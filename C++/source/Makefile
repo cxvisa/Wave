@@ -130,7 +130,7 @@ buildresources: $(BUILD_DIR_OBJ)/Resources/WaveResourceIds.o
 
 clean:
 	rm -rf $(HOME)/build/$(PROJECT)
-	rm -rf ../resourcegeneratorWaveResourceGenerator.$(OS).$(ARCH)
+	rm -rf ../resourcegenerator/WaveResourceGenerator.$(OS).$(ARCH)
 	rm -rf Resources/resources
 
 SRC_ROOT               := $(CURDIR)

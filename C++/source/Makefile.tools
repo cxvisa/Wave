@@ -71,7 +71,7 @@ DYNAMIC_SRC	:= DynamicSource
 BIN_DIR := bin
 
 ifeq "$(WAVE_HOME)" ""
-    WAVE_HOME := $(shell pwd | grep Wave | sed "s/Wave.*/Wave/")
+    WAVE_HOME := $(shell pwd | grep Wave | sed "s/\/Wave\/.*/\/Wave\//")
 endif 
 ifeq "$(WAVE_HOME)" ""
     $(ECHOCMD) "Please Set WAVE_HOME variable to the location of the WAVE source code."
