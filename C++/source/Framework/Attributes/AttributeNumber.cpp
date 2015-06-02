@@ -210,7 +210,7 @@ void AttributeNumber::toString (string &valueString)
 {
     char buffer[128] = {0};
 
-    snprintf (buffer, 128, "%lF", (long double) ((getValue ()).getLd ()));
+    snprintf (buffer, 128, "%Lf", (long double) ((getValue ()).getLd ()));
 
     valueString = string (buffer);
 }
