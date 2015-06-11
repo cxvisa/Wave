@@ -74,7 +74,13 @@ class StringUtils
 
         static string::size_type    findFirstOccuranceOfConsideringStringQuotes                     (const string &inputString, const char &inputCharacter, const string::size_type &inputStartPosition = 0);
 
-    // Now the data members
+        static void                 removeFirstCharacterIfMatches                                   (string &inputString, const char &inputCharatcer);
+        static void                 removeLastCharacterIfMatches                                    (string &inputString, const char &inputCharacter);
+        static void                 removeFirstAndLastCharactersIfMatch                             (string &inputString, const char &inputCharacter);
+
+        static void                 unquote                                                         (string &inputString);
+
+        // Now the data members
 
     private :
     protected :

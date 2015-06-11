@@ -1043,6 +1043,13 @@ ResourceId FrameworkToolKit::analyzeUri (UI32 argc, vector<string> argv)
 
 ResourceId FrameworkToolKit::analyzeJson (UI32 argc, vector<string> argv)
 {
+    UI32 i = 0;
+
+    for (i = 0; i < argc; i++)
+    {
+        tracePrintf (TRACE_LEVEL_INFO, true, true, "%u : %s", i, (argv[i]).c_str ());
+    }
+
     if (argc >= 2)
     {
         string jsonString = argv[1];

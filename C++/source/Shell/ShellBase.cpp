@@ -58,7 +58,16 @@ void ShellBase::getArguments (string *cmdString, vector<string> &argv, UI32 *arg
 
     StringUtils::tokenizeConsideringStringQuotes (*cmdString, argv, ' ');
 
-    *argc = argv.size ();
+    UI32 numberOfArguments = argv.size ();
+
+    *argc = numberOfArguments;
+
+    UI32 i = 0;
+
+    for (i = 0; i < numberOfArguments; i++)
+    {
+        StringUtils::unquote (argv[i]);
+    }
 }
 
 void ShellBase::shellExecuteHandler ()

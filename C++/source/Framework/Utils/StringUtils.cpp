@@ -567,7 +567,7 @@ void StringUtils::trimWhiteSpacesAtTheBeginingAndTheEnd (string &inputString)
 
     while (0 != stringSize)
     {
-        if (true == (isspace (inputString[0])))
+        if (0 != (isspace (inputString[0])))
         {
             inputString.erase (0, 1);
 
@@ -583,7 +583,7 @@ void StringUtils::trimWhiteSpacesAtTheBeginingAndTheEnd (string &inputString)
 
     while (0 != stringSize)
     {
-        if (true == (isspace (inputString[stringSize - 1])))
+        if (0 != (isspace (inputString[stringSize - 1])))
         {
             inputString.erase (stringSize - 1, 1);
 
@@ -609,7 +609,7 @@ string::size_type StringUtils::findFirstOccuranceOfConsideringStringQuotes (cons
           char              previousCharacter  = '\0';
           char              currentCharacter   = '\0';
 
-    while (stringLength > startPosition )
+    while (stringLength > startPosition)
     {
         currentCharacter = inputString[startPosition];
 
@@ -642,5 +642,85 @@ string::size_type StringUtils::findFirstOccuranceOfConsideringStringQuotes (cons
     return (string::npos);
 }
 
+void StringUtils::removeFirstCharacterIfMatches (string &inputString, const char &inputCharacter)
+{
+    if (0 == (inputString.size ()))
+    {
+        return;
+    }
+
+    char firstCharacter = inputString[0];
+
+    if (inputCharacter == firstCharacter)
+    {
+        inputString.erase (0, 1);
+    }
+}
+
+void StringUtils::removeLastCharacterIfMatches (string &inputString, const char &inputCharacter)
+{
+    const string::size_type inputStringSize = inputString.size ();
+
+    if (0 == inputStringSize)
+    {
+        return;
+    }
+
+    char lastCharacter = inputString[inputStringSize - 1];
+
+    if (inputCharacter == lastCharacter)
+    {
+        inputString.erase (inputStringSize - 1, 1);
+    }
+}
+
+void StringUtils::removeFirstAndLastCharactersIfMatch (string &inputString, const char &inputCharacter)
+{
+    removeFirstCharacterIfMatches (inputString, inputCharacter);
+    removeLastCharacterIfMatches  (inputString, inputCharacter);
+}
+
+void StringUtils::unquote (string &inputString)
+{
+    removeFirstAndLastCharactersIfMatch (inputString, '"');
+
+          bool              insideStringQuotes = false;
+          string::size_type startPosition      = 0;
+    const string::size_type stringLength       = inputString.size ();
+          char              previousCharacter  = '\0';
+          char              currentCharacter   = '\0';
+    const char              inputCharacter     = '"';
+
+    while (stringLength > startPosition)
+    {
+        currentCharacter = inputString[startPosition];
+
+        if (true == insideStringQuotes)
+        {
+            if (('"' == currentCharacter) && ('\\' != previousCharacter))
+            {
+                insideStringQuotes = false;
+            }
+        }
+        else
+        {
+            if (('"' == currentCharacter) && ('\\' != previousCharacter))
+            {
+                insideStringQuotes = true;
+            }
+            else
+            {
+                if ((inputCharacter == currentCharacter) && ('\\' == previousCharacter))
+                {
+                    inputString.erase (startPosition - 1, 1);
+                    startPosition--;
+                }
+            }
+        }
+
+        previousCharacter = currentCharacter;
+        startPosition++;
+    }
+}
 
 }
