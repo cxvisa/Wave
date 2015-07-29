@@ -20,7 +20,7 @@ LIST_OF_CLASSES_TO_BE_UPDATED :=
 classes: $(ALL_JAVA_CLASSES) $(WAVEJARFILE)
 	if [ ! -z "$(LIST_OF_CLASSES_TO_BE_UPDATED)" ] ; then \
 		javac -Xlint:unchecked -cp $(CLASSPATH) -sourcepath $(shell pwd) -d ../build/obj -Werror $(LIST_OF_CLASSES_TO_BE_UPDATED) && \
-		cd ../build/obj && jar -cvf ../../source/$(JARFILE) `find . -name "*.class"`; \
+		cd ../build/obj && jar -cvmf ../../source/MANIFEST.MF ../../source/$(JARFILE) `find . -name "*.class"`; \
 	fi
 
 $(ALL_JAVA_CLASSES) : ../build/obj/%.class : %.java
@@ -33,4 +33,5 @@ clean:
 	rm -rf ../build/obj/* ../build/lib/* ../build/DynamicSource/*
 
 runspectrum:
-	java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
+	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
+	java -jar ../build/lib/libSpectrum-1.5.jar ..

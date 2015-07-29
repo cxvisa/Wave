@@ -1,0 +1,4 @@
+Main-Class: com.CxWave.Wave.Spectrum
+Class-Path: ../../../build/lib/libWave-1.5.jar
+
+
