@@ -4,7 +4,7 @@
 
 <ModuleResources ModuleName = "FrameworkMessagingBrokerBasedMessagingBus" ComponentName = "Wave">
     <ResourceEnum Name = "WaveBrokerBasedMessageType">
-        <Resource Name = "WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_UNKNOWN">Subscribe</Resource>
+        <Resource Name = "WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_UNKNOWN">Unknown</Resource>
         <Resource Name = "WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_SUBSCRIBE">Subscribe</Resource>
         <Resource Name = "WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_UNSUBSCRIBE">Unsubscribe</Resource>
         <Resource Name = "WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_PUBLISH">Publish</Resource>

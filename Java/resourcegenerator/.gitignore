@@ -1,0 +1,7 @@
+build/
+*.attach_pid*
+source/.externalToolBuilders/org.eclipse.jdt.core.javabuilder.launch
+source/.classpath
+source/.externalToolBuilders/New_Builder.launch
+source/.project
+

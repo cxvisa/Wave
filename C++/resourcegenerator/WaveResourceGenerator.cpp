@@ -201,7 +201,7 @@ void parseModuleResources  (const string &waveModuleName, const string &waveModu
     XMLCh             *pPrismResourceName           = XMLString::transcode ("Name");;
     char              *pPrismResourceNameAscii      = NULL;
     char              *pPrismResourceValueAscii     = NULL;
-    unsigned long int  waveResourceStart           = waveModuleResourceStart + 1;
+    unsigned long int  waveResourceStart           = waveModuleResourceStart;
 
     waveResourcesParser.setValidationScheme (XercesDOMParser::Val_Auto);
     waveResourcesParser.setDoNamespaces (false);
