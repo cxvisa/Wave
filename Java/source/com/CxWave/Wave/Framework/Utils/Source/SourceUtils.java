@@ -9,10 +9,17 @@ package com.CxWave.Wave.Framework.Utils.Source;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
+import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 
 /**
  * A toolkit to interact with the source code in the project environment.
@@ -268,7 +275,23 @@ public class SourceUtils
         return (getListOfAllFilesOnlyInTheDirectories (directoryPaths.toArray (new String[1])));
     }
 
-    public static List<String> getListOfAllDirectJarFilesAvailable ()
+    public static List<String> getListOfAllAvailableClassFilesInTheDirectory (final String directoryPath)
+    {
+        Vector<String> listOfAllAvailableClassFilesInTheDirectory = new Vector<String> ();
+        List<String>   listOfAllFilesOnlyInTheDirectory           = getListOfAllFilesOnlyInTheDirectory (directoryPath);
+
+        for (String availableFileInTheDirectory : listOfAllFilesOnlyInTheDirectory)
+        {
+            if (availableFileInTheDirectory.endsWith (".class"))
+            {
+                listOfAllAvailableClassFilesInTheDirectory.add (availableFileInTheDirectory);
+            }
+        }
+
+        return (listOfAllAvailableClassFilesInTheDirectory);
+    }
+
+    public static List<String> getListOfAllAvailableJarFiles ()
     {
         Enumeration<URL> urlEnum;
         Vector<String>   listOfAllJarFilesAvailable = new Vector<String> ();
@@ -305,5 +328,147 @@ public class SourceUtils
         }
 
         return (listOfAllJarFilesAvailable);
+    }
+
+    public static List<String> getListOfAllAvailableClassFilesFromJarFile (final String jarFilePath)
+    {
+        Vector<String> listOfAllAvailableClassFromJarFile = new Vector<String> ();
+
+        if (null != jarFilePath)
+        {
+            try
+            {
+                JarFile jarFile = new JarFile (jarFilePath);
+
+                Enumeration<JarEntry> jarEntries = jarFile.entries ();
+
+                while (jarEntries.hasMoreElements ())
+                {
+                    JarEntry jarEntry     = jarEntries.nextElement ();
+                    String   jarEntryName = jarEntry.getName ();
+
+                    if (jarEntryName.endsWith (".class"))
+                    {
+                        listOfAllAvailableClassFromJarFile.add (jarEntryName);
+                    }
+                }
+
+                jarFile.close ();
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        return (listOfAllAvailableClassFromJarFile);
+    }
+
+    public static List<String> getListOfAllAvailableClassFilesFromAllAvailableJarFiles ()
+    {
+        Vector<String> listOfAllAvailableClassFilesFromAllAvailableJarFiles = new Vector<String> ();
+        List<String>   allAvailableJarFiles                                 = getListOfAllAvailableJarFiles ();
+
+        if (null != allAvailableJarFiles)
+        {
+            for (String availableJarFile : allAvailableJarFiles)
+            {
+                List<String> listOfAllAvailableClassFilesFromJarFile = getListOfAllAvailableClassFilesFromJarFile (availableJarFile);
+
+                if (null != listOfAllAvailableClassFilesFromJarFile)
+                {
+                    listOfAllAvailableClassFilesFromAllAvailableJarFiles.addAll (listOfAllAvailableClassFilesFromJarFile);
+                }
+            }
+        }
+
+        return (listOfAllAvailableClassFilesFromAllAvailableJarFiles);
+    }
+
+    public static List<String> getListOfAllAvailableClassPathDirectories ()
+    {
+        Vector<String> listOfAllAvailableClassPathDirectories = new Vector <String> ();
+        List<String>   classPathCommandLineArguments          = EnvironmentUtils.getClassPathCommandLineArguments ();
+
+        for (String classPathCommandLineArgument : classPathCommandLineArguments)
+        {
+            if (false == (classPathCommandLineArgument.endsWith (".jar")))
+            {
+                Path classPathCommandLineArgumentPath = (FileSystems.getDefault ()).getPath (classPathCommandLineArgument);
+
+                listOfAllAvailableClassPathDirectories.add (((classPathCommandLineArgumentPath.toAbsolutePath ()).normalize ()).toString ());
+            }
+        }
+
+        return (listOfAllAvailableClassPathDirectories);
+    }
+
+    public static List<String> getListOfAllAvailableClassFilesFromAllAvailableClassPathDirectories ()
+    {
+        Vector<String> listOfAllAvailableClassFilesFromAllAvailableClassPathDirectories = new Vector<String> ();
+        List<String>   listOfAllAvailableClassPathDirectories                           = getListOfAllAvailableClassPathDirectories ();
+
+        for (String availableClassPathDirectory : listOfAllAvailableClassPathDirectories)
+        {
+            List<String> listOfAllAvailableClassFilesInTheDirectory = getListOfAllAvailableClassFilesInTheDirectory (availableClassPathDirectory);
+
+            if (null != listOfAllAvailableClassFilesInTheDirectory)
+            {
+                listOfAllAvailableClassFilesFromAllAvailableClassPathDirectories.addAll (listOfAllAvailableClassFilesInTheDirectory);
+            }
+        }
+
+        return (listOfAllAvailableClassFilesFromAllAvailableClassPathDirectories);
+    }
+
+    public static List<String> getListOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories ()
+    {
+        Vector<String> listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories = new Vector<String> ();
+        List<String>   listOfAllAvailableClassPathDirectories                                 = getListOfAllAvailableClassPathDirectories ();
+
+        for (String availableClassPathDirectory : listOfAllAvailableClassPathDirectories)
+        {
+            List<String> listOfAllAvailableClassFilesInTheDirectory = getListOfAllAvailableClassFilesInTheDirectory (availableClassPathDirectory);
+
+            if (null != listOfAllAvailableClassFilesInTheDirectory)
+            {
+                for (String availableClassFileInTheDirectory : listOfAllAvailableClassFilesInTheDirectory)
+                {
+                    //Even if the directory hierarchy has a duplicated struture, only the first part matching the class path directory will be replaced to be functionally correct.
+                    // For Example, if class path is /a/b and the class file is /a/b/c/a/b/x.class then the result should be c/a/b/x.class
+
+                    String availableClassFileRelativeToTheDirectory = availableClassFileInTheDirectory.replaceFirst (availableClassPathDirectory + "/", "");
+
+                    listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories.add (availableClassFileRelativeToTheDirectory);
+                }
+            }
+        }
+
+        return (listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories);
+    }
+
+    public static List<String> getListOfAllAvailableClasses ()
+    {
+        List<String> listOfAllVailableClassFilesFromAllAvailableJarFiles                    = getListOfAllAvailableClassFilesFromAllAvailableJarFiles ();
+        List<String> listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories = getListOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories ();
+
+        Set<String>  allAvailableClasses                                                    = new HashSet<String> ();
+
+        for (String availableClassFromJarFile : listOfAllVailableClassFilesFromAllAvailableJarFiles)
+        {
+            allAvailableClasses.add ((availableClassFromJarFile.replaceFirst (".class$", "")).replace ('/', '.'));
+        }
+
+        for (String availableClassFileRelativeToClassPathDirectory : listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories)
+        {
+            allAvailableClasses.add ((availableClassFileRelativeToClassPathDirectory.replaceFirst (".class$", "")).replace ('/', '.'));
+        }
+
+        Vector<String> allAvailableClassFileVector = new Vector<String> ();
+
+        allAvailableClassFileVector.addAll (allAvailableClasses);
+
+        return (allAvailableClassFileVector);
     }
 }

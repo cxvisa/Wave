@@ -34,6 +34,26 @@ class Spectrum
 
         System.out.println ("List of all Available JAR Files : ");
 
-        DebugUtils.prettyPrint (SourceUtils.getListOfAllDirectJarFilesAvailable ());
+        DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableJarFiles ());
+
+        System.out.println ("List of all Available Class Files From All Available Jar Files : ");
+
+        DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClassFilesFromAllAvailableJarFiles ());
+
+        System.out.println ("List of all Available Class Path Directories : ");
+
+        DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClassPathDirectories ());
+
+        System.out.println ("List of all Available Class Files From All Available Class Path Directories : ");
+
+        DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClassFilesFromAllAvailableClassPathDirectories ());
+
+        System.out.println ("List of all Available Class Files Relative to  All Available Class Path Directories : ");
+
+        DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories ());
+
+        System.out.println ("List of all Available Classes : ");
+
+        DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClasses ());
     }
 }
