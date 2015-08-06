@@ -64,7 +64,7 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
         void                        getPendingMessagesForClient                (const UI32 &clientId, vector<ManagementInterfaceMessage *> &messagesVector);
         void                        replyToRemoteMessagesPendingForClient      (const UI32 &clientId, ResourceId completionStatus);
 
-        ResourceId                  connectToNewManagementInterfaceClient      (const string &clientName, const string &clientIpAddress, const SI32 &clientPort, const PrismServiceId &userInterfaceServiceId, const string &serverIpAddressFromClientPerspective, const string &messageVersion, const UI32 &serverUniqueIdentifierFromServerPerspective = 0);
+        ResourceId                  connectToNewManagementInterfaceClient      (const string &clientName, const string &clientIpAddress, const SI32 &clientPort, const WaveServiceId &userInterfaceServiceId, const string &serverIpAddressFromClientPerspective, const string &messageVersion, const UI32 &serverUniqueIdentifierFromServerPerspective = 0);
         WaveManagementClient       *getClient                                  (const string &clientIpAddress, const SI32 &clientPort);
         bool                        isAKnownClient                             (const string &ipAddress, const UI32 &port);
         UI32                        getClientId                                (const string &clientIpAddress, const SI32 &clientPort);
@@ -84,7 +84,7 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
         virtual                                  ~ManagementInterfaceObjectManager ();
 
         static  ManagementInterfaceObjectManager *getInstance                      ();
-        static  PrismServiceId                    getPrismServiceId                ();
+        static  WaveServiceId                    getWaveServiceId                ();
                 void                        	  disconnectFromClient 		   (const string &clientIpAddress);
         static 	void 				  removeInstanceClient 		   (UI32 argc, vector<string> argv);
         static 	void 			          registerDebugShellEntries 	   ();

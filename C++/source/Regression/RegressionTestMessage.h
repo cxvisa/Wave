@@ -15,7 +15,7 @@ namespace WaveNs
 class RegressionTestMessage : public PrismMessage
 {
     private :
-        RegressionTestMessage (PrismServiceId serviceCode);
+        RegressionTestMessage (WaveServiceId serviceCode);
 
     protected :
     public :

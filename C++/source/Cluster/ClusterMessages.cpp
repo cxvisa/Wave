@@ -248,7 +248,7 @@ void ClusterObjectManagerCreateClusterMessage::addFilenameToSync  ( const string
 }
 
 ClusterObjectManagerDeleteClusterMessage::ClusterObjectManagerDeleteClusterMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CLUSTER_DELETE_CLUSTER),
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_DELETE_CLUSTER),
       m_isRebootRequired (true)
 {
 }
@@ -293,7 +293,7 @@ void ClusterObjectManagerAddNodeMessage::setupAttributesForSerialization ()
 
 
 ClusterObjectManagerJoinNodeMessage::ClusterObjectManagerJoinNodeMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CLUSTER_JOIN_NODE),
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_JOIN_NODE),
       m_nodePort (0)
 {
 }
@@ -338,7 +338,7 @@ SI32 ClusterObjectManagerJoinNodeMessage::getNodePort ()
 //None
 //
 ClusterObjectManagerRejoinNodeMessage::ClusterObjectManagerRejoinNodeMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CLUSTER_JOIN_NODE)
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_JOIN_NODE)
 {
     m_isReplaceRejoin = false;
 }
@@ -474,7 +474,7 @@ ResourceId ClusterObjectManagerRejoinNodeMessage::getNodeStatus (const string &n
 }
 
 ClusterObjectManagerDeleteNodeMessage::ClusterObjectManagerDeleteNodeMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CLUSTER_DELETE_NODE),
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_DELETE_NODE),
       m_isDisconnected (false)
 {
 }
@@ -597,7 +597,7 @@ bool ClusterObjectManagerDeleteNodeMessage::getIsDisconnected ()
 }
 
 LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage::LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId (), CLUSTER_PRIMARY_NODE_CHANGED),
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_PRIMARY_NODE_CHANGED),
       m_thisNodePort    (0),
       m_nSecondaryNodes (0)
 {
@@ -701,7 +701,7 @@ SI32 LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage::getThisNode
 }
 
 LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage::LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId (), CLUSTER_REPORT_REMOVED_NODE_FROM_CLUSTER)
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_REMOVED_NODE_FROM_CLUSTER)
 {
 }
 
@@ -711,7 +711,7 @@ LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage::~LocalCluste
 
 #if 0
 LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage::LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId (), CLUSTER_REPORT_CENTERAL_HEART_BEAT)
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_CENTERAL_HEART_BEAT)
 {
 }
 
@@ -750,7 +750,7 @@ string LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage::getNodeNam
 
 
 CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage::CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CLUSTER_REPORT_LOCAL_HEART_BEAT)
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_LOCAL_HEART_BEAT)
 {
 }
 
@@ -790,7 +790,7 @@ string CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage::getNodeNam
 
 
 LocalClusterConfigObjectManagerSetHeartBeatConfigMessage::LocalClusterConfigObjectManagerSetHeartBeatConfigMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId (), CLUSTER_UPDATE_HEARTBEAT_CONFIG)
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_UPDATE_HEARTBEAT_CONFIG)
 {
 }
 
@@ -820,7 +820,7 @@ UI32 LocalClusterConfigObjectManagerSetHeartBeatConfigMessage::getNLostHeartBeat
 #endif
 
 LocalClusterConfigObjectManagerGetNodeRoleMessage::LocalClusterConfigObjectManagerGetNodeRoleMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId (), CLUSTER_GET_NODE_ROLE),
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_GET_NODE_ROLE),
       m_nodeRole (0)
 {
 }
@@ -841,7 +841,7 @@ UI32 LocalClusterConfigObjectManagerGetNodeRoleMessage::getNodeRole ()
 
 
 LocalClusterConfigObjectManagerGetClusterConfigMessage::LocalClusterConfigObjectManagerGetClusterConfigMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId (), CLUSTER_GET_CLUSTER_CONFIG),
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_GET_CLUSTER_CONFIG),
       m_primaryNodeStatus (0),
       m_nSecondaryNodes(0)
 {
@@ -952,8 +952,8 @@ void LocalClusterConfigObjectManagerGetClusterConfigMessage::setSecondaryNodeSta
 
 
 
-HeartBeatLostMessage::HeartBeatLostMessage (/* PrismServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId () /*id*/, CLUSTER_HEARTBEAT_LOST)
+HeartBeatLostMessage::HeartBeatLostMessage (/* WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_LOST)
 {
     m_dstIpAddress          =   dstIpAddress;
     m_dstPort               =   dstPort;
@@ -986,8 +986,8 @@ void HeartBeatLostMessage::setDstPort (UI32 dstPort)
     m_dstPort   = dstPort;
 }
 
-HeartBeatResumedMessage::HeartBeatResumedMessage (/*PrismServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
-    : PrismMessage (LocalClusterConfigObjectManager::getPrismServiceId () /*id*/, CLUSTER_HEARTBEAT_RESUMED)
+HeartBeatResumedMessage::HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
+    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_RESUMED)
 {
     m_dstIpAddress          =   dstIpAddress;
     m_dstPort               =   dstPort;
@@ -1036,7 +1036,7 @@ void HeartBeatResumedMessage::setDstPort (UI32 dstPort)
 //
 
 ClusterConfigObjectManagerGetClusterInfoMessage::ClusterConfigObjectManagerGetClusterInfoMessage()
-:PrismMessage(CentralClusterConfigObjectManager::getPrismServiceId (),CLUSTER_GET_DEBUGINFO),
+:PrismMessage(CentralClusterConfigObjectManager::getWaveServiceId (),CLUSTER_GET_DEBUGINFO),
 m_ClusterCreated(false),
 m_primaryNodePort(0),
 m_primaryNodeLocationId(0),
@@ -1246,13 +1246,13 @@ void ClusterConfigObjectManagerGetClusterInfoMessage::setupAttributesForSerializ
  * Date :       05/05/2011
  */
 CentralClusterConfigUpdateHardwareSynchronizationStateMessage::CentralClusterConfigUpdateHardwareSynchronizationStateMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_UNINITIALIZED)
 {
 }
 
 CentralClusterConfigUpdateHardwareSynchronizationStateMessage::CentralClusterConfigUpdateHardwareSynchronizationStateMessage (ResourceId hardwareSynchronizationState, const vector<LocationId> &locationIds)
-    : PrismMessage (CentralClusterConfigObjectManager::getPrismServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
+    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (hardwareSynchronizationState),
     m_locationIds                   (locationIds)
 {

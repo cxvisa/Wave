@@ -44,7 +44,7 @@ FrameworkTestability5ObjectManager::~FrameworkTestability5ObjectManager ()
 {
 }
 
-PrismServiceId FrameworkTestability5ObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkTestability5ObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

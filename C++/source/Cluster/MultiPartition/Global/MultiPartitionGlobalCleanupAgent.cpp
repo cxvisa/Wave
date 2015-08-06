@@ -72,7 +72,7 @@ ResourceId MultiPartitionGlobalCleanupAgent::execute ()
 ResourceId MultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep (MultiPartitionGlobalCleanupAgentContext *pMultiPartitionGlobalCleanupAgentContext)
 {
     trace (TRACE_LEVEL_INFO, "PrismMultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep: called.");
-    vector<PrismServiceId> &enabledServices = pMultiPartitionGlobalCleanupAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pMultiPartitionGlobalCleanupAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -81,7 +81,7 @@ ResourceId MultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep (Multi
 
 ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep (MultiPartitionGlobalCleanupAgentContext *pMultiPartitionGlobalCleanupAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToSendMultiPartitionCleanup   = pMultiPartitionGlobalCleanupAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToSendMultiPartitionCleanup   = pMultiPartitionGlobalCleanupAgentContext->getEnabledServices ();
     UI32                   i                                        = 0;
     UI32                   numberOfServices                         = serviceIdsToSendMultiPartitionCleanup.size();
 
@@ -143,15 +143,15 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool MultiPartitionGlobalCleanupAgent::requiresMultiPartitionGlobalCleanupNotification (const PrismServiceId &prismServiceId)
+bool MultiPartitionGlobalCleanupAgent::requiresMultiPartitionGlobalCleanupNotification (const WaveServiceId &prismServiceId)
 {
     // 1. Exlude PrismFrameworkObjectManager (in general.)
     // 2. Exclude MultiTenencyLocalObjectManager (It is running this Agent)
     // 3. Exclude Local services
     // 4. Exclude User Specific Local services.
 
-    if (((PrismFrameworkObjectManager::getPrismServiceId()) == prismServiceId) ||
-        ((MultiPartitionObjectManager::getPrismServiceId ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId()) == prismServiceId) ||
+        ((MultiPartitionObjectManager::getWaveServiceId ()) == prismServiceId) ||
         (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {

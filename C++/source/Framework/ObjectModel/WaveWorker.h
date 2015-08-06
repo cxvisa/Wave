@@ -155,9 +155,9 @@ class WaveWorker : public PrismElement
         virtual void                           addEventType                             (const UI32 &eventOperationCode);
 
                 void                           setCpuAffinity                           (const vector<UI32> &cpuAffinityVector);
-                PrismServiceId                 getServiceId                             ();
+                WaveServiceId                 getServiceId                             ();
 
-        virtual void                           listenForEvent                           (PrismServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                           listenForEvent                           (WaveServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
         virtual ResourceId                     sendSynchronouslyToWaveClient            (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance = 0);
         virtual WaveMessageStatus              sendToWaveServer                         (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
         virtual ResourceId                     sendToWaveClient                         (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instance = 0);

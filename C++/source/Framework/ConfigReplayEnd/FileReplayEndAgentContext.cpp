@@ -18,7 +18,7 @@ FileReplayEndAgentContext::~FileReplayEndAgentContext ()
 {
 }
 
-vector<PrismServiceId> &FileReplayEndAgentContext::getEnabledServices ()
+vector<WaveServiceId> &FileReplayEndAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

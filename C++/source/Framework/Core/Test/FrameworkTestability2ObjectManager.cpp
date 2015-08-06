@@ -45,19 +45,19 @@ FrameworkTestability2ObjectManager::~FrameworkTestability2ObjectManager ()
 {
 }
 
-PrismServiceId FrameworkTestability2ObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkTestability2ObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
 
 void FrameworkTestability2ObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (FrameworkLocalMessagingTestObjectManager::getPrismServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::frameworkTestabilityEvent1EventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::PrimaryChangedEventHandler));
-    listenForEvent (PersistenceLocalObjectManager::getPrismServiceId (), STARTUP_SCHEMA_CHANGE_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::StartupSchemaChangeEventHandler));
+    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::frameworkTestabilityEvent1EventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::PrimaryChangedEventHandler));
+    listenForEvent (PersistenceLocalObjectManager::getWaveServiceId (), STARTUP_SCHEMA_CHANGE_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::StartupSchemaChangeEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

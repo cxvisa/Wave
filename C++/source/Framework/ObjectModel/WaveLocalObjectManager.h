@@ -21,7 +21,7 @@ class WaveLocalObjectManager : public WaveObjectManager
 
     public :
         virtual      ~WaveLocalObjectManager ();
-        static  bool  isALocalService         (const PrismServiceId &prismServiceId);
+        static  bool  isALocalService         (const WaveServiceId &prismServiceId);
 
     // Now the data members
 

@@ -19,7 +19,7 @@ LockManagedObject::LockManagedObject (WaveObjectManager *pWaveObjectManager)
 {
 }
 
-LockManagedObject::LockManagedObject (WaveObjectManager *pWaveObjectManager, const LocationId &locationId, const string &serviceString, const PrismServiceId &serviceId)
+LockManagedObject::LockManagedObject (WaveObjectManager *pWaveObjectManager, const LocationId &locationId, const string &serviceString, const WaveServiceId &serviceId)
     : PrismElement (pWaveObjectManager),
       PrismPersistableObject (LockManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
@@ -66,7 +66,7 @@ const string& LockManagedObject::getServiceString () const
     return (m_serviceString);
 }
 
-PrismServiceId LockManagedObject::getServiceId () const
+WaveServiceId LockManagedObject::getServiceId () const
 {
     return (m_serviceId);
 }
@@ -81,7 +81,7 @@ void LockManagedObject::setServiceString (const string &serviceString)
     m_serviceString = serviceString;
 }
 
-void LockManagedObject::setServiceId (const PrismServiceId serviceId)
+void LockManagedObject::setServiceId (const WaveServiceId serviceId)
 {
     m_serviceId = serviceId;
 }

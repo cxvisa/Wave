@@ -18,7 +18,7 @@ PrismExternalStateSynchronizationAgentContext::~PrismExternalStateSynchronizatio
 {
 }
 
-vector<PrismServiceId> &PrismExternalStateSynchronizationAgentContext::getEnabledServices ()
+vector<WaveServiceId> &PrismExternalStateSynchronizationAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

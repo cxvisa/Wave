@@ -221,7 +221,7 @@ InterLocationMessageReceiverObjectManager *InterLocationMessageReceiverObjectMan
     return (pInterLocationMessageReceiverObjectManager);
 }
 
-PrismServiceId InterLocationMessageReceiverObjectManager::getPrismServiceId ()
+WaveServiceId InterLocationMessageReceiverObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

@@ -34,7 +34,7 @@ class HttpInterfaceReceiverObjectManager : public WaveLocalObjectManagerForUserS
 
         static  string                              getServiceName                     ();
         static  HttpInterfaceReceiverObjectManager *getInstance                        ();
-        static  PrismServiceId                      getPrismServiceId                  ();
+        static  WaveServiceId                      getWaveServiceId                  ();
 
         static  bool                                isAKnownHttpInterfaceMethod        (const WaveHttpInterfaceMethod &waveHttpInterfaceMethod);
         static  void                                addHttpInterfaceMethodWorker       (const WaveHttpInterfaceMethod &waveHttpInterfaceMethod, HttpInterfaceMethodWorker *pHttpInterfaceMethodWorker);

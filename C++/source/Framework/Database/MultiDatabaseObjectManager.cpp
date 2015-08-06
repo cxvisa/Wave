@@ -74,7 +74,7 @@ MultiDatabaseObjectManager *MultiDatabaseObjectManager::getInstance ()
     return (pMultiDatacaseObjectManager);
 }
 
-PrismServiceId MultiDatabaseObjectManager::getPrismServiceId ()
+WaveServiceId MultiDatabaseObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

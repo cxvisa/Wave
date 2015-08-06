@@ -29,7 +29,7 @@ class WaveMessagingBrokerTopicProcessorObjectManager : public WaveLocalObjectMan
 
                 string                                          getTopicName                                   () const;
 
-        static PrismServiceId                                   getPrismServiceIdByTopicName                   (const string &topicName);
+        static WaveServiceId                                   getWaveServiceIdByTopicName                   (const string &topicName);
 
     // Now the data members
 
@@ -38,8 +38,8 @@ class WaveMessagingBrokerTopicProcessorObjectManager : public WaveLocalObjectMan
 
                WaveMessagingBrokerTopicProcessorPublishWorker *m_pWaveMessagingBrokerTopicProcessorPublishWorker;
 
-        static map<string, PrismServiceId>                     m_topicNameToPrismServiceIdMap;
-        static PrismMutex                                      m_topicNameToPrismServiceIdMapMutex;
+        static map<string, WaveServiceId>                     m_topicNameToWaveServiceIdMap;
+        static PrismMutex                                      m_topicNameToWaveServiceIdMapMutex;
 
     protected :
     public :

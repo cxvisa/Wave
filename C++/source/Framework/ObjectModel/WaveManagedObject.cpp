@@ -469,7 +469,7 @@ void WaveManagedObject::addEventType (const UI32 &eventOperationCode)
     m_pCurrentOwnerWaveObjectManager->addEventType (eventOperationCode);
 }
 
-void WaveManagedObject::listenForEvent (PrismServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
+void WaveManagedObject::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
 {
     m_pCurrentOwnerWaveObjectManager->listenForEvent (prismServiceCode, sourceOperationCode, pPrismEventHandler, pPrismElement != NULL ? pPrismElement : this, sourceLocationId);
 }
@@ -571,7 +571,7 @@ ResourceId WaveManagedObject::loadOperationalDataSynchronouslyLoadStep (LoadOper
     ObjectId                                                      waveManagedObjectId         = pLoadOperationalDataSynchronousContext->getWaveManagedObjectId ();
     vector<string>                                                operationalDataFields       = pLoadOperationalDataSynchronousContext->getOperationalDataFields ();
     WaveObjectManager                                            *pWaveObjectManager          = getPWaveObjectManager ();
-    PrismServiceId                                                ownerServiceId              = pWaveObjectManager->getServiceId ();
+    WaveServiceId                                                ownerServiceId              = pWaveObjectManager->getServiceId ();
     PrismLoadOperationalDataForManagedObjectObjectManagerMessage  message                       (ownerServiceId, waveManagedObjectId, operationalDataFields);
     ResourceId                                                    status                      = WAVE_MESSAGE_SUCCESS;
     WaveLocalManagedObjectBase                                   *pWaveLocalManagedObjectBase = NULL;
@@ -761,7 +761,7 @@ void WaveManagedObject::preCreateHardwareStepForOperateOnWaveManagedObject (Pris
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectCreateContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
-    PrismServiceId                  prismServiceId;
+    WaveServiceId                  prismServiceId;
     bool                            isNeedSurrogateSupportFlag = false;
     bool                            isPartialSuccessFlag = false;
 
@@ -804,7 +804,7 @@ void WaveManagedObject::preDeleteHardwareStepForOperateOnWaveManagedObject (Pris
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectDeleteContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
-    PrismServiceId                  prismServiceId;
+    WaveServiceId                  prismServiceId;
     bool                            isNeedSurrogateSupportFlag = false;
     bool                            isPartialSuccessFlag = false;
 
@@ -843,7 +843,7 @@ void WaveManagedObject::preUpdateHardwareStepForOperateOnWaveManagedObject (Pris
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectUpdateContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
-    PrismServiceId                  prismServiceId;
+    WaveServiceId                  prismServiceId;
     bool                            isNeedSurrogateSupportFlag = false;
     bool                            isPartialSuccessFlag = false;
 
@@ -945,7 +945,7 @@ void WaveManagedObject::getPluginDetailsForDistributionCallback (WaveSendToClust
     pPrismAsynchronousContext->callback ();
 }
 
-bool WaveManagedObject::getPluginDetailsForDistribution (ObjectId &newOperateOnWaveManagedObjectId, PrismServiceId &prismServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag)
+bool WaveManagedObject::getPluginDetailsForDistribution (ObjectId &newOperateOnWaveManagedObjectId, WaveServiceId &prismServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag)
 {
     return (false);
 }

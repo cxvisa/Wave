@@ -18,7 +18,7 @@ PrismPostbootAgentContext::~PrismPostbootAgentContext ()
 {
 }
 
-vector<PrismServiceId> &PrismPostbootAgentContext::getEnabledServices ()
+vector<WaveServiceId> &PrismPostbootAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveNewNodesAddedEvent::WaveNewNodesAddedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (),FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT )
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (),FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT )
 {
 }
 

@@ -63,7 +63,7 @@ class DatabaseObjectManager : public WaveLocalObjectManager
     public :
         virtual                            ~DatabaseObjectManager                     ();
         static WaveObjectManager           *getInstance                               ();
-        static PrismServiceId               getPrismServiceId                         ();
+        static WaveServiceId               getWaveServiceId                         ();
         static string                       getClassName                              ();
         static bool                         getIsDatabaseEnabled                      ();
         static void                         setIsDatabaseEnabled                      (const bool &isDatabaseEnabled);

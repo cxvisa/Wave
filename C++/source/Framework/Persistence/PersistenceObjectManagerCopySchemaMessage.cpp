@@ -12,14 +12,14 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerCopySchemaMessage::PersistenceObjectManagerCopySchemaMessage (const string &sourceSchema, const string &destSchema)
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA),
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA),
       m_sourceSchema (sourceSchema),
       m_destSchema (destSchema)
 {
 }
 
 PersistenceObjectManagerCopySchemaMessage::PersistenceObjectManagerCopySchemaMessage ()
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA)
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA)
 {
 }
 

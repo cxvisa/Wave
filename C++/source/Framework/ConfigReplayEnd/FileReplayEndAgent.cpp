@@ -44,7 +44,7 @@ ResourceId FileReplayEndAgent::execute ()
 
 ResourceId FileReplayEndAgent::getListOfEnabledServicesStep (FileReplayEndAgentContext *pFileReplayEndAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pFileReplayEndAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pFileReplayEndAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -53,7 +53,7 @@ ResourceId FileReplayEndAgent::getListOfEnabledServicesStep (FileReplayEndAgentC
 
 ResourceId FileReplayEndAgent::sendFileReplayEndStep (FileReplayEndAgentContext *pFileReplayEndAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToSendFileReplayEnd = pFileReplayEndAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToSendFileReplayEnd = pFileReplayEndAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -86,9 +86,9 @@ ResourceId FileReplayEndAgent::sendFileReplayEndStep (FileReplayEndAgentContext 
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool FileReplayEndAgent::requiresFileReplayEndNotification(const PrismServiceId &prismServiceId)
+bool FileReplayEndAgent::requiresFileReplayEndNotification(const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (false);

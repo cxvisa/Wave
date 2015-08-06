@@ -44,7 +44,7 @@ ResourceId ConfigReplayEndAgent::execute ()
 
 ResourceId ConfigReplayEndAgent::getListOfEnabledServicesStep (ConfigReplayEndAgentContext *pConfigReplayEndAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pConfigReplayEndAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pConfigReplayEndAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -53,7 +53,7 @@ ResourceId ConfigReplayEndAgent::getListOfEnabledServicesStep (ConfigReplayEndAg
 
 ResourceId ConfigReplayEndAgent::sendConfigReplayEndStep (ConfigReplayEndAgentContext *pConfigReplayEndAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToSendConfigReplayEnd = pConfigReplayEndAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToSendConfigReplayEnd = pConfigReplayEndAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -86,9 +86,9 @@ ResourceId ConfigReplayEndAgent::sendConfigReplayEndStep (ConfigReplayEndAgentCo
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool ConfigReplayEndAgent::requiresConfigReplayEndNotification(const PrismServiceId &prismServiceId)
+bool ConfigReplayEndAgent::requiresConfigReplayEndNotification(const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (false);

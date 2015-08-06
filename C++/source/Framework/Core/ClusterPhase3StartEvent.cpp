@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 ClusterPhase3StartEvent::ClusterPhase3StartEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT)
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT)
 {
 }
 

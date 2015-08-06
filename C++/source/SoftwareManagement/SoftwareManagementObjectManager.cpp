@@ -43,7 +43,7 @@ SoftwareManagementObjectManager *SoftwareManagementObjectManager::getInstance ()
     return (pSoftwareManagementObjectManager);
 }
 
-PrismServiceId SoftwareManagementObjectManager::getPrismServiceId ()
+WaveServiceId SoftwareManagementObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

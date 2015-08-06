@@ -70,7 +70,7 @@ WaveThreadStatus WaveClientReceiverThread::start ()
                  UI32           peerServerPort                              = 0;
                  bool           isSuccessful                                = false;
 				 UI32 			peerServerId							    = 0;
-    static const PrismServiceId waveUserInterfaceObjectManagerServiceId     = WaveUserInterfaceObjectManager::getPrismServiceId ();
+    static const WaveServiceId waveUserInterfaceObjectManagerServiceId     = WaveUserInterfaceObjectManager::getWaveServiceId ();
                  UI32           serverUniqueIdentifierFromServerPerspective = 0;
                  string         messageVersion                              = "";
 

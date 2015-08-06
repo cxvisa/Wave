@@ -41,7 +41,7 @@ class AttributeType
         static AttributeType AttributeTypeUI32;
         static AttributeType AttributeTypeWaveMessageType;
         static AttributeType AttributeTypeWaveMessagePriority;
-        static AttributeType AttributeTypePrismServiceId;
+        static AttributeType AttributeTypeWaveServiceId;
         static AttributeType AttributeTypeResourceId;
         static AttributeType AttributeTypeResourceEnum;
         static AttributeType AttributeTypeSerializableObjectType;

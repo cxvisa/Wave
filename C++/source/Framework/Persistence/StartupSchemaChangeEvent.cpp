@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 StartupSchemaChangeEvent::StartupSchemaChangeEvent ()
-    : PrismEvent (PersistenceLocalObjectManager::getPrismServiceId (), STARTUP_SCHEMA_CHANGE_EVENT),
+    : PrismEvent (PersistenceLocalObjectManager::getWaveServiceId (), STARTUP_SCHEMA_CHANGE_EVENT),
       m_operationStatus(1), 
       m_fromSchema (RUNNING_SCHEMA),
       m_pathForFromSchemaFile (""),

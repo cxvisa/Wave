@@ -37,7 +37,7 @@ ResourceId WaveCliServiceShell::serviceList (const vector<string> &arguments)
     vector<RegressionTestEntry>     testServiceEntries;
     ResourceId                      status;
     WaveClientSynchronousConnection connection           = getConnection ();
-    vector<PrismServiceId>          serviceIds;
+    vector<WaveServiceId>          serviceIds;
     vector<string>                  serviceNames;
     vector<bool>                    enabledStates;
     vector<bool>                    localServiceStates;
@@ -165,7 +165,7 @@ void WaveCliServiceShell::clientListHelp ()
 ResourceId WaveCliServiceShell::serviceSetCpuAffinity (const vector<string> &arguments)
 {
     UI32                            numberOfArguments   = arguments.size ();
-    PrismServiceId                  prismServiceId      = 0;
+    WaveServiceId                  prismServiceId      = 0;
     vector<string>                  cpuAffinityStrings;
     ResourceId                      status              = WAVE_MESSAGE_ERROR;
     UI32                            numberOfCpuValues   = 0;

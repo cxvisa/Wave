@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 ClusterLocalSlotOfflineMessage::ClusterLocalSlotOfflineMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SLOT_OFFLINE_MESSAGE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_OFFLINE_MESSAGE),
     m_slotNumber (0),
     m_hwType (0x10),
     m_slotState (0)
@@ -21,7 +21,7 @@ ClusterLocalSlotOfflineMessage::ClusterLocalSlotOfflineMessage ()
 }
 
 ClusterLocalSlotOfflineMessage::ClusterLocalSlotOfflineMessage (const UI32 &slotNumber, const UI32 &hwType, const UI32 &slotState)
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SLOT_OFFLINE_MESSAGE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_OFFLINE_MESSAGE),
     m_slotNumber (slotNumber),
     m_hwType (hwType),
     m_slotState (slotState)

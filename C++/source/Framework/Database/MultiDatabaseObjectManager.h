@@ -29,7 +29,7 @@ class MultiDatabaseObjectManager : public WaveLocalObjectManager
         virtual                             ~MultiDatabaseObjectManager                ();
 
         static  MultiDatabaseObjectManager  *getInstance                               ();
-        static  PrismServiceId               getPrismServiceId                         ();
+        static  WaveServiceId               getWaveServiceId                         ();
         static  string                       getClassName                              ();
 
                 WaveManagedObject           *loadWaveManagedObjectFromDatabase         (const ObjectId         &waveManagedObjectObjectId,  const string &schema, WaveObjectManager *pWaveObjectManager = NULL);

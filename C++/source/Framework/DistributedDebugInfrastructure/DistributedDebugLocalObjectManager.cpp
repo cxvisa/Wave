@@ -71,9 +71,9 @@ DistributedDebugLocalObjectManager* DistributedDebugLocalObjectManager::getInsta
  * 
  * 
  * 
- * @return PrismServiceId
+ * @return WaveServiceId
  */
-PrismServiceId   DistributedDebugLocalObjectManager::getPrismServiceId ()
+WaveServiceId   DistributedDebugLocalObjectManager::getWaveServiceId ()
 {
      return ((getInstance ())->getServiceId ());
 

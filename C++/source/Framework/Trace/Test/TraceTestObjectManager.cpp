@@ -34,7 +34,7 @@ TraceTestObjectManager *TraceTestObjectManager::getInstance ()
     return (pTraceTestObjectManager);
 }
 
-PrismServiceId TraceTestObjectManager::getPrismServiceId ()
+WaveServiceId TraceTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

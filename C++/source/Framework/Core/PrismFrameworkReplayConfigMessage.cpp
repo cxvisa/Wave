@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PrismFrameworkReplayConfigMessage::PrismFrameworkReplayConfigMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REPLAY_CONFIG_FILE)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REPLAY_CONFIG_FILE)
 {
 }
 

@@ -27,8 +27,8 @@ class PrismFailoverAgentContext : public PrismAsynchronousContext
                 void                setFailedLocationIds(const vector<LocationId> &failedLocationIds);
                 vector<LocationId> &getFailedLocationIds      ();
 
-                void                setServiceToBeIgnored     (const PrismServiceId &serviceToBeIgnored);
-                PrismServiceId      getServiceToBeIgnored     () const;
+                void                setServiceToBeIgnored     (const WaveServiceId &serviceToBeIgnored);
+                WaveServiceId      getServiceToBeIgnored     () const;
 
                 bool                getIsConfigurationChange  () const;
                 void                setIsConfigurationChange  (const bool isConfigurationChange);
@@ -37,7 +37,7 @@ class PrismFailoverAgentContext : public PrismAsynchronousContext
 
     private :
         vector<LocationId> m_failedLocationIds;
-        PrismServiceId     m_serviceToBeIgnored;
+        WaveServiceId     m_serviceToBeIgnored;
         bool               m_isConfigurationChange;
 
     protected :

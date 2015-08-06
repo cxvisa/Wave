@@ -45,7 +45,7 @@ ResourceId SlotFailoverAgent::execute ()
 
 ResourceId SlotFailoverAgent::getListOfEnabledServicesStep (SlotFailoverAgentContext *pSlotFailoverAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pSlotFailoverAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pSlotFailoverAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -54,7 +54,7 @@ ResourceId SlotFailoverAgent::getListOfEnabledServicesStep (SlotFailoverAgentCon
 
 ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pSlotFailoverAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToSendSlotFailover = pSlotFailoverAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToSendSlotFailover = pSlotFailoverAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -97,9 +97,9 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool SlotFailoverAgent::requiresSlotFailoverNotification(const PrismServiceId &prismServiceId)
+bool SlotFailoverAgent::requiresSlotFailoverNotification(const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true != (FrameworkToolKit::isALocalService (prismServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {

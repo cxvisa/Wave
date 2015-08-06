@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 ClusterFailoverCompleteEvent::ClusterFailoverCompleteEvent (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover)
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_FAILOVER_COMPLETE_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_FAILOVER_COMPLETE_EVENT),
       m_failoverReason                      (failoverReason),
       m_failedLocationIds                   (failedLocationIds),
       m_isPrincipalChangedWithThisFailover  (isPrincipalChangedWithThisFailover)

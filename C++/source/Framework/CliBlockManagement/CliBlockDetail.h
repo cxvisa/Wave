@@ -22,20 +22,20 @@ class CliBlockDetail
     protected :
     public :
                                     CliBlockDetail                      ();
-                                    CliBlockDetail                      (PrismServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext);
+                                    CliBlockDetail                      (WaveServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext);
                                     CliBlockDetail                      (const CliBlockServiceIndependentMessage &cliBlockServiceIndependentMessage);
                                     CliBlockDetail                      (const CliBlockDetail &detail);
                                    ~CliBlockDetail                      ();
           CliBlockDetail&           operator=                           (const CliBlockDetail &detail);
 
-    const PrismServiceId            getPrismServiceId                   () const;
+    const WaveServiceId            getWaveServiceId                   () const;
     const LocationId                getOriginator                       () const;  
     const CliBlockContext&          getCliBlockContext                  () const;
                 
            // Now the data members
 
     private :
-            PrismServiceId            m_prismServiceId;
+            WaveServiceId            m_prismServiceId;
             LocationId                m_originator;
             CliBlockContext           m_cliBlockContext; 
 

@@ -367,7 +367,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
                         pPrismMessage->removeAllBuffers ();
                         pPrismMessage->loadFromSerializedData2 (messageString);
 
-                        pPrismMessage->setServiceCode (WaveUserInterfaceObjectManager::getPrismServiceId ());
+                        pPrismMessage->setServiceCode (WaveUserInterfaceObjectManager::getWaveServiceId ());
 
                     }
 

@@ -89,7 +89,7 @@ PersistenceLocalObjectManager *PersistenceLocalObjectManager::getInstance ()
     return (pPersistenceLocalObjectManager);
 }
 
-PrismServiceId PersistenceLocalObjectManager::getPrismServiceId ()
+WaveServiceId PersistenceLocalObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

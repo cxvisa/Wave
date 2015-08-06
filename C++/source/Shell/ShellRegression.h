@@ -61,7 +61,7 @@ class ShellRegression : public ShellBase
                     // Now the data members
 
     private :
-                vector<PrismServiceId> m_serviceMap;
+                vector<WaveServiceId> m_serviceMap;
                 UI32                   m_nServices;
     protected :
     public :

@@ -41,7 +41,7 @@ class  AppInterfaceObjectManagerRemoteCommandsMessage: public PrismMessage
     public :
         virtual    ~AppInterfaceObjectManagerRemoteCommandsMessage ();
                     AppInterfaceObjectManagerRemoteCommandsMessage ();
-                    AppInterfaceObjectManagerRemoteCommandsMessage (PrismServiceId serviceId);
+                    AppInterfaceObjectManagerRemoteCommandsMessage (WaveServiceId serviceId);
 
         void        setupAttributesForSerialization                ();
         void        setNodeName                                    (string nodeName);
@@ -84,7 +84,7 @@ class ClusterInterfaceObjectManagerCreateClusterDoneMessage : public PrismMessag
     public :
         virtual                ~ClusterInterfaceObjectManagerCreateClusterDoneMessage    ();
                                 ClusterInterfaceObjectManagerCreateClusterDoneMessage    ();
-                                ClusterInterfaceObjectManagerCreateClusterDoneMessage    (PrismServiceId serviceId);
+                                ClusterInterfaceObjectManagerCreateClusterDoneMessage    (WaveServiceId serviceId);
                                 //ClusterInterfaceObjectManagerCreateClusterDoneMessage    (string primaryNodeName, UI32 nSecondaryNodes, string secondariesNodeNames []);
         void                    setupAttributesForSerialization             ();
         void                    setPrimaryNodeName                          (const string &primaryNodeName);
@@ -133,7 +133,7 @@ class ClusterInterfaceObjectManagerDeleteClusterDoneMessage : public PrismMessag
     public :
         virtual                ~ClusterInterfaceObjectManagerDeleteClusterDoneMessage   ();
                                 ClusterInterfaceObjectManagerDeleteClusterDoneMessage   ();
-                                ClusterInterfaceObjectManagerDeleteClusterDoneMessage   (PrismServiceId serviceId);
+                                ClusterInterfaceObjectManagerDeleteClusterDoneMessage   (WaveServiceId serviceId);
         void                    setupAttributesForSerialization                         ();
         void                    setRemoveClusterResultCallBack                          (removeClusterCallBack_t removeClusterResultCb);
         removeClusterCallBack_t getRemoveClusterResultCallBack                          ();
@@ -158,7 +158,7 @@ class ClusterInterfaceObjectManagerAddNodeDoneMessage : public PrismMessage
     public :
         virtual            ~ClusterInterfaceObjectManagerAddNodeDoneMessage ();
                             ClusterInterfaceObjectManagerAddNodeDoneMessage ();
-                            ClusterInterfaceObjectManagerAddNodeDoneMessage (PrismServiceId serviceId);
+                            ClusterInterfaceObjectManagerAddNodeDoneMessage (WaveServiceId serviceId);
         void                setupAttributesForSerialization                 ();
         void                setNodeName                                     (const string &nodeName);
         string              getNodeName                                     ();
@@ -193,7 +193,7 @@ class ClusterInterfaceObjectManagerJoinNodeDoneMessage : public PrismMessage
     public :
         virtual            ~ClusterInterfaceObjectManagerJoinNodeDoneMessage ();
                             ClusterInterfaceObjectManagerJoinNodeDoneMessage ();
-                            ClusterInterfaceObjectManagerJoinNodeDoneMessage (PrismServiceId serviceId);
+                            ClusterInterfaceObjectManagerJoinNodeDoneMessage (WaveServiceId serviceId);
         void                setNodeName                                      (const string &nodeName);
         string              getNodeName                                      ();
         void                setNodePort                                      (const SI32 &nodePort);
@@ -224,7 +224,7 @@ class ClusterInterfaceObjectManagerDeleteNodeDoneMessage : public PrismMessage
     public :
         virtual             ~ClusterInterfaceObjectManagerDeleteNodeDoneMessage ();
                              ClusterInterfaceObjectManagerDeleteNodeDoneMessage ();
-                             ClusterInterfaceObjectManagerDeleteNodeDoneMessage (PrismServiceId serviceId);
+                             ClusterInterfaceObjectManagerDeleteNodeDoneMessage (WaveServiceId serviceId);
         void                 setupAttributesForSerialization                    ();
         void                 setNodeName                                        (const string &nodeName);
         string               getNodeName                                        ();

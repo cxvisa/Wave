@@ -26,7 +26,7 @@ class LocalClusterConfigObjectManager : public WaveLocalObjectManager
     public :
         virtual                                 ~LocalClusterConfigObjectManager    ();
         static  LocalClusterConfigObjectManager *getInstance                        ();
-        static  PrismServiceId                   getPrismServiceId                  ();
+        static  WaveServiceId                   getWaveServiceId                  ();
 
                 void                             reportPrimaryNodeChanged           (LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage *pMessage);
                 void                             reportRemovedNodeFromCluster       (LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage *pMessage);

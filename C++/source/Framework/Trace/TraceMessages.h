@@ -239,17 +239,17 @@ class TraceObjectManagerMessageHistoryDumpForAServiceMessage : public Management
     protected :
     public :
                                 TraceObjectManagerMessageHistoryDumpForAServiceMessage  ();
-                                TraceObjectManagerMessageHistoryDumpForAServiceMessage  (const PrismServiceId prismServiceId);
+                                TraceObjectManagerMessageHistoryDumpForAServiceMessage  (const WaveServiceId prismServiceId);
                                ~TraceObjectManagerMessageHistoryDumpForAServiceMessage  ();
 
-        PrismServiceId          getPrismServiceId                                       () const;
+        WaveServiceId          getWaveServiceId                                       () const;
         vector<string>         &getMessageHistoryDumpStringVector                       ();
         void                    setMessageHistoryDumpStringVector                       (vector<string> &messageHistoryDumpStringVector);
 
     // Now the data members
 
     private :
-        PrismServiceId      m_prismServiceId;
+        WaveServiceId      m_prismServiceId;
         vector<string>      m_messageHistoryDumpStringVector;
 
     protected :
@@ -264,10 +264,10 @@ class TraceObjectManagerMessageHistoryConfigForAServiceMessage : public Manageme
     protected :
     public :
                                 TraceObjectManagerMessageHistoryConfigForAServiceMessage ();
-                                TraceObjectManagerMessageHistoryConfigForAServiceMessage (PrismServiceId prismServiceId);
+                                TraceObjectManagerMessageHistoryConfigForAServiceMessage (WaveServiceId prismServiceId);
                                ~TraceObjectManagerMessageHistoryConfigForAServiceMessage ();
 
-        PrismServiceId          getPrismServiceId                                        () const;
+        WaveServiceId          getWaveServiceId                                        () const;
         bool                    getMessageHistoryState                                   () const;
         void                    setMessageHistoryState                                   (bool messageHistoryState);
         UI32                    getMessageHistoryMaxSize                                 () const;
@@ -276,7 +276,7 @@ class TraceObjectManagerMessageHistoryConfigForAServiceMessage : public Manageme
     // Now the data members
 
     private :
-        PrismServiceId      m_prismServiceId;
+        WaveServiceId      m_prismServiceId;
         bool                m_messageHistoryState;
         UI32                m_messageHistoryMaxSize;
 

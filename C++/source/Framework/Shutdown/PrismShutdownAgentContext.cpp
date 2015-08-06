@@ -18,7 +18,7 @@ PrismShutdownAgentContext::~PrismShutdownAgentContext ()
 {
 }
 
-vector<PrismServiceId> &PrismShutdownAgentContext::getEnabledServices ()
+vector<WaveServiceId> &PrismShutdownAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

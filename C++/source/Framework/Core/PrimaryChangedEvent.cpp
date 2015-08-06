@@ -19,7 +19,7 @@ namespace WaveNs
 {
 
 PrimaryChangedEvent::PrimaryChangedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT),
       m_newPrimaryLocationId (0)
 {
 }

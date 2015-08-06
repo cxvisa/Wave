@@ -453,7 +453,7 @@ void WaveMessagingBrokerClientReceiverThread::processWaveBrokerBasedMessage (Wav
 
     if (NULL != pWaveMessagingBroker)
     {
-        vector<PrismServiceId> currentlySubscribedServices;
+        vector<WaveServiceId> currentlySubscribedServices;
 
         pWaveMessagingBroker->getCurrentlySubscribedServicesForTopicName (topicName, currentlySubscribedServices);
 

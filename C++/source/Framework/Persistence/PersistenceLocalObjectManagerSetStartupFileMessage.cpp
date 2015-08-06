@@ -13,14 +13,14 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerSetStartupFileMessage::PersistenceLocalObjectManagerSetStartupFileMessage (const ResourceId &startupFileType, const string &fileName)
-    : PrismMessage      (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_SET_STARTUP_FILE),
+    : PrismMessage      (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_STARTUP_FILE),
       m_startupFileType (startupFileType),
       m_fileName        (fileName)
 {
 }
 
 PersistenceLocalObjectManagerSetStartupFileMessage::PersistenceLocalObjectManagerSetStartupFileMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_SET_STARTUP_FILE),
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_STARTUP_FILE),
       m_startupFileType(0)
 {
 }

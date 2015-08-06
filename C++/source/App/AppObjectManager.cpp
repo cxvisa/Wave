@@ -16,7 +16,7 @@
 namespace WaveNs
 {
 
-static map<PrismServiceId, PrismServiceId> s_applicationSpecificServicesMap;
+static map<WaveServiceId, WaveServiceId> s_applicationSpecificServicesMap;
 static PrismMutex                          s_applicationSpecificServicesMutex;
 
 // Vector for application registered to start with Wave.
@@ -25,21 +25,21 @@ static PrismMutex                          s_applicationSpecificServicesMutex;
 
 static vector <AppDetail *>               s_appsInfo;
 
-void AppObjectManager::addToApplicationSpecificServicesVector (const PrismServiceId &prismServiceId)
+void AppObjectManager::addToApplicationSpecificServicesVector (const WaveServiceId &prismServiceId)
 {
     s_applicationSpecificServicesMutex.lock ();
     s_applicationSpecificServicesMap[prismServiceId] = prismServiceId;
     s_applicationSpecificServicesMutex.unlock ();
 }
 
-bool AppObjectManager::isAnApplicationSpecificService (const PrismServiceId &prismServiceId)
+bool AppObjectManager::isAnApplicationSpecificService (const WaveServiceId &prismServiceId)
 {
     bool serviceFound = false;
 
     s_applicationSpecificServicesMutex.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element = s_applicationSpecificServicesMap.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator end     = s_applicationSpecificServicesMap.end ();
+    map<WaveServiceId, WaveServiceId>::iterator element = s_applicationSpecificServicesMap.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator end     = s_applicationSpecificServicesMap.end ();
 
     if (element != end)
     {
@@ -217,12 +217,12 @@ void AppObjectManager::createAppObjectMangers ()
         appInterfaceObjectManager   = AppInterfaceObjectManager::createInstance (appInterfaceName);
         appDetail->setAppObjectManager (appObjectManager);
         appDetail->setAppInterfaceObjectManager (appInterfaceObjectManager);
-        appDetail->setAppInterfaceServiceId (appInterfaceObjectManager->getPrismServiceId ());
+        appDetail->setAppInterfaceServiceId (appInterfaceObjectManager->getWaveServiceId ());
         appDetail->setAppServiceId (appObjectManager->getServiceId ());
         // Add the created object manager to prism init/boot/... steps
         FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-        frameworkSequenceGenerator.addPrismServiceIdToAll        (appObjectManager->getServiceId ());
-        frameworkSequenceGenerator.addPrismServiceIdToAll        (appInterfaceObjectManager->getPrismServiceId ());
+        frameworkSequenceGenerator.addWaveServiceIdToAll        (appObjectManager->getServiceId ());
+        frameworkSequenceGenerator.addWaveServiceIdToAll        (appInterfaceObjectManager->getWaveServiceId ());
     }
 }
 

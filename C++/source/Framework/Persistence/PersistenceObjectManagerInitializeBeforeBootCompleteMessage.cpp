@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerInitializeBeforeBootCompleteMessage::PersistenceObjectManagerInitializeBeforeBootCompleteMessage ()
-    : PrismMessage(PersistenceObjectManager::getPrismServiceId(), PERSISTENCE_OBJECT_MANAGER_INITIALIZE_BEFORE_BOOT_COMPLETE)
+    : PrismMessage(PersistenceObjectManager::getWaveServiceId(), PERSISTENCE_OBJECT_MANAGER_INITIALIZE_BEFORE_BOOT_COMPLETE)
 {
 
 }

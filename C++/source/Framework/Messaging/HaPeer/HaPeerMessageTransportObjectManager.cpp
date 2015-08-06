@@ -154,9 +154,9 @@ HaPeerMessageTransportObjectManager::~HaPeerMessageTransportObjectManager ()
 {
 }
 
-PrismServiceId HaPeerMessageTransportObjectManager::getPrismServiceId ()
+WaveServiceId HaPeerMessageTransportObjectManager::getWaveServiceId ()
 {
-    PrismServiceId prismServiceId = 0;
+    WaveServiceId prismServiceId = 0;
 
     s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.lock ();
 

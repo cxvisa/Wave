@@ -17,97 +17,97 @@ FrameworkSequenceGenerator::~FrameworkSequenceGenerator ()
 {
 }
 
-void FrameworkSequenceGenerator::getInitializeSequenceDuringPrePhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getInitializeSequenceDuringPrePhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToInitializeDuringPrePhase;
 }
 
-void FrameworkSequenceGenerator::getEnableSequenceDuringPrePhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getEnableSequenceDuringPrePhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToEnableDuringPrePhase;
 }
 
-void FrameworkSequenceGenerator::getInstallSequenceDuringPrePhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getInstallSequenceDuringPrePhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToInstallDuringPrePhase;
 }
 
-void FrameworkSequenceGenerator::getBootSequenceDuringPrePhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getBootSequenceDuringPrePhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToBootDuringPrePhase;
 }
 
-void FrameworkSequenceGenerator::getShutdownSequenceDuringPostPhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getShutdownSequenceDuringPostPhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToShutdownDuringPostPhase;
 }
 
-void FrameworkSequenceGenerator::getUninstallSequenceDuringPostPhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getUninstallSequenceDuringPostPhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToUninstallDuringPostPhase;
 }
 
-void FrameworkSequenceGenerator::getUninitializeSequenceDuringPostPhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getUninitializeSequenceDuringPostPhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToUninitializeDuringPostPhase;
 }
 
-void FrameworkSequenceGenerator::getDisableSequenceDuringPostPhase (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getDisableSequenceDuringPostPhase (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToDisableDuringPostPhase;
 }
 
-void FrameworkSequenceGenerator::getInitializeSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getInitializeSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToInitialize;
 }
 
-void FrameworkSequenceGenerator::getEnableSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getEnableSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToEnable;
 }
 
-void FrameworkSequenceGenerator::getInstallSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getInstallSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToInstall;
 }
 
-void FrameworkSequenceGenerator::getBootSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getBootSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToBoot;
 }
 
-void FrameworkSequenceGenerator::getShutdownSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getShutdownSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToShutdown;
 }
 
-void FrameworkSequenceGenerator::getUninstallSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getUninstallSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToUninstall;
 }
 
-void FrameworkSequenceGenerator::getUninitializeSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getUninitializeSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToUninitialize;
 }
 
-void FrameworkSequenceGenerator::getDisableSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getDisableSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToDisable;
 }
 
-void FrameworkSequenceGenerator::getFailoverSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getFailoverSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToFailover;
 }
 
-void FrameworkSequenceGenerator::getZeroizeSequence (vector<PrismServiceId> &serviceIds) const
+void FrameworkSequenceGenerator::getZeroizeSequence (vector<WaveServiceId> &serviceIds) const
 {
     serviceIds = m_prismServiceIdsToZeroize;
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToAll (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToAll (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     if (true == isForNormalPhase)
     {
@@ -137,52 +137,52 @@ void FrameworkSequenceGenerator::addPrismServiceIdToAll (const PrismServiceId &p
     
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToInitialize (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToInitialize (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToInitialize.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToEnable (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToEnable (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToEnable.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToInstall (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToInstall (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToInstall.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToBoot (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToBoot (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToBoot.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToShutdown (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToShutdown (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToShutdown.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToUninstall (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToUninstall (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToUninstall.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToUninitialize (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToUninitialize (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToUninitialize.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToDisable (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToDisable (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToDisable.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToFailover (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToFailover (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToFailover.push_back (prismServiceId);
 }
 
-void FrameworkSequenceGenerator::addPrismServiceIdToZeroize (const PrismServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToZeroize (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
 {
     m_prismServiceIdsToZeroize.push_back(prismServiceId);
 }

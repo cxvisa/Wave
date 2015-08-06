@@ -116,7 +116,7 @@ class WaveManagedObject : virtual public PrismElement, virtual public PrismPersi
 
         virtual void                          addEventType                              (const UI32 &eventOperationCode);
 
-        virtual void                          listenForEvent                            (PrismServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                          listenForEvent                            (WaveServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
 
         virtual ResourceId                    sendSynchronouslyToWaveClient             (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
         virtual WaveMessageStatus             sendToWaveServer                          (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
@@ -200,7 +200,7 @@ class WaveManagedObject : virtual public PrismElement, virtual public PrismPersi
         virtual void                          preCreateHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext);
         virtual void                          preDeleteHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext);
                 void                          sendToClusterLocation                              (PrismAsynchronousContext *pPrismAsynchronousContext, PrismMessage *pMessage, bool isPartialSuccessFlag, vector<LocationId> locationIds);
-        virtual bool                          getPluginDetailsForDistribution                    (ObjectId &newOperateOnWaveManagedObjectId, PrismServiceId &prismServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag);
+        virtual bool                          getPluginDetailsForDistribution                    (ObjectId &newOperateOnWaveManagedObjectId, WaveServiceId &prismServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag);
                 void                          getPluginDetailsForDistributionCallback            (WaveSendToClusterContext *pWaveSendToClusterContext);
 
         virtual void                          getHardwareConfigurationDetailsForUpdate      (GetHardwareConfigurationDetailsForUpdateContext *pContext);

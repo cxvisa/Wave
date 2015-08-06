@@ -28,13 +28,13 @@ class MessageTracker
         static bool isAKnownMessageWithBt (const PrismMessage *pPrismMessage);
         static void clearCurrentlyAllocatedMessagesWithBt ();
 
-        static void getMessagesForAThread    (const PrismThreadId &prismThreadId, vector<PrismServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings); // no-lock
+        static void getMessagesForAThread    (const PrismThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings); // no-lock
 
     protected :
     public :
         static void addToMessageTracker      (const PrismMessage *pPrismMessage);
         static void deleteFromMessageTracker (const PrismMessage *pPrismMessage);
-        static void getMessages              (const PrismServiceId &prismServiceId, vector<PrismServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings);
+        static void getMessages              (const WaveServiceId &prismServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings);
         static void changeBtTrackerState     (const bool &btTrackerState);
 
     // Now the data members

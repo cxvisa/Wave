@@ -46,7 +46,7 @@ WaveMessagingBrokerReceiverObjectManager *WaveMessagingBrokerReceiverObjectManag
     return (pWaveMessagingBrokerReceiverObjectManager);
 }
 
-PrismServiceId WaveMessagingBrokerReceiverObjectManager::getPrismServiceId ()
+WaveServiceId WaveMessagingBrokerReceiverObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -91,7 +91,7 @@ void WaveMessagingBrokerReceiverObjectManager::boot (WaveAsynchronousContextForB
 
 void WaveMessagingBrokerReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

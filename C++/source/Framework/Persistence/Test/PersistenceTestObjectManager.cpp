@@ -33,7 +33,7 @@ PersistenceTestObjectManager * PersistenceTestObjectManager::getInstance ()
     return (pPersistenceTestObjectManager);
 }
 
-PrismServiceId PersistenceTestObjectManager::getPrismServiceId ()
+WaveServiceId PersistenceTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

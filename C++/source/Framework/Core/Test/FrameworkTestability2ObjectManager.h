@@ -37,7 +37,7 @@ class FrameworkTestability2ObjectManager : public WaveLocalObjectManager
     public :
         virtual                                    ~FrameworkTestability2ObjectManager ();
         static  FrameworkTestability2ObjectManager *getInstance                        ();
-        static  PrismServiceId                      getPrismServiceId                  ();
+        static  WaveServiceId                      getWaveServiceId                  ();
 
     // Now the data members
 

@@ -50,7 +50,7 @@ UI32 ShellRegression::listServices (UI32 argc, vector<string> argv)
 {
     RegressionTestObjectManagerGetTestServiceEntriesMessage message;
     UI32                                                    nServices;
-    PrismServiceId                                          id;
+    WaveServiceId                                          id;
     bool                                                    testServiceState;
     UI32                                                    index;
     const char                                             *serviceState;
@@ -92,7 +92,7 @@ UI32 ShellRegression::listServices (UI32 argc, vector<string> argv)
 void ShellRegression::shellGetServicesList (void)
 {
     RegressionTestObjectManagerGetTestServiceEntriesMessage message;
-    PrismServiceId                id;
+    WaveServiceId                id;
     UI32                        index;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
@@ -131,7 +131,7 @@ UI32 ShellRegression::shellExecuteSetServiceState (UI32 argc, vector<string> arg
 UI32 ShellRegression::setServiceState (UI32 argc, vector<string> argv)
 {
     bool                        state;
-    PrismServiceId                id;
+    WaveServiceId                id;
     UI32                        serviceIndex;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
@@ -192,7 +192,7 @@ UI32 ShellRegression::shellExecuteSetAllServicesState (UI32 argc, vector<string>
 UI32 ShellRegression::setAllServicesState (UI32 argc, vector<string> argv)
 {
     bool                        state;
-    PrismServiceId                id;
+    WaveServiceId                id;
     UI32                        serviceIndex;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
@@ -249,7 +249,7 @@ UI32 ShellRegression::shellExecuteRunTestService  (UI32 argc, vector<string> arg
 
 UI32 ShellRegression::runTestService (UI32 argc, vector<string> argv)
 {
-    PrismServiceId                id;
+    WaveServiceId                id;
     UI32                        serviceIndex;
     UI32                        nTimes = 1;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
@@ -362,7 +362,7 @@ UI32 ShellRegression::prepareRegression (UI32 argc, vector<string> argv)
     ShellPrism::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::shellExecuteStartRegression : Entering ...");
 
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
-    PrismServiceId                id;
+    WaveServiceId                id;
     UI32                        serviceIndex;
     UI32                        argIndex;
 
@@ -416,7 +416,7 @@ UI32 ShellRegression::prepareRegression2 (UI32 argc, vector<string> argv)
     ShellPrism::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::prepareRegression2 : Entering ...");
 
     WaveMessageStatus           status = WAVE_MESSAGE_ERROR;
-    PrismServiceId              id;
+    WaveServiceId              id;
     UI32                        serviceIndex;
     UI32                        argIndex;
 

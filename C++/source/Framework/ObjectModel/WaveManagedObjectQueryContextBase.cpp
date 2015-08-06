@@ -1249,12 +1249,12 @@ void WaveManagedObjectQueryContextBase::setPartitionFilter (const string &partit
     // In both these object managers, any 'automatic filters for propagated partition-location information' are not required.
     // (If automatic filter is attempted in these object Managers, they send synchronous message to self, causing hang.
 
-    if (pWaveObjectManager->getServiceId () == MultiPartitionObjectManager::getPrismServiceId ())
+    if (pWaveObjectManager->getServiceId () == MultiPartitionObjectManager::getWaveServiceId ())
     {
         return;
     }
 
-    if (pWaveObjectManager->getServiceId () == ClusterLocalObjectManager::getPrismServiceId ())
+    if (pWaveObjectManager->getServiceId () == ClusterLocalObjectManager::getWaveServiceId ())
     {
         return;
     }

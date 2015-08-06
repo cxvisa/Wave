@@ -17,7 +17,7 @@ class RegressionPrepareMessage : public PrismMessage
     private :
     protected :
     public :
-                        RegressionPrepareMessage        (PrismServiceId id);
+                        RegressionPrepareMessage        (WaveServiceId id);
                         RegressionPrepareMessage        ();
                        ~RegressionPrepareMessage        ();
         void            setupAttributesForSerialization ();

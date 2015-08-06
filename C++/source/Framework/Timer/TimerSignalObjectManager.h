@@ -25,7 +25,7 @@ class TimerSignalObjectManager : public WaveLocalObjectManagerForUserSpecificTas
     public :
         virtual                          ~TimerSignalObjectManager ();
         static  TimerSignalObjectManager *getInstance              ();
-        static  PrismServiceId            getPrismServiceId        ();
+        static  WaveServiceId            getWaveServiceId        ();
                 void                      boot                     (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
     // Now the data members

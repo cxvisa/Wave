@@ -64,17 +64,17 @@ class PrismMessage : virtual public SerializableObject
         PrismThreadId   getPrismMessageCreatorThreadId () const;
 
     protected :
-                              PrismMessage                    (PrismServiceId serviceCode, UI32 operationCode);
+                              PrismMessage                    (WaveServiceId serviceCode, UI32 operationCode);
                               PrismMessage                    (const PrismMessage &prismMessage);
         virtual void          setupAttributesForSerialization ();
         virtual void          setupAttributesForSerializationInAttributeOrderFormat ();
                 void          setType                         (WaveMessageType type);
-        virtual void          setServiceCode                  (const PrismServiceId &serviceCode);
+        virtual void          setServiceCode                  (const WaveServiceId &serviceCode);
 
                 void          copyBuffersFrom                 (const PrismMessage &prismMessage);
 
                 void          setMessageId                    (const UI32 &messageId);
-                void          setSenderServiceCode            (const PrismServiceId &senderServiceCode);
+                void          setSenderServiceCode            (const WaveServiceId &senderServiceCode);
                 void                        setIsMessageSupportedWhenServiceIsPaused    (bool isMessageSupportedWhenServiceIsPaused);
 
     public :
@@ -86,9 +86,9 @@ class PrismMessage : virtual public SerializableObject
                 void                      setMessageIdAtOriginatingLocation        (const UI32 &messageIdAtOriginatingLocation);
                 UI32                      getOriginalMessageId                     () const;
                 void                      setOriginalMessageId                     (const UI32 &originalMessageId);
-                PrismServiceId            getServiceCode                           () const;
+                WaveServiceId            getServiceCode                           () const;
                 UI32                      getOperationCode                         () const;
-                PrismServiceId            getSenderServiceCode                     () const;
+                WaveServiceId            getSenderServiceCode                     () const;
                 LocationId                getSenderLocationId                      () const;
                 void                      setSenderLocationId                      (const LocationId &locationId);
                 LocationId                getReceiverLocationId                    () const;
@@ -120,7 +120,7 @@ class PrismMessage : virtual public SerializableObject
         static  UI32                      getMessageCompletionStatus               (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& messageVersion = "");
         static  bool                      getIsLastReply                           (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& messageVersion = "");     
 
-        static  PrismMessage             *createAndLoadFromSerializedData2         (const string &serializedData, const PrismServiceId &assumedServiceCode = 0, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& targetMessageVersion = "");
+        static  PrismMessage             *createAndLoadFromSerializedData2         (const string &serializedData, const WaveServiceId &assumedServiceCode = 0, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& targetMessageVersion = "");
         static  PrismMessage             *createAndLoadFromSerializedData2         (const UI8 *pData, const UI32 dataSize);
 
                 void                      setWaveClientOriginatingLocationId       (const LocationId &waveClientOriginatingLocationId);
@@ -213,12 +213,12 @@ class PrismMessage : virtual public SerializableObject
     private :
                ResourceId                       m_type; // WaveMessageType
                ResourceId                       m_priority; // WaveMessagePriority
-               PrismServiceId                   m_serviceCode;
+               WaveServiceId                   m_serviceCode;
                UI32                             m_operationCode;
                UI32                             m_waveClientMessageId;
                UI32                             m_messageId;
                UI32                             m_messageIdAtOriginatingLocation;
-               PrismServiceId                   m_senderServiceCode;
+               WaveServiceId                   m_senderServiceCode;
                LocationId                       m_senderLocationId;
                LocationId                       m_receiverLocationId;
                bool                             m_isOneWayMessage;

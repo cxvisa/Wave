@@ -36,8 +36,8 @@ class WaveManagementServer
         SI32            getPort                         () const;
         bool            operator <<                     (ManagementInterfaceMessage *pManagementInterfaceMessage);
         void            addServiceCache                 (const vector<string> &serviceNames, const vector<UI32> &serviceIds);
-        PrismServiceId  getPrismServiceIdForServiceName (const string &serviceName);
-        string          getPrismServiceNameForServiceId (const PrismServiceId &serviceId);
+        WaveServiceId  getWaveServiceIdForServiceName (const string &serviceName);
+        string          getPrismServiceNameForServiceId (const WaveServiceId &serviceId);
 
         UI32            getServerUniqueIdentifier       () const;
 

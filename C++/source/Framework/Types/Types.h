@@ -27,7 +27,7 @@ typedef signed   short      int     SI16;
 typedef unsigned            char    UI8;
 typedef signed              char    SI8;
 typedef string                      WaveUnion;
-typedef UI32                        PrismServiceId;
+typedef UI32                        WaveServiceId;
 typedef UI32                        ResourceId;
 typedef ResourceId                  ResourceEnum;
 typedef UI32                        TraceClientId;

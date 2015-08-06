@@ -14,7 +14,7 @@ RegressionTestMessage::RegressionTestMessage ()
 {
 }
 
-RegressionTestMessage::RegressionTestMessage (PrismServiceId serviceCode)
+RegressionTestMessage::RegressionTestMessage (WaveServiceId serviceCode)
     : PrismMessage (serviceCode, WAVE_OBJECT_MANAGER_TEST)
 {
 }

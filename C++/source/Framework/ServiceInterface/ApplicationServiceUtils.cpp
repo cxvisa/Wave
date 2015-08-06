@@ -55,9 +55,9 @@ PrismMessage *ApplicationServiceMessageHandlerContext::getPPrismMessage ()
     return (m_pPrismMessage);
 }
 
-PrismServiceId ApplicationServiceUtils::getPrismServiceIdForApplicationServiceId (const UI32 &applicationServiceId)
+WaveServiceId ApplicationServiceUtils::getWaveServiceIdForApplicationServiceId (const UI32 &applicationServiceId)
 {
-    PrismServiceId                applicationServicePrismServiceId = 0;
+    WaveServiceId                applicationServiceWaveServiceId = 0;
     ApplicationServiceRepository *pApplicationServiceRepository    = NULL;
 
     ApplicationServiceHelper::lock ();
@@ -70,7 +70,7 @@ PrismServiceId ApplicationServiceUtils::getPrismServiceIdForApplicationServiceId
 
         prismAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
 
-        applicationServicePrismServiceId = pApplicationLocalService->getServiceId ();
+        applicationServiceWaveServiceId = pApplicationLocalService->getServiceId ();
     }
     else
     {
@@ -78,17 +78,17 @@ PrismServiceId ApplicationServiceUtils::getPrismServiceIdForApplicationServiceId
 
         prismAssert (NULL != pApplicationService, __FILE__, __LINE__);
 
-        applicationServicePrismServiceId = pApplicationService->getServiceId ();
+        applicationServiceWaveServiceId = pApplicationService->getServiceId ();
     }
 
     ApplicationServiceHelper::unlock ();
 
-    return (applicationServicePrismServiceId);
+    return (applicationServiceWaveServiceId);
 }
 
-ResourceId ApplicationServiceUtils::sendToApplicationService (const PrismServiceId &sendingApplicationPrismServiceId, void *pPayLoad, const UI32 &payLoadLength, const PrismServiceId &receivingApplicationprismServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext)
+ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceId &sendingApplicationWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &receivingApplicationprismServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext)
 {
-    ApplicationServiceMessage *pApplicationServiceMessage = new ApplicationServiceMessage (getPrismServiceIdForApplicationServiceId (receivingApplicationprismServiceId));
+    ApplicationServiceMessage *pApplicationServiceMessage = new ApplicationServiceMessage (getWaveServiceIdForApplicationServiceId (receivingApplicationprismServiceId));
     ResourceId                 status                     = WAVE_MESSAGE_ERROR;
 
     if (NULL != pPayLoad)
@@ -108,9 +108,9 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const PrismService
 
     prismAssert (NULL != pApplicationServiceSendContext, __FILE__, __LINE__);
 
-    if (true == (pApplicationServiceRepository->isAnApplicationLocalService (sendingApplicationPrismServiceId)))
+    if (true == (pApplicationServiceRepository->isAnApplicationLocalService (sendingApplicationWaveServiceId)))
     {
-        ApplicationLocalService *pApplicationLocalService = pApplicationServiceRepository->getApplicationLocalService (sendingApplicationPrismServiceId);
+        ApplicationLocalService *pApplicationLocalService = pApplicationServiceRepository->getApplicationLocalService (sendingApplicationWaveServiceId);
 
         prismAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
 
@@ -123,7 +123,7 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const PrismService
     }
     else
     {
-        ApplicationService *pApplicationService = pApplicationServiceRepository->getApplicationService (sendingApplicationPrismServiceId);
+        ApplicationService *pApplicationService = pApplicationServiceRepository->getApplicationService (sendingApplicationWaveServiceId);
 
         prismAssert (NULL != pApplicationService, __FILE__, __LINE__);
 

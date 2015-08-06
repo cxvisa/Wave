@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerBackupMessage::DatabaseObjectManagerBackupMessage (const string &backupFileName, const bool &pauseTheService)
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_BACKUP),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_BACKUP),
       m_backupFileName (backupFileName),
       m_pauseTheService (pauseTheService),
       m_backupAllSchemas (false),

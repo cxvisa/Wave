@@ -73,7 +73,7 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
     public :
         virtual                                            ~InterLocationMessageTransportObjectManager ();
         static  InterLocationMessageTransportObjectManager *getInstance                                ();
-        static  PrismServiceId                              getPrismServiceId                          ();
+        static  WaveServiceId                              getWaveServiceId                          ();
 
         static  PrismThread                                *getPrismThread                             ();
 

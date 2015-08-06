@@ -32,7 +32,7 @@ class LockManagementObjectManager : public WaveObjectManager
         virtual                                 ~LockManagementObjectManager        ();
         static  string                           getClassName                       ();
         static  LockManagementObjectManager     *getInstance                        ();
-        static  PrismServiceId                   getPrismServiceId                  ();
+        static  WaveServiceId                   getWaveServiceId                  ();
         void    boot                             (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         void    executeAcquireLockMessageHandler (LockManagementObjectManagerAcquireLockMessage *pLockManagementObjectManagerAcquireLockMessage);
         void    executeReleaseLockMessageHandler (LockManagementObjectManagerReleaseLockMessage *pLockManagementObjectManagerReleaseLockMessage);

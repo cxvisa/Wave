@@ -36,7 +36,7 @@ TimerSignalObjectManager::~TimerSignalObjectManager ()
 
 }
 
-PrismServiceId TimerSignalObjectManager::getPrismServiceId ()
+WaveServiceId TimerSignalObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

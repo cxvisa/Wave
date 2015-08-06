@@ -39,7 +39,7 @@ namespace WaveNs
         return ("File Service");
     }
 
-PrismServiceId  FileObjectManager::getPrismServiceId()
+WaveServiceId  FileObjectManager::getWaveServiceId()
     {
         return ((getInstance ())->getServiceId ());
     }

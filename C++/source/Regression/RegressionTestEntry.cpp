@@ -14,7 +14,7 @@ RegressionTestEntry::RegressionTestEntry ()
 {
 }
 
-RegressionTestEntry::RegressionTestEntry (PrismServiceId id, bool enabled)
+RegressionTestEntry::RegressionTestEntry (WaveServiceId id, bool enabled)
     : m_testServiceId (id),
       m_isTestEnabled (enabled)
 {
@@ -24,7 +24,7 @@ RegressionTestEntry::~RegressionTestEntry ()
 {
 }
 
-PrismServiceId RegressionTestEntry::getTestServiceId () const
+WaveServiceId RegressionTestEntry::getTestServiceId () const
 {
     return (m_testServiceId);
 }

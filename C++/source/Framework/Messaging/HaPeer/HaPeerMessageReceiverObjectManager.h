@@ -31,7 +31,7 @@ class HaPeerMessageReceiverObjectManager : public WaveLocalObjectManagerForUserS
     public :
         virtual                                          ~HaPeerMessageReceiverObjectManager ();
         static HaPeerMessageReceiverObjectManager *getInstance                               ();
-        static PrismServiceId                             getPrismServiceId                         ();
+        static WaveServiceId                             getWaveServiceId                         ();
         static bool                                       isACurrentlyConnectedLocation             (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort);
 
         static void                                       debugPrint                                (UI32 argc, vector<string> argv);

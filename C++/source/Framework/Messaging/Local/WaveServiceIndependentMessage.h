@@ -25,7 +25,7 @@ class WaveServiceIndependentMessage : public PrismMessage, public WaveServiceInd
         virtual void            setupAttributesForSerialization ();
 
     public :
-                                WaveServiceIndependentMessage   (PrismServiceId serviceCode, UI32 operationCode);
+                                WaveServiceIndependentMessage   (WaveServiceId serviceCode, UI32 operationCode);
         virtual                ~WaveServiceIndependentMessage   ();
 
 

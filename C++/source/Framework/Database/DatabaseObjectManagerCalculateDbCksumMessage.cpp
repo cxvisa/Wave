@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerCalculateDbCksumMessage::DatabaseObjectManagerCalculateDbCksumMessage ()
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM),
       m_pauseTheService (false)  
 {
 }

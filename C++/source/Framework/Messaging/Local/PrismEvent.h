@@ -22,7 +22,7 @@ class PrismEvent : public PrismMessage
         void setReferenceCountForEventNotifications       (const UI32 &referenceCountForEventNotifications);
 
     protected :
-                     PrismEvent                      (PrismServiceId serviceCode, UI32 operationCode);
+                     PrismEvent                      (WaveServiceId serviceCode, UI32 operationCode);
         virtual void setupAttributesForSerialization ();
 
     public :

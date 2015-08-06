@@ -25,7 +25,7 @@ class WaveNodeBackendSyncUpAgent: protected WaveWorker
 
                 ResourceId  sendBackendSyncUpStep                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
 
-                bool        requiresBackendSyncUpNotification    (const PrismServiceId &prismServiceId);
+                bool        requiresBackendSyncUpNotification    (const WaveServiceId &prismServiceId);
 
     // Now the data members
 

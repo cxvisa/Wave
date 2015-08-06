@@ -51,7 +51,7 @@ class DistributedLogTestObjectManager : public PrismTestObjectManager
 
         static  string                              getServiceName                                          ();
         static  DistributedLogTestObjectManager    *getInstance                                             ();
-        static  PrismServiceId                      getPrismServiceId                                       ();
+        static  WaveServiceId                      getWaveServiceId                                       ();
 
 
     // Now the data members

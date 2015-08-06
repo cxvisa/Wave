@@ -16,7 +16,7 @@
 namespace WaveNs
 {
 
-typedef multimap<PrismServiceId, UI32>::iterator multimapIterator;
+typedef multimap<WaveServiceId, UI32>::iterator multimapIterator;
 
 TimerWorker::TimerWorker (WaveObjectManager *pWaveObjectManager)
             :WaveWorker   (pWaveObjectManager), m_currTimerId (1)
@@ -168,7 +168,7 @@ void TimerWorker::addTimerToList (TimerData *pTimerInfo)
 
     m_timerList.insert (theIterator, pTimerInfo);
 
-    m_timerIdsByServiceId.insert (pair<PrismServiceId, UI32> (pTimerInfo->m_serviceId, pTimerInfo->m_timerId));
+    m_timerIdsByServiceId.insert (pair<WaveServiceId, UI32> (pTimerInfo->m_serviceId, pTimerInfo->m_timerId));
 }
 
 /*
@@ -567,7 +567,7 @@ UI32 TimerWorker::removeTimer (TimerObjectManagerDeleteTimerMessage *pMessage, U
     return (found);
 }
 
-void TimerWorker::removeTimerFromServiceTimersMultimap (PrismServiceId serviceId, UI32 timerId)
+void TimerWorker::removeTimerFromServiceTimersMultimap (WaveServiceId serviceId, UI32 timerId)
 {
     pair<multimapIterator, multimapIterator>    iteratorPair = m_timerIdsByServiceId.equal_range (serviceId);
     multimapIterator                            iterator;

@@ -13,7 +13,7 @@ namespace WaveNs
 {
 typedef	struct  postbootTableEntry {
 		string	passName;
-		vector  <PrismServiceId> serviceId;
+		vector  <WaveServiceId> serviceId;
         vector  <int> recoveryType; // 1:1 mapping from serviceId and it's recoveryType. recoveryType is a bitmap to contain COLD, WARM, etc
 } postbootPass;
 

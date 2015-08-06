@@ -26,8 +26,8 @@ class StartHaSyncDumpContext : public PrismLinearSequencerContext
     // Now the data members
 
     private : 
-        vector<PrismServiceId> m_prismServiceIdsVector;
-        vector<PrismServiceId> m_prismServiceIdsToCommunicate;
+        vector<WaveServiceId> m_prismServiceIdsVector;
+        vector<WaveServiceId> m_prismServiceIdsToCommunicate;
         vector<void *>         m_validationDetailsVector;
         vector<UI32>           m_validationDetailsSizesVector;
 
@@ -45,15 +45,15 @@ class StartHaSyncDumpContext : public PrismLinearSequencerContext
 
     protected :
     public :
-        vector<PrismServiceId> &getPrismServiceIdsToCommunicate ();
-        vector<PrismServiceId> &getPrismServiceIdsVector        ();
+        vector<WaveServiceId> &getWaveServiceIdsToCommunicate ();
+        vector<WaveServiceId> &getWaveServiceIdsVector        ();
 
-        void                    addValidationDetailsForService  (const PrismServiceId &prismServiceId, void *pValidationDetials, const UI32 size);
+        void                    addValidationDetailsForService  (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size);
         vector<void *>         &getValidationDetailsVector      ();
         vector<UI32>           &getValidationDetailsSizesVector ();
-        void                    addValidationResultsForService (const PrismServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
+        void                    addValidationResultsForService (const WaveServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
 
-        void                    getValidationResultsForService  (const PrismServiceId &prismServiceId, void *&pValidationResults, UI32 &size);
+        void                    getValidationResultsForService  (const WaveServiceId &prismServiceId, void *&pValidationResults, UI32 &size);
         void                    setStandbyMessage               (PrismMessage *standbyMessage);
         PrismMessage *          getStandbyMessage               ();
         void                    setHaVersion                    (const UI32 &haVersion);

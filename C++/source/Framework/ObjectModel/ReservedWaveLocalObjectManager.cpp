@@ -28,7 +28,7 @@ ReservedWaveLocalObjectManager *ReservedWaveLocalObjectManager::getInstance ()
     return (pReservedWaveLocalObjectManager);
 }
 
-PrismServiceId ReservedWaveLocalObjectManager::getPrismServiceId ()
+WaveServiceId ReservedWaveLocalObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

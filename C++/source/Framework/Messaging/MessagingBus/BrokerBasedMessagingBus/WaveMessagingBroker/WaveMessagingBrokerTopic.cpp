@@ -22,7 +22,7 @@ WaveMessagingBrokerTopic::WaveMessagingBrokerTopic (const string &name)
 
 WaveMessagingBrokerTopic::~WaveMessagingBrokerTopic ()
 {
-    PrismServiceId prismServiceId = WaveMessagingBrokerTopicProcessorObjectManager::getPrismServiceIdByTopicName (m_name);
+    WaveServiceId prismServiceId = WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (m_name);
 
     WaveObjectManager::endOfLifeService (prismServiceId);
 }

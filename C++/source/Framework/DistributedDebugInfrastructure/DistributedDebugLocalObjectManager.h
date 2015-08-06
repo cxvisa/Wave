@@ -24,7 +24,7 @@ class DistributedDebugLocalObjectManager : public WaveLocalObjectManager
 {
     public:
 	static DistributedDebugLocalObjectManager       *getInstance                  ();
-        static PrismServiceId                            getPrismServiceId                         (); 
+        static WaveServiceId                            getWaveServiceId                         (); 
 
         static string   getServiceName ();
 

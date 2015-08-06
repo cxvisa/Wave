@@ -20,7 +20,7 @@ CliBlockDetail::CliBlockDetail ()
     m_cliBlockContext   = CliBlockContext ();
 }
 
-CliBlockDetail::CliBlockDetail (PrismServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext)
+CliBlockDetail::CliBlockDetail (WaveServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext)
 {
     m_prismServiceId    = prismServiceId;
     m_originator        = originator;
@@ -29,7 +29,7 @@ CliBlockDetail::CliBlockDetail (PrismServiceId prismServiceId, LocationId origin
 
 CliBlockDetail::CliBlockDetail (const CliBlockServiceIndependentMessage &cliBlockServiceIndependentMessage)
 {
-    m_prismServiceId          = cliBlockServiceIndependentMessage.getPrismServiceId ();
+    m_prismServiceId          = cliBlockServiceIndependentMessage.getWaveServiceId ();
     m_originator              = cliBlockServiceIndependentMessage.getOriginator ();
     m_cliBlockContext         = CliBlockContext (cliBlockServiceIndependentMessage.getReason ());
 }
@@ -58,7 +58,7 @@ CliBlockDetail& CliBlockDetail::operator= (const CliBlockDetail &rhs)
     return (*this);
 }
 
-const PrismServiceId CliBlockDetail::getPrismServiceId () const
+const WaveServiceId CliBlockDetail::getWaveServiceId () const
 {
     return m_prismServiceId;
 }

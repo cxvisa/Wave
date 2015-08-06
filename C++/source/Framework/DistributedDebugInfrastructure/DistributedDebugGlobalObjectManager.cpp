@@ -90,9 +90,9 @@ DistributedDebugGlobalObjectManager *DistributedDebugGlobalObjectManager::getIns
  * 
  * 
  * 
- * @return PrismServiceId
+ * @return WaveServiceId
  */
-PrismServiceId DistributedDebugGlobalObjectManager::getPrismServiceId ()
+WaveServiceId DistributedDebugGlobalObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

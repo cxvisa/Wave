@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerAddDelayedTransactionMessage::PersistenceObjectManagerAddDelayedTransactionMessage (const string &sql)
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
     m_sql (sql)
 {
 }
 
 PersistenceObjectManagerAddDelayedTransactionMessage::PersistenceObjectManagerAddDelayedTransactionMessage ()
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
     m_sql ("")
 {
 }

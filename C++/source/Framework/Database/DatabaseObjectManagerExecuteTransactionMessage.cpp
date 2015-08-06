@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerExecuteTransactionMessage::DatabaseObjectManagerExecuteTransactionMessage (const string &sql)
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
       m_sql (sql),
       m_isCommit (false),
       m_isPrepare (false)
@@ -20,7 +20,7 @@ DatabaseObjectManagerExecuteTransactionMessage::DatabaseObjectManagerExecuteTran
 }
 
 DatabaseObjectManagerExecuteTransactionMessage::DatabaseObjectManagerExecuteTransactionMessage ()
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
       m_isCommit (false),
       m_isPrepare (false)
 {

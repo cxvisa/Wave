@@ -224,7 +224,7 @@ WaveClientReceiverObjectManager *WaveClientReceiverObjectManager:: getInstance (
     return (pWaveClientReceiverObjectManager);
 }
 
-PrismServiceId WaveClientReceiverObjectManager:: getPrismServiceId ()
+WaveServiceId WaveClientReceiverObjectManager:: getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

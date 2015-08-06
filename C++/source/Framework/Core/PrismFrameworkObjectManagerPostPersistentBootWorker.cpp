@@ -603,7 +603,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerLastConfi
         map<UI32, string>   configurationIntentMap;
         string              serializedConfigurationIntentMessage    = "";
         PrismMessage       *pConfigurationIntentMessage             = NULL;
-        PrismServiceId      configurationIntentServiceCode          = 0;
+        WaveServiceId      configurationIntentServiceCode          = 0;
         UI32                configurationIntentOperationCode        = 0;
         ResourceId          overallStatus                           = WAVE_MESSAGE_SUCCESS;
 

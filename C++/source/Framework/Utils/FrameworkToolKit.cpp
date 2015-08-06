@@ -216,7 +216,7 @@ const UI32 FrameworkToolKit::getThisLocationId ()
     {
     WaveObjectManager *pWaveObjectManagerForCurrentThread   = PrismThread::getWaveObjectManagerForCurrentThread ();
 
-    if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (ReservedWaveLocalObjectManager::getPrismServiceId ()))->getId ())
+    if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (ReservedWaveLocalObjectManager::getWaveServiceId ()))->getId ())
     {
         PrismMessage *pPrismMessage = pWaveObjectManagerForCurrentThread->getPInputMesage ();
         if (NULL != pPrismMessage && (true == pPrismMessage->getIsMessageBeingSurrogatedFlag ()))
@@ -328,23 +328,23 @@ const SI32 FrameworkToolKit::getClusterPrimaryPort ()
 
 }
 
-const string FrameworkToolKit::getServiceNameById (const PrismServiceId &id)
+const string FrameworkToolKit::getServiceNameById (const WaveServiceId &id)
 {
     return (PrismThread::getPrismServiceNameForServiceId (id));
 }
 
-const PrismServiceId FrameworkToolKit::getServiceIdByName (const string &serviceName)
+const WaveServiceId FrameworkToolKit::getServiceIdByName (const string &serviceName)
 {
-    PrismServiceId prismServiceId = 0;
+    WaveServiceId prismServiceId = 0;
     WaveManagementInterfaceRole waveManagementInterfaceRole = getManagementInterfaceRole ();
 
     if ((WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
     {
-        prismServiceId = PrismThread::getPrismServiceIdForServiceName (serviceName);
+        prismServiceId = PrismThread::getWaveServiceIdForServiceName (serviceName);
     }
     else
     {
-        prismServiceId = WaveClientTransportObjectManager::getPrismServiceId ();
+        prismServiceId = WaveClientTransportObjectManager::getWaveServiceId ();
     }
 
     trace (TRACE_LEVEL_DEBUG, "FrameworkToolKit::getServiceIdByName : Service Name : " + serviceName + string (" :" ) + prismServiceId);
@@ -838,7 +838,7 @@ ResourceId FrameworkToolKit::debugSavePrismConfiguration (UI32 argc, vector<stri
     return (savePrismConfiguration ());
 }
 
-const bool FrameworkToolKit::isALocalService (const PrismServiceId &prismServiceId)
+const bool FrameworkToolKit::isALocalService (const WaveServiceId &prismServiceId)
 {
     return (WaveLocalObjectManager::isALocalService (prismServiceId));
 }
@@ -855,7 +855,7 @@ const bool FrameworkToolKit::isStandAloneLocation ()
 
 ResourceId FrameworkToolKit::printServices (UI32 argc, vector<string> argv)
 {
-    vector<PrismServiceId> prismServiceIds;
+    vector<WaveServiceId> prismServiceIds;
     UI32                   numberOfPrismServices;
     UI32                   i;
 
@@ -923,11 +923,11 @@ ResourceId FrameworkToolKit::debugMessageLeak (UI32 argc, vector<string> argv)
     }
     else
     {
-        vector<PrismServiceId>  messageServiceIds;
+        vector<WaveServiceId>  messageServiceIds;
         vector<UI32>            messageOperationCodes;
         vector<string>          btStrings;
         vector<WaveMessageType> messageTypes;
-        PrismServiceId          prismServiceId         = atoi ((argv[1]).c_str ());
+        WaveServiceId          prismServiceId         = atoi ((argv[1]).c_str ());
         UI32                    numberOfLeakedMessages = 0;
         UI32                    i                      = 0;
 
@@ -973,7 +973,7 @@ ResourceId FrameworkToolKit::debugObjectLeak (UI32 argc, vector<string> argv)
         vector<string>  managedObjectNames;
         vector<bool>    queryResults;
         vector<string>  btStrings;
-        PrismServiceId  prismServiceId           = atoi ((argv[1]).c_str ());
+        WaveServiceId  prismServiceId           = atoi ((argv[1]).c_str ());
         UI32            numberOfLeakedObjects    = 0;
         UI32            i                        = 0;
 
@@ -1004,7 +1004,7 @@ ResourceId FrameworkToolKit::debugObjectLeak (UI32 argc, vector<string> argv)
 ResourceId FrameworkToolKit::debugObjectLeakAll (UI32 argc, vector<string> argv)
 {
     vector<string>         serviceNames;
-    vector<PrismServiceId> serviceIds;
+    vector<WaveServiceId> serviceIds;
     UI32                   numberOfServices = 0;
     UI32                   i                = 0;
 
@@ -2110,9 +2110,9 @@ void FrameworkToolKit::setRewriteStartupSchemaOnNodeReady ()
     prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     // service name is protected, So, at least print service Id.
-    PrismServiceId callerThreadServiceId = pWaveObjectManagerForCurrentThread->getServiceId ();
+    WaveServiceId callerThreadServiceId = pWaveObjectManagerForCurrentThread->getServiceId ();
 
-    trace (TRACE_LEVEL_INFO, string ("FrameworkToolKit::setRewriteStartupSchemaOnNodeReady : Called by PrismServiceId [") + callerThreadServiceId + string ("], s_rewriteStartupSchemaOnNodeReady is set to TRUE."));
+    trace (TRACE_LEVEL_INFO, string ("FrameworkToolKit::setRewriteStartupSchemaOnNodeReady : Called by WaveServiceId [") + callerThreadServiceId + string ("], s_rewriteStartupSchemaOnNodeReady is set to TRUE."));
 }
 
 bool FrameworkToolKit::getRewriteStartupSchemaOnNodeReady ()

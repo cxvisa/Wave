@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-PrismServiceId DatabaseObjectManagerExecuteQueryMessage::m_databaseObjectManagerServiceId;
+WaveServiceId DatabaseObjectManagerExecuteQueryMessage::m_databaseObjectManagerServiceId;
 
 DatabaseObjectManagerExecuteQueryMessage::DatabaseObjectManagerExecuteQueryMessage (const string &className, WaveObjectManager *pWaveObjectManager, const string &sql, const string &schema)
     : PrismMessage                               (getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_QUERY),
@@ -100,12 +100,12 @@ void DatabaseObjectManagerExecuteQueryMessage::setLoadCompositions (const bool l
     m_loadCompositions = loadCompositions;
 }
 
-PrismServiceId DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId ()
+WaveServiceId DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId ()
 {
     return (m_databaseObjectManagerServiceId);
 }
 
-void DatabaseObjectManagerExecuteQueryMessage::setDatabaseObjectManagerServiceId (const PrismServiceId &databaseObjectManagerServiceId)
+void DatabaseObjectManagerExecuteQueryMessage::setDatabaseObjectManagerServiceId (const WaveServiceId &databaseObjectManagerServiceId)
 {
     m_databaseObjectManagerServiceId = databaseObjectManagerServiceId;
 }

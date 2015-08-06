@@ -3,27 +3,27 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#include "Framework/Core/PrismServiceMap.h"
+#include "Framework/Core/WaveServiceMap.h"
 #include "Framework/MultiThreading/PrismThread.h"
 #include "Framework/Utils/AssertUtils.h"
 
 namespace WaveNs
 {
 
-PrismServiceMap::PrismServiceMap ()
+WaveServiceMap::WaveServiceMap ()
 {
 }
 
-PrismServiceMap::~PrismServiceMap ()
+WaveServiceMap::~WaveServiceMap ()
 {
 }
 
-void PrismServiceMap::addServiceMap  (PrismServiceId id, PrismThread *pPrismThread, const string &serviceName)
+void WaveServiceMap::addServiceMap  (WaveServiceId id, PrismThread *pPrismThread, const string &serviceName)
 {
     m_mutex.lock ();
 
     PrismThread    *pTempPrismThread   = m_servicesMap[id];
-    PrismServiceId  tempPrismServiceId = m_servicesIdMap[serviceName];
+    WaveServiceId  tempWaveServiceId = m_servicesIdMap[serviceName];
 
     if (NULL != pTempPrismThread)
     {
@@ -32,7 +32,7 @@ void PrismServiceMap::addServiceMap  (PrismServiceId id, PrismThread *pPrismThre
         exit (0);
     }
 
-    if (0 != tempPrismServiceId)
+    if (0 != tempWaveServiceId)
     {
         prismAssert (false, __FILE__, __LINE__);
         cerr << "Cannot proceed.  Trying to add a duplicate service name." << endl;
@@ -46,10 +46,10 @@ void PrismServiceMap::addServiceMap  (PrismServiceId id, PrismThread *pPrismThre
     m_mutex.unlock ();
 }
 
-void PrismServiceMap::removeServiceMap (PrismServiceId id)
+void WaveServiceMap::removeServiceMap (WaveServiceId id)
 {
-    map<PrismServiceId, PrismThread *>::iterator  element      = m_servicesMap.find (id);
-    map<PrismServiceId, PrismThread *>::iterator  endElement   = m_servicesMap.end  ();
+    map<WaveServiceId, PrismThread *>::iterator  element      = m_servicesMap.find (id);
+    map<WaveServiceId, PrismThread *>::iterator  endElement   = m_servicesMap.end  ();
 
     PrismThread                                  *pPrismThread = NULL;
 
@@ -62,8 +62,8 @@ void PrismServiceMap::removeServiceMap (PrismServiceId id)
         m_servicesMap.erase (element);
     }
 
-    map<PrismServiceId, string>::iterator element1     = m_servicesNameMap.find (id);
-    map<PrismServiceId, string>::iterator endElement1  = m_servicesNameMap.end  ();
+    map<WaveServiceId, string>::iterator element1     = m_servicesNameMap.find (id);
+    map<WaveServiceId, string>::iterator endElement1  = m_servicesNameMap.end  ();
 
     string                                serviceName;
 
@@ -76,8 +76,8 @@ void PrismServiceMap::removeServiceMap (PrismServiceId id)
         m_servicesNameMap.erase (element1);
     }
 
-    map<string, PrismServiceId>::iterator element2    = m_servicesIdMap.find (serviceName);
-    map<string, PrismServiceId>::iterator endElement2 = m_servicesIdMap.end  ();
+    map<string, WaveServiceId>::iterator element2    = m_servicesIdMap.find (serviceName);
+    map<string, WaveServiceId>::iterator endElement2 = m_servicesIdMap.end  ();
 
     if (endElement2 != element2)
     {
@@ -89,12 +89,12 @@ void PrismServiceMap::removeServiceMap (PrismServiceId id)
     m_mutex.unlock ();
 }
 
-PrismThread *PrismServiceMap::getPrismThreadForServiceId (PrismServiceId id)
+PrismThread *WaveServiceMap::getPrismThreadForServiceId (WaveServiceId id)
 {
     m_mutex.lock ();
 
-    map<PrismServiceId, PrismThread *>::iterator  element    = m_servicesMap.find (id);
-    map<PrismServiceId, PrismThread *>::iterator  end        = m_servicesMap.end ();
+    map<WaveServiceId, PrismThread *>::iterator  element    = m_servicesMap.find (id);
+    map<WaveServiceId, PrismThread *>::iterator  end        = m_servicesMap.end ();
     PrismThread                                *pPrismThread = NULL;
 
     if (end != element)
@@ -107,12 +107,12 @@ PrismThread *PrismServiceMap::getPrismThreadForServiceId (PrismServiceId id)
     return (pPrismThread);
 }
 
-void PrismServiceMap::getListOfServiceIds (vector<PrismServiceId> &serviceIds)
+void WaveServiceMap::getListOfServiceIds (vector<WaveServiceId> &serviceIds)
 {
     m_mutex.lock ();
 
-    map<PrismServiceId, string>::iterator element      = m_servicesNameMap.begin ();
-    map<PrismServiceId, string>::iterator end          = m_servicesNameMap.end ();
+    map<WaveServiceId, string>::iterator element      = m_servicesNameMap.begin ();
+    map<WaveServiceId, string>::iterator end          = m_servicesNameMap.end ();
 
     serviceIds.clear ();
 
@@ -127,12 +127,12 @@ void PrismServiceMap::getListOfServiceIds (vector<PrismServiceId> &serviceIds)
     return;
 }
 
-string PrismServiceMap::getPrismServiceNameForServiceId (const PrismServiceId &id)
+string WaveServiceMap::getPrismServiceNameForServiceId (const WaveServiceId &id)
 {
     m_mutex.lock ();
 
-    map<PrismServiceId, string>::iterator element      = m_servicesNameMap.find (id);
-    map<PrismServiceId, string>::iterator end          = m_servicesNameMap.end ();
+    map<WaveServiceId, string>::iterator element      = m_servicesNameMap.find (id);
+    map<WaveServiceId, string>::iterator end          = m_servicesNameMap.end ();
     string                                serviceName;
 
     if (end != element)
@@ -145,13 +145,13 @@ string PrismServiceMap::getPrismServiceNameForServiceId (const PrismServiceId &i
     return (serviceName);
 }
 
-PrismServiceId PrismServiceMap::getPrismServiceIdForServiceName (const string &serviceName)
+WaveServiceId WaveServiceMap::getWaveServiceIdForServiceName (const string &serviceName)
 {
     m_mutex.lock ();
 
-    map<string, PrismServiceId>::iterator element   = m_servicesIdMap.find (serviceName);
-    map<string, PrismServiceId>::iterator end       = m_servicesIdMap.end ();
-    PrismServiceId                        serviceId = 0;
+    map<string, WaveServiceId>::iterator element   = m_servicesIdMap.find (serviceName);
+    map<string, WaveServiceId>::iterator end       = m_servicesIdMap.end ();
+    WaveServiceId                        serviceId = 0;
 
     if (end != element)
     {
@@ -163,12 +163,12 @@ PrismServiceId PrismServiceMap::getPrismServiceIdForServiceName (const string &s
     return (serviceId);
 }
 
-WaveThreadStatus PrismServiceMap::joinAllThreads ()
+WaveThreadStatus WaveServiceMap::joinAllThreads ()
 {
     m_mutex.lock ();
 
-    map<PrismServiceId, PrismThread *>::iterator  element         = m_servicesMap.begin ();
-    map<PrismServiceId, PrismThread *>::iterator  limitingElement = m_servicesMap.end ();
+    map<WaveServiceId, PrismThread *>::iterator  element         = m_servicesMap.begin ();
+    map<WaveServiceId, PrismThread *>::iterator  limitingElement = m_servicesMap.end ();
     PrismThread                                *pPrismThread      = NULL;
 
     while (element != limitingElement)

@@ -18,13 +18,13 @@ namespace WaveNs
 {
 
 NodeReadyForAllCommandsEvent::NodeReadyForAllCommandsEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_NODE_READY_FOR_ALL_COMMANDS_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODE_READY_FOR_ALL_COMMANDS_EVENT),
      m_recoveryType (0)
 {
 }
 
 NodeReadyForAllCommandsEvent::NodeReadyForAllCommandsEvent (const ResourceId &recoveryType)
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_NODE_READY_FOR_ALL_COMMANDS_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODE_READY_FOR_ALL_COMMANDS_EVENT),
      m_recoveryType (recoveryType)
 {
 }

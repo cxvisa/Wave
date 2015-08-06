@@ -23,7 +23,7 @@ class ClusterInterfaceObjectManager : public WaveLocalObjectManager
     public :
         virtual                               ~ClusterInterfaceObjectManager    ();
         static  ClusterInterfaceObjectManager *getInstance                      ();
-        static  PrismServiceId                 getPrismServiceId                ();
+        static  WaveServiceId                 getWaveServiceId                ();
 
                 int                        createCluster                    (SI32 appId, int nSecondaryNodes, node_t secondaryNodes [], createClusterCallBack_t  createClusterResultCB, void *pContext);
                 int                        addNodeToCluster                 (SI32 appId, node_t node, addNodeCallBack_t  addNodeResultCB, void *pContext);

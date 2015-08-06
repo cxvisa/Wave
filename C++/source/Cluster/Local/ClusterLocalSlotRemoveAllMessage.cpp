@@ -14,21 +14,21 @@ namespace WaveNs
 {
 
 ClusterLocalSlotRemoveAllMessage::ClusterLocalSlotRemoveAllMessage ()
-: PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE),
+: PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE),
   m_hwType (0x10) // hardcoded for SYS_SLOT_LC
 {
     m_locationId = FrameworkToolKit::getThisLocationId ();
 }
     
 ClusterLocalSlotRemoveAllMessage::ClusterLocalSlotRemoveAllMessage (const LocationId &locationId)
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE),
       m_locationId (locationId), 
       m_hwType (0x10) // hardcoded for SYS_SLOT_LC
 {
 }
 
 ClusterLocalSlotRemoveAllMessage::ClusterLocalSlotRemoveAllMessage (const LocationId &locationId, const UI32 &hwType)
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE),
       m_locationId (locationId), 
       m_hwType (hwType)
 {

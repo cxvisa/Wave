@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 BootCompleteForThisLocationEvent::BootCompleteForThisLocationEvent (bool flagSchemaChange)
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION),
       m_logSchemaChangeFlag (flagSchemaChange)
 {
 }

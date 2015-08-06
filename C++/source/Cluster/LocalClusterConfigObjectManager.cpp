@@ -43,7 +43,7 @@ LocalClusterConfigObjectManager::~LocalClusterConfigObjectManager ()
 
 }
 
-PrismServiceId LocalClusterConfigObjectManager::getPrismServiceId ()
+WaveServiceId LocalClusterConfigObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

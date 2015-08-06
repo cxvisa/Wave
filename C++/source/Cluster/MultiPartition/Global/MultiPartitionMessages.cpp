@@ -184,12 +184,12 @@ ResourceId MultiPartitionDeletePartitionMessage::getPartialCleanupTag ()
 // Get Object Id for a Partition Name.
 
 MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage::MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage ()
-    : PrismMessage              (MultiPartitionObjectManager::getPrismServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME)
+    : PrismMessage              (MultiPartitionObjectManager::getWaveServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME)
 {
 }
 
 MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage::MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage (const string &partitionName)
-    : PrismMessage              (MultiPartitionObjectManager::getPrismServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME),
+    : PrismMessage              (MultiPartitionObjectManager::getWaveServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME),
       m_partitionName           (partitionName)
 {
 }

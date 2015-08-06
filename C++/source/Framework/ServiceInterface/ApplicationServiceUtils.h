@@ -45,8 +45,8 @@ class ApplicationServiceUtils
     private :
     protected :
     public :
-        static PrismServiceId getPrismServiceIdForApplicationServiceId (const UI32 &applicationServiceId);
-        static ResourceId     sendToApplicationService                 (const PrismServiceId &sendingApplicationServicePrismServiceId, void *pPayLoad, const UI32 &payLoadLength, const PrismServiceId &prismServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext);
+        static WaveServiceId getWaveServiceIdForApplicationServiceId (const UI32 &applicationServiceId);
+        static ResourceId     sendToApplicationService                 (const WaveServiceId &sendingApplicationServiceWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &prismServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext);
         static void           replyToApplicationService                (void *pOutputPayLoad, const UI32 outputPayLoadLength, void *pPrismContext);
 
     // Now the data members

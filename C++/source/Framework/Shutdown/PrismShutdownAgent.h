@@ -34,7 +34,7 @@ class PrismShutdownAgent : protected WaveWorker
                 ResourceId  uninitializePostPhaseServicesStep   (PrismShutdownAgentContext *pPrismShutdownAgentContext);
                 ResourceId  disablePostPhaseServicesStep        (PrismShutdownAgentContext *pPrismShutdownAgentContext);
 
-                bool        requiresShutdown               (const PrismServiceId &prismServiceId);
+                bool        requiresShutdown               (const WaveServiceId &prismServiceId);
 
     // Now the data members
 

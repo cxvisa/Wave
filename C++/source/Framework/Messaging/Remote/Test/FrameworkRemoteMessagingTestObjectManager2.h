@@ -26,7 +26,7 @@ class FrameworkRemoteMessagingTestObjectManager2 : public PrismTestObjectManager
     public :
         virtual                                           ~FrameworkRemoteMessagingTestObjectManager2   ();
         static  FrameworkRemoteMessagingTestObjectManager2 *getInstance                                 ();
-        static  PrismServiceId                             getPrismServiceId                           ();
+        static  WaveServiceId                             getWaveServiceId                           ();
                 void                                       testRequestHandler                          (RegressionTestMessage *pMessage);
                 void                                       selectARemoteLocationStep                   (FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext);
                 void                                       simpleAsynchronousMessageTestStep           (FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext);

@@ -94,7 +94,7 @@ void RunDebugScriptMessage::setupAttributesForSerialization ()
 }
 
 RunDebugScriptOnClusterMemberMessage::RunDebugScriptOnClusterMemberMessage ()
-    :PrismMessage(DistributedDebugLocalObjectManager::getPrismServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE),
+    :PrismMessage(DistributedDebugLocalObjectManager::getWaveServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE),
     m_isNos             (true),
     m_scriptString      (""),
     m_outputString      ("")
@@ -102,7 +102,7 @@ RunDebugScriptOnClusterMemberMessage::RunDebugScriptOnClusterMemberMessage ()
 }
 
 RunDebugScriptOnClusterMemberMessage::RunDebugScriptOnClusterMemberMessage (bool nosOrBash)
-    :PrismMessage(DistributedDebugLocalObjectManager::getPrismServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE), 
+    :PrismMessage(DistributedDebugLocalObjectManager::getWaveServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE), 
     m_isNos             (nosOrBash),
     m_scriptString      (""),
     m_outputString      ("")

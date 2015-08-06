@@ -47,7 +47,7 @@ ResourceId HeartBeatFailureAgent::execute ()
 
 ResourceId HeartBeatFailureAgent::getListOfEnabledServicesStep (HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pHeartBeatFailureAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pHeartBeatFailureAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -56,7 +56,7 @@ ResourceId HeartBeatFailureAgent::getListOfEnabledServicesStep (HeartBeatFailure
 
 ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToSendHeartBeatFailure = pHeartBeatFailureAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToSendHeartBeatFailure = pHeartBeatFailureAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -90,9 +90,9 @@ ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgen
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool HeartBeatFailureAgent::requiresHeartBeatFailureNotification(const PrismServiceId &prismServiceId)
+bool HeartBeatFailureAgent::requiresHeartBeatFailureNotification(const WaveServiceId &prismServiceId)
 {
-    if (((HeartBeatObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((HeartBeatObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (false);

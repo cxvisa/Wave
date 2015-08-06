@@ -15,14 +15,14 @@ namespace WaveNs
 class WaveLocalObjectManagerForUserSpecificTasks : public WaveLocalObjectManager
 {
     private :
-        static void addToUserspecificServicesMap (const PrismServiceId &prismServiceId);
+        static void addToUserspecificServicesMap (const WaveServiceId &prismServiceId);
 
     protected :
         WaveLocalObjectManagerForUserSpecificTasks (const string &objectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
 
     public :
         virtual      ~WaveLocalObjectManagerForUserSpecificTasks ();
-        static  bool  isAUserSpecificService                      (const PrismServiceId &prismServiceId);
+        static  bool  isAUserSpecificService                      (const WaveServiceId &prismServiceId);
 
     // now the data members
 

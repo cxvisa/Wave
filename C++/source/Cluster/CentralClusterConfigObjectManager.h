@@ -60,7 +60,7 @@ class CentralClusterConfigObjectManager : public WaveObjectManager
     public :
         virtual                                   ~CentralClusterConfigObjectManager  ();
         static  CentralClusterConfigObjectManager *getInstance                        ();
-        static  PrismServiceId                     getPrismServiceId                  ();
+        static  WaveServiceId                     getWaveServiceId                  ();
         static  string                             getServiceName                     ();
 
                 void                               createClusterConfig                                  (ClusterObjectManagerCreateClusterMessage *pMessage);

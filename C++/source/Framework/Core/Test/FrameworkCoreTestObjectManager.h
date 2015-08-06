@@ -21,7 +21,7 @@ class FrameworkCoreTestObjectManager : public PrismTestObjectManager
     public :
         virtual                                ~FrameworkCoreTestObjectManager                      ();
         static  FrameworkCoreTestObjectManager *getInstance                                         ();
-        static  PrismServiceId                  getPrismServiceId                                   ();
+        static  WaveServiceId                  getWaveServiceId                                   ();
                 void                            testRequestHandler                                  (RegressionTestMessage *pMessage);
                 void                            frameworkCoreTestFormattedErrorStringValidationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
 

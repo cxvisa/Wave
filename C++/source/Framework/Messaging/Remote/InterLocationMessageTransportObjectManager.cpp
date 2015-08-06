@@ -213,9 +213,9 @@ InterLocationMessageTransportObjectManager::~InterLocationMessageTransportObject
 {
 }
 
-PrismServiceId InterLocationMessageTransportObjectManager::getPrismServiceId ()
+WaveServiceId InterLocationMessageTransportObjectManager::getWaveServiceId ()
 {
-    PrismServiceId prismServiceId = 0;
+    WaveServiceId prismServiceId = 0;
 
     s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.lock ();
 

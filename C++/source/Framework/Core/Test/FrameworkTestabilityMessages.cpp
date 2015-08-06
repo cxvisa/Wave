@@ -36,7 +36,7 @@ static UI32 s_largeInputBuffer1Size = 5 * 1024 * 1024; // 5 MB.
 static SI8  s_largeInputBuffer1Char = 'J';
 
 FrameworkTestabilityMessage1::FrameworkTestabilityMessage1 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE1)
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE1)
 {
 }
 
@@ -62,7 +62,7 @@ void FrameworkTestabilityMessage1::setupAttributesForSerialization ()
 }
 
 FrameworkTestabilityMessage2::FrameworkTestabilityMessage2 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE2)
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE2)
 {
 }
 
@@ -71,7 +71,7 @@ FrameworkTestabilityMessage2::~FrameworkTestabilityMessage2 ()
 }
 
 FrameworkTestabilityMessage3::FrameworkTestabilityMessage3 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE3),
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE3),
       m_isLargInputBuffer1Set (false),
       m_completionStatusType  (0)
 {
@@ -325,7 +325,7 @@ ResourceId FrameworkTestabilityMessage3::getRequestedCompletionStatus ()
 }
 
 FrameworkTestabilityMessage4::FrameworkTestabilityMessage4 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE4)
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE4)
 {
     m_bool1 = false;                                           // bool                   m_bool1;
     m_bool2 = false;                                           // bool                   m_bool2;
@@ -393,9 +393,9 @@ FrameworkTestabilityMessage4::FrameworkTestabilityMessage4 ()
     m_prismMessageType2 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType2; // WaveMessageType
     m_prismMessageType3 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType3; // WaveMessageType
                                                                // 
-    m_prismServiceId1 = 0;                                     // PrismServiceId         m_prismServiceId1;
-    m_prismServiceId2 = 0;                                     // PrismServiceId         m_prismServiceId2;
-    m_prismServiceId3 = 0;                                     // PrismServiceId         m_prismServiceId3;
+    m_prismServiceId1 = 0;                                     // WaveServiceId         m_prismServiceId1;
+    m_prismServiceId2 = 0;                                     // WaveServiceId         m_prismServiceId2;
+    m_prismServiceId3 = 0;                                     // WaveServiceId         m_prismServiceId3;
                                                                // 
     m_serializableObjectType1 = 0;                             // SerializableObjectType m_serializableObjectType1;
     m_serializableObjectType2 = 0;                             // SerializableObjectType m_serializableObjectType2;
@@ -539,9 +539,9 @@ void FrameworkTestabilityMessage4::setupAttributesForSerialization ()
      addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType2, "prismMessageType2"));
      addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType3, "prismMessageType3"));
 
-     addSerializableAttribute (new AttributePrismServiceId (&m_prismServiceId1, "prismServiceId1"));
-     addSerializableAttribute (new AttributePrismServiceId (&m_prismServiceId2, "prismServiceId2"));
-     addSerializableAttribute (new AttributePrismServiceId (&m_prismServiceId3, "prismServiceId3"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId1, "prismServiceId1"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId2, "prismServiceId2"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId3, "prismServiceId3"));
 
      addSerializableAttribute (new AttributeSerializableObjectType (&m_serializableObjectType1, "serializableObjectType1"));
      addSerializableAttribute (new AttributeSerializableObjectType (&m_serializableObjectType2, "serializableObjectType2"));
@@ -1099,26 +1099,26 @@ bool FrameworkTestabilityMessage4::validateWaveMessageTypeContent ()
     return (true);
 }
 
-void FrameworkTestabilityMessage4::setupPrismServiceIdInput ()
+void FrameworkTestabilityMessage4::setupWaveServiceIdInput ()
 {
-    m_prismServiceId1 = FrameworkCoreTestObjectManager::getPrismServiceId ();
-    m_prismServiceId2 = FrameworkTestability1ObjectManager::getPrismServiceId ();
-    m_prismServiceId3 = FrameworkTestability2ObjectManager::getPrismServiceId ();
+    m_prismServiceId1 = FrameworkCoreTestObjectManager::getWaveServiceId ();
+    m_prismServiceId2 = FrameworkTestability1ObjectManager::getWaveServiceId ();
+    m_prismServiceId3 = FrameworkTestability2ObjectManager::getWaveServiceId ();
 }
 
-bool FrameworkTestabilityMessage4::validatePrismServiceIdContent ()
+bool FrameworkTestabilityMessage4::validateWaveServiceIdContent ()
 {
-    if ((FrameworkCoreTestObjectManager::getPrismServiceId ()) != m_prismServiceId1)
+    if ((FrameworkCoreTestObjectManager::getWaveServiceId ()) != m_prismServiceId1)
     {
         return (false);
     }
 
-    if ((FrameworkTestability1ObjectManager::getPrismServiceId ()) != m_prismServiceId2)
+    if ((FrameworkTestability1ObjectManager::getWaveServiceId ()) != m_prismServiceId2)
     {
         return (false);
     }
 
-    if ((FrameworkTestability2ObjectManager::getPrismServiceId ()) != m_prismServiceId3)
+    if ((FrameworkTestability2ObjectManager::getWaveServiceId ()) != m_prismServiceId3)
     {
         return (false);
     }
@@ -1963,7 +1963,7 @@ void FrameworkTestabilityMessage4::setupInput ()
     setupResourceIdInput             ();
     setupWaveMessagePriorityInput    ();
     setupWaveMessageTypeInput        ();
-    setupPrismServiceIdInput         ();
+    setupWaveServiceIdInput         ();
     setupSerializableObjectTypeInput ();
     setupTraceClientIdInput          ();
     setupTraceLevelInput             ();
@@ -2078,7 +2078,7 @@ bool FrameworkTestabilityMessage4::validateContent ()
         return (false);
     }
 
-    if (true != (validatePrismServiceIdContent ()))
+    if (true != (validateWaveServiceIdContent ()))
     {
         return (false);
     }
@@ -2227,7 +2227,7 @@ bool FrameworkTestabilityMessage4::validateContent ()
 }
 
 FrameworkTestabilityMessage5::FrameworkTestabilityMessage5 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE5)
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE5)
 {
 }
 
@@ -2236,7 +2236,7 @@ FrameworkTestabilityMessage5::~FrameworkTestabilityMessage5 ()
 }
 
 FrameworkTestabilityMessage6::FrameworkTestabilityMessage6 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE6)
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE6)
 {
 }
 
@@ -2245,7 +2245,7 @@ FrameworkTestabilityMessage6::~FrameworkTestabilityMessage6 ()
 }
 
 FrameworkTestabilityMessage7::FrameworkTestabilityMessage7 ()
-    : PrismMessage (FrameworkTestability1ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE7)
+    : PrismMessage (FrameworkTestability1ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE7)
 {
 }
 
@@ -2254,7 +2254,7 @@ FrameworkTestabilityMessage7::~FrameworkTestabilityMessage7 ()
 }
 
 FrameworkTestabilityMessage8::FrameworkTestabilityMessage8 ()
-    : PrismMessage (FrameworkTestability4ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE8),
+    : PrismMessage (FrameworkTestability4ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE8),
       m_numberOfObjectsToBeCreated (0),
       m_pageSize (0)
 {
@@ -2285,7 +2285,7 @@ void  FrameworkTestabilityMessage8::setPageSize(UI32 pageSize)
 }
 
 FrameworkTestabilityMessage9::FrameworkTestabilityMessage9 ()
-    : PrismMessage (FrameworkTestability4ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE9)
+    : PrismMessage (FrameworkTestability4ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE9)
 {
 }
 
@@ -2294,7 +2294,7 @@ FrameworkTestabilityMessage9::~FrameworkTestabilityMessage9 ()
 }
 
 FrameworkTestabilityMessage10::FrameworkTestabilityMessage10 ()
-    : PrismMessage (FrameworkTestability5ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE10)
+    : PrismMessage (FrameworkTestability5ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE10)
 {
 }
 
@@ -2303,7 +2303,7 @@ FrameworkTestabilityMessage10::~FrameworkTestabilityMessage10 ()
 }
 
 FrameworkTestabilityMessage11::FrameworkTestabilityMessage11()
-  : PrismMessage (FrameworkTestability6ObjectManager::getPrismServiceId (), FRAMEWORK_TESTABILITY_MESSAGE11)
+  : PrismMessage (FrameworkTestability6ObjectManager::getWaveServiceId (), FRAMEWORK_TESTABILITY_MESSAGE11)
 {
 
 }

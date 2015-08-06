@@ -26,7 +26,7 @@ class SlotFailoverAgent : protected WaveWorker
                 ResourceId  getListOfEnabledServicesStep        (SlotFailoverAgentContext *pSlotFailoverAgentContext);
                 ResourceId  sendSlotFailoverStep                (SlotFailoverAgentContext *pSlotFailoverAgentContext);
 
-                bool        requiresSlotFailoverNotification    (const PrismServiceId &prismServiceId);
+                bool        requiresSlotFailoverNotification    (const WaveServiceId &prismServiceId);
 
     // Now the data members
 

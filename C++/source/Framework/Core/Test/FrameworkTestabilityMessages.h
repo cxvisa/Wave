@@ -145,8 +145,8 @@ class FrameworkTestabilityMessage4 : public PrismMessage
                 bool  validateWaveMessagePriorityContent    ();
                 void  setupWaveMessageTypeInput             ();
                 bool  validateWaveMessageTypeContent        ();
-                void  setupPrismServiceIdInput              ();
-                bool  validatePrismServiceIdContent         ();
+                void  setupWaveServiceIdInput              ();
+                bool  validateWaveServiceIdContent         ();
                 void  setupSerializableObjectTypeInput      ();
                 bool  validateSerializableObjectTypeContent ();
                 void  setupTraceClientIdInput               ();
@@ -271,9 +271,9 @@ class FrameworkTestabilityMessage4 : public PrismMessage
         ResourceId               m_prismMessageType2; // WaveMessageType
         ResourceId               m_prismMessageType3; // WaveMessageType
 
-        PrismServiceId           m_prismServiceId1;
-        PrismServiceId           m_prismServiceId2;
-        PrismServiceId           m_prismServiceId3;
+        WaveServiceId           m_prismServiceId1;
+        WaveServiceId           m_prismServiceId2;
+        WaveServiceId           m_prismServiceId3;
 
         SerializableObjectType m_serializableObjectType1;
         SerializableObjectType m_serializableObjectType2;

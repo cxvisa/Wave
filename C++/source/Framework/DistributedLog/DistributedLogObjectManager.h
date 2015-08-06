@@ -57,7 +57,7 @@ class DistributedLogObjectManager : public WaveObjectManager
 
         static  string                          getServiceName                                              ();
         static  DistributedLogObjectManager    *getInstance                                                 ();
-        static  PrismServiceId                  getPrismServiceId                                           ();
+        static  WaveServiceId                  getWaveServiceId                                           ();
 
     // Now the data members
 

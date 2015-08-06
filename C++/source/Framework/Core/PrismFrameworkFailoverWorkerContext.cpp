@@ -63,12 +63,12 @@ void PrismFrameworkFailoverWorkerContext::getFailedLocationIds (vector<LocationI
     failedLocationIds = m_failedLocationIds;
 }
 
-void PrismFrameworkFailoverWorkerContext::setServiceToBeIgnored (const PrismServiceId &serviceToBeIgnored)
+void PrismFrameworkFailoverWorkerContext::setServiceToBeIgnored (const WaveServiceId &serviceToBeIgnored)
 {
     m_serviceToBeIgnored = serviceToBeIgnored;
 }
 
-PrismServiceId PrismFrameworkFailoverWorkerContext::getServiceToBeIgnored () const
+WaveServiceId PrismFrameworkFailoverWorkerContext::getServiceToBeIgnored () const
 {
     return (m_serviceToBeIgnored);
 }

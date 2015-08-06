@@ -160,7 +160,7 @@ ManagementInterfaceObjectManager *ManagementInterfaceObjectManager::getInstance 
     return (pManagementInterfaceObjectManager);
 }
 
-PrismServiceId ManagementInterfaceObjectManager::getPrismServiceId ()
+WaveServiceId ManagementInterfaceObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -559,7 +559,7 @@ void ManagementInterfaceObjectManager::replyToRemoteMessagesPendingForClient (co
     }
 }
 
-ResourceId ManagementInterfaceObjectManager::connectToNewManagementInterfaceClient (const string &clientName, const string &clientIpAddress, const SI32 &clientPort, const PrismServiceId &userInterfaceServiceId, const string &serverIpAddressFromClientPerspective, const string &messageVersion, const UI32 &serverUniqueIdentifierFromServerPerspective)
+ResourceId ManagementInterfaceObjectManager::connectToNewManagementInterfaceClient (const string &clientName, const string &clientIpAddress, const SI32 &clientPort, const WaveServiceId &userInterfaceServiceId, const string &serverIpAddressFromClientPerspective, const string &messageVersion, const UI32 &serverUniqueIdentifierFromServerPerspective)
 {
     WaveManagementClient *pWaveManagementClient = new WaveManagementClient (clientName, clientIpAddress, clientPort, userInterfaceServiceId);
     ResourceId            status                = FRAMEWORK_ERROR;

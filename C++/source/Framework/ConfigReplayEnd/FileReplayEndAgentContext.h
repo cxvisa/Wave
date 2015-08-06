@@ -23,12 +23,12 @@ class FileReplayEndAgentContext : public PrismSynchronousLinearSequencerContext
                                         FileReplayEndAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~FileReplayEndAgentContext ();
 
-                vector<PrismServiceId> &getEnabledServices        ();
+                vector<WaveServiceId> &getEnabledServices        ();
 
     // Now the data members
 
     private :
-        vector<PrismServiceId> m_enabledServices;
+        vector<WaveServiceId> m_enabledServices;
 
     protected :
     public :

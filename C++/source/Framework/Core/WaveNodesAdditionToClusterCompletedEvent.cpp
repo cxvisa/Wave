@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveNodesAdditionToClusterCompletedEvent::WaveNodesAdditionToClusterCompletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT )
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT )
 {
 }
 

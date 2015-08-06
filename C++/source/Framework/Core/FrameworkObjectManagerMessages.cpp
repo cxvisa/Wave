@@ -15,7 +15,7 @@
 namespace WaveNs
 {
 
-PrismCreateClusterWithNodesMessage::PrismCreateClusterWithNodesMessage (PrismServiceId serviceCode, UI32 operationCode)
+PrismCreateClusterWithNodesMessage::PrismCreateClusterWithNodesMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode),
       m_currentValidtionResultsBufferTag (0),
       m_isAddNodeForSpecialCase (false)
@@ -23,7 +23,7 @@ PrismCreateClusterWithNodesMessage::PrismCreateClusterWithNodesMessage (PrismSer
 }
 
 PrismCreateClusterWithNodesMessage::PrismCreateClusterWithNodesMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CREATE_CLUSTER_WITH_NODES),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CREATE_CLUSTER_WITH_NODES),
       m_currentValidtionResultsBufferTag (0),
       m_isAddNodeForSpecialCase (false)
 {
@@ -255,7 +255,7 @@ void PrismCreateClusterWithNodesMessage::getFilenamesToSync ( vector<string> &fi
 }
 
 PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY),
       m_clusterPrimaryPort (0),
       m_clusterPrimaryLocationId (0),
       m_port (0),
@@ -264,7 +264,7 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage ()
 {
 }
 
-PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (PrismServiceId serviceCode, UI32 operationCode)
+PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode),
       m_clusterPrimaryPort (0),
       m_clusterPrimaryLocationId (0),
@@ -274,7 +274,7 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (Pr
 {
 }
 
-PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (PrismServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
+PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
     : PrismMessage (serviceCode, operationCode),
       m_clusterPrimaryPrismVersion (clusterPrimaryPrismVersion),
       m_clusterPrimaryIpAddress (clusterPrimaryIpAddress),
@@ -288,7 +288,7 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (Pr
 }
 
 PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY),
       m_clusterPrimaryPrismVersion (clusterPrimaryPrismVersion),
       m_clusterPrimaryIpAddress (clusterPrimaryIpAddress),
       m_clusterPrimaryPort (clusterPrimaryPort),
@@ -433,7 +433,7 @@ bool PrismConfigureClusterSecondaryMessage::getIsAddNodeForSpecialCaseFlag () co
 }
 
 PrismConfigureClusterSecondaryHaPeerMessage::PrismConfigureClusterSecondaryHaPeerMessage ()
-    : PrismConfigureClusterSecondaryMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER)
+    : PrismConfigureClusterSecondaryMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER)
 {
 }
 
@@ -447,11 +447,11 @@ void PrismConfigureClusterSecondaryHaPeerMessage::setupAttributesForSerializatio
 }
 
 PrismConfigureClusterSecondaryPhase1Message::PrismConfigureClusterSecondaryPhase1Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1)
 {
 }
 
-PrismConfigureClusterSecondaryPhase1Message::PrismConfigureClusterSecondaryPhase1Message (PrismServiceId serviceCode, UI32 operationCode)
+PrismConfigureClusterSecondaryPhase1Message::PrismConfigureClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode)
 {
 }
@@ -482,7 +482,7 @@ void PrismConfigureClusterSecondaryPhase1Message::getFilenameToSync ( string &fi
 }
 
 PrismConfigureClusterSecondaryHaPeerPhase1Message::PrismConfigureClusterSecondaryHaPeerPhase1Message ()
-    : PrismConfigureClusterSecondaryPhase1Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
+    : PrismConfigureClusterSecondaryPhase1Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
 {
 }
 
@@ -496,7 +496,7 @@ void PrismConfigureClusterSecondaryHaPeerPhase1Message::setupAttributesForSerial
 }
 
 PrismConfigureClusterSecondaryPhase2Message::PrismConfigureClusterSecondaryPhase2Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2)
 {
 }
 
@@ -510,11 +510,11 @@ void PrismConfigureClusterSecondaryPhase2Message::setupAttributesForSerializatio
 }
 
 PrismConfigureClusterSecondaryPhase3Message::PrismConfigureClusterSecondaryPhase3Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3)
 {
 }
 
-PrismConfigureClusterSecondaryPhase3Message::PrismConfigureClusterSecondaryPhase3Message (PrismServiceId serviceCode, UI32 operationCode)
+PrismConfigureClusterSecondaryPhase3Message::PrismConfigureClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode)
 {
 }
@@ -529,7 +529,7 @@ void PrismConfigureClusterSecondaryPhase3Message::setupAttributesForSerializatio
 }
 
 PrismConfigureClusterSecondaryHaPeerPhase3Message::PrismConfigureClusterSecondaryHaPeerPhase3Message ()
-    : PrismConfigureClusterSecondaryPhase3Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
+    : PrismConfigureClusterSecondaryPhase3Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
 {
 }
 
@@ -543,11 +543,11 @@ void PrismConfigureClusterSecondaryHaPeerPhase3Message::setupAttributesForSerial
 }
 
 PrismRejoinClusterSecondaryPhase1Message::PrismRejoinClusterSecondaryPhase1Message ()
-    : PrismConfigureClusterSecondaryPhase1Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1)
+    : PrismConfigureClusterSecondaryPhase1Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1)
 {
 }
 
-PrismRejoinClusterSecondaryPhase1Message::PrismRejoinClusterSecondaryPhase1Message (PrismServiceId serviceCode, UI32 operationCode)
+PrismRejoinClusterSecondaryPhase1Message::PrismRejoinClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
     : PrismConfigureClusterSecondaryPhase1Message (serviceCode, operationCode)
 {
 }
@@ -562,7 +562,7 @@ void PrismRejoinClusterSecondaryPhase1Message::setupAttributesForSerialization (
 }
 
 PrismRejoinClusterSecondaryHaPeerPhase1Message::PrismRejoinClusterSecondaryHaPeerPhase1Message ()
-    : PrismRejoinClusterSecondaryPhase1Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
+    : PrismRejoinClusterSecondaryPhase1Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
 {
 }
 
@@ -586,7 +586,7 @@ void PrismRejoinClusterSecondaryHaPeerPhase1Message::setupAttributesForSerializa
 /// Return
 /// none
 PrismRejoinClusterSecondaryPhase2Message::PrismRejoinClusterSecondaryPhase2Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2),
       m_isReplaceRejoin (false),
       m_replacedNodeLocationId (0)
 {
@@ -645,11 +645,11 @@ void PrismRejoinClusterSecondaryPhase2Message::setIsReplaceRejoin (const bool &i
 /// Return
 /// none
 PrismRejoinClusterSecondaryPhase3Message::PrismRejoinClusterSecondaryPhase3Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3)
 {
 }
 
-PrismRejoinClusterSecondaryPhase3Message::PrismRejoinClusterSecondaryPhase3Message (PrismServiceId serviceCode, UI32 operationCode)
+PrismRejoinClusterSecondaryPhase3Message::PrismRejoinClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode)
 {
 }
@@ -686,7 +686,7 @@ void PrismRejoinClusterSecondaryPhase3Message::setupAttributesForSerialization (
 }
 
 PrismRejoinClusterSecondaryHaPeerPhase3Message::PrismRejoinClusterSecondaryHaPeerPhase3Message ()
-    : PrismRejoinClusterSecondaryPhase3Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
+    : PrismRejoinClusterSecondaryPhase3Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
 {
 }
 
@@ -700,7 +700,7 @@ void PrismRejoinClusterSecondaryHaPeerPhase3Message::setupAttributesForSerializa
 }
 
 FrameworkObjectManagerUpdateListOfSecondariesMessage::FrameworkObjectManagerUpdateListOfSecondariesMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_UPDATE_LIST_OF_CLUSTER_SECONDARIES),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_UPDATE_LIST_OF_CLUSTER_SECONDARIES),
       m_isDeletion(false),
       m_lastUsedLocationId (0)
 {
@@ -809,7 +809,7 @@ void FrameworkObjectManagerUpdateListOfSecondariesMessage::setConnectedLocationI
 }
 
 FrameworkObjectManagerAddNodesToClusterMessage::FrameworkObjectManagerAddNodesToClusterMessage ()
-    : PrismCreateClusterWithNodesMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_ADD_NODES_TO_CLUSTER)
+    : PrismCreateClusterWithNodesMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_ADD_NODES_TO_CLUSTER)
 {
 }
 
@@ -817,14 +817,14 @@ FrameworkObjectManagerAddNodesToClusterMessage::~FrameworkObjectManagerAddNodesT
 {
 }
 
-FrameworkObjectManagerDeleteNodesFromClusterMessage::FrameworkObjectManagerDeleteNodesFromClusterMessage (PrismServiceId serviceCode, UI32 operationCode)
+FrameworkObjectManagerDeleteNodesFromClusterMessage::FrameworkObjectManagerDeleteNodesFromClusterMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismCreateClusterWithNodesMessage (serviceCode, operationCode),
       m_isDisconnected(false)
 {
 }
 
 FrameworkObjectManagerDeleteNodesFromClusterMessage::FrameworkObjectManagerDeleteNodesFromClusterMessage ()
-    : PrismCreateClusterWithNodesMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_DELETE_NODES_FROM_CLUSTER),
+    : PrismCreateClusterWithNodesMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DELETE_NODES_FROM_CLUSTER),
       m_isDisconnected(false)
 {
 }
@@ -879,7 +879,7 @@ bool FrameworkObjectManagerDeleteNodesFromClusterMessage::getIsDisconnected ()
 }
 
 FrameworkObjectManagerDestroyClusterMessage::FrameworkObjectManagerDestroyClusterMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_DESTORY_CLUSTER),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DESTORY_CLUSTER),
       m_reasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED),
       m_originalRequester(0),
       m_isRebootRequired (true)
@@ -895,12 +895,12 @@ FrameworkObjectManagerFailoverReason FrameworkObjectManagerDestroyClusterMessage
     return (m_reasonForDestroyingCluster);
 }
 
-PrismServiceId FrameworkObjectManagerDestroyClusterMessage::getOriginalRequester () const
+WaveServiceId FrameworkObjectManagerDestroyClusterMessage::getOriginalRequester () const
 {
     return (m_originalRequester);
 }
 
-void FrameworkObjectManagerDestroyClusterMessage::setOriginalRequester (const PrismServiceId &originalRequester)
+void FrameworkObjectManagerDestroyClusterMessage::setOriginalRequester (const WaveServiceId &originalRequester)
 {
     m_originalRequester = originalRequester;
 }
@@ -921,7 +921,7 @@ bool FrameworkObjectManagerDestroyClusterMessage::getIsRebootRequired () const
 }
 
 FrameworkObjectManagerUnconfigureClusterSecondaryMessage::FrameworkObjectManagerUnconfigureClusterSecondaryMessage (const string &clusterSecondaryIpAddress, const SI32 &clusterSecondaryPort)
-    : PrismMessage                (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY),
+    : PrismMessage                (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY),
       m_clusterSecondaryIpAddress (clusterSecondaryIpAddress),
       m_clusterSecondaryPort      (clusterSecondaryPort),
       m_isPerformWarmRecovery     (false)
@@ -929,7 +929,7 @@ FrameworkObjectManagerUnconfigureClusterSecondaryMessage::FrameworkObjectManager
 }
 
 FrameworkObjectManagerUnconfigureClusterSecondaryMessage::FrameworkObjectManagerUnconfigureClusterSecondaryMessage ()
-    : PrismMessage                  (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY),
+    : PrismMessage                  (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY),
       m_clusterSecondaryIpAddress (""),
       m_clusterSecondaryPort (0),
       m_isPerformWarmRecovery (false)
@@ -970,7 +970,7 @@ void FrameworkObjectManagerUnconfigureClusterSecondaryMessage::setIsPerformWarmR
 }
 
 FrameworkObjectManagerRejoinNodesToClusterMessage::FrameworkObjectManagerRejoinNodesToClusterMessage ()
-    : FrameworkObjectManagerDeleteNodesFromClusterMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_NODES_TO_CLUSTER),
+    : FrameworkObjectManagerDeleteNodesFromClusterMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_NODES_TO_CLUSTER),
     m_isReplaceRejoin (false)
 {
 }
@@ -1009,19 +1009,19 @@ LocationId FrameworkObjectManagerRejoinNodesToClusterMessage::getNodeLocationId 
 }
 
 FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage ()
-    : PrismConfigureClusterSecondaryMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY),
+    : PrismConfigureClusterSecondaryMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY),
       m_isReplaceRejoin (false)
 {
 }
 
-FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage (PrismServiceId serviceCode, UI32 operationCode)
+FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismConfigureClusterSecondaryMessage (serviceCode, operationCode),
       m_isReplaceRejoin (false)
 {
 }
 
 FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
-    : PrismConfigureClusterSecondaryMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY, clusterPrimaryPrismVersion, clusterPrimaryIpAddress, clusterPrimaryPort, clusterPrimaryLocationId, ipAddress, port, locationId),
+    : PrismConfigureClusterSecondaryMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY, clusterPrimaryPrismVersion, clusterPrimaryIpAddress, clusterPrimaryPort, clusterPrimaryLocationId, ipAddress, port, locationId),
     m_isReplaceRejoin (false)
 {
 }
@@ -1059,7 +1059,7 @@ vector<UI64> FrameworkObjectManagerRejoinClusterSecondaryMessage::getConfigurati
 }
 
 FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage::FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage ()
-    : FrameworkObjectManagerRejoinClusterSecondaryMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER)
+    : FrameworkObjectManagerRejoinClusterSecondaryMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER)
 {
 }
 
@@ -1073,7 +1073,7 @@ void FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage::setupAttributesF
 }
 
 FrameworkObjectManagerDetachFromClusterMessage::FrameworkObjectManagerDetachFromClusterMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_DETACH_FROM_CLUSTER),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DETACH_FROM_CLUSTER),
       m_reasonForDetachingFromCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED)
 {
 }
@@ -1093,7 +1093,7 @@ void FrameworkObjectManagerDetachFromClusterMessage::setReasonForDetachingFromCl
 }
 
 FrameworkObjectManagerLostHeartBeatMessage::FrameworkObjectManagerLostHeartBeatMessage ()
-    : FrameworkObjectManagerDeleteNodesFromClusterMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_LOST_HEART_BEAT_MESSAGE)
+    : FrameworkObjectManagerDeleteNodesFromClusterMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOST_HEART_BEAT_MESSAGE)
 {
 }
 
@@ -1102,7 +1102,7 @@ FrameworkObjectManagerLostHeartBeatMessage::~FrameworkObjectManagerLostHeartBeat
 }
 
 FrameworkObjectManagerPrimaryChangedMessage::FrameworkObjectManagerPrimaryChangedMessage ()
-    : PrismMessage           (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE),
+    : PrismMessage           (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE),
       m_newPrimaryLocationId (0),
       m_newPrimaryIpAddress  (""),
       m_newPrimaryPort       (0),
@@ -1111,7 +1111,7 @@ FrameworkObjectManagerPrimaryChangedMessage::FrameworkObjectManagerPrimaryChange
 {
 }
 
-FrameworkObjectManagerPrimaryChangedMessage::FrameworkObjectManagerPrimaryChangedMessage (PrismServiceId serviceCode, UI32 operationCode)
+FrameworkObjectManagerPrimaryChangedMessage::FrameworkObjectManagerPrimaryChangedMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage           (serviceCode, operationCode),
       m_newPrimaryLocationId (0),
       m_newPrimaryIpAddress  (""),
@@ -1122,7 +1122,7 @@ FrameworkObjectManagerPrimaryChangedMessage::FrameworkObjectManagerPrimaryChange
 }
     
 FrameworkObjectManagerPrimaryChangedMessage::FrameworkObjectManagerPrimaryChangedMessage (const LocationId &newPrimaryLocationId, const string &newPrimaryIpAddress, const UI32 &newPrimaryPort)
-    : PrismMessage                            (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE),
+    : PrismMessage                            (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE),
       m_newPrimaryLocationId                  (newPrimaryLocationId),
       m_newPrimaryIpAddress                   (newPrimaryIpAddress),
       m_newPrimaryPort                        (newPrimaryPort),
@@ -1215,7 +1215,7 @@ UI64  FrameworkObjectManagerPrimaryChangedMessage::getAnyConfigurationChangeTrac
 }
 
 FrameworkObjectManagerPrimaryChangedHaPeerMessage::FrameworkObjectManagerPrimaryChangedHaPeerMessage ()
-    : FrameworkObjectManagerPrimaryChangedMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE_HA_PEER),
+    : FrameworkObjectManagerPrimaryChangedMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE_HA_PEER),
       m_isDBEmptyRequired (true)
 {
 }
@@ -1242,12 +1242,12 @@ bool FrameworkObjectManagerPrimaryChangedHaPeerMessage::getIsDBEmptyRequired () 
 }
 
 FrameworkObjectManagerPrimaryChangedPhase1Message::FrameworkObjectManagerPrimaryChangedPhase1Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_MESSAGE),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_MESSAGE),
       m_anyConfiguraitonChangeTrackingNumber (0)
 {
 }
 
-FrameworkObjectManagerPrimaryChangedPhase1Message::FrameworkObjectManagerPrimaryChangedPhase1Message (PrismServiceId serviceCode, UI32 operationCode)
+FrameworkObjectManagerPrimaryChangedPhase1Message::FrameworkObjectManagerPrimaryChangedPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode),
       m_anyConfiguraitonChangeTrackingNumber (0)
 {
@@ -1280,7 +1280,7 @@ UI64 FrameworkObjectManagerPrimaryChangedPhase1Message::getAnyConfigurationChang
 }
 
 FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message::FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message ()
-    : FrameworkObjectManagerPrimaryChangedPhase1Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_HA_PEER_MESSAGE),
+    : FrameworkObjectManagerPrimaryChangedPhase1Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_HA_PEER_MESSAGE),
       m_isDBRestoreRequired (true)
 {
 }
@@ -1307,7 +1307,7 @@ bool FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message::getIsDBRestoreRequ
 }
 
 FrameworkObjectManagerPrimaryChangedPhase2Message::FrameworkObjectManagerPrimaryChangedPhase2Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_2_MESSAGE)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_2_MESSAGE)
 {
 }
 
@@ -1316,11 +1316,11 @@ FrameworkObjectManagerPrimaryChangedPhase2Message::~FrameworkObjectManagerPrimar
 }
 
 FrameworkObjectManagerPrimaryChangedPhase3Message::FrameworkObjectManagerPrimaryChangedPhase3Message ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_MESSAGE)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_MESSAGE)
 {
 }
 
-FrameworkObjectManagerPrimaryChangedPhase3Message::FrameworkObjectManagerPrimaryChangedPhase3Message (PrismServiceId serviceCode, UI32 operationCode)
+FrameworkObjectManagerPrimaryChangedPhase3Message::FrameworkObjectManagerPrimaryChangedPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode)
 {
 }
@@ -1335,7 +1335,7 @@ void FrameworkObjectManagerPrimaryChangedPhase3Message::setupAttributesForSerial
 }
 
 FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message::FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message ()
-    : FrameworkObjectManagerPrimaryChangedPhase3Message (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_HA_PEER_MESSAGE)
+    : FrameworkObjectManagerPrimaryChangedPhase3Message (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_HA_PEER_MESSAGE)
 {
 }
 
@@ -1349,7 +1349,7 @@ void FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message::setupAttributesFor
 }
 
 FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage::FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_ROLLBACK_STANDBY_ON_ACTIVE_ROLLBACK)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_ROLLBACK_STANDBY_ON_ACTIVE_ROLLBACK)
 {
 }
 
@@ -1375,7 +1375,7 @@ void FrameworkObjectManagerServiceControlListMessage::setupAttributesForSerializ
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributePrismServiceIdVector (&m_prismServiceIds,   "prismServiceIds"));
+     addSerializableAttribute (new AttributeWaveServiceIdVector (&m_prismServiceIds,   "prismServiceIds"));
      addSerializableAttribute (new AttributeStringVector         (&m_serviceNames,      "serviceNames"));
      addSerializableAttribute (new AttributeBoolVector           (&m_enabled,           "enabled"));
      addSerializableAttribute (new AttributeBoolVector           (&m_local,             "local"));
@@ -1387,7 +1387,7 @@ UI32 FrameworkObjectManagerServiceControlListMessage::getNumberOfServices () con
     return (m_prismServiceIds.size ());
 }
 
-void FrameworkObjectManagerServiceControlListMessage::addAService (const PrismServiceId &prismServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity)
+void FrameworkObjectManagerServiceControlListMessage::addAService (const WaveServiceId &prismServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity)
 {
     m_prismServiceIds.push_back (prismServiceId);
     m_serviceNames.push_back    (serviceName);
@@ -1396,7 +1396,7 @@ void FrameworkObjectManagerServiceControlListMessage::addAService (const PrismSe
     m_cpuAffinity.push_back     (cpuAffinity);
 }
 
-void FrameworkObjectManagerServiceControlListMessage::getServiceAtIndex (const UI32 &index, PrismServiceId &prismServiceId, string &serviceName, bool &isEnabled, bool &isLocal, string &cpuAffinity)
+void FrameworkObjectManagerServiceControlListMessage::getServiceAtIndex (const UI32 &index, WaveServiceId &prismServiceId, string &serviceName, bool &isEnabled, bool &isLocal, string &cpuAffinity)
 {
     UI32 numberOfServices = getNumberOfServices ();
 
@@ -1415,7 +1415,7 @@ FrameworkObjectManagerServiceSetCpuAffinityMessage::FrameworkObjectManagerServic
 {
 }
 
-FrameworkObjectManagerServiceSetCpuAffinityMessage::FrameworkObjectManagerServiceSetCpuAffinityMessage (const PrismServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector)
+FrameworkObjectManagerServiceSetCpuAffinityMessage::FrameworkObjectManagerServiceSetCpuAffinityMessage (const WaveServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector)
     : ManagementInterfaceMessage (PrismFrameworkObjectManager::getServiceName (), FRAMEWORK_OBJECT_MANAGER_SERVICE_SET_CPU_AFFINITY_MESSAGE),
       m_prismServiceId           (prismServiceId),
       m_cpuAffinityVector        (cpuAffinityVector)
@@ -1430,11 +1430,11 @@ void FrameworkObjectManagerServiceSetCpuAffinityMessage::setupAttributesForSeria
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributePrismServiceId (&m_prismServiceId,      "prismServiceId"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId,      "prismServiceId"));
      addSerializableAttribute (new AttributeUI32Vector     (&m_cpuAffinityVector,   "cpuAffinityVector"));
 }
 
-PrismServiceId FrameworkObjectManagerServiceSetCpuAffinityMessage::getPrismServiceId ()
+WaveServiceId FrameworkObjectManagerServiceSetCpuAffinityMessage::getWaveServiceId ()
 {
     return (m_prismServiceId);
 }
@@ -1493,7 +1493,7 @@ UI32 FrameworkObjectManagerStartSlotFailoverMessage::getSlotNumber () const
 
 
 FrameworkObjectManagerNewPrincipalEstablishedMessage::FrameworkObjectManagerNewPrincipalEstablishedMessage(const string & failedPrincipalIpAddress,UI32 failedPrincipalPort,LocationId failedPrincipalLocationId)
-      :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(),FRAMEWORK_OBJECT_MANAGER_NEW_PRINCIPAL_ESTABLISHED_AFTER_FAILOVER),
+      :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(),FRAMEWORK_OBJECT_MANAGER_NEW_PRINCIPAL_ESTABLISHED_AFTER_FAILOVER),
        mFailedPrincipalIpAddress(failedPrincipalIpAddress),
        mFailedPrincipalPort(failedPrincipalPort),
        mFailedPrincipalLocationId(failedPrincipalLocationId),
@@ -1545,14 +1545,14 @@ bool FrameworkObjectManagerNewPrincipalEstablishedMessage::getTriggerControlledF
 }
 
 FrameworkObjectManagerSecondaryNodeFailureNotificationMessage::FrameworkObjectManagerSecondaryNodeFailureNotificationMessage()
-      :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(),FRAMEWORK_OBJECT_MANAGER_SECONDARY_NODE_FAILURE_NOTIFICATION),
+      :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(),FRAMEWORK_OBJECT_MANAGER_SECONDARY_NODE_FAILURE_NOTIFICATION),
        m_isControlledFailoverInSpecialCase (false)
       
 {
 }
 
 FrameworkObjectManagerSecondaryNodeFailureNotificationMessage::FrameworkObjectManagerSecondaryNodeFailureNotificationMessage(const string & failedIpAddress,UI32 failedPort,LocationId failedLocationId)
-      :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(),FRAMEWORK_OBJECT_MANAGER_SECONDARY_NODE_FAILURE_NOTIFICATION),
+      :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(),FRAMEWORK_OBJECT_MANAGER_SECONDARY_NODE_FAILURE_NOTIFICATION),
        m_isControlledFailoverInSpecialCase (false)
       
 {
@@ -1605,7 +1605,7 @@ bool FrameworkObjectManagerSecondaryNodeFailureNotificationMessage::getIsControl
 }
 
 FrameworkObjectManagerDisconnectFromAllNodesMessage::FrameworkObjectManagerDisconnectFromAllNodesMessage()
-      :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(),FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_NODES)
+      :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(),FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_NODES)
 {
 }
 
@@ -1615,7 +1615,7 @@ FrameworkObjectManagerDisconnectFromAllNodesMessage::~FrameworkObjectManagerDisc
 }
 
 FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage::FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage ()
-      :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(),FRAMEWORK_OBJECT_MANAGER_ESTABLISH_PRINCIPAL_AFTER_CLUSTER_REBOOT)
+      :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(),FRAMEWORK_OBJECT_MANAGER_ESTABLISH_PRINCIPAL_AFTER_CLUSTER_REBOOT)
 
 {
 
@@ -1627,7 +1627,7 @@ FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage::~FrameworkObj
 }
 
 FrameworkObjectManagerResetNodeToUnconfirmRole::FrameworkObjectManagerResetNodeToUnconfirmRole ()
-    :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_RESET_NODE_FOR_CLUSTER_MERGE)
+    :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_RESET_NODE_FOR_CLUSTER_MERGE)
 {
 
 }
@@ -1638,7 +1638,7 @@ FrameworkObjectManagerResetNodeToUnconfirmRole::~FrameworkObjectManagerResetNode
 }
 
 FrameworkObjectManagerRemoveKnownLocationsMessage::FrameworkObjectManagerRemoveKnownLocationsMessage ()
-      :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_REMOVE_KNOWN_LOCATIONS_MESSAGE)
+      :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_REMOVE_KNOWN_LOCATIONS_MESSAGE)
 {
 }
 
@@ -1665,7 +1665,7 @@ void FrameworkObjectManagerRemoveKnownLocationsMessage::setupAttributesForSerial
 }
 
 FrameworkObjectManagerStartHaSyncMessage::FrameworkObjectManagerStartHaSyncMessage (const string &peerHaIpAddress, const SI32 &peerHaIpPort)
-      :PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_START_HA_SYNC_MESSAGE),
+      :PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_START_HA_SYNC_MESSAGE),
        m_peerHaIpAddress(peerHaIpAddress),
        m_peerHaIpPort(peerHaIpPort),
        m_firmwareVersion (""),
@@ -1740,7 +1740,7 @@ void FrameworkObjectManagerStartHaSyncMessage::setupAttributesForSerialization (
 }
 
 FrameworkObjectManagerEndHaSyncMessage::FrameworkObjectManagerEndHaSyncMessage ()
-      :PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_END_HA_SYNC_MESSAGE)
+      :PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_END_HA_SYNC_MESSAGE)
 {
 }
 
@@ -1749,7 +1749,7 @@ FrameworkObjectManagerEndHaSyncMessage::~FrameworkObjectManagerEndHaSyncMessage(
 }
 
 FrameworkObjectManagerInitHaIpAddressMessage::FrameworkObjectManagerInitHaIpAddressMessage (const string &localHaIpAddress, const SI32 &localHaIpPort)
-      :PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_INIT_HA_IPADDR_MESSAGE),
+      :PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_INIT_HA_IPADDR_MESSAGE),
        m_localHaIpAddress(localHaIpAddress),
        m_localHaIpPort(localHaIpPort)
 {
@@ -1788,14 +1788,14 @@ void FrameworkObjectManagerInitHaIpAddressMessage::setupAttributesForSerializati
 }
 
 PrismHaSyncConfigureStandbyMessage::PrismHaSyncConfigureStandbyMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY),
     m_activePrismVersion (""),
     m_activeLocationRole (LOCATION_STAND_ALONE)
 {
 }
 
 PrismHaSyncConfigureStandbyMessage::PrismHaSyncConfigureStandbyMessage (const string &activePrismVersion, const LocationRole &activeLocationRole)
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY),
       m_activePrismVersion (activePrismVersion),
       m_activeLocationRole (activeLocationRole)
 {
@@ -1897,7 +1897,7 @@ string const & FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage::ge
 }
 
 FrameworkObjectManagerPrepareNodeForHAMessage::FrameworkObjectManagerPrepareNodeForHAMessage ()
-      : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_PREPARE_NODE_FOR_HA)
+      : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_PREPARE_NODE_FOR_HA)
 {
 
 }
@@ -1908,7 +1908,7 @@ FrameworkObjectManagerPrepareNodeForHAMessage::~FrameworkObjectManagerPrepareNod
 }
 
 FrameworkObjectManagerUpdateDatabaseSchema::FrameworkObjectManagerUpdateDatabaseSchema()
-    : PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_UPDATE_DATABASE_SCHEMA)
+    : PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_UPDATE_DATABASE_SCHEMA)
 {
 }
 
@@ -1936,7 +1936,7 @@ void FrameworkObjectManagerListenForManagedObjectMessage::setupAttributesForSeri
 }
 
 FrameworkObjectManagerHaSyncUpdateMessage::FrameworkObjectManagerHaSyncUpdateMessage()
-    :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_UPDATE), 
+    :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_UPDATE), 
      m_isDbSyncRequired (false)
 {
 }
@@ -1956,7 +1956,7 @@ bool FrameworkObjectManagerHaSyncUpdateMessage::getIsDbSyncRequired ()
 }
 
 FrameworkObjectManagerGetFirmwareVersionMessage::FrameworkObjectManagerGetFirmwareVersionMessage()
-    :PrismMessage(PrismFrameworkObjectManager::getPrismServiceId(), FRAMEWORK_OBJECT_MANAGER_GET_FIRMWARE_VERSION),
+    :PrismMessage(PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_GET_FIRMWARE_VERSION),
      m_firmwareVersion ("")
 {
 }
@@ -1990,7 +1990,7 @@ string FrameworkObjectManagerGetFirmwareVersionMessage::getFirmwareVersion ()
 }
 
 FrameworkObjectManagerStartCcmdHaSyncMessage::FrameworkObjectManagerStartCcmdHaSyncMessage (const string &peerHaIpAddress, const SI32 &peerHaIpPort)
-      :PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_START_CCMD_HA_SYNC_MESSAGE),
+      :PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_START_CCMD_HA_SYNC_MESSAGE),
        m_peerHaIpAddress(peerHaIpAddress),
        m_peerHaIpPort(peerHaIpPort),
        m_firmwareVersion (""),
@@ -2079,13 +2079,13 @@ void FrameworkObjectManagerCcmdHaSyncUpdateMessage::setupAttributesForSerializat
 }
 
 FrameworkObjectManagerSetSyncStateMessage::FrameworkObjectManagerSetSyncStateMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_SET_SYNC_STATE_MESSAGE),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_SET_SYNC_STATE_MESSAGE),
       m_syncState (UNKNOWN_SYNC_STATE)
 {
 }
 
 FrameworkObjectManagerSetSyncStateMessage::FrameworkObjectManagerSetSyncStateMessage (const UI32 &syncState)
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_SET_SYNC_STATE_MESSAGE),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_SET_SYNC_STATE_MESSAGE),
       m_syncState (syncState)
 {
 }
@@ -2112,7 +2112,7 @@ UI32 FrameworkObjectManagerSetSyncStateMessage::getSyncState () const
 }
 
 FrameworkObjectManagerGetSyncStateMessage::FrameworkObjectManagerGetSyncStateMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_GET_SYNC_STATE_MESSAGE),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_GET_SYNC_STATE_MESSAGE),
       m_syncState (UNKNOWN_SYNC_STATE)
 {
 }
@@ -2139,7 +2139,7 @@ UI32 FrameworkObjectManagerGetSyncStateMessage::getSyncState () const
 }
 
 FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration::FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_WARM_RECOV_WITH_DEFAULT_CONFIG_MESSAGE)
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_WARM_RECOV_WITH_DEFAULT_CONFIG_MESSAGE)
 {
 }
 
@@ -2153,7 +2153,7 @@ void FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration::setup
 }
 
 FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration::FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration ()
-    : PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_HA_RECOV_WITH_PERSISTENT_CONFIG_MESSAGE),
+    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_HA_RECOV_WITH_PERSISTENT_CONFIG_MESSAGE),
       m_isWarmRecoveryInvolved (false)
 {
 }
@@ -2180,13 +2180,13 @@ void FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration::setW
 }
 
 FrameworkObjectManagerSyncConfigurationMessage::FrameworkObjectManagerSyncConfigurationMessage ()
-     :PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE),
+     :PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE),
       m_prismFrameworkConfigurationFileName ("")
 {
 }
 
 FrameworkObjectManagerSyncConfigurationMessage::FrameworkObjectManagerSyncConfigurationMessage (const string &prismFrameworkConfigurationFileName)
-     :PrismMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE),
+     :PrismMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE),
       m_prismFrameworkConfigurationFileName (prismFrameworkConfigurationFileName)
 {
 }

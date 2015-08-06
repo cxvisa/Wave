@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 FrameworkTestabilityEvent1::FrameworkTestabilityEvent1 ()
-    : PrismEvent (FrameworkLocalMessagingTestObjectManager::getPrismServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1)
+    : PrismEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1)
 {
     m_eventUI32  = 0;
 }

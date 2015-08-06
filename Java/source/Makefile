@@ -1,4 +1,5 @@
-.PHONY: all build package classes doc
+.PHONY: all build package classes doc generateresourceenums
+
 
 export PROJECT_NAME := Wave
 export PROJECT_VERSION := 1.5
@@ -13,7 +14,17 @@ export JARFILE = ../build/lib/lib$(PROJECT_NAME)-$(PROJECT_VERSION).jar
 
 all: build
 
-build: classes $(JARFILE)
+classes : generateresourceenums
+$(JARFILE) : generateresourceenums
+
+buildresourceenums : generateresourceenums
+	gmake -C com/CxWave/Wave/Resources -f Makefile.build
+
+generateresourceenums:
+	gmake -C com/CxWave/Wave/Resources -f Makefile.resources
+
+
+build: buildresourceenums classes $(JARFILE)
 	for i in $(SUB_DIRS); \
 	do \
 	    echo $$i; \
@@ -23,7 +34,11 @@ LIST_OF_CLASSES_TO_BE_UPDATED :=
 
 classes: $(ALL_JAVA_CLASSES)
 	if [ ! -z "$(LIST_OF_CLASSES_TO_BE_UPDATED)" ] ; then \
-		javac -Xlint:unchecked -cp $(shell pwd) -d ../build/obj -Werror $(LIST_OF_CLASSES_TO_BE_UPDATED) && \
+		for i in $(LIST_OF_CLASSES_TO_BE_UPDATED); \
+		do \
+			echo $$i; \
+		done; \
+		javac -Xlint:unchecked -cp $(shell pwd):../build/DynamicSource -d ../build/obj -Werror $(LIST_OF_CLASSES_TO_BE_UPDATED) && \
 		cd ../build/obj && jar -cvf ../../source/$(JARFILE) `find . -name "*.class"`; \
 	fi
 

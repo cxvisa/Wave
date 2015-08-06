@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerCreateInMemoryManagedObjectMessage::DatabaseObjectManagerCreateInMemoryManagedObjectMessage (const  string &className, WaveObjectManager *pWaveObjectManager)
-    : PrismMessage          (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_CREATE_INMEMORY_MO),
+    : PrismMessage          (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_CREATE_INMEMORY_MO),
     m_className             (className),
     m_pInMemoryManagedObject (NULL),
     m_pWaveObjectManager    (pWaveObjectManager)

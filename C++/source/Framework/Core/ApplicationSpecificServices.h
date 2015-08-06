@@ -21,13 +21,13 @@ class ApplicationSpecificServices
                                      virtual    ~ApplicationSpecificServices ();
 
         static   ApplicationSpecificServices    *getInstance                    ();
-                                        void     setPrismServiceId              (PrismServiceId prismServiceId);
-                                        bool     isApplicationSpecificServiceId (PrismServiceId prismServiceId);   
+                                        void     setWaveServiceId              (WaveServiceId prismServiceId);
+                                        bool     isApplicationSpecificServiceId (WaveServiceId prismServiceId);   
 
     // Now the data members
 
     private :
-                 vector<PrismServiceId>        m_PrismServiceId;
+                 vector<WaveServiceId>        m_WaveServiceId;
     protected :
     public :
 };

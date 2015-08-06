@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-PrismEvent::PrismEvent (PrismServiceId serviceCode, UI32 operationCode)
+PrismEvent::PrismEvent (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode),
       m_referenceCountForEventNotifications (1)
 {

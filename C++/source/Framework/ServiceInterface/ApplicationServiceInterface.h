@@ -141,7 +141,7 @@ void addMessageHandler (const unsigned int applicationServiceId, const unsigned 
 //     has been successfully submitted to the Reporte Transport Service on the local node for remote delivery.
 //
 // Parameters:
-//     sendingApplicationServicePrismServiceId:
+//     sendingApplicationServiceWaveServiceId:
 //         The Prism Application Service Id of the sender service.  This is different from the Priam Service Id itself.  This value is typically
 //         returned to the user during the Application registration.  Framework internal.ly maps this to the corresponding Prism Service Id
 //         before routing the message.
@@ -150,8 +150,8 @@ void addMessageHandler (const unsigned int applicationServiceId, const unsigned 
 //         copy of this buffer before returning.  The user is responsible for deletion of the buffer.
 //     payLoadLength:
 //         Length of the input payload.
-//     receivingApplicationServicePrismServiceId:
-//         Receiving Prism Application Service Id.  This is similar to sendingApplicationServicePrismServiceId.
+//     receivingApplicationServiceWaveServiceId:
+//         Receiving Prism Application Service Id.  This is similar to sendingApplicationServiceWaveServiceId.
 //     prismLocationId:
 //         The Location Id of the node to which the request (message) has to be sent.
 //     pPrismApplicationServiceCallback:
@@ -164,10 +164,10 @@ void addMessageHandler (const unsigned int applicationServiceId, const unsigned 
 // Return Value:
 //     A return value of WAVE_MESSAGE_SUCCESS indicates success.  Any other value indicates an error.
 
-unsigned int sendToApplicationService (const unsigned int                              sendingApplicationServicePrismServiceId,
+unsigned int sendToApplicationService (const unsigned int                              sendingApplicationServiceWaveServiceId,
                                                       void                            *pPayLoad,
                                        const unsigned int                              payLoadLength,
-                                       const unsigned int                              receivingApplicationServicePrismServiceId,
+                                       const unsigned int                              receivingApplicationServiceWaveServiceId,
                                        const unsigned int                              prismLocationId,
                                                       PrismApplicationServiceCallback  pPrismApplicationServiceCallback,
                                                       void                            *pApplicationContext);

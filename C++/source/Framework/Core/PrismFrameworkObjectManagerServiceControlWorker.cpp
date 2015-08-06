@@ -47,10 +47,10 @@ PrismMessage *PrismFrameworkObjectManagerServiceControlWorker::createMessageInst
 
 void PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHandler (FrameworkObjectManagerServiceControlListMessage *pFrameworkObjectManagerServiceControlListMessage)
 {
-    vector<PrismServiceId> prismServiceIds;
+    vector<WaveServiceId> prismServiceIds;
     UI32                   numberOfPrismServices;
     UI32                   i;
-    PrismServiceId         serviceId              = 0;
+    WaveServiceId         serviceId              = 0;
     string                 serviceName;
     bool                   isEnabled              = false;
     bool                   isLocal                = false;
@@ -89,11 +89,11 @@ void PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessa
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessageHandler : Entering ...");
 
-          PrismServiceId                           prismServiceId                          = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getPrismServiceId ();
+          WaveServiceId                           prismServiceId                          = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getWaveServiceId ();
           vector<UI32>                             cpuAffinityVector                       = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getCpuAffinityVector ();
           PrismSetCpuAffinityObjectManagerMessage  prismSetCpuAffinityObjectManagerMessage   (prismServiceId);
           ResourceId                               status                                  = WAVE_MESSAGE_SUCCESS;
-    const PrismServiceId                           thisServiceId                           = getServiceId ();
+    const WaveServiceId                           thisServiceId                           = getServiceId ();
 
     if (thisServiceId != prismServiceId)
     {

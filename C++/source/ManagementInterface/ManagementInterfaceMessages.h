@@ -18,7 +18,7 @@ class RequestToManagementInterfaceMessage : public PrismMessage
     private :
     protected :
     public :
-        RequestToManagementInterfaceMessage (PrismServiceId servciceId, UI32 operationId, AttributesMap *pAttributesMap);
+        RequestToManagementInterfaceMessage (WaveServiceId servciceId, UI32 operationId, AttributesMap *pAttributesMap);
 
      // Now the data members
 

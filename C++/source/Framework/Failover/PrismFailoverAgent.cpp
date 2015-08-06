@@ -65,11 +65,11 @@ void PrismFailoverAgent::execute (PrismFailoverAgentContext *pPrismFailoverAgent
 void PrismFailoverAgent::failoverPrismServicesStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::failoverPrismServicesStep");
-    vector<PrismServiceId> serviceIdsToFailover;
+    vector<WaveServiceId> serviceIdsToFailover;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
     vector<LocationId>     failedLocationIds       = pPrismFailoverAgentSequencerContext->getFailedLocationIds ();
-    //PrismServiceId         serviceToBeIgnored      = pPrismFailoverAgentContext->getServiceToBeIgnored ();
+    //WaveServiceId         serviceToBeIgnored      = pPrismFailoverAgentContext->getServiceToBeIgnored ();
     UI32                   index                   = 0;
     bool                   isConfigurationChange   = pPrismFailoverAgentSequencerContext->getIsConfigurationChange ();
     bool                   isPrincipalChangedWithThisFailover = pPrismFailoverAgentSequencerContext->getIsPrincipalChangedWithThisFailover ();
@@ -120,7 +120,7 @@ void PrismFailoverAgent::initializePrismGlobalServicesDuringPrePhaseStep (PrismF
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::initializePrismGlobalServicesDuringPrePhaseStep Entering");
 
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -165,7 +165,7 @@ void PrismFailoverAgent::enablePrismGlobalServicesDuringPrePhaseStep (PrismFailo
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::enablePrismGlobalServicesDuringPrePhaseStep");
 
-    vector<PrismServiceId> serviceIdsToEnableDuringPrePhase;
+    vector<WaveServiceId> serviceIdsToEnableDuringPrePhase;
     UI32                   i                                 = 0;
     UI32                   numberOfServices                  = 0;
 
@@ -217,7 +217,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep (P
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep Entering");
 
-    vector<PrismServiceId> serviceIdsToEnableDuringPrePhase;
+    vector<WaveServiceId> serviceIdsToEnableDuringPrePhase;
     UI32                   i                                 = 0;
     UI32                   numberOfServices                  = 0;
 
@@ -271,7 +271,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep (P
 
 void PrismFailoverAgent::bootPrismGlobalServicesDuringPrePhaseStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -313,7 +313,7 @@ void PrismFailoverAgent::bootPrismGlobalServicesDuringPrePhaseStep (PrismFailove
 
 void PrismFailoverAgent::initializePrismGlobalServicesStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -356,7 +356,7 @@ void PrismFailoverAgent::initializePrismGlobalServicesStep (PrismFailoverAgentSe
 void PrismFailoverAgent::enablePrismGlobalServicesStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::enablePrismGlobalServicesStep");
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -409,7 +409,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesStep (PrismFailoverAg
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::listenForEventsPrismGlobalServicesStep");
 
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -460,7 +460,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesStep (PrismFailoverAg
 
 void PrismFailoverAgent::bootPrismGlobalServicesStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -532,9 +532,9 @@ void PrismFailoverAgent::resetThisLocationToPrimaryStep (PrismFailoverAgentSeque
     pPrismFailoverAgentSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
-bool PrismFailoverAgent::isToBeExcludedForFailover (const PrismServiceId &prismServiceId)
+bool PrismFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
         (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
@@ -943,7 +943,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
 void PrismFailoverAgent::resumeDatabaseDumpStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::resumeDatabaseDumpStep");
-    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
     
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -1486,9 +1486,9 @@ void PrismFailoverAgent::informSecondaryLocationsToRemoveFailedFromKnownLocation
     pPrismFailoverAgentSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-bool PrismFailoverAgent::isToBeExcluded (const PrismServiceId &prismServiceId)
+bool PrismFailoverAgent::isToBeExcluded (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
         (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
@@ -1500,9 +1500,9 @@ bool PrismFailoverAgent::isToBeExcluded (const PrismServiceId &prismServiceId)
     }
 }
 
-bool PrismFailoverAgent::isToBeExcludedDuringPrePhase (const PrismServiceId &prismServiceId)
+bool PrismFailoverAgent::isToBeExcludedDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
         (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
@@ -1518,7 +1518,7 @@ void PrismFailoverAgent::pausePersistence ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::pausePersistence : Starting ...");
 
-    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getPrismServiceId ());
+    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -1546,7 +1546,7 @@ void PrismFailoverAgent::resumePersistence ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::resumePersistence : Starting ...");
 
-    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -1573,11 +1573,11 @@ void PrismFailoverAgent::resumePersistence ()
 void PrismFailoverAgent::failoverForUnknownWaveNodePrismServicesStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::failoverPrismServicesStep");
-    vector<PrismServiceId> serviceIdsToFailover;
+    vector<WaveServiceId> serviceIdsToFailover;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
     vector<LocationId>     failedLocationIds       = pPrismFailoverAgentSequencerContext->getUnknownWaveNodeLocationIds ();
-    //PrismServiceId         serviceToBeIgnored      = pPrismFailoverAgentContext->getServiceToBeIgnored ();
+    //WaveServiceId         serviceToBeIgnored      = pPrismFailoverAgentContext->getServiceToBeIgnored ();
     UI32                   index                   = 0;
     bool                   isConfigurationChange   = pPrismFailoverAgentSequencerContext->getIsConfigurationChange ();
     bool                   isPrincipalChangedWithThisFailover = false;

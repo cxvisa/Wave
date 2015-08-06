@@ -108,16 +108,16 @@ class FrameworkTestabilityManagementInterfaceMessageLeakMessage : public Managem
                  FrameworkTestabilityManagementInterfaceMessageLeakMessage ();
         virtual ~FrameworkTestabilityManagementInterfaceMessageLeakMessage ();
 
-                                void      setMessageArguments (const vector<PrismServiceId>  &messageServiceIds, const vector<UI32> &messageOperationCodes, const vector<WaveMessageType> &messageTypes, const vector<string> &btStrings);
-                                void      getMessageArguments (vector<PrismServiceId>  &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings) const;
+                                void      setMessageArguments (const vector<WaveServiceId>  &messageServiceIds, const vector<UI32> &messageOperationCodes, const vector<WaveMessageType> &messageTypes, const vector<string> &btStrings);
+                                void      getMessageArguments (vector<WaveServiceId>  &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings) const;
 
-                                void      setPrismServiceId (const PrismServiceId prismServiceId);
-                      PrismServiceId      getPrismServiceId () const;
+                                void      setWaveServiceId (const WaveServiceId prismServiceId);
+                      WaveServiceId      getWaveServiceId () const;
     // now the data members
 
     private :
-                PrismServiceId          m_prismServiceId;
-                vector<PrismServiceId>  m_messageServiceIds;
+                WaveServiceId          m_prismServiceId;
+                vector<WaveServiceId>  m_messageServiceIds;
                 vector<UI32>            m_messageOperationCodes;
                 vector<string>          m_btStrings;
                 vector<UI32>            m_messageTypes;
@@ -137,12 +137,12 @@ class FrameworkTestabilityManagementInterfaceObjectLeakMessage : public Manageme
             
                 void     setMessageArguments (const vector<string> &managedObjectClassNames, const vector<string>  &managedObjectNames, const vector<bool> &queryResults, const vector<string> &btStrings);
                 void     getMessageArguments (vector<string> &managedObjectClassNames, vector<string>  &managedObjectNames, vector<bool> &queryResults, vector<string> &btStrings) const;
-                void     setPrismServiceId (PrismServiceId prismServiceId);
-      PrismServiceId     getPrismServiceId () const;
+                void     setWaveServiceId (WaveServiceId prismServiceId);
+      WaveServiceId     getWaveServiceId () const;
     // now the data members
 
     private :
-                PrismServiceId          m_prismServiceId;
+                WaveServiceId          m_prismServiceId;
                 vector<string>          m_managedObjectClassNames;
                 vector<string>          m_managedObjectNames;
                 vector<bool>            m_queryResults;

@@ -37,7 +37,7 @@ class WaveMessagingBrokerReceiverObjectManager : public WaveLocalObjectManagerFo
         virtual                                          ~WaveMessagingBrokerReceiverObjectManager ();
 
         static  WaveMessagingBrokerReceiverObjectManager *getInstance                              ();
-        static  PrismServiceId                            getPrismServiceId                        ();
+        static  WaveServiceId                            getWaveServiceId                        ();
         static  string                                    getServiceName                           ();
 
     // Now the data members

@@ -69,7 +69,7 @@ class AppInterfaceObjectManager : public WaveLocalObjectManager
     protected :
     public :
         virtual                           ~AppInterfaceObjectManager          ();
-                PrismServiceId             getPrismServiceId                  ();
+                WaveServiceId             getWaveServiceId                  ();
         static  AppInterfaceObjectManager *createInstance                     (string appInterfaceName);
 
                 int                        registerDuplicateCmdsHandler       (duplicateCmdsHandler_t  duplicateCmdHandler);

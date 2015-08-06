@@ -32,12 +32,12 @@ void DestroyClusterAsynchronousContext::setReasonForDestroyingCluster (const Fra
     m_reasonForDestroyingCluster = reasonForDestroyingCluster;
 }
 
-PrismServiceId DestroyClusterAsynchronousContext::getOriginalRequester () const
+WaveServiceId DestroyClusterAsynchronousContext::getOriginalRequester () const
 {
     return (m_originalRequester);
 }
 
-void DestroyClusterAsynchronousContext::setOriginalRequester (const PrismServiceId &originalRequester)
+void DestroyClusterAsynchronousContext::setOriginalRequester (const WaveServiceId &originalRequester)
 {
     m_originalRequester = originalRequester;
 }

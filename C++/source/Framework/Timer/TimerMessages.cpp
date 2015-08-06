@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 TimerObjectManagerAddTimerMessage::TimerObjectManagerAddTimerMessage ()
-  : PrismMessage (TimerObjectManager::getPrismServiceId (), TIMER_ADD_TIMER) ,
+  : PrismMessage (TimerObjectManager::getWaveServiceId (), TIMER_ADD_TIMER) ,
     m_timerId (0),
     m_pPrismTimerExpirationCallback (NULL),
     m_pPrismTimerExpirationContext (NULL)
@@ -30,7 +30,7 @@ TimerObjectManagerAddTimerMessage::~TimerObjectManagerAddTimerMessage ()
 
 TimerObjectManagerAddTimerMessage::TimerObjectManagerAddTimerMessage (timeval &startInterval, timeval &periodicInterval, timeval &startTime,
                         PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender)
-    : PrismMessage (TimerObjectManager::getPrismServiceId (), TIMER_ADD_TIMER)
+    : PrismMessage (TimerObjectManager::getWaveServiceId (), TIMER_ADD_TIMER)
 {
     m_startInterval.tv_sec          =   startInterval.tv_sec;
     m_startInterval.tv_usec         =   startInterval.tv_usec;
@@ -87,13 +87,13 @@ void TimerObjectManagerAddTimerMessage::setTimerId (TimerHandle timerId)
 }
 
 TimerObjectManagerDeleteTimerMessage::TimerObjectManagerDeleteTimerMessage ()
-    : PrismMessage (TimerObjectManager::getPrismServiceId (), TIMER_DELETE_TIMER),
+    : PrismMessage (TimerObjectManager::getWaveServiceId (), TIMER_DELETE_TIMER),
       m_timerId(0)
 {
 }
 
 TimerObjectManagerDeleteTimerMessage::TimerObjectManagerDeleteTimerMessage (TimerHandle timerId)
-    : PrismMessage (TimerObjectManager::getPrismServiceId (), TIMER_DELETE_TIMER), m_timerId (timerId)
+    : PrismMessage (TimerObjectManager::getWaveServiceId (), TIMER_DELETE_TIMER), m_timerId (timerId)
 {
 }
 
@@ -103,7 +103,7 @@ UI32 TimerObjectManagerDeleteTimerMessage::getTimerId ()
 }
 
 TimerObjectManagerDeleteAllTimersForServiceMessage::TimerObjectManagerDeleteAllTimersForServiceMessage ()
-    : PrismMessage (TimerObjectManager::getPrismServiceId (), TIMER_DELETE_ALL_TIMERS_FOR_SERVICE)
+    : PrismMessage (TimerObjectManager::getWaveServiceId (), TIMER_DELETE_ALL_TIMERS_FOR_SERVICE)
 {
 }
 

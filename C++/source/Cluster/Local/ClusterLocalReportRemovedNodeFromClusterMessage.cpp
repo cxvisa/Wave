@@ -24,7 +24,7 @@ namespace WaveNs
 /// None
 
 ClusterLocalReportRemovedNodeFromClusterMessage::ClusterLocalReportRemovedNodeFromClusterMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),
       m_thisNodePort  (0),
       m_thisNodeLocationId(0)
 {
@@ -44,7 +44,7 @@ ClusterLocalReportRemovedNodeFromClusterMessage::ClusterLocalReportRemovedNodeFr
 
 
 ClusterLocalReportRemovedNodeFromClusterMessage::ClusterLocalReportRemovedNodeFromClusterMessage (const string & thisNodeIpAddress,UI32 thisNodePort, LocationId thisNodeLocationId)
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),m_thisNodeIpAddress(thisNodeIpAddress), m_thisNodePort(thisNodePort), m_thisNodeLocationId(thisNodeLocationId)
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),m_thisNodeIpAddress(thisNodeIpAddress), m_thisNodePort(thisNodePort), m_thisNodeLocationId(thisNodeLocationId)
 
 {
 }

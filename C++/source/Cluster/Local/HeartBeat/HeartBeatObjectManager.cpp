@@ -55,7 +55,7 @@ HeartBeatObjectManager::~HeartBeatObjectManager ()
 {
 }
 
-PrismServiceId HeartBeatObjectManager::getPrismServiceId ()
+WaveServiceId HeartBeatObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

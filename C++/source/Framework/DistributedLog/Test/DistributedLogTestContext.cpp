@@ -64,12 +64,12 @@ void DistributedLogTestContext::setNextLogId (const UI64 &nextLogId)
     m_nextLogId = nextLogId;
 }
 
-PrismServiceId DistributedLogTestContext::getPrismServiceId () const
+WaveServiceId DistributedLogTestContext::getWaveServiceId () const
 {
     return (m_prismServiceId);
 }
 
-void DistributedLogTestContext::setPrismServiceId (const PrismServiceId &prismServiceId)
+void DistributedLogTestContext::setWaveServiceId (const WaveServiceId &prismServiceId)
 {
     m_prismServiceId = prismServiceId;
 }

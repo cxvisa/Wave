@@ -48,7 +48,7 @@ void WaveManagementServerInformation::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeString               (&m_ipAddress,                                  "ipAddress"));
     addSerializableAttribute (new AttributeUI32                 (&m_port,                                       "port"));
     addSerializableAttribute (new AttributeStringVector         (&m_serviceNames,                               "serviceNames"));
-    addSerializableAttribute (new AttributePrismServiceIdVector (&m_serviceIds,                                 "serviceIds"));
+    addSerializableAttribute (new AttributeWaveServiceIdVector (&m_serviceIds,                                 "serviceIds"));
     addSerializableAttribute (new AttributeUI32                 (&m_serverUniqueIdentifierFromServerPerspective,"serverUniqueIdentifierFromServerPerspective"));
     addSerializableAttribute (new AttributeStringVector         (&m_reservedFields,                             "reservedFields"));
     addSerializableAttribute (new AttributeString               (&m_messageVersion,                             "messageVersion"));

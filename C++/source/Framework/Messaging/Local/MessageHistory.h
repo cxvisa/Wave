@@ -32,7 +32,7 @@ class MessageHistory {
         WaveMessageType             m_type;
         WaveMessageSendType         m_sendType;
         LocationId                  m_destinationLocationID;
-        PrismServiceId              m_destinationServiceId;
+        WaveServiceId              m_destinationServiceId;
         ResourceId                  m_opcode;
         ResourceId                  m_completionStatus;
         time_t                      m_timeInSeconds;

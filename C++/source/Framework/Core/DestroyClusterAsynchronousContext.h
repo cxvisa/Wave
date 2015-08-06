@@ -24,8 +24,8 @@ class DestroyClusterAsynchronousContext : public PrismAsynchronousContext
                 FrameworkObjectManagerFailoverReason  getReasonForDestroyingCluster     () const;
                 void                                  setReasonForDestroyingCluster     (const FrameworkObjectManagerFailoverReason &reasonForDestroyingCluster = FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED);
 
-                void                                  setOriginalRequester              (const PrismServiceId &prismServiceId);
-                PrismServiceId                        getOriginalRequester              () const;
+                void                                  setOriginalRequester              (const WaveServiceId &prismServiceId);
+                WaveServiceId                        getOriginalRequester              () const;
 
                 void                                  setIsRebootRequired               (const bool &isRebootRequired);
                 bool                                  getIsRebootRequired               () const;
@@ -36,7 +36,7 @@ class DestroyClusterAsynchronousContext : public PrismAsynchronousContext
 
     private :
         FrameworkObjectManagerFailoverReason m_reasonForDestroyingCluster;
-        PrismServiceId                       m_originalRequester;
+        WaveServiceId                       m_originalRequester;
         bool                                 m_isRebootRequired;
         bool                                 m_isPreparingForAddNode;
     protected :

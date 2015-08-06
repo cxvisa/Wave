@@ -53,7 +53,7 @@ DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const Resour
 {
 }
 
-DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const string &username, const PrismServiceId &prismServiceId, const ObjectId &waveNodeObjectId)
+DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const string &username, const WaveServiceId &prismServiceId, const ObjectId &waveNodeObjectId)
     : ManagementInterfaceMessage (DistributedLogObjectManager::getServiceName (), DISTRIBUTED_LOG_ADD_LOG_ENTRY),
     m_logType               (logType),
     m_logDescriptionType    (logDescriptionType),
@@ -66,7 +66,7 @@ DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const Resour
 {
 }
 
-DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const PrismServiceId &prismServiceId, const ObjectId &waveNodeObjectId)
+DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const WaveServiceId &prismServiceId, const ObjectId &waveNodeObjectId)
     : ManagementInterfaceMessage (DistributedLogObjectManager::getServiceName (), DISTRIBUTED_LOG_ADD_LOG_ENTRY),
     m_logType               (logType),
     m_logDescriptionType    (logDescriptionType),
@@ -79,7 +79,7 @@ DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const Resour
 {
 }
 
-DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const PrismServiceId &prismServiceId, const ObjectId &waveNodeObjectId, const ObjectId &managedObjectId)
+DistributedLogAddLogEntryMessage::DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const WaveServiceId &prismServiceId, const ObjectId &waveNodeObjectId, const ObjectId &managedObjectId)
     : ManagementInterfaceMessage (DistributedLogObjectManager::getServiceName (), DISTRIBUTED_LOG_ADD_LOG_ENTRY),
     m_logType               (logType),
     m_logDescriptionType    (logDescriptionType),
@@ -104,7 +104,7 @@ void DistributedLogAddLogEntryMessage::setupAttributesForSerialization ()
      addSerializableAttribute (new AttributeResourceId      (&m_logDescriptionType, "logDescriptionType"));
      addSerializableAttribute (new AttributeString          (&m_description,        "description"));
      addSerializableAttribute (new AttributeString          (&m_username,           "username"));
-     addSerializableAttribute (new AttributePrismServiceId  (&m_prismServiceId,     "prismServiceId"));
+     addSerializableAttribute (new AttributeWaveServiceId  (&m_prismServiceId,     "prismServiceId"));
      addSerializableAttribute (new AttributeDateTime        (&m_dateTimeStamp,      "dateTimeStamp"));
      addSerializableAttribute (new AttributeObjectId        (&m_waveNodeObjectId,   "waveNodeObjectId"));
      addSerializableAttribute (new AttributeObjectId        (&m_managedObjectId,    "managedObjectId"));
@@ -150,12 +150,12 @@ void DistributedLogAddLogEntryMessage::setUsername (const string &username)
     m_username = username;
 }
 
-PrismServiceId DistributedLogAddLogEntryMessage::getPrismServiceId () const
+WaveServiceId DistributedLogAddLogEntryMessage::getWaveServiceId () const
 {
     return (m_prismServiceId);
 }
 
-void DistributedLogAddLogEntryMessage::setPrismServiceId (PrismServiceId prismServiceId)
+void DistributedLogAddLogEntryMessage::setWaveServiceId (WaveServiceId prismServiceId)
 {
     m_prismServiceId = prismServiceId;
 }

@@ -38,7 +38,7 @@ class ClusterTestObjectManager : public PrismTestObjectManager
     public :
         virtual                          ~ClusterTestObjectManager ();
         static  ClusterTestObjectManager *getInstance              ();
-        static  PrismServiceId            getPrismServiceId        ();
+        static  WaveServiceId            getWaveServiceId        ();
                 void                      testRequestHandler       (RegressionTestMessage *pMessage);
         static  void                      duplicateCmdTestHandler  (void *pContext, unsigned int nCommands, commandData_t commandList []);
         static  void                      duplicateCmdTestReply    (int status, void * context, int nNodes, remoteCmdResult_t nodeResults []);

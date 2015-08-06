@@ -26,7 +26,7 @@ class WaveManagementClientInformation : virtual public SerializableObject
     protected :
     public :
                                 WaveManagementClientInformation         ();
-                                WaveManagementClientInformation         (const string &waveClientName, const string &waveClientNameWithoutExtension, const string &ipAddress, const UI32 &port, const PrismServiceId &userInterfaceServiceId, const string &messageVersion);
+                                WaveManagementClientInformation         (const string &waveClientName, const string &waveClientNameWithoutExtension, const string &ipAddress, const UI32 &port, const WaveServiceId &userInterfaceServiceId, const string &messageVersion);
         virtual                ~WaveManagementClientInformation         ();
 
                 string          getWaveClientName                       () const;
@@ -41,8 +41,8 @@ class WaveManagementClientInformation : virtual public SerializableObject
                 UI32            getPort                                 () const;
                 void            setPort                                 (const UI32 &port);
 
-                PrismServiceId  getUserInterfaceServiceId               () const;
-                void            setUserInterfaceServiceId               (const PrismServiceId &userInterfaceServiceId);
+                WaveServiceId  getUserInterfaceServiceId               () const;
+                void            setUserInterfaceServiceId               (const WaveServiceId &userInterfaceServiceId);
 
                 string          getServerIpAddressFromClientPerspective () const;
                 void            setServerIpAddressFromClientPerspective (const string &serverIpAddressFromClientPerspective);
@@ -61,7 +61,7 @@ class WaveManagementClientInformation : virtual public SerializableObject
         string         m_waveClientNameWithoutExtension;
         string         m_ipAddress;
         UI32           m_port;
-        PrismServiceId m_userInterfaceServiceId;
+        WaveServiceId m_userInterfaceServiceId;
         string         m_serverIpAddressFromClientPerspective;
         UI32           m_serverUniqueIdentifierFromClientPerspective;
         vector<string> m_reservedFields;

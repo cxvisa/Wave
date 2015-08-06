@@ -17,7 +17,7 @@ class ManagementInterfaceMessageFactory
     private :
     protected :
     public :
-        static ManagementInterfaceMessage *constructManagementInterfaceMessage (PrismServiceId serviceId, UI32 operationId);
+        static ManagementInterfaceMessage *constructManagementInterfaceMessage (WaveServiceId serviceId, UI32 operationId);
 
     // NMow the data members
 

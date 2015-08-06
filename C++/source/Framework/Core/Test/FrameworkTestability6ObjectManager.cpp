@@ -94,7 +94,7 @@ FrameworkTestability6ObjectManager *FrameworkTestability6ObjectManager::getInsta
     return (pFrameworkTestability6ObjectManager);
 }
 
-PrismServiceId FrameworkTestability6ObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkTestability6ObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -4052,7 +4052,7 @@ void  FrameworkTestability6ObjectManager::pausePersistence()
 
     trace (TRACE_LEVEL_DEVEL, "FrameworkTestability6ObjectManager::pausePersistence : Starting ...");
 
-    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getPrismServiceId ());
+    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -4121,7 +4121,7 @@ void  FrameworkTestability6ObjectManager::resumePersistence()
 {
      trace (TRACE_LEVEL_DEVEL, "FrameworkTestability6ObjectManager::resumePersistence : Starting ...");
 
-    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -4177,7 +4177,7 @@ void FrameworkTestability6ObjectManager::resumeDatabase ()
 {
     trace (TRACE_LEVEL_DEVEL, "FrameworkTestability6ObjectManager::resumeDatabase : Starting ...");
 
-    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)

@@ -116,7 +116,7 @@ void MessageTracker::deleteFromMessageTracker(const PrismMessage* pPrismMessage)
 }
 
 // private, no-lock.
-void MessageTracker::getMessagesForAThread (const PrismThreadId &prismThreadId, vector<PrismServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
+void MessageTracker::getMessagesForAThread (const PrismThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
 {
     map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
     map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::const_iterator end1 = m_currentlyAllocatedMessagesByThread.end ();
@@ -154,7 +154,7 @@ void MessageTracker::getMessagesForAThread (const PrismThreadId &prismThreadId, 
     }
 }
 
-void MessageTracker::getMessages (const PrismServiceId &prismServiceId, vector<PrismServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
+void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
 {
     m_messageTrackerMutex.lock ();
 
@@ -172,7 +172,7 @@ void MessageTracker::getMessages (const PrismServiceId &prismServiceId, vector<P
 
     getMessagesForAThread (prismThreadId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
 
-    PrismServiceId serviceIdForReservedWaveLocalObjectManager = ReservedWaveLocalObjectManager::getPrismServiceId ();
+    WaveServiceId serviceIdForReservedWaveLocalObjectManager = ReservedWaveLocalObjectManager::getWaveServiceId ();
 
     if (prismServiceId == serviceIdForReservedWaveLocalObjectManager)
     {
@@ -193,16 +193,16 @@ void MessageTracker::getMessages (const PrismServiceId &prismServiceId, vector<P
 
         set<PrismThreadId> setOfPrismThreadIdsForAllServices;
 
-        vector<PrismServiceId> allPrismServiceIds;
+        vector<WaveServiceId> allWaveServiceIds;
 
-        PrismThread::getListOfServiceIds (allPrismServiceIds);
+        PrismThread::getListOfServiceIds (allWaveServiceIds);
 
-        vector<PrismServiceId>::const_iterator itr2 = allPrismServiceIds.begin ();
-        vector<PrismServiceId>::const_iterator end2 = allPrismServiceIds.end ();
+        vector<WaveServiceId>::const_iterator itr2 = allWaveServiceIds.begin ();
+        vector<WaveServiceId>::const_iterator end2 = allWaveServiceIds.end ();
 
         for (; end2 != itr2; itr2++)
         {
-            PrismServiceId prismServiceIdForAService = *itr2;
+            WaveServiceId prismServiceIdForAService = *itr2;
 
             PrismThread *pPrismThreadForAService = PrismThread::getPrismThreadForServiceId (prismServiceIdForAService);
 

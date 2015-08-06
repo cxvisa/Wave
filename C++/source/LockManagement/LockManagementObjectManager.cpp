@@ -50,7 +50,7 @@ LockManagementObjectManager *LockManagementObjectManager::getInstance ()
     return (pLockManagementObjectManager);
 }
 
-PrismServiceId LockManagementObjectManager::getPrismServiceId ()
+WaveServiceId LockManagementObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -237,7 +237,7 @@ ResourceId LockManagementObjectManager::createLockManagedObjectInDataBaseStep (L
     LockManagementObjectManagerAcquireLockMessage  *pLockManagementObjectManagerAcquireLockMessage = reinterpret_cast<LockManagementObjectManagerAcquireLockMessage *> (pLockManagementMessagingContext->getPPrismMessage ());
     string                                          serviceString = pLockManagementObjectManagerAcquireLockMessage->getServiceString ();
     LocationId                                      locationId = pLockManagementObjectManagerAcquireLockMessage->getSenderLocationId ();
-    PrismServiceId                                  serviceId = pLockManagementObjectManagerAcquireLockMessage->getSenderServiceCode ();
+    WaveServiceId                                  serviceId = pLockManagementObjectManagerAcquireLockMessage->getSenderServiceCode ();
 
     if (NULL == pLockManagementMessagingContext->getPLockManagedObject ())
     {

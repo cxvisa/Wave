@@ -9,12 +9,12 @@
 namespace WaveNs
 {
 
-WaveManagedObjectMessage::WaveManagedObjectMessage (PrismServiceId serviceCode, UI32 operationCode)
+WaveManagedObjectMessage::WaveManagedObjectMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode)
 {
 }
 
-WaveManagedObjectMessage::WaveManagedObjectMessage (PrismServiceId serviceCode, UI32 operationCode, const ObjectId &waveManagedObjectId)
+WaveManagedObjectMessage::WaveManagedObjectMessage (WaveServiceId serviceCode, UI32 operationCode, const ObjectId &waveManagedObjectId)
     : PrismMessage          (serviceCode, operationCode),
       m_waveManagedObjectId (waveManagedObjectId)
 {

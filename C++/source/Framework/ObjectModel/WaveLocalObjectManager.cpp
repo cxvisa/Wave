@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-static map<PrismServiceId, PrismServiceId> s_localPrismServices;
+static map<WaveServiceId, WaveServiceId> s_localPrismServices;
 
 WaveLocalObjectManager::WaveLocalObjectManager (const string &objectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : WaveObjectManager (objectManagerName, stackSize, pCpuAffinityVector)
@@ -27,10 +27,10 @@ bool WaveLocalObjectManager::isALocalPrismService ()
     return (true);
 }
 
-bool WaveLocalObjectManager::isALocalService (const PrismServiceId &prismServiceId)
+bool WaveLocalObjectManager::isALocalService (const WaveServiceId &prismServiceId)
 {
-    map<PrismServiceId, PrismServiceId>::iterator element = s_localPrismServices.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator end     = s_localPrismServices.end ();
+    map<WaveServiceId, WaveServiceId>::iterator element = s_localPrismServices.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator end     = s_localPrismServices.end ();
 
     if (element == end)
     {

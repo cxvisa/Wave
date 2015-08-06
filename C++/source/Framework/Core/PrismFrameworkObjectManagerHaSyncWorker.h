@@ -42,7 +42,7 @@ class PrismFrameworkObjectManagerHaSyncWorker : public WaveWorker
                 void haSyncGetValidationDetailsStep   (StartHaSyncDumpContext *pPrismLinearSequencerContext);
                 void haSyncSendDatabaseDumpStep       (StartHaSyncDumpContext *pPrismLinearSequencerContext);
                 void haSyncSendDatabaseDumpCallback   (FrameworkStatus frameworkStatus, PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage, void *pContext);
-                bool isServiceToBeExcludedInHaSyncCommunications (const PrismServiceId &prismServiceId);
+                bool isServiceToBeExcludedInHaSyncCommunications (const WaveServiceId &prismServiceId);
                 void createDatabaseBackupBuffer       (char * &pDatabaseBackupBuffer, SI32 &sizeOfBackupFile);
                 void resumeDatabase                   ();
                 void haSyncGetValidationResultsStep   (StartHaSyncDumpContext *pPrismLinearSequencerContext);

@@ -26,7 +26,7 @@ class FileReplayEndAgent : protected WaveWorker
                 ResourceId  getListOfEnabledServicesStep        (FileReplayEndAgentContext *pFileReplayEndAgentContext);
                 ResourceId  sendFileReplayEndStep               (FileReplayEndAgentContext *pFileReplayEndAgentContext);
 
-                bool        requiresFileReplayEndNotification   (const PrismServiceId &prismServiceId);
+                bool        requiresFileReplayEndNotification   (const WaveServiceId &prismServiceId);
 
     // Now the data members
 

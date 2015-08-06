@@ -46,7 +46,7 @@ ResourceId PrismExternalStateSynchronizationAgent::execute ()
 
 ResourceId PrismExternalStateSynchronizationAgent::getListOfEnabledServicesStep (PrismExternalStateSynchronizationAgentContext *pPrismExternalStateSynchronizationAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pPrismExternalStateSynchronizationAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pPrismExternalStateSynchronizationAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -55,7 +55,7 @@ ResourceId PrismExternalStateSynchronizationAgent::getListOfEnabledServicesStep 
 
 ResourceId PrismExternalStateSynchronizationAgent::externalStateSynchronizationServicesStep (PrismExternalStateSynchronizationAgentContext *pPrismExternalStateSynchronizationAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToExternalStateSynchronization = pPrismExternalStateSynchronizationAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToExternalStateSynchronization = pPrismExternalStateSynchronizationAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -87,9 +87,9 @@ ResourceId PrismExternalStateSynchronizationAgent::externalStateSynchronizationS
     return (WAVE_MESSAGE_SUCCESS);
 }
                 
-bool PrismExternalStateSynchronizationAgent::requiresExternalStateSynchronization (const PrismServiceId &prismServiceId)
+bool PrismExternalStateSynchronizationAgent::requiresExternalStateSynchronization (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) ||
         (false == PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (prismServiceId)))
     {

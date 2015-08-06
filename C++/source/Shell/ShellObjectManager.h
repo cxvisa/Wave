@@ -35,7 +35,7 @@ class ShellObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
     public :
         virtual                    ~ShellObjectManager ();
         static  ShellObjectManager *getInstance        ();
-        static  PrismServiceId      getPrismServiceId  ();
+        static  WaveServiceId      getWaveServiceId  ();
 
     // Now the data members
 

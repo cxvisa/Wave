@@ -55,7 +55,7 @@ string WaveSourceGeneratorForObjectManager::generateHClassMemberFunctionsPublic 
                                    "        virtual ~" + generateClassName () + " ();\n"
                                    "\n"
                                    "        static " + generateClassName () + " *getInstance ();\n"
-                                   "        static PrismServiceId getPrismServiceId ();\n";
+                                   "        static WaveServiceId getWaveServiceId ();\n";
 
     return (memberFunctionsPublic);
 }
@@ -85,7 +85,7 @@ string WaveSourceGeneratorForObjectManager::generateCppMemberFunctions () const
                        "}\n"
                        "\n";
 
-    memberFunctions += "PrismServiceId " + generateClassName () + ":: getPrismServiceId ()\n"
+    memberFunctions += "WaveServiceId " + generateClassName () + ":: getWaveServiceId ()\n"
                        "{\n"
                        "    return ((getInstance ())->getServiceId ());\n"
                        "}\n"

@@ -40,7 +40,7 @@ WaveMessagingBrokerClientTestObjectManager *WaveMessagingBrokerClientTestObjectM
     return (pWaveMessagingBrokerClientTestObjectManager);
 }
 
-PrismServiceId WaveMessagingBrokerClientTestObjectManager::getPrismServiceId ()
+WaveServiceId WaveMessagingBrokerClientTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

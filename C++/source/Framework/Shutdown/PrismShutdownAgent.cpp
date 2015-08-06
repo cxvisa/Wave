@@ -52,7 +52,7 @@ ResourceId PrismShutdownAgent::execute ()
 
 ResourceId PrismShutdownAgent::getListOfEnabledServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pPrismShutdownAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -61,7 +61,7 @@ ResourceId PrismShutdownAgent::getListOfEnabledServicesStep (PrismShutdownAgentC
 
 ResourceId PrismShutdownAgent::shutdownServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToShutdown = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToShutdown = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -98,7 +98,7 @@ ResourceId PrismShutdownAgent::shutdownServicesStep (PrismShutdownAgentContext *
 
 ResourceId PrismShutdownAgent::uninstallServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToUninstall = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToUninstall = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                     = 0;
     UI32                    numberOfServices      = 0;
 
@@ -135,7 +135,7 @@ ResourceId PrismShutdownAgent::uninstallServicesStep (PrismShutdownAgentContext 
 
 ResourceId PrismShutdownAgent::disableServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToDisable = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToDisable = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                   = 0;
     UI32                    numberOfServices    = 0;
 
@@ -174,7 +174,7 @@ ResourceId PrismShutdownAgent::disableServicesStep (PrismShutdownAgentContext *p
 
 ResourceId PrismShutdownAgent::uninitializeServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToUninitialize = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToUninitialize = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                     = 0;
     UI32                    numberOfServices      = 0;
 
@@ -211,7 +211,7 @@ ResourceId PrismShutdownAgent::uninitializeServicesStep (PrismShutdownAgentConte
 
 ResourceId PrismShutdownAgent::shutdownPostPhaseServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToShutdown = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToShutdown = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -248,7 +248,7 @@ ResourceId PrismShutdownAgent::shutdownPostPhaseServicesStep (PrismShutdownAgent
 
 ResourceId PrismShutdownAgent::uninstallPostPhaseServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToUninstall = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToUninstall = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                     = 0;
     UI32                    numberOfServices      = 0;
 
@@ -285,7 +285,7 @@ ResourceId PrismShutdownAgent::uninstallPostPhaseServicesStep (PrismShutdownAgen
 
 ResourceId PrismShutdownAgent::disablePostPhaseServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToDisable = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToDisable = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                   = 0;
     UI32                    numberOfServices    = 0;
 
@@ -322,7 +322,7 @@ ResourceId PrismShutdownAgent::disablePostPhaseServicesStep (PrismShutdownAgentC
 
 ResourceId PrismShutdownAgent::uninitializePostPhaseServicesStep (PrismShutdownAgentContext *pPrismShutdownAgentContext)
 {
-    vector<PrismServiceId> &serviceIdsToUninitialize = pPrismShutdownAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &serviceIdsToUninitialize = pPrismShutdownAgentContext->getEnabledServices ();
     UI32                    i                     = 0;
     UI32                    numberOfServices      = 0;
 
@@ -357,9 +357,9 @@ ResourceId PrismShutdownAgent::uninitializePostPhaseServicesStep (PrismShutdownA
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool PrismShutdownAgent::requiresShutdown (const PrismServiceId &prismServiceId)
+bool PrismShutdownAgent::requiresShutdown (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (false);

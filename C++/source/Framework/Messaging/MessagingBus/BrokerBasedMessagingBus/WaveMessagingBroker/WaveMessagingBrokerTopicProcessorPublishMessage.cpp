@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-WaveMessagingBrokerTopicProcessorPublishMessage::WaveMessagingBrokerTopicProcessorPublishMessage (const PrismServiceId &prismServiceId)
+WaveMessagingBrokerTopicProcessorPublishMessage::WaveMessagingBrokerTopicProcessorPublishMessage (const WaveServiceId &prismServiceId)
     : PrismMessage                     (prismServiceId, WAVE_MESSAGING_BROKER_TOPIC_PROCESSOR_PUBLISH),
       m_pWaveBrokerBasedMessagePayload (NULL)
 {

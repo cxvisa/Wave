@@ -31,7 +31,7 @@ class InterLocationMessageReceiverObjectManager : public WaveLocalObjectManagerF
     public :
         virtual                                          ~InterLocationMessageReceiverObjectManager ();
         static InterLocationMessageReceiverObjectManager *getInstance                               ();
-        static PrismServiceId                             getPrismServiceId                         ();
+        static WaveServiceId                             getWaveServiceId                         ();
         static bool                                       isACurrentlyConnectedLocation             (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort);
 
         static void                                       debugPrint                                (UI32 argc, vector<string> argv);

@@ -15,18 +15,18 @@ namespace WaveNs
 {
 
 CliBlockServiceIndependentMessage::CliBlockServiceIndependentMessage (const CliBlockMessage &cliBlockMessage)
-    : WaveServiceIndependentMessage (ClusterLocalObjectManager::getPrismServiceId (), CLI_BLOCK_SERVICE_INDEPENDENT)
+    : WaveServiceIndependentMessage (ClusterLocalObjectManager::getWaveServiceId (), CLI_BLOCK_SERVICE_INDEPENDENT)
 {
 
     m_operation         = cliBlockMessage.getOperation            ();
     m_reason            = cliBlockMessage.getReason               ();
     m_originator        = cliBlockMessage.getOriginator           ();
-    m_prismServiceId    = cliBlockMessage.getPrismServiceId       ();
+    m_prismServiceId    = cliBlockMessage.getWaveServiceId       ();
 
 }
 
 CliBlockServiceIndependentMessage::CliBlockServiceIndependentMessage ()
-    : WaveServiceIndependentMessage (ClusterLocalObjectManager::getPrismServiceId (), CLI_BLOCK_SERVICE_INDEPENDENT)
+    : WaveServiceIndependentMessage (ClusterLocalObjectManager::getWaveServiceId (), CLI_BLOCK_SERVICE_INDEPENDENT)
 {
     m_operation      = true;
     m_reason         = WAVE_FRAMEWORK_STATE_UNKNOWN_STATE;
@@ -65,7 +65,7 @@ const LocationId CliBlockServiceIndependentMessage::getOriginator () const
     return (m_originator);
 }
 
-const PrismServiceId CliBlockServiceIndependentMessage::getPrismServiceId () const
+const WaveServiceId CliBlockServiceIndependentMessage::getWaveServiceId () const
 {
     return (m_prismServiceId);
 }

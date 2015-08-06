@@ -11,29 +11,29 @@
 namespace WaveNs
 {
 
-map<string, PrismServiceId> WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToPrismServiceIdMap;
-PrismMutex                  WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToPrismServiceIdMapMutex;
+map<string, WaveServiceId> WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToWaveServiceIdMap;
+PrismMutex                  WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToWaveServiceIdMapMutex;
 
 WaveMessagingBrokerTopicProcessorObjectManager::WaveMessagingBrokerTopicProcessorObjectManager (const string &topicName)
     : WaveLocalObjectManager                            ((getServiceNamePrefix ()) + topicName),
       m_topicName                                       (topicName),
       m_pWaveMessagingBrokerTopicProcessorPublishWorker (NULL)
 {
-    m_topicNameToPrismServiceIdMapMutex.lock ();
+    m_topicNameToWaveServiceIdMapMutex.lock ();
 
-    map<string, PrismServiceId>::const_iterator element    = m_topicNameToPrismServiceIdMap.find (topicName);
-    map<string, PrismServiceId>::const_iterator endElement = m_topicNameToPrismServiceIdMap.end  ();
+    map<string, WaveServiceId>::const_iterator element    = m_topicNameToWaveServiceIdMap.find (topicName);
+    map<string, WaveServiceId>::const_iterator endElement = m_topicNameToWaveServiceIdMap.end  ();
 
     if (endElement == element)
     {
-        m_topicNameToPrismServiceIdMap[topicName] = getServiceId ();
+        m_topicNameToWaveServiceIdMap[topicName] = getServiceId ();
     }
     else
     {
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    m_topicNameToPrismServiceIdMapMutex.unlock ();
+    m_topicNameToWaveServiceIdMapMutex.unlock ();
 
     m_pWaveMessagingBrokerTopicProcessorPublishWorker = new WaveMessagingBrokerTopicProcessorPublishWorker (this);
 
@@ -42,21 +42,21 @@ WaveMessagingBrokerTopicProcessorObjectManager::WaveMessagingBrokerTopicProcesso
 
 WaveMessagingBrokerTopicProcessorObjectManager::~WaveMessagingBrokerTopicProcessorObjectManager ()
 {
-    m_topicNameToPrismServiceIdMapMutex.lock ();
+    m_topicNameToWaveServiceIdMapMutex.lock ();
 
-    map<string, PrismServiceId>::iterator element    = m_topicNameToPrismServiceIdMap.find (m_topicName);
-    map<string, PrismServiceId>::iterator endElement = m_topicNameToPrismServiceIdMap.end  ();
+    map<string, WaveServiceId>::iterator element    = m_topicNameToWaveServiceIdMap.find (m_topicName);
+    map<string, WaveServiceId>::iterator endElement = m_topicNameToWaveServiceIdMap.end  ();
 
     if (endElement != element)
     {
-        m_topicNameToPrismServiceIdMap.erase (element);
+        m_topicNameToWaveServiceIdMap.erase (element);
     }
     else
     {
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    m_topicNameToPrismServiceIdMapMutex.unlock ();
+    m_topicNameToWaveServiceIdMapMutex.unlock ();
 }
 
 WaveMessagingBrokerTopicProcessorObjectManager *WaveMessagingBrokerTopicProcessorObjectManager::createInstance (const string &topicName)
@@ -78,21 +78,21 @@ string WaveMessagingBrokerTopicProcessorObjectManager::getTopicName () const
     return (m_topicName);
 }
 
-PrismServiceId WaveMessagingBrokerTopicProcessorObjectManager::getPrismServiceIdByTopicName (const string &topicName)
+WaveServiceId WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (const string &topicName)
 {
-    PrismServiceId prismServiceId = 0;
+    WaveServiceId prismServiceId = 0;
 
-    m_topicNameToPrismServiceIdMapMutex.lock ();
+    m_topicNameToWaveServiceIdMapMutex.lock ();
 
-    map<string, PrismServiceId>::const_iterator element    = m_topicNameToPrismServiceIdMap.find (topicName);
-    map<string, PrismServiceId>::const_iterator endElement = m_topicNameToPrismServiceIdMap.end  ();
+    map<string, WaveServiceId>::const_iterator element    = m_topicNameToWaveServiceIdMap.find (topicName);
+    map<string, WaveServiceId>::const_iterator endElement = m_topicNameToWaveServiceIdMap.end  ();
 
     if (endElement != element)
     {
         prismServiceId = element->second;
     }
 
-    m_topicNameToPrismServiceIdMapMutex.unlock ();
+    m_topicNameToWaveServiceIdMapMutex.unlock ();
 
     return (prismServiceId);
 }

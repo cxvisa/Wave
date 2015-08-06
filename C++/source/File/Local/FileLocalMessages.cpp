@@ -13,14 +13,14 @@ namespace WaveNs
 {
 
 PushFileToHaPeerMessage::PushFileToHaPeerMessage ()
-    : PrismMessage          (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILETOHAPEER),
+    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILETOHAPEER),
       m_serviceVersion      (sFILESERVICEVERSION),
       m_fileSize            (0)
 {
 }
 
 PushFileToHaPeerMessage::PushFileToHaPeerMessage (const UI32 &serviceVersion, const string &transferHandle, const string &sourceFileName, const string &destinationFileName, const UI32 &fileSize)
-    : PrismMessage          (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILETOHAPEER),
+    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILETOHAPEER),
       m_serviceVersion      (serviceVersion),
       m_sourceFileName      (sourceFileName),
       m_destinationFileName (destinationFileName),
@@ -95,14 +95,14 @@ string PushFileToHaPeerMessage::getTransferHandle () const
 }
 
 FileDeleteRequestMessage::FileDeleteRequestMessage ()
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCREQUESTDELETEFILE),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
       m_destinationFileName     (""),
       m_fileTransferFlag        (0)  
 {
 }
 
 FileDeleteRequestMessage::FileDeleteRequestMessage (const string &DestinationFileName, vector<UI32> &DestinationLocationIdList)
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCREQUESTDELETEFILE),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
       m_destinationFileName      (DestinationFileName),
       m_vecDestinationLocationId (DestinationLocationIdList),
       m_vecLocationToReceiveNextMessage (DestinationLocationIdList),
@@ -111,7 +111,7 @@ FileDeleteRequestMessage::FileDeleteRequestMessage (const string &DestinationFil
 }
 
 FileDeleteRequestMessage::FileDeleteRequestMessage (const string &DestinationFileName, vector<UI32> &DestinationLocationIdList, const UI32 &fileTransferFlag)
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCREQUESTDELETEFILE),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
       m_destinationFileName      (DestinationFileName),
       m_vecDestinationLocationId (DestinationLocationIdList),
       m_vecLocationToReceiveNextMessage (DestinationLocationIdList),
@@ -201,21 +201,21 @@ void FileDeleteRequestMessage::setResponseCodeList(vector<ResourceId>  &response
 }
 
 FileDeleteFileMessage::FileDeleteFileMessage ()
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCDELETEFILE ),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE ),
       m_destinationFileName     (""),
       m_fileTransferFlag        (0)    
 {
 }
 
 FileDeleteFileMessage::FileDeleteFileMessage (const string &DestinationFileName)
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCDELETEFILE),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE),
       m_destinationFileName     (DestinationFileName),
       m_fileTransferFlag        (0)
 {
 }
 
 FileDeleteFileMessage::FileDeleteFileMessage (const string &DestinationFileName, const UI32 &fileTransferFlag) 
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCDELETEFILE),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE),
       m_destinationFileName     (DestinationFileName),
       m_fileTransferFlag        (fileTransferFlag)
 {
@@ -253,20 +253,20 @@ UI32 FileDeleteFileMessage::getFileTransferFlag() const
 }
 
 FileDeleteFileToHaPeerMessage::FileDeleteFileToHaPeerMessage ()
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCDELETEFILETOHAPEER ),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
       m_destinationFileName     (""),
       m_fileTransferFlag        (0)  
 {
 }
 
 FileDeleteFileToHaPeerMessage::FileDeleteFileToHaPeerMessage (const string &DestinationFileName)
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCDELETEFILETOHAPEER ),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
       m_destinationFileName      (DestinationFileName)
 {
 }
 
 FileDeleteFileToHaPeerMessage::FileDeleteFileToHaPeerMessage (const string &DestinationFileName, const UI32 &fileTransferFlag)
-    : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCDELETEFILETOHAPEER ),
+    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
       m_destinationFileName     (DestinationFileName),
       m_fileTransferFlag        (fileTransferFlag)
 {

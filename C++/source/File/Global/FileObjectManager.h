@@ -41,7 +41,7 @@ namespace WaveNs
             virtual                         ~FileObjectManager             ();
             static FileObjectManager        *getInstance                   ();
             static string                    getClassName                  ();
-            static PrismServiceId            getPrismServiceId             ();
+            static WaveServiceId            getWaveServiceId             ();
 
         // Now the data members
         private:

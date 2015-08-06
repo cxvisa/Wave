@@ -38,7 +38,7 @@ TimerObjectManager::~TimerObjectManager ()
     }
 }
 
-PrismServiceId TimerObjectManager::getPrismServiceId ()
+WaveServiceId TimerObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

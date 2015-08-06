@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
     FilePushFileFragmentMessage::FilePushFileFragmentMessage ()
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILEFRAGMENT),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILEFRAGMENT),
         m_sourceLocationId    (0),
         m_fileFragmentIndex   (0),
         m_fragmentSize        (0),
@@ -21,7 +21,7 @@ namespace WaveNs
     }
 
     FilePushFileFragmentMessage::FilePushFileFragmentMessage (const string &TransferHandle,const LocationId &sourceLocationId, const UI32 &FileFragmentIndex,const UI32 &FragmentSize, bool LastFragment)
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILEFRAGMENT),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILEFRAGMENT),
         m_transferHandle      (TransferHandle),
         m_sourceLocationId    (sourceLocationId),
         m_fileFragmentIndex   (FileFragmentIndex),

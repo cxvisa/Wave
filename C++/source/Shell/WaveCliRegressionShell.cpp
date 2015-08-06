@@ -99,7 +99,7 @@ ResourceId WaveCliRegressionShell::regressionPrepare2 (const vector<string> &arg
     UI32                            numberOfArguments   = arguments.size ();
     vector<RegressionTestEntry>     testServiceEntries;
     ResourceId                      status;
-    PrismServiceId                  serviceId           = 0;
+    WaveServiceId                  serviceId           = 0;
     UI32                            serviceIndex        = 0;
     WaveClientSynchronousConnection connection          = getConnection ();
     vector<string>                  inputStrings        = arguments;
@@ -170,7 +170,7 @@ ResourceId WaveCliRegressionShell::regressionRunForAService (const vector<string
     UI32                            numberOfArguments   = arguments.size ();
     vector<RegressionTestEntry>     testServiceEntries;
     ResourceId                      status;
-    PrismServiceId                  serviceId           = 0;
+    WaveServiceId                  serviceId           = 0;
     UI32                            serviceIndex        = 0;
     UI32                            numberOfIterations  = 1;
     WaveClientSynchronousConnection connection          = getConnection ();

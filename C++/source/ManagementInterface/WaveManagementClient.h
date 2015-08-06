@@ -24,7 +24,7 @@ class WaveManagementClient
     private :
     protected :
     public :
-                        WaveManagementClient      (const string &name, const string &ipAddress, const SI32 &port, const PrismServiceId &userInterfaceServiceId);
+                        WaveManagementClient      (const string &name, const string &ipAddress, const SI32 &port, const WaveServiceId &userInterfaceServiceId);
                        ~WaveManagementClient      ();
 
         ResourceId      connect                   (const string &serverIpAddressFromClientPerspective, const UI32 &numberOfRetries = 0, const UI32 &maximumNumberOfSecondsToTryFor = 0, const UI32 &serverUniqueIdentifierFromServerPerspective = 0);
@@ -34,7 +34,7 @@ class WaveManagementClient
         string          getName                   () const;
         string          getIpAddress              () const;
         SI32            getPort                   () const;
-        PrismServiceId  getUserInterfaceServiceId () const;
+        WaveServiceId  getUserInterfaceServiceId () const;
 
         bool            operator <<               (ManagementInterfaceMessage *pManagementInterfaceMessage);
 
@@ -47,7 +47,7 @@ class WaveManagementClient
         string                 m_name;
         string                 m_ipAddress;
         SI32                   m_port;
-        PrismServiceId         m_userInterfaceServiceId;
+        WaveServiceId         m_userInterfaceServiceId;
         ClientStreamingSocket *m_pClientStreamingSocket;
 
     protected :

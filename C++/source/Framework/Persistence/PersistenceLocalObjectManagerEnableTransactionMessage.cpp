@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerEnableTransactionMessage::PersistenceLocalObjectManagerEnableTransactionMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION)
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION)
 {
 }
 

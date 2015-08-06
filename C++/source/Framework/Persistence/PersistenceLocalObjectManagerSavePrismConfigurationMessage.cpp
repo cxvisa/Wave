@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerSavePrismConfigurationMessage::PersistenceLocalObjectManagerSavePrismConfigurationMessage (const bool &isStartupValid)
-    : PrismMessage      (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION),
+    : PrismMessage      (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION),
       m_isStartupValid (isStartupValid)
 {
 }
 
 PersistenceLocalObjectManagerSavePrismConfigurationMessage::PersistenceLocalObjectManagerSavePrismConfigurationMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION)
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION)
 {
     m_isStartupValid = false;
 }

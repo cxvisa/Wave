@@ -18,7 +18,7 @@ PrismZeroizeAgentContext::~PrismZeroizeAgentContext ()
 {
 }
 
-vector<PrismServiceId> &PrismZeroizeAgentContext::getZeroizableServices ()
+vector<WaveServiceId> &PrismZeroizeAgentContext::getZeroizableServices ()
 {
     return (m_zeroizableServices);
 }

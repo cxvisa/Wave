@@ -31,7 +31,7 @@ class PersistenceTestObjectManager : PrismTestObjectManager
                                             ~PersistenceTestObjectManager ();
 
         static PersistenceTestObjectManager *getInstance                  ();
-        static PrismServiceId                getPrismServiceId            ();
+        static WaveServiceId                getWaveServiceId            ();
 
     // Now the data members
 

@@ -23,7 +23,7 @@ class PrismNativeTest1Service : public WaveObjectManager
                                        ~PrismNativeTest1Service                ();
 
         static PrismNativeTest1Service *getInstance                            ();
-        static PrismServiceId           getPrismServiceId                      ();
+        static WaveServiceId           getWaveServiceId                      ();
 
                void                     prismNativeTest1ServiceMessage1Handler (PrismNativeTest1ServiceMessage1 *pMsg);
 

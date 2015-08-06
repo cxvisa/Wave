@@ -18,7 +18,7 @@ MultiPartitionGlobalCleanupAgentContext::~MultiPartitionGlobalCleanupAgentContex
 {
 }
 
-vector<PrismServiceId> &MultiPartitionGlobalCleanupAgentContext::getEnabledServices ()
+vector<WaveServiceId> &MultiPartitionGlobalCleanupAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

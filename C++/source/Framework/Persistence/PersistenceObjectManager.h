@@ -94,7 +94,7 @@ class PersistenceObjectManager : public WaveObjectManager
     public :
         virtual                            ~PersistenceObjectManager                                                ();
         static  PersistenceObjectManager   *getInstance                                                             ();
-        static  PrismServiceId              getPrismServiceId                                                       ();
+        static  WaveServiceId              getWaveServiceId                                                       ();
 
                 void                        initializeConfigurationManagedObjectBeforeBootCompleteMessageHandler    (PersistenceObjectManagerInitializeBeforeBootCompleteMessage *pPersistenceObjectManagerInitializeBeforeBootCompleteMessage);
                 void                        updateInstanceIdMessageHandler                                          (PersistenceObjectManagerUpdateInstanceIdMesssage *pPersistenceObjectManagerUpdateInstanceIdMesssage);

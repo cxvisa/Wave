@@ -65,7 +65,7 @@ class AttributeUI32 : public Attribute
     public :
 };
 
-typedef AttributeUI32       AttributePrismServiceId;
+typedef AttributeUI32       AttributeWaveServiceId;
 typedef AttributeUI32       AttributeSerializableObjectType;
 typedef AttributeUI32       AttributeLocationId;
 typedef AttributeUI32       AttributeTraceClientId;
@@ -116,7 +116,7 @@ class AttributeUI32Vector : public Attribute, public AttributeVector
     public :
 };
 
-typedef AttributeUI32Vector       AttributePrismServiceIdVector;
+typedef AttributeUI32Vector       AttributeWaveServiceIdVector;
 typedef AttributeUI32Vector       AttributeSerializableObjectTypeVector;
 typedef AttributeUI32Vector       AttributeLocationIdVector;
 typedef AttributeUI32Vector       AttributeTraceClientIdVector;

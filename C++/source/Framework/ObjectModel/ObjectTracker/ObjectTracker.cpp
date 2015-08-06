@@ -128,7 +128,7 @@ void ObjectTracker::deleteFromObjectTracker(const WaveManagedObject* pWaveManage
     m_objectTrackerMutex.unlock ();
 }
 
-void ObjectTracker::getObjects (const PrismServiceId &prismServiceId, vector<string> &objectClassNames, vector<string> &objectNames, vector<bool> &queryResults, vector<string> &btStrings)
+void ObjectTracker::getObjects (const WaveServiceId &prismServiceId, vector<string> &objectClassNames, vector<string> &objectNames, vector<bool> &queryResults, vector<string> &btStrings)
 {
     m_objectTrackerMutex.lock ();
 

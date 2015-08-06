@@ -150,7 +150,7 @@ static const UI32                           s_clusterPhase2TimeoutInMilliseconds
 static const UI32                           s_clusterPhase3TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
 
 PrismMutex                                  PrismFrameworkObjectManager::m_externalStateSynchronizationRequiredListLock;
-vector<PrismServiceId>                      PrismFrameworkObjectManager::m_externalStateSynchronizationRequiredList;
+vector<WaveServiceId>                      PrismFrameworkObjectManager::m_externalStateSynchronizationRequiredList;
 
 string                                      PrismFrameworkObjectManager::m_ipAddressForThisLocation;
 PrismMutex                                  PrismFrameworkObjectManager::m_ipAddressForThisLocationMutex;
@@ -319,7 +319,7 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
 
     // We know the service id for the Prism framework object manager must be 1.  And it must not be anything else.  So we use the value 1 in the next statement.
 
-    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = new PrismInitializeObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getPrismServiceId () - it iwill invariably fail since we are inside the getInstance method
+    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = new PrismInitializeObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                                         // We always say it is the first time boot, but, this reason is not to be looked into in the initialize for this OM.
 
     WaveMessageStatus status = sendOneWay (pPrismInitializeObjectManagerMessage);
@@ -330,7 +330,7 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
         exit (-2);
     }
 
-    PrismEnableObjectManagerMessage *pPrismEnableObjectManagerMessage = new PrismEnableObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getPrismServiceId () - it iwill invariably fail since we are inside the getInstance method
+    PrismEnableObjectManagerMessage *pPrismEnableObjectManagerMessage = new PrismEnableObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                             // We always say it is the first time boot, but, this reason is not to be looked into in the enable for this OM.
 
     status = sendOneWay (pPrismEnableObjectManagerMessage);
@@ -341,7 +341,7 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
         exit (-3);
     }
 
-    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = new PrismInstallObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getPrismServiceId () - it iwill invariably fail since we are inside the getInstance method
+    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = new PrismInstallObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                                // We always say it is the first time boot, but, this reason is not to be looked into in the install for this OM.
 
     status = sendOneWay (pPrismInstallObjectManagerMessage);
@@ -352,7 +352,7 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
         exit (-4);
     }
 
-    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = new PrismBootObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getPrismServiceId () - it iwill invariably fail since we are inside the getInstance method
+    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = new PrismBootObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use PrismFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                       // We always say it is the first time boot, but, this reason is not to be looked into in the boot for this OM.
 
     status = sendOneWay (pPrismBootObjectManagerMessage);
@@ -630,7 +630,7 @@ PrismMessage *PrismFrameworkObjectManager::createMessageInstance (const UI32 &op
     return (pPrismMessage);
 }
 
-PrismServiceId PrismFrameworkObjectManager::getPrismServiceId ()
+WaveServiceId PrismFrameworkObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -1301,17 +1301,17 @@ void PrismFrameworkObjectManager::createClusterWithNodesCollectValidationDataSte
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep : Starting ...");
 
-    vector<PrismServiceId>  prismServiceIds;
-    UI32                    numberOfPrismServiceIds;
+    vector<WaveServiceId>  prismServiceIds;
+    UI32                    numberOfWaveServiceIds;
     UI32                    i;
     LocationId              thisLocationId               = FrameworkToolKit::getThisLocationId ();
     ResourceId              status                       = WAVE_MESSAGE_SUCCESS;
-    vector<PrismServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getPrismServiceIdsToCommunicate ();
+    vector<WaveServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getWaveServiceIdsToCommunicate ();
 
     PrismThread::getListOfServiceIds (prismServiceIds);
-    numberOfPrismServiceIds = prismServiceIds.size ();
+    numberOfWaveServiceIds = prismServiceIds.size ();
 
-    for (i = 0; i < numberOfPrismServiceIds; i++)
+    for (i = 0; i < numberOfWaveServiceIds; i++)
     {
         trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep : Collecting Validation Information from Service : ") + prismServiceIds[i]);
 
@@ -1588,19 +1588,19 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
             // Add all the validation buffers to the message before sending out
 
-            vector<PrismServiceId> &prismServiceIds                = pCreateClusterWithNodesContext->getPrismServiceIdsVector ();
+            vector<WaveServiceId> &prismServiceIds                = pCreateClusterWithNodesContext->getWaveServiceIdsVector ();
             vector<void *>         &validationDetailsVector        = pCreateClusterWithNodesContext->getValidationDetailsVector ();
             vector<UI32>           &validationDetailsSizesVector   = pCreateClusterWithNodesContext->getValidationDetailsSizesVector ();
 
-            UI32                    numberOfPrismServiceIds        = prismServiceIds.size ();
+            UI32                    numberOfWaveServiceIds        = prismServiceIds.size ();
             UI32                    numberOfValidationDetails      = validationDetailsVector.size ();
             UI32                    numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
             UI32                    j                              = 0;
 
-            prismAssert (numberOfPrismServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-            prismAssert (numberOfPrismServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+            prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+            prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
-            for (j = 0; j < numberOfPrismServiceIds; j++)
+            for (j = 0; j < numberOfWaveServiceIds; j++)
             {
                 if ((0 != validationDetailsSizesVector[j]) && (NULL != validationDetailsVector[j]))
                 {
@@ -1677,7 +1677,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
         pCreateClusterWithNodesContext->addValidaionResultsLocation (ipAddress, port);
 
-        vector<PrismServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getPrismServiceIdsToCommunicate ();
+        vector<WaveServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getWaveServiceIdsToCommunicate ();
         UI32                    numberOfPrismServices        = prismServiceIdsToCommunicate.size ();
         UI32                    i                            = 0;
 
@@ -2007,7 +2007,7 @@ void PrismFrameworkObjectManager::resumeDatabase ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::resumeDatabase : Starting ...");
 
-    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -2038,7 +2038,7 @@ void PrismFrameworkObjectManager::pausePersistence ()
 
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::pausePersistence : Starting ...");
 
-    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getPrismServiceId ());
+    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -2066,7 +2066,7 @@ void PrismFrameworkObjectManager::resumePersistence ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::resumePersistence : Starting ...");
 
-    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -3161,7 +3161,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesSendValidationResultsSte
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep : Starting ...");
 
-    vector<PrismServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getPrismServiceIdsToCommunicate ();
+    vector<WaveServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getWaveServiceIdsToCommunicate ();
     UI32                    numberOfPrismServices        = prismServiceIdsToCommunicate.size ();
     UI32                    i                            = 0;
 
@@ -3610,7 +3610,7 @@ void PrismFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNode
 
         pDestroyClusterAsynchronousContext->setPreparingForAddNode        (true);
         pDestroyClusterAsynchronousContext->setReasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED);
-        pDestroyClusterAsynchronousContext->setOriginalRequester          (PrismFrameworkObjectManager::getPrismServiceId ());
+        pDestroyClusterAsynchronousContext->setOriginalRequester          (PrismFrameworkObjectManager::getWaveServiceId ());
         pDestroyClusterAsynchronousContext->setIsRebootRequired           (false);
 
         destroyClusterAsynchronousHandler (pDestroyClusterAsynchronousContext);
@@ -4027,19 +4027,19 @@ void PrismFrameworkObjectManager::configureSecondaryNodeValidateVersionStep (Sec
 
 void PrismFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    vector<PrismServiceId> prismServiceIds;
-    UI32                   numberOfPrismServiceIds;
+    vector<WaveServiceId> prismServiceIds;
+    UI32                   numberOfWaveServiceIds;
     UI32                   i;
     LocationId             thisLocationId           = FrameworkToolKit::getThisLocationId ();
     ResourceId             status                   = WAVE_MESSAGE_SUCCESS;
 
     PrismThread::getListOfServiceIds (prismServiceIds);
-    numberOfPrismServiceIds = prismServiceIds.size ();
+    numberOfWaveServiceIds = prismServiceIds.size ();
 
     PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
     prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
-    for (i = 0; i < numberOfPrismServiceIds; i++)
+    for (i = 0; i < numberOfWaveServiceIds; i++)
     {
         trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::configureSecondaryNodeValidateServicesStep : Validating Service : ") + prismServiceIds[i]);
 
@@ -5872,19 +5872,19 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsSte
 
             // Add all the validation buffers to the message before sending out
 
-            vector<PrismServiceId> &prismServiceIds                = pAddNodesToClusterContext->getPrismServiceIdsVector ();
+            vector<WaveServiceId> &prismServiceIds                = pAddNodesToClusterContext->getWaveServiceIdsVector ();
             vector<void *>         &validationDetailsVector        = pAddNodesToClusterContext->getValidationDetailsVector ();
             vector<UI32>           &validationDetailsSizesVector   = pAddNodesToClusterContext->getValidationDetailsSizesVector ();
 
-            UI32                    numberOfPrismServiceIds        = prismServiceIds.size ();
+            UI32                    numberOfWaveServiceIds        = prismServiceIds.size ();
             UI32                    numberOfValidationDetails      = validationDetailsVector.size ();
             UI32                    numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
             UI32                    j                              = 0;
 
-            prismAssert (numberOfPrismServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-            prismAssert (numberOfPrismServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+            prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+            prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
-            for (j = 0; j < numberOfPrismServiceIds; j++)
+            for (j = 0; j < numberOfWaveServiceIds; j++)
             {
                 if ((0 != validationDetailsSizesVector[j]) && (NULL != validationDetailsVector[j]))
                 {
@@ -5949,7 +5949,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCal
 
         pAddNodesToClusterContext->addValidaionResultsLocation (ipAddress, port);
 
-        vector<PrismServiceId> &prismServiceIdsToCommunicate = pAddNodesToClusterContext->getPrismServiceIdsToCommunicate ();
+        vector<WaveServiceId> &prismServiceIdsToCommunicate = pAddNodesToClusterContext->getWaveServiceIdsToCommunicate ();
         UI32                    numberOfPrismServices        = prismServiceIdsToCommunicate.size ();
         UI32                    i                            = 0;
 
@@ -7219,15 +7219,15 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSt
     UI32        numberOfFailures        = 0;
 
     // Add all the validation buffers to the message before sending out
-    vector<PrismServiceId> &prismServiceIds                = pRejoinNodesToClusterContext->getPrismServiceIdsVector ();
+    vector<WaveServiceId> &prismServiceIds                = pRejoinNodesToClusterContext->getWaveServiceIdsVector ();
     vector<void *>         &validationDetailsVector        = pRejoinNodesToClusterContext->getValidationDetailsVector ();
     vector<UI32>           &validationDetailsSizesVector   = pRejoinNodesToClusterContext->getValidationDetailsSizesVector ();
-    UI32                    numberOfPrismServiceIds        = prismServiceIds.size ();
+    UI32                    numberOfWaveServiceIds        = prismServiceIds.size ();
     UI32                    numberOfValidationDetails      = validationDetailsVector.size ();
     UI32                    numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
 
-    prismAssert (numberOfPrismServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-    prismAssert (numberOfPrismServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+    prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+    prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
     //Sending the request to each secondary location
     for (UI32 i = 0; i < numberOfLocationIds; i++)
@@ -7263,7 +7263,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSt
 
             //For each location go through each serviceId and attach the validation data for each service 
             //to the message
-            for (UI32 j = 0; j < numberOfPrismServiceIds; j++)
+            for (UI32 j = 0; j < numberOfWaveServiceIds; j++)
             {
                 if ((0 != validationDetailsSizesVector[j]) && (NULL != validationDetailsVector[j]))
                 {
@@ -8413,16 +8413,16 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep (Second
 void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep : Entering\n");
-    vector<PrismServiceId> prismServiceIds;
+    vector<WaveServiceId> prismServiceIds;
     PrismThread::getListOfServiceIds (prismServiceIds);
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
-    UI32  numberOfPrismServiceIds = prismServiceIds.size ();
+    UI32  numberOfWaveServiceIds = prismServiceIds.size ();
 
     FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
     prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
 
-    for (UI32 i = 0; i < numberOfPrismServiceIds; i++)
+    for (UI32 i = 0; i < numberOfWaveServiceIds; i++)
     {
         trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep : Validating Service : ") + FrameworkToolKit::getServiceNameById (prismServiceIds[i]));
  
@@ -10568,12 +10568,12 @@ PrismFrameworkObjectManagerInitializeWorker *PrismFrameworkObjectManager::getPIn
     return (m_pInitializeWorker);
 }
 
-bool PrismFrameworkObjectManager::isServiceToBeExcludedInClusterCommunications (const PrismServiceId &prismServiceId)
+bool PrismFrameworkObjectManager::isServiceToBeExcludedInClusterCommunications (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId)           ||
-        ((CentralClusterConfigObjectManager::getPrismServiceId         ()) == prismServiceId)           ||
-        ((ClusterTestObjectManager::getPrismServiceId                  ()) == prismServiceId)           ||
-        ((RegressionTestObjectManager::getPrismServiceId               ()) == prismServiceId)           ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId)           ||
+        ((CentralClusterConfigObjectManager::getWaveServiceId         ()) == prismServiceId)           ||
+        ((ClusterTestObjectManager::getWaveServiceId                  ()) == prismServiceId)           ||
+        ((RegressionTestObjectManager::getWaveServiceId               ()) == prismServiceId)           ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) ||
         (true == (isServiceDynamicallyExcludedFromClusterCommunications (prismServiceId))))
     {
@@ -10619,12 +10619,12 @@ void PrismFrameworkObjectManager::releaseBootSynchronizationMutex ()
     s_bootSynchronizationMutex.unlock ();
 }
 
-void PrismFrameworkObjectManager::dynamicallyExcludeServiceFromClusterCommunications (const PrismServiceId &prismServiceId)
+void PrismFrameworkObjectManager::dynamicallyExcludeServiceFromClusterCommunications (const WaveServiceId &prismServiceId)
 {
     m_servicesToBeExcludedForClusterCommunicationsLock.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element    = m_servicesToBeExcludedForClusterCommunications.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator endElement = m_servicesToBeExcludedForClusterCommunications.end  ();
+    map<WaveServiceId, WaveServiceId>::iterator element    = m_servicesToBeExcludedForClusterCommunications.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator endElement = m_servicesToBeExcludedForClusterCommunications.end  ();
 
     if (endElement == element)
     {
@@ -10634,14 +10634,14 @@ void PrismFrameworkObjectManager::dynamicallyExcludeServiceFromClusterCommunicat
     m_servicesToBeExcludedForClusterCommunicationsLock.unlock ();
 }
 
-bool PrismFrameworkObjectManager::isServiceDynamicallyExcludedFromClusterCommunications (const PrismServiceId &prismServiceId)
+bool PrismFrameworkObjectManager::isServiceDynamicallyExcludedFromClusterCommunications (const WaveServiceId &prismServiceId)
 {
     bool isFound = false;
 
     m_servicesToBeExcludedForClusterCommunicationsLock.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element    = m_servicesToBeExcludedForClusterCommunications.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator endElement = m_servicesToBeExcludedForClusterCommunications.end  ();
+    map<WaveServiceId, WaveServiceId>::iterator element    = m_servicesToBeExcludedForClusterCommunications.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator endElement = m_servicesToBeExcludedForClusterCommunications.end  ();
 
     if (endElement != element)
     {
@@ -10653,7 +10653,7 @@ bool PrismFrameworkObjectManager::isServiceDynamicallyExcludedFromClusterCommuni
     return (isFound);
 }
 
-void PrismFrameworkObjectManager::excludeServiceForClusterValidationPhase (const PrismServiceId &prismServiceId)
+void PrismFrameworkObjectManager::excludeServiceForClusterValidationPhase (const WaveServiceId &prismServiceId)
 {
     (PrismFrameworkObjectManager::getInstance ())->dynamicallyExcludeServiceFromClusterCommunications (prismServiceId);
 }
@@ -11863,7 +11863,7 @@ void PrismFrameworkObjectManager::notifyClusterReadyState (bool &readyState)
     return ;
 }
 
-bool PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (PrismServiceId prismServiceId)
+bool PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (WaveServiceId prismServiceId)
 {
     m_externalStateSynchronizationRequiredListLock.lock();
 
@@ -11880,7 +11880,7 @@ bool PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (PrismS
     return false;
 }
 
-void  PrismFrameworkObjectManager::addToExternalStateSynchronizationRequiredList (PrismServiceId prismServiceId)
+void  PrismFrameworkObjectManager::addToExternalStateSynchronizationRequiredList (WaveServiceId prismServiceId)
 {
     if (isExternalStateSynchronizationRequired (prismServiceId))
     {

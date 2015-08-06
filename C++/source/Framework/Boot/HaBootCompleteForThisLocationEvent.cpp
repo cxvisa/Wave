@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 HaBootCompleteForThisLocationEvent::HaBootCompleteForThisLocationEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), HA_BOOT_COMPLETE_FOR_THIS_LOCATION)
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), HA_BOOT_COMPLETE_FOR_THIS_LOCATION)
 {
 }
 

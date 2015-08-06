@@ -33,7 +33,7 @@ class HeartBeatObjectManager : public WaveLocalObjectManager
     public :
         virtual                        ~HeartBeatObjectManager      ();
         static  HeartBeatObjectManager *getInstance                 ();
-        static  PrismServiceId          getPrismServiceId           ();
+        static  WaveServiceId          getWaveServiceId           ();
 
                 void                    initialize                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                    install                     (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);

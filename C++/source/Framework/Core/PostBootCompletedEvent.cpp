@@ -16,14 +16,14 @@ namespace WaveNs
 {
 
 PostBootCompletedEvent::PostBootCompletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_COMPLETED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_COMPLETED_EVENT),
       m_eventId (0),
       m_parameter (0)
 {
 }
 
 PostBootCompletedEvent::PostBootCompletedEvent (const UI32 &eventId, const UI32 &parameter)
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_COMPLETED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_COMPLETED_EVENT),
      m_eventId (eventId),
      m_parameter (parameter)
 {

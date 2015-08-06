@@ -23,12 +23,12 @@ class PrismZeroizeAgentContext : public PrismSynchronousLinearSequencerContext
             PrismZeroizeAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
             virtual                        ~PrismZeroizeAgentContext ();
 
-            vector<PrismServiceId> &getZeroizableServices        ();
+            vector<WaveServiceId> &getZeroizableServices        ();
 
     // Now the data members
 
     private :
-        vector<PrismServiceId> m_zeroizableServices;
+        vector<WaveServiceId> m_zeroizableServices;
 
     protected :
     public :

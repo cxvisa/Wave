@@ -21,7 +21,7 @@ namespace WaveNs
 static UI32       s_waveManagementInterfaceClientId       = 1;
 static PrismMutex s_waveManagementInterfaceClientIdMutex;
 
-WaveManagementClient::WaveManagementClient (const string &name, const string &ipAddress, const SI32 &port, const PrismServiceId &userInterfaceServiceId)
+WaveManagementClient::WaveManagementClient (const string &name, const string &ipAddress, const SI32 &port, const WaveServiceId &userInterfaceServiceId)
     : m_name                   (name),
       m_ipAddress              (ipAddress),
       m_port                   (port),
@@ -175,7 +175,7 @@ SI32 WaveManagementClient::getPort () const
     return (m_port);
 }
 
-PrismServiceId WaveManagementClient::getUserInterfaceServiceId () const
+WaveServiceId WaveManagementClient::getUserInterfaceServiceId () const
 {
     return (m_userInterfaceServiceId);
 }

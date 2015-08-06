@@ -193,16 +193,16 @@ class WaveObjectManager : public PrismElement
             private :
             protected :
             public :
-                 PrismEventListenerMapContext (const PrismServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId);
+                 PrismEventListenerMapContext (const WaveServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId);
                 ~PrismEventListenerMapContext ();
 
-                PrismServiceId getEventListenerServiceId  () const;
+                WaveServiceId getEventListenerServiceId  () const;
                 LocationId     getEventListenerLocationId () const;
 
             // Now the data members
 
             private :
-                PrismServiceId m_eventListenerSericeId;
+                WaveServiceId m_eventListenerSericeId;
                 LocationId     m_eventListenerLocationId;
 
             protected :
@@ -336,8 +336,8 @@ class WaveObjectManager : public PrismElement
                 void                installInstallSelfStepCallback               (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                install                                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-        static  void                addServiceToEnabledServicesList              (const PrismServiceId &prismServiceId);
-        static  void                removeServiceFromEnabledServicesList         (const PrismServiceId &prismServiceId);
+        static  void                addServiceToEnabledServicesList              (const WaveServiceId &prismServiceId);
+        static  void                removeServiceFromEnabledServicesList         (const WaveServiceId &prismServiceId);
 
                 void                enableHandler                                (PrismEnableObjectManagerMessage *pEnableMessage);
                 void                enableEnableWorkersStep                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);
@@ -523,7 +523,7 @@ class WaveObjectManager : public PrismElement
                 void                setAssociatedPrismThread                     (PrismThread *pAssociatedPrismThread);
                 bool                isOperationCodeSupported                     (UI32 operationCode);
                 bool                isEventOperationCodeSupported                (UI32 eventOperationCode);
-                bool                isEventOperationCodeSupportedForListening    (const LocationId &eventSourceLocationId, const PrismServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
+                bool                isEventOperationCodeSupportedForListening    (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
                 bool                isAKnownMessage                              (UI32 prismMessageId);
                 void                handlePrismMessage                           (PrismMessage *pPrismMessage);
                 void                handlePrismEvent                             (const PrismEvent *&pPrismEvent);
@@ -540,8 +540,8 @@ class WaveObjectManager : public PrismElement
         virtual WaveManagedObject  *createManagedObjectInstance                  (const string &managedClassName);
                 WaveManagedObject  *createManagedObjectInstanceWrapper           (const string &managedClassName);
 
-                void                addEventListener                             (const UI32 &eventOperationCode, const PrismServiceId &listenerPrismServiceId, const LocationId &listenerLocationId);
-                void                removeEventListener                          (const UI32 &eventOperationCode, const PrismServiceId &listenerPrismServiceId, const LocationId &listenerLocationId);
+                void                addEventListener                             (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
+                void                removeEventListener                          (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
                 void                getEventListeners                            (const UI32 &eventOperationCode, vector<PrismEventListenerMapContext *> &eventListeners);
 
                 void                trackObjectCreatedDuringCurrentTransaction   (WaveManagedObject *pWaveManagedObject);
@@ -608,12 +608,12 @@ class WaveObjectManager : public PrismElement
                 void                                             removeServiceIndependentOperationMap         (UI32 operationCode);
                 void                                             removeOperationMap                           (const UI32 &operationCode);
         virtual void                                             addEventType                                 (const UI32 &eventOperationCode);
-        virtual void                                             listenForEvent                               (PrismServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                                             listenForEvent                               (WaveServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
         virtual void                                             unlistenEvents                               ();
                 void                                             addResponseMap                               (UI32 prismMessageId, PrismMessageResponseContext *pPrismMessageResponseContext);
                 PrismMessageResponseContext                     *removeResponseMap                            (UI32 prismMessageId);
                 PrismOperationMapContext                        *getPrismMessageHandler                       (UI32 operationCode, UI32 messageHandlerServiceCode = 0, UI32 thisServiceId = 0);
-                PrismEventMapContext                            *getPrismEventHandler                         (const LocationId &eventSourceLocationId, const PrismServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
+                PrismEventMapContext                            *getPrismEventHandler                         (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
                 WaveObjectManager::PrismMessageResponseContext *getResponseContext                            (UI32 prismMessageId);
                 void                                             setIsEnabled                                 (bool isEnabled);
         virtual TraceClientId                                    getTraceClientId                             ();
@@ -872,8 +872,8 @@ class WaveObjectManager : public PrismElement
                 bool                                             isAKnownWaveBrokerBasedMessageSubscription          (const string &brokerName, const string &topicName) const;
 
     public :
-        static void                getListOfEnabledServices                    (vector<PrismServiceId> &enabledServices);
-        static bool                isServiceEnabled                            (const PrismServiceId &prismServiceId);
+        static void                getListOfEnabledServices                    (vector<WaveServiceId> &enabledServices);
+        static bool                isServiceEnabled                            (const WaveServiceId &prismServiceId);
 
         // The following is a special function for consuming all pending messages.  This is not to be used in general.
         // This is being implemented so that the CSCN based application can consume Wave messages as well.
@@ -881,7 +881,7 @@ class WaveObjectManager : public PrismElement
                void                consumeAllPendingMessages                   ();
                PrismMessage       *getPInputMesage                             () const;
 
-               PrismServiceId      getServiceId                                ();
+               WaveServiceId      getServiceId                                ();
 
         static void                addClientListeningForManagedObjectCreate    (const string &waveManagedObjectName, const string &waveClientName);
         static void                removeClientListeningForManagedObjectCreate (const string &waveManagedObjectName, const string &waveClientName);
@@ -893,8 +893,8 @@ class WaveObjectManager : public PrismElement
                 void               getAllOwnedManagedObjectClassNames          (vector<string> &ownedManagedObjectClassNames) const ;
                 void               checkMessageAttributesInSerialization       ();
 
-        static  void               endOfLifeService                            (PrismServiceId prismServiceId);
-        static  void               bootStrapService                            (PrismServiceId prismServiceId);
+        static  void               endOfLifeService                            (WaveServiceId prismServiceId);
+        static  void               bootStrapService                            (WaveServiceId prismServiceId);
 
     // Now the data members
 
@@ -956,7 +956,7 @@ class WaveObjectManager : public PrismElement
                bool                                                                 m_messageHistoryLogInsideSend;
                bool                                                                 m_messageHistoryLogInsideReply;
                bool                                                                 m_messageHistoryLogInsideHandleMessage;
-        static map<string, PrismServiceId>                                          m_serviceStringServiceIdMap;
+        static map<string, WaveServiceId>                                          m_serviceStringServiceIdMap;
         static PrismMutex                                                           m_serviceStringServiceIdMapMutex;
                set<string>                                                          m_serviceStrings;
 

@@ -66,7 +66,7 @@ ResourceId PrismPostbootAgent::getListOfEnabledServicesStep (PrismPostbootAgentC
 
     trace(TRACE_LEVEL_INFO, string("PrismPostbootAgent::getListOfEnabledServicesStep Entered"));
 
-    vector<PrismServiceId> &enabledServices = pPrismPostbootAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pPrismPostbootAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
 
@@ -123,13 +123,13 @@ ResourceId PrismPostbootAgent::notifyPostbootStartedStep (PrismPostbootAgentCont
 
 ResourceId PrismPostbootAgent::sendPostbootPassStep (PrismPostbootAgentContext *pPrismPostbootAgentContext)
 {
-    vector<PrismServiceId> &enabledServices = pPrismPostbootAgentContext->getEnabledServices ();
+    vector<WaveServiceId> &enabledServices = pPrismPostbootAgentContext->getEnabledServices ();
     UI8                     passNum              = 0;
     UI8                     serviceIdIndex       = 0;
     UI8                     checkIdIndex         = 0;
     UI8                     enabledIndex         = 0;
     SI8                     serviceFound         = 0;
-    PrismServiceId          serviceId;
+    WaveServiceId          serviceId;
     string                  passName;
     UI32                    recoveryTypeForThisService;
 
@@ -286,9 +286,9 @@ ResourceId PrismPostbootAgent::notifyPostbootCompletedStep (PrismPostbootAgentCo
     return (status);
 }
 
-bool PrismPostbootAgent::requiresPostboot (const PrismServiceId &prismServiceId)
+bool PrismPostbootAgent::requiresPostboot (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (false);
@@ -304,7 +304,7 @@ void PrismPostbootAgent::printRegistrationTable (void)
     UI8                     tableNum             = 0;
     UI8                     passNum              = 0;
     UI8                     serviceIdIndex       = 0;
-    PrismServiceId          serviceId;
+    WaveServiceId          serviceId;
 
     cout << endl;
     cout << "==============================================" << endl;

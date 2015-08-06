@@ -124,7 +124,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
 
                 if ("127.0.0.1" == m_ipAddress)
                 {
-                    WaveManagementClientInformation waveManagementClientInformation (m_waveClientName, m_waveClientNameWithoutExtension, m_ipAddress, FrameworkToolKit::getManagementInterfaceClientReceiverPort (), WaveUserInterfaceObjectManager::getPrismServiceId (), messageVersion);
+                    WaveManagementClientInformation waveManagementClientInformation (m_waveClientName, m_waveClientNameWithoutExtension, m_ipAddress, FrameworkToolKit::getManagementInterfaceClientReceiverPort (), WaveUserInterfaceObjectManager::getWaveServiceId (), messageVersion);
                     waveManagementClientInformation.setServerIpAddressFromClientPerspective (m_ipAddress);
                     waveManagementClientInformation.setServerUniqueIdentifier               (getServerUniqueIdentifier ());
 
@@ -141,7 +141,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
                 }
                 else
                 {
-                    WaveManagementClientInformation waveManagementClientInformation (m_waveClientName, m_waveClientNameWithoutExtension, FrameworkToolKit::getThisLocationIpAddress (), FrameworkToolKit::getManagementInterfaceClientReceiverPort (), WaveUserInterfaceObjectManager::getPrismServiceId (), messageVersion);
+                    WaveManagementClientInformation waveManagementClientInformation (m_waveClientName, m_waveClientNameWithoutExtension, FrameworkToolKit::getThisLocationIpAddress (), FrameworkToolKit::getManagementInterfaceClientReceiverPort (), WaveUserInterfaceObjectManager::getWaveServiceId (), messageVersion);
 
                     waveManagementClientInformation.setServerIpAddressFromClientPerspective (m_ipAddress);
                     waveManagementClientInformation.setServerUniqueIdentifier               (getServerUniqueIdentifier ());
@@ -259,11 +259,11 @@ void WaveManagementServer::addServiceCache (const vector<string> &serviceNames, 
     }
 }
 
-PrismServiceId WaveManagementServer::getPrismServiceIdForServiceName (const string &serviceName)
+WaveServiceId WaveManagementServer::getWaveServiceIdForServiceName (const string &serviceName)
 {
     map<string, UI32>::iterator element   = m_serviceMapByName.find (serviceName);
     map<string, UI32>::iterator end       = m_serviceMapByName.end ();
-    PrismServiceId              serviceId = 0;
+    WaveServiceId              serviceId = 0;
 
     if (element != end)
     {
@@ -277,7 +277,7 @@ PrismServiceId WaveManagementServer::getPrismServiceIdForServiceName (const stri
     return (serviceId);
 }
 
-string WaveManagementServer::getPrismServiceNameForServiceId (const PrismServiceId &serviceId)
+string WaveManagementServer::getPrismServiceNameForServiceId (const WaveServiceId &serviceId)
 {
     map<UI32, string>::iterator element     = m_serviceMapById.find (serviceId);
     map<UI32, string>::iterator end         = m_serviceMapById.end ();

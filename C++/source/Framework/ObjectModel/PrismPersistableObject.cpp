@@ -50,7 +50,7 @@ PrismPersistableObject::PrismPersistableObject (const string &objectClassName, c
 
     if (true == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
-        if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (DatabaseObjectManager::getPrismServiceId ()))->getId ())
+        if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
         {
             if (true == (getIsObjectRelationalMappingEnabled ()))
             {

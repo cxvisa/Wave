@@ -33,7 +33,7 @@ namespace WaveNs
         public:
                virtual                                      ~MultiPartitionLocalObjectManager      ();
                static MultiPartitionLocalObjectManager        *getInstance                         ();
-               static PrismServiceId                         getPrismServiceId                   ();
+               static WaveServiceId                         getWaveServiceId                   ();
                static string                                 getServiceName                      ();
 
         // Now the data members

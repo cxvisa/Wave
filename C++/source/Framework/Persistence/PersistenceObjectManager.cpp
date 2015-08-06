@@ -125,7 +125,7 @@ PersistenceObjectManager *PersistenceObjectManager::getInstance ()
     return (pPersistenceObjectManager);
 }
 
-PrismServiceId PersistenceObjectManager::getPrismServiceId ()
+WaveServiceId PersistenceObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

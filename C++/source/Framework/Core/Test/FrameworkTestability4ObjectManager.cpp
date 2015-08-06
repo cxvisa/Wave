@@ -110,7 +110,7 @@ FrameworkTestability4ObjectManager *FrameworkTestability4ObjectManager::getInsta
     return (pFrameworkTestability4ObjectManager);
 }
 
-PrismServiceId FrameworkTestability4ObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkTestability4ObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

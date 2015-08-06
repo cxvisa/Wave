@@ -128,7 +128,7 @@ public :
     virtual ~FrameworkTestability6ObjectManager                  ();
 
     static  FrameworkTestability6ObjectManager *getInstance      ();
-    static  PrismServiceId                      getPrismServiceId    ();
+    static  WaveServiceId                      getWaveServiceId    ();
     static  string                              getPrismServiceName ();
 
 

@@ -193,7 +193,7 @@ HaPeerMessageReceiverObjectManager *HaPeerMessageReceiverObjectManager::getInsta
     return (pHaPeerMessageReceiverObjectManager);
 }
 
-PrismServiceId HaPeerMessageReceiverObjectManager::getPrismServiceId ()
+WaveServiceId HaPeerMessageReceiverObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

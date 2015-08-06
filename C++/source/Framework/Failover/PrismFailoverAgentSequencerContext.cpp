@@ -46,12 +46,12 @@ vector<LocationId> &PrismFailoverAgentSequencerContext::getFailedLocationIds ()
     return (m_failedLocationIds);
 }
 
-void PrismFailoverAgentSequencerContext::setServiceToBeIgnored (const PrismServiceId &serviceToBeIgnored)
+void PrismFailoverAgentSequencerContext::setServiceToBeIgnored (const WaveServiceId &serviceToBeIgnored)
 {
     m_serviceToBeIgnored = serviceToBeIgnored;
 }
 
-PrismServiceId PrismFailoverAgentSequencerContext::getServiceToBeIgnored () const
+WaveServiceId PrismFailoverAgentSequencerContext::getServiceToBeIgnored () const
 {
     return (m_serviceToBeIgnored);
 }

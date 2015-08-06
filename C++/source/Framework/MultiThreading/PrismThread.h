@@ -11,7 +11,7 @@
 #include "Framework/MultiThreading/PrismMessageQueue.cpp"
 #include "Framework/Utils/PrismMutex.h"
 #include "Framework/Utils/PrismCondition.h"
-#include "Framework/Core/PrismServiceMap.h"
+#include "Framework/Core/WaveServiceMap.h"
 
 namespace WaveNs
 {
@@ -38,10 +38,10 @@ class PrismThread : public PrismPosixThread
         WaveMessageStatus   submitEvent                                            (PrismEvent *pPrismEvent);
         WaveObjectManager *getWaveObjectManagerForOperationCode                  (UI32 operationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCode             (UI32 eventOperationCode);
-        WaveObjectManager *getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const PrismServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
+        WaveObjectManager *getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
         WaveObjectManager *getWaveObjectManagerForPrismMessageId                 (UI32 prismMessageId);
         WaveObjectManager *getWaveObjectManagerForManagedClass                   (const string &managedClass);
-        PrismServiceId      getPrismServiceId                                      () const;
+        WaveServiceId      getWaveServiceId                                      () const;
         bool                hasWaveObjectManagers                                 ();
         void                initializeHoldCounts                                   ();
         void                holdMessages                                           ();
@@ -65,8 +65,8 @@ class PrismThread : public PrismPosixThread
         void                requestForThreadTermination                            ();
 
     protected :
-                                  PrismThread            (PrismServiceId id, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
-                                  PrismThread            (PrismServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
+                                  PrismThread            (WaveServiceId id, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
+                                  PrismThread            (WaveServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
 
         virtual                   ~PrismThread           ();
         virtual WaveThreadStatus  start                  ();
@@ -75,12 +75,12 @@ class PrismThread : public PrismPosixThread
 
     public :
 
-        static void               getListOfServiceIds                     (vector<PrismServiceId> &serviceIds);
-        static PrismThread       *getPrismThreadForServiceId              (PrismServiceId id);
-        static vector<UI32>       getCpuAffinityVectorForServiceId        (PrismServiceId id);
+        static void               getListOfServiceIds                     (vector<WaveServiceId> &serviceIds);
+        static PrismThread       *getPrismThreadForServiceId              (WaveServiceId id);
+        static vector<UI32>       getCpuAffinityVectorForServiceId        (WaveServiceId id);
         static PrismThreadId      getSelf                                 ();
-        static string             getPrismServiceNameForServiceId         (const PrismServiceId &id);
-        static PrismServiceId     getPrismServiceIdForServiceName         (const string &prismServiceName);
+        static string             getPrismServiceNameForServiceId         (const WaveServiceId &id);
+        static WaveServiceId     getWaveServiceIdForServiceName         (const string &prismServiceName);
         static PrismThread       *getPrismThreadForMessageRemoteTransport ();
         static PrismThread       *getPrismThreadForMessageHaPeerTransport ();
         static WaveThreadStatus   joinAllThreads                          ();
@@ -88,13 +88,13 @@ class PrismThread : public PrismPosixThread
                vector<UI32>       getCpuAffinityVector                    () const;
 
         static WaveObjectManager *getWaveObjectManagerForCurrentThread    ();
-        static PrismServiceId     getPrismServiceIdForCurrentThread       ();
+        static WaveServiceId     getWaveServiceIdForCurrentThread       ();
 
 
     // Now the member variables
 
     private :
-               PrismServiceId                          m_prismServiceId;
+               WaveServiceId                          m_prismServiceId;
 
                PrismMessageQueue<PrismMessage>         m_messages;
                PrismMessageQueue<PrismMessage>         m_messageResponses;

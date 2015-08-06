@@ -115,9 +115,9 @@ bool SecondaryNodeConfigurePrismBootAgent::isAPersistentBoot ()
     return (true);
 }
 
-bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId& prismServiceId)
+bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -133,9 +133,9 @@ bool SecondaryNodeConfigurePrismBootAgent::willBeAPrimaryLocation ()
     return (false);
 }
 
-bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const PrismServiceId &prismServiceId)
+bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if ((prismServiceId == (DatabaseObjectManager::getPrismServiceId ())) ||
+    if ((prismServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -146,9 +146,9 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstallDuringPrePha
     }
 }
 
-bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstall (const PrismServiceId &prismServiceId)
+bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -159,9 +159,9 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstall (const Pris
     }
 }
 
-bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const PrismServiceId &prismServiceId)
+bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -172,9 +172,9 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPre
     }
 }
 
-bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializePhase (const PrismServiceId &prismServiceId)
+bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -185,7 +185,7 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializePhase (co
     }
 }
 
-bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromCurrentBootPhase (PrismServiceId prismServiceId)
+bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId prismServiceId)
 {
 
     ApplicationSpecificServices *pApplicationSpecificServices = ApplicationSpecificServices::getInstance ();

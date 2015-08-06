@@ -34,7 +34,7 @@ class WaveMessagingBrokerClientTestObjectManager : public PrismTestObjectManager
         virtual                                            ~WaveMessagingBrokerClientTestObjectManager ();
 
         static  string                                      getServiceName                             ();
-        static  PrismServiceId                              getPrismServiceId                          ();
+        static  WaveServiceId                              getWaveServiceId                          ();
         static  WaveMessagingBrokerClientTestObjectManager *getInstance                                ();
 
     // Now the data members

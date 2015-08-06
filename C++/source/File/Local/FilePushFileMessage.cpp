@@ -14,14 +14,14 @@ namespace WaveNs
 {
 
     FilePushFileMessage::FilePushFileMessage ()
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILE),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
          m_sourceLocationId(0),        
          m_fileTransferFlag(0)
     {
     }
 
     FilePushFileMessage::FilePushFileMessage (const string &SourceFileName,const string &DestinationFileName,const UI32 &SourceLocationId, vector<UI32> &DestinationLocationIdList, UI32 &fileTransferFlag)
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILE),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
         m_sourceFileName           (SourceFileName),
         m_destinationFileName      (DestinationFileName),
         m_sourceLocationId         (SourceLocationId),
@@ -35,7 +35,7 @@ namespace WaveNs
     
             
     FilePushFileMessage::FilePushFileMessage (const string &SourceFileName,const string &DestinationFileName,const UI32 &SourceLocationId, vector<UI32> &DestinationLocationIdList)
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCPUSHFILE),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
         m_sourceFileName           (SourceFileName),
         m_destinationFileName      (DestinationFileName),
         m_sourceLocationId         (SourceLocationId),
@@ -182,13 +182,13 @@ namespace WaveNs
 
 
 FilePushFileToHaPeerMessage::FilePushFileToHaPeerMessage ()
-    : PrismMessage          (FileLocalObjectManager::getPrismServiceId (), FILESVCFILEPUSHFILETOHAPEER),
+    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCFILEPUSHFILETOHAPEER),
       m_fileSize            (0)
 {
 }
 
 FilePushFileToHaPeerMessage::FilePushFileToHaPeerMessage (const string &sourceFileName, const string &destinationFileName)
-    : PrismMessage          (FileLocalObjectManager::getPrismServiceId (), FILESVCFILEPUSHFILETOHAPEER),
+    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCFILEPUSHFILETOHAPEER),
       m_sourceFileName      (sourceFileName),
       m_destinationFileName (destinationFileName),
       m_fileSize            (0)

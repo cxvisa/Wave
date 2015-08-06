@@ -16,7 +16,7 @@ namespace WaveNs
 //---------------------------------------------------------------------------------------------------------------------------
 
 PersistenceLocalObjectManagerGetLiveSyncEnableMessage::PersistenceLocalObjectManagerGetLiveSyncEnableMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_GET_LIVE_SYNC_ENABLE), 
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_GET_LIVE_SYNC_ENABLE), 
       m_isLiveSyncEnabled (false)
 {
 }
@@ -47,14 +47,14 @@ void PersistenceLocalObjectManagerGetLiveSyncEnableMessage::setIsLiveSyncEnabled
 //---------------------------------------------------------------------------------------------------------------------------
 
 PersistenceLocalObjectManagerSetLiveSyncEnableMessage::PersistenceLocalObjectManagerSetLiveSyncEnableMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
       m_isLiveSyncEnabled (false)
 {
     setIsMessageSupportedWhenServiceIsPaused (true);
 }
 
 PersistenceLocalObjectManagerSetLiveSyncEnableMessage::PersistenceLocalObjectManagerSetLiveSyncEnableMessage (const bool &isLiveSyncEnabled)
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
       m_isLiveSyncEnabled (isLiveSyncEnabled)
 {
     setIsMessageSupportedWhenServiceIsPaused (true);

@@ -139,9 +139,9 @@ WaveBootReason HaStandbyPrismBootAgent::getReason () const
     return (WAVE_BOOT_HASTANDBY_BOOT);
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId& prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -152,9 +152,9 @@ bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismService
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const PrismServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if ((prismServiceId == (DatabaseObjectManager::getPrismServiceId ())) ||
+    if ((prismServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -165,9 +165,9 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const Pri
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const PrismServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -178,9 +178,9 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const PrismServiceId &p
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const PrismServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -191,9 +191,9 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const 
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const PrismServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -204,14 +204,14 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const PrismServ
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromCurrentBootPhase (const PrismServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromCurrentBootPhase (const WaveServiceId &prismServiceId)
 {
     return (false);
 }
 
 ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInstall;
+    vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -263,7 +263,7 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep (Pr
 
 ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInstall;
+    vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -308,7 +308,7 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesStep (PrismSynchronous
 
 ResourceId HaStandbyPrismBootAgent::haBootLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -354,7 +354,7 @@ ResourceId HaStandbyPrismBootAgent::haBootLocalPrismServicesStep (PrismSynchrono
 
 ResourceId HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -399,7 +399,7 @@ ResourceId HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep (PrismSynchron
 
 ResourceId HaStandbyPrismBootAgent::haBootPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -454,7 +454,7 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesStep (PrismSynchronousLin
 
 ResourceId HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 

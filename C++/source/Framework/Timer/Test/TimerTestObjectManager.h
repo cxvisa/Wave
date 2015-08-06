@@ -36,7 +36,7 @@ class TimerTestObjectManager : public PrismTestObjectManager
     public :
         virtual                        ~TimerTestObjectManager ();
         static  TimerTestObjectManager *getInstance            ();
-        static  PrismServiceId          getPrismServiceId      ();
+        static  WaveServiceId          getWaveServiceId      ();
                 void                    testRequestHandler     (RegressionTestMessage *pMessage);
     // Now the data members
 

@@ -57,7 +57,7 @@ class PersistenceLocalObjectManager : public WaveLocalObjectManager
     public :
         virtual                                 ~PersistenceLocalObjectManager                   ();
         static  PersistenceLocalObjectManager   *getInstance                                     ();
-        static  PrismServiceId                   getPrismServiceId                               ();
+        static  WaveServiceId                   getWaveServiceId                               ();
         static  string                           getServiceName                                  ();
         void                                     broadcastSchemaChangeEvent                      (SchemaType m_fromSchema, string fromSchemaPath = "", SchemaType toSchema = STARTUP_SCHEMA, string toSchemaPath = "", bool operationStatus = true);
         void                                     updateInstanceIdMessageHandler                  (PersistenceLocalObjectManagerUpdateInstanceIdMesssage *pPersistenceLocalObjectManagerUpdateInstanceIdMesssage);

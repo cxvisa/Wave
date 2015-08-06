@@ -45,7 +45,7 @@ ClusterInterfaceObjectManager::~ClusterInterfaceObjectManager ()
 
 }
 
-PrismServiceId ClusterInterfaceObjectManager::getPrismServiceId ()
+WaveServiceId ClusterInterfaceObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -126,7 +126,7 @@ void ClusterInterfaceObjectManager::createClusterCallBack (FrameworkStatus frame
     else
     {
         trace ( TRACE_LEVEL_DEBUG, "ClusterInterfaceObjectManager::createClusterCallBack ");
-        ClusterInterfaceObjectManagerCreateClusterDoneMessage  *pCreateClusterDoneMessage = new ClusterInterfaceObjectManagerCreateClusterDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getPrismServiceId ());
+        ClusterInterfaceObjectManagerCreateClusterDoneMessage  *pCreateClusterDoneMessage = new ClusterInterfaceObjectManagerCreateClusterDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getWaveServiceId ());
         pCreateClusterDoneMessage->setOperationStatus (pMessage->getCompletionStatus ());
         pCreateClusterDoneMessage->setNSecondaryNodes (pMessage->getNSecondaryNodes ());
         for (i = 0; i < pMessage->getNSecondaryNodes (); i++)
@@ -195,7 +195,7 @@ void ClusterInterfaceObjectManager::addNodeCallBack (FrameworkStatus frameworkSt
     }
     else
     {
-        ClusterInterfaceObjectManagerAddNodeDoneMessage  *pAddNodeDoneMessage = new ClusterInterfaceObjectManagerAddNodeDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getPrismServiceId ());
+        ClusterInterfaceObjectManagerAddNodeDoneMessage  *pAddNodeDoneMessage = new ClusterInterfaceObjectManagerAddNodeDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getWaveServiceId ());
         pAddNodeDoneMessage->setOperationStatus (pMessage->getCompletionStatus ());
 
         pAddNodeDoneMessage->setAddNodeResultCallBack (pMessageContext->addNodeResultCB);
@@ -256,7 +256,7 @@ void ClusterInterfaceObjectManager::joinNodeCallBack (FrameworkStatus frameworkS
     }
     else
     {
-        ClusterInterfaceObjectManagerJoinNodeDoneMessage  *pJoinNodeDoneMessage = new ClusterInterfaceObjectManagerJoinNodeDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getPrismServiceId ());
+        ClusterInterfaceObjectManagerJoinNodeDoneMessage  *pJoinNodeDoneMessage = new ClusterInterfaceObjectManagerJoinNodeDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getWaveServiceId ());
         pJoinNodeDoneMessage->setOperationStatus (pMessage->getCompletionStatus ());
 
         pJoinNodeDoneMessage->setJoinNodeResultCallBack (pMessageContext->joinNodeResultCB);
@@ -318,7 +318,7 @@ void ClusterInterfaceObjectManager::removeNodeCallBack (FrameworkStatus framewor
     }
     else
     {
-        ClusterInterfaceObjectManagerDeleteNodeDoneMessage  *pDeleteNodeDoneMessage = new ClusterInterfaceObjectManagerDeleteNodeDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getPrismServiceId ());
+        ClusterInterfaceObjectManagerDeleteNodeDoneMessage  *pDeleteNodeDoneMessage = new ClusterInterfaceObjectManagerDeleteNodeDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getWaveServiceId ());
         pDeleteNodeDoneMessage->setOperationStatus (pMessage->getCompletionStatus ());
 
         pDeleteNodeDoneMessage->setRemoveNodeResultCallBack (pMessageContext->removeNodeResultCB);
@@ -379,7 +379,7 @@ void ClusterInterfaceObjectManager::removeClusterCallBack (FrameworkStatus frame
     }
     else
     {
-        ClusterInterfaceObjectManagerDeleteClusterDoneMessage  *pDeleteClusterDoneMessage = new ClusterInterfaceObjectManagerDeleteClusterDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getPrismServiceId ());
+        ClusterInterfaceObjectManagerDeleteClusterDoneMessage  *pDeleteClusterDoneMessage = new ClusterInterfaceObjectManagerDeleteClusterDoneMessage ((AppObjectManager::getAppInterfaceObjectManager (pMessageContext->appId))->getWaveServiceId ());
         pDeleteClusterDoneMessage->setOperationStatus (pMessage->getCompletionStatus ());
 
         pDeleteClusterDoneMessage->setRemoveClusterResultCallBack (pMessageContext->removeClusterResultCB);

@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerPushConfigToKernelMessaage::PersistenceLocalObjectManagerPushConfigToKernelMessaage (const string &globalConfigs)
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL),
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL),
       m_globalConfigs (globalConfigs)
 {
 }
 
 PersistenceLocalObjectManagerPushConfigToKernelMessaage::PersistenceLocalObjectManagerPushConfigToKernelMessaage()
-    : PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL)
+    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL)
 {
 }
 

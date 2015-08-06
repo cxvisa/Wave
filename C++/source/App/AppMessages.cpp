@@ -24,7 +24,7 @@ AppInterfaceObjectManagerRemoteCommandsMessage::AppInterfaceObjectManagerRemoteC
 
 }
 
-AppInterfaceObjectManagerRemoteCommandsMessage::AppInterfaceObjectManagerRemoteCommandsMessage (PrismServiceId serviceId)
+AppInterfaceObjectManagerRemoteCommandsMessage::AppInterfaceObjectManagerRemoteCommandsMessage (WaveServiceId serviceId)
     : PrismMessage (serviceId, APP_REMOTE_COMMANDS)
 {
     m_nResults  = 0;
@@ -147,7 +147,7 @@ ClusterInterfaceObjectManagerCreateClusterDoneMessage::ClusterInterfaceObjectMan
     m_operationStatus = 0;
 }
 
-ClusterInterfaceObjectManagerCreateClusterDoneMessage::ClusterInterfaceObjectManagerCreateClusterDoneMessage (PrismServiceId serviceId)
+ClusterInterfaceObjectManagerCreateClusterDoneMessage::ClusterInterfaceObjectManagerCreateClusterDoneMessage (WaveServiceId serviceId)
     : PrismMessage (serviceId, APP_INTERFACE_CREATE_CLUSTER_DONE)
 {
     m_nSecondaryNodes = 0;
@@ -318,7 +318,7 @@ ClusterInterfaceObjectManagerDeleteClusterDoneMessage::ClusterInterfaceObjectMan
 {
 }
 
-ClusterInterfaceObjectManagerDeleteClusterDoneMessage::ClusterInterfaceObjectManagerDeleteClusterDoneMessage (PrismServiceId serviceId)
+ClusterInterfaceObjectManagerDeleteClusterDoneMessage::ClusterInterfaceObjectManagerDeleteClusterDoneMessage (WaveServiceId serviceId)
     : PrismMessage (serviceId, APP_INTERFACE_DELETE_CLUSTER_DONE),
       m_operationStatus(0)
 {
@@ -372,7 +372,7 @@ ClusterInterfaceObjectManagerAddNodeDoneMessage::ClusterInterfaceObjectManagerAd
 
 }
 
-ClusterInterfaceObjectManagerAddNodeDoneMessage::ClusterInterfaceObjectManagerAddNodeDoneMessage (PrismServiceId serviceId)
+ClusterInterfaceObjectManagerAddNodeDoneMessage::ClusterInterfaceObjectManagerAddNodeDoneMessage (WaveServiceId serviceId)
     : PrismMessage (serviceId, APP_INTERFACE_ADD_NODE_DONE)
 {
     m_nodePort          = 0;
@@ -452,7 +452,7 @@ ClusterInterfaceObjectManagerJoinNodeDoneMessage::ClusterInterfaceObjectManagerJ
 
 }
 
-ClusterInterfaceObjectManagerJoinNodeDoneMessage::ClusterInterfaceObjectManagerJoinNodeDoneMessage (PrismServiceId serviceId)
+ClusterInterfaceObjectManagerJoinNodeDoneMessage::ClusterInterfaceObjectManagerJoinNodeDoneMessage (WaveServiceId serviceId)
     : PrismMessage (serviceId, APP_INTERFACE_JOIN_NODE_DONE)
 {
     m_nodePort          = 0;
@@ -522,7 +522,7 @@ ClusterInterfaceObjectManagerDeleteNodeDoneMessage::ClusterInterfaceObjectManage
     m_operationStatus   = 0;
 }
 
-ClusterInterfaceObjectManagerDeleteNodeDoneMessage::ClusterInterfaceObjectManagerDeleteNodeDoneMessage (PrismServiceId serviceId)
+ClusterInterfaceObjectManagerDeleteNodeDoneMessage::ClusterInterfaceObjectManagerDeleteNodeDoneMessage (WaveServiceId serviceId)
     : PrismMessage (serviceId, APP_INTERFACE_DELETE_NODE_DONE)
 {
     m_nodePort          = 0;

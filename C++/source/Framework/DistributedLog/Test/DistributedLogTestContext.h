@@ -33,8 +33,8 @@ class DistributedLogTestContext : public PrismLinearSequencerContext
                 UI64            getNextLogId                    () const;
                 void            setNextLogId                    (const UI64 &nextLogId);
 
-                PrismServiceId  getPrismServiceId               () const;
-                void            setPrismServiceId               (const PrismServiceId &prismServiceId);
+                WaveServiceId  getWaveServiceId               () const;
+                void            setWaveServiceId               (const WaveServiceId &prismServiceId);
 
                 ObjectId        getManagedObjectId              () const;
                 void            setManagedObjectId              (const ObjectId &managedObjectId);
@@ -49,7 +49,7 @@ class DistributedLogTestContext : public PrismLinearSequencerContext
                 UI64            m_currentMaxAllowedLogEntries;
                 UI64            m_firstLogId;
                 UI64            m_nextLogId;
-                PrismServiceId  m_prismServiceId;
+                WaveServiceId  m_prismServiceId;
                 ObjectId        m_managedObjectId;
                 UI32            m_numberOfFailures;
 

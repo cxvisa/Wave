@@ -16,13 +16,13 @@ namespace WaveNs
 {
 
 LastConfigReplayCompletedEvent::LastConfigReplayCompletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
       m_lastConfigReplayCompletedEventStatus (WAVE_MESSAGE_SUCCESS)
 {
 }
 
 LastConfigReplayCompletedEvent::LastConfigReplayCompletedEvent (const ResourceId &completionStatus)
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
       m_lastConfigReplayCompletedEventStatus (completionStatus)
 {
 }

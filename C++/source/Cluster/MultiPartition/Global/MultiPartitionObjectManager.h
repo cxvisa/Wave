@@ -47,7 +47,7 @@ class MultiPartitionObjectManager : public WaveObjectManager
 
         static  string                          getServiceName                                  ();
         static  MultiPartitionObjectManager    *getInstance                                     ();
-        static  PrismServiceId                  getPrismServiceId                               ();
+        static  WaveServiceId                  getWaveServiceId                               ();
 
         // Message Handlers.
                 void                            addPartitionMessageHandler                      (MultiPartitionAddPartitionMessage *pMultiPartitionAddPartitionMessage); 

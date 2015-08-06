@@ -57,7 +57,7 @@ class TraceObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
                                   ~TraceObjectManager                           ();
         static string              getClassName                                 ();
         static TraceObjectManager *getInstance                                  ();
-        static PrismServiceId      getPrismServiceId                            ();
+        static WaveServiceId      getWaveServiceId                            ();
         static TraceClientId       addClient                                    (const TraceLevel &traceLevel, const string &traceClientName);
         static void                removeClient                                 (const string &traceClientName);
         static void                setTraceFileName                             (const string &traceFileName);

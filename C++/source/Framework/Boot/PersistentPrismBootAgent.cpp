@@ -694,11 +694,11 @@ WaveBootReason PersistentPrismBootAgent::getReason () const
     return (WAVE_BOOT_PERSISTENT_BOOT);
 }
 
-bool PersistentPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId& prismServiceId)
+bool PersistentPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& prismServiceId)
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase) || (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase))
     {
-        if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) || (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+        if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) || (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
         {
             return (true);
         }
@@ -713,11 +713,11 @@ bool PersistentPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServic
     }
 }
 
-bool PersistentPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const PrismServiceId &prismServiceId)
+bool PersistentPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase) || (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase))
     {
-        if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) || (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+        if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) || (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
         {
             return (true);
         }
@@ -732,11 +732,11 @@ bool PersistentPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const
     }
 }
 
-bool PersistentPrismBootAgent::isToBeExcludedFromInitializePhase (const PrismServiceId &prismServiceId)
+bool PersistentPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase) || (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase))
     {
-        if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) || (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+        if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) || (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
         {
             return (true);
         }

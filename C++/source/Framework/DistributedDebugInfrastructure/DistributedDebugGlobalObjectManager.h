@@ -33,7 +33,7 @@ class DistributedDebugGlobalObjectManager : public WaveObjectManager
 public:
 
 	        static  string          getClassName ();
-                static  PrismServiceId  getPrismServiceId ();
+                static  WaveServiceId  getWaveServiceId ();
                 static  string          getPrismServiceName ();                
                 static  DistributedDebugGlobalObjectManager *getInstance ();
 

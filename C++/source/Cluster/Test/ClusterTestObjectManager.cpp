@@ -42,7 +42,7 @@ ClusterTestObjectManager::~ClusterTestObjectManager ()
 {
 }
 
-PrismServiceId ClusterTestObjectManager::getPrismServiceId ()
+WaveServiceId ClusterTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 WaveMessagingBrokerConnectionObjectManagerCancelRequestToTryForConnectionMessage::WaveMessagingBrokerConnectionObjectManagerCancelRequestToTryForConnectionMessage (const vector<string> &brokerNames)
-    : PrismMessage  (WaveMessagingBrokerConnectionObjectManager::getPrismServiceId (), WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_CANCEL_REQUEST_TO_TRY_FOR_CONNECTION),
+    : PrismMessage  (WaveMessagingBrokerConnectionObjectManager::getWaveServiceId (), WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_CANCEL_REQUEST_TO_TRY_FOR_CONNECTION),
       m_brokerNames (brokerNames)
 {
 }
 
 WaveMessagingBrokerConnectionObjectManagerCancelRequestToTryForConnectionMessage::WaveMessagingBrokerConnectionObjectManagerCancelRequestToTryForConnectionMessage (const string &brokerName)
-    : PrismMessage  (WaveMessagingBrokerConnectionObjectManager::getPrismServiceId (), WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_CANCEL_REQUEST_TO_TRY_FOR_CONNECTION)
+    : PrismMessage  (WaveMessagingBrokerConnectionObjectManager::getWaveServiceId (), WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_CANCEL_REQUEST_TO_TRY_FOR_CONNECTION)
 {
     m_brokerNames.push_back (brokerName);
 }

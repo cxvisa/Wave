@@ -43,7 +43,7 @@ class CommandLineInterfaceReceiverObjectManager : public WaveLocalObjectManagerF
 
         static string                                     getServiceName                            ();
         static CommandLineInterfaceReceiverObjectManager *getInstance                               ();
-        static PrismServiceId                             getPrismServiceId                         ();
+        static WaveServiceId                             getWaveServiceId                         ();
 
     // Now the data members
 

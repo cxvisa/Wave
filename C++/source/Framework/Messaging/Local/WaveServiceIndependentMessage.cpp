@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 
-WaveServiceIndependentMessage::WaveServiceIndependentMessage (PrismServiceId serviceCode, UI32 operationCode)
+WaveServiceIndependentMessage::WaveServiceIndependentMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode),
     WaveServiceIndependentMessageBase ()
 {

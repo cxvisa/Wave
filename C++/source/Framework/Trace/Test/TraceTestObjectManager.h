@@ -30,7 +30,7 @@ class TraceTestObjectManager : public PrismTestObjectManager
     public :
         virtual                       ~TraceTestObjectManager ();
         static TraceTestObjectManager *getInstance            ();
-        static PrismServiceId          getPrismServiceId      ();
+        static WaveServiceId          getWaveServiceId      ();
 
     // Now the data members
 

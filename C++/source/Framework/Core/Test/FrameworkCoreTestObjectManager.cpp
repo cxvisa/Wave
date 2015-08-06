@@ -35,7 +35,7 @@ FrameworkCoreTestObjectManager::~FrameworkCoreTestObjectManager ()
 {
 }
 
-PrismServiceId FrameworkCoreTestObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkCoreTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

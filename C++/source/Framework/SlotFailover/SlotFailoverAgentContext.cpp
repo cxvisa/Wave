@@ -18,7 +18,7 @@ SlotFailoverAgentContext::~SlotFailoverAgentContext ()
 {
 }
 
-vector<PrismServiceId> &SlotFailoverAgentContext::getEnabledServices ()
+vector<WaveServiceId> &SlotFailoverAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

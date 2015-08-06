@@ -25,7 +25,7 @@ WaveManagementClientInformation::WaveManagementClientInformation ()
 {
 }
 
-WaveManagementClientInformation::WaveManagementClientInformation (const string &waveClientName, const string &waveClientNameWithoutExtension, const string &ipAddress, const UI32 &port, const PrismServiceId &userInterfaceServiceId, const string &version)
+WaveManagementClientInformation::WaveManagementClientInformation (const string &waveClientName, const string &waveClientNameWithoutExtension, const string &ipAddress, const UI32 &port, const WaveServiceId &userInterfaceServiceId, const string &version)
     : SerializableObject                            (),
       m_waveClientName                              (waveClientName),
       m_waveClientNameWithoutExtension              (waveClientNameWithoutExtension),
@@ -49,7 +49,7 @@ void WaveManagementClientInformation::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeString         (&m_waveClientNameWithoutExtension,               "waveClientNameWithoutExtension"));
     addSerializableAttribute (new AttributeString         (&m_ipAddress,                                    "ipAddress"));
     addSerializableAttribute (new AttributeUI32           (&m_port,                                         "port"));
-    addSerializableAttribute (new AttributePrismServiceId (&m_userInterfaceServiceId,                       "userInterfaceServiceId"));
+    addSerializableAttribute (new AttributeWaveServiceId (&m_userInterfaceServiceId,                       "userInterfaceServiceId"));
     addSerializableAttribute (new AttributeString         (&m_serverIpAddressFromClientPerspective,         "serverIpAddressFromClientPerspective"));
     addSerializableAttribute (new AttributeUI32           (&m_serverUniqueIdentifierFromClientPerspective,  "serverUniqueIdentifierFromClientPerspective"));
     addSerializableAttribute (new AttributeStringVector   (&m_reservedFields,                               "reservedFields"));
@@ -97,13 +97,13 @@ void WaveManagementClientInformation::setPort (const UI32 &port)
 }
 
 
-PrismServiceId  WaveManagementClientInformation::getUserInterfaceServiceId () const
+WaveServiceId  WaveManagementClientInformation::getUserInterfaceServiceId () const
 {
     return (m_userInterfaceServiceId);
 }
 
 
-void WaveManagementClientInformation::setUserInterfaceServiceId (const PrismServiceId &userInterfaceServiceId)
+void WaveManagementClientInformation::setUserInterfaceServiceId (const WaveServiceId &userInterfaceServiceId)
 {
     m_userInterfaceServiceId = userInterfaceServiceId;
 }

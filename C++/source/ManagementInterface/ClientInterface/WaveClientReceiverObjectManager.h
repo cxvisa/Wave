@@ -35,7 +35,7 @@ class WaveClientReceiverObjectManager : public WaveLocalObjectManagerForUserSpec
         virtual                                 ~WaveClientReceiverObjectManager ();
 
         static  WaveClientReceiverObjectManager *getInstance                     ();
-        static  PrismServiceId                   getPrismServiceId               ();
+        static  WaveServiceId                   getWaveServiceId               ();
 
         static  bool                             isACurrentlyConnectedLocation   (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort);
 

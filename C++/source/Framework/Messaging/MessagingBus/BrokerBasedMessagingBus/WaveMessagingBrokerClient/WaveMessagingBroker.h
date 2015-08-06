@@ -25,7 +25,7 @@ class WaveMessagingBroker
 {
     private :
         void postCurrentSubscriptions ();
-        void addServiceSubscription   (const string &topicName, const PrismServiceId &prismServiceId);
+        void addServiceSubscription   (const string &topicName, const WaveServiceId &prismServiceId);
 
     protected :
     public :
@@ -59,7 +59,7 @@ class WaveMessagingBroker
                bool        operator <<                                (WaveBrokerSubscribeMessage *pWaveBrokerSubscribeMessage);
                bool        operator <<                                (WaveBrokerPublishMessage   *pWaveBrokerPublishMessage);
 
-               void        getCurrentlySubscribedServicesForTopicName (const string &topicName, vector<PrismServiceId> &currentlySubscribedServices);
+               void        getCurrentlySubscribedServicesForTopicName (const string &topicName, vector<WaveServiceId> &currentlySubscribedServices);
 
         // Now the data members
 
@@ -71,7 +71,7 @@ class WaveMessagingBroker
         PrismMutex                                         m_mutex;
         UI32                                               m_numberOfOutstandingCheckouts;
         map<string, string>                                m_currentSubscritptions;
-        map<string, map<PrismServiceId, PrismServiceId> >  m_currentlySubscribedServicesByTopicName;
+        map<string, map<WaveServiceId, WaveServiceId> >  m_currentlySubscribedServicesByTopicName;
 
     protected :
     public :

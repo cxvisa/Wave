@@ -35,7 +35,7 @@ FrameworkRemoteMessagingTestObjectManager2::~FrameworkRemoteMessagingTestObjectM
 {
 }
 
-PrismServiceId FrameworkRemoteMessagingTestObjectManager2::getPrismServiceId ()
+WaveServiceId FrameworkRemoteMessagingTestObjectManager2::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -633,7 +633,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTes
     trace (TRACE_LEVEL_INFO, "        bool");
     trace (TRACE_LEVEL_INFO, "        LocationId, ResourceId");
     trace (TRACE_LEVEL_INFO, "        WaveMessageType, WaveMessagePriority");
-    trace (TRACE_LEVEL_INFO, "        PrismServiceId");
+    trace (TRACE_LEVEL_INFO, "        WaveServiceId");
     trace (TRACE_LEVEL_INFO, "        SerializableObjectType");
     trace (TRACE_LEVEL_INFO, "        TraceClientId, TraceLevel");
     trace (TRACE_LEVEL_INFO, "        WorldWideName, vector<WorldWideName>");
@@ -751,7 +751,7 @@ void FrameworkRemoteMessagingTestObjectManager2::synchronousMessageAttributeTest
     trace (TRACE_LEVEL_INFO, "        bool");
     trace (TRACE_LEVEL_INFO, "        LocationId, ResourceId");
     trace (TRACE_LEVEL_INFO, "        WaveMessageType, WaveMessagePriority");
-    trace (TRACE_LEVEL_INFO, "        PrismServiceId");
+    trace (TRACE_LEVEL_INFO, "        WaveServiceId");
     trace (TRACE_LEVEL_INFO, "        SerializableObjectType");
     trace (TRACE_LEVEL_INFO, "        TraceClientId, TraceLevel");
     trace (TRACE_LEVEL_INFO, "        WorldWideName, vector<WorldWideName>");
@@ -835,7 +835,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep (Framewo
     trace (TRACE_LEVEL_INFO, "        bool");
     trace (TRACE_LEVEL_INFO, "        LocationId, ResourceId");
     trace (TRACE_LEVEL_INFO, "        WaveMessageType, WaveMessagePriority");
-    trace (TRACE_LEVEL_INFO, "        PrismServiceId");
+    trace (TRACE_LEVEL_INFO, "        WaveServiceId");
     trace (TRACE_LEVEL_INFO, "        SerializableObjectType");
     trace (TRACE_LEVEL_INFO, "        TraceClientId, TraceLevel");
     trace (TRACE_LEVEL_INFO, "        WorldWideName, vector<WorldWideName>");

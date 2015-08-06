@@ -36,7 +36,7 @@ class FrameworkLocalMessagingTestObjectManager2 : public PrismTestObjectManager
     public :
         virtual                                           ~FrameworkLocalMessagingTestObjectManager2 ();
         static  FrameworkLocalMessagingTestObjectManager2 *getInstance                               ();
-        static  PrismServiceId                             getPrismServiceId                         ();
+        static  WaveServiceId                             getWaveServiceId                         ();
 
     // Now the data members
 

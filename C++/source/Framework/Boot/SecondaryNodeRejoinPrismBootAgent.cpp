@@ -147,14 +147,14 @@ bool SecondaryNodeRejoinPrismBootAgent::isAPersistentBoot ()
 /// Description
 /// QUESTION:SAGAR
 /// Input
-/// const PrismServiceId
+/// const WaveServiceId
 /// Output
 /// none
 /// Return
 /// bool:
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const PrismServiceId &prismServiceId)
+bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -165,9 +165,9 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePha
     }
 }
 
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const PrismServiceId &prismServiceId)
+bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -178,9 +178,9 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const
     }
 }
 
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId& prismServiceId)
+bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId) ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -207,7 +207,7 @@ bool SecondaryNodeRejoinPrismBootAgent::willBeAPrimaryLocation ()
 }
 
 
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromCurrentBootPhase (PrismServiceId prismServiceId)
+bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId prismServiceId)
 {
     ApplicationSpecificServices *pApplicationSpecificServices = ApplicationSpecificServices::getInstance ();
 

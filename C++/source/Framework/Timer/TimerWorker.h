@@ -25,7 +25,7 @@ class TimerWorker : public WaveWorker
     private :
                 void        addTimerToList                          (TimerData *pTimerInfo);
                 UI32        removeTimer                             (TimerObjectManagerDeleteTimerMessage *pMessage, UI32 timerId);
-                void        removeTimerFromServiceTimersMultimap    (PrismServiceId serviceId, UI32 timerId);
+                void        removeTimerFromServiceTimersMultimap    (WaveServiceId serviceId, UI32 timerId);
                 int         restartTimer                            ();
                 UI32        binarySearch                            (int first, int last, timeval &key);
                 void        showPendingTimers                       ();
@@ -51,7 +51,7 @@ class TimerWorker : public WaveWorker
 
     private :
                 vector<TimerData *>             m_timerList;
-                multimap<PrismServiceId, UI32>  m_timerIdsByServiceId;
+                multimap<WaveServiceId, UI32>  m_timerIdsByServiceId;
                 UI32                            m_nTimers;
                 PrismMutex                      m_mutex;
                 UI32                            m_currTimerId;
@@ -81,7 +81,7 @@ class TimerData
                 PrismTimerExpirationHandler     m_pPrismTimerExpirationCallback;
                 void                           *m_pPrismTimerExpirationContext;
                 PrismElement                   *m_pPrismTimerSender;
-                PrismServiceId                  m_serviceId;
+                WaveServiceId                  m_serviceId;
 };
 
 }

@@ -459,7 +459,7 @@ DatabaseObjectManager::~DatabaseObjectManager ()
     }
 }
 
-PrismServiceId DatabaseObjectManager::getPrismServiceId ()
+WaveServiceId DatabaseObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -928,7 +928,7 @@ void DatabaseObjectManager::goOnInfiniteLoopBeforeReboot ()
 
 void DatabaseObjectManager::createInMemoryManagedObjectHandler (DatabaseObjectManagerCreateInMemoryManagedObjectMessage *pDatabaseObjectManagerCreateInMemoryManagedObjectMessage)
 {
-    PrismServiceId    prismServiceId;
+    WaveServiceId    prismServiceId;
     string            className           = pDatabaseObjectManagerCreateInMemoryManagedObjectMessage->getClassName ();
     WaveManagedObject *pWaveManagedObject = NULL;
              

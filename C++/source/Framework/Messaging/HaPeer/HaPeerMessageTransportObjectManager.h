@@ -65,7 +65,7 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
     public :
         virtual                                            ~HaPeerMessageTransportObjectManager ();
         static  HaPeerMessageTransportObjectManager *getInstance                                ();
-        static  PrismServiceId                              getPrismServiceId                          ();
+        static  WaveServiceId                              getWaveServiceId                          ();
 
         static  PrismThread                                *getPrismThread                             ();
 

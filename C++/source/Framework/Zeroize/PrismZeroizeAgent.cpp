@@ -97,7 +97,7 @@ ResourceId PrismZeroizeAgent::shutdownServicesStep(PrismZeroizeAgentContext *pCo
 
 ResourceId PrismZeroizeAgent::executeZeroizeStep(PrismZeroizeAgentContext *pContext)
 {
-    vector<PrismServiceId> &serviceIds = pContext->getZeroizableServices();
+    vector<WaveServiceId> &serviceIds = pContext->getZeroizableServices();
     UI32            i                     = 0;
     UI32            numberOfServices      = 0;    
     ResourceId      status				  = WAVE_MESSAGE_SUCCESS;
@@ -153,17 +153,17 @@ bool PrismZeroizeAgent::isZeroizeAtBoot()
     return(m_zeroizeAtBoot);
 }
 
-bool PrismZeroizeAgent::needsZeroize(const PrismServiceId &prismServiceId)
+bool PrismZeroizeAgent::needsZeroize(const WaveServiceId &prismServiceId)
 {
 
     bool returnFlag = true;
-    if (((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId))
     {
         returnFlag = false;
     }
     else if( (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
-        if ( TraceObjectManager::getPrismServiceId () == prismServiceId)
+        if ( TraceObjectManager::getWaveServiceId () == prismServiceId)
         {
             returnFlag = true;
         }

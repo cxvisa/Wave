@@ -16,7 +16,7 @@
 namespace WaveNs
 {
 
-PrismMessage *PrismMessageFactory::getMessageInstance (const PrismServiceId &serviceId, const UI32 &opcode)
+PrismMessage *PrismMessageFactory::getMessageInstance (const WaveServiceId &serviceId, const UI32 &opcode)
 {
     WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForMessage (serviceId, opcode);
     PrismMessage       *pPrismMessage       = NULL;
@@ -37,7 +37,7 @@ PrismMessage *PrismMessageFactory::getMessageInstance (const PrismServiceId &ser
     return (pPrismMessage);
 }
 
-WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForMessage (const PrismServiceId &serviceId, const UI32 &opcode)
+WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForMessage (const WaveServiceId &serviceId, const UI32 &opcode)
 {
     PrismThread        *pPrismThread        = NULL;
     WaveObjectManager *pWaveObjectManager = NULL;
@@ -52,7 +52,7 @@ WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForMessage (const Pr
     return (pWaveObjectManager);
 }
 
-WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForEvent (const PrismServiceId &serviceId, const UI32 &eventOpcode)
+WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForEvent (const WaveServiceId &serviceId, const UI32 &eventOpcode)
 {
     PrismThread        *pPrismThread        = NULL;
     WaveObjectManager *pWaveObjectManager = NULL;
@@ -67,7 +67,7 @@ WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForEvent (const Pris
     return (pWaveObjectManager);
 }
 
-WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForEventListener (const LocationId &locationId, const PrismServiceId &serviceId, const UI32 &eventOpcode)
+WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForEventListener (const LocationId &locationId, const WaveServiceId &serviceId, const UI32 &eventOpcode)
 {
     PrismThread        *pPrismThread        = NULL;
     WaveObjectManager *pWaveObjectManager = NULL;
@@ -82,7 +82,7 @@ WaveObjectManager *PrismMessageFactory::getWaveObjectManagerForEventListener (co
     return (pWaveObjectManager);
 }
 
-PrismMessage *PrismMessageFactory::getManagementInterfaceMessageInstance (const string &waveClientName, const PrismServiceId &serviceId, const UI32 &opcode)
+PrismMessage *PrismMessageFactory::getManagementInterfaceMessageInstance (const string &waveClientName, const WaveServiceId &serviceId, const UI32 &opcode)
 {
     if (WAVE_MGMT_INTF_ROLE_CLIENT == (FrameworkToolKit::getManagementInterfaceRole ()))
     {

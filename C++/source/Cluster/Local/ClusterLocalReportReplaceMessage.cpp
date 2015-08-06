@@ -22,7 +22,7 @@ namespace WaveNs
 /// Return
 /// None
 ClusterLocalReportReplaceMessage::ClusterLocalReportReplaceMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_REPORT_REPLACE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_REPLACE),
       m_thisNodeIpAddress(""),
       m_thisNodePort(0),
       m_thisNodeLocationId(0),
@@ -46,7 +46,7 @@ ClusterLocalReportReplaceMessage::ClusterLocalReportReplaceMessage (const string
                                                                                           const UI32   thisNodePort,
                                                                                           const LocationId   thisNodeLocationId,
                                                                                           const LocationId   replacedNodeLocationId)
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_REPORT_REPLACE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_REPLACE),
       m_thisNodeIpAddress(thisNodeIpAddress),
       m_thisNodePort(thisNodePort),
       m_thisNodeLocationId(thisNodeLocationId),

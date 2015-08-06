@@ -13,13 +13,13 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerExecuteTransactionMessage::PersistenceObjectManagerExecuteTransactionMessage (const string &sql)
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION),
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION),
       m_sql (sql)
 {
 }
 
 PersistenceObjectManagerExecuteTransactionMessage::PersistenceObjectManagerExecuteTransactionMessage ()
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION)
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION)
 {
 }
 

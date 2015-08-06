@@ -58,7 +58,7 @@ MultiPartitionObjectManager *MultiPartitionObjectManager::getInstance ()
     return (pMultiPartitionObjectManager);
 }
 
-PrismServiceId MultiPartitionObjectManager::getPrismServiceId ()
+WaveServiceId MultiPartitionObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

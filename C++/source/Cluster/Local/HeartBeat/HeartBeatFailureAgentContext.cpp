@@ -18,7 +18,7 @@ HeartBeatFailureAgentContext::~HeartBeatFailureAgentContext ()
 {
 }
 
-vector<PrismServiceId> &HeartBeatFailureAgentContext::getEnabledServices ()
+vector<WaveServiceId> &HeartBeatFailureAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

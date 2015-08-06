@@ -76,7 +76,7 @@ FrameworkTestability1ObjectManager::~FrameworkTestability1ObjectManager ()
 {
 }
 
-PrismServiceId FrameworkTestability1ObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkTestability1ObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -88,7 +88,7 @@ string FrameworkTestability1ObjectManager::getPrismServiceName ()
 
 void FrameworkTestability1ObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (FrameworkLocalMessagingTestObjectManager::getPrismServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityEvent1EventHandler));
+    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityEvent1EventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -877,8 +877,8 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
 {
     trace (TRACE_LEVEL_DEBUG, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage1RequestHandler : ");
 
-    PrismServiceId prismServiceId = pMessage->getPrismServiceId ();
-    vector<PrismServiceId>  messageServiceIds;
+    WaveServiceId prismServiceId = pMessage->getWaveServiceId ();
+    vector<WaveServiceId>  messageServiceIds;
     vector<UI32>            messageOperationCodes;
     vector<WaveMessageType> messageTypes;
     vector<string>          btStrings;
@@ -900,7 +900,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
 {
     trace (TRACE_LEVEL_DEBUG, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceObjectLeakMessageRequestHandler ");
 
-    PrismServiceId prismServiceId = pMessage->getPrismServiceId ();
+    WaveServiceId prismServiceId = pMessage->getWaveServiceId ();
 
     vector<string>  managedObjectClassNames;
     vector<string>  managedObjectNames;
@@ -920,7 +920,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfacF
 {
     trace (TRACE_LEVEL_DEBUG, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceObjectLeakMessageRequestHandler ");
 
-    // PrismServiceId prismServiceId = pMessage->getPrismServiceId ();
+    // WaveServiceId prismServiceId = pMessage->getWaveServiceId ();
     bool bFileServiceUsageFlag = pMessage->getFileServiceUseforFileTransferFlag();
 
     if (true == bFileServiceUsageFlag)

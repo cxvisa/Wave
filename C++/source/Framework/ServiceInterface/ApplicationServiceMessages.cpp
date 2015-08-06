@@ -14,7 +14,7 @@ ApplicationServiceMessage::ApplicationServiceMessage ()
 {
 }
 
-ApplicationServiceMessage::ApplicationServiceMessage (PrismServiceId prismServiceId)
+ApplicationServiceMessage::ApplicationServiceMessage (WaveServiceId prismServiceId)
     : PrismMessage (prismServiceId, APPLICATION_SERVICE_GENERIC_MESSAGE)
 {
 }

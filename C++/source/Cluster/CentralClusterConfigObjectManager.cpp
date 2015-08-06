@@ -142,7 +142,7 @@ CentralClusterConfigObjectManager::~CentralClusterConfigObjectManager ()
     }
 }
 
-PrismServiceId CentralClusterConfigObjectManager::getPrismServiceId ()
+WaveServiceId CentralClusterConfigObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

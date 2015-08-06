@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-ManagementInterfaceMessage *ManagementInterfaceMessageFactory::constructManagementInterfaceMessage (PrismServiceId serviceId, UI32 operationId)
+ManagementInterfaceMessage *ManagementInterfaceMessageFactory::constructManagementInterfaceMessage (WaveServiceId serviceId, UI32 operationId)
 {
     return (NULL);
 }

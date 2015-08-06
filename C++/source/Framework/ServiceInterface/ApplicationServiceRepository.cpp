@@ -113,7 +113,7 @@ void ApplicationServiceRepository::createApplicationServices ()
 
         // Add the New Application Service into all the Framework Sequencers.
 
-        frameworkSequenceGenerator.addPrismServiceIdToAll (pNewApplicationService->getServiceId ());
+        frameworkSequenceGenerator.addWaveServiceIdToAll (pNewApplicationService->getServiceId ());
 
         element++;
     }
@@ -138,7 +138,7 @@ void ApplicationServiceRepository::createApplicationLocalServices ()
 
         // Add the New Application Service into all the Framework Sequencers.
 
-        frameworkSequenceGenerator.addPrismServiceIdToAll (pNewApplicationLocalService->getServiceId ());
+        frameworkSequenceGenerator.addWaveServiceIdToAll (pNewApplicationLocalService->getServiceId ());
 
         element++;
     }

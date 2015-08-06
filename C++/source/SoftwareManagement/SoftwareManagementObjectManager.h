@@ -26,7 +26,7 @@ class SoftwareManagementObjectManager : public WaveObjectManager
     public :
         virtual                                 ~SoftwareManagementObjectManager ();
         static  SoftwareManagementObjectManager *getInstance                     ();
-        static  PrismServiceId                   getPrismServiceId               ();
+        static  WaveServiceId                   getWaveServiceId               ();
         static  string                           getClassName                    ();
 
     // Now the data members

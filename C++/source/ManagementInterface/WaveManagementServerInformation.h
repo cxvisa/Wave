@@ -35,7 +35,7 @@ class WaveManagementServerInformation : virtual public SerializableObject
                 UI32            getPort                                         () const;
                 void            setPort                                         (const UI32 &port);
 
-                void            addServiceInformation                           (const string &serviceName, const PrismServiceId &serviceId);
+                void            addServiceInformation                           (const string &serviceName, const WaveServiceId &serviceId);
                 UI32            getNumberOfServices                             () const;
                 string          getServiceNameAtIndex                           (const UI32 &serviceIndex) const;
                 UI32            getServiceIdAtIndex                             (const UI32 &serviceIndex) const;
@@ -53,7 +53,7 @@ class WaveManagementServerInformation : virtual public SerializableObject
         string                 m_ipAddress;
         UI32                   m_port;
         vector<string>         m_serviceNames;
-        vector<PrismServiceId> m_serviceIds;
+        vector<WaveServiceId> m_serviceIds;
         UI32                   m_serverUniqueIdentifierFromServerPerspective;
         vector<string>         m_reservedFields;
         string                 m_messageVersion;

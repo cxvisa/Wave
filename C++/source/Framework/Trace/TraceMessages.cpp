@@ -17,7 +17,7 @@ static const UI32 GET_CLIENTS_INFORMATION_IDS_TAG    = 0;
 static const UI32 GET_CLIENTS_INFORMATION_LEVELS_TAG = 1;
 
 TraceMessage::TraceMessage (TraceClientId traceClientId, TraceLevel traceLevel, const string &inputString, const bool &addNewLine)
-    : PrismMessage    (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_TRACE),
+    : PrismMessage    (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_TRACE),
       m_traceClientId (traceClientId),
       m_traceLevel    (traceLevel),
       m_addNewLine    (addNewLine)
@@ -26,7 +26,7 @@ TraceMessage::TraceMessage (TraceClientId traceClientId, TraceLevel traceLevel, 
 }
 
 TraceMessage::TraceMessage ()
-    : PrismMessage    (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_TRACE),
+    : PrismMessage    (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_TRACE),
       m_traceClientId (0),
       m_traceLevel    (TRACE_LEVEL_UNKNOWN),
       m_addNewLine    (false)
@@ -218,7 +218,7 @@ void TraceObjectManagerGetClientsInformationMessage::setupAttributesForSerializa
 }
 
 TraceObjectManagerPrintToWaveClientSessionMessage::TraceObjectManagerPrintToWaveClientSessionMessage ()
-    : PrismMessage (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION),
+    : PrismMessage (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION),
       m_clientOriginatingLocationId(0),
       m_nativeClientId (0),
       m_userClientId (0)
@@ -226,7 +226,7 @@ TraceObjectManagerPrintToWaveClientSessionMessage::TraceObjectManagerPrintToWave
 }
 
 TraceObjectManagerPrintToWaveClientSessionMessage::TraceObjectManagerPrintToWaveClientSessionMessage (const LocationId &clientOriginatingLocationId, const UI32 &nativeClientId, const UI32 &userClientId, const string &messageToBePrinted)
-    : PrismMessage                  (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION),
+    : PrismMessage                  (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION),
       m_clientOriginatingLocationId (clientOriginatingLocationId),
       m_nativeClientId              (nativeClientId),
       m_userClientId                (userClientId),
@@ -235,7 +235,7 @@ TraceObjectManagerPrintToWaveClientSessionMessage::TraceObjectManagerPrintToWave
 }
 
 TraceObjectManagerPrintToWaveClientSessionMessage::TraceObjectManagerPrintToWaveClientSessionMessage (const WaveClientSessionContext &waveClientSessionContext, const string &messageToBePrinted)
-    : PrismMessage                  (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION),
+    : PrismMessage                  (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION),
       m_clientOriginatingLocationId (waveClientSessionContext.getWaveClientOriginatingLocationId ()),
       m_nativeClientId              (waveClientSessionContext.getWaveNativeClientId ()),
       m_userClientId                (waveClientSessionContext.getWaveUserClientId ()),
@@ -298,20 +298,20 @@ string TraceObjectManagerPrintToWaveClientSessionMessage::getMessageToBePrinted 
 }
 
 TraceObjectManagerPrintToAllWaveClientSessionsMessage::TraceObjectManagerPrintToAllWaveClientSessionsMessage ()
-    : PrismMessage (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS),
+    : PrismMessage (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS),
       m_clientOriginatingLocationId (0)
 {
 }
 
 TraceObjectManagerPrintToAllWaveClientSessionsMessage::TraceObjectManagerPrintToAllWaveClientSessionsMessage (const LocationId &clientOriginatingLocationId, const string &messageToBePrinted)
-    : PrismMessage                  (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS),
+    : PrismMessage                  (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS),
       m_clientOriginatingLocationId (clientOriginatingLocationId),
       m_messageToBePrinted          (messageToBePrinted)
 {
 }
 
 TraceObjectManagerPrintToAllWaveClientSessionsMessage::TraceObjectManagerPrintToAllWaveClientSessionsMessage (const WaveClientSessionContext &waveClientSessionContext, const string &messageToBePrinted)
-    : PrismMessage                  (TraceObjectManager::getPrismServiceId (), TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS),
+    : PrismMessage                  (TraceObjectManager::getWaveServiceId (), TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS),
       m_clientOriginatingLocationId (waveClientSessionContext.getWaveClientOriginatingLocationId ()),
       m_messageToBePrinted          (messageToBePrinted)
 {
@@ -423,7 +423,7 @@ void TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::decrementOutsta
 }
 
 
-TraceObjectManagerMessageHistoryDumpForAServiceMessage::TraceObjectManagerMessageHistoryDumpForAServiceMessage (PrismServiceId prismServiceId)
+TraceObjectManagerMessageHistoryDumpForAServiceMessage::TraceObjectManagerMessageHistoryDumpForAServiceMessage (WaveServiceId prismServiceId)
     : ManagementInterfaceMessage (TraceObjectManager::getClassName (), TRACE_OPERATION_CODE_MESSAGE_HISTORY_DUMP_FOR_A_SERVICE),
     m_prismServiceId            (prismServiceId)
 {
@@ -439,7 +439,7 @@ TraceObjectManagerMessageHistoryDumpForAServiceMessage::~TraceObjectManagerMessa
 {
 }
 
-PrismServiceId TraceObjectManagerMessageHistoryDumpForAServiceMessage::getPrismServiceId () const
+WaveServiceId TraceObjectManagerMessageHistoryDumpForAServiceMessage::getWaveServiceId () const
 {
     return m_prismServiceId;
 }
@@ -471,7 +471,7 @@ TraceObjectManagerMessageHistoryConfigForAServiceMessage::TraceObjectManagerMess
 {
 }
 
-TraceObjectManagerMessageHistoryConfigForAServiceMessage::TraceObjectManagerMessageHistoryConfigForAServiceMessage (PrismServiceId prismServiceId)
+TraceObjectManagerMessageHistoryConfigForAServiceMessage::TraceObjectManagerMessageHistoryConfigForAServiceMessage (WaveServiceId prismServiceId)
     : ManagementInterfaceMessage (TraceObjectManager::getClassName (), TRACE_OPERATION_CODE_MESSAGE_HISTORY_CONFIG_FOR_A_SERVICE),
     m_prismServiceId            (prismServiceId),
     m_messageHistoryState       (false),
@@ -483,7 +483,7 @@ TraceObjectManagerMessageHistoryConfigForAServiceMessage::~TraceObjectManagerMes
 {
 }
 
-PrismServiceId TraceObjectManagerMessageHistoryConfigForAServiceMessage::getPrismServiceId () const
+WaveServiceId TraceObjectManagerMessageHistoryConfigForAServiceMessage::getWaveServiceId () const
 {
     return m_prismServiceId;
 }

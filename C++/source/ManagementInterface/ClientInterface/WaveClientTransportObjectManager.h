@@ -72,8 +72,8 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
         ResourceId                  postToServer                                    (ManagementInterfaceMessage *pManagementInterfaceMessage);
 
 
-        PrismServiceId              getPrismServiceIdForServiceName                 (const UI32 &serverId, const string &serviceName);
-        string                      getPrismServiceNameForServiceId                 (const UI32 &serverId, const PrismServiceId &serviceId);
+        WaveServiceId              getWaveServiceIdForServiceName                 (const UI32 &serverId, const string &serviceName);
+        string                      getPrismServiceNameForServiceId                 (const UI32 &serverId, const WaveServiceId &serviceId);
         void                        addServerId                                     (const UI32 &serverId);
         void                        removeServerId                                  (const UI32 &serverId);
         bool                        validateIfInTheMiddleOfConnectingToServer       (const UI32 &serverId);
@@ -83,7 +83,7 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
         virtual                                  ~WaveClientTransportObjectManager  ();
 
         static  WaveClientTransportObjectManager *getInstance                       ();
-        static  PrismServiceId                    getPrismServiceId                 ();
+        static  WaveServiceId                    getWaveServiceId                 ();
         void                                      disconnectFromServer              (const UI32 &serverId, const bool removeFromCache = true);
         void                                      disconnectFromServer              (const string &serverIpAddress, const SI32 &serverPort);
         void                                      replyToPendingMessagesForServer   (const string &serverIpAddress, const SI32 &serverPort);

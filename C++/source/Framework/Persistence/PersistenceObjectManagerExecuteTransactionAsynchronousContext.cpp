@@ -53,12 +53,12 @@ void PersistenceObjectManagerExecuteTransactionAsynchronousContext::setIsConfigu
     m_isConfigurationTimeChange = isConfigurationTimeChange;
 }
 
-PrismServiceId PersistenceObjectManagerExecuteTransactionAsynchronousContext::getSenderServiceCode () const
+WaveServiceId PersistenceObjectManagerExecuteTransactionAsynchronousContext::getSenderServiceCode () const
 {
     return (m_senderServiceCode);
 }
 
-void PersistenceObjectManagerExecuteTransactionAsynchronousContext::setSenderServiceCode (const PrismServiceId &senderServiceCode)
+void PersistenceObjectManagerExecuteTransactionAsynchronousContext::setSenderServiceCode (const WaveServiceId &senderServiceCode)
 {
     m_senderServiceCode = senderServiceCode;
 }

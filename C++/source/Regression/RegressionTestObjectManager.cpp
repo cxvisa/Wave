@@ -44,7 +44,7 @@ RegressionTestObjectManager *RegressionTestObjectManager::getInstance ()
     return (pRegressionTestObjectManager);
 }
 
-PrismServiceId RegressionTestObjectManager::getPrismServiceId ()
+WaveServiceId RegressionTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -107,14 +107,14 @@ void RegressionTestObjectManager::getTestServiceEntriesMessageHandler (Regressio
 void RegressionTestObjectManager::setTestServiceStateMessageHandler (RegressionTestObjectManagerSetTestServiceStateMessage *pMessage)
 {
     UI32         numberOfTestServices = m_testServiceEntries.size ();
-    PrismServiceId testServiceId        = pMessage->getTestServiceId ();
+    WaveServiceId testServiceId        = pMessage->getTestServiceId ();
     bool         isTestServiceEnabled = pMessage->getIsTestEnabled ();
     UI32         i;
     bool         foundTestService     = false;
 
     for (i = 0; i < numberOfTestServices; i++)
     {
-        PrismServiceId tempTestServiceId = m_testServiceEntries[i].getTestServiceId ();
+        WaveServiceId tempTestServiceId = m_testServiceEntries[i].getTestServiceId ();
 
         if (testServiceId == tempTestServiceId)
         {
@@ -153,7 +153,7 @@ void RegressionTestObjectManager::startRegressionMessageHandler (RegressionTestO
 
         for (i = 0; i < numberOfTestServices; i++)
         {
-            PrismServiceId testServiceId = m_testServiceEntries[i].getTestServiceId ();
+            WaveServiceId testServiceId = m_testServiceEntries[i].getTestServiceId ();
             bool         isTestEnabled = m_testServiceEntries[i].getIsTestEnabled ();
 
             if (true == isTestEnabled)
@@ -202,7 +202,7 @@ void RegressionTestObjectManager::startRegressionMessageHandler (RegressionTestO
 
 void RegressionTestObjectManager::prepareAServiceTestMessageHandler (RegressionTestObjectManagerPrepareTestForAServiceMessage *pMessage)
 {
-    PrismServiceId serviceCode                 = pMessage->getServiceCode ();
+    WaveServiceId serviceCode                 = pMessage->getServiceCode ();
     ResourceId     completionStatus            = WAVE_MESSAGE_SUCCESS;
     vector<string> inputStrings;
     UI32           argIndex;
@@ -251,7 +251,7 @@ void RegressionTestObjectManager::prepareAServiceTestMessageHandler (RegressionT
 
 void RegressionTestObjectManager::runAServiceTestMessageHandler (RegressionTestObjectManagerRunTestForAServiceMessage *pMessage)
 {
-    PrismServiceId serviceCode                 = pMessage->getServiceCode ();
+    WaveServiceId serviceCode                 = pMessage->getServiceCode ();
     UI32         numberOfTimesToRunServiceTest = pMessage->getNumberOfTimesToRunServiceTest ();
     UI32         i                             = 0;
     ResourceId   completionStatus              = WAVE_MESSAGE_SUCCESS;
@@ -301,7 +301,7 @@ void RegressionTestObjectManager::runAServiceTestMessageHandler (RegressionTestO
     reply (pMessage);
 }
 
-void RegressionTestObjectManager::addToRegressionShell (const PrismServiceId &prismServiceId, const bool &isEnabledByDefault)
+void RegressionTestObjectManager::addToRegressionShell (const WaveServiceId &prismServiceId, const bool &isEnabledByDefault)
 {
     (getInstance ())->m_testServiceEntries.push_back (RegressionTestEntry (prismServiceId, isEnabledByDefault));
 }

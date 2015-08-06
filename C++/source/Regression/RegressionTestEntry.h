@@ -18,9 +18,9 @@ class RegressionTestEntry
     protected :
     public :
                       RegressionTestEntry     ();
-                      RegressionTestEntry     (PrismServiceId id, bool enabled);
+                      RegressionTestEntry     (WaveServiceId id, bool enabled);
                      ~RegressionTestEntry     ();
-        PrismServiceId  getTestServiceId        () const;
+        WaveServiceId  getTestServiceId        () const;
         bool          getIsTestEnabled        () const;
         void          setIsTestEnabled        (bool enabled);
 
@@ -28,7 +28,7 @@ class RegressionTestEntry
     // Now the data members
 
      private :
-        PrismServiceId m_testServiceId;
+        WaveServiceId m_testServiceId;
         bool         m_isTestEnabled;
 
      protected :

@@ -164,7 +164,7 @@ class FrameworkTestability4ObjectManager: public WaveLocalObjectManager
         virtual ~FrameworkTestability4ObjectManager                     ();
 
         static  FrameworkTestability4ObjectManager *getInstance         ();
-        static  PrismServiceId                      getPrismServiceId   ();
+        static  WaveServiceId                      getWaveServiceId   ();
         static  string                              getPrismServiceName ();
 
 

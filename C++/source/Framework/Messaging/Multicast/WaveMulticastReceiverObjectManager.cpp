@@ -28,7 +28,7 @@ WaveMulticastReceiverObjectManager *WaveMulticastReceiverObjectManager::getInsta
     return (pWaveMessagingBrokerReceiverObjectManager);
 }
 
-PrismServiceId WaveMulticastReceiverObjectManager::getPrismServiceId ()
+WaveServiceId WaveMulticastReceiverObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

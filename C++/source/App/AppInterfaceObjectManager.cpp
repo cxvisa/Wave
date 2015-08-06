@@ -66,7 +66,7 @@ AppInterfaceObjectManager::~AppInterfaceObjectManager ()
 
 }
 
-PrismServiceId AppInterfaceObjectManager::getPrismServiceId ()
+WaveServiceId AppInterfaceObjectManager::getWaveServiceId ()
 {
     return (getServiceId ());
 }

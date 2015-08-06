@@ -108,9 +108,9 @@ namespace WaveNs
 {
 
 static PrismMutex                          s_prismObjectManagerMutex;
-static PrismServiceId                      s_nextAvailablePrismServiceId = 0;
+static WaveServiceId                      s_nextAvailableWaveServiceId = 0;
 static PrismMutex                          s_enabledServicesMutex;
-static map<PrismServiceId, PrismServiceId> s_enabledServices;
+static map<WaveServiceId, WaveServiceId> s_enabledServices;
 static PrismMutex                          s_mutexForAddingEventListener;
 static PrismMutex                          s_supportedEventsMutex;
 static map<string, WaveObjectManager *>    s_allManagedClassesAndOwnersMap;
@@ -137,7 +137,7 @@ static char                                 *s_crashForOMMessage= new char [512 
 
 map<string, PrismElement *>       WaveObjectManager::m_ownersForCreatingManagedObjectInstances;
 PrismMutex                        WaveObjectManager::m_createManagedObjectInstanceWrapperMutex;
-map <string, PrismServiceId>      WaveObjectManager::m_serviceStringServiceIdMap;
+map <string, WaveServiceId>      WaveObjectManager::m_serviceStringServiceIdMap;
 PrismMutex                        WaveObjectManager::m_serviceStringServiceIdMapMutex;
 
 map<string, map<string, string> > WaveObjectManager::m_clientsListeningForCreateByManagedObject;
@@ -298,7 +298,7 @@ void WaveObjectManager::PrismEventMapContext::executeEventHandler (const PrismEv
     (m_pPrismElementThatHandlesTheEvent->*m_pPrismEventHandler) (pPrismEvent);
 }
 
-WaveObjectManager::PrismEventListenerMapContext::PrismEventListenerMapContext (const PrismServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId)
+WaveObjectManager::PrismEventListenerMapContext::PrismEventListenerMapContext (const WaveServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId)
     : m_eventListenerSericeId (eventListenerServiceId),
       m_eventListenerLocationId (eventListenerLocationId)
 {
@@ -308,7 +308,7 @@ WaveObjectManager::PrismEventListenerMapContext::~PrismEventListenerMapContext (
 {
 }
 
-PrismServiceId WaveObjectManager::PrismEventListenerMapContext::getEventListenerServiceId () const
+WaveServiceId WaveObjectManager::PrismEventListenerMapContext::getEventListenerServiceId () const
 {
     return (m_eventListenerSericeId);
 }
@@ -465,7 +465,7 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
 
     m_waveServiceMode = m_waveServiceLaunchMode;
 
-    UI32 currentPrismServiceId = 0;
+    UI32 currentWaveServiceId = 0;
 
     if (true != (canInstantiateServiceAtThisTime (objectManagerName)))
     {
@@ -478,8 +478,8 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     }
 
     s_prismObjectManagerMutex.lock ();
-    s_nextAvailablePrismServiceId++;
-    m_serviceId = currentPrismServiceId = s_nextAvailablePrismServiceId;
+    s_nextAvailableWaveServiceId++;
+    m_serviceId = currentWaveServiceId = s_nextAvailableWaveServiceId;
     s_prismObjectManagerMutex.unlock ();
 
     PrismThread *pAssociatedPrismThread = NULL;
@@ -763,7 +763,7 @@ void WaveObjectManager::removeOperationMap (const UI32 &operationCode)
     m_createMessageInstanceWrapperMutex.unlock ();
 }
 
-void WaveObjectManager::addEventListener (const UI32 &eventOperationCode, const PrismServiceId &listenerPrismServiceId, const LocationId &listenerLocationId)
+void WaveObjectManager::addEventListener (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId)
 {
     // This member function can be called from multiple threads.  So we need to make it thread safe.
 
@@ -777,7 +777,7 @@ void WaveObjectManager::addEventListener (const UI32 &eventOperationCode, const 
         m_eventListenersMap[eventOperationCode] = new vector<PrismEventListenerMapContext *>;
     }
 
-    (m_eventListenersMap[eventOperationCode])->push_back (new PrismEventListenerMapContext (listenerPrismServiceId, listenerLocationId));
+    (m_eventListenersMap[eventOperationCode])->push_back (new PrismEventListenerMapContext (listenerWaveServiceId, listenerLocationId));
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::addEventListener : Number Of Event Liusteners For Event : ") + eventOperationCode + string (" are : ") + (m_eventListenersMap[eventOperationCode])->size () + " on Service " + m_name);
 
@@ -810,7 +810,7 @@ void WaveObjectManager::getEventListeners (const UI32 &eventOperationCode, vecto
     s_mutexForAddingEventListener.unlock ();
 }
 
-void WaveObjectManager::removeEventListener (const UI32 &eventOperationCode, const PrismServiceId &listenerPrismServiceId, const LocationId &listenerLocationId)
+void WaveObjectManager::removeEventListener (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId)
 {
     // This member function can be called from multiple threads.  So we need to make it thread safe.
 
@@ -828,12 +828,12 @@ void WaveObjectManager::removeEventListener (const UI32 &eventOperationCode, con
         {
             PrismEventListenerMapContext *pTempContext = *element1;
 
-            if ((listenerPrismServiceId == (pTempContext->getEventListenerServiceId ())) && (listenerLocationId == (pTempContext->getEventListenerLocationId ())))
+            if ((listenerWaveServiceId == (pTempContext->getEventListenerServiceId ())) && (listenerLocationId == (pTempContext->getEventListenerLocationId ())))
             {
                 delete pTempContext;
 
                 (*(element->second)).erase (element1);
-                trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::removeEventListener : Removing an event Listener : ServiceId : ") + listenerPrismServiceId + " : LocationId : " + listenerLocationId);
+                trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::removeEventListener : Removing an event Listener : ServiceId : ") + listenerWaveServiceId + " : LocationId : " + listenerLocationId);
 
                 break;
             }
@@ -854,9 +854,9 @@ void WaveObjectManager::addEventType (const UI32 &eventOperationCode)
     s_supportedEventsMutex.unlock ();
 }
 
-void WaveObjectManager::listenForEvent (PrismServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
+void WaveObjectManager::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
 {
-    PrismServiceId prismServiceId = prismServiceCode;
+    WaveServiceId prismServiceId = prismServiceCode;
 
     if (NULL == pPrismElement)
     {
@@ -970,7 +970,7 @@ void WaveObjectManager::unlistenEvents ()
     map<LocationId, map<UI32, map<UI32, PrismEventMapContext *> *> *>::iterator element               = m_eventsMap.begin ();
     map<LocationId, map<UI32, map<UI32, PrismEventMapContext *> *> *>::iterator end                   = m_eventsMap.end ();
     LocationId                                                                  eventSourceLocationId = 0;
-    PrismServiceId                                                              eventSourceServiceId  = 0;
+    WaveServiceId                                                              eventSourceServiceId  = 0;
     UI32                                                                        eventOperationCode    = 0;
 
     while (element != end)
@@ -1210,11 +1210,11 @@ PrismMessage *WaveObjectManager::getPInputMesage () const
     return (m_pInputMessage);
 }
 
-WaveObjectManager::PrismEventMapContext *WaveObjectManager::getPrismEventHandler (const LocationId &eventSourceLocationId, const PrismServiceId &eventSourceServiceId, const UI32 &eventOperationCode)
+WaveObjectManager::PrismEventMapContext *WaveObjectManager::getPrismEventHandler (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode)
 {
     // If the eventOperationCode is WAVE_OBJECT_MANAGER_ANY_EVENT we do not care about the service and the corresponding service must have registered with null service id for listeneing.
 
-    PrismServiceId        effectiveEventSourceServiceId = (WAVE_OBJECT_MANAGER_ANY_EVENT == eventOperationCode) ? 0 : eventSourceServiceId;
+    WaveServiceId        effectiveEventSourceServiceId = (WAVE_OBJECT_MANAGER_ANY_EVENT == eventOperationCode) ? 0 : eventSourceServiceId;
     PrismEventMapContext *pTemp                         = (*((*(m_eventsMap[eventSourceLocationId]))[effectiveEventSourceServiceId]))[eventOperationCode];
 
     return (pTemp);
@@ -1237,7 +1237,7 @@ void WaveObjectManager::setAssociatedPrismThread (PrismThread *pAssociatedPrismT
 //    if (NULL != pAssociatedPrismThread)
 //    {
 //        m_registeredPrismServicesMutex.lock ();
-//        m_registeredPrismServices.insert (m_registeredPrismServices.end (), pAssociatedPrismThread->getPrismServiceId ());
+//        m_registeredPrismServices.insert (m_registeredPrismServices.end (), pAssociatedPrismThread->getWaveServiceId ());
 //        m_registeredPrismServicesMutex.unlock ();
 //    }
 }
@@ -1272,7 +1272,7 @@ bool WaveObjectManager::isEventOperationCodeSupported (UI32 eventOperationCode)
     return (isEventSupported);
 }
 
-bool WaveObjectManager::isEventOperationCodeSupportedForListening (const LocationId &eventSourceLocationId, const PrismServiceId &eventSourceServiceId, const UI32 &eventOperationCode)
+bool WaveObjectManager::isEventOperationCodeSupportedForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode)
 {
     if (NULL != (getPrismEventHandler (eventSourceLocationId, eventSourceServiceId, eventOperationCode)))
     {
@@ -1720,7 +1720,7 @@ WaveMessageStatus WaveObjectManager::sendOneWay (PrismMessage *pPrismMessage, co
     // Set this so the message can be returned.  In fact one way messages can never be returned.  This is set so that
     // in case we need to refer it at the receiver end.
 
-    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getPrismServiceId ();
+    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
 
     // Store the receiver LocationId.
 
@@ -1790,7 +1790,7 @@ WaveMessageStatus WaveObjectManager::sendOneWayToFront (PrismMessage *pPrismMess
     // Set this so the message can be returned.  Infact one way messages can never be returned.  This is set so that
     // in case we need to refer it at the receiver end.
 
-    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getPrismServiceId ();
+    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
 
     // Store the receiver LocationId.
 
@@ -1874,7 +1874,7 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
     // Set this so the message can be returned.  Infact synchonously sent messages can never be returned.  This is set so that
     // in case we need to refer it at the receiver end.
 
-    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getPrismServiceId ();
+    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
 
     // Set the filed to indictae the message is a synchronously sent message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply unlock the sending thread.
@@ -1902,7 +1902,7 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
 
     pPrismMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
-    if ((true == pPrismMessage->getIsALastConfigReplay ()) && (m_pAssociatedPrismThread->getPrismServiceId () == PrismFrameworkObjectManager::getPrismServiceId ()))
+    if ((true == pPrismMessage->getIsALastConfigReplay ()) && (m_pAssociatedPrismThread->getWaveServiceId () == PrismFrameworkObjectManager::getWaveServiceId ()))
     {
         // This case is the initial start of the Last Config Replay where the PrismFrameworkPostPersistentBootWorker (PrismFrameworkObjectManager) triggers a last config replay.  We do not want to propagate message flags from the input message to output message here.  Otherwise, the last configuration replayed intent will have incorrect propagated flags.  Only the sendSynchronously () API needs this special handling since triggering the last config replay should only be synchronously replayed.
     }
@@ -2370,7 +2370,7 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::broadcast : Number Of Event Listeners for Event : ") + eventOperationCode + string (" are ") + numberOfEventListeners + string (" on Service : ") + m_name);
 
-    pPrismEvent->m_senderServiceCode = m_pAssociatedPrismThread->getPrismServiceId ();
+    pPrismEvent->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
 
     // Set the field to indictae the message is a one way message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply destroy the event.
@@ -2389,7 +2389,7 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
 
         PrismThread    *pPrismThread               = NULL;
         LocationId      thisLocationId             = FrameworkToolKit::getThisLocationId ();
-        PrismServiceId  listenerServiceId          = pPrismEventListenerContext->getEventListenerServiceId ();
+        WaveServiceId  listenerServiceId          = pPrismEventListenerContext->getEventListenerServiceId ();
         LocationId      effectiveLocationId        = pPrismEventListenerContext->getEventListenerLocationId ();
 
         // FIXME : sagar : replace the 0 with NullLocationId
@@ -2835,7 +2835,7 @@ void WaveObjectManager::enableEnableSelfStepCallback (WaveAsynchronousContextFor
 
         // Add it to the services that are enabled.
 
-        PrismServiceId thisServiceId = getServiceId ();
+        WaveServiceId thisServiceId = getServiceId ();
 
         addServiceToEnabledServicesList (thisServiceId);
     }
@@ -4792,7 +4792,7 @@ void WaveObjectManager::disableDisableSelfStepCallback (WaveAsynchronousContextF
 
         // Add it to the services that are enabled.
 
-        PrismServiceId thisServiceId = getServiceId ();
+        WaveServiceId thisServiceId = getServiceId ();
 
         removeServiceFromEnabledServicesList (thisServiceId);
 
@@ -5773,7 +5773,7 @@ void WaveObjectManager::removeWorker (WaveWorker *pWaveWorker)
     m_workersMutex.unlock ();
 }
 
-PrismServiceId WaveObjectManager::getServiceId ()
+WaveServiceId WaveObjectManager::getServiceId ()
 {
     return (m_serviceId);
 }
@@ -6205,19 +6205,19 @@ bool WaveObjectManager::isALocalPrismService ()
     return (false);
 }
 
-void WaveObjectManager::addServiceToEnabledServicesList (const PrismServiceId &prismServiceId)
+void WaveObjectManager::addServiceToEnabledServicesList (const WaveServiceId &prismServiceId)
 {
     s_enabledServicesMutex.lock ();
     s_enabledServices[prismServiceId] = prismServiceId;
     s_enabledServicesMutex.unlock ();
 }
 
-void WaveObjectManager::removeServiceFromEnabledServicesList (const PrismServiceId &prismServiceId)
+void WaveObjectManager::removeServiceFromEnabledServicesList (const WaveServiceId &prismServiceId)
 {
     s_enabledServicesMutex.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element = s_enabledServices.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator end     = s_enabledServices.end ();
+    map<WaveServiceId, WaveServiceId>::iterator element = s_enabledServices.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator end     = s_enabledServices.end ();
 
     if (element != end)
     {
@@ -6227,12 +6227,12 @@ void WaveObjectManager::removeServiceFromEnabledServicesList (const PrismService
     s_enabledServicesMutex.unlock ();
 }
 
-void WaveObjectManager::getListOfEnabledServices (vector<PrismServiceId> &enabledServices)
+void WaveObjectManager::getListOfEnabledServices (vector<WaveServiceId> &enabledServices)
 {
     s_enabledServicesMutex.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element = s_enabledServices.begin ();
-    map<PrismServiceId, PrismServiceId>::iterator end     = s_enabledServices.end ();
+    map<WaveServiceId, WaveServiceId>::iterator element = s_enabledServices.begin ();
+    map<WaveServiceId, WaveServiceId>::iterator end     = s_enabledServices.end ();
 
     enabledServices.clear ();
 
@@ -6245,12 +6245,12 @@ void WaveObjectManager::getListOfEnabledServices (vector<PrismServiceId> &enable
     s_enabledServicesMutex.unlock ();
 }
 
-bool WaveObjectManager::isServiceEnabled (const PrismServiceId &prismServiceId)
+bool WaveObjectManager::isServiceEnabled (const WaveServiceId &prismServiceId)
 {
     s_enabledServicesMutex.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element   = s_enabledServices.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator end       = s_enabledServices.end ();
+    map<WaveServiceId, WaveServiceId>::iterator element   = s_enabledServices.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator end       = s_enabledServices.end ();
     bool                                          isEnabled = false;
 
     if (element != end)
@@ -6815,10 +6815,10 @@ PrismEvent *WaveObjectManager::createEventInstance (const UI32 &eventOperationCo
 void WaveObjectManager::registerEventListenerHandler (WaveObjectManagerRegisterEventListenerMessage *pWaveObjectManagerRegisterEventListenerMessage)
 {
     const UI32           operationCodeToListenFor = pWaveObjectManagerRegisterEventListenerMessage->getOperationCodeToListenFor ();
-    const PrismServiceId listenerPrismServiceId   = pWaveObjectManagerRegisterEventListenerMessage->getListenerPrismServiceId ();
+    const WaveServiceId listenerWaveServiceId   = pWaveObjectManagerRegisterEventListenerMessage->getListenerWaveServiceId ();
     const LocationId     listenerLocationId       = pWaveObjectManagerRegisterEventListenerMessage->getListenerLocationId ();
 
-    addEventListener (operationCodeToListenFor, listenerPrismServiceId, listenerLocationId);
+    addEventListener (operationCodeToListenFor, listenerWaveServiceId, listenerLocationId);
 
     pWaveObjectManagerRegisterEventListenerMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
@@ -8482,14 +8482,14 @@ ResourceId WaveObjectManager::sendSynchronouslyToWaveClient (const string &waveC
     }
 
     pManagementInterfaceMessage->setClientName  (waveClientName+Instance);
-    pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
 
     return (sendSynchronously (pManagementInterfaceMessage));
 }
 
 WaveMessageStatus WaveObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
-    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId    (waveServerId);
     pManagementInterfaceMessage->setTtyName     (FrameworkToolKit::getCurrentTtyName ());
 
@@ -8500,7 +8500,7 @@ ResourceId WaveObjectManager::sendOneWayToAllWaveClients(ManagementInterfaceMess
 {
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::sendOneWayToAllWaveClients : Entering");
 
-    pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setAllWaveClients(true);
 
     return (sendOneWay(pManagementInterfaceMessage) );
@@ -8522,7 +8522,7 @@ ResourceId WaveObjectManager::sendToWaveClient (const string &waveClientName, Ma
        Instance);
 
     pManagementInterfaceMessage->setClientName  (waveClientName+Instance);
-    pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
 
     return (send (pManagementInterfaceMessage, pPrismMessageCallback, pPrismMessageContext, timeOutInMilliSeconds));
 }
@@ -8716,7 +8716,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (PrismLinearSequence
     numberOfInstancesToSendTo = instancesForPhase1.size ();
     pManagementInterfaceMessageForPhase1->setClientNameWithoutExtension (pWaveSendToClientsContext->getClientName ());
     pManagementInterfaceMessageForPhase1->setClientName (pWaveSendToClientsContext->getClientName ());
-    pManagementInterfaceMessageForPhase1->setServiceCode (ManagementInterfaceObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessageForPhase1->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
 
     for (i = 0; i < numberOfInstancesToSendTo; i++)
     {
@@ -8941,7 +8941,7 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (PrismLi
         pClonedManagementInterfaceMessageForPhase2->setClientNameWithoutExtension (clientName);
         pClonedManagementInterfaceMessageForPhase2->setClientName (clientName);
 
-        pClonedManagementInterfaceMessageForPhase2->setServiceCode (ManagementInterfaceObjectManager::getPrismServiceId ());
+        pClonedManagementInterfaceMessageForPhase2->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
         pClonedManagementInterfaceMessageForPhase2->setSlotInstance (instancesToSendToForPhase2[i]);
 
         WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase2, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2);
@@ -10403,7 +10403,7 @@ void WaveObjectManager::waveObjectManagerMessageHistoryDumpMessageHandler (WaveO
 
 void WaveObjectManager::registerLock (const string &serviceString)
 {
-    PrismServiceId          prismServiceId = getServiceId ();
+    WaveServiceId          prismServiceId = getServiceId ();
 
     //Populate the global map with serviceString and the prismServiceId
 
@@ -10557,12 +10557,12 @@ WaveObjectManagerStatisticsTracker *WaveObjectManager::getPWaveObjectManagerStat
 
 bool WaveObjectManager::isServiceStringRegisteredWithService (const string &serviceString)
 {
-    PrismServiceId          prismServiceId = getServiceId ();
+    WaveServiceId          prismServiceId = getServiceId ();
     bool                    serviceRegistered = true;
 
     m_serviceStringServiceIdMapMutex.lock ();
 
-    map <string, PrismServiceId>::iterator it = WaveObjectManager::m_serviceStringServiceIdMap.find (serviceString);
+    map <string, WaveServiceId>::iterator it = WaveObjectManager::m_serviceStringServiceIdMap.find (serviceString);
 
     if (m_serviceStringServiceIdMap.end () != it)
     {
@@ -11613,7 +11613,7 @@ void WaveObjectManager::deliverWaveBrokerPublishedEvent (const string &brokerNam
     }
 }
 
-void WaveObjectManager::endOfLifeService (PrismServiceId prismServiceId)
+void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
@@ -11728,7 +11728,7 @@ void WaveObjectManager::endOfLifeService (PrismServiceId prismServiceId)
     delete pPrismDestructObjectManagerMessage;
 }
 
-void WaveObjectManager::bootStrapService (PrismServiceId prismServiceId)
+void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 

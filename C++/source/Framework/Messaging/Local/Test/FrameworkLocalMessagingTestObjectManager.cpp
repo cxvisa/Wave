@@ -38,7 +38,7 @@ FrameworkLocalMessagingTestObjectManager::~FrameworkLocalMessagingTestObjectMana
 {
 }
 
-PrismServiceId FrameworkLocalMessagingTestObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkLocalMessagingTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

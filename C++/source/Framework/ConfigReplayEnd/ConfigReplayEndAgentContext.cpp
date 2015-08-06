@@ -18,7 +18,7 @@ ConfigReplayEndAgentContext::~ConfigReplayEndAgentContext ()
 {
 }
 
-vector<PrismServiceId> &ConfigReplayEndAgentContext::getEnabledServices ()
+vector<WaveServiceId> &ConfigReplayEndAgentContext::getEnabledServices ()
 {
     return (m_enabledServices);
 }

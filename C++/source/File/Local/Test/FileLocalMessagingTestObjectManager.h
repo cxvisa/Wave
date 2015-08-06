@@ -30,7 +30,7 @@ class FileLocalMessagingTestObjectManager : public PrismTestObjectManager
      protected :
      public :
           virtual                                                                   ~FileLocalMessagingTestObjectManager     ();
-          static  PrismServiceId                                                     getPrismServiceId                       ();
+          static  WaveServiceId                                                     getWaveServiceId                       ();
           void                                                                       testRequestHandler                      (RegressionTestMessage *pMessage);
           static  FileLocalMessagingTestObjectManager                               *getInstance                             ();
           static  string                                                             getServiceName                          ();

@@ -31,7 +31,7 @@ class ApplicationServiceMessage : public PrismMessage
 
     public :
               ApplicationServiceMessage ();
-              ApplicationServiceMessage (PrismServiceId prismServiceId);
+              ApplicationServiceMessage (WaveServiceId prismServiceId);
              ~ApplicationServiceMessage ();
 
         void *getInputBuffer1           (UI32 &bufferLength);

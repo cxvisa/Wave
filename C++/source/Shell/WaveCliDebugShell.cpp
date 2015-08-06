@@ -367,7 +367,7 @@ ResourceId WaveCliDebugShell::messageHistoryDump (const vector<string> &argument
 
     WaveClientSynchronousConnection connection = getConnection ();
 
-    PrismServiceId prismServiceId = (PrismServiceId) atoi(arguments[0].c_str ());
+    WaveServiceId prismServiceId = (WaveServiceId) atoi(arguments[0].c_str ());
 
     status = connection.dumpMessageHistoryOfAService (prismServiceId);
 
@@ -400,7 +400,7 @@ ResourceId WaveCliDebugShell::messageHistoryConfig (const vector<string> &argume
 
     // Argument validation.
 
-    PrismServiceId  prismServiceId         = (PrismServiceId) atoi(arguments[0].c_str ());
+    WaveServiceId  prismServiceId         = (WaveServiceId) atoi(arguments[0].c_str ());
 
     bool            messageHistoryState    = false;
     UI32            messageHistoryMaxSize  = 0;

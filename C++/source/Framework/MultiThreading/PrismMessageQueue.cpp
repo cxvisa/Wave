@@ -46,7 +46,7 @@ template<class T> WaveMessageStatus PrismMessageQueue<T>::remove (T *&pPrismMess
 {
     m_prismMutex.lock ();
 
-    WaveMessageStatus                   status  = WAVE_MESSAGE_ERROR_UNKNOWN_MESSAGE;
+    WaveMessageStatus                    status  = WAVE_MESSAGE_ERROR_UNKNOWN_MESSAGE;
     std::deque<PrismMessage *>::iterator element = m_messageQueue.begin ();
     std::deque<PrismMessage *>::iterator end     = m_messageQueue.end ();
 

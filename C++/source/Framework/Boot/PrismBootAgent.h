@@ -36,16 +36,16 @@ class PrismBootAgent : protected WaveWorker
 {
     private :
         virtual bool           isAPersistentBoot                            ();
-        virtual bool           isToBeExcludedForEnableAndBoot               (const PrismServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInstallDuringPrePhase      (const PrismServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInstall                    (const PrismServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromCurrentBootPhase           (PrismServiceId prismServiceId);
-        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const PrismServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInitializePhase            (const PrismServiceId &prismServiceId);
+        virtual bool           isToBeExcludedForEnableAndBoot               (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedFromInstallDuringPrePhase      (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedFromInstall                    (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedFromCurrentBootPhase           (WaveServiceId prismServiceId);
+        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedFromInitializePhase            (const WaveServiceId &prismServiceId);
 
         virtual WaveBootReason getReason                                    () const;
         virtual bool           getRollBackFlag                              () const;
-        void                   handleUpgradeFailure                         (const PrismServiceId& service);
+        void                   handleUpgradeFailure                         (const WaveServiceId& service);
 
     protected :
                    PrismBootAgent                                 (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);

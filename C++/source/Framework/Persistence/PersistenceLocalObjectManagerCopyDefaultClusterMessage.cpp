@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerCopyDefaultClusterMessage::PersistenceLocalObjectManagerCopyDefaultClusterMessage()
-: PrismMessage (PersistenceLocalObjectManager::getPrismServiceId (),PERSISTENCE_COPY_DEFAULT_CLUSTER) 
+: PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (),PERSISTENCE_COPY_DEFAULT_CLUSTER) 
 { }
 
 PersistenceLocalObjectManagerCopyDefaultClusterMessage::~PersistenceLocalObjectManagerCopyDefaultClusterMessage()

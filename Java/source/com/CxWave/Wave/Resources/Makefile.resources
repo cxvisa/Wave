@@ -1,0 +1,29 @@
+
+export BUILD_DIR = ../../../../../build
+export BUILD_DIR_OBJ = $(BUILD_DIR)/obj
+export BUILD_DIR_DYNAMIC = $(BUILD_DIR)/DynamicSource
+export ALL_XML_SOURCES = $(shell find . -name "*.xml")
+export ALL_JAVA_FILES = $(patsubst %.xml,$(BUILD_DIR_DYNAMIC)/com/CxWave/Wave/Resources/ResourceEnums/%.java,$(ALL_XML_SOURCES))
+
+.PHONY: all
+
+all: classes
+
+generateresourceenums:
+	gmake -C ../../../../../resourcegenerator/source generateresourceenums	
+
+LIST_OF_CLASSES_TO_BE_UPDATED :=
+
+classes: $(ALL_JAVA_FILES)
+	if [ ! -z "$(LIST_OF_CLASSES_TO_BE_UPDATED)" ] ; then \
+		for i in $(LIST_OF_CLASSES_TO_BE_UPDATED); \
+		do \
+			echo $$i; \
+		done; \
+		gmake -C ../../../../../resourcegenerator/source generateresourceenums; \
+	fi
+
+$(ALL_JAVA_FILES) : $(BUILD_DIR_DYNAMIC)/com/CxWave/Wave/Resources/ResourceEnums/%.java : %.xml
+	echo $<
+	$(eval LIST_OF_CLASSES_TO_BE_UPDATED += $$<)
+

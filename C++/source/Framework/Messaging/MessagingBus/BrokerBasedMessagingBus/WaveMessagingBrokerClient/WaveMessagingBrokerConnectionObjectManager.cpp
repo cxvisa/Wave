@@ -42,7 +42,7 @@ WaveMessagingBrokerConnectionObjectManager *WaveMessagingBrokerConnectionObjectM
     return (pWaveMessagingBrokerConnectionObjectManager);
 }
 
-PrismServiceId WaveMessagingBrokerConnectionObjectManager::getPrismServiceId ()
+WaveServiceId WaveMessagingBrokerConnectionObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

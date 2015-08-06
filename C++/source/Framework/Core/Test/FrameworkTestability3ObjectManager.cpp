@@ -38,14 +38,14 @@ FrameworkTestability3ObjectManager::~FrameworkTestability3ObjectManager ()
 {
 }
 
-PrismServiceId FrameworkTestability3ObjectManager::getPrismServiceId ()
+WaveServiceId FrameworkTestability3ObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
 
 void FrameworkTestability3ObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (FrameworkLocalMessagingTestObjectManager::getPrismServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler));
+    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

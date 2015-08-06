@@ -125,9 +125,9 @@ ResourceId RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep (Pri
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const PrismServiceId &prismServiceId)
+bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if ((TimerSignalObjectManager::getPrismServiceId               ()) == prismServiceId ||
+    if ((TimerSignalObjectManager::getWaveServiceId               ()) == prismServiceId ||
         ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
     {   
         return (true);
@@ -138,9 +138,9 @@ bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const Pr
     }
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId &prismServiceId)
+bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &prismServiceId)
 {
-    if ((TimerSignalObjectManager::getPrismServiceId               ()) == prismServiceId ||
+    if ((TimerSignalObjectManager::getWaveServiceId               ()) == prismServiceId ||
         ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
     {   
         return (true);
@@ -151,9 +151,9 @@ bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId
     }
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const PrismServiceId &prismServiceId)
+bool RecoverPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
 {
-    if ((TimerSignalObjectManager::getPrismServiceId               ()) == prismServiceId ||
+    if ((TimerSignalObjectManager::getWaveServiceId               ()) == prismServiceId ||
         ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
     {   
         return (true);

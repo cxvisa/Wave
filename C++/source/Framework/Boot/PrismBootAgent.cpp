@@ -65,7 +65,7 @@ ResourceId PrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
 
 ResourceId PrismBootAgent::initializePrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -117,7 +117,7 @@ ResourceId PrismBootAgent::initializePrismServicesDuringPrePhaseStep (PrismSynch
 
 ResourceId PrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -169,7 +169,7 @@ ResourceId PrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep (Prism
 
 ResourceId PrismBootAgent::enablePrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -221,7 +221,7 @@ ResourceId PrismBootAgent::enablePrismServicesDuringPrePhaseStep (PrismSynchrono
 
 ResourceId PrismBootAgent::installPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInstall;
+    vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -273,7 +273,7 @@ ResourceId PrismBootAgent::installPrismServicesDuringPrePhaseStep (PrismSynchron
 
 ResourceId PrismBootAgent::bootPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -325,7 +325,7 @@ ResourceId PrismBootAgent::bootPrismServicesDuringPrePhaseStep (PrismSynchronous
 
 ResourceId PrismBootAgent::initializeGlobalPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -372,7 +372,7 @@ ResourceId PrismBootAgent::initializeGlobalPrismServicesDuringPrePhaseStep (Pris
 
 ResourceId PrismBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -417,7 +417,7 @@ ResourceId PrismBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep (Pris
 
 ResourceId PrismBootAgent::enableGlobalPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -463,7 +463,7 @@ ResourceId PrismBootAgent::enableGlobalPrismServicesDuringPrePhaseStep (PrismSyn
 
 ResourceId PrismBootAgent::bootGlobalPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -508,7 +508,7 @@ ResourceId PrismBootAgent::bootGlobalPrismServicesDuringPrePhaseStep (PrismSynch
 
 ResourceId PrismBootAgent::initializeLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -558,7 +558,7 @@ ResourceId PrismBootAgent::initializeLocalPrismServicesStep (PrismSynchronousLin
 
 ResourceId PrismBootAgent::initializeGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -603,7 +603,7 @@ ResourceId PrismBootAgent::initializeGlobalPrismServicesStep (PrismSynchronousLi
 
 ResourceId PrismBootAgent::initializePrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInitialize;
+    vector<WaveServiceId> serviceIdsToInitialize;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -653,7 +653,7 @@ ResourceId PrismBootAgent::initializePrismServicesStep (PrismSynchronousLinearSe
 
 ResourceId PrismBootAgent::listenForEventsLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -707,7 +707,7 @@ ResourceId PrismBootAgent::listenForEventsLocalPrismServicesStep (PrismSynchrono
 
 ResourceId PrismBootAgent::enableLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -760,7 +760,7 @@ ResourceId PrismBootAgent::enableLocalPrismServicesStep (PrismSynchronousLinearS
 
 ResourceId PrismBootAgent::listenForEventsGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -813,7 +813,7 @@ ResourceId PrismBootAgent::listenForEventsGlobalPrismServicesStep (PrismSynchron
 
 ResourceId PrismBootAgent::enableGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -866,7 +866,7 @@ ResourceId PrismBootAgent::enableGlobalPrismServicesStep (PrismSynchronousLinear
 
 ResourceId PrismBootAgent::listenForEventsPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -922,7 +922,7 @@ ResourceId PrismBootAgent::listenForEventsPrismServicesStep (PrismSynchronousLin
 
 ResourceId PrismBootAgent::enablePrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -977,7 +977,7 @@ ResourceId PrismBootAgent::enablePrismServicesStep (PrismSynchronousLinearSequen
 
 ResourceId PrismBootAgent::installLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInstall;
+    vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1035,7 +1035,7 @@ ResourceId PrismBootAgent::installLocalPrismServicesStep (PrismSynchronousLinear
 
 ResourceId PrismBootAgent::installGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInstall;
+    vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1088,7 +1088,7 @@ ResourceId PrismBootAgent::installGlobalPrismServicesStep (PrismSynchronousLinea
 
 ResourceId PrismBootAgent::installPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToInstall;
+    vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1133,7 +1133,7 @@ ResourceId PrismBootAgent::installPrismServicesStep (PrismSynchronousLinearSeque
 
 ResourceId PrismBootAgent::bootLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1436,7 +1436,7 @@ ResourceId PrismBootAgent::updateDatabaseForeignKeyConstraintsStep (PrismSynchro
 
 ResourceId PrismBootAgent::bootGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1489,7 +1489,7 @@ ResourceId PrismBootAgent::bootGlobalPrismServicesStep (PrismSynchronousLinearSe
 
 ResourceId PrismBootAgent::bootPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToBoot;
+    vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1551,7 +1551,7 @@ ResourceId  PrismBootAgent::upgradePrismServicesDuringPrePhaseStep (PrismSynchro
         return (WAVE_MESSAGE_SUCCESS);
     }
     
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1602,7 +1602,7 @@ ResourceId  PrismBootAgent::upgradePrismServicesDuringPrePhaseStep (PrismSynchro
     return (WAVE_MESSAGE_SUCCESS);
 }
  
-void PrismBootAgent::handleUpgradeFailure (const PrismServiceId &serviceId)
+void PrismBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
 {
     trace (TRACE_LEVEL_WARN, "PrismBootAgent::handleUpgradeFailure: upgrade failed for service : [" + FrameworkToolKit::getServiceNameById (serviceId) + "]");
 
@@ -1651,7 +1651,7 @@ ResourceId  PrismBootAgent::upgradeGlobalPrismServicesDuringPrePhaseStep (PrismS
     {
         return (WAVE_MESSAGE_SUCCESS);
     }
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1712,7 +1712,7 @@ ResourceId  PrismBootAgent::upgradeLocalPrismServicesStep (PrismSynchronousLinea
         return (WAVE_MESSAGE_SUCCESS);
     }
 
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1777,7 +1777,7 @@ ResourceId  PrismBootAgent::upgradeGlobalPrismServicesStep (PrismSynchronousLine
         return (WAVE_MESSAGE_SUCCESS);
     }
 
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1842,7 +1842,7 @@ ResourceId  PrismBootAgent::upgradePrismServicesStep (PrismSynchronousLinearSequ
         return (WAVE_MESSAGE_SUCCESS);
     }
 
-    vector<PrismServiceId> serviceIdsToEnable;
+    vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1902,7 +1902,7 @@ ResourceId  PrismBootAgent::upgradePrismServicesStep (PrismSynchronousLinearSequ
 ResourceId  PrismBootAgent::databaseSanityCheckStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
     //This step will send a message(WAVE_OBJECT_MANAGER_DATABASE_SANITY_CHECK) to all Local and Global services.
-    vector<PrismServiceId> serviceIds;
+    vector<WaveServiceId> serviceIds;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
 
@@ -1970,7 +1970,7 @@ bool PrismBootAgent::isAPersistentBoot ()
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedForEnableAndBoot (const PrismServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &prismServiceId)
 {
     return (false);
 }
@@ -1980,27 +1980,27 @@ bool PrismBootAgent::willBeAPrimaryLocation ()
     return ((FrameworkToolKit::isStandAloneLocation ()) || (FrameworkToolKit::isPrimaryLocation ()));
 }
 
-bool PrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const PrismServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromInstall (const PrismServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &prismServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromCurrentBootPhase (PrismServiceId prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId prismServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const PrismServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromInitializePhase (const PrismServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
 {
     return (false);
 }

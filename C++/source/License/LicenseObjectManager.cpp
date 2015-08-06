@@ -32,7 +32,7 @@ LicenseObjectManager::~LicenseObjectManager ()
 {
 }
 
-PrismServiceId LicenseObjectManager::getPrismServiceId ()
+WaveServiceId LicenseObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

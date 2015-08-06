@@ -27,7 +27,7 @@ class CliBlockMessage : public PrismMessage
          const bool                     getOperation                        () const;
          const ResourceId               getReason                           () const;
          const LocationId               getOriginator                       () const;
-         const PrismServiceId           getPrismServiceId                   () const;
+         const WaveServiceId           getWaveServiceId                   () const;
 
     // Now the data members
 
@@ -35,7 +35,7 @@ class CliBlockMessage : public PrismMessage
         bool                m_operation; //true is block, false is unblock
         ResourceId          m_reason;
         LocationId          m_originator;
-        PrismServiceId      m_prismServiceId;
+        WaveServiceId      m_prismServiceId;
 
     protected :
     public :

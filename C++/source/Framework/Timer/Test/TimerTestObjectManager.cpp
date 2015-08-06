@@ -36,7 +36,7 @@ TimerTestObjectManager::~TimerTestObjectManager ()
 {
 }
 
-PrismServiceId TimerTestObjectManager::getPrismServiceId ()
+WaveServiceId TimerTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

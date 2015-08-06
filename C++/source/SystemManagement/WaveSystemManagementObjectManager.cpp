@@ -91,7 +91,7 @@ WaveSystemManagementObjectManager *WaveSystemManagementObjectManager::getInstanc
     return (pSoftwareManagementObjectManager);
 }
 
-PrismServiceId WaveSystemManagementObjectManager::getPrismServiceId ()
+WaveServiceId WaveSystemManagementObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

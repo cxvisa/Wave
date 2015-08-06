@@ -33,7 +33,7 @@ PrismNativeTest1Service *PrismNativeTest1Service::getInstance ()
     return (pPrismNativeTest1Service);
 }
 
-PrismServiceId PrismNativeTest1Service::getPrismServiceId ()
+WaveServiceId PrismNativeTest1Service::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

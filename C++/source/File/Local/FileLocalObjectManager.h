@@ -90,7 +90,7 @@ namespace WaveNs
                virtual                               ~FileLocalObjectManager                      ();
                static FileLocalObjectManager         *getInstance                                 ();
                static string                          getClassName                                ();
-               static PrismServiceId                  getPrismServiceId                           ();
+               static WaveServiceId                  getWaveServiceId                           ();
                UI32                                   getFileServiceVersion                       () const;
 
         // Now the data members

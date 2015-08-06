@@ -91,7 +91,7 @@ void PrismMessage::PrismMessageBuffer::setPBuffer (void *pBuffer)
     m_pBuffer = pBuffer;
 }
 
-PrismMessage::PrismMessage (PrismServiceId serviceCode, UI32 operationCode)
+PrismMessage::PrismMessage (WaveServiceId serviceCode, UI32 operationCode)
     : m_serviceCode                             (serviceCode),
       m_operationCode                           (operationCode),
       m_senderLocationId                        (FrameworkToolKit::getThisLocationId ()),
@@ -201,12 +201,12 @@ void PrismMessage::setPriority (WaveMessagePriority priority)
     m_priority = priority;
 }
 
-PrismServiceId PrismMessage::getServiceCode () const
+WaveServiceId PrismMessage::getServiceCode () const
 {
     return (m_serviceCode);
 }
 
-void PrismMessage::setServiceCode (const PrismServiceId &serviceCode)
+void PrismMessage::setServiceCode (const WaveServiceId &serviceCode)
 {
     m_serviceCode = serviceCode;
 }
@@ -216,7 +216,7 @@ UI32 PrismMessage::getOperationCode () const
     return (m_operationCode);
 }
 
-PrismServiceId PrismMessage::getSenderServiceCode () const
+WaveServiceId PrismMessage::getSenderServiceCode () const
 {
     return (m_senderServiceCode);
 }
@@ -461,7 +461,7 @@ void PrismMessage::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeWaveMessageType      (&m_type,                                           "waveMessageType"));
     addSerializableAttribute (new AttributeWaveMessagePriority  (&m_priority,                                       "messagePriority"));
     addSerializableAttribute (new AttributeUI32                 (&m_messageIdAtOriginatingLocation,                 "messageIdAtOriginatingLocation"));
-    addSerializableAttribute (new AttributePrismServiceId       (&m_serviceCode,                                    "serviceId"));
+    addSerializableAttribute (new AttributeWaveServiceId       (&m_serviceCode,                                    "serviceId"));
     addSerializableAttribute (new AttributeUI32                 (&m_operationCode,                                  "operationCode"));
     addSerializableAttribute (new AttributeUI32                 (&m_waveClientMessageId,                            "waveClientMessageId"));
     addSerializableAttribute (new AttributeLocationId           (&m_senderLocationId,                               "senderLocationId"));
@@ -754,7 +754,7 @@ bool PrismMessage::getIsLastReply (const string &serializedData, const UI8 seria
     return (false);
 }  
 
-PrismMessage *PrismMessage::createAndLoadFromSerializedData2 (const string &serializedData, const PrismServiceId &assumedServiceCode, const UI8 serializationType) 
+PrismMessage *PrismMessage::createAndLoadFromSerializedData2 (const string &serializedData, const WaveServiceId &assumedServiceCode, const UI8 serializationType) 
 {
     // A4 attribute corresponds to the service code and A5 attribute corresponds to the operation code.
     // We strictly depend on these numbers.  If the order in the setupAttributesForSerialization in PrismMessage
@@ -974,7 +974,7 @@ void PrismMessage::setMessageId (const UI32 &messageId)
 }
 
 
-void PrismMessage::setSenderServiceCode(const WaveNs::PrismServiceId& senderServiceCode)
+void PrismMessage::setSenderServiceCode(const WaveNs::WaveServiceId& senderServiceCode)
 {
     m_senderServiceCode = senderServiceCode;
 }

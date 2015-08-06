@@ -331,7 +331,7 @@ bool WaveMessagingBroker::operator << (WaveBrokerSubscribeMessage *pWaveBrokerSu
     {
         m_currentSubscritptions[topicNames[i]] = topicNames[i];
 
-        PrismServiceId prismServiceId = PrismThread::getPrismServiceIdForCurrentThread ();
+        WaveServiceId prismServiceId = PrismThread::getWaveServiceIdForCurrentThread ();
 
         addServiceSubscription (topicNames[i], prismServiceId);
     }
@@ -385,24 +385,24 @@ void WaveMessagingBroker::postCurrentSubscriptions ()
     }
 }
 
-void WaveMessagingBroker::addServiceSubscription (const string &topicName, const PrismServiceId &prismServiceId)
+void WaveMessagingBroker::addServiceSubscription (const string &topicName, const WaveServiceId &prismServiceId)
 {
     m_currentlySubscribedServicesByTopicName[topicName][prismServiceId] = prismServiceId;
 }
 
-void WaveMessagingBroker::getCurrentlySubscribedServicesForTopicName (const string &topicName, vector<PrismServiceId> &currentlySubscribedServices)
+void WaveMessagingBroker::getCurrentlySubscribedServicesForTopicName (const string &topicName, vector<WaveServiceId> &currentlySubscribedServices)
 {
     currentlySubscribedServices.clear ();
 
     m_mutex.lock ();
 
-    map<string, map<PrismServiceId, PrismServiceId> >::const_iterator element    = m_currentlySubscribedServicesByTopicName.find (topicName);
-    map<string, map<PrismServiceId, PrismServiceId> >::const_iterator endElement = m_currentlySubscribedServicesByTopicName.end  ();
+    map<string, map<WaveServiceId, WaveServiceId> >::const_iterator element    = m_currentlySubscribedServicesByTopicName.find (topicName);
+    map<string, map<WaveServiceId, WaveServiceId> >::const_iterator endElement = m_currentlySubscribedServicesByTopicName.end  ();
 
     if (endElement != element)
     {
-        map<PrismServiceId, PrismServiceId>::const_iterator element1    = (element->second).begin ();
-        map<PrismServiceId, PrismServiceId>::const_iterator endElement1 = (element->second).end   ();
+        map<WaveServiceId, WaveServiceId>::const_iterator element1    = (element->second).begin ();
+        map<WaveServiceId, WaveServiceId>::const_iterator endElement1 = (element->second).end   ();
 
         while (endElement1 != element1)
         {

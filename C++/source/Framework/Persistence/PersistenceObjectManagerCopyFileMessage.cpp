@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerCopyFileMessage::PersistenceObjectManagerCopyFileMessage (const ResourceId &startupFileType, const string &startupFileName, const bool &isLocalFileCopy)
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
       m_startupFileType (startupFileType),
       m_startupFileName (startupFileName),
       m_isLocalFileCopy (isLocalFileCopy)
@@ -21,7 +21,7 @@ PersistenceObjectManagerCopyFileMessage::PersistenceObjectManagerCopyFileMessage
 }
 
 PersistenceObjectManagerCopyFileMessage::PersistenceObjectManagerCopyFileMessage ()
-    : PrismMessage (PersistenceObjectManager::getPrismServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
+    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
       m_startupFileType (0),
       m_isLocalFileCopy(false)
 {

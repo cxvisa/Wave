@@ -226,7 +226,7 @@ ManagementInterfaceReceiverObjectManager *ManagementInterfaceReceiverObjectManag
     return (pManagementInterfaceReceiverObjectManager);
 }
 
-PrismServiceId ManagementInterfaceReceiverObjectManager::getPrismServiceId ()
+WaveServiceId ManagementInterfaceReceiverObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -266,7 +266,7 @@ void ManagementInterfaceReceiverObjectManager::boot (WaveAsynchronousContextForB
 
 void ManagementInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

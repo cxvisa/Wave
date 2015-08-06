@@ -21,7 +21,7 @@ class WaveMulticastReceiverObjectManager : public WaveLocalObjectManagerForUserS
         virtual                                ~WaveMulticastReceiverObjectManager ();
 
         static  WaveMulticastReceiverObjectManager *getInstance                    ();
-        static  PrismServiceId                  getPrismServiceId                  ();
+        static  WaveServiceId                  getWaveServiceId                  ();
         static  string                          getServiceName                     ();
 
     // Now the data members

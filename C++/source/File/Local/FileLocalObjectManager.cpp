@@ -62,7 +62,7 @@ namespace WaveNs
         return ("File Local Service");
     }
 
-    PrismServiceId  FileLocalObjectManager::getPrismServiceId()
+    WaveServiceId  FileLocalObjectManager::getWaveServiceId()
     {
         return ((getInstance ())->getServiceId ());
     }

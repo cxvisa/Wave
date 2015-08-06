@@ -243,7 +243,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDel
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDeleteClusterStep : Entering ...");
 
     ClusterObjectManagerDeleteClusterMessage    *pClusterObjectManagerDeleteClusterMessage    = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPPrismMessage ());
-    PrismServiceId                               serderServiceId                              = pClusterObjectManagerDeleteClusterMessage->getSenderServiceCode ();
+    WaveServiceId                               serderServiceId                              = pClusterObjectManagerDeleteClusterMessage->getSenderServiceCode ();
 
     FrameworkObjectManagerDestroyClusterMessage *pFrameworkObjectManagerDestroyClusterMessage = new FrameworkObjectManagerDestroyClusterMessage ();
     ResourceId                                   status                                       = WAVE_MESSAGE_SUCCESS;

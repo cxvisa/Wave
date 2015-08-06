@@ -28,8 +28,8 @@ class PersistenceObjectManagerExecuteTransactionAsynchronousContext : public Pri
                 void                setIsConfigurationChange                                        (const bool &isConfigurationChange);
                 bool                getIsConfigurationTimeChange                                    () const;
                 void                setIsConfigurationTimeChange                                    (const bool &isConfigurartionTimeChange);
-                PrismServiceId      getSenderServiceCode                                            () const;
-                void                setSenderServiceCode                                            (const PrismServiceId &senderServiceCode);
+                WaveServiceId      getSenderServiceCode                                            () const;
+                void                setSenderServiceCode                                            (const WaveServiceId &senderServiceCode);
                 LocationId          getSenderLocationId                                             () const;
                 void                setSenderLocationId                                             (const LocationId &senderLocationId);
     
@@ -39,7 +39,7 @@ class PersistenceObjectManagerExecuteTransactionAsynchronousContext : public Pri
         string                      m_sql;
         bool                        m_isConfigurationChange;
         bool                        m_isConfigurationTimeChange;
-        PrismServiceId              m_senderServiceCode;
+        WaveServiceId              m_senderServiceCode;
         LocationId                  m_senderLocationId;
 
     protected :

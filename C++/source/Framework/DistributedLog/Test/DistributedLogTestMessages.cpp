@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DistributedLogInvokeAddLogApiMessage::DistributedLogInvokeAddLogApiMessage ()
-    : PrismMessage (DistributedLogTestObjectManager::getPrismServiceId (), DISTRIBUTED_LOG_INVOKE_ADD_LOG_API),
+    : PrismMessage (DistributedLogTestObjectManager::getWaveServiceId (), DISTRIBUTED_LOG_INVOKE_ADD_LOG_API),
     m_logType               (),
     m_logDescriptionType    (),
     m_managedObjectId       (),

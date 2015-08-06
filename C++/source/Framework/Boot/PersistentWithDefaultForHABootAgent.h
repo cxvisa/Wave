@@ -26,11 +26,11 @@ class PersistentWithDefaultForHABootAgent : public PrismBootAgent
 
                 ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
                 ResourceId  connectToKnownLocationsStep                                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        virtual bool        isToBeExcludedFromInstallDuringPrePhase                    (const PrismServiceId &prismServiceId);
-        virtual bool        isToBeExcludedFromInstall                                  (const PrismServiceId &prismServiceId);
-        virtual bool        isToBeExcludedFromInitializeDuringPrePhase                 (const PrismServiceId &prismServiceId);
-        virtual bool        isToBeExcludedFromInitializePhase                          (const PrismServiceId &prismServiceId);
-        virtual bool        isToBeExcludedForEnableAndBoot                             (const PrismServiceId& prismServiceId);
+        virtual bool        isToBeExcludedFromInstallDuringPrePhase                    (const WaveServiceId &prismServiceId);
+        virtual bool        isToBeExcludedFromInstall                                  (const WaveServiceId &prismServiceId);
+        virtual bool        isToBeExcludedFromInitializeDuringPrePhase                 (const WaveServiceId &prismServiceId);
+        virtual bool        isToBeExcludedFromInitializePhase                          (const WaveServiceId &prismServiceId);
+        virtual bool        isToBeExcludedForEnableAndBoot                             (const WaveServiceId& prismServiceId);
 
     // Now the data members
 

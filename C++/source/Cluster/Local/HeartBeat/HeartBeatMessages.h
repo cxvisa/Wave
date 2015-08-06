@@ -19,7 +19,7 @@ class StartHeartBeatMessage : public PrismMessage
 {
     private :
     protected :
-                               StartHeartBeatMessage           (PrismServiceId serviceCode, UI32 operationCode);
+                               StartHeartBeatMessage           (WaveServiceId serviceCode, UI32 operationCode);
                                StartHeartBeatMessage           (IpV4Address dstIpAddress, UI16 dstPortNumber);
                                StartHeartBeatMessage           (IpV4Address dstIpAddress, UI16 dstPortNumber, UI32 heartBeatInterval);
                                StartHeartBeatMessage           (IpV4Address dstIpAddress, UI16 dstPortNumber, UI32 heartBeatInterval, UI32 heartBeatFailureThreshold);

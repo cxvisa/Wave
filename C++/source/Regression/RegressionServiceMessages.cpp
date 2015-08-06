@@ -36,7 +36,7 @@ void RegressionTestObjectManagerGetTestServiceEntriesMessage::setNumberOfTestSer
     m_numberOfTestServiceEntries = numberOfTestServiceEntries;
 }
 
-void RegressionTestObjectManagerGetTestServiceEntriesMessage::addTestServiceEntry (const PrismServiceId &prismServiceId, const bool &isServiceEnabled)
+void RegressionTestObjectManagerGetTestServiceEntriesMessage::addTestServiceEntry (const WaveServiceId &prismServiceId, const bool &isServiceEnabled)
 {
     m_testServiceIds.push_back (prismServiceId);
     m_testServiceStates.push_back (isServiceEnabled);
@@ -66,14 +66,14 @@ RegressionTestEntry RegressionTestObjectManagerGetTestServiceEntriesMessage::get
 }
 
 RegressionTestObjectManagerSetTestServiceStateMessage::RegressionTestObjectManagerSetTestServiceStateMessage ()
-    : PrismMessage    (RegressionTestObjectManager::getPrismServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
+    : PrismMessage    (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
       m_testServiceId (0),
       m_isTestEnabled (false)
 {
 }
 
-RegressionTestObjectManagerSetTestServiceStateMessage::RegressionTestObjectManagerSetTestServiceStateMessage (PrismServiceId testServiceId, bool isTestEnabled)
-    : PrismMessage (RegressionTestObjectManager::getPrismServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
+RegressionTestObjectManagerSetTestServiceStateMessage::RegressionTestObjectManagerSetTestServiceStateMessage (WaveServiceId testServiceId, bool isTestEnabled)
+    : PrismMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
       m_testServiceId (testServiceId),
       m_isTestEnabled (isTestEnabled)
 {
@@ -87,11 +87,11 @@ void RegressionTestObjectManagerSetTestServiceStateMessage::setupAttributesForSe
 {
     PrismMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributePrismServiceId (&m_testServiceId, "testServiceId"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_testServiceId, "testServiceId"));
      addSerializableAttribute (new AttributeBool (&m_isTestEnabled,           "isTestEnabled"));
 }
 
-PrismServiceId RegressionTestObjectManagerSetTestServiceStateMessage::getTestServiceId ()
+WaveServiceId RegressionTestObjectManagerSetTestServiceStateMessage::getTestServiceId ()
 {
     return (m_testServiceId);
 }
@@ -102,13 +102,13 @@ bool RegressionTestObjectManagerSetTestServiceStateMessage::getIsTestEnabled ()
 }
 
 RegressionTestObjectManagerStartRegressionMessage::RegressionTestObjectManagerStartRegressionMessage ()
-    : PrismMessage (RegressionTestObjectManager::getPrismServiceId (), REGRESSION_START_REGRESSION),
+    : PrismMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_START_REGRESSION),
       m_numberOfTimesToRunRegression (1)
 {
 }
 
 RegressionTestObjectManagerStartRegressionMessage::RegressionTestObjectManagerStartRegressionMessage (UI32 numberOfTimesToRunRegression)
-    : PrismMessage (RegressionTestObjectManager::getPrismServiceId (), REGRESSION_START_REGRESSION),
+    : PrismMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_START_REGRESSION),
       m_numberOfTimesToRunRegression (numberOfTimesToRunRegression)
 {
 }
@@ -136,14 +136,14 @@ RegressionTestObjectManagerRunTestForAServiceMessage::RegressionTestObjectManage
 {
 }
 
-RegressionTestObjectManagerRunTestForAServiceMessage::RegressionTestObjectManagerRunTestForAServiceMessage (PrismServiceId serviceCode)
+RegressionTestObjectManagerRunTestForAServiceMessage::RegressionTestObjectManagerRunTestForAServiceMessage (WaveServiceId serviceCode)
     : ManagementInterfaceMessage (RegressionTestObjectManager::getServiceName (), REGRESSION_RUN_TEST_FOR_A_SERVICE),
       m_serviceCode (serviceCode),
       m_numberOfTimesToRunServiceTest (1)
 {
 }
 
-RegressionTestObjectManagerRunTestForAServiceMessage::RegressionTestObjectManagerRunTestForAServiceMessage (PrismServiceId serviceCode, UI32 numberOfTimesToRunServiceTest)
+RegressionTestObjectManagerRunTestForAServiceMessage::RegressionTestObjectManagerRunTestForAServiceMessage (WaveServiceId serviceCode, UI32 numberOfTimesToRunServiceTest)
     : ManagementInterfaceMessage (RegressionTestObjectManager::getServiceName (), REGRESSION_RUN_TEST_FOR_A_SERVICE),
       m_serviceCode (serviceCode),
       m_numberOfTimesToRunServiceTest (numberOfTimesToRunServiceTest)
@@ -158,11 +158,11 @@ void RegressionTestObjectManagerRunTestForAServiceMessage::setupAttributesForSer
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributePrismServiceId (&m_serviceCode,         "serviceCode"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_serviceCode,         "serviceCode"));
      addSerializableAttribute (new AttributeUI32 (&m_numberOfTimesToRunServiceTest, "numberOfTimesToRunServiceTest"));
 }
 
-PrismServiceId RegressionTestObjectManagerRunTestForAServiceMessage::getServiceCode ()
+WaveServiceId RegressionTestObjectManagerRunTestForAServiceMessage::getServiceCode ()
 {
     return (m_serviceCode);
 }
@@ -179,13 +179,13 @@ RegressionTestObjectManagerPrepareTestForAServiceMessage::RegressionTestObjectMa
 {
 }
 
-RegressionTestObjectManagerPrepareTestForAServiceMessage::RegressionTestObjectManagerPrepareTestForAServiceMessage (PrismServiceId serviceCode)
+RegressionTestObjectManagerPrepareTestForAServiceMessage::RegressionTestObjectManagerPrepareTestForAServiceMessage (WaveServiceId serviceCode)
     : ManagementInterfaceMessage (RegressionTestObjectManager::getServiceName (), REGRESSION_PREPARE_TEST_FOR_A_SERVICE),
       m_serviceCode (serviceCode)
 {
 }
 
-RegressionTestObjectManagerPrepareTestForAServiceMessage::RegressionTestObjectManagerPrepareTestForAServiceMessage (PrismServiceId serviceCode, vector<string> inputStrings)
+RegressionTestObjectManagerPrepareTestForAServiceMessage::RegressionTestObjectManagerPrepareTestForAServiceMessage (WaveServiceId serviceCode, vector<string> inputStrings)
     : ManagementInterfaceMessage (RegressionTestObjectManager::getServiceName (), REGRESSION_PREPARE_TEST_FOR_A_SERVICE),
       m_serviceCode (serviceCode),
       m_inputStrings (inputStrings)
@@ -200,11 +200,11 @@ void RegressionTestObjectManagerPrepareTestForAServiceMessage::setupAttributesFo
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributePrismServiceId (&m_serviceCode, "serviceCode"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_serviceCode, "serviceCode"));
      addSerializableAttribute (new AttributeStringVector (&m_inputStrings,  "inputStrings"));
 }
 
-PrismServiceId RegressionTestObjectManagerPrepareTestForAServiceMessage::getServiceCode ()
+WaveServiceId RegressionTestObjectManagerPrepareTestForAServiceMessage::getServiceCode ()
 {
     return (m_serviceCode);
 }

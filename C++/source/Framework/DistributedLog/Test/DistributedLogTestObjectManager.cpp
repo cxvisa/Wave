@@ -45,7 +45,7 @@ DistributedLogTestObjectManager *DistributedLogTestObjectManager::getInstance ()
     return (pDistributedLogTestObjectManager);
 }
 
-PrismServiceId DistributedLogTestObjectManager::getPrismServiceId ()
+WaveServiceId DistributedLogTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -339,7 +339,7 @@ void DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep (Distrib
             
             pDistributedLogTestContext->setCurrentMaxAllowedLogEntries  (maxLogEntries);
             pDistributedLogTestContext->setManagedObjectId              (objectId);
-            pDistributedLogTestContext->setPrismServiceId               (getPrismServiceId ());
+            pDistributedLogTestContext->setWaveServiceId               (getWaveServiceId ());
 
             trace (TRACE_LEVEL_INFO, string ("DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep : MaxLogEntries : ") + maxLogEntries + ", FirstLogId : " + firstLogId + ", NextLogId : " + lastLogId + ".");
 
@@ -367,7 +367,7 @@ void DistributedLogTestObjectManager::addMaximumLogEntriesTestStep (DistributedL
     UI64                 lastLogId                  = pDistributedLogTestContext->getNextLogId ();
     UI64                 numberOfLogEntries         = lastLogId - firstLogId; 
     UI64                 numberOfLogEntriesToAdd    = maxLogEntries - numberOfLogEntries;
-    PrismServiceId       prismServiceId             = pDistributedLogTestContext->getPrismServiceId ();
+    WaveServiceId       prismServiceId             = pDistributedLogTestContext->getWaveServiceId ();
     ObjectId             configInfoObjectId         = pDistributedLogTestContext->getManagedObjectId ();
     WaveMessageStatus    status                     = WAVE_MESSAGE_ERROR;
 
@@ -379,7 +379,7 @@ void DistributedLogTestObjectManager::addMaximumLogEntriesTestStep (DistributedL
         DistributedLogAddLogEntryMessage message;
         message.setDescription      (string ("This is the add maximum logs description : ") + i);
         message.setUsername         ("root");
-        message.setPrismServiceId   (prismServiceId);
+        message.setWaveServiceId   (prismServiceId);
         message.setManagedObjectId  (configInfoObjectId);
 
         status = sendSynchronously (&message);       
@@ -431,7 +431,7 @@ void DistributedLogTestObjectManager::verifyMaximumLogEntriesTestStep (Distribut
 void DistributedLogTestObjectManager::rotateLogEntriesTestStep (DistributedLogTestContext *pDistributedLogTestContext)
 {
     UI64               numberOfLogEntries   = pDistributedLogTestContext->getCurrentMaxAllowedLogEntries ();
-    PrismServiceId     prismServiceId       = pDistributedLogTestContext->getPrismServiceId ();
+    WaveServiceId     prismServiceId       = pDistributedLogTestContext->getWaveServiceId ();
     ObjectId           objectId             = pDistributedLogTestContext->getManagedObjectId ();
     WaveMessageStatus  status               = WAVE_MESSAGE_ERROR;
 
@@ -442,7 +442,7 @@ void DistributedLogTestObjectManager::rotateLogEntriesTestStep (DistributedLogTe
         DistributedLogAddLogEntryMessage    message;
         message.setUsername                 ("admin");
         message.setDescription              (string ("This is the rotate logs description : ") + i);
-        message.setPrismServiceId           (prismServiceId);
+        message.setWaveServiceId           (prismServiceId);
         message.setManagedObjectId          (objectId);
 
         status = sendSynchronously (&message);

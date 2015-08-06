@@ -29,12 +29,12 @@ ResourceId CliBlockManagementToolKit::blockCli (const CliBlockDetail &detail)
     if (endElement == element)
     {
         m_cliBlockMap [reason] = detail; 
-        WaveNs::trace (TRACE_LEVEL_INFO, string ("CliBlockManagementToolKit::blockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getPrismServiceId ()) + "] successfully block cli for reason [" + reason + "].")); 
+        WaveNs::trace (TRACE_LEVEL_INFO, string ("CliBlockManagementToolKit::blockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getWaveServiceId ()) + "] successfully block cli for reason [" + reason + "].")); 
     }
     else
     {
         // Can't block CLI for the same reason
-        WaveNs::trace (TRACE_LEVEL_ERROR, string ("CliBlockManagementToolKit::blockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getPrismServiceId ()) + "] failed to block cli for reason [" + reason + "].")); 
+        WaveNs::trace (TRACE_LEVEL_ERROR, string ("CliBlockManagementToolKit::blockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getWaveServiceId ()) + "] failed to block cli for reason [" + reason + "].")); 
     }
  
     m_cliBlockMapMutex.unlock ();  
@@ -55,12 +55,12 @@ ResourceId CliBlockManagementToolKit::unblockCli (const CliBlockDetail &detail)
     if (endElement == element)
     {
         // Can't unblock CLI which was not blocked before
-        WaveNs::trace (TRACE_LEVEL_ERROR, string ("CliBlockManagementToolKit::unblockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getPrismServiceId ()) + "] failed to unblock cli for reason [" + reason + "]."));
+        WaveNs::trace (TRACE_LEVEL_ERROR, string ("CliBlockManagementToolKit::unblockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getWaveServiceId ()) + "] failed to unblock cli for reason [" + reason + "]."));
     }
     else
     {
         m_cliBlockMap.erase (reason);
-        WaveNs::trace (TRACE_LEVEL_INFO, string ("CliBlockManagementToolKit::unblockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getPrismServiceId ()) + "] successfully unblock cli for reason [" + reason + "]."));
+        WaveNs::trace (TRACE_LEVEL_INFO, string ("CliBlockManagementToolKit::unblockCli : service [" + FrameworkToolKit::getServiceNameById (detail.getWaveServiceId ()) + "] successfully unblock cli for reason [" + reason + "]."));
     }
  
     m_cliBlockMapMutex.unlock ();  
@@ -152,7 +152,7 @@ string CliBlockManagementToolKit::getDisplayString ()
         description += string ("reasonCode:"                    + FrameworkToolKit::localizeToSourceCodeEnum (it->first)                                               + "\n");
         description += string ("    reasonDescription:"         + FrameworkToolKit::localize (it->first)                                                               + "\n");
         description += string ("    originatorLocationId:"      + locationString                                                                                       + "\n");
-        description += string ("    originatorServiceName:"     + FrameworkToolKit::getServiceNameById ((it->second).getPrismServiceId ())                             + "\n\n");
+        description += string ("    originatorServiceName:"     + FrameworkToolKit::getServiceNameById ((it->second).getWaveServiceId ())                             + "\n\n");
     }
 
     m_cliBlockMapMutex.unlock ();

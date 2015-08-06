@@ -73,12 +73,12 @@ void PrismFrameworkFailoverWorkerSequencerContext::setPPrismFailoverAgent (Prism
     m_pPrismFailoverAgent = pPrismFailoverAgent;
 }
 
-void PrismFrameworkFailoverWorkerSequencerContext::setServiceToBeIgnored (const PrismServiceId &serviceToBeIgnored)
+void PrismFrameworkFailoverWorkerSequencerContext::setServiceToBeIgnored (const WaveServiceId &serviceToBeIgnored)
 {
     m_serviceToBeIgnored = serviceToBeIgnored;
 }
 
-PrismServiceId PrismFrameworkFailoverWorkerSequencerContext::getServiceToBeIgnored () const
+WaveServiceId PrismFrameworkFailoverWorkerSequencerContext::getServiceToBeIgnored () const
 {
     return (m_serviceToBeIgnored);
 }

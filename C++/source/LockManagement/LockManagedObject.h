@@ -27,19 +27,19 @@ class LockManagedObject : public WaveManagedObject
     protected :
     public :
                                  LockManagedObject   (WaveObjectManager *pWaveObjectManager);
-                                 LockManagedObject   (WaveObjectManager *pWaveObjectManager, const LocationId &locationId, const string &serviceString, const PrismServiceId &serviceId);
+                                 LockManagedObject   (WaveObjectManager *pWaveObjectManager, const LocationId &locationId, const string &serviceString, const WaveServiceId &serviceId);
         virtual                 ~LockManagedObject   ();
 
         static string            getClassName               ();
 
                LocationId        getLocationId              () const;
         const  string&           getServiceString           () const;
-               PrismServiceId    getServiceId               () const;
+               WaveServiceId    getServiceId               () const;
                
 
                void              setLocationId              (const LocationId locationId);
                void              setServiceString           (const string &serviceString);
-               void              setServiceId               (const PrismServiceId serviceId);
+               void              setServiceId               (const WaveServiceId serviceId);
 
                void              resetLockManagedObject     ();
                
@@ -50,7 +50,7 @@ class LockManagedObject : public WaveManagedObject
     private :
                LocationId        m_locationId;
                string            m_serviceString;
-               PrismServiceId    m_serviceId;
+               WaveServiceId    m_serviceId;
 
     protected :
     public :

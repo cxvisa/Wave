@@ -475,7 +475,7 @@ void WaveMessagingBrokerReceiverThread::processWaveBrokerPublishMessage   (WaveB
 
     string topicName = WaveBrokerBasedMessage::getTopicName (pWaveBrokerBasedMessagePayload->getMessageBody ());
 
-    WaveMessagingBrokerTopicProcessorPublishMessage *pWaveMessagingBrokerTopicProcessorPublishMessage = new WaveMessagingBrokerTopicProcessorPublishMessage (WaveMessagingBrokerTopicProcessorObjectManager::getPrismServiceIdByTopicName (topicName));
+    WaveMessagingBrokerTopicProcessorPublishMessage *pWaveMessagingBrokerTopicProcessorPublishMessage = new WaveMessagingBrokerTopicProcessorPublishMessage (WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (topicName));
 
     prismAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
 

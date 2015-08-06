@@ -29,8 +29,8 @@ class PrismFailoverAgentSequencerContext : public PrismLinearSequencerContext
                 void                setFailedLocationIds                    (const vector<LocationId> &failedLocationIds);
                 vector<LocationId> &getFailedLocationIds                    ();
 
-                void                setServiceToBeIgnored                   (const PrismServiceId &serviceToBeIgnored);
-                PrismServiceId      getServiceToBeIgnored                   () const;
+                void                setServiceToBeIgnored                   (const WaveServiceId &serviceToBeIgnored);
+                WaveServiceId      getServiceToBeIgnored                   () const;
                 
                 void                setSecondaryNodeStatus                  (const string &secondaryNodeIpAddress, const SI32 &secondaryNodePort, ResourceId status);
                 void                updateSecondaryNodeStatus               (const string &secondaryNodeIpAddress, const SI32 &secondaryNodePort, ResourceId status);
@@ -55,7 +55,7 @@ class PrismFailoverAgentSequencerContext : public PrismLinearSequencerContext
 
     private :
         vector<LocationId>      m_failedLocationIds;
-        PrismServiceId          m_serviceToBeIgnored;
+        WaveServiceId          m_serviceToBeIgnored;
         map<string, ResourceId> m_secondaryNodesStatus;
         bool                    m_isConfigurationChange;
         LocationId              m_olderPrimaryLocationId;

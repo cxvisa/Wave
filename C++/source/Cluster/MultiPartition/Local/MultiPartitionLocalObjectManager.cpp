@@ -42,7 +42,7 @@ namespace WaveNs
         return ("Multi Partition Local Service");
     }
 
-    PrismServiceId  MultiPartitionLocalObjectManager::getPrismServiceId()
+    WaveServiceId  MultiPartitionLocalObjectManager::getWaveServiceId()
     {
         return ((getInstance ())->getServiceId ());
     }

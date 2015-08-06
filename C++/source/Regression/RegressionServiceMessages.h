@@ -20,7 +20,7 @@ class RegressionTestObjectManagerGetTestServiceEntriesMessage : public Managemen
 {
     private :
         void setNumberOfTestServiceEntries (UI32 numberOfTestServiceEntries);
-        void addTestServiceEntry           (const PrismServiceId &prismServiceId, const bool &isServiceEnabled);
+        void addTestServiceEntry           (const WaveServiceId &prismServiceId, const bool &isServiceEnabled);
 
     protected :
     public :
@@ -50,16 +50,16 @@ class RegressionTestObjectManagerSetTestServiceStateMessage : public PrismMessag
     protected :
     public :
                                 RegressionTestObjectManagerSetTestServiceStateMessage ();
-                                RegressionTestObjectManagerSetTestServiceStateMessage (PrismServiceId testseviceId, bool isTestEnabled);
+                                RegressionTestObjectManagerSetTestServiceStateMessage (WaveServiceId testseviceId, bool isTestEnabled);
         virtual                ~RegressionTestObjectManagerSetTestServiceStateMessage ();
         virtual void            setupAttributesForSerialization                       ();
-                PrismServiceId  getTestServiceId                                      ();
+                WaveServiceId  getTestServiceId                                      ();
                 bool            getIsTestEnabled                                      ();
 
     // Now the data members
 
     private :
-        PrismServiceId m_testServiceId;
+        WaveServiceId m_testServiceId;
         bool           m_isTestEnabled;
 
     protected :
@@ -92,17 +92,17 @@ class RegressionTestObjectManagerRunTestForAServiceMessage : public ManagementIn
     protected :
     public :
                                 RegressionTestObjectManagerRunTestForAServiceMessage ();
-                                RegressionTestObjectManagerRunTestForAServiceMessage (PrismServiceId serviceCode);
-                                RegressionTestObjectManagerRunTestForAServiceMessage (PrismServiceId serviceCode, UI32 numberOfTimesToRunServiceTest);
+                                RegressionTestObjectManagerRunTestForAServiceMessage (WaveServiceId serviceCode);
+                                RegressionTestObjectManagerRunTestForAServiceMessage (WaveServiceId serviceCode, UI32 numberOfTimesToRunServiceTest);
         virtual                ~RegressionTestObjectManagerRunTestForAServiceMessage ();
         virtual void            setupAttributesForSerialization                      ();
-                PrismServiceId  getServiceCode                                       ();
+                WaveServiceId  getServiceCode                                       ();
                 UI32            getNumberOfTimesToRunServiceTest                     ();
 
     // Now the data members
 
     private :
-        PrismServiceId m_serviceCode;
+        WaveServiceId m_serviceCode;
         UI32           m_numberOfTimesToRunServiceTest;
 
     protected :
@@ -115,17 +115,17 @@ class RegressionTestObjectManagerPrepareTestForAServiceMessage : public Manageme
     protected :
     public :
                                 RegressionTestObjectManagerPrepareTestForAServiceMessage ();
-                                RegressionTestObjectManagerPrepareTestForAServiceMessage (PrismServiceId serviceCode);
-                                RegressionTestObjectManagerPrepareTestForAServiceMessage (PrismServiceId serviceCode, vector<string> inputStrings);
+                                RegressionTestObjectManagerPrepareTestForAServiceMessage (WaveServiceId serviceCode);
+                                RegressionTestObjectManagerPrepareTestForAServiceMessage (WaveServiceId serviceCode, vector<string> inputStrings);
         virtual                ~RegressionTestObjectManagerPrepareTestForAServiceMessage ();
         virtual void            setupAttributesForSerialization                      ();
-                PrismServiceId  getServiceCode                                       ();
+                WaveServiceId  getServiceCode                                       ();
                 vector<string> &getInputStrings                                      ();
 
     // Now the data members
 
     private :
-        PrismServiceId m_serviceCode;
+        WaveServiceId m_serviceCode;
         vector<string> m_inputStrings;
 
     protected :

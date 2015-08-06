@@ -663,12 +663,12 @@ void WaveWorker::setCpuAffinity (const vector<UI32> &cpuAffinityVector)
     m_pWaveObjectManager->setCpuAffinity (cpuAffinityVector);
 }
 
-PrismServiceId WaveWorker::getServiceId ()
+WaveServiceId WaveWorker::getServiceId ()
 {
     return (m_pWaveObjectManager->getServiceId ());
 }
 
-void WaveWorker::listenForEvent (PrismServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
+void WaveWorker::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
 {
     m_pWaveObjectManager->listenForEvent (prismServiceCode, sourceOperationCode, pPrismEventHandler, pPrismElement != NULL ? pPrismElement : this, sourceLocationId);
 }

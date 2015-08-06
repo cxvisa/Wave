@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-map<PrismServiceId, PrismServiceId> s_userSpecificServicesMap;
+map<WaveServiceId, WaveServiceId> s_userSpecificServicesMap;
 PrismMutex s_userSpecificServicesMapMutex;
 
 WaveLocalObjectManagerForUserSpecificTasks::WaveLocalObjectManagerForUserSpecificTasks (const string &objectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
@@ -24,19 +24,19 @@ WaveLocalObjectManagerForUserSpecificTasks::~WaveLocalObjectManagerForUserSpecif
 {
 }
 
-void WaveLocalObjectManagerForUserSpecificTasks::addToUserspecificServicesMap (const PrismServiceId &prismServiceId)
+void WaveLocalObjectManagerForUserSpecificTasks::addToUserspecificServicesMap (const WaveServiceId &prismServiceId)
 {
     s_userSpecificServicesMapMutex.lock ();
     s_userSpecificServicesMap[prismServiceId] = prismServiceId;
     s_userSpecificServicesMapMutex.unlock ();
 }
 
-bool WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (const PrismServiceId &prismServiceId)
+bool WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (const WaveServiceId &prismServiceId)
 {
     s_userSpecificServicesMapMutex.lock ();
 
-    map<PrismServiceId, PrismServiceId>::iterator element = s_userSpecificServicesMap.find (prismServiceId);
-    map<PrismServiceId, PrismServiceId>::iterator end     = s_userSpecificServicesMap.end ();
+    map<WaveServiceId, WaveServiceId>::iterator element = s_userSpecificServicesMap.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator end     = s_userSpecificServicesMap.end ();
     bool                                          found   = false;
 
     if (element != end)

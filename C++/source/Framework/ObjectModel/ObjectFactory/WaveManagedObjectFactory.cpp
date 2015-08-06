@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 
-WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const PrismServiceId &prismServiceId, const  string &className)
+WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const WaveServiceId &prismServiceId, const  string &className)
 {
     WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForManagedObject (prismServiceId, className);
     WaveManagedObject *pWaveManagedObject = NULL;
@@ -34,7 +34,7 @@ WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const
     return (pWaveManagedObject);
 }
 
-WaveObjectManager *WaveManagedObjectFactory::getWaveObjectManagerForManagedObject (const PrismServiceId &prismServiceId, const  string &className)
+WaveObjectManager *WaveManagedObjectFactory::getWaveObjectManagerForManagedObject (const WaveServiceId &prismServiceId, const  string &className)
 {
     PrismThread        *pPrismThread        = NULL;
     WaveObjectManager *pWaveObjectManager = NULL;

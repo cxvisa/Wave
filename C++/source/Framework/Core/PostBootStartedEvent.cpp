@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 PostBootStartedEvent::PostBootStartedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
       m_eventId (0),
       m_parameter (0)
 	  
@@ -24,7 +24,7 @@ PostBootStartedEvent::PostBootStartedEvent ()
 }
 
 PostBootStartedEvent::PostBootStartedEvent (const UI32 &eventId, const UI32 &parameter)
-    : PrismEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
+    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
      m_eventId (eventId),
      m_parameter (parameter)
 {

@@ -35,10 +35,10 @@ class RegressionTestObjectManager : public WaveLocalObjectManager
     protected :
     public :
         static RegressionTestObjectManager *getInstance          ();
-        static PrismServiceId               getPrismServiceId    ();
+        static WaveServiceId               getWaveServiceId    ();
         static string                       getServiceName       ();
 
-        static void                         addToRegressionShell (const PrismServiceId &prismServiceId, const bool &isEnabledByDefault);
+        static void                         addToRegressionShell (const WaveServiceId &prismServiceId, const bool &isEnabledByDefault);
 
     // Now the data members
 

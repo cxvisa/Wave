@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 ZeroizeForFIPSMessage::ZeroizeForFIPSMessage ()
-    : ManagementInterfaceMessage (FrameworkToolKit::getServiceNameById(PrismFrameworkObjectManager::getPrismServiceId ()),FRAMEWORK_OBJECT_MANAGER_FIPS_ZEROIZE)
+    : ManagementInterfaceMessage (FrameworkToolKit::getServiceNameById(PrismFrameworkObjectManager::getWaveServiceId ()),FRAMEWORK_OBJECT_MANAGER_FIPS_ZEROIZE)
 {
     setPriority(WAVE_MESSAGE_PRIORITY_HIGH);
 }

@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerCleanPreparedTransactionsMessage::DatabaseObjectManagerCleanPreparedTransactionsMessage ()
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_CLEAN_PREPARED_TRANSACTIONS)
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_CLEAN_PREPARED_TRANSACTIONS)
 {
 }
 

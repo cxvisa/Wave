@@ -259,7 +259,7 @@ void WaveClient::instantiateNativePrismServices ()
 
         prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-        frameworkSequenceGenerator.addPrismServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
+        frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
     }
 
     for (i = 0; i < numberOfNativeMultiplePrismServciesToInstantiate; i++)
@@ -273,7 +273,7 @@ void WaveClient::instantiateNativePrismServices ()
 
             prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-            frameworkSequenceGenerator.addPrismServiceIdToAll (pWaveObjectManager->getServiceId ());
+            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId ());
         }
     }
 

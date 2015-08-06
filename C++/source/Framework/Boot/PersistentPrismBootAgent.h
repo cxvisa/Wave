@@ -24,9 +24,9 @@ class PersistentPrismBootAgent : public PrismBootAgent
                 void           reloadPreviousDataBase                                     ();
 //                void           rollbackCfgFile                                            ();
 
-        virtual bool           isToBeExcludedForEnableAndBoot                             (const PrismServiceId& prismServiceId);
-        virtual bool           isToBeExcludedFromInitializeDuringPrePhase                 (const PrismServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInitializePhase                          (const PrismServiceId &prismServiceId);
+        virtual bool           isToBeExcludedForEnableAndBoot                             (const WaveServiceId& prismServiceId);
+        virtual bool           isToBeExcludedFromInitializeDuringPrePhase                 (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedFromInitializePhase                          (const WaveServiceId &prismServiceId);
 
     protected :
     public :

@@ -45,8 +45,8 @@ class DatabaseObjectManagerExecuteQueryMessage : public PrismMessage
                 void                         setPResults                              (vector<WaveManagedObject *> *pResults);
                 vector<WaveManagedObject *> *getPResults                              () const;
 
-        static  void                         setDatabaseObjectManagerServiceId        (const PrismServiceId &databaseObjectManagerServiceId);
-        static  PrismServiceId               getDatabaseObjectManagerServiceId        ();
+        static  void                         setDatabaseObjectManagerServiceId        (const WaveServiceId &databaseObjectManagerServiceId);
+        static  WaveServiceId               getDatabaseObjectManagerServiceId        ();
 
     // Now the data members
 
@@ -61,7 +61,7 @@ class DatabaseObjectManagerExecuteQueryMessage : public PrismMessage
                bool                         m_loadCompositions;
                vector<WaveManagedObject *> *m_pResults;
 
-        static PrismServiceId               m_databaseObjectManagerServiceId;
+        static WaveServiceId               m_databaseObjectManagerServiceId;
 
     protected :
     public :

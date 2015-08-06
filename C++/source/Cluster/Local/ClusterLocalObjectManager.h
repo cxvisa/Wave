@@ -75,7 +75,7 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
         virtual                           ~ClusterLocalObjectManager        ();
 
         static  ClusterLocalObjectManager *getInstance                      ();
-        static  PrismServiceId             getPrismServiceId                ();
+        static  WaveServiceId             getWaveServiceId                ();
         static  string                     getPrismServiceName              ();
 
         static  bool                       getIsInstantiated                ();

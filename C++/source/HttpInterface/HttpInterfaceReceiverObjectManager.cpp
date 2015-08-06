@@ -77,7 +77,7 @@ HttpInterfaceReceiverObjectManager *HttpInterfaceReceiverObjectManager::getInsta
     return (pHttpInterfaceReceiverObjectManager);
 }
 
-PrismServiceId HttpInterfaceReceiverObjectManager::getPrismServiceId ()
+WaveServiceId HttpInterfaceReceiverObjectManager::getWaveServiceId ()
 {
     return ((getInstance())->getServiceId ());
 }
@@ -117,7 +117,7 @@ void HttpInterfaceReceiverObjectManager::boot (WaveAsynchronousContextForBootPha
 
 void HttpInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

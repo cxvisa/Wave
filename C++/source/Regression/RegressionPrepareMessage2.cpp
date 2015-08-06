@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-RegressionPrepareMessage2::RegressionPrepareMessage2 (PrismServiceId id)
+RegressionPrepareMessage2::RegressionPrepareMessage2 (WaveServiceId id)
     : PrismMessage (id, WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2)
 {
 }

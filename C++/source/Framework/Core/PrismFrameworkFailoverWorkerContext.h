@@ -30,8 +30,8 @@ class PrismFrameworkFailoverWorkerContext : public PrismAsynchronousContext
                 LocationId                            getFailedLocationAtIndex            (const UI32 &index) const;
                 void                                  addFailedLocationId                 (const LocationId &locationId);
                 void                                  getFailedLocationIds                (vector<LocationId> &failedLocationIds);
-                void                                  setServiceToBeIgnored               (const PrismServiceId &serviceToBeIgnored);
-                PrismServiceId                        getServiceToBeIgnored               () const;
+                void                                  setServiceToBeIgnored               (const WaveServiceId &serviceToBeIgnored);
+                WaveServiceId                        getServiceToBeIgnored               () const;
                 bool                                  isSecondaryControlledFailoverDueToPrimaryRemoval () const;
                 void                                  setSecondaryControlledFailoverDueToPrimaryRemoval ();
                 bool                                  getIsConfigurationChange            () const;
@@ -43,7 +43,7 @@ class PrismFrameworkFailoverWorkerContext : public PrismAsynchronousContext
         LocationRole                         m_thisLocationRole;
         FrameworkObjectManagerFailoverReason m_failoverReason;
         vector<LocationId>                   m_failedLocationIds;
-        PrismServiceId                       m_serviceToBeIgnored;
+        WaveServiceId                       m_serviceToBeIgnored;
         bool                                 m_secondaryControlledFailoverDueToPrimaryRemoval;
         bool                                 m_isConfigurationChange;
     protected :

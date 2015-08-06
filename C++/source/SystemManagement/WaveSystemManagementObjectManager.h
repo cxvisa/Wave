@@ -30,7 +30,7 @@ class WaveSystemManagementObjectManager : public WaveLocalObjectManager
     public :
         virtual                                   ~WaveSystemManagementObjectManager    ();
         static  WaveSystemManagementObjectManager *getInstance                          ();
-        static  PrismServiceId                     getPrismServiceId                    ();
+        static  WaveServiceId                     getWaveServiceId                    ();
         static  string                             getClassName                         ();
 
         static  YangModuleCollection              *getYangModuleCollection              ();

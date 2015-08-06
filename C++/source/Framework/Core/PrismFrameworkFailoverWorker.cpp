@@ -151,7 +151,7 @@ void PrismFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep (PrismFra
     PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = reinterpret_cast<PrismFrameworkFailoverWorkerContext *> (pPrismFrameworkFailoverWorkerSequencerContext->getPPrismAsynchronousContext ());
     PrismFailoverAgent                  *pPrismFailoverAgent                  = pPrismFrameworkFailoverWorkerSequencerContext->getPPrismFailoverAgent ();
     vector<LocationId>                   failedLocationIds;
-    PrismServiceId                       serviceToBeIgnored                   = 0;
+    WaveServiceId                       serviceToBeIgnored                   = 0;
 
     prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 

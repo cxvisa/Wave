@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
     FileTransferHandshakeMessage::FileTransferHandshakeMessage ()
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCFILETRANSFERHANDSHAKE),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCFILETRANSFERHANDSHAKE),
         m_serviceVersion(0x0100),
         m_sourceLocationId(0),
         m_fileSize(0),
@@ -23,7 +23,7 @@ namespace WaveNs
     }
 
     FileTransferHandshakeMessage::FileTransferHandshakeMessage (const UI32 &ServiceVersion,const string &sourceFileName, const string &DestinationFileName,const UI32 &SourceLocationId,const UI32 &FileSize,const UI32 &fileTransferFlag)
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCFILETRANSFERHANDSHAKE),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCFILETRANSFERHANDSHAKE),
         m_serviceVersion    (ServiceVersion),
         m_sourceFileName    (sourceFileName),        
         m_destinationFileName    (DestinationFileName),

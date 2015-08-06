@@ -21,7 +21,7 @@ class LicenseObjectManager : public WaveObjectManager
     public :
         virtual                      ~LicenseObjectManager ();
         static  LicenseObjectManager *getInstance          ();
-        static  PrismServiceId        getPrismServiceId    ();
+        static  WaveServiceId        getWaveServiceId    ();
 
     // Now the data members
 

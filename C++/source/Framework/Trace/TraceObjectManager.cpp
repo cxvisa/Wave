@@ -81,7 +81,7 @@ TraceObjectManager::TraceObjectManager ()
      * zeroize is required for non-Notive service and native services. This initializatin cannot be done globally
      * hence individual OM's should register themselves if they want to implement zeroize.
     FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    frameworkSequenceGenerator.addPrismServiceIdToZeroize(getServiceId());
+    frameworkSequenceGenerator.addWaveServiceIdToZeroize(getServiceId());
      */
 
 }
@@ -108,7 +108,7 @@ TraceObjectManager::~TraceObjectManager ()
 {
 }
 
-PrismServiceId TraceObjectManager::getPrismServiceId ()
+WaveServiceId TraceObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -1138,14 +1138,14 @@ void TraceObjectManager::rotateTraceFile(bool noSizeCheck)
 
 void TraceObjectManager::messageHistoryConfigForAServiceMessageHandler (TraceObjectManagerMessageHistoryConfigForAServiceMessage *pMessageHistoryConfigForAServiceMessage)
 {
-    PrismServiceId  prismServiceId          = pMessageHistoryConfigForAServiceMessage->getPrismServiceId ();
+    WaveServiceId  prismServiceId          = pMessageHistoryConfigForAServiceMessage->getWaveServiceId ();
     bool            messageHistoryState     = pMessageHistoryConfigForAServiceMessage->getMessageHistoryState ();
     UI32            messageHistoryMaxSize   = pMessageHistoryConfigForAServiceMessage->getMessageHistoryMaxSize ();
     ResourceId      status                  = WAVE_MESSAGE_ERROR;
     ResourceId      completionStatus        = WAVE_MESSAGE_ERROR;
     string          messageString           = "";
 
-    PrismServiceId  thisServiceId           = getServiceId ();
+    WaveServiceId  thisServiceId           = getServiceId ();
 
     LocationId      thisLocationId          = FrameworkToolKit::getThisLocationId ();
     LocationId      primaryLocationId       = FrameworkToolKit::getClusterPrimaryLocationId ();
@@ -1203,12 +1203,12 @@ void TraceObjectManager::messageHistoryConfigForAServiceMessageHandler (TraceObj
 
 void TraceObjectManager::messageHistoryDumpForAServiceMessageHandler (TraceObjectManagerMessageHistoryDumpForAServiceMessage *pMessageHistoryDumpForAServiceMessage)
 {
-    PrismServiceId  prismServiceId          = pMessageHistoryDumpForAServiceMessage->getPrismServiceId ();
+    WaveServiceId  prismServiceId          = pMessageHistoryDumpForAServiceMessage->getWaveServiceId ();
     ResourceId      status                  = WAVE_MESSAGE_ERROR;
     ResourceId      completionStatus        = WAVE_MESSAGE_ERROR;
     string          messageString           = "";
 
-    PrismServiceId  thisServiceId           = getServiceId ();
+    WaveServiceId  thisServiceId           = getServiceId ();
 
     LocationId      thisLocationId          = FrameworkToolKit::getThisLocationId ();
     LocationId      primaryLocationId       = FrameworkToolKit::getClusterPrimaryLocationId ();

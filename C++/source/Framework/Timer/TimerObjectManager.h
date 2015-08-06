@@ -22,7 +22,7 @@ class TimerObjectManager : public WaveLocalObjectManager
     public :
         virtual                    ~TimerObjectManager  ();
         static  TimerObjectManager *getInstance         ();
-        static  PrismServiceId      getPrismServiceId   ();
+        static  WaveServiceId      getWaveServiceId   ();
                 void                disable             (PrismAsynchronousContext *pPrismAsynchronousContext);
 
     // Now the data members

@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-StartHeartBeatMessage::StartHeartBeatMessage (PrismServiceId serviceCode, UI32 operationCode)
+StartHeartBeatMessage::StartHeartBeatMessage (WaveServiceId serviceCode, UI32 operationCode)
     : PrismMessage (serviceCode, operationCode),
       m_dstPortNumber(0),
       m_heartBeatInterval         (0),
@@ -21,7 +21,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (PrismServiceId serviceCode, UI32 o
 }
     
 StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dstPortNumber)
-    : PrismMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_START), 
+    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstIpAddress              (dstIpAddress), 
       m_dstPortNumber             (dstPortNumber),
       m_heartBeatInterval         (0),
@@ -30,7 +30,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dst
 }
 
 StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dstPortNumber, UI32 heartBeatInterval)
-    : PrismMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_START), 
+    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstIpAddress              (dstIpAddress), 
       m_dstPortNumber             (dstPortNumber),
       m_heartBeatInterval         (heartBeatInterval),
@@ -40,7 +40,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dst
 }
 
 StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dstPortNumber, UI32 heartBeatInterval, UI32 heartBeatFailureThreshold)
-    : PrismMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_START), 
+    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstIpAddress              (dstIpAddress), 
       m_dstPortNumber             (dstPortNumber),
       m_heartBeatInterval         (heartBeatInterval),
@@ -50,7 +50,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dst
 }
 
 StartHeartBeatMessage::StartHeartBeatMessage ()
-    : PrismMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_START), 
+    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstPortNumber             (0),
       m_heartBeatInterval         (0),
       m_heartBeatFailureThreshold (0)
@@ -115,7 +115,7 @@ void StartHeartBeatMessage::setHeartBeatFailureThreshold (UI32 heartBeatFailureT
 // StopHeartBeat
 
 StopHeartBeatMessage::StopHeartBeatMessage ()
-    : StartHeartBeatMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_STOP)
+    : StartHeartBeatMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_STOP)
 {
 }
 
@@ -124,7 +124,7 @@ StopHeartBeatMessage::~StopHeartBeatMessage ()
 }
 
 PauseHeartBeatMessage::PauseHeartBeatMessage ()
-    : StartHeartBeatMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_PAUSE)
+    : StartHeartBeatMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_PAUSE)
 {
 }
 
@@ -133,7 +133,7 @@ PauseHeartBeatMessage::~PauseHeartBeatMessage ()
 }
 
 ResumeHeartBeatMessage::ResumeHeartBeatMessage ()
-    : StartHeartBeatMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_RESUME)
+    : StartHeartBeatMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_RESUME)
 {
 }
 
@@ -142,7 +142,7 @@ ResumeHeartBeatMessage::~ResumeHeartBeatMessage ()
 }
 
 ConfigHeartBeatMessage::ConfigHeartBeatMessage ()
-    : StartHeartBeatMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_CONFIG)
+    : StartHeartBeatMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_CONFIG)
 {
 }
 
@@ -210,7 +210,7 @@ void GetHeartBeatStatMessage::setDstPortNumber (UI16 dstPortNumber)
 }
 
 ShowHeartBeatStatMessage::ShowHeartBeatStatMessage ()
-    : StartHeartBeatMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_SHOW_STAT)
+    : StartHeartBeatMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_SHOW_STAT)
 {
     m_dstPortNumber      = FrameworkToolKit::getThisLocationPort ();
 }
@@ -220,7 +220,7 @@ ShowHeartBeatStatMessage::~ShowHeartBeatStatMessage ()
 }
 
 ReportHeartBeatMessage::ReportHeartBeatMessage ()
-    : StartHeartBeatMessage (HeartBeatObjectManager::getPrismServiceId (), HEARTBEAT_REPORT),
+    : StartHeartBeatMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_REPORT),
       m_senderPort (0),
       m_heartBeatNum (0)
 {
@@ -270,7 +270,7 @@ void ReportHeartBeatMessage::setupAttributesForSerialization ()
 }
 
 DisconnectFromNodeMessage::DisconnectFromNodeMessage(LocationId locationId)
-      :PrismMessage (HeartBeatObjectManager::getPrismServiceId(),HEARTBEAT_DISCONNECT_FROM_NODE),
+      :PrismMessage (HeartBeatObjectManager::getWaveServiceId(),HEARTBEAT_DISCONNECT_FROM_NODE),
        mLocationId  (locationId),
        m_serverPort (0)
 {

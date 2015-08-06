@@ -32,7 +32,7 @@ class PrismCreateClusterWithNodesMessage : public PrismMessage
         bool isNewNodeIpAddressExists (const string &newNodeIpAddress, const SI32 &newNodePort);
 
     protected :
-        PrismCreateClusterWithNodesMessage (PrismServiceId serviceCode, UI32 operationCode);
+        PrismCreateClusterWithNodesMessage (WaveServiceId serviceCode, UI32 operationCode);
 
     public :
                             PrismCreateClusterWithNodesMessage ();
@@ -74,8 +74,8 @@ class PrismConfigureClusterSecondaryMessage : public PrismMessage
 {
     private :
     protected :
-                     PrismConfigureClusterSecondaryMessage (PrismServiceId serviceCode, UI32 operationCode);
-                     PrismConfigureClusterSecondaryMessage (PrismServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
+                     PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode);
+                     PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
         virtual void setupAttributesForSerialization       ();
 
     public :
@@ -142,7 +142,7 @@ class PrismConfigureClusterSecondaryPhase1Message : public PrismMessage
 {
     private :
     protected :
-                  PrismConfigureClusterSecondaryPhase1Message (PrismServiceId serviceCode, UI32 operationCode);
+                  PrismConfigureClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization ();
 
     public :
@@ -199,7 +199,7 @@ class PrismConfigureClusterSecondaryPhase3Message : public PrismMessage
 {
     private :
     protected :
-                  PrismConfigureClusterSecondaryPhase3Message (PrismServiceId serviceCode, UI32 operationCode);
+                  PrismConfigureClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization ();
 
     public :
@@ -234,7 +234,7 @@ class PrismRejoinClusterSecondaryPhase1Message : public PrismConfigureClusterSec
 {
     private :
     protected :
-                  PrismRejoinClusterSecondaryPhase1Message (PrismServiceId serviceCode, UI32 operationCode);
+                  PrismRejoinClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization          ();
 
     public :
@@ -299,7 +299,7 @@ class PrismRejoinClusterSecondaryPhase3Message : public PrismMessage
 {
     private :
     protected :
-                  PrismRejoinClusterSecondaryPhase3Message (PrismServiceId serviceCode, UI32 operationCode);
+                  PrismRejoinClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization ();
 
     public :
@@ -387,7 +387,7 @@ class FrameworkObjectManagerDeleteNodesFromClusterMessage : public PrismCreateCl
 {
     private :
     protected :
-        FrameworkObjectManagerDeleteNodesFromClusterMessage (PrismServiceId serviceCode, UI32 operationCode);
+        FrameworkObjectManagerDeleteNodesFromClusterMessage (WaveServiceId serviceCode, UI32 operationCode);
 
     public :
                             FrameworkObjectManagerDeleteNodesFromClusterMessage ();
@@ -418,8 +418,8 @@ class FrameworkObjectManagerDestroyClusterMessage : public PrismMessage
         virtual                                      ~FrameworkObjectManagerDestroyClusterMessage ();
                 FrameworkObjectManagerFailoverReason  getReasonForDestroyingCluster               () const;
                 void                                  setReasonForDestroyingCluster               (const FrameworkObjectManagerFailoverReason &reasonForDestroyingCluster = FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED);
-                void                                  setOriginalRequester                        (const PrismServiceId &prismServiceId);
-                PrismServiceId                        getOriginalRequester                        () const;
+                void                                  setOriginalRequester                        (const WaveServiceId &prismServiceId);
+                WaveServiceId                        getOriginalRequester                        () const;
                 void                                  setIsRebootRequired                         (const bool &isRebootRequired);
                 bool                                  getIsRebootRequired                         () const;
 
@@ -427,7 +427,7 @@ class FrameworkObjectManagerDestroyClusterMessage : public PrismMessage
 
     private :
         FrameworkObjectManagerFailoverReason m_reasonForDestroyingCluster;
-        PrismServiceId                       m_originalRequester;
+        WaveServiceId                       m_originalRequester;
         bool                                 m_isRebootRequired;
     protected :
     public :
@@ -492,7 +492,7 @@ class FrameworkObjectManagerRejoinClusterSecondaryMessage : public PrismConfigur
 
     public :
                         FrameworkObjectManagerRejoinClusterSecondaryMessage     ();
-                        FrameworkObjectManagerRejoinClusterSecondaryMessage     (PrismServiceId serviceCode, UI32 operationCode);
+                        FrameworkObjectManagerRejoinClusterSecondaryMessage     (WaveServiceId serviceCode, UI32 operationCode);
                         FrameworkObjectManagerRejoinClusterSecondaryMessage     (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
         virtual        ~FrameworkObjectManagerRejoinClusterSecondaryMessage    ();
 
@@ -573,7 +573,7 @@ class FrameworkObjectManagerPrimaryChangedMessage : public PrismMessage
 
     public :
                             FrameworkObjectManagerPrimaryChangedMessage ();
-                            FrameworkObjectManagerPrimaryChangedMessage (PrismServiceId serviceCode, UI32 operationCode);
+                            FrameworkObjectManagerPrimaryChangedMessage (WaveServiceId serviceCode, UI32 operationCode);
                             FrameworkObjectManagerPrimaryChangedMessage (const LocationId &newPrimaryLocationId, const string &newPrimaryIpAddress, const UI32 &newPrimaryPort);
         virtual            ~FrameworkObjectManagerPrimaryChangedMessage ();
 
@@ -635,7 +635,7 @@ class FrameworkObjectManagerPrimaryChangedPhase1Message : public PrismMessage
 {
     private :
     protected :
-                 FrameworkObjectManagerPrimaryChangedPhase1Message (PrismServiceId serviceCode, UI32 operationCode);
+                 FrameworkObjectManagerPrimaryChangedPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
          void    setupAttributesForSerialization ();
 
     public :
@@ -693,7 +693,7 @@ class FrameworkObjectManagerPrimaryChangedPhase3Message : public PrismMessage
 {
     private :
     protected :
-                 FrameworkObjectManagerPrimaryChangedPhase3Message (PrismServiceId serviceCode, UI32 operationCode);
+                 FrameworkObjectManagerPrimaryChangedPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
             void setupAttributesForSerialization ();
 
     public :
@@ -770,13 +770,13 @@ class FrameworkObjectManagerServiceControlListMessage : public ManagementInterfa
              ~FrameworkObjectManagerServiceControlListMessage ();
 
         UI32  getNumberOfServices                             () const;
-        void  addAService                                     (const PrismServiceId &prismServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity);
-        void  getServiceAtIndex                               (const UI32 &index, PrismServiceId &prismServiceId, string &serviceName, bool &isEnabled, bool &isLocal, string &cpuAffinity);
+        void  addAService                                     (const WaveServiceId &prismServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity);
+        void  getServiceAtIndex                               (const UI32 &index, WaveServiceId &prismServiceId, string &serviceName, bool &isEnabled, bool &isLocal, string &cpuAffinity);
 
     // Now the data members
 
     private :
-        vector<PrismServiceId> m_prismServiceIds;
+        vector<WaveServiceId> m_prismServiceIds;
         vector<string>         m_serviceNames;
         vector<bool>           m_enabled;
         vector<bool>           m_local;
@@ -794,16 +794,16 @@ class FrameworkObjectManagerServiceSetCpuAffinityMessage : public ManagementInte
     protected :
     public :
                     FrameworkObjectManagerServiceSetCpuAffinityMessage ();
-                    FrameworkObjectManagerServiceSetCpuAffinityMessage (const PrismServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector);
+                    FrameworkObjectManagerServiceSetCpuAffinityMessage (const WaveServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector);
                    ~FrameworkObjectManagerServiceSetCpuAffinityMessage ();
 
-    PrismServiceId  getPrismServiceId                                  ();
+    WaveServiceId  getWaveServiceId                                  ();
     vector<UI32>    getCpuAffinityVector                               () const;
 
     // Now the data members
 
     private :
-        PrismServiceId m_prismServiceId;
+        WaveServiceId m_prismServiceId;
         vector<UI32>   m_cpuAffinityVector;
 
     protected :

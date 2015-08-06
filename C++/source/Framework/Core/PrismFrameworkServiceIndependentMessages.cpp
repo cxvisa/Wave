@@ -17,13 +17,13 @@ namespace WaveNs
 {
 
 FrameworkObjectManagerStoreConfigurationIntentMessage::FrameworkObjectManagerStoreConfigurationIntentMessage ()
-    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT),
+    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT),
     m_configurationIntentMessageId  (0)
 {
 }
 
 FrameworkObjectManagerStoreConfigurationIntentMessage::FrameworkObjectManagerStoreConfigurationIntentMessage (const UI32 &configurationIntentMessageId)
-    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT),
+    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT),
     m_configurationIntentMessageId  (configurationIntentMessageId)
 {
 }
@@ -51,13 +51,13 @@ void FrameworkObjectManagerStoreConfigurationIntentMessage::setConfigurationInte
 
 
 FrameworkObjectManagerRemoveConfigurationIntentMessage::FrameworkObjectManagerRemoveConfigurationIntentMessage ()
-    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT),
+    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT),
     m_configurationIntentMessageId  (0)
 {
 }
 
 FrameworkObjectManagerRemoveConfigurationIntentMessage::FrameworkObjectManagerRemoveConfigurationIntentMessage (const UI32 &configurationIntentMessageId)
-    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT),
+    : WaveServiceIndependentMessage (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT),
     m_configurationIntentMessageId  (configurationIntentMessageId)
 {
 }

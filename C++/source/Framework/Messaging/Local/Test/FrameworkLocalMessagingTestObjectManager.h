@@ -25,7 +25,7 @@ class FrameworkLocalMessagingTestObjectManager : public PrismTestObjectManager
     public :
         virtual                                          ~FrameworkLocalMessagingTestObjectManager ();
         static  FrameworkLocalMessagingTestObjectManager *getInstance                              ();
-        static  PrismServiceId                            getPrismServiceId                        ();
+        static  WaveServiceId                            getWaveServiceId                        ();
                 void                                      testRequestHandler                       (RegressionTestMessage *pMessage);
                 void                                      simpleAsynchronousMessageTestStep        (FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext);
                 void                                      frameworkTestabilityMessage1Callback     (FrameworkStatus frameworkStatus, FrameworkTestabilityMessage1 *pMessage, FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext);

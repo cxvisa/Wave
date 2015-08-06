@@ -22,13 +22,13 @@ namespace WaveNs
 {
 
 ClusterLocalSetHardwareSynchronizationStateMessage::ClusterLocalSetHardwareSynchronizationStateMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_UNINITIALIZED)
 {
 }
 
 ClusterLocalSetHardwareSynchronizationStateMessage::ClusterLocalSetHardwareSynchronizationStateMessage (ResourceId hardwareSynchronizationState)
-    : PrismMessage (ClusterLocalObjectManager::getPrismServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
+    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (hardwareSynchronizationState)
 {
 }

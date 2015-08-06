@@ -12,12 +12,12 @@ namespace WaveNs
 {
 
     FileAbortFileTransferMessage::FileAbortFileTransferMessage ()
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCABORTFILETRANSFER)
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCABORTFILETRANSFER)
     {
     }
 
     FileAbortFileTransferMessage::FileAbortFileTransferMessage (vector<LocationId> &vecLocationIdList)
-        : PrismMessage (FileLocalObjectManager::getPrismServiceId (), FILESVCABORTFILETRANSFER),
+        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCABORTFILETRANSFER),
        m_vecLocationId(vecLocationIdList)
     {
     }

@@ -24,65 +24,65 @@ class FrameworkSequenceGenerator
     public :
         virtual      ~FrameworkSequenceGenerator          ();
 
-        virtual void  getInitializeSequenceDuringPrePhase (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getEnableSequenceDuringPrePhase     (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getInstallSequenceDuringPrePhase    (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getBootSequenceDuringPrePhase       (vector<PrismServiceId> &serviceIds) const;
+        virtual void  getInitializeSequenceDuringPrePhase (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getEnableSequenceDuringPrePhase     (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getInstallSequenceDuringPrePhase    (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getBootSequenceDuringPrePhase       (vector<WaveServiceId> &serviceIds) const;
 
-        virtual void  getInitializeSequence               (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getEnableSequence                   (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getInstallSequence                  (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getBootSequence                     (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getShutdownSequence                 (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getUninstallSequence                (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getUninitializeSequence             (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getDisableSequence                  (vector<PrismServiceId> &serviceIds) const;
+        virtual void  getInitializeSequence               (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getEnableSequence                   (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getInstallSequence                  (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getBootSequence                     (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getShutdownSequence                 (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getUninstallSequence                (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getUninitializeSequence             (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getDisableSequence                  (vector<WaveServiceId> &serviceIds) const;
 
-        virtual void  getShutdownSequenceDuringPostPhase     (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getUninstallSequenceDuringPostPhase    (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getUninitializeSequenceDuringPostPhase (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getDisableSequenceDuringPostPhase      (vector<PrismServiceId> &serviceIds) const;
+        virtual void  getShutdownSequenceDuringPostPhase     (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getUninstallSequenceDuringPostPhase    (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getUninitializeSequenceDuringPostPhase (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getDisableSequenceDuringPostPhase      (vector<WaveServiceId> &serviceIds) const;
 
-        virtual void  getFailoverSequence                 (vector<PrismServiceId> &serviceIds) const;
-        virtual void  getZeroizeSequence                 (vector<PrismServiceId> &serviceIds) const;
+        virtual void  getFailoverSequence                 (vector<WaveServiceId> &serviceIds) const;
+        virtual void  getZeroizeSequence                 (vector<WaveServiceId> &serviceIds) const;
 
-        virtual void  addPrismServiceIdToAll              (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToInitialize       (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToEnable           (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToInstall          (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToBoot             (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToShutdown         (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToUninstall        (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToUninitialize     (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToDisable          (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToFailover         (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addPrismServiceIdToZeroize 		  (const PrismServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToAll              (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToInitialize       (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToEnable           (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToInstall          (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToBoot             (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToShutdown         (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToUninstall        (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToUninitialize     (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToDisable          (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToFailover         (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToZeroize 		  (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
 
     // Nowe the data members
 
     private :
     protected :
-        vector<PrismServiceId> m_prismServiceIdsToInitializeDuringPrePhase;
-        vector<PrismServiceId> m_prismServiceIdsToEnableDuringPrePhase;
-        vector<PrismServiceId> m_prismServiceIdsToInstallDuringPrePhase;
-        vector<PrismServiceId> m_prismServiceIdsToBootDuringPrePhase;
+        vector<WaveServiceId> m_prismServiceIdsToInitializeDuringPrePhase;
+        vector<WaveServiceId> m_prismServiceIdsToEnableDuringPrePhase;
+        vector<WaveServiceId> m_prismServiceIdsToInstallDuringPrePhase;
+        vector<WaveServiceId> m_prismServiceIdsToBootDuringPrePhase;
 
-        vector<PrismServiceId> m_prismServiceIdsToInitialize;
-        vector<PrismServiceId> m_prismServiceIdsToEnable;
-        vector<PrismServiceId> m_prismServiceIdsToInstall;
-        vector<PrismServiceId> m_prismServiceIdsToBoot;
-        vector<PrismServiceId> m_prismServiceIdsToShutdown;
-        vector<PrismServiceId> m_prismServiceIdsToUninstall;
-        vector<PrismServiceId> m_prismServiceIdsToUninitialize;
-        vector<PrismServiceId> m_prismServiceIdsToDisable;
+        vector<WaveServiceId> m_prismServiceIdsToInitialize;
+        vector<WaveServiceId> m_prismServiceIdsToEnable;
+        vector<WaveServiceId> m_prismServiceIdsToInstall;
+        vector<WaveServiceId> m_prismServiceIdsToBoot;
+        vector<WaveServiceId> m_prismServiceIdsToShutdown;
+        vector<WaveServiceId> m_prismServiceIdsToUninstall;
+        vector<WaveServiceId> m_prismServiceIdsToUninitialize;
+        vector<WaveServiceId> m_prismServiceIdsToDisable;
 
-        vector<PrismServiceId> m_prismServiceIdsToShutdownDuringPostPhase;
-        vector<PrismServiceId> m_prismServiceIdsToUninstallDuringPostPhase;
-        vector<PrismServiceId> m_prismServiceIdsToUninitializeDuringPostPhase;
-        vector<PrismServiceId> m_prismServiceIdsToDisableDuringPostPhase;
+        vector<WaveServiceId> m_prismServiceIdsToShutdownDuringPostPhase;
+        vector<WaveServiceId> m_prismServiceIdsToUninstallDuringPostPhase;
+        vector<WaveServiceId> m_prismServiceIdsToUninitializeDuringPostPhase;
+        vector<WaveServiceId> m_prismServiceIdsToDisableDuringPostPhase;
 
-        vector<PrismServiceId> m_prismServiceIdsToFailover;
-        vector<PrismServiceId> m_prismServiceIdsToZeroize;
+        vector<WaveServiceId> m_prismServiceIdsToFailover;
+        vector<WaveServiceId> m_prismServiceIdsToZeroize;
 
     public :
 };

@@ -30,7 +30,7 @@ class PrismPostbootAgent : protected WaveWorker
                 ResourceId  notifyPostbootStartedStep       (PrismPostbootAgentContext *pPrismPostbootAgentContext);
                 ResourceId  sendPostbootPassStep            (PrismPostbootAgentContext *pPrismPostbootAgentContext);
                 ResourceId  notifyPostbootCompletedStep     (PrismPostbootAgentContext *pPrismPostbootAgentContext);
-                bool        requiresPostboot              (const PrismServiceId &prismServiceId);
+                bool        requiresPostboot              (const WaveServiceId &prismServiceId);
 
                 void        printRegistrationTable        (void);
         static  void        populateRegistrations         (map <UI32, vector <postbootPass> > registrationsTable);

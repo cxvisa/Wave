@@ -741,7 +741,7 @@ void Wave::instantiateNativePrismServices ()
 
         if (WAVE_SERVICE_ACTIVE == m_nativePrismServiceInstantiationMode[i])
         {
-            frameworkSequenceGenerator.addPrismServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
+            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
 
         }
     }
@@ -757,7 +757,7 @@ void Wave::instantiateNativePrismServices ()
 
             prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-            frameworkSequenceGenerator.addPrismServiceIdToAll (pWaveObjectManager->getServiceId ());
+            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId ());
         }
     }
 
@@ -768,7 +768,7 @@ void Wave::instantiateNativePrismServices ()
 
         ApplicationSpecificServices *pApplicationSpecificServices = ApplicationSpecificServices::getInstance ();
 
-        pApplicationSpecificServices->setPrismServiceId (pWaveObjectManager->getServiceId ());
+        pApplicationSpecificServices->setWaveServiceId (pWaveObjectManager->getServiceId ());
 
         trace (TRACE_LEVEL_DEBUG, string ("ApplicationSpecificPrismServices service ID ") + pWaveObjectManager->getServiceId ());
     }

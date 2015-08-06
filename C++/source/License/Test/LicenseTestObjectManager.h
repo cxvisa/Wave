@@ -22,7 +22,7 @@ class LicenseTestObjectManager : public PrismTestObjectManager
         virtual                          ~LicenseTestObjectManager ();
                 void                      testRequestHandler       (RegressionTestMessage *pMessage);
         static  LicenseTestObjectManager *getInstance              ();
-        static  PrismServiceId            getPrismServiceId        ();
+        static  WaveServiceId            getWaveServiceId        ();
 
     // Now the data members
 

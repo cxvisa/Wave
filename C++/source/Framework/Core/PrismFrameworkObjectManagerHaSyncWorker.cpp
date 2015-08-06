@@ -344,16 +344,16 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCollectValidationDataStep (S
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::collectHaSyncValidationDataStep");
 
-    vector<PrismServiceId>  prismServiceIds;
-    UI32                    numberOfPrismServiceIds;
+    vector<WaveServiceId>  prismServiceIds;
+    UI32                    numberOfWaveServiceIds;
     UI32                    i;
     ResourceId              status                       = WAVE_MESSAGE_SUCCESS;
-    vector<PrismServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getPrismServiceIdsToCommunicate ();
+    vector<WaveServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
 
     PrismThread::getListOfServiceIds (prismServiceIds);
-    numberOfPrismServiceIds = prismServiceIds.size ();
+    numberOfWaveServiceIds = prismServiceIds.size ();
 
-    for (i = 0; i < numberOfPrismServiceIds; i++)
+    for (i = 0; i < numberOfWaveServiceIds; i++)
     {
         trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::haSyncCollectHaSyncValidationDataStep : Collecting Validation Information from Service : ") + prismServiceIds[i]);
 
@@ -821,21 +821,21 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep (St
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep : Starting ...");
 
-    vector<PrismServiceId> &prismServiceIds                = pStartHaSyncDumpContext->getPrismServiceIdsVector ();
+    vector<WaveServiceId> &prismServiceIds                = pStartHaSyncDumpContext->getWaveServiceIdsVector ();
     vector<void *>         &validationDetailsVector        = pStartHaSyncDumpContext->getValidationDetailsVector ();
     vector<UI32>           &validationDetailsSizesVector   = pStartHaSyncDumpContext->getValidationDetailsSizesVector ();
 
-    UI32                   numberOfPrismServiceIds        = prismServiceIds.size ();
+    UI32                   numberOfWaveServiceIds        = prismServiceIds.size ();
     UI32                   numberOfValidationDetails      = validationDetailsVector.size ();
     UI32                   numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
     UI32                   j                              = 0;
 
-    prismAssert (numberOfPrismServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-    prismAssert (numberOfPrismServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+    prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+    prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
     PrismHaSyncConfigureStandbyMessage *pMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pStartHaSyncDumpContext->getStandbyMessage ());
 
-    for (j = 0; j < numberOfPrismServiceIds; j++)
+    for (j = 0; j < numberOfWaveServiceIds; j++)
     {
          if ((0 != validationDetailsSizesVector[j]) && (NULL != validationDetailsVector[j]))
          {
@@ -922,7 +922,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::resumeDatabase ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerHaSyncWorker::resumeDatabase : Starting ...");
 
-    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
 
     ResourceId                      status  = sendSynchronously (&message);
 
@@ -959,7 +959,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationResultsStep (St
 
     if (NULL != pPrismHaSyncConfigureStandbyMessage)
     {
-        vector<PrismServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getPrismServiceIdsToCommunicate ();
+        vector<WaveServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
         UI32                    numberOfPrismServices        = prismServiceIdsToCommunicate.size ();
         UI32                    i                            = 0;
 
@@ -1017,9 +1017,9 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpCallback (Fr
     }
 }
 
-bool PrismFrameworkObjectManagerHaSyncWorker::isServiceToBeExcludedInHaSyncCommunications (const PrismServiceId &prismServiceId)
+bool PrismFrameworkObjectManagerHaSyncWorker::isServiceToBeExcludedInHaSyncCommunications (const WaveServiceId &prismServiceId)
 {
-    if (((PrismFrameworkObjectManager::getPrismServiceId               ()) == prismServiceId)           ||
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId)           ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
     {
         return (true);
@@ -1406,16 +1406,16 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServiceStep");
 
-    vector<PrismServiceId> prismServiceIds;
-    UI32                   numberOfPrismServiceIds;
+    vector<WaveServiceId> prismServiceIds;
+    UI32                   numberOfWaveServiceIds;
     UI32                   i;
     LocationId             thisLocationId           = FrameworkToolKit::getThisLocationId ();
     ResourceId             status                   = WAVE_MESSAGE_SUCCESS;
 
     PrismThread::getListOfServiceIds (prismServiceIds);
-    numberOfPrismServiceIds = prismServiceIds.size ();
+    numberOfWaveServiceIds = prismServiceIds.size ();
 
-    for (i = 0; i < numberOfPrismServiceIds; i++)
+    for (i = 0; i < numberOfWaveServiceIds; i++)
     {
         trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesStep : Validating Service : ") + prismServiceIds[i]);
 
@@ -2615,7 +2615,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::pauseLocalPersistence ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerHaSyncWorker::pauseLocalPersistence : Starting ...");
 
-    PrismPauseObjectManagerMessage message (PersistenceLocalObjectManager::getPrismServiceId ());
+    PrismPauseObjectManagerMessage message (PersistenceLocalObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -2639,7 +2639,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::resumeLocalPersistence ()
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerHaSyncWorker::resumeLocalPersistence : Starting ...");
 
-    PrismResumeObjectManagerMessage message (PersistenceLocalObjectManager::getPrismServiceId ());
+    PrismResumeObjectManagerMessage message (PersistenceLocalObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)

@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopySchemaMessage (const string &prepareString, const string &sourceSchema, const string &destSchema)
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
       m_pResults (NULL),
       m_prepareString (prepareString),
       m_sourceSchema (sourceSchema),
@@ -21,7 +21,7 @@ DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopyS
 }
 
 DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopySchemaMessage (const string &sourceSchema, const string &destSchema)
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
       m_pResults (NULL),
       m_prepareString (""),
       m_sourceSchema (sourceSchema),
@@ -30,7 +30,7 @@ DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopyS
 }
 
 DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopySchemaMessage ()
-    : PrismMessage (DatabaseObjectManager::getPrismServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
+    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
       m_pResults (NULL),
       m_prepareString (""),
       m_sourceSchema (""),

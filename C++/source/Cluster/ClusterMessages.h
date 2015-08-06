@@ -435,7 +435,7 @@ class HeartBeatLostMessage : public PrismMessage
     protected :
     public :
         virtual         ~HeartBeatLostMessage   ();
-                HeartBeatLostMessage   (/*PrismServiceId id, */string dstIpAddress, UI32 dstPort/* , PrismElement *pStartHeartBeatSender*/);
+                HeartBeatLostMessage   (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort/* , PrismElement *pStartHeartBeatSender*/);
                 string   getDstIpAddress        ();
                 void     setDstIpAddress        (string dstIpAddress);
                 UI32     getDstPort             ();
@@ -457,7 +457,7 @@ class HeartBeatResumedMessage : public PrismMessage
     protected :
     public :
         virtual         ~HeartBeatResumedMessage ();
-        HeartBeatResumedMessage (/*PrismServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender*/);
+        HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender*/);
         string   getDstIpAddress         ();
         void     setDstIpAddress         (string dstIpAddress);
         UI32     getDstPort              ();

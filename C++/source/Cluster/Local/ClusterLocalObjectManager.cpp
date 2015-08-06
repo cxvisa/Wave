@@ -198,7 +198,7 @@ ClusterLocalObjectManager *ClusterLocalObjectManager:: getInstance ()
     return (pClusterLocalObjectManager);
 }
 
-PrismServiceId ClusterLocalObjectManager:: getPrismServiceId ()
+WaveServiceId ClusterLocalObjectManager:: getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -266,9 +266,9 @@ PrismMessage *ClusterLocalObjectManager::createMessageInstance (const UI32 &oper
 
 void ClusterLocalObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::nodeAddedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::phase3StartEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getPrismServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_COMPLETE_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::phase3CompleteEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::nodeAddedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::phase3StartEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_COMPLETE_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::phase3CompleteEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

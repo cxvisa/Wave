@@ -75,7 +75,7 @@ WaveUserInterfaceObjectManager *WaveUserInterfaceObjectManager:: getInstance ()
     return (pWaveUserInterfaceObjectManager);
 }
 
-PrismServiceId WaveUserInterfaceObjectManager:: getPrismServiceId ()
+WaveServiceId WaveUserInterfaceObjectManager:: getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -204,7 +204,7 @@ void WaveUserInterfaceObjectManager::replyToWaveServer (ManagementInterfaceMessa
 
 WaveMessageStatus WaveUserInterfaceObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pPrismMessageSender)
 {
-    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId (waveServerId);
     pManagementInterfaceMessage->setTtyName (m_ttyName);
 
@@ -245,7 +245,7 @@ void WaveUserInterfaceObjectManager::sendToWaveServerCallback (FrameworkStatus f
 
 WaveMessageStatus WaveUserInterfaceObjectManager::sendOneWayToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, const LocationId &locationId)
 {
-    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId (waveServerId);
     pManagementInterfaceMessage->setTtyName (m_ttyName);
 
@@ -254,7 +254,7 @@ WaveMessageStatus WaveUserInterfaceObjectManager::sendOneWayToWaveServer (const 
 
 WaveMessageStatus WaveUserInterfaceObjectManager::sendSynchronouslyToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, const LocationId &locationId)
 {
-    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getPrismServiceId ());
+    pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId (waveServerId);
     pManagementInterfaceMessage->setTtyName (m_ttyName);
 

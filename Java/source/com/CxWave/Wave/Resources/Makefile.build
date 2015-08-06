@@ -1,0 +1,30 @@
+
+export BUILD_DIR = ../../../../../build
+export BUILD_DIR_OBJ = $(BUILD_DIR)/obj
+export BUILD_DIR_DYNAMIC = $(BUILD_DIR)/DynamicSource
+export ALL_JAVA_SOURCES = $(shell cd $(BUILD_DIR_DYNAMIC) && find . -name "*.java")
+export ALL_JAVA_CLASSES = $(patsubst %.java,$(BUILD_DIR_OBJ)/%.class,$(ALL_JAVA_SOURCES))
+
+.PHONY: all buildresources classes
+
+vpath $(BUILD_DIR_DYNAMIC)
+
+all: buildresources
+
+buildresources: classes
+
+LIST_OF_CLASSES_TO_BE_UPDATED :=
+
+classes: $(ALL_JAVA_CLASSES)
+	if [ ! -z "$(LIST_OF_CLASSES_TO_BE_UPDATED)" ] ; then \
+        for i in $(LIST_OF_CLASSES_TO_BE_UPDATED); \
+        do \
+            echo $$i; \
+        done; \
+        javac -Xlint:unchecked -cp $(shell pwd):../../../.. -d $(BUILD_DIR)/obj -Werror $(LIST_OF_CLASSES_TO_BE_UPDATED); \
+	fi
+
+$(ALL_JAVA_CLASSES) : $(BUILD_DIR_OBJ)/%.class : $(BUILD_DIR_DYNAMIC)/%.java
+	echo $<
+	$(eval LIST_OF_CLASSES_TO_BE_UPDATED += $$<)
+

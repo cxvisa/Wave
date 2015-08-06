@@ -209,13 +209,13 @@ WaveManagementServer *WaveManagementServerMap::getServer (const UI32 &id)
     return (pTempWaveManagementServer);
 }
 
-PrismServiceId WaveManagementServerMap::getPrismServiceIdForServiceName (const UI32 &serverId, const string &serviceName)
+WaveServiceId WaveManagementServerMap::getWaveServiceIdForServiceName (const UI32 &serverId, const string &serviceName)
 {
     m_managementServersMutex.lock ();
 
     bool                  serverAlreadyExists       = isAKnownServerNoLock (serverId);
     WaveManagementServer *pTempWaveManagementServer = NULL;
-    PrismServiceId        serviceId                 = 0;
+    WaveServiceId        serviceId                 = 0;
 
     if (true == serverAlreadyExists)
     {
@@ -223,7 +223,7 @@ PrismServiceId WaveManagementServerMap::getPrismServiceIdForServiceName (const U
 
         prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
-        serviceId = pTempWaveManagementServer->getPrismServiceIdForServiceName (serviceName);
+        serviceId = pTempWaveManagementServer->getWaveServiceIdForServiceName (serviceName);
     }
 
     m_managementServersMutex.unlock ();
@@ -231,7 +231,7 @@ PrismServiceId WaveManagementServerMap::getPrismServiceIdForServiceName (const U
     return (serviceId);
 }
 
-string WaveManagementServerMap::getPrismServiceNameForServiceId (const UI32 &serverId, const PrismServiceId &serviceId)
+string WaveManagementServerMap::getPrismServiceNameForServiceId (const UI32 &serverId, const WaveServiceId &serviceId)
 {
     m_managementServersMutex.lock ();
 

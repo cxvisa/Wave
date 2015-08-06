@@ -27,7 +27,7 @@ class PrismInitializeObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismInitializeObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason);
+                       PrismInitializeObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason);
 
         WaveBootReason getReason                           () const;
 
@@ -45,7 +45,7 @@ class PrismInstallObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismInstallObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason);
+                       PrismInstallObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason);
 
         WaveBootReason getReason                        () const;
 
@@ -63,7 +63,7 @@ class PrismEnableObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismEnableObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason);
+                       PrismEnableObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason);
         WaveBootReason getReason                       () const;
 
     // Now the data members
@@ -80,7 +80,7 @@ class PrismUpgradeObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismUpgradeObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason);
+                       PrismUpgradeObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason);
         WaveBootReason getReason                        () const;
 
     // Now the data members
@@ -97,7 +97,7 @@ class PrismBootObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismBootObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason, const bool &rollBackFlag = false);
+                       PrismBootObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason, const bool &rollBackFlag = false);
         WaveBootReason getReason                     () const;
         bool           getRollBackFlag               () const;
     // Now the data members
@@ -114,7 +114,7 @@ class PrismHaInstallObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismHaInstallObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason);
+                       PrismHaInstallObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason);
 
         WaveBootReason getReason                        () const;
     // Now the data members
@@ -130,7 +130,7 @@ class PrismHaBootObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                       PrismHaBootObjectManagerMessage (PrismServiceId id, const WaveBootReason &reason);
+                       PrismHaBootObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason);
         WaveBootReason getReason                     () const;
     // Now the data members
     private :
@@ -145,7 +145,7 @@ class PrismPostbootObjectManagerMessage : public PrismMessage
         virtual void setupAttributesForSerialization ();
     protected :
     public :
-                       PrismPostbootObjectManagerMessage (PrismServiceId id, SI8 passNum, string passName, UI32 slotNum, UI32 recoveryType);
+                       PrismPostbootObjectManagerMessage (WaveServiceId id, SI8 passNum, string passName, UI32 slotNum, UI32 recoveryType);
         SI8            getPassNum                    () const;
         string         getPassName                   () const;
         UI32           getSlotNum                    () const;
@@ -165,7 +165,7 @@ class PrismShutdownObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismShutdownObjectManagerMessage (PrismServiceId id);
+        PrismShutdownObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -179,7 +179,7 @@ class PrismDisableObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismDisableObjectManagerMessage (PrismServiceId id);
+        PrismDisableObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -193,7 +193,7 @@ class PrismUninstallObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismUninstallObjectManagerMessage (PrismServiceId id);
+        PrismUninstallObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -207,7 +207,7 @@ class PrismUninitializeObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismUninitializeObjectManagerMessage (PrismServiceId id);
+        PrismUninitializeObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -221,7 +221,7 @@ class PrismDestructObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismDestructObjectManagerMessage (PrismServiceId id);
+        PrismDestructObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -233,7 +233,7 @@ class PrismDestructObjectManagerMessage : public PrismMessage
 class PrismPingObjectManagerMessage : public PrismMessage
 {
     private :
-        PrismPingObjectManagerMessage (PrismServiceId id);
+        PrismPingObjectManagerMessage (WaveServiceId id);
 
     protected :
     public :
@@ -250,7 +250,7 @@ class PrismTimerExpiredObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                                               PrismTimerExpiredObjectManagerMessage (PrismServiceId id, TimerHandle m_timerId, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender);
+                                               PrismTimerExpiredObjectManagerMessage (WaveServiceId id, TimerHandle m_timerId, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender);
                                                PrismTimerExpiredObjectManagerMessage (const PrismTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage);
         PrismTimerExpiredObjectManagerMessage &operator =                            (const PrismTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage);
         PrismTimerExpirationHandler            getTimerExpirationCallback            ();
@@ -276,7 +276,7 @@ class WaveObjectManagerDatabaseSanityCheckMessage : public PrismMessage
     private :
     protected :
     public :
-                       WaveObjectManagerDatabaseSanityCheckMessage (PrismServiceId id, const WaveBootReason &bootReason);
+                       WaveObjectManagerDatabaseSanityCheckMessage (WaveServiceId id, const WaveBootReason &bootReason);
         WaveBootReason getBootReason                               () const;
 
     // Now the data members
@@ -293,7 +293,7 @@ class WaveObjectManagerCollectValidationDataMessage : public PrismMessage
     private :
     protected :
     public :
-              WaveObjectManagerCollectValidationDataMessage (PrismServiceId id);
+              WaveObjectManagerCollectValidationDataMessage (WaveServiceId id);
              ~WaveObjectManagerCollectValidationDataMessage ();
         void  setValidationDetails                           (void *const pData, const UI32 &size, bool willBeOwnedByMessage = false);
         void  getValidationDetails                           (void *&pData, UI32 &size);
@@ -310,7 +310,7 @@ class WaveObjectManagerValidateClusterCreationMessage : public PrismMessage
     private :
     protected :
     public :
-                WaveObjectManagerValidateClusterCreationMessage (PrismServiceId id);
+                WaveObjectManagerValidateClusterCreationMessage (WaveServiceId id);
                 ~WaveObjectManagerValidateClusterCreationMessage ();
         void  setValidationDetails                             (void *const pData, const UI32 &size, bool willBeOwnedByMessage = false);
         void  getValidationDetails                             (void *&pData, UI32 &size);
@@ -329,7 +329,7 @@ class WaveObjectManagerSendValidationResultsMessage : public PrismMessage
     private :
     protected :
     public :
-              WaveObjectManagerSendValidationResultsMessage (PrismServiceId id);
+              WaveObjectManagerSendValidationResultsMessage (WaveServiceId id);
              ~WaveObjectManagerSendValidationResultsMessage ();
         void  addValidationResults                           (const string &ipAddress, const SI32 &port, void *pValidationResults, const UI32 &validationResultsSize);
         void  getValidationResults                           (const string &ipAddress, const SI32 &port, void *&pValidationResults, UI32 &validationResultsSize);
@@ -351,7 +351,7 @@ class WaveObjectManagerHaSyncCollectValidationDataMessage : public PrismMessage
     private :
     protected :
     public :
-              WaveObjectManagerHaSyncCollectValidationDataMessage (PrismServiceId id);
+              WaveObjectManagerHaSyncCollectValidationDataMessage (WaveServiceId id);
              ~WaveObjectManagerHaSyncCollectValidationDataMessage ();
         void  setValidationDetails                           (void *const pData, const UI32 &size, bool willBeOwnedByMessage = false);
         void  getValidationDetails                           (void *&pData, UI32 &size);
@@ -368,7 +368,7 @@ class WaveObjectManagerHaSyncValidateDataMessage : public PrismMessage
     private :
     protected :
     public :
-                WaveObjectManagerHaSyncValidateDataMessage (PrismServiceId id);
+                WaveObjectManagerHaSyncValidateDataMessage (WaveServiceId id);
                 ~WaveObjectManagerHaSyncValidateDataMessage ();
         void  setValidationDetails                             (void *const pData, const UI32 &size, bool willBeOwnedByMessage = false);
         void  getValidationDetails                             (void *&pData, UI32 &size);
@@ -387,7 +387,7 @@ class WaveObjectManagerHaSyncSendValidationResultsMessage : public PrismMessage
     private :
     protected :
     public :
-              WaveObjectManagerHaSyncSendValidationResultsMessage (PrismServiceId id);
+              WaveObjectManagerHaSyncSendValidationResultsMessage (WaveServiceId id);
              ~WaveObjectManagerHaSyncSendValidationResultsMessage ();
         void  addValidationResults                           (void *pValidationResults, const UI32 &validationResultsSize);
         void  getValidationResults                           (void *&pValidationResults, UI32 &validationResultsSize);
@@ -406,13 +406,13 @@ class WaveObjectManagerRegisterEventListenerMessage : public PrismMessage
     private :
     protected :
     public :
-              WaveObjectManagerRegisterEventListenerMessage (PrismServiceId id, const UI32 &operationCodeToListenFor, const PrismServiceId &listenerPrismServiceId, const LocationId &listenerLocationId);
+              WaveObjectManagerRegisterEventListenerMessage (WaveServiceId id, const UI32 &operationCodeToListenFor, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
              ~WaveObjectManagerRegisterEventListenerMessage ();
 
         UI32           getOperationCodeToListenFor           () const;
         void           setOperationCodeToListenFor           (const UI32 &operationCodeToListenFor);
-        PrismServiceId getListenerPrismServiceId             () const;
-        void           setListenerPrismServiceId             (const PrismServiceId &listenerPrismServiceId);
+        WaveServiceId getListenerWaveServiceId             () const;
+        void           setListenerWaveServiceId             (const WaveServiceId &listenerWaveServiceId);
         LocationId     getListenerLocationId                 () const;
         void           setListenerLocationId                 (const LocationId &listenerLocationId);
 
@@ -420,7 +420,7 @@ class WaveObjectManagerRegisterEventListenerMessage : public PrismMessage
 
     private :
         UI32           m_operationCodeToListenFor;
-        PrismServiceId m_listenerPrismServiceId;
+        WaveServiceId m_listenerWaveServiceId;
         LocationId     m_listenerLocationId;
 
     protected :
@@ -432,7 +432,7 @@ class PrismFailoverObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                                                      PrismFailoverObjectManagerMessage (PrismServiceId id, const FrameworkObjectManagerFailoverReason &failoverReason, const bool isPrincipalChangedWithThisFailover);
+                                                      PrismFailoverObjectManagerMessage (WaveServiceId id, const FrameworkObjectManagerFailoverReason &failoverReason, const bool isPrincipalChangedWithThisFailover);
         virtual                                      ~PrismFailoverObjectManagerMessage ();
 
                 FrameworkObjectManagerFailoverReason  getFailoverReason                 () const;
@@ -455,7 +455,7 @@ class PrismPauseObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismPauseObjectManagerMessage (PrismServiceId id);
+        PrismPauseObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -469,7 +469,7 @@ class PrismResumeObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismResumeObjectManagerMessage (PrismServiceId id);
+        PrismResumeObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -483,7 +483,7 @@ class PrismSetCpuAffinityObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-                     PrismSetCpuAffinityObjectManagerMessage (PrismServiceId id);
+                     PrismSetCpuAffinityObjectManagerMessage (WaveServiceId id);
 
         vector<UI32> getCpuAffinityVector                    () const;
         void         setCpuAffinityVector                    (const vector<UI32> &cpuAffinityVector);
@@ -502,7 +502,7 @@ class PrismListenForEventsObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismListenForEventsObjectManagerMessage (PrismServiceId id);
+        PrismListenForEventsObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -519,7 +519,7 @@ class PrismLoadOperationalDataForManagedObjectObjectManagerMessage : public Pris
     protected :
     public :
         PrismLoadOperationalDataForManagedObjectObjectManagerMessage ();
-        PrismLoadOperationalDataForManagedObjectObjectManagerMessage (PrismServiceId id, ObjectId objectId, const vector<string> &operationalDataFields);
+        PrismLoadOperationalDataForManagedObjectObjectManagerMessage (WaveServiceId id, ObjectId objectId, const vector<string> &operationalDataFields);
 
         ObjectId       getObjectId              () const;
         vector<string> getOperationalDataFields () const;
@@ -541,7 +541,7 @@ class PrismHeartbeatFailureObjectManagerMessage : public PrismMessage
 
     protected :
     public :
-        PrismHeartbeatFailureObjectManagerMessage (PrismServiceId id, IpV4Address ipAddress, UI16 portNumber);
+        PrismHeartbeatFailureObjectManagerMessage (WaveServiceId id, IpV4Address ipAddress, UI16 portNumber);
 
         IpV4Address  getIpAddress () const;
 		UI16         getPortNumber () const;
@@ -561,7 +561,7 @@ class PrismExternalStateSynchronizationObjectManagerMessage : public PrismMessag
 
     protected :
     public :
-        PrismExternalStateSynchronizationObjectManagerMessage (PrismServiceId id, UI32 fssStageNumber, ResourceId serviceType);
+        PrismExternalStateSynchronizationObjectManagerMessage (WaveServiceId id, UI32 fssStageNumber, ResourceId serviceType);
 
 		UI32         getFssStageNumber () const;
 		ResourceId   getServiceType() const;
@@ -581,7 +581,7 @@ class PrismConfigReplayEndObjectManagerMessage : public PrismMessage
 
     protected :
     public :
-        PrismConfigReplayEndObjectManagerMessage (PrismServiceId id);
+        PrismConfigReplayEndObjectManagerMessage (WaveServiceId id);
 
 	// Now the data members
     private :
@@ -596,7 +596,7 @@ class PrismFileReplayEndObjectManagerMessage : public PrismMessage
 
     protected :
     public :
-        PrismFileReplayEndObjectManagerMessage (PrismServiceId id);
+        PrismFileReplayEndObjectManagerMessage (WaveServiceId id);
 
 	// Now the data members
     private :
@@ -611,7 +611,7 @@ class PrismSlotFailoverObjectManagerMessage : public PrismMessage
 
     protected :
     public :
-        PrismSlotFailoverObjectManagerMessage (PrismServiceId id, UI32 slotNumber);
+        PrismSlotFailoverObjectManagerMessage (WaveServiceId id, UI32 slotNumber);
         UI32    getSlotNumber () const;
 
 
@@ -629,7 +629,7 @@ class PrismMultiPartitionCleanupObjectManagerMessage : public PrismMessage
 
     protected :
     public :
-        PrismMultiPartitionCleanupObjectManagerMessage    (PrismServiceId id, string &partitionName, ObjectId &ownerPartitionManagedObjectId);
+        PrismMultiPartitionCleanupObjectManagerMessage    (WaveServiceId id, string &partitionName, ObjectId &ownerPartitionManagedObjectId);
         string      getPartitionName                                   () const;
         ObjectId    getOwnerPartitionManagedObjectId                   () const ;
 
@@ -655,7 +655,7 @@ class WaveObjectManagerBackendSyncUpMessage : public PrismMessage
     private :
     protected :
     public :
-              WaveObjectManagerBackendSyncUpMessage (PrismServiceId id);
+              WaveObjectManagerBackendSyncUpMessage (WaveServiceId id);
 
 
     // Now the data members
@@ -673,7 +673,7 @@ class WaveObjectManagerMessageHistoryDumpMessage : public PrismMessage
         virtual void                   setupAttributesForSerialization ();
     protected :
     public :
-                                       WaveObjectManagerMessageHistoryDumpMessage (PrismServiceId id);
+                                       WaveObjectManagerMessageHistoryDumpMessage (WaveServiceId id);
         virtual                       ~WaveObjectManagerMessageHistoryDumpMessage ();
 
                 vector<string>        &getMessageHistoryDumpStringVector          ();
@@ -695,7 +695,7 @@ class WaveObjectManagerMessageHistoryConfigMessage : public PrismMessage
 
     protected :
     public :
-                                        WaveObjectManagerMessageHistoryConfigMessage (PrismServiceId id);
+                                        WaveObjectManagerMessageHistoryConfigMessage (WaveServiceId id);
         virtual                        ~WaveObjectManagerMessageHistoryConfigMessage ();
 
                 bool                    getMessageHistoryState                       () const;
@@ -720,8 +720,8 @@ class WaveObjectManagerUpdateRelationshipMessage : public PrismMessage
                 void    setupAttributesForSerialization ();
     public:
                         WaveObjectManagerUpdateRelationshipMessage ();
-                        WaveObjectManagerUpdateRelationshipMessage (PrismServiceId id);
-                        WaveObjectManagerUpdateRelationshipMessage (PrismServiceId id, UI32 operationCode);
+                        WaveObjectManagerUpdateRelationshipMessage (WaveServiceId id);
+                        WaveObjectManagerUpdateRelationshipMessage (WaveServiceId id, UI32 operationCode);
         virtual        ~WaveObjectManagerUpdateRelationshipMessage ();
 
         void            setRelationshipVariables    (const string &parentClassName, const string &childClassName, const string &relationshipName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
@@ -749,8 +749,8 @@ class WaveObjectManagerUpdateWaveManagedObjectMessage: public PrismMessage
 
     public :
                                 WaveObjectManagerUpdateWaveManagedObjectMessage ();
-                                WaveObjectManagerUpdateWaveManagedObjectMessage (PrismServiceId id);
-                                WaveObjectManagerUpdateWaveManagedObjectMessage (PrismServiceId id, UI32 operationCode);
+                                WaveObjectManagerUpdateWaveManagedObjectMessage (WaveServiceId id);
+                                WaveObjectManagerUpdateWaveManagedObjectMessage (WaveServiceId id, UI32 operationCode);
         virtual                ~WaveObjectManagerUpdateWaveManagedObjectMessage ();
 
                 ObjectId        getInputWaveManagedObjectId                     () const;
@@ -817,7 +817,7 @@ class WaveObjectManagerCreateWaveManagedObjectMessage : public WaveObjectManager
     public:
 
                                 WaveObjectManagerCreateWaveManagedObjectMessage     ();
-                                WaveObjectManagerCreateWaveManagedObjectMessage     (PrismServiceId id);
+                                WaveObjectManagerCreateWaveManagedObjectMessage     (WaveServiceId id);
         virtual                ~WaveObjectManagerCreateWaveManagedObjectMessage     ();
 
         string                  getManagedObjectClassNameNeedToBeCreated            () const;
@@ -843,8 +843,8 @@ class WaveObjectManagerDeleteWaveManagedObjectMessage: public WaveObjectManagerU
         void setupAttributesForSerialization ();
     public :
                                 WaveObjectManagerDeleteWaveManagedObjectMessage ();
-                                WaveObjectManagerDeleteWaveManagedObjectMessage (PrismServiceId id);
-                                WaveObjectManagerDeleteWaveManagedObjectMessage (PrismServiceId id, UI32 operationCode);
+                                WaveObjectManagerDeleteWaveManagedObjectMessage (WaveServiceId id);
+                                WaveObjectManagerDeleteWaveManagedObjectMessage (WaveServiceId id, UI32 operationCode);
         virtual                ~WaveObjectManagerDeleteWaveManagedObjectMessage ();
 
                 UI32            getIsMO                                         () const;
@@ -867,7 +867,7 @@ class WaveObjectManagerDeleteWaveManagedObjectsMessage: public WaveObjectManager
     protected :
     public :
                                 WaveObjectManagerDeleteWaveManagedObjectsMessage ();
-                                WaveObjectManagerDeleteWaveManagedObjectsMessage (PrismServiceId id);
+                                WaveObjectManagerDeleteWaveManagedObjectsMessage (WaveServiceId id);
         virtual                ~WaveObjectManagerDeleteWaveManagedObjectsMessage ();
 
               vector<ObjectId>        getManagedObjectsIdVector                        () const;
@@ -894,7 +894,7 @@ class PrismZeroizeObjectManagerMessage : public PrismMessage
     private :
     protected :
     public :
-        PrismZeroizeObjectManagerMessage (PrismServiceId id);
+        PrismZeroizeObjectManagerMessage (WaveServiceId id);
 
     // Now the data members
 
@@ -950,8 +950,8 @@ class WaveObjectManagerGetDataFromClientMessage : public PrismMessage
     protected :
     public :
                                     WaveObjectManagerGetDataFromClientMessage   ();
-                                    WaveObjectManagerGetDataFromClientMessage   (PrismServiceId id);
-                                    WaveObjectManagerGetDataFromClientMessage   (PrismServiceId id, UI32 commandCode, UI32 commandType, bool sendToClusterRequested = false );
+                                    WaveObjectManagerGetDataFromClientMessage   (WaveServiceId id);
+                                    WaveObjectManagerGetDataFromClientMessage   (WaveServiceId id, UI32 commandCode, UI32 commandType, bool sendToClusterRequested = false );
         virtual                    ~WaveObjectManagerGetDataFromClientMessage   ();
 
                     void            setEnablePaginate               (const bool &enablePaginate);
@@ -1020,7 +1020,7 @@ class WaveDeliverBrokerPublishMessage : public PrismMessage
     private :
     protected :
     public :
-                                  WaveDeliverBrokerPublishMessage (PrismServiceId id);
+                                  WaveDeliverBrokerPublishMessage (WaveServiceId id);
                                  ~WaveDeliverBrokerPublishMessage ();
 
         WaveBrokerPublishMessage *getPWaveBrokerPublishMessage    ();

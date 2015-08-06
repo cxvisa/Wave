@@ -67,8 +67,8 @@ class FrameworkToolKit
         static const LocationId                  getClusterPrimaryLocationId                ();
         static const string                      getClusterPrimaryIpAddress                 ();
         static const SI32                        getClusterPrimaryPort                      ();
-        static const string                      getServiceNameById                         (const PrismServiceId &id);
-        static const PrismServiceId              getServiceIdByName                         (const string &serviceName);
+        static const string                      getServiceNameById                         (const WaveServiceId &id);
+        static const WaveServiceId              getServiceIdByName                         (const string &serviceName);
         static       LocationId                  getLocationIdForIpAddressAndPort           (const string &ipAddress, const SI32 &port);
         static       string                      getIpAddressForLocationId                  (const LocationId &locationId);
         static       SI32                        getPortForLocationId                       (const LocationId &locationId);
@@ -96,7 +96,7 @@ class FrameworkToolKit
         static const ResourceId                  savePrismConfiguration                     (const bool &syncToStandby = false);
         static const ResourceId                  getPrismConfigurationValidity              (bool &validity);
         static const ResourceId                  changePrismConfigurationValidity           (const bool &validity);
-        static const bool                        isALocalService                            (const PrismServiceId &prismServiceId);
+        static const bool                        isALocalService                            (const WaveServiceId &prismServiceId);
         static const bool                        isPrimaryLocation                          ();
         static const bool                        isStandAloneLocation                       ();
         static const SI32                        getManagementInterfaceReceiverPort         ();

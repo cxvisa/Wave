@@ -153,7 +153,7 @@ WaveClientTransportObjectManager *WaveClientTransportObjectManager:: getInstance
     return (pWaveClientTransportObjectManager);
 }
 
-PrismServiceId WaveClientTransportObjectManager:: getPrismServiceId ()
+WaveServiceId WaveClientTransportObjectManager:: getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }
@@ -188,7 +188,7 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
 
     string                      serviceName     = pManagementInterfaceMessage->getServiceName ();
     UI32                        serverId        = pManagementInterfaceMessage->getServerId ();
-    PrismServiceId              serviceId       = getPrismServiceIdForServiceName (serverId, serviceName);
+    WaveServiceId              serviceId       = getWaveServiceIdForServiceName (serverId, serviceName);
 
     if (0 != serviceId)
     {
@@ -577,12 +577,12 @@ void WaveClientTransportObjectManager::disconnectFromServer (const string &serve
     }
 }
 
-PrismServiceId WaveClientTransportObjectManager::getPrismServiceIdForServiceName (const UI32 &serverId, const string &serviceName)
+WaveServiceId WaveClientTransportObjectManager::getWaveServiceIdForServiceName (const UI32 &serverId, const string &serviceName)
 {
-    return (m_serversMap.getPrismServiceIdForServiceName (serverId, serviceName));
+    return (m_serversMap.getWaveServiceIdForServiceName (serverId, serviceName));
 }
 
-string WaveClientTransportObjectManager::getPrismServiceNameForServiceId (const UI32 &serverId, const PrismServiceId &serviceId)
+string WaveClientTransportObjectManager::getPrismServiceNameForServiceId (const UI32 &serverId, const WaveServiceId &serviceId)
 {
     return (m_serversMap.getPrismServiceNameForServiceId (serverId, serviceId));
 }

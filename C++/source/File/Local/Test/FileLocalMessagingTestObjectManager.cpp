@@ -42,7 +42,7 @@ FileLocalMessagingTestObjectManager::~FileLocalMessagingTestObjectManager ()
 {
 }
 
-PrismServiceId FileLocalMessagingTestObjectManager::getPrismServiceId ()
+WaveServiceId FileLocalMessagingTestObjectManager::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
 }

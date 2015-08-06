@@ -44,7 +44,7 @@ ResourceId WaveNodeBackendSyncUpAgent::execute ()
 
 ResourceId WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    vector<PrismServiceId> serviceIdsToSend;
+    vector<WaveServiceId> serviceIdsToSend;
     UI32                    i                    = 0;
     UI32                    numberOfServices     = 0;
 
@@ -92,9 +92,9 @@ ResourceId WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep (PrismSynchronousLi
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool WaveNodeBackendSyncUpAgent::requiresBackendSyncUpNotification (const PrismServiceId &prismServiceId)
+bool WaveNodeBackendSyncUpAgent::requiresBackendSyncUpNotification (const WaveServiceId &prismServiceId)
 {
-    if ((!FrameworkToolKit::isALocalService (prismServiceId)) || ((PrismFrameworkObjectManager::getPrismServiceId ()) == prismServiceId) ||
+    if ((!FrameworkToolKit::isALocalService (prismServiceId)) || ((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
 		 (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId)))
     {
         return (false);

@@ -20,8 +20,8 @@ class WaveManagedObjectMessage : public PrismMessage
 
     protected :
     public :
-                          WaveManagedObjectMessage (PrismServiceId serviceCode, UI32 operationCode);
-                          WaveManagedObjectMessage (PrismServiceId serviceCode, UI32 operationCode, const ObjectId &waveManagedObjectId);
+                          WaveManagedObjectMessage (WaveServiceId serviceCode, UI32 operationCode);
+                          WaveManagedObjectMessage (WaveServiceId serviceCode, UI32 operationCode, const ObjectId &waveManagedObjectId);
         virtual          ~WaveManagedObjectMessage ();
 
                 ObjectId  getWaveManagedObjectId   () const;

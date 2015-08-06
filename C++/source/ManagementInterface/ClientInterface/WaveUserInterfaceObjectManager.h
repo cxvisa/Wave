@@ -40,7 +40,7 @@ class WaveUserInterfaceObjectManager : public WaveObjectManager
         virtual                                                  ~WaveUserInterfaceObjectManager                     ();
 
         static  WaveUserInterfaceObjectManager                   *getInstance                                        ();
-        static  PrismServiceId                                    getPrismServiceId                                  ();
+        static  WaveServiceId                                    getWaveServiceId                                  ();
         static  string                                            getPrismServiceName                                ();
 
         static  void                                              setManagementInterfaceMessageHandlerForClient      (ManagementInterfaceMessageHandlerForClient managementInterfaceMessageHandlerForClient);

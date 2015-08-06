@@ -33,8 +33,8 @@ class PrismFrameworkFailoverWorkerSequencerContext : public PrismLinearSequencer
                 PrismFailoverAgent                   *getPPrismFailoverAgent                       () const;
                 void                                  setPPrismFailoverAgent                       (PrismFailoverAgent *pPrismFailoverAgent);
 
-                void                                  setServiceToBeIgnored                        (const PrismServiceId &serviceToBeIgnored);
-                PrismServiceId                        getServiceToBeIgnored                        () const;
+                void                                  setServiceToBeIgnored                        (const WaveServiceId &serviceToBeIgnored);
+                WaveServiceId                        getServiceToBeIgnored                        () const;
 
     // Now the data members
 
@@ -45,7 +45,7 @@ class PrismFrameworkFailoverWorkerSequencerContext : public PrismLinearSequencer
 
         PrismFailoverAgent                   *m_pPrismFailoverAgent;
 
-        PrismServiceId                        m_serviceToBeIgnored;
+        WaveServiceId                        m_serviceToBeIgnored;
 
     protected :
     public :
