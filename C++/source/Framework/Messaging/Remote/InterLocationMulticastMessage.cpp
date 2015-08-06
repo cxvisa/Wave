@@ -15,7 +15,7 @@
 namespace WaveNs
 {
 InterLocationMulticastMessage::InterLocationMulticastMessage ()
-    : PrismMessage (InterLocationMessageTransportObjectManager::getWaveServiceId (), INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND),
+    : WaveMessage (InterLocationMessageTransportObjectManager::getWaveServiceId (), INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND),
     m_numberOfMessagesSent (0)
 {
 }

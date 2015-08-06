@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 class WaveObjectManager;
-class PrismMessage;
+class WaveMessage;
 
 typedef PrismApplicationServiceCallback ApplicationServiceCallback;
 
@@ -61,17 +61,17 @@ class ApplicationServiceMessageHandlerContext
     private :
     protected :
     public :
-                            ApplicationServiceMessageHandlerContext (WaveObjectManager *pWaveObjectManager, PrismMessage *pPrismMessage);
+                            ApplicationServiceMessageHandlerContext (WaveObjectManager *pWaveObjectManager, WaveMessage *pWaveMessage);
                            ~ApplicationServiceMessageHandlerContext ();
 
         WaveObjectManager *getPWaveObjectManager                  ();
-        PrismMessage       *getPPrismMessage                        ();
+        WaveMessage       *getPWaveMessage                        ();
 
     // Now the data members
 
     private :
         WaveObjectManager *m_pWaveObjectManager;
-        PrismMessage       *m_pPrismMessage;
+        WaveMessage       *m_pWaveMessage;
 
     protected :
     public :

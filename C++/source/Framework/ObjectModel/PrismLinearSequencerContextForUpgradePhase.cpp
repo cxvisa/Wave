@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-PrismLinearSequencerContextForUpgradePhase::PrismLinearSequencerContextForUpgradePhase (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps)
+PrismLinearSequencerContextForUpgradePhase::PrismLinearSequencerContextForUpgradePhase (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps)
 {
     m_schemaChangeInfo = NULL;    
 }

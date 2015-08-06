@@ -22,7 +22,7 @@ class WaveManagedObjectAsynchronousCreateContext;
 class WaveManagedObjectUpdateWorker : public WaveWorker
 {
     private :
-        PrismMessage *createMessageInstance         (const UI32 &operationCode);
+        WaveMessage *createMessageInstance         (const UI32 &operationCode);
 
         void        updateHandler                                   (WaveObjectManagerUpdateWaveManagedObjectMessage *pWaveObjectManagerUpdateWaveManagedObjectMessage);
         void        updateQueryManagedObjectStep                    (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext);

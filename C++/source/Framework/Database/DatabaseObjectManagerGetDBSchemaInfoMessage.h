@@ -7,7 +7,7 @@
 #ifndef DATABASEOBJECTMANAGERGETDBSCHEMAINFOMESSAGE_H
 #define DATABASEOBJECTMANAGERGETDBSCHEMAINFOMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectRelationalMapping/DatabaseSchema.h"
 
 using namespace std;
@@ -18,7 +18,7 @@ namespace WaveNs
 class WaveManagedObject;
 class WaveObjectManager;
 
-class DatabaseObjectManagerGetDBSchemaInfoMessage : public PrismMessage
+class DatabaseObjectManagerGetDBSchemaInfoMessage : public WaveMessage
 {
     private :
     protected :

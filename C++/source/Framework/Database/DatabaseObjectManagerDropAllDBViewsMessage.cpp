@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerDropAllDBViewsMessage::DatabaseObjectManagerDropAllDBViewsMessage ()
-    : PrismMessage                               (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_DROP_DB_VIEWS)
+    : WaveMessage                               (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_DROP_DB_VIEWS)
 {
 }
 

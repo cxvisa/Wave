@@ -4,7 +4,7 @@
  ***************************************************************************/
 
 #include "Framework/Utils/PrismLinearSequencerContext.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectModel/PrismElement.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -15,9 +15,9 @@ using namespace std;
 namespace WaveNs
 {
 
-PrismLinearSequencerContext::PrismLinearSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
-    m_pPrismMessage                              = pPrismMessage;
+    m_pWaveMessage                              = pWaveMessage;
     m_pPrismAsynchronousContext                  = NULL;
     m_pPrismElement                              = pPrismElement;
     m_pSteps                                     = NULL;
@@ -63,7 +63,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (PrismMessage *pPrismMe
 
 PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
-    m_pPrismMessage                              = NULL;
+    m_pWaveMessage                              = NULL;
     m_pPrismAsynchronousContext                  = pPrismAsynchronousContext;
     m_pPrismElement                              = pPrismElement;
     m_pSteps                                     = NULL;
@@ -109,7 +109,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousConte
 
 PrismLinearSequencerContext::PrismLinearSequencerContext (const PrismLinearSequencerContext &prismLinearSequencerContext)
 {
-    m_pPrismMessage                              = prismLinearSequencerContext.m_pPrismMessage;
+    m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
     m_pPrismElement                              = prismLinearSequencerContext.m_pPrismElement;
     m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
@@ -180,7 +180,7 @@ PrismLinearSequencerContext::~PrismLinearSequencerContext ()
 
 PrismLinearSequencerContext &PrismLinearSequencerContext::operator = (const PrismLinearSequencerContext &prismLinearSequencerContext)
 {
-    m_pPrismMessage                              = prismLinearSequencerContext.m_pPrismMessage;
+    m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
     m_pPrismElement                              = prismLinearSequencerContext.m_pPrismElement;
     m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
@@ -233,9 +233,9 @@ void PrismLinearSequencerContext::executeCurrentStep ()
 {
     if (m_currentStep < (m_numberOfSteps - 2))
     {
-        if ((0 != m_clockId) && (NULL != m_pPrismMessage) && (NULL != m_pPrismElement))
+        if ((0 != m_clockId) && (NULL != m_pWaveMessage) && (NULL != m_pPrismElement))
         {
-            m_operationCode = m_pPrismMessage->getOperationCode ();
+            m_operationCode = m_pWaveMessage->getOperationCode ();
             m_returnValue   = clock_gettime (m_clockId,      &m_ts1);
             m_returnValueR  = clock_gettime (CLOCK_REALTIME, &m_tsr1);
         }
@@ -352,14 +352,14 @@ void PrismLinearSequencerContext::executeNextStep (const ResourceId &currentStep
     }
 }
 
-PrismMessage *PrismLinearSequencerContext::getPPrismMessage ()
+WaveMessage *PrismLinearSequencerContext::getPWaveMessage ()
 {
-    return (m_pPrismMessage);
+    return (m_pWaveMessage);
 }
 
-void PrismLinearSequencerContext::setPPrismMessage (PrismMessage *pPrismMessage)
+void PrismLinearSequencerContext::setPWaveMessage (WaveMessage *pWaveMessage)
 {
-    m_pPrismMessage = pPrismMessage;
+    m_pWaveMessage = pWaveMessage;
 }
 
 PrismAsynchronousContext *PrismLinearSequencerContext::getPPrismAsynchronousContext ()

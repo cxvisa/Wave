@@ -670,25 +670,25 @@ void WaveMessageBrokerClient::instantiateNativePrismServices ()
 void WaveMessageBrokerClient::waveExit ()
 {
 #if 0
-    map<PrismThreadId, PrismThreadId> mapOfCurrentPrismThreads;
+    map<WaveThreadId, WaveThreadId> mapOfCurrentWaveThreads;
 
-    PrismFrameworkObjectManager::getAllPrismThreads (mapOfCurrentPrismThreads);
+    PrismFrameworkObjectManager::getAllWaveThreads (mapOfCurrentWaveThreads);
 
-    map<PrismThreadId, PrismThreadId>::iterator  threadIterator;
+    map<WaveThreadId, WaveThreadId>::iterator  threadIterator;
 
-    for (threadIterator = mapOfCurrentPrismThreads.begin (); threadIterator != mapOfCurrentPrismThreads.end (); threadIterator++)
+    for (threadIterator = mapOfCurrentWaveThreads.begin (); threadIterator != mapOfCurrentWaveThreads.end (); threadIterator++)
     {
         pthread_cancel (threadIterator->first);
     }
 
-    for (threadIterator = mapOfCurrentPrismThreads.begin (); threadIterator != mapOfCurrentPrismThreads.end (); threadIterator++)
+    for (threadIterator = mapOfCurrentWaveThreads.begin (); threadIterator != mapOfCurrentWaveThreads.end (); threadIterator++)
     {
         void *pContext = NULL;
 
         pthread_join (threadIterator->first, &pContext);
     }
 #endif
-    PrismFrameworkObjectManager::deleteAllPrismThreads ();
+    PrismFrameworkObjectManager::deleteAllWaveThreads ();
 
     exit (0);
 }

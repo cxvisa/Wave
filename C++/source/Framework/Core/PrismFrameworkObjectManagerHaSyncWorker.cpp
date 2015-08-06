@@ -57,16 +57,16 @@ PrismFrameworkObjectManagerHaSyncWorker::PrismFrameworkObjectManagerHaSyncWorker
       m_myHaVersion (RUNNING_CFG_SYNC_SAME_VERSION),
       m_peerHaVersion (UNKNOWN_VERSION)
 {
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_HA_SYNC_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startHaSyncDumpHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_INIT_HA_IPADDR_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::configureStandbyHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_HA_SYNC_UPDATE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startHaSyncUpdateHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_GET_FIRMWARE_VERSION, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::getFirmwareVersionHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_END_HA_SYNC_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::endHaSyncHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_CCMD_HA_SYNC_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startCcmdHaSyncDumpHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CCMD_HA_SYNC_UPDATE_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startCcmdHaSyncUpdateHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SET_SYNC_STATE_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::setSyncStateHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_GET_SYNC_STATE_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::getSyncStateHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_HA_SYNC_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startHaSyncDumpHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_INIT_HA_IPADDR_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::configureStandbyHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_HA_SYNC_UPDATE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startHaSyncUpdateHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_GET_FIRMWARE_VERSION, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::getFirmwareVersionHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_END_HA_SYNC_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::endHaSyncHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_CCMD_HA_SYNC_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startCcmdHaSyncDumpHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CCMD_HA_SYNC_UPDATE_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::startCcmdHaSyncUpdateHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SET_SYNC_STATE_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::setSyncStateHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_GET_SYNC_STATE_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerHaSyncWorker::getSyncStateHandler));
 }
 
 PrismFrameworkObjectManagerHaSyncWorker::~PrismFrameworkObjectManagerHaSyncWorker ()
@@ -80,33 +80,33 @@ PrismFrameworkObjectManagerHaSyncWorker *PrismFrameworkObjectManagerHaSyncWorker
     return pPrismFrameworkObjectManagerHaSyncWorker;
 }
 
-PrismMessage *PrismFrameworkObjectManagerHaSyncWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PrismFrameworkObjectManagerHaSyncWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY:
-            pPrismMessage = new PrismHaSyncConfigureStandbyMessage;
+            pWaveMessage = new PrismHaSyncConfigureStandbyMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_HA_SYNC_UPDATE :
-            pPrismMessage = new FrameworkObjectManagerHaSyncUpdateMessage;
+            pWaveMessage = new FrameworkObjectManagerHaSyncUpdateMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CCMD_HA_SYNC_UPDATE_MESSAGE :
-            pPrismMessage = new FrameworkObjectManagerCcmdHaSyncUpdateMessage;
+            pWaveMessage = new FrameworkObjectManagerCcmdHaSyncUpdateMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_GET_FIRMWARE_VERSION :
-            pPrismMessage = new FrameworkObjectManagerGetFirmwareVersionMessage;
+            pWaveMessage = new FrameworkObjectManagerGetFirmwareVersionMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 
@@ -235,7 +235,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressStep (PrismLinearSe
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker:: initHaIpAddressStep");
 
-    FrameworkObjectManagerInitHaIpAddressMessage *pFrameworkObjectManagerInitHaIpAddressMessage = dynamic_cast<FrameworkObjectManagerInitHaIpAddressMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+    FrameworkObjectManagerInitHaIpAddressMessage *pFrameworkObjectManagerInitHaIpAddressMessage = dynamic_cast<FrameworkObjectManagerInitHaIpAddressMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
 
     string localHaIp = pFrameworkObjectManagerInitHaIpAddressMessage->getLocalHaIpAddress();
 
@@ -302,7 +302,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::connectToHaPeerStep (StartHaSyncDu
 
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker:: connectToHaPeerStep");
 
-    FrameworkObjectManagerStartHaSyncMessage *pFrameworkObjectManagerStartHaSyncMessage = dynamic_cast<FrameworkObjectManagerStartHaSyncMessage *>(pStartHaSyncDumpContext->getPPrismMessage());
+    FrameworkObjectManagerStartHaSyncMessage *pFrameworkObjectManagerStartHaSyncMessage = dynamic_cast<FrameworkObjectManagerStartHaSyncMessage *>(pStartHaSyncDumpContext->getPWaveMessage());
 
     // Set the context 
     UI32 sizeOfBuffer = 0;
@@ -350,7 +350,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCollectValidationDataStep (S
     ResourceId              status                       = WAVE_MESSAGE_SUCCESS;
     vector<WaveServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
 
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
     numberOfWaveServiceIds = prismServiceIds.size ();
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
@@ -443,7 +443,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncValidateVersionStep (StartHa
     UI32 haSyncVersion = m_myHaVersion;
     pFrameworkObjectManagerGetFirmwareVersionMessage->addBuffer (ACTIVE_HA_SYNC_VERSION, sizeof (UI32), (void *) &haSyncVersion, false); 
 
-    WaveMessageStatus status = send (pFrameworkObjectManagerGetFirmwareVersionMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManagerHaSyncWorker::haSyncValidateVersionCallback), pStartHaSyncDumpContext, 60000, haPeerLocationId);
+    WaveMessageStatus status = send (pFrameworkObjectManagerGetFirmwareVersionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManagerHaSyncWorker::haSyncValidateVersionCallback), pStartHaSyncDumpContext, 60000, haPeerLocationId);
 
     if (status != WAVE_MESSAGE_SUCCESS)
     {
@@ -875,7 +875,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpStep (StartH
         }
     }
 
-    WaveMessageStatus status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpCallback), pStartHaSyncDumpContext, 420000, haPeerLocationId);
+    WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpCallback), pStartHaSyncDumpContext, 420000, haPeerLocationId);
 
     if (status != WAVE_MESSAGE_SUCCESS)
     {
@@ -1355,7 +1355,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateVersionSte
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateVersionStep");
 
-    PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+    PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
 
     // Determine whether DB sync is needed
 	UI32   sizeOfTheDatabaseBackupFromActive  = 0;
@@ -1412,7 +1412,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
     LocationId             thisLocationId           = FrameworkToolKit::getThisLocationId ();
     ResourceId             status                   = WAVE_MESSAGE_SUCCESS;
 
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
     numberOfWaveServiceIds = prismServiceIds.size ();
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
@@ -1424,7 +1424,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
             continue;
         }
 
-        PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+        PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
         void                                  *pValidationData                        = NULL;
         UI32                                   size                                   = 0;
 
@@ -1503,7 +1503,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateVcsConfigSte
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateVcsConfigStep");
 
-    PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+    PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
 
     // Set vcs configuration
     ResourceId status = WAVE_MESSAGE_SUCCESS;
@@ -1538,7 +1538,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateStartupFileS
 
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateStartupFileStep");
 
-    PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+    PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
 
     UI32 sizeOfStartupData = 0;
 
@@ -1696,7 +1696,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyEmptyDatabaseStep 
         sync();
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyEmptyDatabaseStep: Ending System Call SYNC");
 
-        PrismMessage *pMessage = NULL;
+        WaveMessage *pMessage = NULL;
 
         if (m_isDbDropNeeded)
         {
@@ -1749,7 +1749,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyLoadDatabaseFromAc
     {
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyLoadDatabaseFromActiveDatabaseStep");
 
-		PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+		PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
 
 		UI32   sizeOfTheDatabaseBackupFromActive  = 0;
 
@@ -1848,7 +1848,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::loadPrismConfigurationStep (Receiv
     {
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::loadPrismConfigurationStep");
 
-        PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+        PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
 
         UI32 sizeOfCfgData = 0;
 
@@ -1941,7 +1941,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyUpdatePrismConfigu
     bool        cfgValidity     = false;
     UI32        sizeOfBuffer    = 0;
 
-    PrismHaSyncConfigureStandbyMessage *pMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ()); 
+    PrismHaSyncConfigureStandbyMessage *pMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ()); 
 
     bool *cfgValidityPtr = reinterpret_cast<bool *> (pMessage->findBuffer (CFG_VALIDITY, sizeOfBuffer));
 
@@ -2183,7 +2183,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncUpdateValidationStep (StartH
 
     if (getSyncDumpComplete ())
     {
-        FrameworkObjectManagerHaSyncUpdateMessage *pFrameworkObjectManagerHaSyncUpdateMessage = dynamic_cast<FrameworkObjectManagerHaSyncUpdateMessage *>(pStartHaSyncDumpContext->getPPrismMessage());
+        FrameworkObjectManagerHaSyncUpdateMessage *pFrameworkObjectManagerHaSyncUpdateMessage = dynamic_cast<FrameworkObjectManagerHaSyncUpdateMessage *>(pStartHaSyncDumpContext->getPWaveMessage());
 
         // Set the context 
         UI32 sizeOfBuffer = 0;
@@ -2240,7 +2240,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::sendFirmwareVersionStep (ReceiveHa
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerHaSyncWorker::sendFirmwareVersionStep: Starting ...");
 
-    FrameworkObjectManagerGetFirmwareVersionMessage *pFrameworkObjectManagerGetFirmwareVersionMessage = reinterpret_cast<FrameworkObjectManagerGetFirmwareVersionMessage *> (pReceiveHaSyncDumpContext->getPPrismMessage ());
+    FrameworkObjectManagerGetFirmwareVersionMessage *pFrameworkObjectManagerGetFirmwareVersionMessage = reinterpret_cast<FrameworkObjectManagerGetFirmwareVersionMessage *> (pReceiveHaSyncDumpContext->getPWaveMessage ());
 
     UI32 sizeOfBuffer = 0;
     UI32 * pPeerHaVersion = reinterpret_cast<UI32 *> (pFrameworkObjectManagerGetFirmwareVersionMessage->findBuffer (ACTIVE_HA_SYNC_VERSION, sizeOfBuffer));
@@ -2312,7 +2312,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::sendFirmwareVersionStep (ReceiveHa
 
     pFrameworkObjectManagerGetFirmwareVersionMessage->addBuffer (STANDBY_HA_SYNC_VERSION, sizeof (UI32), (void *) &m_myHaVersion, false);
 
-    pReceiveHaSyncDumpContext->setPPrismMessage (pFrameworkObjectManagerGetFirmwareVersionMessage);
+    pReceiveHaSyncDumpContext->setPWaveMessage (pFrameworkObjectManagerGetFirmwareVersionMessage);
 
     setStandbySyncState (OUT_OF_SYNC);
 
@@ -2357,7 +2357,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::ccmdConnectToHaPeerStep (StartHaSy
 
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker:: ccmdConnectToHaPeerStep");
 
-    FrameworkObjectManagerStartCcmdHaSyncMessage *pFrameworkObjectManagerStartCcmdHaSyncMessage = dynamic_cast<FrameworkObjectManagerStartCcmdHaSyncMessage *>(pStartHaSyncDumpContext->getPPrismMessage());
+    FrameworkObjectManagerStartCcmdHaSyncMessage *pFrameworkObjectManagerStartCcmdHaSyncMessage = dynamic_cast<FrameworkObjectManagerStartCcmdHaSyncMessage *>(pStartHaSyncDumpContext->getPWaveMessage());
 
     // Set the context 
     UI32 sizeOfBuffer = 0;
@@ -2401,7 +2401,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::ccmdHaSyncUpdateValidationStep (St
 
     if (getSyncDumpComplete ())
     {
-        FrameworkObjectManagerCcmdHaSyncUpdateMessage *pFrameworkObjectManagerCcmdHaSyncUpdateMessage = dynamic_cast<FrameworkObjectManagerCcmdHaSyncUpdateMessage *>(pStartHaSyncDumpContext->getPPrismMessage());
+        FrameworkObjectManagerCcmdHaSyncUpdateMessage *pFrameworkObjectManagerCcmdHaSyncUpdateMessage = dynamic_cast<FrameworkObjectManagerCcmdHaSyncUpdateMessage *>(pStartHaSyncDumpContext->getPWaveMessage());
 
         // Set the context 
         UI32 sizeOfBuffer = 0;

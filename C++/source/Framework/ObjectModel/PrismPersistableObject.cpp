@@ -7,7 +7,7 @@
 #include "Framework/ObjectModel/PrismPersistableObject.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectRelationalMapping/OrmTable.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectRelationalMapping/OrmView.h"
@@ -50,7 +50,7 @@ PrismPersistableObject::PrismPersistableObject (const string &objectClassName, c
 
     if (true == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
-        if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
+        if ((WaveThread::getSelf ()) != (WaveThread::getWaveThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
         {
             if (true == (getIsObjectRelationalMappingEnabled ()))
             {

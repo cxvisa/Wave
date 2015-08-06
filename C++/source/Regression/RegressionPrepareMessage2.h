@@ -7,12 +7,12 @@
 #ifndef REGRESSIONPREPAREMESSAGE2_H
 #define REGRESSIONPREPAREMESSAGE2_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class RegressionPrepareMessage2 : public PrismMessage
+class RegressionPrepareMessage2 : public WaveMessage
 {
     private :
     protected :

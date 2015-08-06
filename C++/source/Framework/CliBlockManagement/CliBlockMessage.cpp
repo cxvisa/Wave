@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 CliBlockMessage::CliBlockMessage (bool operation, const CliBlockDetail &cliBlockDetail)
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLI_BLOCK)
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLI_BLOCK)
 {
     m_operation         = operation;
     m_reason            = (cliBlockDetail.getCliBlockContext ()).getReason ();
@@ -24,7 +24,7 @@ CliBlockMessage::CliBlockMessage (bool operation, const CliBlockDetail &cliBlock
 }
 
 CliBlockMessage::CliBlockMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLI_BLOCK)
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLI_BLOCK)
 {
     m_operation      = true;
     m_reason         = WAVE_FRAMEWORK_STATE_UNKNOWN_STATE;
@@ -39,7 +39,7 @@ CliBlockMessage::~CliBlockMessage ()
 void CliBlockMessage::setupAttributesForSerialization ()
 {
 
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeBool (&m_operation, "operation"));
     addSerializableAttribute (new AttributeResourceId (&m_reason, "reason"));

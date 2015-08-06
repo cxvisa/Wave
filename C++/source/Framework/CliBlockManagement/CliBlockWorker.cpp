@@ -20,28 +20,28 @@ namespace WaveNs
 CliBlockWorker::CliBlockWorker (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager)
     : WaveWorker (pCentralClusterConfigObjectManager)
 {
-    addOperationMap (CLI_BLOCK, reinterpret_cast<PrismMessageHandler> (&CliBlockWorker::cliBlockMessageHandler));
+    addOperationMap (CLI_BLOCK, reinterpret_cast<WaveMessageHandler> (&CliBlockWorker::cliBlockMessageHandler));
 }
 
 CliBlockWorker::~CliBlockWorker ()
 {
 }
 
-PrismMessage *CliBlockWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CliBlockWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLI_BLOCK :
-            pPrismMessage = new CliBlockMessage;
+            pWaveMessage = new CliBlockMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void CliBlockWorker::cliBlockMessageHandler (CliBlockMessage *pCliBlockMessage)
@@ -68,7 +68,7 @@ void CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback (Wav
 
     ResourceId  sendToClusterCompletionStatus   = pWaveSendToClusterContext->getCompletionStatus ();
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext);
 
     trace (TRACE_LEVEL_DEBUG, "CliBlockWorker::processCliBlockMessageForConnectedLocationStep : Finish.");
@@ -82,7 +82,7 @@ void CliBlockWorker::processCliBlockMessageForConnectedLocationStep (PrismLinear
 
     trace (TRACE_LEVEL_INFO, "CliBlockWorker::processCliBlockMessageForConnectedLocationStep : Entering ...");
 
-    CliBlockMessage *pCliBlockMessage = reinterpret_cast<CliBlockMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    CliBlockMessage *pCliBlockMessage = reinterpret_cast<CliBlockMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     CliBlockServiceIndependentMessage *pCliBlockServiceIndependentMessage1 = new CliBlockServiceIndependentMessage (*pCliBlockMessage);
  
@@ -91,7 +91,7 @@ void CliBlockWorker::processCliBlockMessageForConnectedLocationStep (PrismLinear
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pCliBlockServiceIndependentMessage1);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pCliBlockServiceIndependentMessage1);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
 
     sendToWaveCluster (pWaveSendToClusterContext);

@@ -22,7 +22,7 @@ class ApplicationLocalService : public WaveLocalObjectManager
     private :
                               ApplicationLocalService               (const string &applicationServiceName, const UI32 &applicationLocalServiceId);
 
-        virtual PrismMessage *createMessageInstance                 (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance                 (const UI32 &operationCode);
 
                 void          applicationLocalServiceMessageHandler  (ApplicationServiceMessage *pApplicationServiceMessage);
                 void          applicationLocalServiceMessageCallback (FrameworkStatus frameworkStatus, ApplicationServiceMessage *pApplicationServiceMessage, void *pContext);

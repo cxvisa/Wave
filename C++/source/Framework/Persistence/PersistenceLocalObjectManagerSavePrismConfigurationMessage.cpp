@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerSavePrismConfigurationMessage::PersistenceLocalObjectManagerSavePrismConfigurationMessage (const bool &isStartupValid)
-    : PrismMessage      (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION),
+    : WaveMessage      (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION),
       m_isStartupValid (isStartupValid)
 {
 }
 
 PersistenceLocalObjectManagerSavePrismConfigurationMessage::PersistenceLocalObjectManagerSavePrismConfigurationMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION)
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SAVE_PRISM_CONFIGURATION)
 {
     m_isStartupValid = false;
 }
@@ -29,7 +29,7 @@ PersistenceLocalObjectManagerSavePrismConfigurationMessage::~PersistenceLocalObj
 
 void PersistenceLocalObjectManagerSavePrismConfigurationMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeBool (&m_isStartupValid, "isStartupValid"));
 }

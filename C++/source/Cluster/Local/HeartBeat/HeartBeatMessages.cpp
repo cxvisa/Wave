@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 StartHeartBeatMessage::StartHeartBeatMessage (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismMessage (serviceCode, operationCode),
+    : WaveMessage (serviceCode, operationCode),
       m_dstPortNumber(0),
       m_heartBeatInterval         (0),
       m_heartBeatFailureThreshold (0)
@@ -21,7 +21,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (WaveServiceId serviceCode, UI32 op
 }
     
 StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dstPortNumber)
-    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
+    : WaveMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstIpAddress              (dstIpAddress), 
       m_dstPortNumber             (dstPortNumber),
       m_heartBeatInterval         (0),
@@ -30,7 +30,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dst
 }
 
 StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dstPortNumber, UI32 heartBeatInterval)
-    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
+    : WaveMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstIpAddress              (dstIpAddress), 
       m_dstPortNumber             (dstPortNumber),
       m_heartBeatInterval         (heartBeatInterval),
@@ -40,7 +40,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dst
 }
 
 StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dstPortNumber, UI32 heartBeatInterval, UI32 heartBeatFailureThreshold)
-    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
+    : WaveMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstIpAddress              (dstIpAddress), 
       m_dstPortNumber             (dstPortNumber),
       m_heartBeatInterval         (heartBeatInterval),
@@ -50,7 +50,7 @@ StartHeartBeatMessage::StartHeartBeatMessage (IpV4Address dstIpAddress, UI16 dst
 }
 
 StartHeartBeatMessage::StartHeartBeatMessage ()
-    : PrismMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
+    : WaveMessage (HeartBeatObjectManager::getWaveServiceId (), HEARTBEAT_START), 
       m_dstPortNumber             (0),
       m_heartBeatInterval         (0),
       m_heartBeatFailureThreshold (0)
@@ -63,7 +63,7 @@ StartHeartBeatMessage::~StartHeartBeatMessage ()
 
 void StartHeartBeatMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeIpV4Address (&m_dstIpAddress,               "dstIpAddress"));
      addSerializableAttribute (new AttributeUI16        (&m_dstPortNumber,              "dstPortNumber"));
@@ -270,7 +270,7 @@ void ReportHeartBeatMessage::setupAttributesForSerialization ()
 }
 
 DisconnectFromNodeMessage::DisconnectFromNodeMessage(LocationId locationId)
-      :PrismMessage (HeartBeatObjectManager::getWaveServiceId(),HEARTBEAT_DISCONNECT_FROM_NODE),
+      :WaveMessage (HeartBeatObjectManager::getWaveServiceId(),HEARTBEAT_DISCONNECT_FROM_NODE),
        mLocationId  (locationId),
        m_serverPort (0)
 {

@@ -20,7 +20,7 @@ class StartHaSyncDumpContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                StartHaSyncDumpContext   (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                StartHaSyncDumpContext   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                 StartHaSyncDumpContext   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~StartHaSyncDumpContext   ();
     // Now the data members
@@ -34,7 +34,7 @@ class StartHaSyncDumpContext : public PrismLinearSequencerContext
         map<string, void *>    m_validationResultsVector;
         map<string, UI32>      m_validationResultsSizesVector;
 
-        PrismMessage *         m_standbyMessage;
+        WaveMessage *         m_standbyMessage;
         UI32                   m_haVersion;
         bool                   m_isDbSyncRequired;
         bool                   m_isDbResumeRequired;
@@ -54,8 +54,8 @@ class StartHaSyncDumpContext : public PrismLinearSequencerContext
         void                    addValidationResultsForService (const WaveServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
 
         void                    getValidationResultsForService  (const WaveServiceId &prismServiceId, void *&pValidationResults, UI32 &size);
-        void                    setStandbyMessage               (PrismMessage *standbyMessage);
-        PrismMessage *          getStandbyMessage               ();
+        void                    setStandbyMessage               (WaveMessage *standbyMessage);
+        WaveMessage *          getStandbyMessage               ();
         void                    setHaVersion                    (const UI32 &haVersion);
         UI32                    getHaVersion                    ();
         void                    setIsDbSyncRequired             (const bool &isDbSyncRequired);
@@ -75,7 +75,7 @@ class ReceiveHaSyncDumpContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                ReceiveHaSyncDumpContext   (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                ReceiveHaSyncDumpContext   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                 ReceiveHaSyncDumpContext   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~ReceiveHaSyncDumpContext   ();
         void                    setIsDbSyncRequired             (const bool &isDbSyncRequired);

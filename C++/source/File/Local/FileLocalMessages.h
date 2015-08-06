@@ -7,7 +7,7 @@
 #ifndef FILELOCALMESSAGES_H
 #define FILELOCALMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace WaveNs;
 
@@ -17,7 +17,7 @@ namespace WaveNs
 // Following message(s) are internal messages.
 // This message is sent by Active Wave server to its Ha Peer server.
 
-class PushFileToHaPeerMessage : public PrismMessage
+class PushFileToHaPeerMessage : public WaveMessage
 {
     private:
     protected:
@@ -52,7 +52,7 @@ class PushFileToHaPeerMessage : public PrismMessage
 
 };
 
-class FileDeleteRequestMessage : public PrismMessage
+class FileDeleteRequestMessage : public WaveMessage
 {   
     private:
     protected:
@@ -96,7 +96,7 @@ class FileDeleteRequestMessage : public PrismMessage
 
 };
 
-class FileDeleteFileMessage : public PrismMessage
+class FileDeleteFileMessage : public WaveMessage
 {
     private:
     protected:
@@ -123,7 +123,7 @@ class FileDeleteFileMessage : public PrismMessage
                 UI32                        m_fileTransferFlag;
 };
 
-class FileDeleteFileToHaPeerMessage : public PrismMessage
+class FileDeleteFileToHaPeerMessage : public WaveMessage
 {
     private:
     protected:

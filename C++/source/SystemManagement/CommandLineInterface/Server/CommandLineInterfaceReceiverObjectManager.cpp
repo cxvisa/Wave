@@ -111,13 +111,13 @@ void CommandLineInterfaceReceiverObjectManager::bootCompleteForThisLocationEvent
     m_pCommandLineInterfaceReceiverThread->run ();
 }
 
-WaveMessageStatus CommandLineInterfaceReceiverObjectManager::send (PrismMessage *pPrismMessage, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, UI32 timeOutInMilliSeconds, LocationId locationId)
+WaveMessageStatus CommandLineInterfaceReceiverObjectManager::send (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, UI32 timeOutInMilliSeconds, LocationId locationId)
 {
     if (NULL != pCommandLineInterfaceReceiverWorkerThread)
     {
-        addToCommandLineInterfaceReceiverMapsByMessage (pPrismMessage, pCommandLineInterfaceReceiverWorkerThread, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pPrismMessageContext);
+        addToCommandLineInterfaceReceiverMapsByMessage (pWaveMessage, pCommandLineInterfaceReceiverWorkerThread, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
 
-        return (WaveObjectManager::send (pPrismMessage, reinterpret_cast<PrismMessageResponseHandler> (&CommandLineInterfaceReceiverObjectManager::sendCallback), pPrismMessageContext, timeOutInMilliSeconds, locationId, this));
+        return (WaveObjectManager::send (pWaveMessage, reinterpret_cast<WaveMessageResponseHandler> (&CommandLineInterfaceReceiverObjectManager::sendCallback), pWaveMessageContext, timeOutInMilliSeconds, locationId, this));
     }
     else
     {
@@ -127,23 +127,23 @@ WaveMessageStatus CommandLineInterfaceReceiverObjectManager::send (PrismMessage 
     return (WAVE_MESSAGE_ERROR);
 }
 
-void CommandLineInterfaceReceiverObjectManager::sendCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void CommandLineInterfaceReceiverObjectManager::sendCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     CommandLineInterfaceReceiverWorkerThread                               *pCommandLineInterfaceReceiverWorkerThread                              = NULL;
-    PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
-    void                                                                   *pPrismMessageContext                                                   = NULL;
+    WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
+    void                                                                   *pWaveMessageContext                                                   = NULL;
 
-    getCommandLineInterfaceReceiverDetailsForMessage (pPrismMessage, pCommandLineInterfaceReceiverWorkerThread, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pPrismMessageContext);
+    getCommandLineInterfaceReceiverDetailsForMessage (pWaveMessage, pCommandLineInterfaceReceiverWorkerThread, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
 
     prismAssert (NULL != pCommandLineInterfaceReceiverWorkerThread,                              __FILE__, __LINE__);
     prismAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
-    prismAssert (NULL != pPrismMessageContext,                                                   __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
 
-    removeFromCommandLineInterfaceReceiverMapsByMessage (pPrismMessage);
+    removeFromCommandLineInterfaceReceiverMapsByMessage (pWaveMessage);
 
-    CommandLineInterfaceWorkerSendContext *pCommandLineInterfaceWorkerSendContext = new CommandLineInterfaceWorkerSendContext (frameworkStatus, pPrismMessage, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pPrismMessageContext);
+    CommandLineInterfaceWorkerSendContext *pCommandLineInterfaceWorkerSendContext = new CommandLineInterfaceWorkerSendContext (frameworkStatus, pWaveMessage, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
 
     prismAssert (NULL != pCommandLineInterfaceWorkerSendContext, __FILE__, __LINE__);
 
@@ -154,9 +154,9 @@ void CommandLineInterfaceReceiverObjectManager::sendCallback (FrameworkStatus fr
     pCommandLineInterfaceReceiverWorkerThread->submitCommandLineInterfaceWorkerMessage (pCommandLineInterfaceWorkerMessage);
 }
 
-bool CommandLineInterfaceReceiverObjectManager::isAMessageSentByThisObjectManager (PrismMessage *pPrismMessage)
+bool CommandLineInterfaceReceiverObjectManager::isAMessageSentByThisObjectManager (WaveMessage *pWaveMessage)
 {
-    UI32                                                                  messageId  = pPrismMessage->getMessageId                                   ();
+    UI32                                                                  messageId  = pWaveMessage->getMessageId                                   ();
     map<UI32, CommandLineInterfaceReceiverWorkerThread *>::const_iterator element    = m_commandLineInterfaceReceiverWorkerThreadMapByMessageId.find (messageId);
     map<UI32, CommandLineInterfaceReceiverWorkerThread *>::const_iterator endElement = m_commandLineInterfaceReceiverWorkerThreadMapByMessageId.end  ();
     bool                                                                  isKnown    = false;
@@ -173,12 +173,12 @@ bool CommandLineInterfaceReceiverObjectManager::isAMessageSentByThisObjectManage
     return (isKnown);
 }
 
-void CommandLineInterfaceReceiverObjectManager::addToCommandLineInterfaceReceiverMapsByMessage (PrismMessage *pPrismMessage, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext)
+void CommandLineInterfaceReceiverObjectManager::addToCommandLineInterfaceReceiverMapsByMessage (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext)
 {
-    prismAssert (NULL != pPrismMessage,                             __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage,                             __FILE__, __LINE__);
     prismAssert (NULL != pCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
 
-    bool isKnown = isAMessageSentByThisObjectManager (pPrismMessage);
+    bool isKnown = isAMessageSentByThisObjectManager (pWaveMessage);
 
     if (true == isKnown)
     {
@@ -186,23 +186,23 @@ void CommandLineInterfaceReceiverObjectManager::addToCommandLineInterfaceReceive
     }
     else
     {
-        UI32 messageId = pPrismMessage->getMessageId ();
+        UI32 messageId = pWaveMessage->getMessageId ();
 
         m_commandLineInterfaceReceiverWorkerThreadMapByMessageId[messageId] = pCommandLineInterfaceReceiverWorkerThread;
         m_commandLineInterfaceReceiverCallbackMapByMessageId[messageId]     = prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
-        m_commandLineInterfaceReceiverContextMapByMessageId[messageId]      = pPrismMessageContext;
+        m_commandLineInterfaceReceiverContextMapByMessageId[messageId]      = pWaveMessageContext;
     }
 }
 
-void CommandLineInterfaceReceiverObjectManager::getCommandLineInterfaceReceiverDetailsForMessage    (PrismMessage *pPrismMessage, CommandLineInterfaceReceiverWorkerThread *&pCommandLineInterfaceReceiverWorkerThread, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread &prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *&pPrismMessageContext)
+void CommandLineInterfaceReceiverObjectManager::getCommandLineInterfaceReceiverDetailsForMessage    (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *&pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread &prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *&pWaveMessageContext)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    bool isKnown = isAMessageSentByThisObjectManager (pPrismMessage);
+    bool isKnown = isAMessageSentByThisObjectManager (pWaveMessage);
 
     pCommandLineInterfaceReceiverWorkerThread                              = NULL;
     prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
-    pPrismMessageContext                                                   = NULL;
+    pWaveMessageContext                                                   = NULL;
 
     if (false == isKnown)
     {
@@ -210,23 +210,23 @@ void CommandLineInterfaceReceiverObjectManager::getCommandLineInterfaceReceiverD
     }
     else
     {
-        UI32 messageId = pPrismMessage->getMessageId ();
+        UI32 messageId = pWaveMessage->getMessageId ();
 
         pCommandLineInterfaceReceiverWorkerThread                              = m_commandLineInterfaceReceiverWorkerThreadMapByMessageId[messageId];
         prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = m_commandLineInterfaceReceiverCallbackMapByMessageId[messageId];
-        pPrismMessageContext                                                   = m_commandLineInterfaceReceiverContextMapByMessageId[messageId];
+        pWaveMessageContext                                                   = m_commandLineInterfaceReceiverContextMapByMessageId[messageId];
 
         prismAssert (NULL != pCommandLineInterfaceReceiverWorkerThread,                              __FILE__, __LINE__);
         prismAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
-        prismAssert (NULL != pPrismMessageContext,                                                   __FILE__, __LINE__);
+        prismAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
     }
 }
 
-void CommandLineInterfaceReceiverObjectManager::removeFromCommandLineInterfaceReceiverMapsByMessage (PrismMessage *pPrismMessage)
+void CommandLineInterfaceReceiverObjectManager::removeFromCommandLineInterfaceReceiverMapsByMessage (WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    bool isKnown = isAMessageSentByThisObjectManager (pPrismMessage);
+    bool isKnown = isAMessageSentByThisObjectManager (pWaveMessage);
 
     if (false == isKnown)
     {
@@ -234,13 +234,13 @@ void CommandLineInterfaceReceiverObjectManager::removeFromCommandLineInterfaceRe
     }
     else
     {
-        bool isLastReply = pPrismMessage->getIsLastReply ();
+        bool isLastReply = pWaveMessage->getIsLastReply ();
 
         if (true == isLastReply)
         {
-            m_commandLineInterfaceReceiverWorkerThreadMapByMessageId.erase (pPrismMessage->getMessageId ());
+            m_commandLineInterfaceReceiverWorkerThreadMapByMessageId.erase (pWaveMessage->getMessageId ());
 
-            UI32 messageId = pPrismMessage->getMessageId ();
+            UI32 messageId = pWaveMessage->getMessageId ();
 
             m_commandLineInterfaceReceiverWorkerThreadMapByMessageId.erase (messageId);
             m_commandLineInterfaceReceiverCallbackMapByMessageId.erase     (messageId);

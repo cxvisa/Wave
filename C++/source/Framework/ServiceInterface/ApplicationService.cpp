@@ -18,7 +18,7 @@ ApplicationService::ApplicationService (const string &applicationServiceName, co
     : WaveObjectManager (applicationServiceName),
       m_applicationServiceId (applicationServiceId)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&ApplicationService::applicationServiceMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&ApplicationService::applicationServiceMessageHandler));
 
     map<UI32, ApplicationServiceMessageHandler> *pHandlersMap = ApplicationServiceHelper::getHandlersMapForApplicationService (m_applicationServiceId);
 
@@ -40,20 +40,20 @@ ApplicationService::~ApplicationService ()
 {
 }
 
-PrismMessage *ApplicationService::createMessageInstance (const UI32 &operationCode)
+WaveMessage *ApplicationService::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case APPLICATION_SERVICE_GENERIC_MESSAGE:
-            pPrismMessage = new ApplicationServiceMessage ();
+            pWaveMessage = new ApplicationServiceMessage ();
             break;
         default:
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 UI32 ApplicationService::registerNewApplicationService (const string &newApplicationServiceName)

@@ -142,7 +142,7 @@ void FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestSte
         pMessage->setMessage ("This is a test message");
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -150,7 +150,7 @@ void FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -231,7 +231,7 @@ void FrameworkRemoteMessagingTestObjectManager::simpleOneWayMessageTestStep (Fra
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }
@@ -316,7 +316,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTe
         pMessage->setupInputBuffer1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -324,7 +324,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTe
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -471,7 +471,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuff
         pMessage->setInputLargeBuffer1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -479,7 +479,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuff
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -600,7 +600,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest
         pMessage->setupInput ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTestCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTestCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -608,7 +608,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -773,15 +773,15 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningTestStep (Framewor
 
     for (i = 0; i < numberOfMessagesToSend; i++)
     {
-        PrismMessage                 *pTempPrismMessage = message.clone ();
-        FrameworkTestabilityMessage4 *pMessage          = dynamic_cast<FrameworkTestabilityMessage4 *> (pTempPrismMessage);
+        WaveMessage                 *pTempWaveMessage = message.clone ();
+        FrameworkTestabilityMessage4 *pMessage          = dynamic_cast<FrameworkTestabilityMessage4 *> (pTempWaveMessage);
 
         prismAssert( NULL != pMessage , __FILE__, __LINE__);
 
         pMessage->setupInput ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTestCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTestCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -789,7 +789,7 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningTestStep (Framewor
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -826,13 +826,13 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestSte
 
     for (i = 0; i < numberOfMessagesToSend; i++)
     {
-        PrismMessage                 *pTempPrismMessage = message.clone ();
-        FrameworkTestabilityMessage3 *pMessage          = dynamic_cast<FrameworkTestabilityMessage3 *> (pTempPrismMessage);
+        WaveMessage                 *pTempWaveMessage = message.clone ();
+        FrameworkTestabilityMessage3 *pMessage          = dynamic_cast<FrameworkTestabilityMessage3 *> (pTempWaveMessage);
 
         prismAssert( NULL != pMessage , __FILE__, __LINE__);
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -840,7 +840,7 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -862,7 +862,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -874,7 +874,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
@@ -891,12 +891,12 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pFrameworkTestabilityMessage32->setupInputBuffer1 ();
     pFrameworkTestabilityMessage32->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (pFrameworkTestabilityMessage32);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (pFrameworkTestabilityMessage32);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -908,8 +908,8 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase2 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
     delete pWaveSendToClusterContext;
 
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
@@ -925,7 +925,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (1);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -937,7 +937,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES == sendToClusterCompletionStatus)
@@ -959,12 +959,12 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (1);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pFrameworkTestabilityMessage32->setupInputBuffer1 ();
     pFrameworkTestabilityMessage32->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (pFrameworkTestabilityMessage32);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (pFrameworkTestabilityMessage32);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -976,8 +976,8 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase2 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES == sendToClusterCompletionStatus)
@@ -998,7 +998,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
 
     sendToWaveCluster (pWaveSendToClusterContext);
@@ -1013,7 +1013,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     if (3 > numberOfLocationsToSendToForPhase1)
@@ -1048,12 +1048,12 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pFrameworkTestabilityMessage32->setupInputBuffer1 ();
     pFrameworkTestabilityMessage32->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (pFrameworkTestabilityMessage32);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (pFrameworkTestabilityMessage32);
 
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
     sendToWaveCluster (pWaveSendToClusterContext);
@@ -1068,8 +1068,8 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase2 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
     delete pWaveSendToClusterContext;
 
     if (3 > numberOfLocationsToSendToForPhase1)
@@ -1103,7 +1103,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (4);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
 
     sendToWaveCluster (pWaveSendToClusterContext);
@@ -1116,7 +1116,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES == sendToClusterCompletionStatus)
@@ -1138,12 +1138,12 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (4);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pFrameworkTestabilityMessage32->setupInputBuffer1 ();
     pFrameworkTestabilityMessage32->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (pFrameworkTestabilityMessage32);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (pFrameworkTestabilityMessage32);
 
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
     sendToWaveCluster (pWaveSendToClusterContext);
@@ -1156,8 +1156,8 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase2 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES == sendToClusterCompletionStatus)
@@ -1179,7 +1179,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (2);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -1191,7 +1191,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_ERROR_FAILED_ON_SOME_NODES == sendToClusterCompletionStatus)
@@ -1217,13 +1217,13 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (2);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
 
     pFrameworkTestabilityMessage32->setupInputBuffer1 ();
     pFrameworkTestabilityMessage32->setCompletionStatusType (0);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (pFrameworkTestabilityMessage32);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (pFrameworkTestabilityMessage32);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -1235,8 +1235,8 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase2 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_ERROR_ROLLBACK_SUCCEEDED == sendToClusterCompletionStatus)
@@ -1262,13 +1262,13 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnec
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (5);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
 
     pFrameworkTestabilityMessage32->setupInputBuffer1 ();
     pFrameworkTestabilityMessage32->setCompletionStatusType (0);
         
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (pFrameworkTestabilityMessage32);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (pFrameworkTestabilityMessage32);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
     
     sendToWaveCluster (pWaveSendToClusterContext);
@@ -1281,8 +1281,8 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnec
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase2 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_SUCCESS != sendToClusterCompletionStatus)
@@ -1303,7 +1303,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessF
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (2);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pWaveSendToClusterContext->setPartialSuccessFlag (true);
 
@@ -1322,7 +1322,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessF
     {
         trace (TRACE_LEVEL_ERROR, "FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessAndFailingOverFlagSetTestStepCallback: Status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
     }
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
@@ -1338,7 +1338,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessA
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pWaveSendToClusterContext->setPartialSuccessFlag (true);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
@@ -1370,7 +1370,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessA
         }
     }
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
 }
@@ -1386,7 +1386,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSucc
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
     pFrameworkTestabilityMessage3->setNeedSurrogateSupportFlag (true);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -1398,7 +1398,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSucc
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
@@ -1415,7 +1415,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPar
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
     pFrameworkTestabilityMessage3->setNeedSurrogateSupportFlag (true);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pWaveSendToClusterContext->setPartialSuccessFlag (true);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
@@ -1447,7 +1447,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPar
         }
     }
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
 }
@@ -1463,7 +1463,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLoc
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
     pFrameworkTestabilityMessage3->setNeedSurrogateSupportFlag (true);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pFrameworkTestabilityMessage3);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pFrameworkTestabilityMessage3);
 
     pWaveSendToClusterContext->setPartialSuccessFlag (true);
     pWaveSendToClusterContext->setTreatFailureOnFailingOverAsSuccessFlag (true);
@@ -1511,7 +1511,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLoc
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     pFrameworkLocalMessagingTestContext->executeNextStep (sendToClusterCompletionStatus);
@@ -1526,7 +1526,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStep 
     FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
     pMessage->setMessage ("This is a send one way to wave cluster test message");
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
 
     sendOneWayToWaveCluster (pWaveSendToClusterContext);
 }
@@ -1539,7 +1539,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStepC
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     pFrameworkLocalMessagingTestContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
@@ -1564,7 +1564,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
 //    pMessage->setupInput ();
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
 
     pFrameworkLocalMessagingTestContext->incrementNumberOfMessagesSend ();
 
@@ -1578,7 +1578,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
     prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
 
     if (WAVE_MESSAGE_SUCCESS != sendWaveToClusterCompletionStatus)
@@ -1597,7 +1597,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
 //        pMessage->setupInput ();
 
-        pNewWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage);
+        pNewWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
 
         pFrameworkLocalMessagingTestContext->incrementNumberOfMessagesSend ();
 
@@ -1632,7 +1632,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
 //    pMessage->setupInput ();
 
-    pWaveSendMulticastContext->setPrismMessage (pMessage);
+    pWaveSendMulticastContext->setWaveMessage (pMessage);
 
     pFrameworkLocalMessagingTestContext->incrementNumberOfMessagesSend ();
 
@@ -1659,7 +1659,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
 //        pMessage->setupInput ();
 
-        pNewWaveSendMulticastContext->setPrismMessage (pMessage);
+        pNewWaveSendMulticastContext->setWaveMessage (pMessage);
 
         pFrameworkLocalMessagingTestContext->incrementNumberOfMessagesSend ();
 

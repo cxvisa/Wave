@@ -13,7 +13,7 @@
 namespace WaveNs
 {
 
-class PrismThread;
+class WaveThread;
 
 class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
 {
@@ -27,15 +27,15 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
             public :
                                            MessageMap                          ();
                                           ~MessageMap                          ();
-                       WaveMessageStatus   addMessage                          (PrismMessage *pPrismMessage);
-                       PrismMessage       *findMessage                         (UI32 prismMessageId);
-                       PrismMessage       *removeMessage                       (UI32 prismMessageId);
-                       void                getPendingMessagesForRemoteLocation (LocationId locationId, vector<PrismMessage *> &messagesVector);
+                       WaveMessageStatus   addMessage                          (WaveMessage *pWaveMessage);
+                       WaveMessage       *findMessage                         (UI32 prismMessageId);
+                       WaveMessage       *removeMessage                       (UI32 prismMessageId);
+                       void                getPendingMessagesForRemoteLocation (LocationId locationId, vector<WaveMessage *> &messagesVector);
 
             // Now the data members
 
             private :
-                map<UI32, PrismMessage *> m_messagesMap;
+                map<UI32, WaveMessage *> m_messagesMap;
                 PrismMutex                m_accessMutex;
 
             protected :
@@ -46,17 +46,17 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
 
         void                initialize                                 (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         void                listenForEvents                            (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void                haPeerMessageTransportHandler              (PrismMessage *pPrismMessage);
+        void                haPeerMessageTransportHandler              (WaveMessage *pWaveMessage);
         void                lockAccess                                 ();
         void                unlockAccess                               ();
         void                lockAccess1                                ();
         void                unlockAccess1                              ();
-        WaveMessageStatus   sendToBeUsedByReceiverThreads              (PrismMessage *pPrismMessage);
-        void                callbackForSendUsedByReceiverThreads       (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
-        PrismMessage       *getPendingMessage                          (const UI32 &messageId);
-        void                replyToBeUsedByReceiverThreads             (PrismMessage *pPrismMessage);
+        WaveMessageStatus   sendToBeUsedByReceiverThreads              (WaveMessage *pWaveMessage);
+        void                callbackForSendUsedByReceiverThreads       (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
+        WaveMessage       *getPendingMessage                          (const UI32 &messageId);
+        void                replyToBeUsedByReceiverThreads             (WaveMessage *pWaveMessage);
         void                replyToBeUsedByReceiverThreads             (UI32 prismMessageId);
-        void                getPendingMessagesForRemoteLocation        (LocationId locationId, vector<PrismMessage *> &messagesVector);
+        void                getPendingMessagesForRemoteLocation        (LocationId locationId, vector<WaveMessage *> &messagesVector);
         void                replyToRemoteMessagesPendingOnLocation     (LocationId locationId, ResourceId completionStatus);
 
         void                haPeerEventTransportHandler                (PrismEvent *pPrismEvent);
@@ -67,7 +67,7 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
         static  HaPeerMessageTransportObjectManager *getInstance                                ();
         static  WaveServiceId                              getWaveServiceId                          ();
 
-        static  PrismThread                                *getPrismThread                             ();
+        static  WaveThread                                *getWaveThread                             ();
 
     // Now the data members
 

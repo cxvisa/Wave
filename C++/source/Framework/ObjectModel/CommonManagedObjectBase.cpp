@@ -18,7 +18,7 @@ CommonManagedObjectBase::CommonManagedObjectBase (PrismPersistableObject *pPrism
 {
     // Do not request for tracking if the Wave Managed Object is being instantiated because of query
 #if 0
-    if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
+    if ((WaveThread::getSelf ()) != (WaveThread::getWaveThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
     {
         pWaveObjectManager->trackObjectCreatedDuringCurrentTransaction (this);
 
@@ -34,7 +34,7 @@ CommonManagedObjectBase::~CommonManagedObjectBase ()
     // Request Object Manager to track this object if necessary.
     // Do not request for tracking if the Wave Managed Object is being instantiated because of query
 #if 0
-    if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
+    if ((WaveThread::getSelf ()) != (WaveThread::getWaveThreadForServiceId (DatabaseObjectManager::getWaveServiceId ()))->getId ())
     {
         m_pCurrentOwnerWaveObjectManager->trackObjectDeletedDuringCurrentTransaction (this);
     }

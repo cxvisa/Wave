@@ -7,7 +7,7 @@
 #ifndef INTERLOCATION_MULTICAST_MESSAGE_H
 #define INTERLOCATION_MULTICAST_MESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/PrismMutex.h"
 #include <vector>
 #include <set>
@@ -19,7 +19,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class InterLocationMulticastMessage : public PrismMessage
+class InterLocationMulticastMessage : public WaveMessage
 {
  public:
     

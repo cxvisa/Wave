@@ -37,7 +37,7 @@ namespace WaveNs
 ClusterLocalSetHaRoleWorker::ClusterLocalSetHaRoleWorker (ClusterLocalObjectManager *pClusterLocalObjectManager)
     : WaveWorker (pClusterLocalObjectManager)
 {
-    addOperationMap (CLUSTER_LOCAL_SET_HA_ROLE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalSetHaRoleWorker::setHaRoleMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SET_HA_ROLE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalSetHaRoleWorker::setHaRoleMessageHandler));
 }
 /// Name
 /// ClusterLocalSetHaRoleWorker
@@ -102,7 +102,7 @@ void ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep(PrismLinearS
 
 #if 0
     //Message from the context
-    ClusterLocalSetHaRoleMessage* pClusterLocalSetHaRoleMessage = dynamic_cast<ClusterLocalSetHaRoleMessage* >(pPrismLinearSequencerContext->getPPrismMessage());
+    ClusterLocalSetHaRoleMessage* pClusterLocalSetHaRoleMessage = dynamic_cast<ClusterLocalSetHaRoleMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
 
     prismAssert(NULL != pClusterLocalSetHaRoleMessage, __FILE__, __LINE__);
 

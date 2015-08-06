@@ -24,7 +24,7 @@ namespace WaveNs
     class FileObjectManager: public WaveObjectManager
     {
         private:
-            PrismMessage      *createMessageInstance                       (const UI32 &operationCode);
+            WaveMessage      *createMessageInstance                       (const UI32 &operationCode);
             WaveManagedObject *createManagedObjectInstance                 (const string &managedClassName);
             void              FILESVCAbortFileTransferMessageHandler       (FILESVCAbortFileTransferMessage *pFILESVCAbortFileTransferMessage);
             void              boot                                         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);

@@ -8,12 +8,12 @@
 #define PRISMPOSTBOOTMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class ExecutePostbootPassTableMessage : public PrismMessage
+class ExecutePostbootPassTableMessage : public WaveMessage
 {
     private :
     protected :

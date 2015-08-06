@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 ClusterLocalSlotOnlineMessage::ClusterLocalSlotOnlineMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_ONLINE_MESSAGE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_ONLINE_MESSAGE),
     m_slotNumber (0),
     m_objectType (0),
     m_hwType (0),
@@ -28,7 +28,7 @@ ClusterLocalSlotOnlineMessage::ClusterLocalSlotOnlineMessage ()
 }
 
 ClusterLocalSlotOnlineMessage::ClusterLocalSlotOnlineMessage (const UI32 &slotNumber, const UI32 &objectType, const UI32 &hwType, const UI32 &hwId, const UI32 &slotState, const UI32 &reason, const UI32 &version)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_ONLINE_MESSAGE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_ONLINE_MESSAGE),
     m_slotNumber (slotNumber),
     m_objectType (objectType),
     m_hwType (hwType),
@@ -48,7 +48,7 @@ ClusterLocalSlotOnlineMessage::~ClusterLocalSlotOnlineMessage ()
 
 void ClusterLocalSlotOnlineMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32   (&m_slotNumber,              "slotNumber"));
      addSerializableAttribute (new AttributeUI32   (&m_objectType,              "objectType"));

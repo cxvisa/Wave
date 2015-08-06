@@ -10,10 +10,10 @@
 namespace WaveNs
 {
 
-WaveMessagePayloadBase::WaveMessagePayloadBase (PrismMessage *pPrismMessage)
-    : m_pPrismMessage (pPrismMessage)
+WaveMessagePayloadBase::WaveMessagePayloadBase (WaveMessage *pWaveMessage)
+    : m_pWaveMessage (pWaveMessage)
 {
-    prismAssert (NULL != m_pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != m_pWaveMessage, __FILE__, __LINE__);
 }
 
 WaveMessagePayloadBase::~WaveMessagePayloadBase ()
@@ -22,7 +22,7 @@ WaveMessagePayloadBase::~WaveMessagePayloadBase ()
 
 void WaveMessagePayloadBase::addSerializableAttribute (Attribute *pAttribute)
 {
-    m_pPrismMessage->addSerializableAttribute (pAttribute);
+    m_pWaveMessage->addSerializableAttribute (pAttribute);
 }
 
 }

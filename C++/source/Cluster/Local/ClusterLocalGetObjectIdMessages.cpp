@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 ClusterLocalGetSlotObjectIdMessage::ClusterLocalGetSlotObjectIdMessage (const UI32 &slotNumber, const LocationId &locationId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_SLOT_OBJECTID),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_SLOT_OBJECTID),
         m_slotNumber (slotNumber),
         m_locationId (locationId)
 {
@@ -53,7 +53,7 @@ void ClusterLocalGetSlotObjectIdMessage::setSlotObjectId (const ObjectId slotObj
 }
 
 ClusterLocalGetLocationObjectIdMessage::ClusterLocalGetLocationObjectIdMessage (const LocationId &locationId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_LOCATION_OBJECTID),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_LOCATION_OBJECTID),
         m_locationId (locationId)
 {
 }
@@ -83,7 +83,7 @@ void ClusterLocalGetLocationObjectIdMessage::setLocationObjectId (const ObjectId
 }
 
 ClusterLocalGetLocationIdMessage::ClusterLocalGetLocationIdMessage (const ObjectId locationObjectId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_LOCATIONID),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_LOCATIONID),
         m_locationObjectId (locationObjectId)
 {
 }
@@ -113,7 +113,7 @@ void ClusterLocalGetLocationIdMessage::setLocationObjectId (const ObjectId locat
 }
 
 ClusterLocalGetSlotNumberMessage::ClusterLocalGetSlotNumberMessage (const ObjectId slotObjectId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_SLOTNUMBER),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_GET_SLOTNUMBER),
         m_slotObjectId (slotObjectId)
 {
 }

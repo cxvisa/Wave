@@ -44,7 +44,7 @@ class TraceObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
         static  bool          getIsSysLogRequired                             ();
         static  void          setIsSysLogRequired                             (bool isSysLogRequired);
 
-        virtual PrismMessage *createMessageInstance                      (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance                      (const UI32 &operationCode);
 
         static  bool          isAKnownNativeClientDebugSession           (const UI32 &nativeClientId);
         static  bool          isAKnownUserClientDebugSession             (const UI32 &userClientId);

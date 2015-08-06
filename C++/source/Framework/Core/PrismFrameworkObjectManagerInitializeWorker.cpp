@@ -62,7 +62,7 @@ PrismFrameworkObjectManagerInitializeWorker::PrismFrameworkObjectManagerInitiali
     addEventType (FRAMEWORK_OBJECT_MANAGER_BROADCAST_FAILOVER_COMPLETE_EVENT);
     addEventType (HA_BOOT_COMPLETE_FOR_THIS_LOCATION);
 
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_UPDATE_DATABASE_SCHEMA, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerInitializeWorker::FrameworkUpdateDatabaseSchema));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_UPDATE_DATABASE_SCHEMA, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerInitializeWorker::FrameworkUpdateDatabaseSchema));
 }
 
 PrismFrameworkObjectManagerInitializeWorker::~PrismFrameworkObjectManagerInitializeWorker ()

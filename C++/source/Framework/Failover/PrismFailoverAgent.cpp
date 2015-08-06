@@ -643,7 +643,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryStep (PrismFailo
             pMessage->setPrimaryChangeDueToControlledFailover ();
         }
 
-        WaveMessageStatus status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback), pPrismFailoverAgentSequencerContext, s_primaryChangedPhase0TimeoutInMilliseconds, locationId);
+        WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback), pPrismFailoverAgentSequencerContext, s_primaryChangedPhase0TimeoutInMilliseconds, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -669,7 +669,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryStep (PrismFailo
     }
 }
 
-void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback");
     PrismFailoverAgentSequencerContext  *pPrismFailoverAgentSequencerContext = reinterpret_cast<PrismFailoverAgentSequencerContext *> (pContext);
@@ -681,10 +681,10 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-        ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
-        locationId                  = pPrismMessage->getReceiverLocationId ();
+        ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
+        locationId                  = pWaveMessage->getReceiverLocationId ();
         ipAddress                   = FrameworkToolKit::getIpAddressForLocationId (locationId);
         port                        = FrameworkToolKit::getPortForLocationId (locationId);
 
@@ -698,9 +698,9 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
     }
     else
     {
-        if (NULL != pPrismMessage)
+        if (NULL != pWaveMessage)
         {
-            locationId = pPrismMessage->getReceiverLocationId ();
+            locationId = pWaveMessage->getReceiverLocationId ();
             ipAddress  = FrameworkToolKit::getIpAddressForLocationId (locationId);
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
@@ -711,9 +711,9 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
         }
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        delete pPrismMessage;
+        delete pWaveMessage;
     }
 
     if (0 == (pPrismFailoverAgentSequencerContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
@@ -832,7 +832,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Step (Pris
             trace (TRACE_LEVEL_ERROR, "PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Step : No Database Backup is being sent to the lcoation.");
         }
 
-        ResourceId status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback), pPrismFailoverAgentSequencerContext, s_primaryChangedPhase1TimeoutInMilliseconds, locationId);
+        ResourceId status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback), pPrismFailoverAgentSequencerContext, s_primaryChangedPhase1TimeoutInMilliseconds, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -862,7 +862,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Step (Pris
     }
 }
 
-void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback");
 
@@ -875,10 +875,10 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-        ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
-        locationId                  = pPrismMessage->getReceiverLocationId ();
+        ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
+        locationId                  = pWaveMessage->getReceiverLocationId ();
         ipAddress                   = FrameworkToolKit::getIpAddressForLocationId (locationId);
         port                        = FrameworkToolKit::getPortForLocationId (locationId);
 
@@ -892,9 +892,9 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
     }
     else
     {
-        if (NULL != pPrismMessage)
+        if (NULL != pWaveMessage)
         {
-            locationId = pPrismMessage->getReceiverLocationId ();
+            locationId = pWaveMessage->getReceiverLocationId ();
             ipAddress  = FrameworkToolKit::getIpAddressForLocationId (locationId);
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
@@ -905,9 +905,9 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
         }
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        delete pPrismMessage;
+        delete pWaveMessage;
     }
 
     if (0 == (pPrismFailoverAgentSequencerContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
@@ -1015,7 +1015,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Step (Pris
 
         FrameworkObjectManagerPrimaryChangedPhase2Message *pMessage = new FrameworkObjectManagerPrimaryChangedPhase2Message();
 
-        ResourceId status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback), pPrismFailoverAgentSequencerContext, 300000, locationId);
+        ResourceId status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback), pPrismFailoverAgentSequencerContext, 300000, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1042,7 +1042,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Step (Pris
     }
 }
 
-void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback");
 
@@ -1055,10 +1055,10 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-        ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
-        locationId                  = pPrismMessage->getReceiverLocationId ();
+        ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
+        locationId                  = pWaveMessage->getReceiverLocationId ();
         ipAddress                   = FrameworkToolKit::getIpAddressForLocationId (locationId);
         port                        = FrameworkToolKit::getPortForLocationId (locationId);
 
@@ -1072,9 +1072,9 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
     }
     else
     {
-        if (NULL != pPrismMessage)
+        if (NULL != pWaveMessage)
         {
-            locationId = pPrismMessage->getReceiverLocationId ();
+            locationId = pWaveMessage->getReceiverLocationId ();
             ipAddress  = FrameworkToolKit::getIpAddressForLocationId (locationId);
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
@@ -1085,9 +1085,9 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
         }
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        delete pPrismMessage;
+        delete pWaveMessage;
     }
 
     if (0 == (pPrismFailoverAgentSequencerContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
@@ -1168,7 +1168,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Step (Pris
 
         FrameworkObjectManagerPrimaryChangedPhase3Message *pMessage = new FrameworkObjectManagerPrimaryChangedPhase3Message();
 
-        ResourceId status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback), pPrismFailoverAgentSequencerContext, 0, locationId);
+        ResourceId status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback), pPrismFailoverAgentSequencerContext, 0, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1192,7 +1192,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Step (Pris
     }
 }
 
-void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback");
 
@@ -1200,12 +1200,12 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback (
 
     --(*pPrismFailoverAgentSequencerContext);
 
-	prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+	prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
-        LocationId locationId       = pPrismMessage->getReceiverLocationId ();
+        ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
+        LocationId locationId       = pWaveMessage->getReceiverLocationId ();
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
@@ -1214,14 +1214,14 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback (
     }
     else
     {
-        LocationId  locationId = pPrismMessage->getReceiverLocationId ();
+        LocationId  locationId = pWaveMessage->getReceiverLocationId ();
 
         (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        delete pPrismMessage;
+        delete pWaveMessage;
     }
 
     if (0 == (pPrismFailoverAgentSequencerContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))

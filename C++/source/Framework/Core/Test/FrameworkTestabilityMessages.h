@@ -13,7 +13,7 @@
 #include "Framework/Types/Time.h"
 #include "Framework/Types/DateTime.h"
 #include "Framework/Types/Decimal64.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Core/Test/FrameworkTestabilityTypes.h"
 #include "Framework/Trace/TraceTypes.h"
 #include "Framework/Attributes/AttributeSI64.h"
@@ -37,7 +37,7 @@
 namespace WaveNs
 {
 
-class FrameworkTestabilityMessage1 : public PrismMessage
+class FrameworkTestabilityMessage1 : public WaveMessage
 {
     private :
     protected :
@@ -58,7 +58,7 @@ class FrameworkTestabilityMessage1 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage2 : public PrismMessage
+class FrameworkTestabilityMessage2 : public WaveMessage
 {
     private :
     protected :
@@ -73,7 +73,7 @@ class FrameworkTestabilityMessage2 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage3 : public PrismMessage
+class FrameworkTestabilityMessage3 : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();
@@ -102,7 +102,7 @@ class FrameworkTestabilityMessage3 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage4 : public PrismMessage
+class FrameworkTestabilityMessage4 : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();
@@ -346,7 +346,7 @@ class FrameworkTestabilityMessage4 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage5 : public PrismMessage
+class FrameworkTestabilityMessage5 : public WaveMessage
 {
     private :
     protected :
@@ -361,7 +361,7 @@ class FrameworkTestabilityMessage5 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage6 : public PrismMessage
+class FrameworkTestabilityMessage6 : public WaveMessage
 {
     private :
     protected :
@@ -376,7 +376,7 @@ class FrameworkTestabilityMessage6 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage7 : public PrismMessage
+class FrameworkTestabilityMessage7 : public WaveMessage
 {
     private :
     protected :
@@ -391,7 +391,7 @@ class FrameworkTestabilityMessage7 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage8 : public PrismMessage
+class FrameworkTestabilityMessage8 : public WaveMessage
 {
     private :
     protected :
@@ -413,7 +413,7 @@ class FrameworkTestabilityMessage8 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage9 : public PrismMessage
+class FrameworkTestabilityMessage9 : public WaveMessage
 {
     private :
     protected :
@@ -428,7 +428,7 @@ class FrameworkTestabilityMessage9 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage10 : public PrismMessage
+class FrameworkTestabilityMessage10 : public WaveMessage
 {
     private :
     protected :
@@ -443,7 +443,7 @@ class FrameworkTestabilityMessage10 : public PrismMessage
     public :
 };
 
-class FrameworkTestabilityMessage11 : public PrismMessage
+class FrameworkTestabilityMessage11 : public WaveMessage
 {
     private :
     protected :

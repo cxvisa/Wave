@@ -98,7 +98,7 @@ internalsdk: all examples
 	tar -C $(WAVE_PROJECT_NAME)InternalSDK/include -zxf $(WAVE_PROJECT_NAME)InternalSDK-temp.tgz; \
 	rm -rf $(WAVE_PROJECT_NAME)InternalSDK-temp.tgz; \
 	cp $(WAVE_BUILD_DIR_DYNAMIC_SRC)/*.h $(WAVE_PROJECT_NAME)InternalSDK/include; \
-	cp $(SRC_ROOT)/Framework/MultiThreading/PrismMessageQueue.cpp $(WAVE_PROJECT_NAME)InternalSDK/include/Framework/MultiThreading/PrismMessageQueue.cpp; \
+	cp $(SRC_ROOT)/Framework/MultiThreading/WaveMessageQueue.cpp $(WAVE_PROJECT_NAME)InternalSDK/include/Framework/MultiThreading/WaveMessageQueue.cpp; \
 	cp -f $(POSTGRESQL_INCLUDE_DIR)/libpq-fe.h $(POSTGRESQL_INCLUDE_DIR)/postgres_ext.h  $(WAVE_PROJECT_NAME)InternalSDK/include; \
 	cp -p $(WAVE_BUILD_DIR_LIB)/lib$(WAVE_PROJECT_NAME).a $(WAVE_BUILD_DIR_LIB)/lib$(WAVE_PROJECT_NAME).so.$(WAVE_VERSION_MAJOR).$(WAVE_VERSION_MINOR).$(WAVE_VERSION_PATCH) $(WAVE_BUILD_DIR_LIB)/lib$(WAVE_PROJECT_NAME).so.$(WAVE_VERSION_MAJOR) $(WAVE_BUILD_DIR_LIB)/lib$(WAVE_PROJECT_NAME).so $(WAVE_PROJECT_NAME)InternalSDK/lib; \
 	cp $(WAVE_DEPENDENCIES_ROOT)/$(OS)/$(ARCH)/postgresql/lib/libpq.a $(WAVE_PROJECT_NAME)InternalSDK/lib; \

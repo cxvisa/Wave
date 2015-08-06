@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-ClusterLocalMessagingContext::ClusterLocalMessagingContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismSynchronousLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+ClusterLocalMessagingContext::ClusterLocalMessagingContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismSynchronousLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
     m_WaveSlotLocalManagedObjectPointer (NULL),
     m_waveNodePointer (NULL),
     m_slotNumber (0),

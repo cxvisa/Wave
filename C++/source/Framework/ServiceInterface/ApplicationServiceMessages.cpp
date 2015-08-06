@@ -10,12 +10,12 @@ namespace WaveNs
 {
 
 ApplicationServiceMessage::ApplicationServiceMessage ()
-    : PrismMessage (0, APPLICATION_SERVICE_GENERIC_MESSAGE)
+    : WaveMessage (0, APPLICATION_SERVICE_GENERIC_MESSAGE)
 {
 }
 
 ApplicationServiceMessage::ApplicationServiceMessage (WaveServiceId prismServiceId)
-    : PrismMessage (prismServiceId, APPLICATION_SERVICE_GENERIC_MESSAGE)
+    : WaveMessage (prismServiceId, APPLICATION_SERVICE_GENERIC_MESSAGE)
 {
 }
 
@@ -25,7 +25,7 @@ ApplicationServiceMessage::~ApplicationServiceMessage ()
 
 void ApplicationServiceMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 void *ApplicationServiceMessage::getInputBuffer1 (UI32 &bufferLength)

@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerExecuteTransactionMessage::DatabaseObjectManagerExecuteTransactionMessage (const string &sql)
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
       m_sql (sql),
       m_isCommit (false),
       m_isPrepare (false)
@@ -20,7 +20,7 @@ DatabaseObjectManagerExecuteTransactionMessage::DatabaseObjectManagerExecuteTran
 }
 
 DatabaseObjectManagerExecuteTransactionMessage::DatabaseObjectManagerExecuteTransactionMessage ()
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION),
       m_isCommit (false),
       m_isPrepare (false)
 {
@@ -32,7 +32,7 @@ DatabaseObjectManagerExecuteTransactionMessage::~DatabaseObjectManagerExecuteTra
 
 void DatabaseObjectManagerExecuteTransactionMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_sql,         "sql"));
      addSerializableAttribute (new AttributeBool   (&m_isCommit,    "isCommit"));

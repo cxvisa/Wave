@@ -44,12 +44,12 @@ CentralClusterConfigObjectManager::CentralClusterConfigObjectManager ()
     prismCluster.setupOrm ();
     addManagedClass (PrismCluster::getClassName ());
 
-//    addOperationMap (CLUSTER_CREATE_CLUSTER,                    reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigObjectManager::createClusterConfig));
-//    addOperationMap (CLUSTER_DELETE_CLUSTER,                    reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigObjectManager::deleteCluster));
-    //addOperationMap (CLUSTER_ADD_NODE,                          reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigObjectManager::addNode));
-//    addOperationMap (CLUSTER_DELETE_NODE,                       reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigObjectManager::deleteNode));
-  //  addOperationMap (CLUSTER_JOIN_NODE,                         reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigObjectManager::joinNode));
-//    addOperationMap (CLUSTER_HEARTBEAT_LOST,                    reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigObjectManager::reportLostHeartBeat));
+//    addOperationMap (CLUSTER_CREATE_CLUSTER,                    reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::createClusterConfig));
+//    addOperationMap (CLUSTER_DELETE_CLUSTER,                    reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::deleteCluster));
+    //addOperationMap (CLUSTER_ADD_NODE,                          reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::addNode));
+//    addOperationMap (CLUSTER_DELETE_NODE,                       reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::deleteNode));
+  //  addOperationMap (CLUSTER_JOIN_NODE,                         reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::joinNode));
+//    addOperationMap (CLUSTER_HEARTBEAT_LOST,                    reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::reportLostHeartBeat));
 
     m_managmentOperationInProgress = MANAGMENT_OPERATION_IDLE;
 
@@ -152,24 +152,24 @@ string CentralClusterConfigObjectManager::getServiceName ()
     return ("Centeral Cluster Configuration");
 }
 
-PrismMessage *CentralClusterConfigObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CentralClusterConfigObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLUSTER_ADD_NODE :
-            pPrismMessage = new ClusterObjectManagerAddNodeMessage;
+            pWaveMessage = new ClusterObjectManagerAddNodeMessage;
             break;
         case CLUSTER_DELETE_NODE :
-            pPrismMessage = new ClusterObjectManagerDeleteNodeMessage;
+            pWaveMessage = new ClusterObjectManagerDeleteNodeMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *CentralClusterConfigObjectManager::createManagedObjectInstance (const string &managedClassName)
@@ -498,11 +498,11 @@ void CentralClusterConfigObjectManager::failover (FailoverAsynchronousContext *p
 
     if(FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED == failoverReason) 
     {
-        pClusterFailoverContext = new ClusterFailoverContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerUncontrolledSteps, sizeof (sequencerUncontrolledSteps) / sizeof (sequencerSteps[0]), failoverReason, failedLocationIds);
+        pClusterFailoverContext = new ClusterFailoverContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerUncontrolledSteps, sizeof (sequencerUncontrolledSteps) / sizeof (sequencerSteps[0]), failoverReason, failedLocationIds);
     } 
     else 
     {
-        pClusterFailoverContext = new ClusterFailoverContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), failoverReason, failedLocationIds);
+        pClusterFailoverContext = new ClusterFailoverContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), failoverReason, failedLocationIds);
     }
 
     ResourceId status = pClusterFailoverContext->execute ();
@@ -1149,7 +1149,7 @@ UI32 CentralClusterConfigObjectManager::informFrameworkForClusterCreation (Clust
         pCreateClusterMessage->addNewNodeIpAddressAndPort (secondaryNode, secondaryNodePort);
     }
 
-    status = send (pCreateClusterMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkCreateClusterReply), pMessage);
+    status = send (pCreateClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkCreateClusterReply), pMessage);
 
     return (status);
 }
@@ -1386,7 +1386,7 @@ UI32 CentralClusterConfigObjectManager::informFrameworkForDeleteCluster (Cluster
 
     FrameworkObjectManagerDestroyClusterMessage       *pFrameworkDestroyClusterMessage = new FrameworkObjectManagerDestroyClusterMessage ();
 
-    status = send (pFrameworkDestroyClusterMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkDeleteClusterReply), pMessage);
+    status = send (pFrameworkDestroyClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkDeleteClusterReply), pMessage);
 
     return (status);
 
@@ -1582,7 +1582,7 @@ UI32 CentralClusterConfigObjectManager::informFrameworkForJoinNode (ClusterObjec
     SI32    secondaryNodePort =   pMessage->getNodePort ();
     pFrameworkJoinNodeMessage->addNodeIpAddressAndPort (secondaryNode, secondaryNodePort);
 
-    status = send (pFrameworkJoinNodeMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkJoinNodeReply), pMessage);
+    status = send (pFrameworkJoinNodeMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkJoinNodeReply), pMessage);
 
     return (status);
 }
@@ -1678,7 +1678,7 @@ UI32 CentralClusterConfigObjectManager::informFrameworkLostHeartBeat(string ipAd
 
     pFrameworkLostHeartBeatMessage->addNodeIpAddressAndPort (ipAddress, port);
 
-    status = send (pFrameworkLostHeartBeatMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkHeartBeatLostReply), NULL);
+    status = send (pFrameworkLostHeartBeatMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkHeartBeatLostReply), NULL);
 
     return (status);
 

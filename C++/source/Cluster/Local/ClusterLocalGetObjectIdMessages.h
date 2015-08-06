@@ -8,14 +8,14 @@
 #define CLUSTERLOCALGETOBJECTIDMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
-class ClusterLocalGetSlotObjectIdMessage : public PrismMessage
+class ClusterLocalGetSlotObjectIdMessage : public WaveMessage
 {
     private :
     protected :
@@ -43,7 +43,7 @@ class ClusterLocalGetSlotObjectIdMessage : public PrismMessage
     public :
 };
 
-class ClusterLocalGetLocationObjectIdMessage : public PrismMessage
+class ClusterLocalGetLocationObjectIdMessage : public WaveMessage
 {
     private :
     protected :
@@ -67,7 +67,7 @@ class ClusterLocalGetLocationObjectIdMessage : public PrismMessage
     public :
 };
 
-class ClusterLocalGetSlotNumberMessage : public PrismMessage
+class ClusterLocalGetSlotNumberMessage : public WaveMessage
 {
     private :
     protected :
@@ -91,7 +91,7 @@ class ClusterLocalGetSlotNumberMessage : public PrismMessage
     public :
 };
 
-class ClusterLocalGetLocationIdMessage : public PrismMessage
+class ClusterLocalGetLocationIdMessage : public WaveMessage
 {
     private :
     protected :

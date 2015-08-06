@@ -34,8 +34,8 @@ namespace WaveNs
 PrismFrameworkObjectManagerPostPersistentBootWorker::PrismFrameworkObjectManagerPostPersistentBootWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_SERVICE_AND_WAVE_SLOTS, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootServiceAndWaveSlotsMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_SERVICE_AND_WAVE_SLOTS, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootServiceAndWaveSlotsMessageHandler));
 
     addEventType (FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT);
 }
@@ -602,7 +602,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerLastConfi
         vector<UI32>        configurationIntentVector;
         map<UI32, string>   configurationIntentMap;
         string              serializedConfigurationIntentMessage    = "";
-        PrismMessage       *pConfigurationIntentMessage             = NULL;
+        WaveMessage       *pConfigurationIntentMessage             = NULL;
         WaveServiceId      configurationIntentServiceCode          = 0;
         UI32                configurationIntentOperationCode        = 0;
         ResourceId          overallStatus                           = WAVE_MESSAGE_SUCCESS;
@@ -622,7 +622,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerLastConfi
         
         serializedConfigurationIntentMessage = configurationIntentMap[configurationIntentVector[lastConfigurationIntentIndex]];
 
-        pConfigurationIntentMessage = PrismMessage::createAndLoadFromSerializedData2 (serializedConfigurationIntentMessage);
+        pConfigurationIntentMessage = WaveMessage::createAndLoadFromSerializedData2 (serializedConfigurationIntentMessage);
         prismAssert (NULL != pConfigurationIntentMessage, __FILE__, __LINE__);
 
         pConfigurationIntentMessage->setIsALastConfigReplay (true);

@@ -9,11 +9,11 @@
 
 #include <string>
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 ///Class:
 ///ClusterLocalReportRemovedNodeFromClusterMessage
@@ -24,7 +24,7 @@ class PrismMessage;
 /// The ClusterLocalObject Manager will set the Local WaveNode to STAND_ALONE 
 /// state.
 
-class ClusterLocalReportRemovedNodeFromClusterMessage: public  PrismMessage
+class ClusterLocalReportRemovedNodeFromClusterMessage: public  WaveMessage
 {
 
     public :

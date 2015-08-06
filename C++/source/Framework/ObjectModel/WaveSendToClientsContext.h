@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 class WaveSendToClientsContext : public PrismAsynchronousContext
 {

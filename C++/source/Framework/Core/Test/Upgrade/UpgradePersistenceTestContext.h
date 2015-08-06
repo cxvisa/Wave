@@ -32,7 +32,7 @@ class UpgradePersistenceTestContext : public PrismLinearSequencerContext
 private :
 protected :
 public :
-    UpgradePersistenceTestContext  (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+    UpgradePersistenceTestContext  (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
     ~UpgradePersistenceTestContext  ();
 
     vector<UpgradeTestManagedObject1 *>        &getCreatedObjects                 ();

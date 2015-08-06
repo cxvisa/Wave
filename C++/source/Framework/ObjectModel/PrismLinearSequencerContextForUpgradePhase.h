@@ -24,7 +24,7 @@ class PrismLinearSequencerContextForUpgradePhase : public PrismLinearSequencerCo
     private :
     protected :
     public :
-                           PrismLinearSequencerContextForUpgradePhase (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           PrismLinearSequencerContextForUpgradePhase (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual           ~PrismLinearSequencerContextForUpgradePhase ();
 
 /*

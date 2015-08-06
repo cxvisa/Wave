@@ -121,7 +121,7 @@ void FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestSt
         pMessage->setMessage ("This is a test message");
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -129,7 +129,7 @@ void FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestSt
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -225,7 +225,7 @@ void FrameworkRemoteMessagingTestObjectManager2::simpleOneWayMessageTestStep (Fr
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }
@@ -340,7 +340,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersT
         pMessage->setupInputBuffer1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -348,7 +348,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersT
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -523,7 +523,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuf
         pMessage->setInputLargeBuffer1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -531,7 +531,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuf
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -665,7 +665,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTes
         pMessage->setupInput ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTestCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTestCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -673,7 +673,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTes
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -860,15 +860,15 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep (Framewo
 
     for (i = 0; i < m_numberOfMessagesToSend; i++)
     {
-        PrismMessage                 *pTempPrismMessage = message.clone ();
-        FrameworkTestabilityMessage4 *pMessage          = dynamic_cast<FrameworkTestabilityMessage4 *> (pTempPrismMessage);
+        WaveMessage                 *pTempWaveMessage = message.clone ();
+        FrameworkTestabilityMessage4 *pMessage          = dynamic_cast<FrameworkTestabilityMessage4 *> (pTempWaveMessage);
 
         prismAssert( NULL != pMessage , __FILE__ , __LINE__ );
 
         pMessage->setupInput ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTestCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTestCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -876,7 +876,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep (Framewo
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -914,13 +914,13 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestSt
 
     for (i = 0; i < m_numberOfMessagesToSend; i++)
     {
-        PrismMessage                 *pTempPrismMessage = message.clone ();
-        FrameworkTestabilityMessage3 *pMessage          = dynamic_cast<FrameworkTestabilityMessage3 *> (pTempPrismMessage);
+        WaveMessage                 *pTempWaveMessage = message.clone ();
+        FrameworkTestabilityMessage3 *pMessage          = dynamic_cast<FrameworkTestabilityMessage3 *> (pTempWaveMessage);
 
         prismAssert( NULL != pMessage , __FILE__ , __LINE__ );
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),
                        pFrameworkLocalMessagingTestContext,
                        0,
                        pFrameworkLocalMessagingTestContext->getRemoteLocationId ());
@@ -928,7 +928,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestSt
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {

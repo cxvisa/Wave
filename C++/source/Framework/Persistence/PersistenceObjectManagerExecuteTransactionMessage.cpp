@@ -13,13 +13,13 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerExecuteTransactionMessage::PersistenceObjectManagerExecuteTransactionMessage (const string &sql)
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION),
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION),
       m_sql (sql)
 {
 }
 
 PersistenceObjectManagerExecuteTransactionMessage::PersistenceObjectManagerExecuteTransactionMessage ()
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION)
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_EXECUTE_TRANSACTION)
 {
 }
 
@@ -29,7 +29,7 @@ PersistenceObjectManagerExecuteTransactionMessage::~PersistenceObjectManagerExec
 
 void PersistenceObjectManagerExecuteTransactionMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeString (&m_sql, "sql"));
 

@@ -18,7 +18,7 @@ class FrameworkTestability3ObjectManager : public WaveObjectManager
 {
     private :
                       FrameworkTestability3ObjectManager    ();
-        PrismMessage *createMessageInstance                 (const UI32 &operationCode);
+        WaveMessage *createMessageInstance                 (const UI32 &operationCode);
 
         void          listenForEvents                        (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 

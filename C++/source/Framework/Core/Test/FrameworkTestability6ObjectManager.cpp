@@ -77,7 +77,7 @@ FrameworkTestability6ObjectManager::FrameworkTestability6ObjectManager ()
     addManagedClass (UpgradeTestManagedObject7::getClassName ());
     addManagedClass (UpgradeTestManagedObject8::getClassName ());
 
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE11,               reinterpret_cast<PrismMessageHandler> (&FrameworkTestability6ObjectManager::frameworkTestabilityMessage11RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE11,               reinterpret_cast<WaveMessageHandler> (&FrameworkTestability6ObjectManager::frameworkTestabilityMessage11RequestHandler));
 
 }
 
@@ -113,24 +113,24 @@ void FrameworkTestability6ObjectManager::initialize (WaveAsynchronousContextForB
 }
 
 
-PrismMessage *FrameworkTestability6ObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *FrameworkTestability6ObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
     case FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS :
-        pPrismMessage = new FrameworkTestability6ObjectManagerGetManagedObjects;
+        pWaveMessage = new FrameworkTestability6ObjectManagerGetManagedObjects;
         break;
 
     case FRAMEWORK_TESTABILITY_MESSAGE9 :
-        pPrismMessage = new FrameworkTestabilityMessage9;
+        pWaveMessage = new FrameworkTestabilityMessage9;
         break;
     default :
-        pPrismMessage = NULL;
+        pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *FrameworkTestability6ObjectManager::createManagedObjectInstance (const string &managedClassName)
@@ -825,7 +825,7 @@ void FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep (Upgrade
 {
     trace (TRACE_LEVEL_INFO, "Simple Query By ATtributes Test ...");
 
-    FrameworkTestabilityMessage11   *pFrameworkTestabilityMessage11   = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11   *pFrameworkTestabilityMessage11   = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     UI32                            numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
 
@@ -1283,7 +1283,7 @@ void FrameworkTestability6ObjectManager::largeTransactionTestStep (UpgradePersis
 {
     trace (TRACE_LEVEL_INFO, "Large Transaction Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -1749,7 +1749,7 @@ void FrameworkTestability6ObjectManager::largeOneToAssociationTransactionTestSte
 {
     trace (TRACE_LEVEL_INFO, "Large One-One Association Transaction Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -2156,7 +2156,7 @@ void FrameworkTestability6ObjectManager::largeDerivationTransactionTestStep (Upg
 {
     trace (TRACE_LEVEL_INFO, "Large Derivation Transaction Test ...");
 
-    FrameworkTestabilityMessage11     *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11     *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                       status                     = WAVE_MESSAGE_SUCCESS;
     UI32                               numberOfObjectsToCreate     = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                               i                             = 0;
@@ -2643,7 +2643,7 @@ void FrameworkTestability6ObjectManager::largeOneToManyAssociationTransactionTes
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-Many Association Transaction Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -3086,7 +3086,7 @@ void FrameworkTestability6ObjectManager::largeOneToManyMultipleAssociationsInHie
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-Many Muiltiple Associations In Hierarchy Transaction Test ...");
 
-    FrameworkTestabilityMessage11        *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11        *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -3279,7 +3279,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneCompositionUpdateTestStep
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-One Composition Update Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -3373,7 +3373,7 @@ void FrameworkTestability6ObjectManager::largeOneToOneCompositionTransactionTest
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-One Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -3560,7 +3560,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyCompositionUpdateTestSte
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Composition Update Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -3668,7 +3668,7 @@ void FrameworkTestability6ObjectManager::largeOneToManyCompositionTransactionTes
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-Many Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage11            *pFrameworkTestabilityMessage11 = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId                              status                      = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
     UI32                                      i                          = 0;
@@ -3881,7 +3881,7 @@ void FrameworkTestability6ObjectManager::validatePrepareStep (UpgradePersistence
 /* Do the instrumentation in the Database*/
 void FrameworkTestability6ObjectManager::instrumentTheDatabaseStep(UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
-    RegressionTestMessage            *pRegressionTestMessage = reinterpret_cast<RegressionTestMessage *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    RegressionTestMessage            *pRegressionTestMessage = reinterpret_cast<RegressionTestMessage *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     trace (TRACE_LEVEL_INFO,string ("FrameworkTestability6ObjectManager::instrumentTheDatabaseStep start"));
     ResourceId  status  =   WAVE_MESSAGE_SUCCESS;
     if ( m_pUpgradeDatabaseSchemaParser )
@@ -4227,7 +4227,7 @@ void FrameworkTestability6ObjectManager::restoreConfigurationFile()
 void  FrameworkTestability6ObjectManager::restoreDatabaseStep(UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     /* Verify the status of instrumentation */
-    RegressionTestMessage            *pRegressionTestMessage = reinterpret_cast<RegressionTestMessage *> (pUpgradePersistenceTestContext->getPPrismMessage ());
+    RegressionTestMessage            *pRegressionTestMessage = reinterpret_cast<RegressionTestMessage *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     ResourceId status1 = pRegressionTestMessage->getCompletionStatus();
     if ( status1 == WAVE_MESSAGE_ERROR )
     {

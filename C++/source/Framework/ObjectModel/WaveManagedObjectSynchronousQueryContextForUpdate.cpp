@@ -6,7 +6,7 @@
 
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContextForUpdate.h"
 #include "Framework/Utils/TraceUtils.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 
@@ -16,7 +16,7 @@ namespace WaveNs
 WaveManagedObjectSynchronousQueryContextForUpdate::WaveManagedObjectSynchronousQueryContextForUpdate (const string &classToQueryFor)
     : WaveManagedObjectSynchronousQueryContext (classToQueryFor)
 {
-    WaveObjectManager *pWaveObjectManagerForCurrentThread = PrismThread::getWaveObjectManagerForCurrentThread ();
+    WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
     prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     m_WaveManagedObjectToAddUpdateAttributes = pWaveObjectManagerForCurrentThread->createInMemoryManagedObject (classToQueryFor);

@@ -20,7 +20,7 @@ class ClusterLocalMessagingContext : public PrismSynchronousLinearSequencerConte
     private :
     protected :
     public :
-                                    ClusterLocalMessagingContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                    ClusterLocalMessagingContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                    ~ClusterLocalMessagingContext ();
 								   
   	   WaveSlotLocalManagedObject *getWaveSlotManagedObjectPointer ();

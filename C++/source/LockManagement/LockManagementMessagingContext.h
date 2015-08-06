@@ -18,7 +18,7 @@ class LockManagementMessagingContext : public PrismSynchronousLinearSequencerCon
     private :
     protected :
     public :
-                                    LockManagementMessagingContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                    LockManagementMessagingContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                    ~LockManagementMessagingContext ();
        LocationId                   getLocationId () const;
        const string&                getServiceString () const;

@@ -63,7 +63,7 @@ class AppInterfaceObjectManager : public WaveLocalObjectManager
 {
     private :
                                 AppInterfaceObjectManager  (string appInterfaceName, const UI32 &stackSize = 0);
-        virtual PrismMessage   *createMessageInstance      (const UI32 &operationCode);
+        virtual WaveMessage   *createMessageInstance      (const UI32 &operationCode);
         virtual void            failover                   (FailoverAsynchronousContext *pFailoverAsynchronousContext);
 
     protected :
@@ -122,7 +122,7 @@ class MessageAndContext
     private :
     protected :
     public :
-        MessageAndContext       (PrismMessageHandler *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext, unsigned int m_appId);
+        MessageAndContext       (WaveMessageHandler *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext, unsigned int m_appId);
         MessageAndContext       ();
        ~MessageAndContext       ();
 
@@ -130,7 +130,7 @@ class MessageAndContext
     protected :
     public :
 
-        PrismMessageHandler         *m_pMessage;
+        WaveMessageHandler         *m_pMessage;
         PrismAsynchronousContext    *m_pPrismAsynchronousContext;
         unsigned int                 m_appId;
 };

@@ -26,15 +26,15 @@ HeartBeatObjectManager::HeartBeatObjectManager ()
     heartBeatConfigLocalManagedObject.setupOrm (); 
     addManagedClass (HeartBeatConfigLocalManagedObject::getClassName ());
 
-    addOperationMap (HEARTBEAT_START,      reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::startHeartBeat));
-    addOperationMap (HEARTBEAT_STOP,       reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::stopHeartBeat));
-    addOperationMap (HEARTBEAT_PAUSE,      reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::pauseHeartBeat));
-    addOperationMap (HEARTBEAT_RESUME,     reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::resumeHeartBeat));
-    addOperationMap (HEARTBEAT_CONFIG,     reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::configHeartBeat));
-    addOperationMap (HEARTBEAT_REPORT,     reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::reportHeartBeat));
-    addOperationMap (HEARTBEAT_GET_STAT,   reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::getHeartBeatStat));
-    addOperationMap (HEARTBEAT_SHOW_STAT,  reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::showHeartBeatStat));
-    addOperationMap (HEARTBEAT_DISCONNECT_FROM_NODE,  reinterpret_cast<PrismMessageHandler> (&HeartBeatObjectManager::disconnectFromNodeMessageHandler));
+    addOperationMap (HEARTBEAT_START,      reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::startHeartBeat));
+    addOperationMap (HEARTBEAT_STOP,       reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::stopHeartBeat));
+    addOperationMap (HEARTBEAT_PAUSE,      reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::pauseHeartBeat));
+    addOperationMap (HEARTBEAT_RESUME,     reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::resumeHeartBeat));
+    addOperationMap (HEARTBEAT_CONFIG,     reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::configHeartBeat));
+    addOperationMap (HEARTBEAT_REPORT,     reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::reportHeartBeat));
+    addOperationMap (HEARTBEAT_GET_STAT,   reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::getHeartBeatStat));
+    addOperationMap (HEARTBEAT_SHOW_STAT,  reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::showHeartBeatStat));
+    addOperationMap (HEARTBEAT_DISCONNECT_FROM_NODE,  reinterpret_cast<WaveMessageHandler> (&HeartBeatObjectManager::disconnectFromNodeMessageHandler));
 //	setTraceLevel (TRACE_LEVEL_UNKNOWN);
 }
 
@@ -60,29 +60,29 @@ WaveServiceId HeartBeatObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-PrismMessage *HeartBeatObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *HeartBeatObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case HEARTBEAT_REPORT :
-            pPrismMessage = new ReportHeartBeatMessage;
+            pWaveMessage = new ReportHeartBeatMessage;
             break;
 
         case HEARTBEAT_START :
-            pPrismMessage = new StartHeartBeatMessage;
+            pWaveMessage = new StartHeartBeatMessage;
             break;
 
         case HEARTBEAT_GET_STAT:
-            pPrismMessage = new GetHeartBeatStatMessage;
+            pWaveMessage = new GetHeartBeatStatMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject  *HeartBeatObjectManager::createManagedObjectInstance(const string &managedClassName)
@@ -554,7 +554,7 @@ void HeartBeatObjectManager::sendHeartBeat (HeartBeatNodeInfo *pHeartBeatInfo)
 
         pHeartBeatInfo->m_waitingForHeartBeatReply = 1;
     	trace (TRACE_LEVEL_DEBUG, string ("HeartBeatObjectManager::sendHeartBeat : Before Send"));
-        status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&HeartBeatObjectManager::processHeartBeatReply), pHeartBeatInfo, 0, locationId);
+        status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&HeartBeatObjectManager::processHeartBeatReply), pHeartBeatInfo, 0, locationId);
     	trace (TRACE_LEVEL_DEBUG, string ("HeartBeatObjectManager::sendHeartBeat : Heart beat sent to ip address = ") + (pHeartBeatInfo->m_ipAddress.toString()) + string (" port num = ") + pHeartBeatInfo->m_portNumber + string ("Seq Num = ") + pHeartBeatInfo->m_heartBeatStat.m_heartBeatSent);
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -751,7 +751,7 @@ void HeartBeatObjectManager::validateDisconnectFromNodeRequest (PrismLinearSeque
 {
     trace(TRACE_LEVEL_DEVEL, "HeartBeatObjectManager::validateDisconnectFromNodeRequest..Entering");
     /* Nothing fro now */
-    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
     prismAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
 
     LocationId locationId = pDisconnectFromNodeMessage->getLocationId ();
@@ -770,7 +770,7 @@ void HeartBeatObjectManager::processDisconnectFromNodeMessage (PrismLinearSequen
 {
     trace(TRACE_LEVEL_DEVEL, "HeartBeatObjectManager::processDisconnectFromNodeMessage..Entering");
 
-    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
     prismAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
 
     LocationId locationId = pDisconnectFromNodeMessage->getLocationId ();

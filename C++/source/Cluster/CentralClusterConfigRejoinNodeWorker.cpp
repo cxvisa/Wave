@@ -36,7 +36,7 @@ namespace WaveNs
 CentralClusterConfigRejoinNodeWorker::CentralClusterConfigRejoinNodeWorker (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager)
     : WaveWorker (pCentralClusterConfigObjectManager)
 {
-    addOperationMap (CLUSTER_JOIN_NODE, reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeMessageHandler));
+    addOperationMap (CLUSTER_JOIN_NODE, reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeMessageHandler));
 }
 
 /// Name
@@ -64,21 +64,21 @@ CentralClusterConfigRejoinNodeWorker::~CentralClusterConfigRejoinNodeWorker ()
 /// Return
 /// none
 
-PrismMessage *CentralClusterConfigRejoinNodeWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CentralClusterConfigRejoinNodeWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLUSTER_JOIN_NODE :
-            pPrismMessage = new ClusterObjectManagerRejoinNodeMessage;
+            pWaveMessage = new ClusterObjectManagerRejoinNodeMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 /// Name
 /// rejoinNodeMessageHandler
@@ -182,7 +182,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
 
         prismAssert (NULL != pResults, __FILE__, __LINE__);
 
-        ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPPrismMessage ());
+        ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
 	prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
         UI32 numberOfNodes = pClusterObjectManagerRejoinNodeMessage->getNNodes ();
@@ -270,7 +270,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNod
 {
 
     //Message pointer of the mesage received from VCS obtained from ctxt
-    ClusterObjectManagerRejoinNodeMessage  *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPPrismMessage ());
+    ClusterObjectManagerRejoinNodeMessage  *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
     prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
 
@@ -293,7 +293,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNod
     }
 
     //Call into the framework. Notice that this is lodging a callback function in the framework.
-    ResourceId status = send (pFrameworkObjectManagerRejoinNodesToClusterMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNodeCallBack), pClusterRejoinContext);
+    ResourceId status = send (pFrameworkObjectManagerRejoinNodesToClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNodeCallBack), pClusterRejoinContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -324,7 +324,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNod
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigRejoinNodeWorker::createClusterRequestFrameworkToRejoinNodeCallback : Entering ...");
 
     ClusterRejoinContext *pClusterRejoinContext = reinterpret_cast<ClusterRejoinContext *> (pContext);
-    ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage  = reinterpret_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPPrismMessage ());
+    ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage  = reinterpret_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     ResourceId completionStatus = WAVE_MESSAGE_SUCCESS;
@@ -422,7 +422,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
         return;
     }
 
-    ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPPrismMessage ());
+    ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
     prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
 
@@ -492,7 +492,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
 void CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep (ClusterRejoinContext *pClusterRejoinContext)
 {
 
-    ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPPrismMessage ());
+    ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
     prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__ , __LINE__);
 

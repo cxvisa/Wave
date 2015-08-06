@@ -13,13 +13,13 @@ namespace WaveNs
 {
 
 ClusterLocalSetHaRoleMessage::ClusterLocalSetHaRoleMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HA_ROLE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HA_ROLE),
       m_haRole                (WAVE_HA_NODE_STANDBY_UNCONFIRMED)
 {
 }
 
 ClusterLocalSetHaRoleMessage::ClusterLocalSetHaRoleMessage (const UI32 &haRole)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HA_ROLE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HA_ROLE),
       m_haRole                (haRole)
 {
 }

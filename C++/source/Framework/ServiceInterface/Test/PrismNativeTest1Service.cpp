@@ -13,7 +13,7 @@ namespace WaveNs
 PrismNativeTest1Service::PrismNativeTest1Service ()
     : WaveObjectManager ("PrismNativeTest1Service")
 {
-   addOperationMap (WAVE_NATIVE_TEST1_SERVICE_MESSAGE1, reinterpret_cast<PrismMessageHandler> (&PrismNativeTest1Service::prismNativeTest1ServiceMessage1Handler));
+   addOperationMap (WAVE_NATIVE_TEST1_SERVICE_MESSAGE1, reinterpret_cast<WaveMessageHandler> (&PrismNativeTest1Service::prismNativeTest1ServiceMessage1Handler));
 }
 
 PrismNativeTest1Service::~PrismNativeTest1Service ()

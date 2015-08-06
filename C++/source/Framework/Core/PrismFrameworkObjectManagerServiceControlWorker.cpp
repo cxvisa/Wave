@@ -6,7 +6,7 @@
 
 #include "Framework/Core/PrismFrameworkObjectManagerServiceControlWorker.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 
@@ -16,33 +16,33 @@ namespace WaveNs
 PrismFrameworkObjectManagerServiceControlWorker::PrismFrameworkObjectManagerServiceControlWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SERVICE_CONTROL_LIST_MESSAGE,     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SERVICE_SET_CPU_AFFINITY_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SERVICE_CONTROL_LIST_MESSAGE,     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SERVICE_SET_CPU_AFFINITY_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessageHandler));
 }
 
 PrismFrameworkObjectManagerServiceControlWorker::~PrismFrameworkObjectManagerServiceControlWorker ()
 {
 }
 
-PrismMessage *PrismFrameworkObjectManagerServiceControlWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PrismFrameworkObjectManagerServiceControlWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_OBJECT_MANAGER_SERVICE_CONTROL_LIST_MESSAGE :
-            pPrismMessage = new FrameworkObjectManagerServiceControlListMessage;
+            pWaveMessage = new FrameworkObjectManagerServiceControlListMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_SERVICE_SET_CPU_AFFINITY_MESSAGE :
-            pPrismMessage = new FrameworkObjectManagerServiceSetCpuAffinityMessage;
+            pWaveMessage = new FrameworkObjectManagerServiceSetCpuAffinityMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHandler (FrameworkObjectManagerServiceControlListMessage *pFrameworkObjectManagerServiceControlListMessage)
@@ -59,7 +59,7 @@ void PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageH
     UI32                   numberOfCpus           = 0;
     UI32                   j                      = 0;
 
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
     numberOfPrismServices = prismServiceIds.size ();
 
     for (i = 0; i < numberOfPrismServices; i++)
@@ -68,7 +68,7 @@ void PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageH
         serviceName       = FrameworkToolKit::getServiceNameById (serviceId);
         isEnabled         = WaveObjectManager::isServiceEnabled (serviceId);
         isLocal           = FrameworkToolKit::isALocalService (serviceId);
-        cpuAffinityVector = PrismThread::getCpuAffinityVectorForServiceId (serviceId);
+        cpuAffinityVector = WaveThread::getCpuAffinityVectorForServiceId (serviceId);
 
         cpuAffinity  = "";
         numberOfCpus = cpuAffinityVector.size ();

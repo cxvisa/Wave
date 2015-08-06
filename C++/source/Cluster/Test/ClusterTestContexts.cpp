@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-ClusterTestContext::ClusterTestContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+ClusterTestContext::ClusterTestContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_numberOfFailures (0)
 {
 }

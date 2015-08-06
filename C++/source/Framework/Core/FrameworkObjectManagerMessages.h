@@ -7,7 +7,7 @@
 #ifndef FRAMEWORKOBJECTMANAGERMESSAGES_H
 #define FRAMEWORKOBJECTMANAGERMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
 #include "Framework/Core/PrismFrameworkConfiguration.h"
@@ -26,7 +26,7 @@ typedef enum
     VALIDATION_RESULTS_BUFFER_TAG = 1001
 } BufferTagsForFrameworkClusterMessages;
 
-class PrismCreateClusterWithNodesMessage : public PrismMessage
+class PrismCreateClusterWithNodesMessage : public WaveMessage
 {
     private :
         bool isNewNodeIpAddressExists (const string &newNodeIpAddress, const SI32 &newNodePort);
@@ -70,7 +70,7 @@ class PrismCreateClusterWithNodesMessage : public PrismMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryMessage : public PrismMessage
+class PrismConfigureClusterSecondaryMessage : public WaveMessage
 {
     private :
     protected :
@@ -138,7 +138,7 @@ class PrismConfigureClusterSecondaryHaPeerMessage : public PrismConfigureCluster
     public :
 };
 
-class PrismConfigureClusterSecondaryPhase1Message : public PrismMessage
+class PrismConfigureClusterSecondaryPhase1Message : public WaveMessage
 {
     private :
     protected :
@@ -178,7 +178,7 @@ class PrismConfigureClusterSecondaryHaPeerPhase1Message : public PrismConfigureC
     public :
 };
 
-class PrismConfigureClusterSecondaryPhase2Message : public PrismMessage
+class PrismConfigureClusterSecondaryPhase2Message : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -195,7 +195,7 @@ class PrismConfigureClusterSecondaryPhase2Message : public PrismMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryPhase3Message : public PrismMessage
+class PrismConfigureClusterSecondaryPhase3Message : public WaveMessage
 {
     private :
     protected :
@@ -268,7 +268,7 @@ class PrismRejoinClusterSecondaryHaPeerPhase1Message : public PrismRejoinCluster
 //class: PrismRejoinClusterSecondaryPhase2Message
 //Description: This class is used to send a message to
 //the secondaries to start phase 2 processing
-class PrismRejoinClusterSecondaryPhase2Message : public PrismMessage
+class PrismRejoinClusterSecondaryPhase2Message : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -295,7 +295,7 @@ class PrismRejoinClusterSecondaryPhase2Message : public PrismMessage
 //class: PrismRejoinClusterSecondaryPhase3Message
 //Description: This class is used to send a message to
 //the secondaries to start phase 3 processing
-class PrismRejoinClusterSecondaryPhase3Message : public PrismMessage
+class PrismRejoinClusterSecondaryPhase3Message : public WaveMessage
 {
     private :
     protected :
@@ -330,7 +330,7 @@ class PrismRejoinClusterSecondaryHaPeerPhase3Message : public PrismRejoinCluster
     public :
 };
 
-class FrameworkObjectManagerUpdateListOfSecondariesMessage : public PrismMessage
+class FrameworkObjectManagerUpdateListOfSecondariesMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();
@@ -409,7 +409,7 @@ class FrameworkObjectManagerDeleteNodesFromClusterMessage : public PrismCreateCl
     public :
 };
 
-class FrameworkObjectManagerDestroyClusterMessage : public PrismMessage
+class FrameworkObjectManagerDestroyClusterMessage : public WaveMessage
 {
     private :
     protected :
@@ -433,7 +433,7 @@ class FrameworkObjectManagerDestroyClusterMessage : public PrismMessage
     public :
 };
 
-class FrameworkObjectManagerUnconfigureClusterSecondaryMessage : public PrismMessage
+class FrameworkObjectManagerUnconfigureClusterSecondaryMessage : public WaveMessage
 {
     private :
     protected :
@@ -529,7 +529,7 @@ class FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage : public Framewo
     public :
 };
 
-class FrameworkObjectManagerDetachFromClusterMessage : public PrismMessage
+class FrameworkObjectManagerDetachFromClusterMessage : public WaveMessage
 {
     private :
     protected :
@@ -565,7 +565,7 @@ class FrameworkObjectManagerLostHeartBeatMessage : public FrameworkObjectManager
 };
 
 
-class FrameworkObjectManagerPrimaryChangedMessage : public PrismMessage
+class FrameworkObjectManagerPrimaryChangedMessage : public WaveMessage
 {
     private :
     protected :
@@ -631,7 +631,7 @@ class FrameworkObjectManagerPrimaryChangedHaPeerMessage : public FrameworkObject
     public :
 };
 
-class FrameworkObjectManagerPrimaryChangedPhase1Message : public PrismMessage
+class FrameworkObjectManagerPrimaryChangedPhase1Message : public WaveMessage
 {
     private :
     protected :
@@ -674,7 +674,7 @@ class FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message : public Framework
     protected :
     public :
 };
-class FrameworkObjectManagerPrimaryChangedPhase2Message : public PrismMessage
+class FrameworkObjectManagerPrimaryChangedPhase2Message : public WaveMessage
 {
     private :
     protected :
@@ -689,7 +689,7 @@ class FrameworkObjectManagerPrimaryChangedPhase2Message : public PrismMessage
     public :
 };
 
-class FrameworkObjectManagerPrimaryChangedPhase3Message : public PrismMessage
+class FrameworkObjectManagerPrimaryChangedPhase3Message : public WaveMessage
 {
     private :
     protected :
@@ -724,7 +724,7 @@ class FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message : public Framework
     public :
 };
 
-class FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage :  public PrismMessage
+class FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage :  public WaveMessage
 {
     private :
     protected :
@@ -740,7 +740,7 @@ class FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage :  public Pri
     public :
 };
 
-class FrameworkObjectManagerRemoveKnownLocationsMessage : public PrismMessage
+class FrameworkObjectManagerRemoveKnownLocationsMessage : public WaveMessage
 {
     private :
         void                setupAttributesForSerialization ();
@@ -846,7 +846,7 @@ class FrameworkObjectManagerStartSlotFailoverMessage : public ManagementInterfac
     public :
 };
 
-class FrameworkObjectManagerNewPrincipalEstablishedMessage : public PrismMessage
+class FrameworkObjectManagerNewPrincipalEstablishedMessage : public WaveMessage
 {
  public:
 
@@ -877,7 +877,7 @@ class FrameworkObjectManagerNewPrincipalEstablishedMessage : public PrismMessage
      bool   mTriggerControlledFailover;
 };
 
-class FrameworkObjectManagerSecondaryNodeFailureNotificationMessage : public PrismMessage
+class FrameworkObjectManagerSecondaryNodeFailureNotificationMessage : public WaveMessage
 {
  public:
 
@@ -912,7 +912,7 @@ class FrameworkObjectManagerSecondaryNodeFailureNotificationMessage : public Pri
 
 };
 
-class FrameworkObjectManagerDisconnectFromAllNodesMessage : public PrismMessage
+class FrameworkObjectManagerDisconnectFromAllNodesMessage : public WaveMessage
 {
  public:
 
@@ -929,7 +929,7 @@ class FrameworkObjectManagerDisconnectFromAllNodesMessage : public PrismMessage
 
 };
 
-class FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage: public PrismMessage
+class FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage: public WaveMessage
 {
 
 public:
@@ -945,7 +945,7 @@ public:
 
 };
 
-class FrameworkObjectManagerResetNodeToUnconfirmRole : public PrismMessage
+class FrameworkObjectManagerResetNodeToUnconfirmRole : public WaveMessage
 {
     public:
                      FrameworkObjectManagerResetNodeToUnconfirmRole ();
@@ -960,7 +960,7 @@ class FrameworkObjectManagerResetNodeToUnconfirmRole : public PrismMessage
     private:
 };
 
-class FrameworkObjectManagerStartHaSyncMessage : public PrismMessage
+class FrameworkObjectManagerStartHaSyncMessage : public WaveMessage
 {
  public:
 
@@ -993,7 +993,7 @@ class FrameworkObjectManagerStartHaSyncMessage : public PrismMessage
     string m_returnData;
 };
 
-class FrameworkObjectManagerInitHaIpAddressMessage : public PrismMessage
+class FrameworkObjectManagerInitHaIpAddressMessage : public WaveMessage
 {
  public:
 
@@ -1016,7 +1016,7 @@ class FrameworkObjectManagerInitHaIpAddressMessage : public PrismMessage
     SI32 m_localHaIpPort;
 };
 
-class PrismHaSyncConfigureStandbyMessage : public PrismMessage
+class PrismHaSyncConfigureStandbyMessage : public WaveMessage
 {
     private :
     protected :
@@ -1064,7 +1064,7 @@ class FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage : public Man
 };
 
 
-class FrameworkObjectManagerPrepareNodeForHAMessage : public PrismMessage
+class FrameworkObjectManagerPrepareNodeForHAMessage : public WaveMessage
 {
 
     public:
@@ -1080,7 +1080,7 @@ class FrameworkObjectManagerPrepareNodeForHAMessage : public PrismMessage
 
 };
 
-class FrameworkObjectManagerUpdateDatabaseSchema :  public PrismMessage
+class FrameworkObjectManagerUpdateDatabaseSchema :  public WaveMessage
 {
     public:
                 FrameworkObjectManagerUpdateDatabaseSchema();
@@ -1116,7 +1116,7 @@ class FrameworkObjectManagerListenForManagedObjectMessage : public ManagementInt
     public :
 };
 
-class FrameworkObjectManagerHaSyncUpdateMessage :  public PrismMessage
+class FrameworkObjectManagerHaSyncUpdateMessage :  public WaveMessage
 {
     public:
     			     FrameworkObjectManagerHaSyncUpdateMessage();
@@ -1132,7 +1132,7 @@ class FrameworkObjectManagerHaSyncUpdateMessage :  public PrismMessage
         bool m_isDbSyncRequired;
 };
 
-class FrameworkObjectManagerGetFirmwareVersionMessage :  public PrismMessage
+class FrameworkObjectManagerGetFirmwareVersionMessage :  public WaveMessage
 {
     public:
     			       FrameworkObjectManagerGetFirmwareVersionMessage();
@@ -1150,7 +1150,7 @@ class FrameworkObjectManagerGetFirmwareVersionMessage :  public PrismMessage
         string m_firmwareVersion;
 };
 
-class FrameworkObjectManagerEndHaSyncMessage : public PrismMessage
+class FrameworkObjectManagerEndHaSyncMessage : public WaveMessage
 {
  public:
 
@@ -1166,7 +1166,7 @@ class FrameworkObjectManagerEndHaSyncMessage : public PrismMessage
  private:
 };
 
-class FrameworkObjectManagerStartCcmdHaSyncMessage : public PrismMessage
+class FrameworkObjectManagerStartCcmdHaSyncMessage : public WaveMessage
 {
  public:
 
@@ -1213,7 +1213,7 @@ class FrameworkObjectManagerCcmdHaSyncUpdateMessage :  public ManagementInterfac
     private:
 };
 
-class FrameworkObjectManagerSetSyncStateMessage :  public PrismMessage
+class FrameworkObjectManagerSetSyncStateMessage :  public WaveMessage
 {
     public:
     			     FrameworkObjectManagerSetSyncStateMessage ();
@@ -1232,7 +1232,7 @@ class FrameworkObjectManagerSetSyncStateMessage :  public PrismMessage
        UI32   m_syncState;
 };
 
-class FrameworkObjectManagerGetSyncStateMessage :  public PrismMessage
+class FrameworkObjectManagerGetSyncStateMessage :  public WaveMessage
 {
     public:
     			     FrameworkObjectManagerGetSyncStateMessage ();
@@ -1251,7 +1251,7 @@ class FrameworkObjectManagerGetSyncStateMessage :  public PrismMessage
        UI32   m_syncState;
 };
 
-class FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration :  public PrismMessage
+class FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration :  public WaveMessage
 {
     public:
                       FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration ();
@@ -1267,7 +1267,7 @@ class FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration :  pu
     private:
 };
 
-class FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration :  public PrismMessage
+class FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration :  public WaveMessage
 {
     public:
                       FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration ();
@@ -1287,7 +1287,7 @@ class FrameworkObjectManagerPrepareForHaFailoverWithPersistentConfiguration :  p
                bool m_isWarmRecoveryInvolved;
 };
 
-class FrameworkObjectManagerSyncConfigurationMessage : public PrismMessage
+class FrameworkObjectManagerSyncConfigurationMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization       ();

@@ -10,12 +10,12 @@ namespace WaveNs
 {
 
 WaveManagedObjectMessage::WaveManagedObjectMessage (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismMessage (serviceCode, operationCode)
+    : WaveMessage (serviceCode, operationCode)
 {
 }
 
 WaveManagedObjectMessage::WaveManagedObjectMessage (WaveServiceId serviceCode, UI32 operationCode, const ObjectId &waveManagedObjectId)
-    : PrismMessage          (serviceCode, operationCode),
+    : WaveMessage          (serviceCode, operationCode),
       m_waveManagedObjectId (waveManagedObjectId)
 {
 }
@@ -26,7 +26,7 @@ WaveManagedObjectMessage::~WaveManagedObjectMessage ()
 
 void WaveManagedObjectMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeObjectId (&m_waveManagedObjectId, "waveManagedObjectId"));
 }

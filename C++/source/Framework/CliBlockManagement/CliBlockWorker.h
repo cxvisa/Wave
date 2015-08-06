@@ -19,7 +19,7 @@ class CliBlockMessage;
 class CliBlockWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage *createMessageInstance                                            (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance                                            (const UI32 &operationCode);
 
                 void          cliBlockMessageHandler                                           (CliBlockMessage *pCliBlockMessage);
                 void          processCliBlockMessageForConnectedLocationStep                   (PrismLinearSequencerContext *pPrismLinearSequencerContext);

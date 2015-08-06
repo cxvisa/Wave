@@ -19,7 +19,7 @@ class PrismPosixThread;
 
 typedef PrismPosixThread *(*PrismPosixThreadStartMethodType) (PrismPosixThread *);
 typedef void *(*PosixThreadStartMethodType) (void *);
-typedef pthread_t PrismThreadId;
+typedef pthread_t WaveThreadId;
 
 class PrismPosixThread
 {
@@ -31,7 +31,7 @@ class PrismPosixThread
         virtual WaveThreadStatus        run               ();
                 WaveThreadStatus        joinCallingThread ();
         const   PrismPosixThreadContext *getThreadContext  ();
-                PrismThreadId            getId             () const;
+                WaveThreadId            getId             () const;
 
     protected :
         virtual WaveThreadStatus        start               ();

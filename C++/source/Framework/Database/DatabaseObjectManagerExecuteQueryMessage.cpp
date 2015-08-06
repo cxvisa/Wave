@@ -14,7 +14,7 @@ namespace WaveNs
 WaveServiceId DatabaseObjectManagerExecuteQueryMessage::m_databaseObjectManagerServiceId;
 
 DatabaseObjectManagerExecuteQueryMessage::DatabaseObjectManagerExecuteQueryMessage (const string &className, WaveObjectManager *pWaveObjectManager, const string &sql, const string &schema)
-    : PrismMessage                               (getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_QUERY),
+    : WaveMessage                               (getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_QUERY),
       m_className                                (className),
       m_pWaveObjectManager                       (pWaveObjectManager),
       m_sql                                      (sql),

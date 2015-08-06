@@ -6,7 +6,7 @@
 
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForPostbootPhase.h"
@@ -243,24 +243,24 @@ void WaveWorker::backendSyncUp (PrismAsynchronousContext *pPrismAsynchronousCont
     pPrismAsynchronousContext->callback ();
 }
 
-WaveMessageStatus WaveWorker::send  (PrismMessage *pPrismMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pPrismMessageSender)
+WaveMessageStatus WaveWorker::send  (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
 {
-    return (m_pWaveObjectManager->send (pPrismMessage, pPrismMessageCallback, pPrismMessageContext, timeOutInMilliSeconds, locationId, pPrismMessageSender != NULL ? pPrismMessageSender : this));
+    return (m_pWaveObjectManager->send (pWaveMessage, pWaveMessageCallback, pWaveMessageContext, timeOutInMilliSeconds, locationId, pWaveMessageSender != NULL ? pWaveMessageSender : this));
 }
 
-WaveMessageStatus WaveWorker::sendOneWay (PrismMessage *pPrismMessage, const LocationId &locationId)
+WaveMessageStatus WaveWorker::sendOneWay (WaveMessage *pWaveMessage, const LocationId &locationId)
 {
-    return (m_pWaveObjectManager->sendOneWay (pPrismMessage, locationId));
+    return (m_pWaveObjectManager->sendOneWay (pWaveMessage, locationId));
 }
 
-WaveMessageStatus WaveWorker::sendOneWayToFront (PrismMessage *pPrismMessage, const LocationId &locationId)
+WaveMessageStatus WaveWorker::sendOneWayToFront (WaveMessage *pWaveMessage, const LocationId &locationId)
 {
-    return (m_pWaveObjectManager->sendOneWayToFront (pPrismMessage, locationId));
+    return (m_pWaveObjectManager->sendOneWayToFront (pWaveMessage, locationId));
 }
 
-WaveMessageStatus WaveWorker::sendSynchronously (PrismMessage *pPrismMessage, const LocationId &locationId)
+WaveMessageStatus WaveWorker::sendSynchronously (WaveMessage *pWaveMessage, const LocationId &locationId)
 {
-    return (m_pWaveObjectManager->sendSynchronously (pPrismMessage, locationId));
+    return (m_pWaveObjectManager->sendSynchronously (pWaveMessage, locationId));
 }
 
 void WaveWorker::sendToWaveCluster (WaveSendToClusterContext *pWaveSendToClusterContext)
@@ -278,14 +278,14 @@ bool WaveWorker::isBeingSurrogated ()
     return (m_pWaveObjectManager->isBeingSurrogated ());
 }
 
-WaveMessageStatus WaveWorker::recall (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveWorker::recall (WaveMessage *pWaveMessage)
 {
-    return (m_pWaveObjectManager->recall (pPrismMessage));
+    return (m_pWaveObjectManager->recall (pWaveMessage));
 }
 
-WaveMessageStatus WaveWorker::reply (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveWorker::reply (WaveMessage *pWaveMessage)
 {
-    return (m_pWaveObjectManager->reply (pPrismMessage));
+    return (m_pWaveObjectManager->reply (pWaveMessage));
 }
 
 WaveMessageStatus WaveWorker::reply (const PrismEvent *&pPrismEvent)
@@ -330,14 +330,14 @@ void WaveWorker::prismAssert (bool isAssertNotRequired, const char *pFileName, U
     m_pWaveObjectManager->prismAssert (isAssertNotRequired, pFileName, lineNumber);
 }
 
-void WaveWorker::addOperationMap (UI32 operationCode, PrismMessageHandler pPrismMessageHandler, PrismElement *pPrismElement)
+void WaveWorker::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, PrismElement *pPrismElement)
 {
     if (NULL == pPrismElement)
     {
         pPrismElement = this;
     }
 
-    m_pWaveObjectManager->addOperationMap (operationCode, pPrismMessageHandler, pPrismElement);
+    m_pWaveObjectManager->addOperationMap (operationCode, pWaveMessageHandler, pPrismElement);
 }
 
 void WaveWorker::removeOperationMap (const UI32 &operationCode)
@@ -678,14 +678,14 @@ ResourceId WaveWorker::sendSynchronouslyToWaveClient (const string &waveClientNa
     return (m_pWaveObjectManager->sendSynchronouslyToWaveClient (waveClientName, pManagementInterfaceMessage, Instance));
 }
 
-WaveMessageStatus WaveWorker::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
+WaveMessageStatus WaveWorker::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
-    return (m_pWaveObjectManager->sendToWaveServer (waveServerId, pManagementInterfaceMessage, messageCallback, pPrismMessageSender, pInputContext, timeOutInMilliSeconds));
+    return (m_pWaveObjectManager->sendToWaveServer (waveServerId, pManagementInterfaceMessage, messageCallback, pWaveMessageSender, pInputContext, timeOutInMilliSeconds));
 }
 
-ResourceId WaveWorker::sendToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext, UI32 timeOutInMilliSeconds, const SI32 &Instance)
+ResourceId WaveWorker::sendToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, const SI32 &Instance)
 {
-    return (m_pWaveObjectManager->sendToWaveClient (waveClientName, pManagementInterfaceMessage, pPrismMessageCallback, pPrismMessageContext, timeOutInMilliSeconds, Instance));
+    return (m_pWaveObjectManager->sendToWaveClient (waveClientName, pManagementInterfaceMessage, pWaveMessageCallback, pWaveMessageContext, timeOutInMilliSeconds, Instance));
 }
 
 void WaveWorker::sendToWaveClients (WaveSendToClientsContext *pWaveSendToClientsContext)
@@ -714,7 +714,7 @@ void WaveWorker::addManagedClass (const string &managedClassName, PrismElement *
     m_pWaveObjectManager->addManagedClass (managedClassName, pOwnerForInstantiation);
 }
 
-PrismMessage *WaveWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveWorker::createMessageInstance (const UI32 &operationCode)
 {
     trace (TRACE_LEVEL_ERROR, "WaveWorker::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
     return (NULL);
@@ -811,9 +811,9 @@ void WaveWorker::sendMulticast (WaveSendMulticastContext *pWaveSendMulticastCont
     m_pWaveObjectManager->sendMulticast (pWaveSendMulticastContext);
 }
 
-void WaveWorker::postponeMessageHandling (PrismMessage *pPrismMessage)
+void WaveWorker::postponeMessageHandling (WaveMessage *pWaveMessage)
 {
-    m_pWaveObjectManager->postponeMessageHandling (pPrismMessage);
+    m_pWaveObjectManager->postponeMessageHandling (pWaveMessage);
 }
 
 void WaveWorker::resumeAllPostponedMessages ()

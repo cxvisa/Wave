@@ -23,15 +23,15 @@ namespace WaveNs
 
     FileLocalObjectManager::FileLocalObjectManager ()  : WaveLocalObjectManager  (getClassName ())
     {
-        addOperationMap (FILESVCPUSHFILE,              reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::PushFileMessageHandler));    
-        addOperationMap (FILESVCFILETRANSFERHANDSHAKE, reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::FileTransferHandshakeMessageHandler));
-        addOperationMap (FILESVCPUSHFILEFRAGMENT,      reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::PushFileFragmentMessageHandler));
-        addOperationMap (FILESVCABORTFILETRANSFER,     reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::AbortFileTransferMessageHandler));
-        addOperationMap (FILESVCPUSHFILETOHAPEER,      reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::PushFileToHaPeerMessageHandler));
-        addOperationMap (FILESVCFILEPUSHFILETOHAPEER,  reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::FilePushFileToHaPeerMessageHandler));
-        addOperationMap (FILESVCREQUESTDELETEFILE,     reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::FileDeleteRequestFromServiceHandler));
-        addOperationMap (FILESVCDELETEFILE,            reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::DeleteFileMessageHandler));
-        addOperationMap (FILESVCDELETEFILETOHAPEER,    reinterpret_cast<PrismMessageHandler> (&FileLocalObjectManager::DeleteFileOnHaPeerMessageHandler));     
+        addOperationMap (FILESVCPUSHFILE,              reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::PushFileMessageHandler));    
+        addOperationMap (FILESVCFILETRANSFERHANDSHAKE, reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::FileTransferHandshakeMessageHandler));
+        addOperationMap (FILESVCPUSHFILEFRAGMENT,      reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::PushFileFragmentMessageHandler));
+        addOperationMap (FILESVCABORTFILETRANSFER,     reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::AbortFileTransferMessageHandler));
+        addOperationMap (FILESVCPUSHFILETOHAPEER,      reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::PushFileToHaPeerMessageHandler));
+        addOperationMap (FILESVCFILEPUSHFILETOHAPEER,  reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::FilePushFileToHaPeerMessageHandler));
+        addOperationMap (FILESVCREQUESTDELETEFILE,     reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::FileDeleteRequestFromServiceHandler));
+        addOperationMap (FILESVCDELETEFILE,            reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::DeleteFileMessageHandler));
+        addOperationMap (FILESVCDELETEFILETOHAPEER,    reinterpret_cast<WaveMessageHandler> (&FileLocalObjectManager::DeleteFileOnHaPeerMessageHandler));     
 
         // Set the FileService Version.
         m_nFileServiceVersion = sFILESERVICEVERSION;
@@ -67,45 +67,45 @@ namespace WaveNs
         return ((getInstance ())->getServiceId ());
     }
 
-    PrismMessage  *FileLocalObjectManager::createMessageInstance(const UI32 &operationCode)
+    WaveMessage  *FileLocalObjectManager::createMessageInstance(const UI32 &operationCode)
     {
-        PrismMessage *pPrismMessage = NULL;
+        WaveMessage *pWaveMessage = NULL;
 
         switch (operationCode)
         {
 
             case FILESVCFILETRANSFERHANDSHAKE :
-                pPrismMessage = new FileTransferHandshakeMessage ();
+                pWaveMessage = new FileTransferHandshakeMessage ();
                 break;
             case FILESVCPUSHFILE :
-                pPrismMessage = new FilePushFileMessage ();
+                pWaveMessage = new FilePushFileMessage ();
                 break;
             case FILESVCPUSHFILEFRAGMENT :
-                pPrismMessage = new FilePushFileFragmentMessage ();
+                pWaveMessage = new FilePushFileFragmentMessage ();
                 break;
             case FILESVCABORTFILETRANSFER :
-                pPrismMessage = new FileAbortFileTransferMessage ();
+                pWaveMessage = new FileAbortFileTransferMessage ();
                 break;
             case FILESVCPUSHFILETOHAPEER :
-                pPrismMessage = new PushFileToHaPeerMessage ();
+                pWaveMessage = new PushFileToHaPeerMessage ();
                 break;
             case FILESVCFILEPUSHFILETOHAPEER :
-                pPrismMessage = new FilePushFileToHaPeerMessage ();
+                pWaveMessage = new FilePushFileToHaPeerMessage ();
                 break;
             case FILESVCREQUESTDELETEFILE :
-                pPrismMessage = new FileDeleteRequestMessage ();
+                pWaveMessage = new FileDeleteRequestMessage ();
                 break;
             case FILESVCDELETEFILE :
-                pPrismMessage = new FileDeleteFileMessage ();
+                pWaveMessage = new FileDeleteFileMessage ();
                 break;
             case FILESVCDELETEFILETOHAPEER :
-                pPrismMessage = new FileDeleteFileToHaPeerMessage ();
+                pWaveMessage = new FileDeleteFileToHaPeerMessage ();
                 break;
             default :
-                pPrismMessage = NULL;
+                pWaveMessage = NULL;
         }
 
-        return (pPrismMessage);
+        return (pWaveMessage);
     }
 
     WaveManagedObject  *FileLocalObjectManager::createManagedObjectInstance(const string &managedClassName)
@@ -147,7 +147,7 @@ namespace WaveNs
 
          tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
 
-         FileAbortFileTransferMessage    *pAbortFTMessage = reinterpret_cast<FileAbortFileTransferMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+         FileAbortFileTransferMessage    *pAbortFTMessage = reinterpret_cast<FileAbortFileTransferMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
          WaveNs::prismAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);
          
          // Before cleanup of incoming transfers.
@@ -221,7 +221,7 @@ namespace WaveNs
      void  FileLocalObjectManager::validateLocationIdAndVersion(PrismLinearSequencerContext *pPrismLinearSequencerContext)
      {
     	 tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
-         FileTransferHandshakeMessage    *pFTHandShakeMessage = reinterpret_cast<FileTransferHandshakeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+         FileTransferHandshakeMessage    *pFTHandShakeMessage = reinterpret_cast<FileTransferHandshakeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
          ResourceId status = WAVE_MESSAGE_SUCCESS;
          WaveNs::prismAssert (NULL != pFTHandShakeMessage, __FILE__, __LINE__);
          do {
@@ -252,7 +252,7 @@ namespace WaveNs
      {
          ResourceId status = WAVE_MESSAGE_SUCCESS;
          tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
-         FileTransferHandshakeMessage    *pFTHandShakeMessage = reinterpret_cast<FileTransferHandshakeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+         FileTransferHandshakeMessage    *pFTHandShakeMessage = reinterpret_cast<FileTransferHandshakeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
          WaveNs::prismAssert (NULL != pFTHandShakeMessage, __FILE__, __LINE__);
          string sDestinationFileName = pFTHandShakeMessage->getDestinationFileName();
@@ -348,7 +348,7 @@ namespace WaveNs
      void  FileLocalObjectManager::addToIncomingQueue(PrismLinearSequencerContext *pPrismLinearSequencerContext)
      {
     	tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
-		FileTransferHandshakeMessage    *pFTHandShakeMessage = reinterpret_cast<FileTransferHandshakeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+		FileTransferHandshakeMessage    *pFTHandShakeMessage = reinterpret_cast<FileTransferHandshakeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 		ResourceId status = WAVE_MESSAGE_SUCCESS;
 		WaveNs::prismAssert (NULL != pFTHandShakeMessage, __FILE__, __LINE__);
         string sDestinationFileName = pFTHandShakeMessage->getDestinationFileName();
@@ -409,7 +409,7 @@ namespace WaveNs
          ResourceId status = WAVE_MESSAGE_SUCCESS;
          tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
                   
-         FilePushFileFragmentMessage *pPushFileFragmentMessage = reinterpret_cast<FilePushFileFragmentMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+         FilePushFileFragmentMessage *pPushFileFragmentMessage = reinterpret_cast<FilePushFileFragmentMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
          WaveNs::prismAssert (NULL != pPushFileFragmentMessage, __FILE__, __LINE__);         
 
           do {
@@ -578,7 +578,7 @@ namespace WaveNs
     void FileLocalObjectManager::DeleteFileHaPeerStep ( PrismLinearSequencerContext *pPrismLinearSequencerContext )
     {
         ResourceId status = WAVE_MESSAGE_SUCCESS;
-        FileDeleteFileToHaPeerMessage *pFileDeleteFileToHaPeerMessage = reinterpret_cast<FileDeleteFileToHaPeerMessage *> (pPrismLinearSequencerContext->getPPrismMessage());
+        FileDeleteFileToHaPeerMessage *pFileDeleteFileToHaPeerMessage = reinterpret_cast<FileDeleteFileToHaPeerMessage *> (pPrismLinearSequencerContext->getPWaveMessage());
         string filename = pFileDeleteFileToHaPeerMessage->getDestinationFileName();
 
         SI32 ret = DeleteFile (filename);
@@ -616,7 +616,7 @@ namespace WaveNs
         ResourceId status = WAVE_MESSAGE_SUCCESS;
         tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
 
-        FileDeleteFileMessage *pFileDeleteFileMessage = reinterpret_cast<FileDeleteFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage());
+        FileDeleteFileMessage *pFileDeleteFileMessage = reinterpret_cast<FileDeleteFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage());
         string filename = pFileDeleteFileMessage->getDestinationFileName();
 
         SI32 ret = DeleteFile (filename); 
@@ -733,7 +733,7 @@ namespace WaveNs
          ResourceId status = WAVE_MESSAGE_SUCCESS;
          tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
     
-         FileDeleteRequestMessage *pFileDeleteRequestMessage = dynamic_cast<FileDeleteRequestMessage*> (pPrismLinearSequencerContext->getPPrismMessage ());
+         FileDeleteRequestMessage *pFileDeleteRequestMessage = dynamic_cast<FileDeleteRequestMessage*> (pPrismLinearSequencerContext->getPWaveMessage ());
         
          WaveNs::prismAssert (NULL != pFileDeleteRequestMessage, __FILE__, __LINE__);
  
@@ -798,7 +798,7 @@ namespace WaveNs
 
         ++(*pPrismLinearSequencerContext);
 
-        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
         FileTransferHandshakeMessage  *pHandShakeMessage = new FileTransferHandshakeMessage(this->getFileServiceVersion(), string(""), pFileDeleteRequestMessage->getDestinationFileName(), (FrameworkToolKit::getMyLocationId ()), 0, pFileDeleteRequestMessage->getFileTransferFlag());
 
@@ -806,7 +806,7 @@ namespace WaveNs
 
         WaveSendToClusterContext     *pWaveSendToClusterContext   = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FileLocalObjectManager::DeleteRequestFileTransferHandshakeCallback), pPrismLinearSequencerContext);
 
-        pWaveSendToClusterContext->setPPrismMessageForPhase1 (pHandShakeMessage);
+        pWaveSendToClusterContext->setPWaveMessageForPhase1 (pHandShakeMessage);
         pWaveSendToClusterContext->setLocationsToSendToForPhase1( pFileDeleteRequestMessage->getDestinationLocationIdListForNextMessage());
         sendToWaveCluster (pWaveSendToClusterContext);
         tracePrintf(TRACE_LEVEL_DEBUG, "FileLocalObjectManager::DeleteRequestFileTransferHandshake : After sending to cluster status "); 
@@ -820,7 +820,7 @@ namespace WaveNs
         PrismLinearSequencerContext *pPrismLinearSequencerContext  = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
         prismAssert (pPrismLinearSequencerContext, __FILE__, __LINE__);
 
-        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
         prismAssert (NULL != pFileDeleteRequestMessage, __FILE__, __LINE__);
 
         --(*pPrismLinearSequencerContext);
@@ -867,7 +867,7 @@ namespace WaveNs
 
         }    
 
-        delete pWaveSendToClusterContext->getPPrismMessageForPhase1 ();  // Delete the handshake message we created.
+        delete pWaveSendToClusterContext->getPWaveMessageForPhase1 ();  // Delete the handshake message we created.
         delete pWaveSendToClusterContext;
 
         status = ((pFileDeleteRequestMessage->getLocationCountToReceiveNextMessage() > 0) ? WAVE_MESSAGE_SUCCESS : WAVE_MESSAGE_ERROR);
@@ -887,7 +887,7 @@ namespace WaveNs
         
         ++(*pPrismLinearSequencerContext);
 
-        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
         prismAssert (NULL != pFileDeleteRequestMessage, __FILE__, __LINE__);
 
         FileDeleteFileMessage *pMessage = new FileDeleteFileMessage (pFileDeleteRequestMessage->getDestinationFileName(), pFileDeleteRequestMessage->getFileTransferFlag());
@@ -897,7 +897,7 @@ namespace WaveNs
                                                                            reinterpret_cast<PrismAsynchronousCallback> (&FileLocalObjectManager::sendDeleteMessageToAllCallback),
                                                                            pPrismLinearSequencerContext);
 
-        pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage);
+        pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
         pWaveSendToClusterContext->setLocationsToSendToForPhase1( pFileDeleteRequestMessage->getDestinationLocationIdListForNextMessage());
         sendToWaveCluster (pWaveSendToClusterContext);
         tracePrintf(TRACE_LEVEL_INFO, "FileLocalObjectManager::sendDeleteMessageToAll : After sending to cluster");
@@ -911,7 +911,7 @@ namespace WaveNs
         PrismLinearSequencerContext *pPrismLinearSequencerContext  = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
         prismAssert (pPrismLinearSequencerContext, __FILE__, __LINE__);
 
-        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+        FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
         prismAssert (NULL != pFileDeleteRequestMessage, __FILE__, __LINE__);
 
         --(*pPrismLinearSequencerContext);
@@ -958,7 +958,7 @@ namespace WaveNs
 
         }        
         
-        delete pWaveSendToClusterContext->getPPrismMessageForPhase1 ();  // Delete the message we created
+        delete pWaveSendToClusterContext->getPWaveMessageForPhase1 ();  // Delete the message we created
         delete pWaveSendToClusterContext;
 
         vector<UI32> destinationList = pFileDeleteRequestMessage->getDestinationLocationIdList ();
@@ -1030,7 +1030,7 @@ namespace WaveNs
          ResourceId status = WAVE_MESSAGE_SUCCESS;
          tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
     
-         FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+         FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
          
          WaveNs::prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);
 
@@ -1114,7 +1114,7 @@ namespace WaveNs
        	  ++(*pPrismLinearSequencerContext);
        	
           do {
-               FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+               FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
                WaveNs::prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);
                string sSrcFilename = pPushFileMessage->getSourceFileName();
                // Get the Source file size first.
@@ -1152,7 +1152,7 @@ namespace WaveNs
                                                                            reinterpret_cast<PrismAsynchronousCallback> (&FileLocalObjectManager::TriggerFileTransferHandshakeCallback),
                                                                            pPrismLinearSequencerContext);
 
-               pWaveSendToClusterContext->setPPrismMessageForPhase1 (pHandShakeMessage);
+               pWaveSendToClusterContext->setPWaveMessageForPhase1 (pHandShakeMessage);
                pWaveSendToClusterContext->setLocationsToSendToForPhase1(pPushFileMessage->getDestinationLocationIdListForNextMessage());
                sendToWaveCluster (pWaveSendToClusterContext);
                tracePrintf(TRACE_LEVEL_DEBUG, "FileLocalObjectManager::TriggerAsyncFileTransferHandshake : After sending to cluster status = [0x%x]", status);
@@ -1190,7 +1190,7 @@ namespace WaveNs
           PrismLinearSequencerContext *pPrismLinearSequencerContext  = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
           prismAssert (pPrismLinearSequencerContext, __FILE__, __LINE__);
 
-          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
           prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);
 
           //--(*pPrismLinearSequencerContext);
@@ -1251,7 +1251,7 @@ namespace WaveNs
               m_FTTable.setResponseStatus(sFTHandle, completionStatus, (*itr));
           }
 
-          delete pWaveSendToClusterContext->getPPrismMessageForPhase1 ();  // Delete the handshake message we created.
+          delete pWaveSendToClusterContext->getPWaveMessageForPhase1 ();  // Delete the handshake message we created.
           delete pWaveSendToClusterContext;
 
           // Need to call next step if there is atleast one node to which the fragments can be sent to. So this check needs to be updated for the same.
@@ -1282,7 +1282,7 @@ namespace WaveNs
      {
           tracePrintf(TRACE_LEVEL_DEBUG, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
 
-          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
           WaveNs::prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);          
           
           //1. Call a function to create a fragment list of the source file.
@@ -1357,7 +1357,7 @@ namespace WaveNs
                                                                                                               pPrismLinearSequencerContext);
                          WaveNs::prismAssert (NULL != pWaveSendToClusterContext , __FILE__, __LINE__);          
 
-                         pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage);
+                         pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
                          pWaveSendToClusterContext->setLocationsToSendToForPhase1(pPushFileMessage->getDestinationLocationIdListForNextMessage());
 
                          trace (TRACE_LEVEL_DEBUG, "FileLocalObjectManager::StartAsyncFileTransfer : sending to cluster");
@@ -1406,7 +1406,7 @@ void   FileLocalObjectManager::StartFileTransferCallback( WaveSendToClusterConte
           PrismLinearSequencerContext  *pPrismLinearSequencerContext  = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
           prismAssert (NULL != pPrismLinearSequencerContext , __FILE__, __LINE__);
 
-          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
           prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);
 
           --(*pPrismLinearSequencerContext);
@@ -1483,9 +1483,9 @@ void   FileLocalObjectManager::StartFileTransferCallback( WaveSendToClusterConte
 
           // Now cleanup if it is Last fragment. 
 
-          FilePushFileFragmentMessage *pPrismMessageForPhase1 = dynamic_cast<FilePushFileFragmentMessage *> (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+          FilePushFileFragmentMessage *pWaveMessageForPhase1 = dynamic_cast<FilePushFileFragmentMessage *> (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
 
-          bool isLastFragment = pPrismMessageForPhase1->IsLastFragment ();
+          bool isLastFragment = pWaveMessageForPhase1->IsLastFragment ();
 
           if (true == isLastFragment)
           {
@@ -1526,7 +1526,7 @@ void   FileLocalObjectManager::StartFileTransferCallback( WaveSendToClusterConte
           }
 
           // Cleanup.
-          delete pPrismMessageForPhase1;  // Delete the handshake message we created.
+          delete pWaveMessageForPhase1;  // Delete the handshake message we created.
           delete pWaveSendToClusterContext;
 
           // Need to call next step if there is atleast one node to which the fragments can be sent to. So this check needs to be updated for the same.
@@ -1578,7 +1578,7 @@ void   FileLocalObjectManager::StartFileTransferCallback( WaveSendToClusterConte
 
           ResourceId status = WAVE_MESSAGE_SUCCESS;
           tracePrintf(TRACE_LEVEL_INFO, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
-          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
           WaveNs::prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);          
 
@@ -1694,7 +1694,7 @@ void   FileLocalObjectManager::StartFileTransferCallback( WaveSendToClusterConte
           ResourceId HandShakeStatus = WAVE_MESSAGE_SUCCESS;
 
           tracePrintf(TRACE_LEVEL_INFO, "[%s]:[%d]  Called ", __FUNCTION__ , __LINE__ );
-          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+          FilePushFileMessage *pPushFileMessage = reinterpret_cast<FilePushFileMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
           
          WaveNs::prismAssert (NULL != pPushFileMessage, __FILE__, __LINE__);          
 
@@ -1792,7 +1792,7 @@ void FileLocalObjectManager::PushFileToHaPeerMessageHandler (PushFileToHaPeerMes
 
 ResourceId FileLocalObjectManager::pushFileToHaPeerValidateReceiptStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    PushFileToHaPeerMessage *pPushFileToHaPeerMessage = dynamic_cast<PushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPPrismMessage ());
+    PushFileToHaPeerMessage *pPushFileToHaPeerMessage = dynamic_cast<PushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pPushFileToHaPeerMessage, __FILE__, __LINE__);
 
     UI32        fileSize            = pPushFileToHaPeerMessage->getFileSize ();
@@ -1825,7 +1825,7 @@ ResourceId FileLocalObjectManager::pushFileToHaPeerValidateReceiptStep (PrismSyn
 
 ResourceId FileLocalObjectManager::pushFileToHaPeerReceiveFileStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    PushFileToHaPeerMessage *pPushFileToHaPeerMessage = dynamic_cast<PushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPPrismMessage ());
+    PushFileToHaPeerMessage *pPushFileToHaPeerMessage = dynamic_cast<PushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pPushFileToHaPeerMessage, __FILE__, __LINE__);
 
     // 1. Get 'file buffer' from message.
@@ -1875,7 +1875,7 @@ void FileLocalObjectManager::FilePushFileToHaPeerMessageHandler (FilePushFileToH
 
 ResourceId FileLocalObjectManager::pushFileToHaPeerValidateStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    FilePushFileToHaPeerMessage *pFilePushFileToHaPeerMessage = dynamic_cast<FilePushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPPrismMessage ());
+    FilePushFileToHaPeerMessage *pFilePushFileToHaPeerMessage = dynamic_cast<FilePushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pFilePushFileToHaPeerMessage, __FILE__, __LINE__);
 
     string      sourceFileName          = pFilePushFileToHaPeerMessage->getSourceFileName ();
@@ -1943,7 +1943,7 @@ ResourceId FileLocalObjectManager::pushFileToHaPeerValidateStep (PrismSynchronou
 
 ResourceId FileLocalObjectManager::pushFileToHaPeerSendFileStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    FilePushFileToHaPeerMessage *pFilePushFileToHaPeerMessage = dynamic_cast<FilePushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPPrismMessage ());
+    FilePushFileToHaPeerMessage *pFilePushFileToHaPeerMessage = dynamic_cast<FilePushFileToHaPeerMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pFilePushFileToHaPeerMessage, __FILE__, __LINE__);
 
     string      fileTransferHandle      = "";

@@ -7,7 +7,7 @@
 #ifndef PERSISTENCEOBJECTMANAGERCOPYSCHEMAMESSAGE_H
 #define PERSISTENCEOBJECTMANAGERCOPYSCHEMAMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 #include <string>
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceObjectManagerCopySchemaMessage : public PrismMessage
+class PersistenceObjectManagerCopySchemaMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

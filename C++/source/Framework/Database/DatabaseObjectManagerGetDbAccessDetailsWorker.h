@@ -17,7 +17,7 @@ class DatabaseObjectManagerGetDbAccessDetailsMessage;
 class DatabaseObjectManagerGetDbAccessDetailsWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage *createMessageInstance            (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance            (const UI32 &operationCode);
                 void          getDbAccessDetailsMessageHandler (DatabaseObjectManagerGetDbAccessDetailsMessage *pDatabaseObjectManagerGetDbAccessDetailsMessage);
 
     protected :

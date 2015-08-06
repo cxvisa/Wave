@@ -36,7 +36,7 @@ namespace WaveNs
     {
         private:
                FileLocalObjectManager                                         ();
-               PrismMessage      *createMessageInstance                       (const UI32 &operationCode);
+               WaveMessage      *createMessageInstance                       (const UI32 &operationCode);
                WaveManagedObject *createManagedObjectInstance                 (const string &managedClassName);
                void               AbortFileTransferMessageHandler             (FileAbortFileTransferMessage *pFileAbortFileTransferMessage);
                void               PushFileMessageHandler                      (FilePushFileMessage *pPushFileMessage);

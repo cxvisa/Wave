@@ -331,7 +331,7 @@ DatabaseObjectManager::DatabaseObjectManager ()
 
     prismAssert (NULL != m_pDatabaseObjectManagerGetDbAccessDetailsWorker, __FILE__, __LINE__);
 
-    addOperationMap (DATABASE_OBJECT_MANAGER_CREATE_INMEMORY_MO, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManager::createInMemoryManagedObjectHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_CREATE_INMEMORY_MO, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManager::createInMemoryManagedObjectHandler));
 
     addDebugFunction ((ShellCmdFunction) (&DatabaseObjectManager::debugPsql), "psql");
 

@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_serviceToBeIgnored                   (0),
       m_isConfigurationChange                (false),
       m_olderPrimaryLocationId               (0),

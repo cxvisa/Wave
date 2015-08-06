@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-SecondaryNodeClusterPhase2Context::SecondaryNodeClusterPhase2Context(PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag)
-    : SecondaryNodeClusterContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps, false, false)
+SecondaryNodeClusterPhase2Context::SecondaryNodeClusterPhase2Context(WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag)
+    : SecondaryNodeClusterContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps, false, false)
 {
     m_resetSecondaryNodeClusterCreationFlag = resetSecondaryNodeClusterCreationFlag;
 }

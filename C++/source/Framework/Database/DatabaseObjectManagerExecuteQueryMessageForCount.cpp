@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerExecuteQueryMessageForCount::DatabaseObjectManagerExecuteQueryMessageForCount (const string &className, WaveObjectManager *pWaveObjectManager, const string &sql)
-    : PrismMessage                               (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_QUERY_FOR_COUNT),
+    : WaveMessage                               (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_QUERY_FOR_COUNT),
       m_className                                (className),
       m_pWaveObjectManager                       (pWaveObjectManager),
       m_sql                                      (sql),

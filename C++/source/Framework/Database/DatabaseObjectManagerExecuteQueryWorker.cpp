@@ -33,40 +33,40 @@ DatabaseObjectManagerExecuteQueryWorker::DatabaseObjectManagerExecuteQueryWorker
     : WaveWorker            (pWaveObjectManager),
       m_isMultiDatabaseMode (isMultiDatabaseMode)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_QUERY, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler));
-    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_QUERY_FOR_COUNT, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandlerForCount));
-    addOperationMap (DATABASE_OBJECT_MANAGER_DEBUG_CHANGE_QUERY_SETTINGS, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::debugChangeQuerySettingsMessageHandler));
-    addOperationMap (DATABASE_OBJECT_MANAGER_GET_DB_SCHEMA_INFO, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::getDBSchemaInfoMessageHandler));
-    addOperationMap (DATABASE_OBJECT_MANAGER_DROP_DB_VIEWS, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::dropAllDbViewsMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_QUERY, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_QUERY_FOR_COUNT, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandlerForCount));
+    addOperationMap (DATABASE_OBJECT_MANAGER_DEBUG_CHANGE_QUERY_SETTINGS, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::debugChangeQuerySettingsMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_GET_DB_SCHEMA_INFO, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::getDBSchemaInfoMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_DROP_DB_VIEWS, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteQueryWorker::dropAllDbViewsMessageHandler));
 }
 
 DatabaseObjectManagerExecuteQueryWorker::~DatabaseObjectManagerExecuteQueryWorker ()
 {
 }
 
-PrismMessage *DatabaseObjectManagerExecuteQueryWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerExecuteQueryWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_DEBUG_CHANGE_QUERY_SETTINGS :
-            pPrismMessage = new DatabaseObjectManagerDebugChangeQuerySettingsMessage ();
+            pWaveMessage = new DatabaseObjectManagerDebugChangeQuerySettingsMessage ();
             break;
 
         case DATABASE_OBJECT_MANAGER_GET_DB_SCHEMA_INFO :
-            pPrismMessage = new DatabaseObjectManagerGetDBSchemaInfoMessage ();
+            pWaveMessage = new DatabaseObjectManagerGetDBSchemaInfoMessage ();
             break;
 
         case DATABASE_OBJECT_MANAGER_DROP_DB_VIEWS :
-            pPrismMessage = new DatabaseObjectManagerDropAllDBViewsMessage ();
+            pWaveMessage = new DatabaseObjectManagerDropAllDBViewsMessage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return pPrismMessage;
+    return pWaveMessage;
 }
 
 ResourceId DatabaseObjectManagerExecuteQueryWorker::getCountFromDatabaseTableForAGivenSql (const string &sqlString, UI32 &count, const string &className)

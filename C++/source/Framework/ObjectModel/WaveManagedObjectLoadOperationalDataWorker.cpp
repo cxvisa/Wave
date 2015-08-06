@@ -17,28 +17,28 @@ namespace WaveNs
 WaveManagedObjectLoadOperationalDataWorker::WaveManagedObjectLoadOperationalDataWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT, reinterpret_cast<PrismMessageHandler> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT, reinterpret_cast<WaveMessageHandler> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataHandler));
 }
 
 WaveManagedObjectLoadOperationalDataWorker::~WaveManagedObjectLoadOperationalDataWorker ()
 {
 }
 
-PrismMessage *WaveManagedObjectLoadOperationalDataWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveManagedObjectLoadOperationalDataWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT :
-            pPrismMessage = new PrismLoadOperationalDataForManagedObjectObjectManagerMessage;
+            pWaveMessage = new PrismLoadOperationalDataForManagedObjectObjectManagerMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataHandler (PrismLoadOperationalDataForManagedObjectObjectManagerMessage *pPrismLoadOperationalDataForManagedObjectObjectManagerMessage)

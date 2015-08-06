@@ -11,14 +11,14 @@
 #ifndef DATABASEOBJECTMANAGERCALCULATEDBCKSUMMESSAGE_H
 #define DATABASEOBJECTMANAGERCALCULATEDBCKSUMMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace std;
 
 namespace WaveNs
 {
 
-    class DatabaseObjectManagerCalculateDbCksumMessage : public PrismMessage
+    class DatabaseObjectManagerCalculateDbCksumMessage : public WaveMessage
     { 
 
         private :

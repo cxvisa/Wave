@@ -43,7 +43,7 @@ private:
                 DistributedDebugGlobalObjectManager ();
 	        virtual ~DistributedDebugGlobalObjectManager ();
 
-                virtual PrismMessage *createMessageInstance    (const UI32 &operationCode);
+                virtual WaveMessage *createMessageInstance    (const UI32 &operationCode);
 
                 void sendDebugScriptToAllNodesStep (PrismLinearSequencerContext* pRunDebugScriptMessageHandlerContext);
 

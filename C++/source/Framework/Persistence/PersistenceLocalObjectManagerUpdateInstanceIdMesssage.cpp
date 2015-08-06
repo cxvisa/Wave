@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerUpdateInstanceIdMesssage::PersistenceLocalObjectManagerUpdateInstanceIdMesssage ()
-    : PrismMessage(PersistenceLocalObjectManager::getWaveServiceId(), PERSISTENCE_LOCAL_OBJECT_MANAGER_UPDATE_INSTANCE_ID)
+    : WaveMessage(PersistenceLocalObjectManager::getWaveServiceId(), PERSISTENCE_LOCAL_OBJECT_MANAGER_UPDATE_INSTANCE_ID)
 {
 
 }

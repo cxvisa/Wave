@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerRestoreMessage::DatabaseObjectManagerRestoreMessage (const string &fileToRestoreFrom)
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_RESTORE),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_RESTORE),
       m_fileToRestoreFrom (fileToRestoreFrom),
       m_restoreSchema (false),
       m_dataOnlyRestore (false),

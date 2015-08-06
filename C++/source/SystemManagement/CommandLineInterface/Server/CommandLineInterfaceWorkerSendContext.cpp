@@ -9,11 +9,11 @@
 namespace WaveNs
 {
 
-CommandLineInterfaceWorkerSendContext::CommandLineInterfaceWorkerSendContext (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext)
+CommandLineInterfaceWorkerSendContext::CommandLineInterfaceWorkerSendContext (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext)
     : m_frameworkStatus                                                        (frameworkStatus),
-      m_pPrismMessage                                                          (pPrismMessage),
+      m_pWaveMessage                                                          (pWaveMessage),
       m_prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread (prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread),
-      m_pPrismMessageContext                                                   (pPrismMessageContext)
+      m_pWaveMessageContext                                                   (pWaveMessageContext)
 {
 }
 
@@ -26,19 +26,19 @@ FrameworkStatus CommandLineInterfaceWorkerSendContext::getFrameworkStatus ()
     return (m_frameworkStatus);
 }
 
-PrismMessage *CommandLineInterfaceWorkerSendContext::getPPrismMessage ()
+WaveMessage *CommandLineInterfaceWorkerSendContext::getPWaveMessage ()
 {
-    return (m_pPrismMessage);
+    return (m_pWaveMessage);
 }
 
-PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread CommandLineInterfaceWorkerSendContext::getPrismMessageResponseHandler ()
+WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread CommandLineInterfaceWorkerSendContext::getWaveMessageResponseHandler ()
 {
     return (m_prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread);
 }
 
-void *CommandLineInterfaceWorkerSendContext::getPPrismMessageContext ()
+void *CommandLineInterfaceWorkerSendContext::getPWaveMessageContext ()
 {
-    return (m_pPrismMessageContext);
+    return (m_pWaveMessageContext);
 }
 
 }

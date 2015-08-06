@@ -22,8 +22,8 @@ DatabaseObjectManagerExecuteCursorCommandWorker::DatabaseObjectManagerExecuteCur
     : WaveWorker            (pWaveObjectManager),
       m_isMultiDatabaseMode (isMultiDatabaseMode)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_CFG_COMMAND, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandMessageHandler));
-    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_QUERY_COMMAND, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorQueryCommandMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_CFG_COMMAND, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_QUERY_COMMAND, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorQueryCommandMessageHandler));
 }
 
 DatabaseObjectManagerExecuteCursorCommandWorker::~DatabaseObjectManagerExecuteCursorCommandWorker ()
@@ -52,7 +52,7 @@ void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHan
 
 
 	DatabaseObjectManagerExecuteCursorCfgCommandMessage *pDatabaseObjectManagerExecuteCursorCfgCommandMessage =
-	dynamic_cast<DatabaseObjectManagerExecuteCursorCfgCommandMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+	dynamic_cast<DatabaseObjectManagerExecuteCursorCfgCommandMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
 
     prismAssert( NULL != pDatabaseObjectManagerExecuteCursorCfgCommandMessage , __FILE__, __LINE__ );
 

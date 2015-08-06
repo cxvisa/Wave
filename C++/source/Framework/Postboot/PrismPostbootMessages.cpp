@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 ExecutePostbootPassTableMessage::ExecutePostbootPassTableMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POSTBOOT_PASSES)
+    : WaveMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POSTBOOT_PASSES)
 {
 }
 

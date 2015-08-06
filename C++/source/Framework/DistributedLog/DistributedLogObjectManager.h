@@ -52,7 +52,7 @@ class DistributedLogObjectManager : public WaveObjectManager
                                                 DistributedLogObjectManager                                 ();
         virtual                                ~DistributedLogObjectManager                                 ();
 
-        virtual PrismMessage                   *createMessageInstance                                       (const UI32 &operationCode);
+        virtual WaveMessage                   *createMessageInstance                                       (const UI32 &operationCode);
                 WaveManagedObject              *createManagedObjectInstance                                 (const string &managedClassName);
 
         static  string                          getServiceName                                              ();

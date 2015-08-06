@@ -13,8 +13,8 @@
 namespace WaveNs
 {
 
-DisplayCurrentConfigurationContext::DisplayCurrentConfigurationContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext        (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+DisplayCurrentConfigurationContext::DisplayCurrentConfigurationContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext        (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_pYangDisplayConfigurationContext (NULL),
       m_currentYangElementIndex          (0),
       m_pYangElement                     (NULL),

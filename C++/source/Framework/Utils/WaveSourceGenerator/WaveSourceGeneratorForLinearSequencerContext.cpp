@@ -42,7 +42,7 @@ string WaveSourceGeneratorForLinearSequencerContext::generateHClassBegin () cons
 string WaveSourceGeneratorForLinearSequencerContext::generateHClassMemberFunctionsPublic () const
 {
     string memberFunctionsPublic = "    public :\n"
-                                   "                 " + generateClassName () + " (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);\n"
+                                   "                 " + generateClassName () + " (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);\n"
                                    "        virtual ~" + generateClassName () + " ();\n";
 
     return (memberFunctionsPublic);
@@ -52,8 +52,8 @@ string WaveSourceGeneratorForLinearSequencerContext::generateCppMemberFunctions 
 {
     string memberFunctions;
 
-    memberFunctions += generateClassName () + "::" + generateClassName () + " (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)\n"
-                       "    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps)\n"
+    memberFunctions += generateClassName () + "::" + generateClassName () + " (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)\n"
+                       "    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps)\n"
                        "{\n"
                        "}\n"
                        "\n";

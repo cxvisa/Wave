@@ -7,14 +7,14 @@
 #ifndef FILEABORTFILETRANSFERMESSAGE_H
 #define FILEABORTFILETRANSFERMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace WaveNs;
 
 namespace WaveNs
 {
 
-    class FileAbortFileTransferMessage : public PrismMessage
+    class FileAbortFileTransferMessage : public WaveMessage
     {
         private:
         protected:

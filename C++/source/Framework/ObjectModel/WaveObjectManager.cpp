@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/Core/PrismFrameworkObjectManager.h"
 #include "Framework/Types/Types.h"
@@ -19,7 +19,7 @@
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Timer/TimerMessages.h"
 #include "Framework/Trace/TraceObjectManager.h"
-#include "Framework/Messaging/MessageFactory/PrismMessageFactory.h"
+#include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 #include "Framework/Persistence/PersistenceObjectManagerExecuteTransactionMessage.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
@@ -151,11 +151,11 @@ PrismMutex                        WaveObjectManager::m_postponedMessageQueueMute
 
 WaveServiceMode WaveObjectManager::m_waveServiceLaunchMode = WAVE_SERVICE_ACTIVE;
 
-WaveObjectManager::PrismMessageResponseContext::PrismMessageResponseContext (PrismMessage *pPrismMessage, PrismElement *pPrismMessageSender, PrismMessageResponseHandler pPrismMessageSenderCallback, void *pPrismMessageSenderContext)
-    : m_pPrismMessage                  (pPrismMessage),
-      m_pPrismMessageSender            (pPrismMessageSender),
-      m_pPrismMessageSenderCallback    (pPrismMessageSenderCallback),
-      m_pPrismMessageSenderContext     (pPrismMessageSenderContext),
+WaveObjectManager::WaveMessageResponseContext::WaveMessageResponseContext (WaveMessage *pWaveMessage, PrismElement *pWaveMessageSender, WaveMessageResponseHandler pWaveMessageSenderCallback, void *pWaveMessageSenderContext)
+    : m_pWaveMessage                  (pWaveMessage),
+      m_pWaveMessageSender            (pWaveMessageSender),
+      m_pWaveMessageSenderCallback    (pWaveMessageSenderCallback),
+      m_pWaveMessageSenderContext     (pWaveMessageSenderContext),
       m_isMessageTimedOut              (false),
       m_pInputMessageInResponseContext (NULL),
       m_isTimerStarted                 (false),
@@ -163,11 +163,11 @@ WaveObjectManager::PrismMessageResponseContext::PrismMessageResponseContext (Pri
 {
 }
 
-void WaveObjectManager::PrismMessageResponseContext::executeResponseCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, bool isMessageRecalled)
+void WaveObjectManager::WaveMessageResponseContext::executeResponseCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled)
 {
-    if (((PrismMessageResponseHandler) NULL) == m_pPrismMessageSenderCallback)
+    if (((WaveMessageResponseHandler) NULL) == m_pWaveMessageSenderCallback)
     {
-        delete m_pPrismMessage;
+        delete m_pWaveMessage;
     }
     else
     {
@@ -176,7 +176,7 @@ void WaveObjectManager::PrismMessageResponseContext::executeResponseCallback (Fr
 
         if (FRAMEWORK_TIME_OUT !=frameworkStatus)
         {
-            // We take pPrismMessage input so that multiple replies with messages copies is also possible.  But the current
+            // We take pWaveMessage input so that multiple replies with messages copies is also possible.  But the current
             // methodology that we decided to follow is this:  If there are multiple replies for a message then the message
             // must not be deleted unpon receiving intermediate replies.  It must be deleted  only after receiving the last
             // reply.  Though we have the infra structure to support multiple replies with message copies, currently we do
@@ -186,11 +186,11 @@ void WaveObjectManager::PrismMessageResponseContext::executeResponseCallback (Fr
             // Update to the above comment (at the time of implementing support for multiple replies feature):
             // The below enforcement is only done in case of last reply.
 
-            if (true == (pPrismMessage->getIsLastReply ()))
+            if (true == (pWaveMessage->getIsLastReply ()))
             {
-                WaveNs::prismAssert (pPrismMessage == m_pPrismMessage, __FILE__, __LINE__);
+                WaveNs::prismAssert (pWaveMessage == m_pWaveMessage, __FILE__, __LINE__);
 
-                if (pPrismMessage != m_pPrismMessage)
+                if (pWaveMessage != m_pWaveMessage)
                 {
                     return;
                 }
@@ -203,11 +203,11 @@ void WaveObjectManager::PrismMessageResponseContext::executeResponseCallback (Fr
 
             if (false == (getIsMessageTimedOut ()))
             {
-                (m_pPrismMessageSender->*m_pPrismMessageSenderCallback) (frameworkStatus, pPrismMessage, m_pPrismMessageSenderContext);
+                (m_pWaveMessageSender->*m_pWaveMessageSenderCallback) (frameworkStatus, pWaveMessage, m_pWaveMessageSenderContext);
             }
             else
             {
-                delete pPrismMessage;
+                delete pWaveMessage;
             }
         }
         else
@@ -216,75 +216,75 @@ void WaveObjectManager::PrismMessageResponseContext::executeResponseCallback (Fr
 
             if (true == isMessageRecalled)
             {
-                (m_pPrismMessageSender->*m_pPrismMessageSenderCallback) (frameworkStatus, pPrismMessage, m_pPrismMessageSenderContext);
+                (m_pWaveMessageSender->*m_pWaveMessageSenderCallback) (frameworkStatus, pWaveMessage, m_pWaveMessageSenderContext);
             }
             else
             {
-                (m_pPrismMessageSender->*m_pPrismMessageSenderCallback) (frameworkStatus, NULL, m_pPrismMessageSenderContext);
+                (m_pWaveMessageSender->*m_pWaveMessageSenderCallback) (frameworkStatus, NULL, m_pWaveMessageSenderContext);
             }
         }
     }
 }
 
-void WaveObjectManager::PrismMessageResponseContext::executeResponseCallback (FrameworkStatus frameworkStatus)
+void WaveObjectManager::WaveMessageResponseContext::executeResponseCallback (FrameworkStatus frameworkStatus)
 {
-    executeResponseCallback (frameworkStatus, m_pPrismMessage);
+    executeResponseCallback (frameworkStatus, m_pWaveMessage);
 }
 
-void WaveObjectManager::PrismMessageResponseContext::setIsMessageTimedOut (bool isMessageTimedOut)
+void WaveObjectManager::WaveMessageResponseContext::setIsMessageTimedOut (bool isMessageTimedOut)
 {
     m_isMessageTimedOut = isMessageTimedOut;
 }
 
-bool WaveObjectManager::PrismMessageResponseContext::getIsMessageTimedOut ()
+bool WaveObjectManager::WaveMessageResponseContext::getIsMessageTimedOut ()
 {
     return (m_isMessageTimedOut);
 }
 
-PrismMessage *WaveObjectManager::PrismMessageResponseContext::getPPrismMessage ()
+WaveMessage *WaveObjectManager::WaveMessageResponseContext::getPWaveMessage ()
 {
-    return (m_pPrismMessage);
+    return (m_pWaveMessage);
 }
 
-PrismMessage*WaveObjectManager::PrismMessageResponseContext::getPInputMessageInResponseContext ()
+WaveMessage*WaveObjectManager::WaveMessageResponseContext::getPInputMessageInResponseContext ()
 {
     return (m_pInputMessageInResponseContext);
 }
 
-void WaveObjectManager::PrismMessageResponseContext::setPInputMessageInResponseContext (PrismMessage *pPrismMessage)
+void WaveObjectManager::WaveMessageResponseContext::setPInputMessageInResponseContext (WaveMessage *pWaveMessage)
 {
-    m_pInputMessageInResponseContext = pPrismMessage;
+    m_pInputMessageInResponseContext = pWaveMessage;
 }
 
-bool WaveObjectManager::PrismMessageResponseContext::getIsTimerStarted () const
+bool WaveObjectManager::WaveMessageResponseContext::getIsTimerStarted () const
 {
     return (m_isTimerStarted);
 }
 
-void WaveObjectManager::PrismMessageResponseContext::setIsTimerStarted (const bool &isTimerStarted)
+void WaveObjectManager::WaveMessageResponseContext::setIsTimerStarted (const bool &isTimerStarted)
 {
     m_isTimerStarted = isTimerStarted;
 }
 
-TimerHandle WaveObjectManager::PrismMessageResponseContext::getTimerHandle () const
+TimerHandle WaveObjectManager::WaveMessageResponseContext::getTimerHandle () const
 {
     return (m_timerHandle);
 }
 
-void WaveObjectManager::PrismMessageResponseContext::setTimerHandle (const TimerHandle &timerHandle)
+void WaveObjectManager::WaveMessageResponseContext::setTimerHandle (const TimerHandle &timerHandle)
 {
     m_timerHandle = timerHandle;
 }
 
-WaveObjectManager::PrismOperationMapContext::PrismOperationMapContext (PrismElement *pPrismElement, PrismMessageHandler pPrismMessageHandler)
+WaveObjectManager::PrismOperationMapContext::PrismOperationMapContext (PrismElement *pPrismElement, WaveMessageHandler pWaveMessageHandler)
     : m_pPrismElementThatHandlesTheMessage (pPrismElement),
-      m_pPrismMessageHandler (pPrismMessageHandler)
+      m_pWaveMessageHandler (pWaveMessageHandler)
 {
 }
 
-void WaveObjectManager::PrismOperationMapContext::executeMessageHandler (PrismMessage *&pPrismMessage)
+void WaveObjectManager::PrismOperationMapContext::executeMessageHandler (WaveMessage *&pWaveMessage)
 {
-    (m_pPrismElementThatHandlesTheMessage->*m_pPrismMessageHandler) (pPrismMessage);
+    (m_pPrismElementThatHandlesTheMessage->*m_pWaveMessageHandler) (pWaveMessage);
 }
 
 WaveObjectManager::PrismEventMapContext::PrismEventMapContext (PrismElement *pPrismElement, PrismEventHandler pPrismEventHandler)
@@ -444,7 +444,7 @@ PrismElement *WaveObjectManager::WaveBrokerPublishMessageHandlerContext::getPSub
 WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : PrismElement                          (this),
       m_name                                (objectManagerName),
-      m_pAssociatedPrismThread              (NULL),
+      m_pAssociatedWaveThread              (NULL),
       m_isEnabled                           (false),
       m_isTransactionOn                     (false),
       m_pAssociatedVirtualWaveObjectManager (NULL),
@@ -482,14 +482,14 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     m_serviceId = currentWaveServiceId = s_nextAvailableWaveServiceId;
     s_prismObjectManagerMutex.unlock ();
 
-    PrismThread *pAssociatedPrismThread = NULL;
+    WaveThread *pAssociatedWaveThread = NULL;
 
     if (WAVE_SERVICE_ACTIVE == m_waveServiceMode)
     {
-        pAssociatedPrismThread = new PrismThread (m_serviceId, this, m_name, stackSize, &m_cpuAffinityVector);
+        pAssociatedWaveThread = new WaveThread (m_serviceId, this, m_name, stackSize, &m_cpuAffinityVector);
     }
 
-    setAssociatedPrismThread (pAssociatedPrismThread);
+    setAssociatedWaveThread (pAssociatedWaveThread);
 
     m_traceClientId = TraceObjectManager::addClient (FrameworkToolKit::getDefaultTraceLevel (), m_name);
 
@@ -527,54 +527,54 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     m_pWaveDeliverBrokerPublishMessageWorker = new WaveDeliverBrokerPublishMessageWorker(this);
     prismAssert (NULL != m_pWaveDeliverBrokerPublishMessageWorker, __FILE__, __LINE__);
 
-    addOperationMap (WAVE_OBJECT_MANAGER_INITIALIZE,                             reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::initializeHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_LISTEN_FOR_EVENTS,                      reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::listenForEventsHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_INSTALL,                                reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::installHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_ENABLE,                                 reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::enableHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_UPGRADE,                                reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::upgradeHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_BOOT,                                   reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::bootHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_SHUTDOWN,                               reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::shutdownHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_UNINSTALL,                              reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::uninstallHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_DISABLE,                                reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::disableHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_UNINITIALIZE,                           reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::uninitializeHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_DESTRUCT,                               reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::destructHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_HAINSTALL,                              reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::hainstallHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_HABOOT,                                 reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::habootHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_HEARTBEAT_FAILURE,                      reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::heartbeatFailureHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_EXTERNAL_STATE_SYNCHRONIZATION,         reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::externalStateSynchronizationHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_CONFIG_REPLAY_END,                      reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::configReplayEndHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_FILE_REPLAY_END,                        reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::fileReplayEndHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_SLOT_FAILOVER,                          reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::slotFailoverHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_PARTITION_CLEANUP,                      reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::multiPartitionCleanupHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_INITIALIZE,                             reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::initializeHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_LISTEN_FOR_EVENTS,                      reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::listenForEventsHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_INSTALL,                                reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::installHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ENABLE,                                 reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::enableHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_UPGRADE,                                reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::upgradeHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_BOOT,                                   reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::bootHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_SHUTDOWN,                               reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::shutdownHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_UNINSTALL,                              reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::uninstallHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_DISABLE,                                reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::disableHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_UNINITIALIZE,                           reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::uninitializeHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_DESTRUCT,                               reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::destructHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_HAINSTALL,                              reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::hainstallHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_HABOOT,                                 reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::habootHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_HEARTBEAT_FAILURE,                      reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::heartbeatFailureHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_EXTERNAL_STATE_SYNCHRONIZATION,         reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::externalStateSynchronizationHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_CONFIG_REPLAY_END,                      reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::configReplayEndHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_FILE_REPLAY_END,                        reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::fileReplayEndHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_SLOT_FAILOVER,                          reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::slotFailoverHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_PARTITION_CLEANUP,                      reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::multiPartitionCleanupHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_TIMER_EXPIRED,                          reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::timerExpiredHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_TIMER_EXPIRED,                          reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::timerExpiredHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_CLUSTER_COLLECT_VALIDATION_DATA, reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::clusterCreateCollectValidationDataHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_CLUSTER_VALIDATE,                reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::clusterCreateValidateHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_CLUSTER_SEND_VALIDATION_RESULTS, reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::clusterCreateSendValidationResultsHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_CLUSTER_COLLECT_VALIDATION_DATA, reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::clusterCreateCollectValidationDataHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_CLUSTER_VALIDATE,                reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::clusterCreateValidateHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_CLUSTER_SEND_VALIDATION_RESULTS, reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::clusterCreateSendValidationResultsHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_HA_SYNC_COLLECT_VALIDATION_DATA,        reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::haSyncCollectValidationDataHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_HA_SYNC_VALIDATE_DATA,                  reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::haSyncValidateDataHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_HA_SYNC_SEND_VALIDATION_RESULTS,        reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::haSyncSendValidationResultsHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_HA_SYNC_COLLECT_VALIDATION_DATA,        reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::haSyncCollectValidationDataHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_HA_SYNC_VALIDATE_DATA,                  reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::haSyncValidateDataHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_HA_SYNC_SEND_VALIDATION_RESULTS,        reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::haSyncSendValidationResultsHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_FAILOVER,                               reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::failoverHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_FAILOVER,                               reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::failoverHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_PAUSE,                                  reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::pauseHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_RESUME,                                 reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::resumeHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_PAUSE,                                  reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::pauseHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_RESUME,                                 reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::resumeHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_REGISTER_EVENT_LISTENER,                reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::registerEventListenerHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_REGISTER_EVENT_LISTENER,                reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::registerEventListenerHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_SET_CPU_AFFINITY,                       reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::setCpuAffinityHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_SET_CPU_AFFINITY,                       reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::setCpuAffinityHandler));
 
-    addOperationMap (WAVE_OBJECT_MANAGER_BACKEND_SYNC_UP,                        reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::backendSyncUpHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_CONFIG,                 reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::waveObjectManagerMessageHistoryConfigMessageHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_DUMP,                   reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::waveObjectManagerMessageHistoryDumpMessageHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_FIPS_ZEROIZE,                           reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::zeroizeHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_DATABASE_SANITY_CHECK,                  reinterpret_cast<PrismMessageHandler> (&WaveObjectManager::databaseSanityCheckHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_BACKEND_SYNC_UP,                        reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::backendSyncUpHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_CONFIG,                 reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::waveObjectManagerMessageHistoryConfigMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_DUMP,                   reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::waveObjectManagerMessageHistoryDumpMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_FIPS_ZEROIZE,                           reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::zeroizeHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_DATABASE_SANITY_CHECK,                  reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::databaseSanityCheckHandler));
 
     if (WAVE_SERVICE_ACTIVE == m_waveServiceMode)
     {
-        WaveThreadStatus status = pAssociatedPrismThread->run ();
+        WaveThreadStatus status = pAssociatedWaveThread->run ();
 
         if (WAVE_THREAD_SUCCESS != status)
         {
@@ -678,7 +678,7 @@ WaveObjectManager &WaveObjectManager::operator = (const WaveObjectManager &prism
     return (*this);
 }
 
-void WaveObjectManager::addOperationMap (UI32 operationCode, PrismMessageHandler pPrismMessageHandler, PrismElement *pPrismElement)
+void WaveObjectManager::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, PrismElement *pPrismElement)
 {
     if (NULL == pPrismElement)
     {
@@ -695,7 +695,7 @@ void WaveObjectManager::addOperationMap (UI32 operationCode, PrismMessageHandler
         return;
     }
 
-    m_operationsMap[operationCode] = new PrismOperationMapContext (pPrismElement, pPrismMessageHandler);
+    m_operationsMap[operationCode] = new PrismOperationMapContext (pPrismElement, pWaveMessageHandler);
 
     m_createMessageInstanceWrapperMutex.lock ();
 
@@ -923,7 +923,7 @@ void WaveObjectManager::listenForEvent (WaveServiceId prismServiceCode, UI32 sou
     {
         WaveObjectManager *pWaveObjectManager = NULL;
 
-        pWaveObjectManager = PrismMessageFactory::getWaveObjectManagerForEvent (prismServiceId, sourceOperationCode);
+        pWaveObjectManager = WaveMessageFactory::getWaveObjectManagerForEvent (prismServiceId, sourceOperationCode);
 
         // The remote transport service listens for any events.  The way it achieves listeneing for any event is that it sytart listening
         // for any event that is generated by the null service.  So the remote transport service does not have to specify a valid service with an object manager.
@@ -999,7 +999,7 @@ void WaveObjectManager::unlistenEvents ()
                 {
                     WaveObjectManager *pWaveObjectManager = NULL;
 
-                    pWaveObjectManager = PrismMessageFactory::getWaveObjectManagerForEvent (eventSourceServiceId, eventOperationCode);
+                    pWaveObjectManager = WaveMessageFactory::getWaveObjectManagerForEvent (eventSourceServiceId, eventOperationCode);
 
                     // The remote transport service listens for any events.  The way it achieves listeneing for any event is that it sytart listening
                     // for any event that is generated by the null service.  So the remote transport service does not have to specify a valid service with an object manager.
@@ -1043,10 +1043,10 @@ void WaveObjectManager::unlistenEvents ()
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::unlistenEvents : Finished unlistening all the events for this service.");
 }
 
-void WaveObjectManager::addResponseMap (UI32 prismMessageId, PrismMessageResponseContext *pPrismMessageResponseContext)
+void WaveObjectManager::addResponseMap (UI32 prismMessageId, WaveMessageResponseContext *pWaveMessageResponseContext)
 {
     m_responsesMapMutex.lock ();
-    m_responsesMap[prismMessageId] = pPrismMessageResponseContext;
+    m_responsesMap[prismMessageId] = pWaveMessageResponseContext;
     m_responsesMapMutex.unlock ();
 }
 
@@ -1164,28 +1164,28 @@ WaveObjectManager *WaveObjectManager::getOwnerForManagedClass (const string &man
     return (pWaveObjectManager);
 }
 
-WaveObjectManager::PrismMessageResponseContext *WaveObjectManager::removeResponseMap (UI32 prismMessageId)
+WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::removeResponseMap (UI32 prismMessageId)
 {
-    PrismMessageResponseContext *pPrismMessageResponseContext = NULL;
+    WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
     m_responsesMapMutex.lock ();
 
-    map<UI32, PrismMessageResponseContext *>::iterator element = m_responsesMap.find (prismMessageId);
-    map<UI32, PrismMessageResponseContext *>::iterator end     = m_responsesMap.end ();
+    map<UI32, WaveMessageResponseContext *>::iterator element = m_responsesMap.find (prismMessageId);
+    map<UI32, WaveMessageResponseContext *>::iterator end     = m_responsesMap.end ();
 
     if (end != element)
     {
-        pPrismMessageResponseContext = element->second;
+        pWaveMessageResponseContext = element->second;
 
         m_responsesMap.erase (element);
     }
 
     m_responsesMapMutex.unlock ();
 
-    return (pPrismMessageResponseContext);
+    return (pWaveMessageResponseContext);
 }
 
-WaveObjectManager::PrismOperationMapContext *WaveObjectManager::getPrismMessageHandler (UI32 operationCode, UI32 messageHandlerServiceCode, UI32 thisServiceId)
+WaveObjectManager::PrismOperationMapContext *WaveObjectManager::getWaveMessageHandler (UI32 operationCode, UI32 messageHandlerServiceCode, UI32 thisServiceId)
 {
     PrismOperationMapContext *pTemp = NULL;
 
@@ -1195,7 +1195,7 @@ WaveObjectManager::PrismOperationMapContext *WaveObjectManager::getPrismMessageH
     }
 
     // If we could not find the exeact match then look for WAVE_OBJECT_MANAGER_ANY_OPCODE opcode.
-    // Because, e know that this specific opcode supports any PrismMessage or its derivation.
+    // Because, e know that this specific opcode supports any WaveMessage or its derivation.
 
     if (NULL == pTemp)
     {
@@ -1205,7 +1205,7 @@ WaveObjectManager::PrismOperationMapContext *WaveObjectManager::getPrismMessageH
     return (pTemp);
 }
 
-PrismMessage *WaveObjectManager::getPInputMesage () const
+WaveMessage *WaveObjectManager::getPInputMesage () const
 {
     return (m_pInputMessage);
 }
@@ -1220,31 +1220,31 @@ WaveObjectManager::PrismEventMapContext *WaveObjectManager::getPrismEventHandler
     return (pTemp);
 }
 
-void WaveObjectManager::setAssociatedPrismThread (PrismThread *pAssociatedPrismThread)
+void WaveObjectManager::setAssociatedWaveThread (WaveThread *pAssociatedWaveThread)
 {
-    if (NULL != m_pAssociatedPrismThread)
+    if (NULL != m_pAssociatedWaveThread)
     {
-        trace (TRACE_LEVEL_ERROR, "WaveObjectManager::setAssociatedPrismThread : This Object Manager has already been associated with another Prism Thread.");
+        trace (TRACE_LEVEL_ERROR, "WaveObjectManager::setAssociatedWaveThread : This Object Manager has already been associated with another Prism Thread.");
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    m_pAssociatedPrismThread = pAssociatedPrismThread;
+    m_pAssociatedWaveThread = pAssociatedWaveThread;
 
     // FIXME : sagar : The following seems to be obsolete code and it is not needed anymore.
     //                 After confirming that this code is not required (perform extended tests)
     //                 remove the code and also remove the corresponding static member variable declarations in the .h file.
 
-//    if (NULL != pAssociatedPrismThread)
+//    if (NULL != pAssociatedWaveThread)
 //    {
 //        m_registeredPrismServicesMutex.lock ();
-//        m_registeredPrismServices.insert (m_registeredPrismServices.end (), pAssociatedPrismThread->getWaveServiceId ());
+//        m_registeredPrismServices.insert (m_registeredPrismServices.end (), pAssociatedWaveThread->getWaveServiceId ());
 //        m_registeredPrismServicesMutex.unlock ();
 //    }
 }
 
 bool WaveObjectManager::isOperationCodeSupported (UI32 operationCode)
 {
-    if (NULL != (getPrismMessageHandler (operationCode)))
+    if (NULL != (getWaveMessageHandler (operationCode)))
     {
         return (true);
     }
@@ -1311,23 +1311,23 @@ bool WaveObjectManager::isManagedClassSupported (const string &managedClass)
     }
 }
 
-WaveObjectManager::PrismMessageResponseContext *WaveObjectManager::getResponseContext (UI32 prismMessageId)
+WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::getResponseContext (UI32 prismMessageId)
 {
-    PrismMessageResponseContext *pPrismMessageResponseContext = NULL;
+    WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
     m_responsesMapMutex.lock ();
 
-    map<UI32, PrismMessageResponseContext *>::iterator element = m_responsesMap.find (prismMessageId);
-    map<UI32, PrismMessageResponseContext *>::iterator end     = m_responsesMap.end ();
+    map<UI32, WaveMessageResponseContext *>::iterator element = m_responsesMap.find (prismMessageId);
+    map<UI32, WaveMessageResponseContext *>::iterator end     = m_responsesMap.end ();
 
     if (end != element)
     {
-        pPrismMessageResponseContext = element->second;
+        pWaveMessageResponseContext = element->second;
     }
 
     m_responsesMapMutex.unlock ();
 
-    return (pPrismMessageResponseContext);
+    return (pWaveMessageResponseContext);
 }
 
 bool WaveObjectManager::isAKnownMessage (UI32 prismMessageId)
@@ -1349,26 +1349,26 @@ bool WaveObjectManager::isAKnownMessage (UI32 prismMessageId)
     }
 }
 
-void WaveObjectManager::handlePrismMessage (PrismMessage *pPrismMessage)
+void WaveObjectManager::handleWaveMessage (WaveMessage *pWaveMessage)
 {
-    PrismOperationMapContext *pPrismOperationMapContext = getPrismMessageHandler (pPrismMessage->getOperationCode (), pPrismMessage->getServiceCode (), getServiceId ());
+    PrismOperationMapContext *pPrismOperationMapContext = getWaveMessageHandler (pWaveMessage->getOperationCode (), pWaveMessage->getServiceCode (), getServiceId ());
 
     if (NULL != pPrismOperationMapContext)
     {
         prismAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
-        m_pInputMessage = pPrismMessage;
+        m_pInputMessage = pWaveMessage;
 
-        addMessageToMessageHistoryCalledFromHandle (pPrismMessage);
+        addMessageToMessageHistoryCalledFromHandle (pWaveMessage);
 
-        pPrismOperationMapContext->executeMessageHandler (pPrismMessage);
+        pPrismOperationMapContext->executeMessageHandler (pWaveMessage);
         m_pInputMessage = NULL;
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveObjectManager::handlePrismMessage : This type of message is not handled by this Object Manager.");
+        trace (TRACE_LEVEL_ERROR, "WaveObjectManager::handleWaveMessage : This type of message is not handled by this Object Manager.");
         prismAssert (false, __FILE__, __LINE__);
-        pPrismMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
+        reply (pWaveMessage);
     }
 }
 
@@ -1398,9 +1398,9 @@ void WaveObjectManager::handlePrismEvent (const PrismEvent *&pPrismEvent)
     }
 }
 
-WaveMessageStatus WaveObjectManager::postToRemoteLocation (InterLocationMulticastMessage *pPrismMessage, set<LocationId> locationsToSent)
+WaveMessageStatus WaveObjectManager::postToRemoteLocation (InterLocationMulticastMessage *pWaveMessage, set<LocationId> locationsToSent)
 {
-    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pPrismMessage, locationsToSent);
+    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pWaveMessage, locationsToSent);
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
@@ -1412,25 +1412,25 @@ WaveMessageStatus WaveObjectManager::postToRemoteLocation (InterLocationMulticas
     }
 }
 
-WaveMessageStatus WaveObjectManager::postToRemoteLocation (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveObjectManager::postToRemoteLocation (WaveMessage *pWaveMessage)
 {
     string         tempString;
     LocationId     destinationLocationId;
-    WaveMessageType messageType            = pPrismMessage->getType ();
+    WaveMessageType messageType            = pWaveMessage->getType ();
 
     // Make sure that the message has been prepared for serialization.
 
-//    pPrismMessage->prepareForSerialization ();
+//    pWaveMessage->prepareForSerialization ();
 
-//    pPrismMessage->serialize (tempString);
+//    pWaveMessage->serialize (tempString);
 
     if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
     {
-        destinationLocationId = pPrismMessage->getReceiverLocationId ();
+        destinationLocationId = pWaveMessage->getReceiverLocationId ();
     }
     else if (WAVE_MESSAGE_TYPE_RESPONSE == messageType)
     {
-        destinationLocationId = pPrismMessage->getSenderLocationId ();
+        destinationLocationId = pWaveMessage->getSenderLocationId ();
     }
     else
     {
@@ -1440,7 +1440,7 @@ WaveMessageStatus WaveObjectManager::postToRemoteLocation (PrismMessage *pPrismM
     }
 
 //    ResourceId status = ((PrismFrameworkObjectManager::createInstance ())->getThisLocation ())->postToRemoteLocation (tempString, destinationLocationId);
-    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pPrismMessage, destinationLocationId);
+    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pWaveMessage, destinationLocationId);
 
 
     if(WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION_DUE_TO_PRINCIPAL_FAILOVER == status)
@@ -1457,9 +1457,9 @@ WaveMessageStatus WaveObjectManager::postToRemoteLocation (PrismMessage *pPrismM
     }
 }
 
-WaveMessageStatus WaveObjectManager::postToHaPeerLocation (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveObjectManager::postToHaPeerLocation (WaveMessage *pWaveMessage)
 {
-    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToHaPeerLocation (pPrismMessage);
+    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToHaPeerLocation (pWaveMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -1471,21 +1471,21 @@ WaveMessageStatus WaveObjectManager::postToHaPeerLocation (PrismMessage *pPrismM
     }
 }
 
-WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pPrismMessageSender)
+WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
 {
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::send : Trying to send a message with NULL message.");
         return (WAVE_MESSAGE_ERROR_NULL_MESSAGE);
     }
 
-    if ((NULL == pPrismMessage) || (((PrismMessageResponseHandler) NULL) == pPrismMessageCallback))
+    if ((NULL == pWaveMessage) || (((WaveMessageResponseHandler) NULL) == pWaveMessageCallback))
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::send : Trying to send a message with NULL callback.  If you do not want to register a callback send it as a one way message.");
         return (WAVE_MESSAGE_ERROR_NULL_CALLBACK);
     }
 
-    PrismThread *pPrismThread = NULL;
+    WaveThread *pWaveThread = NULL;
 
     LocationId thisLocationId      = FrameworkToolKit::getThisLocationId ();
     LocationId effectiveLocationId = locationId;
@@ -1494,7 +1494,7 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
 
     if (0 == effectiveLocationId)
     {
-        if (true != (FrameworkToolKit::isALocalService (pPrismMessage->getServiceCode ())))
+        if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
             LocationId myLocationId = FrameworkToolKit::getMyLocationId ();
@@ -1514,24 +1514,24 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
 
     if ((0 == effectiveLocationId) || (thisLocationId == effectiveLocationId))
     {
-        pPrismThread = PrismThread::getPrismThreadForServiceId (pPrismMessage->getServiceCode ());
+        pWaveThread = WaveThread::getWaveThreadForServiceId (pWaveMessage->getServiceCode ());
     }
     else if (1 == effectiveLocationId)
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageHaPeerTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageHaPeerTransport ();
     }
     else
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageRemoteTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageRemoteTransport ();
     }
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
-        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : No Service registered to accept this service Id ") + pPrismMessage->getServiceCode () + ".");
+        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : No Service registered to accept this service Id ") + pWaveMessage->getServiceCode () + ".");
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    if (false == (pPrismThread->hasWaveObjectManagers ()))
+    if (false == (pWaveThread->hasWaveObjectManagers ()))
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::send : Service identified.  But there are no Prism Object Managers registered to process any kind of requests.");
         return (WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
@@ -1539,13 +1539,13 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
 
     // Set this so that the message can be returned after getting processed.
 
-    pPrismMessage->m_senderServiceCode = getServiceId ();
+    pWaveMessage->m_senderServiceCode = getServiceId ();
 
     // Store the receiver LocationId.
 
-    UI32 prismMessageId = pPrismMessage->getMessageId ();
+    UI32 prismMessageId = pWaveMessage->getMessageId ();
 
-    pPrismMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
+    pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
     if (NULL != (getResponseContext (prismMessageId)))
     {
@@ -1553,7 +1553,7 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
         return (WAVE_MESSAGE_ERROR_DUPLICATE_MESSAGE_SEND);
     }
 
-    addMessageToMessageHistoryCalledFromSend (pPrismMessage);
+    addMessageToMessageHistoryCalledFromSend (pWaveMessage);
 
     // The following lock is used so that the response for the submitted message does not arrive before we finish adding the messages
     // Response context.  If the message response arrive before we add the response context, we will fail the response delivery.
@@ -1566,17 +1566,17 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
 
     m_sendReplyMutexForResponseMap.lock ();
 
-    if ((NULL != m_pInputMessage) && (m_pAssociatedPrismThread->getId () == pPrismMessage->getPrismMessageCreatorThreadId ()))
+    if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pWaveMessage->getWaveMessageCreatorThreadId ()))
     {
         // Propagate message flags from Inoming Message to Outgoing Message
 
-        pPrismMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
-        pPrismMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
-        pPrismMessage->setTransactionCounter                    (m_pInputMessage->getTransactionCounter ());
+        pWaveMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
+        pWaveMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
+        pWaveMessage->setTransactionCounter                    (m_pInputMessage->getTransactionCounter ());
 
-        if (false == pPrismMessage->getIsPartitionNameSetByUser ())
+        if (false == pWaveMessage->getIsPartitionNameSetByUser ())
         {
-            pPrismMessage->setPartitionName                         (m_pInputMessage->getPartitionName ());                         // Propagate the Partition name from Input Message.
+            pWaveMessage->setPartitionName                         (m_pInputMessage->getPartitionName ());                         // Propagate the Partition name from Input Message.
         }
         else
         {
@@ -1584,64 +1584,64 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
             // Do not overwrite the partition name with partitionName in m_pInputMessage.
         }
 
-        pPrismMessage->setPartitionLocationIdForPropagation     (m_pInputMessage->getPartitionLocationIdForPropagation ());
-        pPrismMessage->setIsPartitionContextPropagated          (m_pInputMessage->getIsPartitionContextPropagated ());
+        pWaveMessage->setPartitionLocationIdForPropagation     (m_pInputMessage->getPartitionLocationIdForPropagation ());
+        pWaveMessage->setIsPartitionContextPropagated          (m_pInputMessage->getIsPartitionContextPropagated ());
 
-        pPrismMessage->setIsALastConfigReplay                   (m_pInputMessage->getIsALastConfigReplay ());
-        pPrismMessage->addXPathStringsVectorForTimestampUpdate  (m_pInputMessage->getXPathStringsVectorForTimestampUpdate ());  // if receiver service is "management interface", should this be skipped ?
+        pWaveMessage->setIsALastConfigReplay                   (m_pInputMessage->getIsALastConfigReplay ());
+        pWaveMessage->addXPathStringsVectorForTimestampUpdate  (m_pInputMessage->getXPathStringsVectorForTimestampUpdate ());  // if receiver service is "management interface", should this be skipped ?
 
         // This is required because sendToWaveCluster also uses the send method. As send and sendToWaveCluster will be having same m_pInputMessage with
         // the flags always set to false. Even if for surrogating message sendToWaveCluster sets the flag, it will be otherwise cleared off here.
 
-        if (false == pPrismMessage->getIsMessageBeingSurrogatedFlag ())
+        if (false == pWaveMessage->getIsMessageBeingSurrogatedFlag ())
         {
-            pPrismMessage->setIsMessageBeingSurrogatedFlag  (m_pInputMessage->getIsMessageBeingSurrogatedFlag ());
-            pPrismMessage->setSurrogatingForLocationId      (m_pInputMessage->getSurrogatingForLocationId ());
+            pWaveMessage->setIsMessageBeingSurrogatedFlag  (m_pInputMessage->getIsMessageBeingSurrogatedFlag ());
+            pWaveMessage->setSurrogatingForLocationId      (m_pInputMessage->getSurrogatingForLocationId ());
         }
     }
 
-    if ((true == pPrismMessage->getIsAConfigurationIntent ()) && (true == PersistenceLocalObjectManager::getLiveSyncEnabled ()))
+    if ((true == pWaveMessage->getIsAConfigurationIntent ()) && (true == PersistenceLocalObjectManager::getLiveSyncEnabled ()))
     {
         // Send a configuration intent to the HA peer
 
-        ResourceId configurationIntentStatus = sendOneWayForStoringConfigurationIntent (pPrismMessage);
+        ResourceId configurationIntentStatus = sendOneWayForStoringConfigurationIntent (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS == configurationIntentStatus)
         {
-            pPrismMessage->setIsConfigurationIntentStored (true);
+            pWaveMessage->setIsConfigurationIntentStored (true);
         }
         else
         {
             // Do not penalize the actual configuration.  Flag an error for now.
 
-            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : Failed to store the configuration intent on HA peer for messageId : ") + pPrismMessage->getMessageId () + ", handled by service code : " + pPrismMessage->getServiceCode () + ".");
+            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : Failed to store the configuration intent on HA peer for messageId : ") + pWaveMessage->getMessageId () + ", handled by service code : " + pWaveMessage->getServiceCode () + ".");
 
-            pPrismMessage->setIsConfigurationIntentStored (false);
+            pWaveMessage->setIsConfigurationIntentStored (false);
         }
     }
 
-    WaveMessageStatus status = pPrismThread->submitMessage (pPrismMessage);
+    WaveMessageStatus status = pWaveThread->submitMessage (pWaveMessage);
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
         // Now store the details related to callback so that we can call the appropriate callback when the reply to this message arrives.
 
-        PrismMessageResponseContext *pPrismMessageResponseContext = new PrismMessageResponseContext (pPrismMessage, pPrismMessageSender != NULL ? pPrismMessageSender : this, pPrismMessageCallback, pPrismMessageContext);
+        WaveMessageResponseContext *pWaveMessageResponseContext = new WaveMessageResponseContext (pWaveMessage, pWaveMessageSender != NULL ? pWaveMessageSender : this, pWaveMessageCallback, pWaveMessageContext);
 
-        if (m_pAssociatedPrismThread->getId () == pPrismMessage->getPrismMessageCreatorThreadId ())
+        if (m_pAssociatedWaveThread->getId () == pWaveMessage->getWaveMessageCreatorThreadId ())
         {
-            pPrismMessageResponseContext->setPInputMessageInResponseContext (m_pInputMessage);
+            pWaveMessageResponseContext->setPInputMessageInResponseContext (m_pInputMessage);
         }
 
-        prismAssert (NULL != pPrismMessageResponseContext, __FILE__, __LINE__);
+        prismAssert (NULL != pWaveMessageResponseContext, __FILE__, __LINE__);
 
-        if (NULL == pPrismMessageResponseContext)
+        if (NULL == pWaveMessageResponseContext)
         {
             status = WAVE_MESSAGE_ERROR_MEMORY_EXHAUSTED;
         }
         else
         {
-            addResponseMap (prismMessageId, pPrismMessageResponseContext);
+            addResponseMap (prismMessageId, pWaveMessageResponseContext);
         }
 
         // If user requested for a message timeout then start the timer.
@@ -1658,8 +1658,8 @@ WaveMessageStatus WaveObjectManager::send (PrismMessage *pPrismMessage, PrismMes
             }
             else
             {
-                pPrismMessageResponseContext->setIsTimerStarted (true);
-                pPrismMessageResponseContext->setTimerHandle (timerHandle);
+                pWaveMessageResponseContext->setIsTimerStarted (true);
+                pWaveMessageResponseContext->setTimerHandle (timerHandle);
             }
         }
     }
@@ -1673,12 +1673,12 @@ void WaveObjectManager::sendTimerExpiredCallback (TimerHandle timerHandle, void 
 {
     UI32 prismMessageId = reinterpret_cast<ULI> (pContext);
 
-    handlePrismMessageResponseWhenTimeOutExpired (FRAMEWORK_TIME_OUT, prismMessageId);
+    handleWaveMessageResponseWhenTimeOutExpired (FRAMEWORK_TIME_OUT, prismMessageId);
 }
 
-WaveMessageStatus WaveObjectManager::sendOneWay (PrismMessage *pPrismMessage, const LocationId &locationId)
+WaveMessageStatus WaveObjectManager::sendOneWay (WaveMessage *pWaveMessage, const LocationId &locationId)
 {
-    PrismThread *pPrismThread        = NULL;
+    WaveThread *pWaveThread        = NULL;
     LocationId   thisLocationId      = FrameworkToolKit::getThisLocationId ();
     LocationId   effectiveLocationId = locationId;
 
@@ -1686,7 +1686,7 @@ WaveMessageStatus WaveObjectManager::sendOneWay (PrismMessage *pPrismMessage, co
 
     if (0 == effectiveLocationId)
     {
-        if (true != (FrameworkToolKit::isALocalService (pPrismMessage->getServiceCode ())))
+        if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
         }
@@ -1694,24 +1694,24 @@ WaveMessageStatus WaveObjectManager::sendOneWay (PrismMessage *pPrismMessage, co
 
     if ((0 == effectiveLocationId) || (thisLocationId == effectiveLocationId))
     {
-        pPrismThread = PrismThread::getPrismThreadForServiceId (pPrismMessage->getServiceCode ());
+        pWaveThread = WaveThread::getWaveThreadForServiceId (pWaveMessage->getServiceCode ());
     }
     else if (1 == effectiveLocationId)
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageHaPeerTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageHaPeerTransport ();
     }
     else
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageRemoteTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageRemoteTransport ();
     }
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
-        //trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendOneWay : No Service registered to accept this service Id ") + pPrismMessage->getServiceCode () + ".");
+        //trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendOneWay : No Service registered to accept this service Id ") + pWaveMessage->getServiceCode () + ".");
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    if (false == (pPrismThread->hasWaveObjectManagers ()))
+    if (false == (pWaveThread->hasWaveObjectManagers ()))
     {
         //trace (TRACE_LEVEL_ERROR, "WaveObjectManager::sendOneWay : Service identified.  But there are no Prism Object Managers registered to process any kind of reqquests.");
         return (WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
@@ -1720,35 +1720,35 @@ WaveMessageStatus WaveObjectManager::sendOneWay (PrismMessage *pPrismMessage, co
     // Set this so the message can be returned.  In fact one way messages can never be returned.  This is set so that
     // in case we need to refer it at the receiver end.
 
-    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
+    pWaveMessage->m_senderServiceCode = m_pAssociatedWaveThread->getWaveServiceId ();
 
     // Store the receiver LocationId.
 
-    pPrismMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
+    pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
     // Set the field to indictae the message is a one way message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply destroy the message.
 
-    pPrismMessage->setIsOneWayMessage (true);
+    pWaveMessage->setIsOneWayMessage (true);
 
-    if ((NULL != m_pInputMessage) && (m_pAssociatedPrismThread->getId () == pPrismMessage->getPrismMessageCreatorThreadId ()))
+    if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pWaveMessage->getWaveMessageCreatorThreadId ()))
     {
         // Propagate message flags from Inoming Message to Outgoing Message
 
-        pPrismMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
-        pPrismMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
+        pWaveMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
+        pWaveMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
     }
 
-    addMessageToMessageHistoryCalledFromSend (pPrismMessage);
+    addMessageToMessageHistoryCalledFromSend (pWaveMessage);
 
-    WaveMessageStatus status = pPrismThread->submitMessage (pPrismMessage);
+    WaveMessageStatus status = pWaveThread->submitMessage (pWaveMessage);
 
     return (status);
 }
 
-WaveMessageStatus WaveObjectManager::sendOneWayToFront (PrismMessage *pPrismMessage, const LocationId &locationId)
+WaveMessageStatus WaveObjectManager::sendOneWayToFront (WaveMessage *pWaveMessage, const LocationId &locationId)
 {
-    PrismThread *pPrismThread        = NULL;
+    WaveThread *pWaveThread        = NULL;
     LocationId   thisLocationId      = FrameworkToolKit::getThisLocationId ();
     LocationId   effectiveLocationId = locationId;
 
@@ -1756,7 +1756,7 @@ WaveMessageStatus WaveObjectManager::sendOneWayToFront (PrismMessage *pPrismMess
 
     if (0 == effectiveLocationId)
     {
-        if (true != (FrameworkToolKit::isALocalService (pPrismMessage->getServiceCode ())))
+        if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
         }
@@ -1764,24 +1764,24 @@ WaveMessageStatus WaveObjectManager::sendOneWayToFront (PrismMessage *pPrismMess
 
     if ((0 == effectiveLocationId) || (thisLocationId == effectiveLocationId))
     {
-        pPrismThread = PrismThread::getPrismThreadForServiceId (pPrismMessage->getServiceCode ());
+        pWaveThread = WaveThread::getWaveThreadForServiceId (pWaveMessage->getServiceCode ());
     }
     else if (1 == effectiveLocationId)
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageHaPeerTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageHaPeerTransport ();
     }
     else
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageRemoteTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageRemoteTransport ();
     }
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
-        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendOneWayToFront : No Service registered to accept this service Id ") + pPrismMessage->getServiceCode () + ".");
+        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendOneWayToFront : No Service registered to accept this service Id ") + pWaveMessage->getServiceCode () + ".");
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    if (false == (pPrismThread->hasWaveObjectManagers ()))
+    if (false == (pWaveThread->hasWaveObjectManagers ()))
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::sendOneWayToFront : Service identified.  But there are no Prism Object Managers registered to process any kind of reqquests.");
         return (WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
@@ -1790,25 +1790,25 @@ WaveMessageStatus WaveObjectManager::sendOneWayToFront (PrismMessage *pPrismMess
     // Set this so the message can be returned.  Infact one way messages can never be returned.  This is set so that
     // in case we need to refer it at the receiver end.
 
-    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
+    pWaveMessage->m_senderServiceCode = m_pAssociatedWaveThread->getWaveServiceId ();
 
     // Store the receiver LocationId.
 
-    pPrismMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
+    pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
     // Set the field to indictae the message is a one way message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply destroy the message.
 
-    pPrismMessage->setIsOneWayMessage (true);
+    pWaveMessage->setIsOneWayMessage (true);
 
-    addMessageToMessageHistoryCalledFromSend (pPrismMessage);
+    addMessageToMessageHistoryCalledFromSend (pWaveMessage);
 
-    WaveMessageStatus status = pPrismThread->submitMessageAtFront (pPrismMessage);
+    WaveMessageStatus status = pWaveThread->submitMessageAtFront (pWaveMessage);
 
     return (status);
 }
 
-WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMessage, const LocationId &locationId)
+WaveMessageStatus WaveObjectManager::sendSynchronously (WaveMessage *pWaveMessage, const LocationId &locationId)
 {
     // NOTICE :
     // In this method the order of lock, wait and unlock are very very important.
@@ -1816,7 +1816,7 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
     // If you are modifying the code - DON'T DO IT.  But if you must modify it,
     // PLEASE PLEASE make sure that the existing behavior is not broken.
 
-    PrismThread *pPrismThread        = NULL;
+    WaveThread *pWaveThread        = NULL;
     LocationId   thisLocationId      = FrameworkToolKit::getThisLocationId ();
     LocationId   effectiveLocationId = locationId;
 
@@ -1824,7 +1824,7 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
 
     if (0 == effectiveLocationId)
     {
-        if (true != (FrameworkToolKit::isALocalService (pPrismMessage->getServiceCode ())))
+        if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
             LocationId myLocationId = FrameworkToolKit::getMyLocationId ();
@@ -1839,33 +1839,33 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
     {
 
         // NOTE : In vCenter feature we have a separate thread spawned by the ObjectManager which sends message to the object manager. So revert back this particular check
-        /*if (pPrismMessage->getServiceCode () == m_serviceId)
+        /*if (pWaveMessage->getServiceCode () == m_serviceId)
         {
             string  serviceName = FrameworkToolKit::getServiceNameById (m_serviceId);
-            UI32    operationCode      = pPrismMessage->getOperationCode ();
+            UI32    operationCode      = pWaveMessage->getOperationCode ();
             trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::sendSynchronously : Service [" + serviceName + "] cannot send message [serviceCode=" + m_serviceId + ", operationCode=" + operationCode + "] synchronously to itself."));
             return (WAVE_MESSAGE_ERROR);
         }*/
 
-        pPrismThread = PrismThread::getPrismThreadForServiceId (pPrismMessage->getServiceCode ());
+        pWaveThread = WaveThread::getWaveThreadForServiceId (pWaveMessage->getServiceCode ());
 
     }
     else if (1 == effectiveLocationId)
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageHaPeerTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageHaPeerTransport ();
     }
     else
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageRemoteTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageRemoteTransport ();
     }
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
-        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : No Service registered to accept this service Id ") + pPrismMessage->getServiceCode () + ".");
+        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : No Service registered to accept this service Id ") + pWaveMessage->getServiceCode () + ".");
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    if (false == (pPrismThread->hasWaveObjectManagers ()))
+    if (false == (pWaveThread->hasWaveObjectManagers ()))
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::sendSynchronously : Service identified.  But there are no Prism Object Managers registered to process any kind of reqquests.");
         return (WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
@@ -1874,25 +1874,25 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
     // Set this so the message can be returned.  Infact synchonously sent messages can never be returned.  This is set so that
     // in case we need to refer it at the receiver end.
 
-    pPrismMessage->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
+    pWaveMessage->m_senderServiceCode = m_pAssociatedWaveThread->getWaveServiceId ();
 
     // Set the filed to indictae the message is a synchronously sent message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply unlock the sending thread.
 
-    pPrismMessage->setIsSynchronousMessage (true);
+    pWaveMessage->setIsSynchronousMessage (true);
 
     // The following (PrismMutex creation and locking it) is done by the sending thread:
     // Now Create a PrismMutex and a corresponding PrismCondition.  Use the standard Mutex-Condition combination
     // logic to synchronize the sender thread and the receiver thread.  The Mutex-Condition logic is very similar
     // to the POSIX equivalents.
-    // Store the created PrismMutex and PrismCondition in the PrismMessage.  The receiver thread needs to use
+    // Store the created PrismMutex and PrismCondition in the WaveMessage.  The receiver thread needs to use
     // them when it does a reply on the message after processing it.
 
     PrismMutex synchronizingMutex;
     PrismCondition synchronizingCondition (&synchronizingMutex);
 
-    pPrismMessage->setPSynchronizingMutex (&synchronizingMutex);
-    pPrismMessage->setPSynchronizingCondition (&synchronizingCondition);
+    pWaveMessage->setPSynchronizingMutex (&synchronizingMutex);
+    pWaveMessage->setPSynchronizingCondition (&synchronizingCondition);
 
     // Now lock the synchronizing mutex.  So that receiver thread cannot acquire it.
 
@@ -1900,25 +1900,25 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
 
     // Store the receiver LocationId.
 
-    pPrismMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
+    pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
-    if ((true == pPrismMessage->getIsALastConfigReplay ()) && (m_pAssociatedPrismThread->getWaveServiceId () == PrismFrameworkObjectManager::getWaveServiceId ()))
+    if ((true == pWaveMessage->getIsALastConfigReplay ()) && (m_pAssociatedWaveThread->getWaveServiceId () == PrismFrameworkObjectManager::getWaveServiceId ()))
     {
         // This case is the initial start of the Last Config Replay where the PrismFrameworkPostPersistentBootWorker (PrismFrameworkObjectManager) triggers a last config replay.  We do not want to propagate message flags from the input message to output message here.  Otherwise, the last configuration replayed intent will have incorrect propagated flags.  Only the sendSynchronously () API needs this special handling since triggering the last config replay should only be synchronously replayed.
     }
     else
     {
-        if ((NULL != m_pInputMessage) && (m_pAssociatedPrismThread->getId () == pPrismMessage->getPrismMessageCreatorThreadId ()))
+        if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pWaveMessage->getWaveMessageCreatorThreadId ()))
         {
             // Propagate message flags from Inoming Message to Outgoing Message
 
-            pPrismMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
-            pPrismMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
-            pPrismMessage->setTransactionCounter                    (m_pInputMessage->getTransactionCounter ());
+            pWaveMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
+            pWaveMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
+            pWaveMessage->setTransactionCounter                    (m_pInputMessage->getTransactionCounter ());
 
-            if (false == pPrismMessage->getIsPartitionNameSetByUser ())
+            if (false == pWaveMessage->getIsPartitionNameSetByUser ())
             {
-                pPrismMessage->setPartitionName                         (m_pInputMessage->getPartitionName ());                         // Propagate the Partition name from Input Message.
+                pWaveMessage->setPartitionName                         (m_pInputMessage->getPartitionName ());                         // Propagate the Partition name from Input Message.
             }
             else
             {
@@ -1926,42 +1926,42 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
                 // Do not overwrite the partition name with partitionName in m_pInputMessage.
             }
 
-            pPrismMessage->setPartitionLocationIdForPropagation     (m_pInputMessage->getPartitionLocationIdForPropagation ());
-            pPrismMessage->setIsPartitionContextPropagated          (m_pInputMessage->getIsPartitionContextPropagated ());
+            pWaveMessage->setPartitionLocationIdForPropagation     (m_pInputMessage->getPartitionLocationIdForPropagation ());
+            pWaveMessage->setIsPartitionContextPropagated          (m_pInputMessage->getIsPartitionContextPropagated ());
 
-            pPrismMessage->setIsALastConfigReplay                   (m_pInputMessage->getIsALastConfigReplay ());
-            pPrismMessage->addXPathStringsVectorForTimestampUpdate  (m_pInputMessage->getXPathStringsVectorForTimestampUpdate ());  // if receiver service is "management interface", should this be skipped ?
+            pWaveMessage->setIsALastConfigReplay                   (m_pInputMessage->getIsALastConfigReplay ());
+            pWaveMessage->addXPathStringsVectorForTimestampUpdate  (m_pInputMessage->getXPathStringsVectorForTimestampUpdate ());  // if receiver service is "management interface", should this be skipped ?
 
             // This is required because sendToWaveCluster also uses the send method. As send and sendToWaveCluster will be having same m_pInputMessage with
             // the flags always set to false. Even if for surrogating message sendToWaveCluster sets the flag, it will be otherwise cleared off here.
 
-            if (false == pPrismMessage->getIsMessageBeingSurrogatedFlag ())
+            if (false == pWaveMessage->getIsMessageBeingSurrogatedFlag ())
             {
-                pPrismMessage->setIsMessageBeingSurrogatedFlag  (m_pInputMessage->getIsMessageBeingSurrogatedFlag ());
-                pPrismMessage->setSurrogatingForLocationId      (m_pInputMessage->getSurrogatingForLocationId ());
+                pWaveMessage->setIsMessageBeingSurrogatedFlag  (m_pInputMessage->getIsMessageBeingSurrogatedFlag ());
+                pWaveMessage->setSurrogatingForLocationId      (m_pInputMessage->getSurrogatingForLocationId ());
             }
         }
     }
 
-    addMessageToMessageHistoryCalledFromSend (pPrismMessage);
+    addMessageToMessageHistoryCalledFromSend (pWaveMessage);
 
-    if ((true == pPrismMessage->getIsAConfigurationIntent ()) && (true == PersistenceLocalObjectManager::getLiveSyncEnabled ()))
+    if ((true == pWaveMessage->getIsAConfigurationIntent ()) && (true == PersistenceLocalObjectManager::getLiveSyncEnabled ()))
     {
         // Send a configuration intent to the HA peer
 
-        ResourceId configurationIntentStatus = sendOneWayForStoringConfigurationIntent (pPrismMessage);
+        ResourceId configurationIntentStatus = sendOneWayForStoringConfigurationIntent (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS == configurationIntentStatus)
         {
-            pPrismMessage->setIsConfigurationIntentStored (true);
+            pWaveMessage->setIsConfigurationIntentStored (true);
         }
         else
         {
             // Do not penalize the actual configuration.  Flag an error for now.
 
-            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : Failed to store the configuration intent on HA peer for messageId : ") + pPrismMessage->getMessageId () + ", message operation code : " + pPrismMessage->getOperationCode () + ", handled by service code : " + pPrismMessage->getServiceCode () + ".");
+            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : Failed to store the configuration intent on HA peer for messageId : ") + pWaveMessage->getMessageId () + ", message operation code : " + pWaveMessage->getOperationCode () + ", handled by service code : " + pWaveMessage->getServiceCode () + ".");
 
-            pPrismMessage->setIsConfigurationIntentStored (false);
+            pWaveMessage->setIsConfigurationIntentStored (false);
         }
     }
 
@@ -1969,7 +1969,7 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
     // the message before we return from the method below, it is perfectly OK.  The receiver thread
     // may finish processing but cannot reply to the message as we are holding the synchronizing mutex.
 
-    WaveMessageStatus status = pPrismThread->submitMessage (pPrismMessage);
+    WaveMessageStatus status = pWaveThread->submitMessage (pWaveMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -1978,15 +1978,15 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
 
         synchronizingMutex.unlock ();
 
-        if (true == pPrismMessage->getIsConfigurationIntentStored ())
+        if (true == pWaveMessage->getIsConfigurationIntentStored ())
         {
             // Remove configuration intent
 
-            ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (pPrismMessage->getMessageId ());
+            ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (pWaveMessage->getMessageId ());
 
             if (WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
             {
-                trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : Failed to remove the configuration intent from HA peer for messageId : ") + pPrismMessage->getMessageId () + ", message operation code : " + pPrismMessage->getOperationCode () + ", handled by service code : " + pPrismMessage->getServiceCode () + ".");
+                trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : Failed to remove the configuration intent from HA peer for messageId : ") + pWaveMessage->getMessageId () + ", message operation code : " + pWaveMessage->getOperationCode () + ", handled by service code : " + pWaveMessage->getServiceCode () + ".");
             }
         }
 
@@ -2017,44 +2017,44 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (PrismMessage *pPrismMess
     // The caller will examine the completion status on the message to obtain the status of completion of processing
     // the message.
 
-    if ((NULL != m_pInputMessage) && (m_pAssociatedPrismThread->getId () == pPrismMessage->getPrismMessageCreatorThreadId ()))
+    if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pWaveMessage->getWaveMessageCreatorThreadId ()))
     {
-        m_pInputMessage->appendNestedSql (pPrismMessage->getNestedSql ());
+        m_pInputMessage->appendNestedSql (pWaveMessage->getNestedSql ());
     }
 
-    if (true == pPrismMessage->getIsConfigurationIntentStored ())
+    if (true == pWaveMessage->getIsConfigurationIntentStored ())
     {
         // Remove configuration intent
 
-        ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (pPrismMessage->getMessageId ());
+        ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (pWaveMessage->getMessageId ());
 
         if (WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
         {
-            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : Failed to remove the configuration intent from HA peer for messageId : ") + pPrismMessage->getMessageId () + ", handled by service code : " + pPrismMessage->getServiceCode () + ".");
+            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendSynchronously : Failed to remove the configuration intent from HA peer for messageId : ") + pWaveMessage->getMessageId () + ", handled by service code : " + pWaveMessage->getServiceCode () + ".");
         }
     }
 
     return (status);
 }
 
-WaveMessageStatus WaveObjectManager::recallButDoNotDeleteResponseMap (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveObjectManager::recallButDoNotDeleteResponseMap (WaveMessage *pWaveMessage)
 {
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::recall : Trying to recall a NULL message.");
         return (WAVE_MESSAGE_ERROR_NULL_MESSAGE);
     }
 
-    PrismThread *pPrismThread        = NULL;
+    WaveThread *pWaveThread        = NULL;
     LocationId   thisLocationId      = FrameworkToolKit::getThisLocationId ();
-    LocationId   locationId          = pPrismMessage->getReceiverLocationId ();
+    LocationId   locationId          = pWaveMessage->getReceiverLocationId ();
     LocationId   effectiveLocationId = locationId;
 
     // FIXME : sagar : replace the 0 with NullLocationId
 
     if (0 == effectiveLocationId)
     {
-        if (true != (FrameworkToolKit::isALocalService (pPrismMessage->getServiceCode ())))
+        if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
         }
@@ -2062,37 +2062,37 @@ WaveMessageStatus WaveObjectManager::recallButDoNotDeleteResponseMap (PrismMessa
 
     if ((0 == effectiveLocationId) || (thisLocationId == effectiveLocationId))
     {
-        pPrismThread = PrismThread::getPrismThreadForServiceId (pPrismMessage->getServiceCode ());
+        pWaveThread = WaveThread::getWaveThreadForServiceId (pWaveMessage->getServiceCode ());
     }
     else
     {
-        pPrismThread = PrismThread::getPrismThreadForMessageRemoteTransport ();
+        pWaveThread = WaveThread::getWaveThreadForMessageRemoteTransport ();
     }
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
-        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::recall : No Service registered to accept this service Id ") + pPrismMessage->getServiceCode () + ".");
+        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::recall : No Service registered to accept this service Id ") + pWaveMessage->getServiceCode () + ".");
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    return (pPrismThread->recallMessage (pPrismMessage));
+    return (pWaveThread->recallMessage (pWaveMessage));
 }
 
-WaveMessageStatus WaveObjectManager::recall (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveObjectManager::recall (WaveMessage *pWaveMessage)
 {
-    WaveMessageStatus recallStatus = recallButDoNotDeleteResponseMap (pPrismMessage);
+    WaveMessageStatus recallStatus = recallButDoNotDeleteResponseMap (pWaveMessage);
 
     if (WAVE_MESSAGE_SUCCESS == recallStatus)
     {
-        PrismMessageResponseContext *pPrismMessageResponseContext = NULL;
+        WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
-        pPrismMessageResponseContext = removeResponseMap (pPrismMessage->getMessageId ());
+        pWaveMessageResponseContext = removeResponseMap (pWaveMessage->getMessageId ());
 
-        prismAssert (NULL != pPrismMessageResponseContext, __FILE__, __LINE__);
+        prismAssert (NULL != pWaveMessageResponseContext, __FILE__, __LINE__);
 
-        if (NULL != pPrismMessageResponseContext)
+        if (NULL != pWaveMessageResponseContext)
         {
-            delete pPrismMessageResponseContext;
+            delete pWaveMessageResponseContext;
         }
     }
 
@@ -2159,7 +2159,7 @@ void WaveObjectManager::tracePrintf (TraceLevel traceLevel, const char * const p
     }
 }
 
-WaveMessageStatus WaveObjectManager::reply (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveObjectManager::reply (WaveMessage *pWaveMessage)
 {
     // First check if we need to really deliver the reply.
     // If the message was sent synchronously simply resume the sender thread and return.
@@ -2169,134 +2169,134 @@ WaveMessageStatus WaveObjectManager::reply (PrismMessage *pPrismMessage)
     // If the message was sent as a one way message, simply destroy it.
     // Do not attempt to deliver it back to the original sender.
 
-    if (true == (pPrismMessage->getIsSynchronousMessage ()))
+    if (true == (pWaveMessage->getIsSynchronousMessage ()))
     {
-        prismAssert (true == (pPrismMessage->getIsLastReply ()), __FILE__, __LINE__);
+        prismAssert (true == (pWaveMessage->getIsLastReply ()), __FILE__, __LINE__);
 
-        addMessageToMessageHistoryCalledFromReply (pPrismMessage);
+        addMessageToMessageHistoryCalledFromReply (pWaveMessage);
 
-        (pPrismMessage->getPSynchronizingMutex ())->lock ();
-        (pPrismMessage->getPSynchronizingCondition ())->resume ();
-        (pPrismMessage->getPSynchronizingMutex ())->unlock ();
+        (pWaveMessage->getPSynchronizingMutex ())->lock ();
+        (pWaveMessage->getPSynchronizingCondition ())->resume ();
+        (pWaveMessage->getPSynchronizingMutex ())->unlock ();
 
         m_pInputMessage = NULL;
 
         return (WAVE_MESSAGE_SUCCESS);
     }
-    else if (true == (pPrismMessage->getIsOneWayMessage ()))
+    else if (true == (pWaveMessage->getIsOneWayMessage ()))
     {
-        prismAssert (true == (pPrismMessage->getIsLastReply ()), __FILE__, __LINE__);
+        prismAssert (true == (pWaveMessage->getIsLastReply ()), __FILE__, __LINE__);
 
-        addMessageToMessageHistoryCalledFromReply (pPrismMessage);
+        addMessageToMessageHistoryCalledFromReply (pWaveMessage);
 
         m_pInputMessage = NULL;
-        delete pPrismMessage;
+        delete pWaveMessage;
         return (WAVE_MESSAGE_SUCCESS);
     }
     else
     {
-        PrismMessage *pTempPrismMessage = pPrismMessage;
+        WaveMessage *pTempWaveMessage = pWaveMessage;
 
-        if (false == (pPrismMessage->getIsLastReply ()))
+        if (false == (pWaveMessage->getIsLastReply ()))
         {
-            pTempPrismMessage = pPrismMessage->clone ();
+            pTempWaveMessage = pWaveMessage->clone ();
 
-            pTempPrismMessage->setMessageId (pPrismMessage->getMessageId ());
-            pTempPrismMessage->setMessageIdAtOriginatingLocation (pPrismMessage->getMessageIdAtOriginatingLocation ());
-            pTempPrismMessage->setOriginalMessageId              (pPrismMessage->getOriginalMessageId ());
-            pTempPrismMessage->setWaveClientMessageId            (pPrismMessage->getWaveClientMessageId ());
-            pTempPrismMessage->setSenderServiceCode              (pPrismMessage->getSenderServiceCode ());
+            pTempWaveMessage->setMessageId (pWaveMessage->getMessageId ());
+            pTempWaveMessage->setMessageIdAtOriginatingLocation (pWaveMessage->getMessageIdAtOriginatingLocation ());
+            pTempWaveMessage->setOriginalMessageId              (pWaveMessage->getOriginalMessageId ());
+            pTempWaveMessage->setWaveClientMessageId            (pWaveMessage->getWaveClientMessageId ());
+            pTempWaveMessage->setSenderServiceCode              (pWaveMessage->getSenderServiceCode ());
         }
 
-        PrismThread *pPrismThread = NULL;
+        WaveThread *pWaveThread = NULL;
 
-        pPrismThread = PrismThread::getPrismThreadForServiceId (pTempPrismMessage->getSenderServiceCode ());
+        pWaveThread = WaveThread::getWaveThreadForServiceId (pTempWaveMessage->getSenderServiceCode ());
 
-        if (NULL == pPrismThread)
+        if (NULL == pWaveThread)
         {
-            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::reply : No Service registered to accept reply with this service Id ") + pTempPrismMessage->getSenderServiceCode () + ". How did we receive this message in the first place.  May be the service went down after submitting the request.  Dropping and destroying the message.");
+            trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::reply : No Service registered to accept reply with this service Id ") + pTempWaveMessage->getSenderServiceCode () + ". How did we receive this message in the first place.  May be the service went down after submitting the request.  Dropping and destroying the message.");
 
-            if (true == (pTempPrismMessage->getIsLastReply ()))
+            if (true == (pTempWaveMessage->getIsLastReply ()))
             {
                m_pInputMessage = NULL;
             }
 
-            delete pTempPrismMessage;
+            delete pTempWaveMessage;
             return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE_RESPONSE);
         }
 
-        pTempPrismMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
+        pTempWaveMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
 
-        if (true == (pTempPrismMessage->getIsLastReply ()))
+        if (true == (pTempWaveMessage->getIsLastReply ()))
         {
             m_pInputMessage = NULL;
         }
 
-        addMessageToMessageHistoryCalledFromReply (pTempPrismMessage);
+        addMessageToMessageHistoryCalledFromReply (pTempWaveMessage);
 
-        pPrismThread->submitReplyMessage (pTempPrismMessage);
+        pWaveThread->submitReplyMessage (pTempWaveMessage);
 
         return (WAVE_MESSAGE_SUCCESS);
     }
 }
 
-void WaveObjectManager::handlePrismMessageResponse (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, bool isMessageRecalled)
+void WaveObjectManager::handleWaveMessageResponse (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled)
 {
-    UI32                         prismMessageId               = pPrismMessage->getMessageId ();
-    bool                         isLastReply                  = pPrismMessage->getIsLastReply ();
-    PrismMessageResponseContext *pPrismMessageResponseContext = NULL;
+    UI32                         prismMessageId               = pWaveMessage->getMessageId ();
+    bool                         isLastReply                  = pWaveMessage->getIsLastReply ();
+    WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
-    addMessageToMessageHistoryCalledFromHandle (pPrismMessage);
+    addMessageToMessageHistoryCalledFromHandle (pWaveMessage);
 
     //if (((FRAMEWORK_TIME_OUT != frameworkStatus) && (true == isLastReply)) || ((FRAMEWORK_TIME_OUT == frameworkStatus) && (true == isMessageRecalled)))
     if (true == isLastReply)
     {
-        pPrismMessageResponseContext = removeResponseMap (prismMessageId);
+        pWaveMessageResponseContext = removeResponseMap (prismMessageId);
     }
     else
     {
-        pPrismMessageResponseContext = getResponseContext (prismMessageId);
+        pWaveMessageResponseContext = getResponseContext (prismMessageId);
     }
 
-    if (NULL != pPrismMessageResponseContext)
+    if (NULL != pWaveMessageResponseContext)
     {
-        if (true == (pPrismMessageResponseContext->getIsTimerStarted ()))
+        if (true == (pWaveMessageResponseContext->getIsTimerStarted ()))
         {
-            deleteTimer (pPrismMessageResponseContext->getTimerHandle ());
+            deleteTimer (pWaveMessageResponseContext->getTimerHandle ());
         }
 
         prismAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
 
-        if (false == (pPrismMessageResponseContext->getIsMessageTimedOut ()))
+        if (false == (pWaveMessageResponseContext->getIsMessageTimedOut ()))
         {
-            m_pInputMessage = pPrismMessageResponseContext->getPInputMessageInResponseContext ();
+            m_pInputMessage = pWaveMessageResponseContext->getPInputMessageInResponseContext ();
         }
 
         if (NULL != m_pInputMessage)
         {
-            m_pInputMessage->appendNestedSql (pPrismMessage->getNestedSql ());
+            m_pInputMessage->appendNestedSql (pWaveMessage->getNestedSql ());
         }
 
-        if (true == isLastReply && true == pPrismMessage->getIsConfigurationIntentStored ())
+        if (true == isLastReply && true == pWaveMessage->getIsConfigurationIntentStored ())
         {
             // Remove configuration intent
 
-            ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (pPrismMessage->getMessageId ());
+            ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (pWaveMessage->getMessageId ());
 
             if (WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
             {
-                trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::handlePrismMessageResponse : Failed to remove the configuration intent from HA peer for messageId : ") + pPrismMessage->getMessageId () + ", handled by service code : " + pPrismMessage->getServiceCode () + ".");
+                trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::handleWaveMessageResponse : Failed to remove the configuration intent from HA peer for messageId : ") + pWaveMessage->getMessageId () + ", handled by service code : " + pWaveMessage->getServiceCode () + ".");
             }
         }
 
-        pPrismMessageResponseContext->executeResponseCallback (frameworkStatus, pPrismMessage, isMessageRecalled);
+        pWaveMessageResponseContext->executeResponseCallback (frameworkStatus, pWaveMessage, isMessageRecalled);
 
         m_pInputMessage = NULL;
 
         //if (((FRAMEWORK_TIME_OUT != frameworkStatus) && (true == isLastReply)) || ((FRAMEWORK_TIME_OUT == frameworkStatus) && (true == isMessageRecalled)))
         if (true == isLastReply)
         {
-            delete pPrismMessageResponseContext;
+            delete pWaveMessageResponseContext;
         }
     }
     else
@@ -2305,29 +2305,29 @@ void WaveObjectManager::handlePrismMessageResponse (FrameworkStatus frameworkSta
     }
 }
 
-void WaveObjectManager::handlePrismMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 prismMessageId)
+void WaveObjectManager::handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 prismMessageId)
 {
-    PrismMessageResponseContext *pPrismMessageResponseContext = getResponseContext (prismMessageId);
+    WaveMessageResponseContext *pWaveMessageResponseContext = getResponseContext (prismMessageId);
 
-    if (NULL != pPrismMessageResponseContext)
+    if (NULL != pWaveMessageResponseContext)
     {
-        pPrismMessageResponseContext->setIsTimerStarted (false);
-        pPrismMessageResponseContext->setTimerHandle    (0);
+        pWaveMessageResponseContext->setIsTimerStarted (false);
+        pWaveMessageResponseContext->setTimerHandle    (0);
 
-        PrismMessage      *pPrismMessage     = pPrismMessageResponseContext->getPPrismMessage ();
-        WaveMessageStatus  status            = recallButDoNotDeleteResponseMap (pPrismMessage);
-        PrismMessage      *pTempInputMessage = m_pInputMessage;
+        WaveMessage      *pWaveMessage     = pWaveMessageResponseContext->getPWaveMessage ();
+        WaveMessageStatus  status            = recallButDoNotDeleteResponseMap (pWaveMessage);
+        WaveMessage      *pTempInputMessage = m_pInputMessage;
 
         m_pInputMessage = NULL;
 
         if (WAVE_MESSAGE_SUCCESS == status)
         {
-            pPrismMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_RECALLED_DUE_TO_TIME_OUT);
-            handlePrismMessageResponse (frameworkStatus, pPrismMessage, true); // Indicate that message has been recalled
+            pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_RECALLED_DUE_TO_TIME_OUT);
+            handleWaveMessageResponse (frameworkStatus, pWaveMessage, true); // Indicate that message has been recalled
         }
         else
         {
-            pPrismMessageResponseContext->executeResponseCallback (frameworkStatus);
+            pWaveMessageResponseContext->executeResponseCallback (frameworkStatus);
         }
 
         m_pInputMessage = pTempInputMessage;
@@ -2356,7 +2356,7 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
         s_mutexForAddingEventListener.unlock ();
 
         // delete mem if we don't have any listeners
-        // DO NOT CALL reply(pPrismEvent) AS THIS MAY SEND REPLY FOR PrismMessage!!!
+        // DO NOT CALL reply(pPrismEvent) AS THIS MAY SEND REPLY FOR WaveMessage!!!
         if (0 == (pPrismEvent->decrementReferenceCountForEventNotifications ()))
         {
             delete pPrismEvent;
@@ -2370,7 +2370,7 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::broadcast : Number Of Event Listeners for Event : ") + eventOperationCode + string (" are ") + numberOfEventListeners + string (" on Service : ") + m_name);
 
-    pPrismEvent->m_senderServiceCode = m_pAssociatedPrismThread->getWaveServiceId ();
+    pPrismEvent->m_senderServiceCode = m_pAssociatedWaveThread->getWaveServiceId ();
 
     // Set the field to indictae the message is a one way message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply destroy the event.
@@ -2387,7 +2387,7 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
 
         prismAssert (NULL != pPrismEventListenerContext, __FILE__, __LINE__);
 
-        PrismThread    *pPrismThread               = NULL;
+        WaveThread    *pWaveThread               = NULL;
         LocationId      thisLocationId             = FrameworkToolKit::getThisLocationId ();
         WaveServiceId  listenerServiceId          = pPrismEventListenerContext->getEventListenerServiceId ();
         LocationId      effectiveLocationId        = pPrismEventListenerContext->getEventListenerLocationId ();
@@ -2404,21 +2404,21 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
 
         if ((0 == effectiveLocationId) || (thisLocationId == effectiveLocationId))
         {
-            pPrismThread = PrismThread::getPrismThreadForServiceId (listenerServiceId);
+            pWaveThread = WaveThread::getWaveThreadForServiceId (listenerServiceId);
         }
         else
         {
-            pPrismThread = PrismThread::getPrismThreadForMessageRemoteTransport ();
+            pWaveThread = WaveThread::getWaveThreadForMessageRemoteTransport ();
         }
 
-        if (NULL == pPrismThread)
+        if (NULL == pWaveThread)
         {
             trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::broadcast : No Service registered to accept this service Id ") + listenerServiceId + ".");
             reply (pPrismEvent);
             continue;
         }
 
-        if (false == (pPrismThread->hasWaveObjectManagers ()))
+        if (false == (pWaveThread->hasWaveObjectManagers ()))
         {
             trace (TRACE_LEVEL_ERROR, "WaveObjectManager::broadcast : Service identified.  But there are no Prism Object Managers registered to process any kind of requests.");
             reply (pPrismEvent);
@@ -2430,7 +2430,7 @@ WaveMessageStatus WaveObjectManager::broadcast (PrismEvent *pPrismEvent)
 
         pPrismEvent->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
-        status = pPrismThread->submitEvent (pPrismEvent);
+        status = pWaveThread->submitEvent (pPrismEvent);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -2476,7 +2476,7 @@ void WaveObjectManager::initializeInitializeWorkersStep (PrismLinearSequencerCon
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::initializeInitializeWorkersStep : Entering ...");
 
-    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
@@ -2532,7 +2532,7 @@ void WaveObjectManager::initializeInitializeSelfStep (PrismLinearSequencerContex
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::initializeInitializeSelfStep : Entering ...");
 
-    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
@@ -2671,7 +2671,7 @@ void WaveObjectManager::installInstallWorkersStep (PrismLinearSequencerContext *
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::installInstallWorkersStep : Entering ...");
 
-    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = reinterpret_cast<PrismInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = reinterpret_cast<PrismInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                              numberOfWorkers                   = m_workers.size ();
     UI32                              i                                 = 0;
 
@@ -2722,7 +2722,7 @@ void WaveObjectManager::installInstallSelfStep (PrismLinearSequencerContext *pPr
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::installInstallSelfStep : Entering ...");
 
-    PrismInstallObjectManagerMessage     *pPrismInstallObjectManagerMessage     = reinterpret_cast<PrismInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismInstallObjectManagerMessage     *pPrismInstallObjectManagerMessage     = reinterpret_cast<PrismInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::installInstallSelfStepCallback), pPrismLinearSequencerContext);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismInstallObjectManagerMessage->getReason ());
@@ -3192,7 +3192,7 @@ void WaveObjectManager::bootBootWorkersStep (PrismLinearSequencerContext *pPrism
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::bootBootWorkersStep : Entering ...");
 
-    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
@@ -3247,7 +3247,7 @@ void WaveObjectManager::bootBootSelfStep (PrismLinearSequencerContext *pPrismLin
 
 //    checkMessageAttributesInSerialization ();
 
-    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::bootBootSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -3310,7 +3310,7 @@ void WaveObjectManager::hainstallInstallWorkersStep (PrismLinearSequencerContext
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::hainstallInstallWorkersStep : Entering ...");
 
-    PrismHaInstallObjectManagerMessage *pPrismHaInstallObjectManagerMessage = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismHaInstallObjectManagerMessage *pPrismHaInstallObjectManagerMessage = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                              numberOfWorkers                   = m_workers.size ();
     UI32                              i                                 = 0;
 
@@ -3359,7 +3359,7 @@ void WaveObjectManager::hainstallInstallSelfStep (PrismLinearSequencerContext *p
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::hainstallInstallSelfStep : Entering ...");
 
-    PrismHaInstallObjectManagerMessage     *pPrismHaInstallObjectManagerMessage     = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismHaInstallObjectManagerMessage     *pPrismHaInstallObjectManagerMessage     = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::hainstallInstallSelfStepCallback), pPrismLinearSequencerContext);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismHaInstallObjectManagerMessage->getReason ());
@@ -3405,7 +3405,7 @@ void WaveObjectManager::habootBootWorkersStep (PrismLinearSequencerContext *pPri
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::habootBootWorkersStep : Entering ...");
 
-    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
@@ -3455,7 +3455,7 @@ void WaveObjectManager::habootBootSelfStep (PrismLinearSequencerContext *pPrismL
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::habootBootSelfStep : Entering ...");
 
-    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::habootBootSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -4796,23 +4796,23 @@ void WaveObjectManager::disableDisableSelfStepCallback (WaveAsynchronousContextF
 
         removeServiceFromEnabledServicesList (thisServiceId);
 
-        vector<PrismMessage *> incomingMessages;
+        vector<WaveMessage *> incomingMessages;
         UI32                   numberOfIncomingMessages = 0;
         UI32                   i                        = 0;
 
-        m_pAssociatedPrismThread->emptyIncomingMessageQueuesForDisable (incomingMessages);
+        m_pAssociatedWaveThread->emptyIncomingMessageQueuesForDisable (incomingMessages);
         numberOfIncomingMessages = incomingMessages.size ();
 
         trace (TRACE_LEVEL_DEBUG, string ("Replying to all ") + numberOfIncomingMessages + " pending messages with service disabling error.");
 
         for (i = 0; i < numberOfIncomingMessages; i++)
         {
-            PrismMessage *pPrismMessage = incomingMessages[i];
+            WaveMessage *pWaveMessage = incomingMessages[i];
 
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-            pPrismMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_SERVICE_DISABLING);
-            reply (pPrismMessage);
+            pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_SERVICE_DISABLING);
+            reply (pWaveMessage);
         }
     }
 
@@ -5006,9 +5006,9 @@ void WaveObjectManager::destruct (WaveAsynchronousContextForShutDownPhases *pWav
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::destruct : Entering ...");
 
-    if (NULL != m_pAssociatedPrismThread)
+    if (NULL != m_pAssociatedWaveThread)
     {
-        m_pAssociatedPrismThread->requestForThreadTermination ();
+        m_pAssociatedWaveThread->requestForThreadTermination ();
     }
 
     pWaveAsynchronousContextForShutDownPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
@@ -5148,7 +5148,7 @@ void WaveObjectManager::configReplayEndWorkersStep (PrismLinearSequencerContext 
      * Please refer externalStateSynchronization for the method to use it.
     */
 
-    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
@@ -5202,7 +5202,7 @@ void WaveObjectManager::configReplayEndSelfStep (PrismLinearSequencerContext *pP
      * message and pass it onto the WaveAsynchronousContextForConfigReplayEnd.
      * Please refer externalStateSynchronization for the method to use it.
     */
-    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd = new WaveAsynchronousContextForConfigReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::configReplayEndSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -5248,7 +5248,7 @@ void WaveObjectManager::slotFailoverWorkersStep (PrismLinearSequencerContext *pP
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::slotFailoverEndWorkersStep : Entering ...");
 
-    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
@@ -5292,7 +5292,7 @@ void WaveObjectManager::slotFailoverSelfStep (PrismLinearSequencerContext *pPris
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::slotFailoverSelfStep : Entering ...");
 
-    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover = new WaveAsynchronousContextForSlotFailover (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::slotFailoverSelfStepCallback), pPrismLinearSequencerContext);
     pWaveAsynchronousContextForSlotFailover->setSlotNumber (pPrismSlotFailoverObjectManagerMessage->getSlotNumber () );
@@ -5339,7 +5339,7 @@ void WaveObjectManager::multiPartitionCleanupWorkersStep (PrismLinearSequencerCo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::multiPartitionCleanupEndWorkersStep : Entering ...");
 
-    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     bool isPartialCleanup   = pPrismMultiPartitionCleanupObjectManagerMessage->getIsPartialCleanup ();
     UI32 numberOfWorkers = m_workers.size ();
@@ -5395,7 +5395,7 @@ void WaveObjectManager::multiPartitionCleanupSelfStep (PrismLinearSequencerConte
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::multiPartitionCleanupSelfStep : Entering ...");
 
-    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     bool isPartialCleanup   = pPrismMultiPartitionCleanupObjectManagerMessage->getIsPartialCleanup ();
 
@@ -5519,7 +5519,7 @@ void WaveObjectManager::fileReplayEndWorkersStep (PrismLinearSequencerContext *p
      * Please refer externalStateSynchronization for the method to use it.
     */
 
-    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
@@ -5573,7 +5573,7 @@ void WaveObjectManager::fileReplayEndSelfStep (PrismLinearSequencerContext *pPri
      * message and pass it onto the WaveAsynchronousContextForFileReplayEnd.
      * Please refer externalStateSynchronization for the method to use it.
     */
-    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd = new WaveAsynchronousContextForFileReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::fileReplayEndSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -5619,7 +5619,7 @@ void WaveObjectManager::externalStateSynchronizationWorkersStep (PrismLinearSequ
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::externalStateSynchronizationWorkersStep : Entering ...");
 
-    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
@@ -5670,7 +5670,7 @@ void WaveObjectManager::externalStateSynchronizationSelfStep (PrismLinearSequenc
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::externalStateSynchronizationSelfStep : Entering ...");
 
-    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization = new WaveAsynchronousContextForExternalStateSynchronization (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::externalStateSynchronizationSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -5785,42 +5785,42 @@ TraceClientId WaveObjectManager::getTraceClientId ()
 
 void WaveObjectManager::holdMessages ()
 {
-    m_pAssociatedPrismThread->holdMessages ();
+    m_pAssociatedWaveThread->holdMessages ();
 }
 
 void WaveObjectManager::holdHighPriorityMessages ()
 {
-    m_pAssociatedPrismThread->holdHighPriorityMessages ();
+    m_pAssociatedWaveThread->holdHighPriorityMessages ();
 }
 
 void WaveObjectManager::holdEvents ()
 {
-    m_pAssociatedPrismThread->holdEvents ();
+    m_pAssociatedWaveThread->holdEvents ();
 }
 
 void WaveObjectManager::holdAll ()
 {
-    m_pAssociatedPrismThread->holdAll ();
+    m_pAssociatedWaveThread->holdAll ();
 }
 
 void WaveObjectManager::unholdMessages ()
 {
-    m_pAssociatedPrismThread->unholdMessages ();
+    m_pAssociatedWaveThread->unholdMessages ();
 }
 
 void WaveObjectManager::unholdHighPriorityMessages ()
 {
-    m_pAssociatedPrismThread->unholdHighPriorityMessages ();
+    m_pAssociatedWaveThread->unholdHighPriorityMessages ();
 }
 
 void WaveObjectManager::unholdEvents ()
 {
-    m_pAssociatedPrismThread->unholdEvents ();
+    m_pAssociatedWaveThread->unholdEvents ();
 }
 
 void WaveObjectManager::unholdAll ()
 {
-    m_pAssociatedPrismThread->unholdAll ();
+    m_pAssociatedWaveThread->unholdAll ();
 }
 
 bool WaveObjectManager::getIsEnabled ()
@@ -6187,17 +6187,17 @@ ResourceId WaveObjectManager::deleteAllTimersForService ()
 
 UI32 WaveObjectManager::getNumberOfPendingTimerExpirationMessages ()
 {
-    return (m_pAssociatedPrismThread->getNumberOfPendingTimerExpirationMessages ());
+    return (m_pAssociatedWaveThread->getNumberOfPendingTimerExpirationMessages ());
 }
 
 UI32 WaveObjectManager::getNumberOfPendingNormalMessages ()
 {
-    return (m_pAssociatedPrismThread->getNumberOfPendingNormalMessages ());
+    return (m_pAssociatedWaveThread->getNumberOfPendingNormalMessages ());
 }
 
 UI32 WaveObjectManager::getNumberOfPendingHighPriorityMessages ()
 {
-    return (m_pAssociatedPrismThread->getNumberOfPendingHighPriorityMessages ());
+    return (m_pAssociatedWaveThread->getNumberOfPendingHighPriorityMessages ());
 }
 
 bool WaveObjectManager::isALocalPrismService ()
@@ -6295,7 +6295,7 @@ void WaveObjectManager::clusterCreateCollectValidationDataSelfStep (PrismLinearS
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerCollectValidationDataMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerCollectValidationDataMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -6349,7 +6349,7 @@ void WaveObjectManager::clusterCreateValidateSelfStep (PrismLinearSequencerConte
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerValidateClusterCreationMessage *pMessage = reinterpret_cast<WaveObjectManagerValidateClusterCreationMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerValidateClusterCreationMessage *pMessage = reinterpret_cast<WaveObjectManagerValidateClusterCreationMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateValidateSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -6403,7 +6403,7 @@ void WaveObjectManager::clusterCreateSendValidationResultsSelfStep (PrismLinearS
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateSendValidationResultsSelfStep : Entering ...");
 
-    WaveObjectManagerSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerSendValidationResultsMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerSendValidationResultsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateSendValidationResultsSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -6453,7 +6453,7 @@ void WaveObjectManager::haSyncCollectValidationDataSelfStep (PrismLinearSequence
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncCollectValidationDataMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncCollectValidationDataMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncCollectValidationDataSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -6503,7 +6503,7 @@ void WaveObjectManager::haSyncValidateDataSelfStep (PrismLinearSequencerContext 
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerHaSyncValidateDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncValidateDataMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerHaSyncValidateDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncValidateDataMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncValidateDataSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -6554,7 +6554,7 @@ void WaveObjectManager::haSyncSendValidationResultsSelfStep (PrismLinearSequence
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncSendValidationResultsSelfStep : Entering ...");
 
-    WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncSendValidationResultsMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncSendValidationResultsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncSendValidationResultsSelfStepCallback), pPrismLinearSequencerContext);
 
@@ -6617,7 +6617,7 @@ void WaveObjectManager::failoverWorkersStep (PrismLinearSequencerContext *pPrism
 
     UI32                               numberOfWorkers = m_workers.size ();
     UI32                               i               = 0;
-    PrismFailoverObjectManagerMessage *pMessage        = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismFailoverObjectManagerMessage *pMessage        = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     FrameworkObjectManagerFailoverReason failoverReason                     = pMessage->getFailoverReason ();
     vector<LocationId>                   failedLocationIds                  = pMessage->getFailedLocationIds ();
     bool                                 isPrincipalChangedWithThisFailover = pMessage->getIsPrincipalChangedWithThisFailover ();
@@ -6668,7 +6668,7 @@ void WaveObjectManager::failoverSelfStep (PrismLinearSequencerContext *pPrismLin
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::failoverSelfStep : Entering ...");
 
-    PrismFailoverObjectManagerMessage *pMessage = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    PrismFailoverObjectManagerMessage *pMessage = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     FrameworkObjectManagerFailoverReason failoverReason                     = pMessage->getFailoverReason ();
     vector<LocationId>                   failedLocationIds                  = pMessage->getFailedLocationIds ();
@@ -6723,15 +6723,15 @@ void WaveObjectManager::resumeHandler (PrismResumeObjectManagerMessage *pPrismRe
     reply (pPrismResumeObjectManagerMessage);
 }
 
-PrismMessage *WaveObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveObjectManager::createMessageInstance (const UI32 &operationCode)
 {
     trace (TRACE_LEVEL_ERROR, "WaveObjectManager::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
     return (NULL);
 }
 
-PrismMessage *WaveObjectManager::createMessageInstanceWrapper (const UI32 &operationCode)
+WaveMessage *WaveObjectManager::createMessageInstanceWrapper (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     m_createMessageInstanceWrapperMutex.lock ();
 
@@ -6740,9 +6740,9 @@ PrismMessage *WaveObjectManager::createMessageInstanceWrapper (const UI32 &opera
 
     if (endElement != element)
     {
-        pPrismMessage = (m_ownersForCreatingMessageInstances[operationCode])->createMessageInstance (operationCode);
+        pWaveMessage = (m_ownersForCreatingMessageInstances[operationCode])->createMessageInstance (operationCode);
 
-        if (NULL == pPrismMessage)
+        if (NULL == pWaveMessage)
         {
             trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::createMessageInstanceWrapper : Owner for \"") + operationCode + string ("\" has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further."));
         }
@@ -6754,9 +6754,9 @@ PrismMessage *WaveObjectManager::createMessageInstanceWrapper (const UI32 &opera
 
         if (endElement1 != element1)
         {
-            pPrismMessage = (m_ownersForCreatingMessageInstances[WAVE_OBJECT_MANAGER_ANY_OPCODE])->createMessageInstance (operationCode);
+            pWaveMessage = (m_ownersForCreatingMessageInstances[WAVE_OBJECT_MANAGER_ANY_OPCODE])->createMessageInstance (operationCode);
 
-            if (NULL == pPrismMessage)
+            if (NULL == pWaveMessage)
             {
                 trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::createMessageInstanceWrapper : Owner for \"") + operationCode + string ("\" via WAVE_OBJECT_MANAGER_ANY_OPCODE has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further."));
             }
@@ -6769,7 +6769,7 @@ PrismMessage *WaveObjectManager::createMessageInstanceWrapper (const UI32 &opera
 
     m_createMessageInstanceWrapperMutex.unlock ();
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *WaveObjectManager::createManagedObjectInstance (const string &managedClassName)
@@ -7928,7 +7928,7 @@ void WaveObjectManager::query (WaveManagedObjectQueryContext *pWaveManagedObject
     pDatabaseObjectManagerExecuteQueryMessage->setLoadOneToManyRelationships  (pWaveManagedObjectQueryContext->getLoadOneToManyRelationships  ());
     pDatabaseObjectManagerExecuteQueryMessage->setLoadCompositions            (pWaveManagedObjectQueryContext->getLoadCompositions            ());
 
-    WaveMessageStatus status = send (pDatabaseObjectManagerExecuteQueryMessage, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::queryCallback), pWaveManagedObjectQueryContext);
+    WaveMessageStatus status = send (pDatabaseObjectManagerExecuteQueryMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::queryCallback), pWaveManagedObjectQueryContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -8410,12 +8410,12 @@ vector<WaveManagedObject *> *WaveObjectManager::queryManagedObjectAssociatedWith
 
 pthread_t WaveObjectManager::getPthreadId ()
 {
-    return (m_pAssociatedPrismThread->getId ());
+    return (m_pAssociatedWaveThread->getId ());
 }
 
 void WaveObjectManager::consumeAllPendingMessages ()
 {
-    WaveThreadStatus status = m_pAssociatedPrismThread->consumePendingMessages ();
+    WaveThreadStatus status = m_pAssociatedWaveThread->consumePendingMessages ();
 
     if (WAVE_THREAD_SUCCESS != status)
     {
@@ -8435,7 +8435,7 @@ void WaveObjectManager::setTraceLevel (const TraceLevel &traceLevel)
 
 void WaveObjectManager::setCpuAffinity (const vector<UI32> &cpuAffinityVector)
 {
-    m_pAssociatedPrismThread->setCpuAffinity (cpuAffinityVector);
+    m_pAssociatedWaveThread->setCpuAffinity (cpuAffinityVector);
 }
 
 void WaveObjectManager::setCpuAffinityHandler (PrismSetCpuAffinityObjectManagerMessage *pPrismSetCpuAffinityObjectManagerMessage)
@@ -8487,13 +8487,13 @@ ResourceId WaveObjectManager::sendSynchronouslyToWaveClient (const string &waveC
     return (sendSynchronously (pManagementInterfaceMessage));
 }
 
-WaveMessageStatus WaveObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
+WaveMessageStatus WaveObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
     pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId    (waveServerId);
     pManagementInterfaceMessage->setTtyName     (FrameworkToolKit::getCurrentTtyName ());
 
-    return (send (pManagementInterfaceMessage, messageCallback, pInputContext, timeOutInMilliSeconds, 0, pPrismMessageSender));
+    return (send (pManagementInterfaceMessage, messageCallback, pInputContext, timeOutInMilliSeconds, 0, pWaveMessageSender));
 }
 
 ResourceId WaveObjectManager::sendOneWayToAllWaveClients(ManagementInterfaceMessage *pManagementInterfaceMessage)
@@ -8507,13 +8507,13 @@ ResourceId WaveObjectManager::sendOneWayToAllWaveClients(ManagementInterfaceMess
 
 }
 
-ResourceId WaveObjectManager::sendToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext, UI32 timeOutInMilliSeconds, const SI32 &Instance)
+ResourceId WaveObjectManager::sendToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, const SI32 &Instance)
 {
     if (NULL != m_pInputMessage && (m_pInputMessage->getIsMessageBeingSurrogatedFlag ()))
     {
         trace (TRACE_LEVEL_DEBUG, string("WaveObjectManager::sendToWaveClient : getIsMessageBeingSurrogatedFlag returned : ") + m_pInputMessage->getIsMessageBeingSurrogatedFlag ());
         pManagementInterfaceMessage->updateForCompletionStatusDuringSurrogacy ();
-        ResourceId status = executeMessageReplyDuringSurrogacy (pManagementInterfaceMessage, pPrismMessageCallback, pPrismMessageContext);
+        ResourceId status = executeMessageReplyDuringSurrogacy (pManagementInterfaceMessage, pWaveMessageCallback, pWaveMessageContext);
         return (status);
     }
 
@@ -8524,7 +8524,7 @@ ResourceId WaveObjectManager::sendToWaveClient (const string &waveClientName, Ma
     pManagementInterfaceMessage->setClientName  (waveClientName+Instance);
     pManagementInterfaceMessage->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
 
-    return (send (pManagementInterfaceMessage, pPrismMessageCallback, pPrismMessageContext, timeOutInMilliSeconds));
+    return (send (pManagementInterfaceMessage, pWaveMessageCallback, pWaveMessageContext, timeOutInMilliSeconds));
 }
 
 
@@ -8540,7 +8540,7 @@ ResourceId WaveObjectManager::sendToWaveClient (const string &waveClientName, Ma
 //                 queue (submitT)      so that the callback will be called.                                            //
 // Return value  : ResourceId (status)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pManagementInterfaceMessageContext)
+ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pManagementInterfaceMessageContext)
 {
     if (NULL == pManagementInterfaceMessage)
     {
@@ -8548,7 +8548,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
         return (WAVE_MESSAGE_ERROR_NULL_MESSAGE);
     }
 
-    if (((PrismMessageResponseHandler) NULL) == pPrismMessageCallback)
+    if (((WaveMessageResponseHandler) NULL) == pWaveMessageCallback)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::send : Trying to send a message with NULL callback.  If you do not want to register a callback send it as a one way message.");
         return (WAVE_MESSAGE_ERROR_NULL_CALLBACK);
@@ -8572,7 +8572,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
     addMessageToMessageHistoryCalledFromSend (pManagementInterfaceMessage);
 
 
-    if ((NULL != m_pInputMessage) && (m_pAssociatedPrismThread->getId () == pManagementInterfaceMessage->getPrismMessageCreatorThreadId ()))
+    if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pManagementInterfaceMessage->getWaveMessageCreatorThreadId ()))
     {
         pManagementInterfaceMessage->setIsConfigurationChange (m_pInputMessage->getIsConfigurationChange ());
         pManagementInterfaceMessage->setIsConfigurationTimeChange (m_pInputMessage->getIsConfigurationTimeChange ());
@@ -8589,11 +8589,11 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
 
     m_sendReplyMutexForResponseMap.lock ();
     // Now store the details related to callback so that we can call the appropriate callback when the reply to this message arrives.
-    PrismMessageResponseContext *pManagementInterfaceMessageResponseContext = new PrismMessageResponseContext (pManagementInterfaceMessage, this, pPrismMessageCallback, pManagementInterfaceMessageContext);
+    WaveMessageResponseContext *pManagementInterfaceMessageResponseContext = new WaveMessageResponseContext (pManagementInterfaceMessage, this, pWaveMessageCallback, pManagementInterfaceMessageContext);
 
     prismAssert (NULL != pManagementInterfaceMessageResponseContext, __FILE__, __LINE__);
 
-    if (m_pAssociatedPrismThread->getId () == pManagementInterfaceMessage->getPrismMessageCreatorThreadId ())
+    if (m_pAssociatedWaveThread->getId () == pManagementInterfaceMessage->getWaveMessageCreatorThreadId ())
     {
         pManagementInterfaceMessageResponseContext->setPInputMessageInResponseContext (m_pInputMessage);
     }
@@ -8603,13 +8603,13 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
 
     // 3. Call the  to add this message in replied message queue
 
-    PrismThread *pPrismThread = NULL;
+    WaveThread *pWaveThread = NULL;
 
-    pPrismThread = PrismThread::getPrismThreadForServiceId (pManagementInterfaceMessage->getSenderServiceCode ());
+    pWaveThread = WaveThread::getWaveThreadForServiceId (pManagementInterfaceMessage->getSenderServiceCode ());
 
-    if (NULL == pPrismThread || (pPrismThread->getId () != PrismThread::getSelf ()))
+    if (NULL == pWaveThread || (pWaveThread->getId () != WaveThread::getSelf ()))
     {
-        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::executeMessageReplyDuringSurrogacy : PrismThread must be same.");
+        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::executeMessageReplyDuringSurrogacy : WaveThread must be same.");
         prismAssert (false, __FILE__, __LINE__);
     }
 
@@ -8617,7 +8617,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
 
     addMessageToMessageHistoryCalledFromReply (pManagementInterfaceMessage);
 
-    pPrismThread->submitReplyMessage (pManagementInterfaceMessage);
+    pWaveThread->submitReplyMessage (pManagementInterfaceMessage);
 
     return (WAVE_MESSAGE_SUCCESS);
 }
@@ -8740,7 +8740,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (PrismLinearSequence
         pClonedManagementInterfaceMessageForPhase1->setClientName (clientName);
         pClonedManagementInterfaceMessageForPhase1->setSlotInstance (instancesForPhase1[i]);
 
-        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase1, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllInstancesCallback), pPrismLinearSequencerContext, timeoutForPhase1);
+        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllInstancesCallback), pPrismLinearSequencerContext, timeoutForPhase1);
 
         pWaveSendToClientsContext->setSendStatusForPhase1 (instancesForPhase1[i], status);
 
@@ -8944,7 +8944,7 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (PrismLi
         pClonedManagementInterfaceMessageForPhase2->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
         pClonedManagementInterfaceMessageForPhase2->setSlotInstance (instancesToSendToForPhase2[i]);
 
-        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase2, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2);
+        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2);
 
         tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep : Instance %u : Send Status : %s", instancesToSendToForPhase2[i], (FrameworkToolKit::localize (status)).c_str ());
 
@@ -9331,10 +9331,10 @@ void WaveObjectManager::computeDisconnectedNodesIfSurrogateStep (PrismLinearSequ
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
-    PrismMessage *pPrismMessageForPhase1 = pWaveSendToClusterContext->getPPrismMessageForPhase1 ();
-    prismAssert (NULL != pPrismMessageForPhase1, __FILE__, __LINE__);
+    WaveMessage *pWaveMessageForPhase1 = pWaveSendToClusterContext->getPWaveMessageForPhase1 ();
+    prismAssert (NULL != pWaveMessageForPhase1, __FILE__, __LINE__);
 
-    if (false == pPrismMessageForPhase1->getNeedSurrogateSupportFlag ())
+    if (false == pWaveMessageForPhase1->getNeedSurrogateSupportFlag ())
     {
         trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::computeDisconnectedNodesIfSurrogateStep : Message doesn't need Surrogate support.");
         pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
@@ -9456,9 +9456,9 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
     vector<LocationId>        locationsToSendTo         = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();
     UI32                      numberOfLocationsToSendTo = locationsToSendTo.size ();
     UI32                      i                         = 0;
-    PrismMessage             *pPrismMessageForPhase1    = pWaveSendToClusterContext->getPPrismMessageForPhase1 ();
+    WaveMessage             *pWaveMessageForPhase1    = pWaveSendToClusterContext->getPWaveMessageForPhase1 ();
 
-    prismAssert (NULL != pPrismMessageForPhase1, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessageForPhase1, __FILE__, __LINE__);
 
     UI32                      timeoutForPhase1          = pWaveSendToClusterContext->getTimeoutForPhase1 ();
     bool                      isSendOneWayToWaveCluster = pWaveSendToClusterContext->getIsSendOneWayToWaveCluster ();
@@ -9467,17 +9467,17 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
 
     for (i = 0; i < numberOfLocationsToSendTo; i++)
     {
-        PrismMessage *pClonedPrismMessageForPhase1 = pPrismMessageForPhase1->clone ();
+        WaveMessage *pClonedWaveMessageForPhase1 = pWaveMessageForPhase1->clone ();
 
-        prismAssert (NULL != pClonedPrismMessageForPhase1, __FILE__, __LINE__);
+        prismAssert (NULL != pClonedWaveMessageForPhase1, __FILE__, __LINE__);
 
         if (0 >= locationsToSendTo[i])
         {
             tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : incorrect location-id specified for phase1 message : %d", locationsToSendTo[i]);
         }
-        else if (pPrismMessageForPhase1->getNeedSurrogateSupportFlag () && (locationsToSendTo[i] != FrameworkToolKit::getThisLocationId ()) && (false == FrameworkToolKit::isAConnectedLocation (locationsToSendTo[i])))
+        else if (pWaveMessageForPhase1->getNeedSurrogateSupportFlag () && (locationsToSendTo[i] != FrameworkToolKit::getThisLocationId ()) && (false == FrameworkToolKit::isAConnectedLocation (locationsToSendTo[i])))
         {
-            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : getNeedSurrogateSupportFlag = %d", pClonedPrismMessageForPhase1->getNeedSurrogateSupportFlag ());
+            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : getNeedSurrogateSupportFlag = %d", pClonedWaveMessageForPhase1->getNeedSurrogateSupportFlag ());
             LocationId locationToSurrogate = 0;
             LocationBase *pThisLocation = FrameworkToolKit::getPThisLocation ();
             if (NULL != pThisLocation)
@@ -9485,12 +9485,12 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
                 locationToSurrogate = ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationId ());
             }
 
-            pClonedPrismMessageForPhase1->setSurrogatingForLocationId (locationsToSendTo[i]);
-            pClonedPrismMessageForPhase1->setIsMessageBeingSurrogatedFlag (true);
+            pClonedWaveMessageForPhase1->setSurrogatingForLocationId (locationsToSendTo[i]);
+            pClonedWaveMessageForPhase1->setIsMessageBeingSurrogatedFlag (true);
 
             if (true == isSendOneWayToWaveCluster)
             {
-                status = sendOneWay (pClonedPrismMessageForPhase1, locationToSurrogate);
+                status = sendOneWay (pClonedWaveMessageForPhase1, locationToSurrogate);
 
                 tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Location Id %u surrogating for %u : Send One Way Status : %s", locationToSurrogate, locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
             }
@@ -9498,7 +9498,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
             {
                 // Perform regular asynchronous send to wave cluster.
 
-                status = send (pClonedPrismMessageForPhase1, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pPrismLinearSequencerContext, timeoutForPhase1, locationToSurrogate);
+                status = send (pClonedWaveMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pPrismLinearSequencerContext, timeoutForPhase1, locationToSurrogate);
 
                 tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Location Id %u surrogating for %u : Send Status : %s", locationToSurrogate, locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
             }
@@ -9507,7 +9507,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
        {
             if (true == isSendOneWayToWaveCluster)
             {
-                status = sendOneWay (pClonedPrismMessageForPhase1, locationsToSendTo[i]);
+                status = sendOneWay (pClonedWaveMessageForPhase1, locationsToSendTo[i]);
 
                 tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Location Id %u : Send One Way Status : %s", locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
             }
@@ -9515,7 +9515,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
             {
                 // Perform regular asynchronous send to wave cluster.
 
-                status = send (pClonedPrismMessageForPhase1, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pPrismLinearSequencerContext, timeoutForPhase1, locationsToSendTo[i]);
+                status = send (pClonedWaveMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pPrismLinearSequencerContext, timeoutForPhase1, locationsToSendTo[i]);
 
                 tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Location Id %u : Send Status : %s", locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
             }
@@ -9527,7 +9527,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pPrismLinearSequencerContext->incrementNumberOfFailures ();
-            delete pClonedPrismMessageForPhase1;
+            delete pClonedWaveMessageForPhase1;
         }
         else
         {
@@ -9543,27 +9543,27 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
     --(*pPrismLinearSequencerContext);
 
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     LocationId receiverLocationId = 0;
-    if (true == pPrismMessage->getIsMessageBeingSurrogatedFlag ())
+    if (true == pWaveMessage->getIsMessageBeingSurrogatedFlag ())
     {
-        receiverLocationId = pPrismMessage->getSurrogatingForLocationId ();
+        receiverLocationId = pWaveMessage->getSurrogatingForLocationId ();
     }
     else
     {
-        receiverLocationId = pPrismMessage->getReceiverLocationId ();
+        receiverLocationId = pWaveMessage->getReceiverLocationId ();
     }
 
 
-    pWaveSendToClusterContext->setResultingMessageForPhase1 (receiverLocationId, pPrismMessage);
+    pWaveSendToClusterContext->setResultingMessageForPhase1 (receiverLocationId, pWaveMessage);
 
     pWaveSendToClusterContext->setFrameworkStatusForPhase1 (receiverLocationId, frameworkStatus);
 
@@ -9575,7 +9575,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus fra
     }
     else
     {
-        ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
+        ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
 
         pWaveSendToClusterContext->setCompletionStatusForPhase1 (receiverLocationId, completionStatus);
 
@@ -9668,7 +9668,7 @@ void WaveObjectManager::computeFailedNodesForPhase1Step (PrismLinearSequencerCon
             trace (TRACE_LEVEL_INFO, "WaveObjectManager::computeFailedNodesForPhase1Step : Partial Success case.");
             pWaveSendToClusterContext->setIsPartialSuccessCaseFlag (true);
         }
-        else if (NULL != pWaveSendToClusterContext->getPPrismMessageForPhase2 ())
+        else if (NULL != pWaveSendToClusterContext->getPWaveMessageForPhase2 ())
         {
             // Enforce that we do not update Phase2 locations when a Phase2 message is not set.
 
@@ -9710,7 +9710,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
     vector<LocationId>        locationsToSendTo         = pWaveSendToClusterContext->getLocationsToSendToForPhase2 ();
     UI32                      numberOfLocationsToSendTo = locationsToSendTo.size ();
     UI32                      i                         = 0;
-    PrismMessage             *pPrismMessageForPhase2    = pWaveSendToClusterContext->getPPrismMessageForPhase2 ();
+    WaveMessage             *pWaveMessageForPhase2    = pWaveSendToClusterContext->getPWaveMessageForPhase2 ();
 
     pPrismLinearSequencerContext->setNumberOfFailures (0);
 
@@ -9720,7 +9720,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
         return;
     }
 
-    if (NULL == pPrismMessageForPhase2)
+    if (NULL == pWaveMessageForPhase2)
     {
         pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
@@ -9741,11 +9741,11 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
             return;
         }
 
-        PrismMessage *pClonedPrismMessageForPhase2 = pPrismMessageForPhase2->clone ();
+        WaveMessage *pClonedWaveMessageForPhase2 = pWaveMessageForPhase2->clone ();
 
-        prismAssert (NULL != pClonedPrismMessageForPhase2, __FILE__, __LINE__);
+        prismAssert (NULL != pClonedWaveMessageForPhase2, __FILE__, __LINE__);
 
-        WaveMessageStatus status = send (pClonedPrismMessageForPhase2, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2, locationsToSendTo[i]);
+        WaveMessageStatus status = send (pClonedWaveMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2, locationsToSendTo[i]);
 
         tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep : Location Id %u : Send Status : %s", locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
 
@@ -9754,7 +9754,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pPrismLinearSequencerContext->incrementNumberOfFailures ();
-            delete pClonedPrismMessageForPhase2;
+            delete pClonedWaveMessageForPhase2;
         }
         else
         {
@@ -9767,7 +9767,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
     --(*pPrismLinearSequencerContext);
 
@@ -9775,11 +9775,11 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (Framewo
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    LocationId                receiverLocationId        = pPrismMessage->getReceiverLocationId ();
+    LocationId                receiverLocationId        = pWaveMessage->getReceiverLocationId ();
 
-    pWaveSendToClusterContext->setResultingMessageForPhase2 (receiverLocationId, pPrismMessage);
+    pWaveSendToClusterContext->setResultingMessageForPhase2 (receiverLocationId, pWaveMessage);
 
     pWaveSendToClusterContext->setFrameworkStatusForPhase2 (receiverLocationId, frameworkStatus);
 
@@ -9791,7 +9791,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (Framewo
     }
     else
     {
-        ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
+        ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
 
         pWaveSendToClusterContext->setCompletionStatusForPhase2 (receiverLocationId, completionStatus);
 
@@ -9831,10 +9831,10 @@ void WaveObjectManager::computeOverallStatusStep (PrismLinearSequencerContext *p
     UI32                      failureCountFromContext             = pPrismLinearSequencerContext->getNumberOfFailures ();
     ResourceId                overAllCompletionStatus             = WAVE_MESSAGE_ERROR;
 
-    PrismMessage             *pPrismMessageForPhase2              = pWaveSendToClusterContext->getPPrismMessageForPhase2 ();
+    WaveMessage             *pWaveMessageForPhase2              = pWaveSendToClusterContext->getPWaveMessageForPhase2 ();
     bool                      noRollBackFlag                      = pWaveSendToClusterContext->getTreatFailureOnFailingOverAsSuccessFlag ();
 
-    if (NULL != pPrismMessageForPhase2)
+    if (NULL != pWaveMessageForPhase2)
     {
         for (i = 0; i < numberOfLocationsToSendToForPhase2; i++)
         {
@@ -9919,7 +9919,7 @@ void WaveObjectManager::computeOverallStatusStep (PrismLinearSequencerContext *p
             {
                 overAllCompletionStatus = WAVE_MESSAGE_SUCCESS;
             }
-            else if (NULL == pPrismMessageForPhase2)
+            else if (NULL == pWaveMessageForPhase2)
             {
                 overAllCompletionStatus = WAVE_MESSAGE_ERROR_FAILED_ON_SOME_NODES;
             }
@@ -10208,26 +10208,26 @@ void WaveObjectManager::backendSyncUp (PrismAsynchronousContext *pPrismAsynchron
 
 
 // This function is called through wrapper functions. Whether history state is on or off is checked in wrapper functions.
-void WaveObjectManager::addMessageToMessageHistory (PrismMessage *pPrismMessage, WaveMessageHistoryLogType messageHistoryLogType)
+void WaveObjectManager::addMessageToMessageHistory (WaveMessage *pWaveMessage, WaveMessageHistoryLogType messageHistoryLogType)
 {
     // do not log message history related messages.
-    if ((WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_CONFIG == pPrismMessage->getOperationCode ()) || (WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_DUMP == pPrismMessage->getOperationCode ()))
+    if ((WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_CONFIG == pWaveMessage->getOperationCode ()) || (WAVE_OBJECT_MANAGER_MESSAGE_HISTORY_DUMP == pWaveMessage->getOperationCode ()))
     {
         return;
     }
 
     WaveMessageSendType sendType = WAVE_MESSAGE_SEND_TYPE_ASYNCHRONOUS;
 
-    if (true == pPrismMessage->getIsSynchronousMessage ())
+    if (true == pWaveMessage->getIsSynchronousMessage ())
     {
         sendType = WAVE_MESSAGE_SEND_TYPE_SYNCHRONOUS;
     }
-    else if (true == pPrismMessage->getIsOneWayMessage ())
+    else if (true == pWaveMessage->getIsOneWayMessage ())
     {
         sendType = WAVE_MESSAGE_SEND_TYPE_ONEWAY;
     }
 
-    MessageHistory *pMessageHistoryObject   = new MessageHistory (pPrismMessage, sendType, messageHistoryLogType);
+    MessageHistory *pMessageHistoryObject   = new MessageHistory (pWaveMessage, sendType, messageHistoryLogType);
 
     if (m_messageHistoryNextSlotInVector < m_messageHistoryVector.size ())
     {
@@ -10253,27 +10253,27 @@ void WaveObjectManager::addMessageToMessageHistory (PrismMessage *pPrismMessage,
     // trace (TRACE_LEVEL_INFO, getName () + string (" :  Logged a message : ") + debugString);
 }
 
-void WaveObjectManager::addMessageToMessageHistoryCalledFromSend (PrismMessage *pPrismMessage)
+void WaveObjectManager::addMessageToMessageHistoryCalledFromSend (WaveMessage *pWaveMessage)
 {
     if ((true == m_messageHistoryState) && (true == m_messageHistoryLogInsideSend))
     {
-        addMessageToMessageHistory (pPrismMessage, WAVE_MESSAGE_HISTORY_LOG_AT_SEND);
+        addMessageToMessageHistory (pWaveMessage, WAVE_MESSAGE_HISTORY_LOG_AT_SEND);
     }
 }
 
-void WaveObjectManager::addMessageToMessageHistoryCalledFromReply (PrismMessage *pPrismMessage)
+void WaveObjectManager::addMessageToMessageHistoryCalledFromReply (WaveMessage *pWaveMessage)
 {
     if ((true == m_messageHistoryState) && (true == m_messageHistoryLogInsideReply))
     {
-        addMessageToMessageHistory (pPrismMessage, WAVE_MESSAGE_HISTORY_LOG_AT_REPLY);
+        addMessageToMessageHistory (pWaveMessage, WAVE_MESSAGE_HISTORY_LOG_AT_REPLY);
     }
 }
 
-void WaveObjectManager::addMessageToMessageHistoryCalledFromHandle (PrismMessage *pPrismMessage)
+void WaveObjectManager::addMessageToMessageHistoryCalledFromHandle (WaveMessage *pWaveMessage)
 {
     if ((true == m_messageHistoryState) && (true == m_messageHistoryLogInsideHandleMessage))
     {
-        addMessageToMessageHistory (pPrismMessage, WAVE_MESSAGE_HISTORY_LOG_AT_HANDLE);
+        addMessageToMessageHistory (pWaveMessage, WAVE_MESSAGE_HISTORY_LOG_AT_HANDLE);
     }
 }
 
@@ -10602,7 +10602,7 @@ void WaveObjectManager::checkBasicDatabaseSanityWorkersStep (PrismLinearSequence
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkBasicDatabaseSanityWorkersStep: Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
     ResourceId status    = WAVE_MESSAGE_SUCCESS;
@@ -10657,7 +10657,7 @@ void WaveObjectManager::checkBasicDatabaseSanitySelfStep (PrismLinearSequencerCo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkBasicDatabaseSanitySelfStep : Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkBasicDatabaseSanitySelfStepCallback), pPrismLinearSequencerContext);
     pWaveAsynchronousContextForBootPhases->setBootReason (pWaveObjectManagerDatabaseSanityCheckMessage->getBootReason ());
@@ -10686,7 +10686,7 @@ void WaveObjectManager::checkIncorrectEntriesWorkersStep (PrismLinearSequencerCo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkIncorrectEntriesWorkersStep : Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
     ResourceId status    = WAVE_MESSAGE_SUCCESS;
@@ -10741,7 +10741,7 @@ void WaveObjectManager::checkIncorrectEntriesSelfStep (PrismLinearSequencerConte
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkIncorrectEntriesSelfStep : Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkIncorrectEntriesSelfStepCallback), pPrismLinearSequencerContext);
     pWaveAsynchronousContextForBootPhases->setBootReason (pWaveObjectManagerDatabaseSanityCheckMessage->getBootReason ());
@@ -11005,19 +11005,19 @@ set<string>  &WaveObjectManager::getSetOfPartitionNamesReferencedInCurrentTransa
     return (m_setOfPartitionNamesReferencedInCurrentTransaction);
 }
 
-ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (PrismMessage *pPrismMessage)
+ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (WaveMessage *pWaveMessage)
 {
-    PrismThread    *pHaPeerTransportPrismThread                 = PrismThread::getPrismThreadForMessageHaPeerTransport ();
-    UI32            prismMessageId                              = pPrismMessage->getMessageId ();
+    WaveThread    *pHaPeerTransportWaveThread                 = WaveThread::getWaveThreadForMessageHaPeerTransport ();
+    UI32            prismMessageId                              = pWaveMessage->getMessageId ();
     string          serializedConfigurationIntentMessage        = "";
 
-    if (NULL == pHaPeerTransportPrismThread)
+    if (NULL == pHaPeerTransportWaveThread)
     {
         trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendOneWayForStoringConfigurationIntent : Ha Peer Service is not registered to accept configuration intents."));
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    if (false == (pHaPeerTransportPrismThread->hasWaveObjectManagers ()))
+    if (false == (pHaPeerTransportWaveThread->hasWaveObjectManagers ()))
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::sendOneWayForStoringConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
         return (WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
@@ -11028,7 +11028,7 @@ ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (PrismMess
 
     pStoreConfigurationIntentMessage->setConfigurationIntentMessageId (prismMessageId);
 
-    pPrismMessage->serialize2 (serializedConfigurationIntentMessage);
+    pWaveMessage->serialize2 (serializedConfigurationIntentMessage);
 
     pStoreConfigurationIntentMessage->addBuffer (SERIALIZED_CONFIGURATION_INTENT_BUFFER, serializedConfigurationIntentMessage.size (), (void *) (serializedConfigurationIntentMessage.c_str ()), false);
 
@@ -11040,22 +11040,22 @@ ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (PrismMess
 
     addMessageToMessageHistoryCalledFromSend (pStoreConfigurationIntentMessage);
 
-    WaveMessageStatus status = pHaPeerTransportPrismThread->submitMessage (pStoreConfigurationIntentMessage);
+    WaveMessageStatus status = pHaPeerTransportWaveThread->submitMessage (pStoreConfigurationIntentMessage);
 
     return (status);
 }
 
 ResourceId WaveObjectManager::sendOneWayForRemovingConfigurationIntent (const UI32 &configurationIntentMessageId)
 {
-    PrismThread    *pHaPeerTransportPrismThread                 = PrismThread::getPrismThreadForMessageHaPeerTransport ();
+    WaveThread    *pHaPeerTransportWaveThread                 = WaveThread::getWaveThreadForMessageHaPeerTransport ();
 
-    if (NULL == pHaPeerTransportPrismThread)
+    if (NULL == pHaPeerTransportWaveThread)
     {
         trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::sendOneWayForRemovingConfigurationIntent : Ha Peer Service is not registered to accept configuration intents."));
         return (WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
     }
 
-    if (false == (pHaPeerTransportPrismThread->hasWaveObjectManagers ()))
+    if (false == (pHaPeerTransportWaveThread->hasWaveObjectManagers ()))
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
         return (WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
@@ -11072,7 +11072,7 @@ ResourceId WaveObjectManager::sendOneWayForRemovingConfigurationIntent (const UI
 
     addMessageToMessageHistoryCalledFromSend (pRemoveConfigurationIntentMessage);
 
-    WaveMessageStatus status = pHaPeerTransportPrismThread->submitMessage (pRemoveConfigurationIntentMessage);
+    WaveMessageStatus status = pHaPeerTransportWaveThread->submitMessage (pRemoveConfigurationIntentMessage);
 
     return (status);
 }
@@ -11099,7 +11099,7 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
     UI32                            numberOfLocations         = locationsToSend.size ();
     bool                            isThisLocationInvolved    = false;
     ResourceId                      status                    = WAVE_MESSAGE_SUCCESS;
-    PrismMessage                   *pPrismMessage             = pWaveSendMulticastContext->getPrismMessage ();
+    WaveMessage                   *pWaveMessage             = pWaveSendMulticastContext->getWaveMessage ();
     set<LocationId>                 remoteLocations;
 
     for (UI32 i = 0; i < numberOfLocations; i++)
@@ -11120,19 +11120,19 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
 
     ++(*pPrismLinearSequencerContext);
 
-    pPrismMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
     if (0 != remoteLocations.size ())
     {
         // Set the multicast context before sending to remote locations
         InterLocationMulticastMessage *pInterLocationMulticastMessage = new InterLocationMulticastMessage ();
 
-        pPrismMessage->serialize2 (pInterLocationMulticastMessage->getSerializedStringToSend ());
+        pWaveMessage->serialize2 (pInterLocationMulticastMessage->getSerializedStringToSend ());
 
         pInterLocationMulticastMessage->setLocationsToSend (remoteLocations);
-        pInterLocationMulticastMessage->setMessageIdForMessageToMulticast (pPrismMessage->getMessageId ());
+        pInterLocationMulticastMessage->setMessageIdForMessageToMulticast (pWaveMessage->getMessageId ());
 
-        status = send (pInterLocationMulticastMessage, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::performSendMulticastRemoteCallback), pPrismLinearSequencerContext);
+        status = send (pInterLocationMulticastMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastRemoteCallback), pPrismLinearSequencerContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -11164,7 +11164,7 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
 
     if (true == isThisLocationInvolved)
     {
-        status = send (pPrismMessage, reinterpret_cast<PrismMessageResponseHandler> (&WaveObjectManager::performSendMulticastLocalCallback), pPrismLinearSequencerContext);
+        status = send (pWaveMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastLocalCallback), pPrismLinearSequencerContext);
 
         prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 
@@ -11176,7 +11176,7 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
     pPrismLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
 }
 
-void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
     WaveSendMulticastContext    *pWaveSendMulticastContext    = dynamic_cast<WaveSendMulticastContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
@@ -11185,12 +11185,12 @@ void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frame
 
     prismAssert (FRAMEWORK_SUCCESS == frameworkStatus, __FILE__, __LINE__);
 
-    ResourceId  completionstatus = pPrismMessage->getCompletionStatus ();
+    ResourceId  completionstatus = pWaveMessage->getCompletionStatus ();
     LocationId  thisLocationId   = FrameworkToolKit::getThisLocationId ();
 
     pWaveSendMulticastContext->setStatusForALocation (thisLocationId, completionstatus);
 
-    ResourceId completionStatus = pPrismMessage->getCompletionStatus ();
+    ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
 
     if (WAVE_MESSAGE_SUCCESS != completionStatus)
     {
@@ -11204,11 +11204,11 @@ void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frame
     pPrismLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
 }
 
-void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     PrismLinearSequencerContext    *pPrismLinearSequencerContext    = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
     WaveSendMulticastContext       *pWaveSendMulticastContext       = dynamic_cast<WaveSendMulticastContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
-    InterLocationMulticastMessage  *pInterLocationMulticastMessage  = dynamic_cast<InterLocationMulticastMessage *> (pPrismMessage);
+    InterLocationMulticastMessage  *pInterLocationMulticastMessage  = dynamic_cast<InterLocationMulticastMessage *> (pWaveMessage);
     set<LocationId>::iterator       locationIterator;
 
     prismAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
@@ -11254,10 +11254,10 @@ void WaveObjectManager::getAllOwnedManagedObjectClassNames (vector<string> &owne
     }
 }
 
-void WaveObjectManager::postponeMessageHandling (PrismMessage *pPrismMessage)
+void WaveObjectManager::postponeMessageHandling (WaveMessage *pWaveMessage)
 {
     //Always insert at the front so that when we get from the front and populate into the prism queue we are in the correct order.
-    m_postponedMessageQueue.insertAtTheFront (pPrismMessage);
+    m_postponedMessageQueue.insertAtTheFront (pWaveMessage);
 }
 
 void WaveObjectManager::resumeAllPostponedMessages ()
@@ -11266,14 +11266,14 @@ void WaveObjectManager::resumeAllPostponedMessages ()
     {
         if (WAVE_MUTEX_SUCCESS == (m_postponedMessageQueueMutex.tryLock ()))
         {
-            PrismMessage *pPrismMessage = m_postponedMessageQueue.removeAndGetFromFront ();
+            WaveMessage *pWaveMessage = m_postponedMessageQueue.removeAndGetFromFront ();
 
             do
             {
-                m_pAssociatedPrismThread->submitMessageAtFront (pPrismMessage);
-                pPrismMessage = m_postponedMessageQueue.removeAndGetFromFront ();
+                m_pAssociatedWaveThread->submitMessageAtFront (pWaveMessage);
+                pWaveMessage = m_postponedMessageQueue.removeAndGetFromFront ();
             }
-            while (pPrismMessage != NULL);
+            while (pWaveMessage != NULL);
 
             m_postponedMessageQueueMutex.unlock ();
         }
@@ -11287,7 +11287,7 @@ void WaveObjectManager::checkMessageAttributesInSerialization ()
     // 3. call setupAttributesForSerialization for each of the message instance.
 
     UI32            operationCode   = 0;
-    PrismMessage*   pPrismMessage   = NULL;
+    WaveMessage*   pWaveMessage   = NULL;
 
     m_createMessageInstanceWrapperMutex.lock ();
 
@@ -11298,21 +11298,21 @@ void WaveObjectManager::checkMessageAttributesInSerialization ()
     {
         operationCode   = element->first;
 
-        pPrismMessage = (m_ownersForCreatingMessageInstances[operationCode])->createMessageInstance (operationCode);
+        pWaveMessage = (m_ownersForCreatingMessageInstances[operationCode])->createMessageInstance (operationCode);
 
 
-        if (NULL == pPrismMessage)
+        if (NULL == pWaveMessage)
         {
             trace (TRACE_LEVEL_WARN, string ("WaveObjectManager::checkMessageAttributesInSerialization : Owner for \"") + operationCode + string ("\" has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further."));
         }
         else
         {
-            pPrismMessage->setupAttributesForSerialization ();
+            pWaveMessage->setupAttributesForSerialization ();
 
             trace (TRACE_LEVEL_INFO, string ("WaveObjectManager::checkMessageAttributesInSerialization : message for [") + operationCode + string ("] is created and setupAttributesForSerialization is successful for the same."));
 
-            delete pPrismMessage;
-            pPrismMessage = NULL;
+            delete pWaveMessage;
+            pWaveMessage = NULL;
         }
 
         element++;

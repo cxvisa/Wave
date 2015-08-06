@@ -16,7 +16,7 @@ namespace WaveNs
 //
 //
 AppInterfaceObjectManagerRemoteCommandsMessage::AppInterfaceObjectManagerRemoteCommandsMessage ()
-    : PrismMessage (0, APP_REMOTE_COMMANDS)
+    : WaveMessage (0, APP_REMOTE_COMMANDS)
 {
     m_nResults  = 0;
     m_nCommands = 0;
@@ -25,7 +25,7 @@ AppInterfaceObjectManagerRemoteCommandsMessage::AppInterfaceObjectManagerRemoteC
 }
 
 AppInterfaceObjectManagerRemoteCommandsMessage::AppInterfaceObjectManagerRemoteCommandsMessage (WaveServiceId serviceId)
-    : PrismMessage (serviceId, APP_REMOTE_COMMANDS)
+    : WaveMessage (serviceId, APP_REMOTE_COMMANDS)
 {
     m_nResults  = 0;
     m_nCommands = 0;
@@ -38,7 +38,7 @@ AppInterfaceObjectManagerRemoteCommandsMessage::~AppInterfaceObjectManagerRemote
 
 void AppInterfaceObjectManagerRemoteCommandsMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32 (&m_nResults,  "nResults"));
      addSerializableAttribute (new AttributeUI32 (&m_nCommands, "nCommands"));
@@ -141,14 +141,14 @@ void AppInterfaceObjectManagerRemoteCommandsMessage::transferOutputBufferToUser 
 
 
 ClusterInterfaceObjectManagerCreateClusterDoneMessage::ClusterInterfaceObjectManagerCreateClusterDoneMessage ()
-    : PrismMessage (0, APP_INTERFACE_CREATE_CLUSTER_DONE)
+    : WaveMessage (0, APP_INTERFACE_CREATE_CLUSTER_DONE)
 {
     m_nSecondaryNodes = 0;
     m_operationStatus = 0;
 }
 
 ClusterInterfaceObjectManagerCreateClusterDoneMessage::ClusterInterfaceObjectManagerCreateClusterDoneMessage (WaveServiceId serviceId)
-    : PrismMessage (serviceId, APP_INTERFACE_CREATE_CLUSTER_DONE)
+    : WaveMessage (serviceId, APP_INTERFACE_CREATE_CLUSTER_DONE)
 {
     m_nSecondaryNodes = 0;
     m_operationStatus = 0;
@@ -161,7 +161,7 @@ ClusterInterfaceObjectManagerCreateClusterDoneMessage::~ClusterInterfaceObjectMa
 
 void ClusterInterfaceObjectManagerCreateClusterDoneMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString             (&m_primaryNodeName,     "primaryNodeName"));
      addSerializableAttribute (new AttributeUI32               (&m_nSecondaryNodes,     "nSecondaryNodes"));
@@ -313,13 +313,13 @@ UI32 ClusterInterfaceObjectManagerCreateClusterDoneMessage::getOperationStatus (
 }
 
 ClusterInterfaceObjectManagerDeleteClusterDoneMessage::ClusterInterfaceObjectManagerDeleteClusterDoneMessage ()
-    : PrismMessage (0, APP_INTERFACE_DELETE_CLUSTER_DONE),
+    : WaveMessage (0, APP_INTERFACE_DELETE_CLUSTER_DONE),
       m_operationStatus(0)
 {
 }
 
 ClusterInterfaceObjectManagerDeleteClusterDoneMessage::ClusterInterfaceObjectManagerDeleteClusterDoneMessage (WaveServiceId serviceId)
-    : PrismMessage (serviceId, APP_INTERFACE_DELETE_CLUSTER_DONE),
+    : WaveMessage (serviceId, APP_INTERFACE_DELETE_CLUSTER_DONE),
       m_operationStatus(0)
 {
 }
@@ -330,7 +330,7 @@ ClusterInterfaceObjectManagerDeleteClusterDoneMessage::~ClusterInterfaceObjectMa
 
 void ClusterInterfaceObjectManagerDeleteClusterDoneMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 void ClusterInterfaceObjectManagerDeleteClusterDoneMessage::setRemoveClusterResultCallBack (removeClusterCallBack_t removeClusterResultCb)
@@ -365,7 +365,7 @@ UI32 ClusterInterfaceObjectManagerDeleteClusterDoneMessage::getOperationStatus (
 }
 
 ClusterInterfaceObjectManagerAddNodeDoneMessage::ClusterInterfaceObjectManagerAddNodeDoneMessage ()
-    : PrismMessage (0, APP_INTERFACE_ADD_NODE_DONE)
+    : WaveMessage (0, APP_INTERFACE_ADD_NODE_DONE)
 {
     m_nodePort          = 0;
     m_operationStatus   = 0;
@@ -373,7 +373,7 @@ ClusterInterfaceObjectManagerAddNodeDoneMessage::ClusterInterfaceObjectManagerAd
 }
 
 ClusterInterfaceObjectManagerAddNodeDoneMessage::ClusterInterfaceObjectManagerAddNodeDoneMessage (WaveServiceId serviceId)
-    : PrismMessage (serviceId, APP_INTERFACE_ADD_NODE_DONE)
+    : WaveMessage (serviceId, APP_INTERFACE_ADD_NODE_DONE)
 {
     m_nodePort          = 0;
     m_operationStatus   = 0;
@@ -386,7 +386,7 @@ ClusterInterfaceObjectManagerAddNodeDoneMessage::~ClusterInterfaceObjectManagerA
 
 void ClusterInterfaceObjectManagerAddNodeDoneMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_nodeName, "nodeName"));
      addSerializableAttribute (new AttributeSI32   (&m_nodePort, "nodePort"));
@@ -445,7 +445,7 @@ UI32 ClusterInterfaceObjectManagerAddNodeDoneMessage::getOperationStatus ()
 
 
 ClusterInterfaceObjectManagerJoinNodeDoneMessage::ClusterInterfaceObjectManagerJoinNodeDoneMessage ()
-    : PrismMessage (0, APP_INTERFACE_JOIN_NODE_DONE)
+    : WaveMessage (0, APP_INTERFACE_JOIN_NODE_DONE)
 {
     m_nodePort          = 0;
     m_operationStatus   = 0;
@@ -453,7 +453,7 @@ ClusterInterfaceObjectManagerJoinNodeDoneMessage::ClusterInterfaceObjectManagerJ
 }
 
 ClusterInterfaceObjectManagerJoinNodeDoneMessage::ClusterInterfaceObjectManagerJoinNodeDoneMessage (WaveServiceId serviceId)
-    : PrismMessage (serviceId, APP_INTERFACE_JOIN_NODE_DONE)
+    : WaveMessage (serviceId, APP_INTERFACE_JOIN_NODE_DONE)
 {
     m_nodePort          = 0;
     m_operationStatus   = 0;
@@ -516,14 +516,14 @@ UI32 ClusterInterfaceObjectManagerJoinNodeDoneMessage::getOperationStatus ()
 }
 
 ClusterInterfaceObjectManagerDeleteNodeDoneMessage::ClusterInterfaceObjectManagerDeleteNodeDoneMessage ()
-    : PrismMessage (0, APP_INTERFACE_DELETE_NODE_DONE)
+    : WaveMessage (0, APP_INTERFACE_DELETE_NODE_DONE)
 {
     m_nodePort          = 0;
     m_operationStatus   = 0;
 }
 
 ClusterInterfaceObjectManagerDeleteNodeDoneMessage::ClusterInterfaceObjectManagerDeleteNodeDoneMessage (WaveServiceId serviceId)
-    : PrismMessage (serviceId, APP_INTERFACE_DELETE_NODE_DONE)
+    : WaveMessage (serviceId, APP_INTERFACE_DELETE_NODE_DONE)
 {
     m_nodePort          = 0;
     m_operationStatus   = 0;
@@ -537,7 +537,7 @@ ClusterInterfaceObjectManagerDeleteNodeDoneMessage::~ClusterInterfaceObjectManag
 
 void ClusterInterfaceObjectManagerDeleteNodeDoneMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_nodeName, "nodeName"));
      addSerializableAttribute (new AttributeSI32   (&m_nodePort, "nodePort"));

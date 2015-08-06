@@ -51,11 +51,11 @@ void FrameworkTestability3ObjectManager::listenForEvents (WaveAsynchronousContex
     pWaveAsynchronousContextForBootPhases->callback ();
 }
 
-PrismMessage *FrameworkTestability3ObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *FrameworkTestability3ObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler (const FrameworkTestabilityEvent1 *&pEvent)

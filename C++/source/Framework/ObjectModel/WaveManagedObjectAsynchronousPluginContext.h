@@ -88,8 +88,8 @@ class IsAssociatedManagedObjectToBeCreatedContext : public WaveManagedObjectAsyn
                             IsAssociatedManagedObjectToBeCreatedContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~IsAssociatedManagedObjectToBeCreatedContext ();
 
-        PrismMessage       *getMessage                  () const;
-        void                setMessage                  (PrismMessage *message);
+        WaveMessage       *getMessage                  () const;
+        void                setMessage                  (WaveMessage *message);
 
         void                setAssociatedClassName      (const string &associatedClassName);
         string              getAssociatedClassName      () const;
@@ -108,7 +108,7 @@ class IsAssociatedManagedObjectToBeCreatedContext : public WaveManagedObjectAsyn
 
     // Now the data members
     private :
-        PrismMessage     *m_pMessage;
+        WaveMessage     *m_pMessage;
         string           m_associatedClassName;
         string           m_associatedAttributeName;
         string           m_associatedAttributeValue;

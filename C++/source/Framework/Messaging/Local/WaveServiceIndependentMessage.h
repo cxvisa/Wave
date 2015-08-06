@@ -12,13 +12,13 @@
 #ifndef WAVESERVICEINDEPENDENTMESSAGE_H
 #define WAVESERVICEINDEPENDENTMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Messaging/Local/WaveServiceIndependentMessageBase.h"
 
 namespace WaveNs
 {
 
-class WaveServiceIndependentMessage : public PrismMessage, public WaveServiceIndependentMessageBase
+class WaveServiceIndependentMessage : public WaveMessage, public WaveServiceIndependentMessageBase
 {
     private :
     protected :

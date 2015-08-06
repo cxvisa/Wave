@@ -7,7 +7,7 @@
 #ifndef DATABASEOBJECTMANAGERDROPALLDBVIEWSMESSAGE_H
 #define DATABASEOBJECTMANAGERDROPALLDBVIEWSMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ namespace WaveNs
 class WaveManagedObject;
 class WaveObjectManager;
 
-class DatabaseObjectManagerDropAllDBViewsMessage : public PrismMessage
+class DatabaseObjectManagerDropAllDBViewsMessage : public WaveMessage
 {
     private :
     protected :

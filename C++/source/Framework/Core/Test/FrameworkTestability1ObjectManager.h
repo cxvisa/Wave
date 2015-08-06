@@ -36,7 +36,7 @@ class FrameworkTestability1ObjectManager : public WaveLocalObjectManager
 {
     private :
                                            FrameworkTestability1ObjectManager       ();
-               PrismMessage               *createMessageInstance                    (const UI32 &operationCode);
+               WaveMessage               *createMessageInstance                    (const UI32 &operationCode);
         static ManagementInterfaceMessage *createManagementInterfaceMessageInstance (const UI32 &operationCode);
 
         void          listenForEvents                    (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);

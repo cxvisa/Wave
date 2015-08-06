@@ -21,7 +21,7 @@ class CentralClusterConfigDeleteClusterWorker : public WaveWorker
     private :
                       CentralClusterConfigDeleteClusterWorker              (WaveObjectManager *pWaveObjectManager);
 
-        PrismMessage *createMessageInstance                                (const UI32 &operationCode);
+        WaveMessage *createMessageInstance                                (const UI32 &operationCode);
 
         void          deleteClusterMessageHandler                          (ClusterObjectManagerDeleteClusterMessage *pClusterObjectManagerDeleteClusterMessage);
         void          deleteClusterValidateStep                            (ClusterDeleteContext *pClusterDeleteContext);

@@ -7,7 +7,7 @@
 #ifndef PERSISTENCEOBJECTMANAGERDELAYEDTRANSACTIONMESSAGES_H
 #define PERSISTENCEOBJECTMANAGERDELAYEDTRANSACTIONMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 #include <string>
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceObjectManagerAddDelayedTransactionMessage : public PrismMessage
+class PersistenceObjectManagerAddDelayedTransactionMessage : public WaveMessage
 {
     private :
         void            setupAttributesForSerialization ();

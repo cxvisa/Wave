@@ -94,7 +94,7 @@ void RunDebugScriptMessage::setupAttributesForSerialization ()
 }
 
 RunDebugScriptOnClusterMemberMessage::RunDebugScriptOnClusterMemberMessage ()
-    :PrismMessage(DistributedDebugLocalObjectManager::getWaveServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE),
+    :WaveMessage(DistributedDebugLocalObjectManager::getWaveServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE),
     m_isNos             (true),
     m_scriptString      (""),
     m_outputString      ("")
@@ -102,7 +102,7 @@ RunDebugScriptOnClusterMemberMessage::RunDebugScriptOnClusterMemberMessage ()
 }
 
 RunDebugScriptOnClusterMemberMessage::RunDebugScriptOnClusterMemberMessage (bool nosOrBash)
-    :PrismMessage(DistributedDebugLocalObjectManager::getWaveServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE), 
+    :WaveMessage(DistributedDebugLocalObjectManager::getWaveServiceId (),RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE), 
     m_isNos             (nosOrBash),
     m_scriptString      (""),
     m_outputString      ("")
@@ -141,7 +141,7 @@ const  string &  RunDebugScriptOnClusterMemberMessage::getOutputString   () cons
 
 void RunDebugScriptOnClusterMemberMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
      addSerializableAttribute (new AttributeBool       (&m_isNos,           "isNos"));
      addSerializableAttribute (new AttributeString     (&m_scriptString,    "scriptString"));
      addSerializableAttribute (new AttributeString     (&m_outputString,    "outputString"));

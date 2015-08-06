@@ -17,7 +17,7 @@ class DistributedLogSynchronousLinearSequencerContext : public PrismSynchronousL
     private:
     protected:
     public:
-                            DistributedLogSynchronousLinearSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DistributedLogSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                             DistributedLogSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual            ~DistributedLogSynchronousLinearSequencerContext (); 
 

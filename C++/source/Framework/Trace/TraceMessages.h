@@ -7,7 +7,7 @@
 #ifndef TRACEMESSAGES_H
 #define TRACEMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Trace/TraceTypes.h"
 #include "Framework/ObjectModel/WaveClientSessionContext.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
@@ -37,7 +37,7 @@ typedef enum
     TRACE_INPUT_BUFFER = 0
 } TraceMessageBufferTags;
 
-class TraceMessage : public PrismMessage
+class TraceMessage : public WaveMessage
 {
     private :
                 void addInput                        (const string &inputString);
@@ -137,7 +137,7 @@ class TraceObjectManagerGetClientsInformationMessage : public ManagementInterfac
     friend class TraceObjectManager;
 };
 
-class TraceObjectManagerPrintToWaveClientSessionMessage : public PrismMessage
+class TraceObjectManagerPrintToWaveClientSessionMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();
@@ -171,7 +171,7 @@ class TraceObjectManagerPrintToWaveClientSessionMessage : public PrismMessage
     public :
 };
 
-class TraceObjectManagerPrintToAllWaveClientSessionsMessage : public PrismMessage
+class TraceObjectManagerPrintToAllWaveClientSessionsMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

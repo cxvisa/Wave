@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopySchemaMessage (const string &prepareString, const string &sourceSchema, const string &destSchema)
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
       m_pResults (NULL),
       m_prepareString (prepareString),
       m_sourceSchema (sourceSchema),
@@ -21,7 +21,7 @@ DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopyS
 }
 
 DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopySchemaMessage (const string &sourceSchema, const string &destSchema)
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
       m_pResults (NULL),
       m_prepareString (""),
       m_sourceSchema (sourceSchema),
@@ -30,7 +30,7 @@ DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopyS
 }
 
 DatabaseObjectManagerExecuteCopySchemaMessage::DatabaseObjectManagerExecuteCopySchemaMessage ()
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA),
       m_pResults (NULL),
       m_prepareString (""),
       m_sourceSchema (""),
@@ -44,7 +44,7 @@ DatabaseObjectManagerExecuteCopySchemaMessage::~DatabaseObjectManagerExecuteCopy
 
 void DatabaseObjectManagerExecuteCopySchemaMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_prepareString,   "prepareString"));
      addSerializableAttribute (new AttributeString (&m_sourceSchema,    "sourceSchema"));

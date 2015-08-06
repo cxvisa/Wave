@@ -8,7 +8,7 @@
 #include "Framework/Core/PrismFrameworkObjectManager.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Framework/LocationManagement/LocationBase.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/StreamingSocket.h"
 #include "Framework/Utils/ClientStreamingSocket.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -214,14 +214,14 @@ const UI32 FrameworkToolKit::getThisLocationId ()
 
     if (WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole)
     {
-    WaveObjectManager *pWaveObjectManagerForCurrentThread   = PrismThread::getWaveObjectManagerForCurrentThread ();
+    WaveObjectManager *pWaveObjectManagerForCurrentThread   = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    if ((PrismThread::getSelf ()) != (PrismThread::getPrismThreadForServiceId (ReservedWaveLocalObjectManager::getWaveServiceId ()))->getId ())
+    if ((WaveThread::getSelf ()) != (WaveThread::getWaveThreadForServiceId (ReservedWaveLocalObjectManager::getWaveServiceId ()))->getId ())
     {
-        PrismMessage *pPrismMessage = pWaveObjectManagerForCurrentThread->getPInputMesage ();
-        if (NULL != pPrismMessage && (true == pPrismMessage->getIsMessageBeingSurrogatedFlag ()))
+        WaveMessage *pWaveMessage = pWaveObjectManagerForCurrentThread->getPInputMesage ();
+        if (NULL != pWaveMessage && (true == pWaveMessage->getIsMessageBeingSurrogatedFlag ()))
         {
-            locationid = pPrismMessage->getSurrogatingForLocationId ();
+            locationid = pWaveMessage->getSurrogatingForLocationId ();
         }
     }
     }
@@ -330,7 +330,7 @@ const SI32 FrameworkToolKit::getClusterPrimaryPort ()
 
 const string FrameworkToolKit::getServiceNameById (const WaveServiceId &id)
 {
-    return (PrismThread::getPrismServiceNameForServiceId (id));
+    return (WaveThread::getPrismServiceNameForServiceId (id));
 }
 
 const WaveServiceId FrameworkToolKit::getServiceIdByName (const string &serviceName)
@@ -340,7 +340,7 @@ const WaveServiceId FrameworkToolKit::getServiceIdByName (const string &serviceN
 
     if ((WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
     {
-        prismServiceId = PrismThread::getWaveServiceIdForServiceName (serviceName);
+        prismServiceId = WaveThread::getWaveServiceIdForServiceName (serviceName);
     }
     else
     {
@@ -859,7 +859,7 @@ ResourceId FrameworkToolKit::printServices (UI32 argc, vector<string> argv)
     UI32                   numberOfPrismServices;
     UI32                   i;
 
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
     numberOfPrismServices = prismServiceIds.size ();
 
     for (i = 0; i < numberOfPrismServices; i++)
@@ -1253,7 +1253,7 @@ void FrameworkToolKit::getServices (vector<string> &serviceNames, vector<UI32> &
     UI32                   numberOfPrismServices;
     UI32                   i;
 
-    PrismThread::getListOfServiceIds (serviceIds);
+    WaveThread::getListOfServiceIds (serviceIds);
     numberOfPrismServices = serviceIds.size ();
 
     for (i = 0; i < numberOfPrismServices; i++)
@@ -2106,7 +2106,7 @@ void FrameworkToolKit::setRewriteStartupSchemaOnNodeReady ()
 
     // Following lines are for printing caller details.
 
-    WaveObjectManager *pWaveObjectManagerForCurrentThread = PrismThread::getWaveObjectManagerForCurrentThread ();
+    WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
     prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     // service name is protected, So, at least print service Id.

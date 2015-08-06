@@ -21,7 +21,7 @@ class WaveSystemManagementRebuildYangInterfacesMessage;
 class WaveSystemManagementYangInterfacesInitializeWorker: public WaveWorker
 {
     private :
-        virtual PrismMessage   *createMessageInstance (const UI32 &operationCode);
+        virtual WaveMessage   *createMessageInstance (const UI32 &operationCode);
         
                 void            initialize                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void            initializeSystemManagementInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);

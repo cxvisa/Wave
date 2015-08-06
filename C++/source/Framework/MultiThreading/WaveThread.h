@@ -8,7 +8,7 @@
 #define PRISMTHREAD_H
 
 #include "Framework/MultiThreading/PrismPosixThread.h"
-#include "Framework/MultiThreading/PrismMessageQueue.cpp"
+#include "Framework/MultiThreading/WaveMessageQueue.cpp"
 #include "Framework/Utils/PrismMutex.h"
 #include "Framework/Utils/PrismCondition.h"
 #include "Framework/Core/WaveServiceMap.h"
@@ -23,23 +23,23 @@ typedef enum
 {
     WAVE_THREAD_MESSAGE_QUEUE_SUCCESS = 0,
     WAVE_THREAD_MESSAGE_QUEUE_NO_MESSAGES_TO_PROCESS
-} PrismThreadMessageQueueStatus;
+} WaveThreadMessageQueueStatus;
 
-class PrismThread : public PrismPosixThread
+class WaveThread : public PrismPosixThread
 {
     private :
-        PrismMessage       *getNextMessageToProcess                                ();
-        WaveMessageStatus   submitMessage                                          (PrismMessage *pPrismMessage);
-        WaveMessageStatus   submitMessageAtFront                                   (PrismMessage *pPrismMessage);
-        WaveMessageStatus   submitMessageAtBack                                    (PrismMessage *pPrismMessage);
-        WaveMessageStatus   recallMessage                                          (PrismMessage *pPrismMessage);
+        WaveMessage       *getNextMessageToProcess                                ();
+        WaveMessageStatus   submitMessage                                          (WaveMessage *pWaveMessage);
+        WaveMessageStatus   submitMessageAtFront                                   (WaveMessage *pWaveMessage);
+        WaveMessageStatus   submitMessageAtBack                                    (WaveMessage *pWaveMessage);
+        WaveMessageStatus   recallMessage                                          (WaveMessage *pWaveMessage);
         UI32                recallTimerExpirationMessagesForTimer                  (const TimerHandle &timerHandle);
-        WaveMessageStatus   submitReplyMessage                                     (PrismMessage *pPrismMessage);
+        WaveMessageStatus   submitReplyMessage                                     (WaveMessage *pWaveMessage);
         WaveMessageStatus   submitEvent                                            (PrismEvent *pPrismEvent);
         WaveObjectManager *getWaveObjectManagerForOperationCode                  (UI32 operationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCode             (UI32 eventOperationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
-        WaveObjectManager *getWaveObjectManagerForPrismMessageId                 (UI32 prismMessageId);
+        WaveObjectManager *getWaveObjectManagerForWaveMessageId                 (UI32 prismMessageId);
         WaveObjectManager *getWaveObjectManagerForManagedClass                   (const string &managedClass);
         WaveServiceId      getWaveServiceId                                      () const;
         bool                hasWaveObjectManagers                                 ();
@@ -58,17 +58,17 @@ class PrismThread : public PrismPosixThread
         UI32                getNumberOfPendingNormalMessages                       ();
         UI32                getNumberOfPendingHighPriorityMessages                 ();
 
-        void                emptyIncomingMessageQueuesForDisable                   (vector<PrismMessage *> &incomingMessages);
+        void                emptyIncomingMessageQueuesForDisable                   (vector<WaveMessage *> &incomingMessages);
 
         void                setCpuAffinity                                         (const vector<UI32> &cpuAffinityVector);
 
         void                requestForThreadTermination                            ();
 
     protected :
-                                  PrismThread            (WaveServiceId id, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
-                                  PrismThread            (WaveServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
+                                  WaveThread            (WaveServiceId id, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
+                                  WaveThread            (WaveServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
 
-        virtual                   ~PrismThread           ();
+        virtual                   ~WaveThread           ();
         virtual WaveThreadStatus  start                  ();
         virtual WaveThreadStatus  consumePendingMessages ();
                 void              addWaveObjectManager   (WaveObjectManager *pWaveObjectManager);
@@ -76,13 +76,13 @@ class PrismThread : public PrismPosixThread
     public :
 
         static void               getListOfServiceIds                     (vector<WaveServiceId> &serviceIds);
-        static PrismThread       *getPrismThreadForServiceId              (WaveServiceId id);
+        static WaveThread       *getWaveThreadForServiceId              (WaveServiceId id);
         static vector<UI32>       getCpuAffinityVectorForServiceId        (WaveServiceId id);
-        static PrismThreadId      getSelf                                 ();
+        static WaveThreadId      getSelf                                 ();
         static string             getPrismServiceNameForServiceId         (const WaveServiceId &id);
         static WaveServiceId     getWaveServiceIdForServiceName         (const string &prismServiceName);
-        static PrismThread       *getPrismThreadForMessageRemoteTransport ();
-        static PrismThread       *getPrismThreadForMessageHaPeerTransport ();
+        static WaveThread       *getWaveThreadForMessageRemoteTransport ();
+        static WaveThread       *getWaveThreadForMessageHaPeerTransport ();
         static WaveThreadStatus   joinAllThreads                          ();
 
                vector<UI32>       getCpuAffinityVector                    () const;
@@ -96,16 +96,16 @@ class PrismThread : public PrismPosixThread
     private :
                WaveServiceId                          m_prismServiceId;
 
-               PrismMessageQueue<PrismMessage>         m_messages;
-               PrismMessageQueue<PrismMessage>         m_messageResponses;
-               PrismMessageQueue<PrismMessage>         m_highPriorityMessages;
-               PrismMessageQueue<PrismMessage>         m_highPriorityMessageResponses;
-               PrismMessageQueue<PrismMessage>         m_events;
-               PrismMessageQueue<PrismMessage>         m_timerExpirations;
-               PrismMessageQueue<PrismMessage>         m_timerExpirationResponses;
-               PrismMessageQueue<PrismMessage>         m_frameworkMessages;
-               PrismMessageQueue<PrismMessage>         m_frameworkMessageResponses;
-               PrismMessageQueue<PrismMessage>         m_frameworkResumeMessages;
+               WaveMessageQueue<WaveMessage>         m_messages;
+               WaveMessageQueue<WaveMessage>         m_messageResponses;
+               WaveMessageQueue<WaveMessage>         m_highPriorityMessages;
+               WaveMessageQueue<WaveMessage>         m_highPriorityMessageResponses;
+               WaveMessageQueue<WaveMessage>         m_events;
+               WaveMessageQueue<WaveMessage>         m_timerExpirations;
+               WaveMessageQueue<WaveMessage>         m_timerExpirationResponses;
+               WaveMessageQueue<WaveMessage>         m_frameworkMessages;
+               WaveMessageQueue<WaveMessage>         m_frameworkMessageResponses;
+               WaveMessageQueue<WaveMessage>         m_frameworkResumeMessages;
 
                PrismMutex                              m_gateKeeper;
                PrismMutex                              m_wakeupCaller;
@@ -126,7 +126,7 @@ class PrismThread : public PrismPosixThread
 
                vector<UI32>                            m_cpuAffinityVector;
 
-        static map<PrismThreadId, WaveObjectManager *> m_prismThreadIdToWaveObjectManagerMap;
+        static map<WaveThreadId, WaveObjectManager *> m_prismThreadIdToWaveObjectManagerMap;
         static PrismMutex                              m_prismThreadIdToWaveObjectManagerMapMutex;
 
                bool                                    m_terminateThread;
@@ -137,7 +137,7 @@ class PrismThread : public PrismPosixThread
         friend class WaveObjectManager;
         friend class PrismFrameworkObjectManager;
         friend class TimerWorker;
-        friend class PrismMessageFactory;
+        friend class WaveMessageFactory;
         friend class WaveManagedObjectFactory;
 };
 

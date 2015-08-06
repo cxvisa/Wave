@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerExecuteTransactionMessage::PersistenceLocalObjectManagerExecuteTransactionMessage (const string &sql, const UI32 &transactionId)
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION),
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION),
       m_sql (sql),
       m_isCommit (false),
       m_isRollback (false),
@@ -25,7 +25,7 @@ PersistenceLocalObjectManagerExecuteTransactionMessage::PersistenceLocalObjectMa
 }
 
 PersistenceLocalObjectManagerExecuteTransactionMessage::PersistenceLocalObjectManagerExecuteTransactionMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION),
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION),
       m_sql (""),
       m_isCommit (false),
       m_isRollback (false),
@@ -43,7 +43,7 @@ PersistenceLocalObjectManagerExecuteTransactionMessage::~PersistenceLocalObjectM
 
 void PersistenceLocalObjectManagerExecuteTransactionMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeString (&m_sql,                                  "sql"));
     addSerializableAttribute (new AttributeBool   (&m_isCommit,                             "isCommit"));

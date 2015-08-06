@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerAddDelayedTransactionMessage::PersistenceObjectManagerAddDelayedTransactionMessage (const string &sql)
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
     m_sql (sql)
 {
 }
 
 PersistenceObjectManagerAddDelayedTransactionMessage::PersistenceObjectManagerAddDelayedTransactionMessage ()
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBJECT_MANAGER_ADD_DELAYED_TRANSACTION),
     m_sql ("")
 {
 }
@@ -29,7 +29,7 @@ PersistenceObjectManagerAddDelayedTransactionMessage::~PersistenceObjectManagerA
 
 void PersistenceObjectManagerAddDelayedTransactionMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeString (&m_sql, "sql"));
 }

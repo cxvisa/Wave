@@ -29,28 +29,28 @@ PrismFrameworkConfigurationWorker::PrismFrameworkConfigurationWorker (WaveObject
         createLockFileForConfigurationFile();
     }
 
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkConfigurationWorker::syncPrismConfigurationMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkConfigurationWorker::syncPrismConfigurationMessageHandler));
 }
 
 PrismFrameworkConfigurationWorker::~PrismFrameworkConfigurationWorker ()
 {
 }
 
-PrismMessage *PrismFrameworkConfigurationWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PrismFrameworkConfigurationWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_OBJECT_MANAGER_SYNC_CONFIGURATION_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerSyncConfigurationMessage ();
+            pWaveMessage = new FrameworkObjectManagerSyncConfigurationMessage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 ResourceId PrismFrameworkConfigurationWorker::savePrismConfiguration (const string &prismConfigurationFile, const bool &syncToStandby)
@@ -418,7 +418,7 @@ ResourceId PrismFrameworkConfigurationWorker::updatePrismConfigurationFileStep (
     UI32        sizeOfBuffer        = 0;
     bool        cfgValidity         = false;
 
-    FrameworkObjectManagerSyncConfigurationMessage *pMessage = reinterpret_cast<FrameworkObjectManagerSyncConfigurationMessage *> (pPrismFrameworkConfigurationContext->getPPrismMessage ());
+    FrameworkObjectManagerSyncConfigurationMessage *pMessage = reinterpret_cast<FrameworkObjectManagerSyncConfigurationMessage *> (pPrismFrameworkConfigurationContext->getPWaveMessage ());
     
     bool *cfgValidityPtr = reinterpret_cast<bool *> (pMessage->findBuffer (CFG_VALIDITY, sizeOfBuffer));
 

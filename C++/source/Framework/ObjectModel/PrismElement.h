@@ -8,7 +8,7 @@
 #define PRISMELEMENT_H
 
 #include "Framework/Utils/StringUtils.h"
-//#include "Framework/Messaging/Local/PrismMessage.h"
+//#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Trace/TraceMessages.h"
 #include "Framework/Utils/PrismLinearSequencerContext.h"
 #include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
@@ -23,7 +23,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 class PrismEvent;
 class PrismElement;
 class WaveObjectManager;
@@ -42,9 +42,9 @@ class WaveSendMulticastContext;
 class CliBlockContext;
 class WaveBrokerPublishMessage;
 
-typedef void (PrismElement::* PrismMessageHandler)                  (PrismMessage *pPrismMessage);
+typedef void (PrismElement::* WaveMessageHandler)                  (WaveMessage *pWaveMessage);
 typedef void (PrismElement::* PrismEventHandler)                    (const PrismEvent *&pPrismEvent);
-typedef void (PrismElement::* PrismMessageResponseHandler)          (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+typedef void (PrismElement::* WaveMessageResponseHandler)          (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 typedef void (PrismElement::* PrismTimerExpirationHandler)          (TimerHandle timerHandle, void *pContext);
 typedef void (*WaveServiceIndependentMessageHandler)                (WaveServiceIndependentMessage *pWaveServiceIndependentMessage);
 typedef void (*ManagementInterfaceServiceIndependentMessageHandler) (ManagementInterfaceServiceIndependentMessage *pManagementInterfaceServiceIndependentMessage);
@@ -63,15 +63,15 @@ class PrismElement
                                               PrismElement                                         (WaveObjectManager *pWaveObjectManager);
                                               PrismElement                                         (const PrismElement &prismElement);
                 PrismElement                 &operator =                                           (const PrismElement &prismElement);
-        virtual WaveMessageStatus             send                                                 (PrismMessage *pPrismMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, PrismElement *pPrismMessageSender = NULL) = 0;
-        virtual WaveMessageStatus             sendOneWay                                           (PrismMessage *pPrismMessage, const LocationId &locationId = 0) = 0;
-        virtual WaveMessageStatus             sendOneWayToFront                                    (PrismMessage *pPrismMessage, const LocationId &locationId = 0) = 0;
-        virtual WaveMessageStatus             sendSynchronously                                    (PrismMessage *pPrismMessage, const LocationId &locationId = 0) = 0;
+        virtual WaveMessageStatus             send                                                 (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, PrismElement *pWaveMessageSender = NULL) = 0;
+        virtual WaveMessageStatus             sendOneWay                                           (WaveMessage *pWaveMessage, const LocationId &locationId = 0) = 0;
+        virtual WaveMessageStatus             sendOneWayToFront                                    (WaveMessage *pWaveMessage, const LocationId &locationId = 0) = 0;
+        virtual WaveMessageStatus             sendSynchronously                                    (WaveMessage *pWaveMessage, const LocationId &locationId = 0) = 0;
         virtual void                          sendToWaveCluster                                    (WaveSendToClusterContext *pWaveSendToClusterContext) = 0;
         virtual void                          sendMulticast                                        (WaveSendMulticastContext *pWaveSendMulticastContext) = 0;
         virtual void                          sendOneWayToWaveCluster                              (WaveSendToClusterContext *pWaveSendToClusterContext) = 0;
-        virtual WaveMessageStatus             recall                                               (PrismMessage *pPrismMessage) = 0;
-        virtual WaveMessageStatus             reply                                                (PrismMessage *pPrismMessage) = 0;
+        virtual WaveMessageStatus             recall                                               (WaveMessage *pWaveMessage) = 0;
+        virtual WaveMessageStatus             reply                                                (WaveMessage *pWaveMessage) = 0;
         virtual WaveMessageStatus             broadcast                                            (PrismEvent *pPrismEvent) = 0;
         virtual void                          trace                                                (TraceLevel traceLevel, const string &stringToTrace) = 0;
         virtual void                          tracePrintf                                          (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...) = 0;
@@ -148,8 +148,8 @@ class PrismElement
         virtual void                          listenForEvent                                       (WaveServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0) = 0;
 
         virtual ResourceId                    sendSynchronouslyToWaveClient                        (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance = 0) = 0;
-        virtual WaveMessageStatus             sendToWaveServer                                     (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds) = 0;
-        virtual ResourceId                    sendToWaveClient                                     (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler pPrismMessageCallback, void *pPrismMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instance = 0) = 0;
+        virtual WaveMessageStatus             sendToWaveServer                                     (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds) = 0;
+        virtual ResourceId                    sendToWaveClient                                     (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instance = 0) = 0;
         virtual void                          sendToWaveClients                                    (WaveSendToClientsContext *pWaveSendToClientsContext) = 0;
         virtual void                          printfToWaveClientSession                            (const WaveClientSessionContext &waveClientContext, const char * const pFormat, ...) = 0;
         virtual void                          printfToAllWaveClientSessions                        (const WaveClientSessionContext &waveClientContext, const char * const pFormat, ...) = 0;
@@ -161,7 +161,7 @@ class PrismElement
 
         virtual void                          deleteAllManagedObjectInstances                      (const string &className) = 0;
 
-        virtual void                          postponeMessageHandling                              (PrismMessage *pPrismMessage) = 0;
+        virtual void                          postponeMessageHandling                              (WaveMessage *pWaveMessage) = 0;
         virtual void                          resumeAllPostponedMessages                           () = 0;
         virtual ResourceId                    blockCli                                             (const CliBlockContext &cliBlockContext, const bool &clusterWide) = 0;
         virtual ResourceId                    unblockCli                                           (const CliBlockContext &cliBlockContext, const bool &clusterWide) = 0;
@@ -177,7 +177,7 @@ class PrismElement
     public :
         virtual                   ~PrismElement                ();
         virtual WaveManagedObject *createManagedObjectInstance (const string &managedClassName);
-        virtual PrismMessage      *createMessageInstance       (const UI32 &operationCode);
+        virtual WaveMessage      *createMessageInstance       (const UI32 &operationCode);
 
     // Now the data members
 

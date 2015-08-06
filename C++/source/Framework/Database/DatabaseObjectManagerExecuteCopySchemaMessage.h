@@ -7,7 +7,7 @@
 #ifndef DATABASEOBJECTMANAGEREXECUTECOPYSCHEMAMESSAGE_H
 #define DATABASEOBJECTMANAGEREXECUTECOPYSCHEMAMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "libpq-fe.h"
 
 #include <string>
@@ -21,7 +21,7 @@ namespace WaveNs
 class WaveManagedObject;
 class WaveObjectManager;
 
-class DatabaseObjectManagerExecuteCopySchemaMessage : public PrismMessage
+class DatabaseObjectManagerExecuteCopySchemaMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();

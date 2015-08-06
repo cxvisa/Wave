@@ -7,7 +7,7 @@
 #ifndef DATABASEOBJECTMANAGEREXECUTEQUERYMESSAGE_H
 #define DATABASEOBJECTMANAGEREXECUTEQUERYMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 #include "libpq-fe.h"
 
@@ -22,7 +22,7 @@ namespace WaveNs
 class WaveManagedObject;
 class WaveObjectManager;
 
-class DatabaseObjectManagerExecuteQueryMessage : public PrismMessage
+class DatabaseObjectManagerExecuteQueryMessage : public WaveMessage
 {
     private :
     protected :

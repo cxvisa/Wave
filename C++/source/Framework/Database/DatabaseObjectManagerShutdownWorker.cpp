@@ -20,26 +20,26 @@ namespace WaveNs
 DatabaseObjectManagerShutdownWorker::DatabaseObjectManagerShutdownWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_SHUTDOWN, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerShutdownWorker::shutdownMessageHandler));
-    addOperationMap (DATABASE_OBJECT_MANAGER_STOP, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerShutdownWorker::stopMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_SHUTDOWN, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerShutdownWorker::shutdownMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_STOP, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerShutdownWorker::stopMessageHandler));
 }
 
 DatabaseObjectManagerShutdownWorker::~DatabaseObjectManagerShutdownWorker ()
 {
 }
 
-PrismMessage *DatabaseObjectManagerShutdownWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerShutdownWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_SHUTDOWN :
-            pPrismMessage = new DatabaseObjectManagerShutdownMessage ();
+            pWaveMessage = new DatabaseObjectManagerShutdownMessage ();
             break;
 
         case DATABASE_OBJECT_MANAGER_STOP :
-            pPrismMessage = new DatabaseObjectManagerShutdownMessage (false);
+            pWaveMessage = new DatabaseObjectManagerShutdownMessage (false);
             break;
 
         default :
@@ -47,7 +47,7 @@ PrismMessage *DatabaseObjectManagerShutdownWorker::createMessageInstance (const 
             prismAssert (false, __FILE__, __LINE__);
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerShutdownWorker::shutdownMessageHandler (DatabaseObjectManagerShutdownMessage *pDatabaseObjectManagerShutdownMessage)

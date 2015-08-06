@@ -261,20 +261,20 @@ WaveMessageStatus WaveClientSynchronousConnection::sendSynchronouslyToWaveServer
 }
 
 
-WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveClientMessageCallbackHandler messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pPrismMessageSender)
+WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveClientMessageCallbackHandler messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
 {
     WaveMessageStatus status = WAVE_MESSAGE_ERROR;
 
-    status = (WaveUserInterfaceObjectManager::getInstance ())->sendToWaveServer (getWaveServerId (), pManagementInterfaceMessage, messageCallback, pInputContext, timeOutInMilliSeconds, locationId, pPrismMessageSender);
+    status = (WaveUserInterfaceObjectManager::getInstance ())->sendToWaveServer (getWaveServerId (), pManagementInterfaceMessage, messageCallback, pInputContext, timeOutInMilliSeconds, locationId, pWaveMessageSender);
 
     return (status);
 }
 
-WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
+WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
     WaveMessageStatus status = WAVE_MESSAGE_ERROR;
 
-    status = WaveObjectManagerToolKit::sendToWaveServer (getWaveServerId (), pManagementInterfaceMessage, messageCallback, pPrismMessageSender, pInputContext, timeOutInMilliSeconds);
+    status = WaveObjectManagerToolKit::sendToWaveServer (getWaveServerId (), pManagementInterfaceMessage, messageCallback, pWaveMessageSender, pInputContext, timeOutInMilliSeconds);
 
     return (status);
 }

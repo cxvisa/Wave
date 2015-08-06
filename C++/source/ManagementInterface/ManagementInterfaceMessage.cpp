@@ -8,13 +8,13 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
-#include "Framework/Messaging/MessageFactory/PrismMessageFactory.h"
+#include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 
 namespace WaveNs
 {
 
 ManagementInterfaceMessage::ManagementInterfaceMessage (const string &serviceName, const UI32 &operationId)
-    : PrismMessage  (FrameworkToolKit::getServiceIdByName (serviceName), operationId),
+    : WaveMessage  (FrameworkToolKit::getServiceIdByName (serviceName), operationId),
       m_serviceName (serviceName),
       m_clientPort  (0),
       m_clientId    (0),
@@ -31,7 +31,7 @@ ManagementInterfaceMessage::~ManagementInterfaceMessage ()
 
 void ManagementInterfaceMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_serviceName,                 "serviceName"));
      addSerializableAttribute (new AttributeString (&m_clientIpAddress,             "clientIpAddress"));
@@ -140,22 +140,22 @@ void ManagementInterfaceMessage::setTtyName (const string &ttyName)
     m_ttyName = ttyName;
 }
 
-PrismMessage *ManagementInterfaceMessage::clone ()
+WaveMessage *ManagementInterfaceMessage::clone ()
 {
-    PrismMessage *pClonedPrismMessage            = PrismMessageFactory::getManagementInterfaceMessageInstance (m_clientNameWithoutExtension, m_serviceCode, m_operationCode);
+    WaveMessage *pClonedWaveMessage            = WaveMessageFactory::getManagementInterfaceMessageInstance (m_clientNameWithoutExtension, m_serviceCode, m_operationCode);
     string        serializedData;
     UI32          messageIdAtOriginatingLocation = 0;
     UI32          originalMessageId              = 0;
     UI32          waveClientMessageId            = 0;
 
-    prismAssert (NULL != pClonedPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pClonedWaveMessage, __FILE__, __LINE__);
 
-    if (NULL == pClonedPrismMessage)
+    if (NULL == pClonedWaveMessage)
     {
         return (NULL);
     }
 
-    ManagementInterfaceMessage *pManagementInterfaceMesage = dynamic_cast<ManagementInterfaceMessage *> (pClonedPrismMessage);
+    ManagementInterfaceMessage *pManagementInterfaceMesage = dynamic_cast<ManagementInterfaceMessage *> (pClonedWaveMessage);
 
     prismAssert (NULL != pManagementInterfaceMesage, __FILE__, __LINE__);
 

@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
     FilePushFileFragmentMessage::FilePushFileFragmentMessage ()
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILEFRAGMENT),
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILEFRAGMENT),
         m_sourceLocationId    (0),
         m_fileFragmentIndex   (0),
         m_fragmentSize        (0),
@@ -21,7 +21,7 @@ namespace WaveNs
     }
 
     FilePushFileFragmentMessage::FilePushFileFragmentMessage (const string &TransferHandle,const LocationId &sourceLocationId, const UI32 &FileFragmentIndex,const UI32 &FragmentSize, bool LastFragment)
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILEFRAGMENT),
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILEFRAGMENT),
         m_transferHandle      (TransferHandle),
         m_sourceLocationId    (sourceLocationId),
         m_fileFragmentIndex   (FileFragmentIndex),
@@ -36,7 +36,7 @@ namespace WaveNs
 
     void  FilePushFileFragmentMessage::setupAttributesForSerialization()
     {
-        PrismMessage::setupAttributesForSerialization ();
+        WaveMessage::setupAttributesForSerialization ();
         addSerializableAttribute (new AttributeString(&m_transferHandle,"TransferHandle"));
         addSerializableAttribute (new AttributeUI32(&m_sourceLocationId,"SourceLocationId"));
         addSerializableAttribute (new AttributeUI32(&m_fileFragmentIndex,"FileFragmentIndex"));

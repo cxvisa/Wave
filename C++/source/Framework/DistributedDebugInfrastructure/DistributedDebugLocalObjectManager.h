@@ -34,7 +34,7 @@ class DistributedDebugLocalObjectManager : public WaveLocalObjectManager
     virtual                       ~DistributedDebugLocalObjectManager                                      ();
 
 
-    virtual PrismMessage *createMessageInstance    (const UI32 &operationCode);
+    virtual WaveMessage *createMessageInstance    (const UI32 &operationCode);
 
 
               void executeScriptStep (PrismSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext);

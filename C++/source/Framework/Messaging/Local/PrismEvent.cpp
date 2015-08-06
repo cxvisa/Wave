@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 PrismEvent::PrismEvent (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismMessage (serviceCode, operationCode),
+    : WaveMessage (serviceCode, operationCode),
       m_referenceCountForEventNotifications (1)
 {
     setType (WAVE_MESSAGE_TYPE_EVENT);
@@ -27,7 +27,7 @@ PrismEvent::~PrismEvent ()
 
 void PrismEvent::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 UI32 PrismEvent::getReferenceCountForEventNotifications () const

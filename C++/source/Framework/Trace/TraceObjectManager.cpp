@@ -65,15 +65,15 @@ TraceObjectManager::TraceObjectManager ()
 
     setIsEnabled (true);
 
-    addOperationMap (TRACE_OPERATION_CODE_TRACE,                                   reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::traceMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_SET_CLIENT_TRACE_LEVEL,                  reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::setClientTraceLevelMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_GET_CLIENT_TRACE_LEVEL,                  reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::getClientTraceLevelMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_GET_CLIENTS_INFORMATION,                 reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::getClientsInformationMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION,            reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::printToWaveClientSessionMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS,       reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::printToAllWaveClientSessionsMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_DEBUG_CLIENT_SESSIONS, reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::printToAllWaveDebugClientSessionsMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_MESSAGE_HISTORY_DUMP_FOR_A_SERVICE,      reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::messageHistoryDumpForAServiceMessageHandler));
-    addOperationMap (TRACE_OPERATION_CODE_MESSAGE_HISTORY_CONFIG_FOR_A_SERVICE,    reinterpret_cast<PrismMessageHandler> (&TraceObjectManager::messageHistoryConfigForAServiceMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_TRACE,                                   reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::traceMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_SET_CLIENT_TRACE_LEVEL,                  reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::setClientTraceLevelMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_GET_CLIENT_TRACE_LEVEL,                  reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::getClientTraceLevelMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_GET_CLIENTS_INFORMATION,                 reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::getClientsInformationMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION,            reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::printToWaveClientSessionMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS,       reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::printToAllWaveClientSessionsMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_DEBUG_CLIENT_SESSIONS, reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::printToAllWaveDebugClientSessionsMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_MESSAGE_HISTORY_DUMP_FOR_A_SERVICE,      reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::messageHistoryDumpForAServiceMessageHandler));
+    addOperationMap (TRACE_OPERATION_CODE_MESSAGE_HISTORY_CONFIG_FOR_A_SERVICE,    reinterpret_cast<WaveMessageHandler> (&TraceObjectManager::messageHistoryConfigForAServiceMessageHandler));
 
     // restrictMessageHistoryLogging                (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
     restrictMessageHistoryLogging                (false, false, false);
@@ -113,55 +113,55 @@ WaveServiceId TraceObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-PrismMessage *TraceObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *TraceObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case TRACE_OPERATION_CODE_TRACE :
-            pPrismMessage = new TraceMessage;
+            pWaveMessage = new TraceMessage;
             break;
 
         case TRACE_OPERATION_CODE_SET_CLIENT_TRACE_LEVEL :
-            pPrismMessage = new TraceObjectManagerSetClientTraceLevelMessage;
+            pWaveMessage = new TraceObjectManagerSetClientTraceLevelMessage;
             break;
 
         case TRACE_OPERATION_CODE_GET_CLIENT_TRACE_LEVEL :
-            pPrismMessage = new TraceObjectManagerGetClientTraceLevelMessage;
+            pWaveMessage = new TraceObjectManagerGetClientTraceLevelMessage;
             break;
 
         case TRACE_OPERATION_CODE_GET_CLIENTS_INFORMATION :
-            pPrismMessage = new TraceObjectManagerGetClientsInformationMessage;
+            pWaveMessage = new TraceObjectManagerGetClientsInformationMessage;
             break;
 
         case TRACE_OPERATION_CODE_PRINT_TO_WAVE_CLIENT_SESSION :
-            pPrismMessage = new TraceObjectManagerPrintToWaveClientSessionMessage;
+            pWaveMessage = new TraceObjectManagerPrintToWaveClientSessionMessage;
             break;
 
         case TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_CLIENT_SESSIONS :
-            pPrismMessage = new TraceObjectManagerPrintToAllWaveClientSessionsMessage;
+            pWaveMessage = new TraceObjectManagerPrintToAllWaveClientSessionsMessage;
             break;
 
         case TRACE_OPERATION_CODE_PRINT_TO_ALL_WAVE_DEBUG_CLIENT_SESSIONS :
-            pPrismMessage = new TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage;
+            pWaveMessage = new TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage;
             break;
 
         case TRACE_OPERATION_CODE_MESSAGE_HISTORY_DUMP_FOR_A_SERVICE :
-            pPrismMessage = new TraceObjectManagerMessageHistoryDumpForAServiceMessage;
+            pWaveMessage = new TraceObjectManagerMessageHistoryDumpForAServiceMessage;
             break;
 
         case TRACE_OPERATION_CODE_MESSAGE_HISTORY_CONFIG_FOR_A_SERVICE :
-            pPrismMessage = new TraceObjectManagerMessageHistoryConfigForAServiceMessage;
+            pWaveMessage = new TraceObjectManagerMessageHistoryConfigForAServiceMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
 
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 TraceClientId TraceObjectManager::addClient (const TraceLevel &traceLevel, const string &traceClientName)

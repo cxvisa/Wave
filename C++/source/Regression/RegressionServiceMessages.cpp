@@ -66,14 +66,14 @@ RegressionTestEntry RegressionTestObjectManagerGetTestServiceEntriesMessage::get
 }
 
 RegressionTestObjectManagerSetTestServiceStateMessage::RegressionTestObjectManagerSetTestServiceStateMessage ()
-    : PrismMessage    (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
+    : WaveMessage    (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
       m_testServiceId (0),
       m_isTestEnabled (false)
 {
 }
 
 RegressionTestObjectManagerSetTestServiceStateMessage::RegressionTestObjectManagerSetTestServiceStateMessage (WaveServiceId testServiceId, bool isTestEnabled)
-    : PrismMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
+    : WaveMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_SET_TEST_SERVICE_STATE),
       m_testServiceId (testServiceId),
       m_isTestEnabled (isTestEnabled)
 {
@@ -85,7 +85,7 @@ RegressionTestObjectManagerSetTestServiceStateMessage::~RegressionTestObjectMana
 
 void RegressionTestObjectManagerSetTestServiceStateMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeWaveServiceId (&m_testServiceId, "testServiceId"));
      addSerializableAttribute (new AttributeBool (&m_isTestEnabled,           "isTestEnabled"));
@@ -102,13 +102,13 @@ bool RegressionTestObjectManagerSetTestServiceStateMessage::getIsTestEnabled ()
 }
 
 RegressionTestObjectManagerStartRegressionMessage::RegressionTestObjectManagerStartRegressionMessage ()
-    : PrismMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_START_REGRESSION),
+    : WaveMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_START_REGRESSION),
       m_numberOfTimesToRunRegression (1)
 {
 }
 
 RegressionTestObjectManagerStartRegressionMessage::RegressionTestObjectManagerStartRegressionMessage (UI32 numberOfTimesToRunRegression)
-    : PrismMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_START_REGRESSION),
+    : WaveMessage (RegressionTestObjectManager::getWaveServiceId (), REGRESSION_START_REGRESSION),
       m_numberOfTimesToRunRegression (numberOfTimesToRunRegression)
 {
 }
@@ -119,7 +119,7 @@ RegressionTestObjectManagerStartRegressionMessage::~RegressionTestObjectManagerS
 
 void RegressionTestObjectManagerStartRegressionMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32 (&m_numberOfTimesToRunRegression, "numberOfTimesToRunRegression"));
 }

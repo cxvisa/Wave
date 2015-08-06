@@ -141,7 +141,7 @@ static PrismMutex                           s_bootSynchronizationMutex;
 static PrismMutex                           s_dbRestoreMutex;
 static PrismMutex                           s_dbConversionStatusMutex;
 
-static map<PrismThreadId, PrismThreadId>    s_prismThreadIdRepository;
+static map<WaveThreadId, WaveThreadId>    s_prismThreadIdRepository;
 static PrismMutex                           s_prismThredIdRepositoryMutex;
 
 static const UI32                           s_clusterPhase0TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
@@ -363,53 +363,53 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
         exit (-5);
     }
 
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CREATE_CLUSTER_WITH_NODES,           reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::createClusterWithNodesMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY,         reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodePhase1MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodePhase2MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_UPDATE_LIST_OF_CLUSTER_SECONDARIES,  reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::updateListOfSecondariesMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_ADD_NODES_TO_CLUSTER,                reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::addNodesToClusterMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DELETE_NODES_FROM_CLUSTER,           reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::deleteNodesFromClusterMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY,       reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::unconfigureClusterSecondaryMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DESTORY_CLUSTER,                     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::destroyClusterMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_NODES_TO_CLUSTER,             reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY,            reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1,    reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2,    reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryPhase2MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3,    reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DETACH_FROM_CLUSTER,                 reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::detachFromClusterMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_LOST_HEART_BEAT_MESSAGE,             reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::lostHeartBeatMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE,             reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_MESSAGE,     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedPhase1MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_2_MESSAGE,     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedPhase2MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_MESSAGE,     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedPhase3MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_EXTERNAL_STATE_SYNCHRONIZATION,reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::startExternalStateSynchronizationHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_SLOT_FAILOVER,                 reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::startSlotFailoverHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_NEW_PRINCIPAL_ESTABLISHED_AFTER_FAILOVER, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::newPrincipalSelectedAfterFaioverMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SECONDARY_NODE_FAILURE_NOTIFICATION, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_NODES,           reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::disconnectFromAllNodesHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_ESTABLISH_PRINCIPAL_AFTER_CLUSTER_REBOOT, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_RESET_NODE_FOR_CLUSTER_MERGE,reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::resetNodeForClusterMergeHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REMOVE_KNOWN_LOCATIONS_MESSAGE,reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_FIPS_ZEROIZE,                      reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::zeroizeForFIPSMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_INSTANCE_CLIENTS, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::disconnectFromAllInstanceClientsHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_WARM_RECOV_WITH_DEFAULT_CONFIG_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::prepareNodeForWarmRecoveryWithDefaultConfiguration));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::storeConfigurationIntentMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::removeConfigurationIntentMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_HA_RECOV_WITH_PERSISTENT_CONFIG_MESSAGE, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CREATE_CLUSTER_WITH_NODES,           reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::createClusterWithNodesMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY,         reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodePhase1MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodePhase2MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_UPDATE_LIST_OF_CLUSTER_SECONDARIES,  reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::updateListOfSecondariesMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_ADD_NODES_TO_CLUSTER,                reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::addNodesToClusterMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DELETE_NODES_FROM_CLUSTER,           reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::deleteNodesFromClusterMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY,       reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::unconfigureClusterSecondaryMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DESTORY_CLUSTER,                     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::destroyClusterMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_NODES_TO_CLUSTER,             reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY,            reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1,    reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2,    reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryPhase2MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3,    reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DETACH_FROM_CLUSTER,                 reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::detachFromClusterMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_LOST_HEART_BEAT_MESSAGE,             reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::lostHeartBeatMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE,             reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_MESSAGE,     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedPhase1MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_2_MESSAGE,     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedPhase2MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_MESSAGE,     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedPhase3MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_EXTERNAL_STATE_SYNCHRONIZATION,reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::startExternalStateSynchronizationHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_START_SLOT_FAILOVER,                 reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::startSlotFailoverHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_NEW_PRINCIPAL_ESTABLISHED_AFTER_FAILOVER, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::newPrincipalSelectedAfterFaioverMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_SECONDARY_NODE_FAILURE_NOTIFICATION, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_NODES,           reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::disconnectFromAllNodesHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_ESTABLISH_PRINCIPAL_AFTER_CLUSTER_REBOOT, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_RESET_NODE_FOR_CLUSTER_MERGE,reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::resetNodeForClusterMergeHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REMOVE_KNOWN_LOCATIONS_MESSAGE,reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_FIPS_ZEROIZE,                      reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::zeroizeForFIPSMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_INSTANCE_CLIENTS, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::disconnectFromAllInstanceClientsHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_WARM_RECOV_WITH_DEFAULT_CONFIG_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::prepareNodeForWarmRecoveryWithDefaultConfiguration));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::storeConfigurationIntentMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::removeConfigurationIntentMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PREPARE_FOR_HA_RECOV_WITH_PERSISTENT_CONFIG_MESSAGE, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler));
 
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER,         reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeHaPeerMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeHaPeerPhase1MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeHaPeerPhase3MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER,            reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1,    reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase1MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3,    reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE_HA_PEER,             reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerMessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_HA_PEER_MESSAGE,     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPhase1MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_HA_PEER_MESSAGE,     reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPhase3MessageHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_ROLLBACK_STANDBY_ON_ACTIVE_ROLLBACK,         reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler));
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REPLAY_CONFIG_FILE,                          reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManager::replayConfigFileMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER,         reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeHaPeerMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeHaPeerPhase1MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::configureSecondaryNodeHaPeerPhase3MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER,            reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1,    reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase1MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3,    reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE_HA_PEER,             reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_HA_PEER_MESSAGE,     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPhase1MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_HA_PEER_MESSAGE,     reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPhase3MessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_ROLLBACK_STANDBY_ON_ACTIVE_ROLLBACK,         reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_REPLAY_CONFIG_FILE,                          reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManager::replayConfigFileMessageHandler));
 
     addServiceIndependentOperationMap (FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT, reinterpret_cast<WaveServiceIndependentMessageHandler> (&PrismFrameworkObjectManager::storeConfigurationIntentStaticMessageHandler));
     addServiceIndependentOperationMap (FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT, reinterpret_cast<WaveServiceIndependentMessageHandler> (&PrismFrameworkObjectManager::removeConfigurationIntentStaticMessageHandler));
@@ -498,136 +498,136 @@ PrismFrameworkObjectManager::~PrismFrameworkObjectManager ()
 #endif
 }
 
-PrismMessage *PrismFrameworkObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PrismFrameworkObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_OBJECT_MANAGER_UPDATE_LIST_OF_CLUSTER_SECONDARIES :
-            pPrismMessage = new FrameworkObjectManagerUpdateListOfSecondariesMessage;
+            pWaveMessage = new FrameworkObjectManagerUpdateListOfSecondariesMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY :
-            pPrismMessage = new PrismConfigureClusterSecondaryMessage;
+            pWaveMessage = new PrismConfigureClusterSecondaryMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1 :
-            pPrismMessage = new PrismConfigureClusterSecondaryPhase1Message;
+            pWaveMessage = new PrismConfigureClusterSecondaryPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2 :
-            pPrismMessage = new PrismConfigureClusterSecondaryPhase2Message;
+            pWaveMessage = new PrismConfigureClusterSecondaryPhase2Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3 :
-            pPrismMessage = new PrismConfigureClusterSecondaryPhase3Message;
+            pWaveMessage = new PrismConfigureClusterSecondaryPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY :
-            pPrismMessage = new FrameworkObjectManagerUnconfigureClusterSecondaryMessage;
+            pWaveMessage = new FrameworkObjectManagerUnconfigureClusterSecondaryMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY :
-            pPrismMessage = new FrameworkObjectManagerRejoinClusterSecondaryMessage;
+            pWaveMessage = new FrameworkObjectManagerRejoinClusterSecondaryMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1 :
-            pPrismMessage = new PrismRejoinClusterSecondaryPhase1Message();
+            pWaveMessage = new PrismRejoinClusterSecondaryPhase1Message();
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2 :
-            pPrismMessage = new PrismRejoinClusterSecondaryPhase2Message();
+            pWaveMessage = new PrismRejoinClusterSecondaryPhase2Message();
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3 :
-            pPrismMessage = new PrismRejoinClusterSecondaryPhase3Message();
+            pWaveMessage = new PrismRejoinClusterSecondaryPhase3Message();
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE :
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedMessage;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedPhase1Message;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_2_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedPhase2Message;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedPhase2Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedPhase3Message;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedPhase3Message;
             break;
         case FRAMEWORK_OBJECT_MANAGER_FIPS_ZEROIZE:
-            pPrismMessage = new ZeroizeForFIPSMessage;
+            pWaveMessage = new ZeroizeForFIPSMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REMOVE_KNOWN_LOCATIONS_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerRemoveKnownLocationsMessage;
+            pWaveMessage = new FrameworkObjectManagerRemoveKnownLocationsMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_DISCONNECT_FROM_ALL_INSTANCE_CLIENTS :
-            pPrismMessage = new FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage;
+            pWaveMessage = new FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_STORE_CONFIGURATION_INTENT :
-            pPrismMessage = new FrameworkObjectManagerStoreConfigurationIntentMessage;
+            pWaveMessage = new FrameworkObjectManagerStoreConfigurationIntentMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REMOVE_CONFIGURATION_INTENT :
-            pPrismMessage = new FrameworkObjectManagerRemoveConfigurationIntentMessage;
+            pWaveMessage = new FrameworkObjectManagerRemoveConfigurationIntentMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER:
-            pPrismMessage = new PrismConfigureClusterSecondaryHaPeerMessage;
+            pWaveMessage = new PrismConfigureClusterSecondaryHaPeerMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1:
-            pPrismMessage = new PrismConfigureClusterSecondaryHaPeerPhase1Message;
+            pWaveMessage = new PrismConfigureClusterSecondaryHaPeerPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3:
-            pPrismMessage = new PrismConfigureClusterSecondaryHaPeerPhase3Message;
+            pWaveMessage = new PrismConfigureClusterSecondaryHaPeerPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER:
-            pPrismMessage = new FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage;
+            pWaveMessage = new FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1:
-            pPrismMessage = new PrismRejoinClusterSecondaryHaPeerPhase1Message;
+            pWaveMessage = new PrismRejoinClusterSecondaryHaPeerPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3:
-            pPrismMessage = new PrismRejoinClusterSecondaryHaPeerPhase3Message;
+            pWaveMessage = new PrismRejoinClusterSecondaryHaPeerPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE_HA_PEER:
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedHaPeerMessage;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedHaPeerMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_1_HA_PEER_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_PHASE_3_HA_PEER_MESSAGE:
-            pPrismMessage = new FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message;
+            pWaveMessage = new FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_ROLLBACK_STANDBY_ON_ACTIVE_ROLLBACK:
-            pPrismMessage = new FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage;
+            pWaveMessage = new FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REPLAY_CONFIG_FILE:
-            pPrismMessage = new PrismFrameworkReplayConfigMessage ();
+            pWaveMessage = new PrismFrameworkReplayConfigMessage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveServiceId PrismFrameworkObjectManager::getWaveServiceId ()
@@ -969,7 +969,7 @@ bool PrismFrameworkObjectManager::getIsFrameworkReadyToBoot ()
     return (isFrameworkReadyToBoot);
 }
 
-void PrismFrameworkObjectManager::addPrismThreadId (const PrismThreadId &prismThreadId)
+void PrismFrameworkObjectManager::addWaveThreadId (const WaveThreadId &prismThreadId)
 {
     s_prismThredIdRepositoryMutex.lock ();
 
@@ -978,12 +978,12 @@ void PrismFrameworkObjectManager::addPrismThreadId (const PrismThreadId &prismTh
     s_prismThredIdRepositoryMutex.unlock ();
 }
 
-void PrismFrameworkObjectManager::removePrismThreadId (const PrismThreadId &prismThreadId)
+void PrismFrameworkObjectManager::removeWaveThreadId (const WaveThreadId &prismThreadId)
 {
     s_prismThredIdRepositoryMutex.lock ();
 
-    map<PrismThreadId, PrismThreadId>::iterator  element = s_prismThreadIdRepository.find (prismThreadId);
-    map<PrismThreadId, PrismThreadId>::iterator  end     = s_prismThreadIdRepository.end (); 
+    map<WaveThreadId, WaveThreadId>::iterator  element = s_prismThreadIdRepository.find (prismThreadId);
+    map<WaveThreadId, WaveThreadId>::iterator  end     = s_prismThreadIdRepository.end (); 
 
     if (end != element)
     {   
@@ -991,13 +991,13 @@ void PrismFrameworkObjectManager::removePrismThreadId (const PrismThreadId &pris
     }
     else
     {
-        WaveNs::trace (TRACE_LEVEL_WARN, string ("PrismFrameworkObjectManager::removePrismThreadId This thread Id does not exist"));
+        WaveNs::trace (TRACE_LEVEL_WARN, string ("PrismFrameworkObjectManager::removeWaveThreadId This thread Id does not exist"));
     } 
 
     s_prismThredIdRepositoryMutex.unlock ();    
 }
 
-void PrismFrameworkObjectManager::getAllPrismThreads (map<PrismThreadId, PrismThreadId> &prismThreadsMap)
+void PrismFrameworkObjectManager::getAllWaveThreads (map<WaveThreadId, WaveThreadId> &prismThreadsMap)
 {
     s_prismThredIdRepositoryMutex.lock ();
 
@@ -1006,14 +1006,14 @@ void PrismFrameworkObjectManager::getAllPrismThreads (map<PrismThreadId, PrismTh
     s_prismThredIdRepositoryMutex.unlock ();
 }
         
-void PrismFrameworkObjectManager::deleteAllPrismThreads ()
+void PrismFrameworkObjectManager::deleteAllWaveThreads ()
 {
-    map<PrismThreadId, PrismThreadId>::iterator  threadIterator;
+    map<WaveThreadId, WaveThreadId>::iterator  threadIterator;
     UI32 retVal = 0;
     s_prismThredIdRepositoryMutex.lock ();
 
     // This code has been added so that we test the existence of the thread id that is pthread_cancel'ed before proceeding to kill other pthreads
-    // Also, at the end of the function we do not unlock the mutex so that no other deleteAllPrismThreads call is made to kill the same set of threads again
+    // Also, at the end of the function we do not unlock the mutex so that no other deleteAllWaveThreads call is made to kill the same set of threads again
 
     for (threadIterator = s_prismThreadIdRepository.begin (); threadIterator != s_prismThreadIdRepository.end (); threadIterator++)
     {   
@@ -1024,7 +1024,7 @@ void PrismFrameworkObjectManager::deleteAllPrismThreads ()
             retVal = pthread_kill (threadIterator->first, 0);
             if (!retVal)
             {
-                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, false, false, "PrismFrameworkObjectManager::deleteAllPrismThreads : Thread successfully canceled \n");
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, false, false, "PrismFrameworkObjectManager::deleteAllWaveThreads : Thread successfully canceled \n");
                 break;
             }
             else
@@ -1187,7 +1187,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationRole                        currentRole                         = m_pThisLocation->getLocationRole ();
     ResourceId                          status                              = WAVE_MESSAGE_SUCCESS;
 
@@ -1231,7 +1231,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesValidateStep (CreateClus
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::createClusterWithNodesValidateStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     UI32                                numberOfNewNodes                    = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
     UI32                                i                                   = 0;
     string                              thisLocationIpAddress               = FrameworkToolKit::getThisLocationIpAddress ();
@@ -1308,7 +1308,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesCollectValidationDataSte
     ResourceId              status                       = WAVE_MESSAGE_SUCCESS;
     vector<WaveServiceId> &prismServiceIdsToCommunicate = pCreateClusterWithNodesContext->getWaveServiceIdsToCommunicate ();
 
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
     numberOfWaveServiceIds = prismServiceIds.size ();
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
@@ -1368,7 +1368,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep (C
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     UI32                                numberOfNewNodes                    = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
     UI32                                i                                   = 0;
     UI32                                numberOfFailures                    = 0;
@@ -1424,7 +1424,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocatio
 
     static const UI32                                maximumNumberOfRetriesToConnectToARemoteLocation  = 30;
     static const UI32                                maximumNumberOfSecondsToWaitToConnect             = 30;
-                 PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage               = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+                 PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage               = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
                  UI32                                numberOfNewLocationIds                            = pCreateClusterWithNodesContext->getNumberOfNewLocationIds ();
                  LocationId                          newLocationId                                     = 0;
                  SI32                                i                                                 = 0;
@@ -1554,7 +1554,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     UI32                                numberOfNewLocationIds              = pCreateClusterWithNodesContext->getNumberOfNewLocationIds ();
     UI32                                i                                   = 0;
     LocationId                          thisLocationId                      = FrameworkToolKit::getThisLocationId ();
@@ -1619,7 +1619,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
             pMessage->setToAllowSendForOneWayCommunication (true);
 
-            WaveMessageStatus status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsCallback), pCreateClusterWithNodesContext, s_clusterPhase0TimeoutInMilliseconds, newLocationId);
+            WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsCallback), pCreateClusterWithNodesContext, s_clusterPhase0TimeoutInMilliseconds, newLocationId);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1662,7 +1662,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsCallback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationId                          newLocationId;
     string                              ipAddress;
     SI32                                port;
@@ -1779,7 +1779,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
@@ -1850,7 +1850,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
                 pfileBuffer = NULL;
             }
 
-            status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback), pCreateClusterWithNodesContext, s_clusterPhase1TimeoutInMilliseconds, newLocationId1);
+            status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback), pCreateClusterWithNodesContext, s_clusterPhase1TimeoutInMilliseconds, newLocationId1);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1904,7 +1904,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationId                          newLocationId;
     string                              ipAddress;
     SI32                                port;
@@ -2111,7 +2111,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
@@ -2140,7 +2140,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
         {
             PrismConfigureClusterSecondaryPhase2Message *pMessage = new PrismConfigureClusterSecondaryPhase2Message ();
 
-            WaveMessageStatus status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback), pCreateClusterWithNodesContext, 120000, newLocationId1);
+            WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback), pCreateClusterWithNodesContext, 120000, newLocationId1);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -2189,7 +2189,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationId                          newLocationId;
     string                              ipAddress;
     SI32                                port;
@@ -2456,7 +2456,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Step : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     vector<LocationId>                  successfullyAddedLocationIdVector   = pCreateClusterWithNodesContext->getSuccessfullyAddedLocationIdVector ();
                  UI32                   numberOfSuccessfullyAddedNode       = successfullyAddedLocationIdVector.size ();
                  UI32                   numberOfFailures                    = 0;
@@ -2471,7 +2471,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
         PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message = new PrismConfigureClusterSecondaryPhase3Message ();
 
-        WaveMessageStatus status = send (pPrismConfigureClusterSecondaryPhase3Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback), pCreateClusterWithNodesContext, 0, locationId);
+        WaveMessageStatus status = send (pPrismConfigureClusterSecondaryPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback), pCreateClusterWithNodesContext, 0, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -2558,7 +2558,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
  
@@ -3226,9 +3226,9 @@ void PrismFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToA
 //    ++(*pCreateClusterWithNodesContext);
 
     PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = 0;
-    if(pCreateClusterWithNodesContext->getPPrismMessage()) 
+    if(pCreateClusterWithNodesContext->getPWaveMessage()) 
     {
-     pPrismCreateClusterWithNodesMessage =  dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+     pPrismCreateClusterWithNodesMessage =  dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     prismAssert(NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
     }
 
@@ -3343,7 +3343,7 @@ void PrismFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep(Creat
     trace(TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimary: Entering..");
 
     //Extract the message
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPPrismMessage ());
+    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     prismAssert(NULL != pPrismCreateClusterWithNodesMessage,__FILE__, __LINE__);
 
     //Number of nodes in the message received from the cluster service
@@ -3680,7 +3680,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeValidateDefaultConfigura
 
 void PrismFrameworkObjectManager::configureSecondaryNodeValidateStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     LocationRole                           currentRole                            = m_pThisLocation->getLocationRole ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
 
@@ -3979,7 +3979,7 @@ bool PrismFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const ve
 
 void PrismFrameworkObjectManager::configureSecondaryNodeValidateVersionStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     string                                 primaryPrismVersionString              = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPrismVersion ();
     string                                 thisLocationPrismPrimaryVersionString  = PrismVersion::getVersionString ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
@@ -4033,10 +4033,10 @@ void PrismFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Se
     LocationId             thisLocationId           = FrameworkToolKit::getThisLocationId ();
     ResourceId             status                   = WAVE_MESSAGE_SUCCESS;
 
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
     numberOfWaveServiceIds = prismServiceIds.size ();
 
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
@@ -4048,7 +4048,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Se
             continue;
         }
 
-        //PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+        //PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
         void                                  *pValidationData                        = NULL;
         UI32                                   size                                   = 0;
 
@@ -4122,7 +4122,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Seconda
     {
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
-        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
         prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
         PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage = new PrismConfigureClusterSecondaryHaPeerMessage ();
@@ -4130,7 +4130,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Seconda
 
         pPrismConfigureClusterSecondaryHaPeerMessage->copyBuffersFrom (*pPrismConfigureClusterSecondaryMessage);
 
-        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
             
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -4230,7 +4230,7 @@ void PrismFrameworkObjectManager::checkHaPeerSyncPostPhaseStep (SecondaryNodeClu
 
 void PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     prismAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
@@ -4242,7 +4242,7 @@ void PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep (Secondar
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerPhase1Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -4310,7 +4310,7 @@ void PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (Fram
 
 void PrismFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
-    PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPPrismMessage ());
+    PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
     prismAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
@@ -4322,7 +4322,7 @@ void PrismFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep (Seconda
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerPhase3Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -4404,7 +4404,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeAddNewKnownLocationsStep
 
 void PrismFrameworkObjectManager::configureSecondaryNodeConnectToNewKnownLocationsStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-                 PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage           = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+                 PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage           = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
                  LocationId                             clusterPrimaryLocationId                         = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ();
     static const UI32                                   maximumNumberOfRetriesToConnectToARemoteLocation = 30;
     static const UI32                                   maximumNumberOfSecondsToWaitToConnect            = 30;
@@ -4508,7 +4508,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep (Secon
 void PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep : Entering ...");
-    PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     UI32                                   sizeOfTheDatabaseBackupFromPrimary     = 0;
     char                                  *pBuffer                                = reinterpret_cast<char *> (pPrismConfigureClusterSecondaryPhase1Message->findBuffer (pPrismConfigureClusterSecondaryPhase1Message->getDatabaseBackupBufferTag (), sizeOfTheDatabaseBackupFromPrimary));
 
@@ -4621,7 +4621,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeConfigureMyLocationIdSte
 {
     trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::configureSecondaryNodeConfigureMyLocationIdStep : Entering ...");
 
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     LocationId                             myNewLocationId                        = pPrismConfigureClusterSecondaryMessage->getLocationId ();
     SI32                                   clusterPrimaryPort                     = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
     LocationId                             clusterPrimaryLocationId               = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ();
@@ -4730,7 +4730,7 @@ void PrismFrameworkObjectManager::secondaryNodeClusterFailureStep (SecondaryNode
 {
     trace (TRACE_LEVEL_INFO, string ("PrismFrameworkObjectManager::secondaryNodeClusterFailureStep connecting back to primary to return error back to primary"));
 
-    PrismMessage *pMessage = reinterpret_cast<PrismMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    WaveMessage *pMessage = reinterpret_cast<WaveMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
     SI32       currentPrimaryPort       = pSecondaryNodeClusterContext->getClusterPrimaryPort       ();
     LocationId currentPrimaryLocationId = pSecondaryNodeClusterContext->getClusterPrimaryLocationId ();
@@ -4969,7 +4969,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeede
 {
     trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeededStep : Entering ...");
 
-    PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase2Message *> (pSecondaryNodeClusterPhase2Context->getPPrismMessage ());
+    PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase2Message *> (pSecondaryNodeClusterPhase2Context->getPWaveMessage ());
     ResourceId         processingStatus = WAVE_MESSAGE_SUCCESS;   
 
     if (true == pPrismRejoinClusterSecondaryPhase2Message->getIsReplaceRejoin ())
@@ -5326,7 +5326,7 @@ void PrismFrameworkObjectManager::updateListOfSecondariesSetupContextStep (Updat
         return;
     }    
 
-    FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = reinterpret_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPPrismMessage ());
+    FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = reinterpret_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPWaveMessage ());
     UI32                                                  numberOfNewSecondaryLocations                         = pFrameworkObjectManagerUpdateListOfSecondariesMessage->getNumberOfSecondaryLocations ();
     UI32                                                  i                                                     = 0;
     LocationId                                            locationId;
@@ -5470,7 +5470,7 @@ void PrismFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListO
   
    trace(TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep: Entering.."); 
 
-   FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = dynamic_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPPrismMessage ());
+   FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = dynamic_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPWaveMessage ());
 
    prismAssert( NULL != pFrameworkObjectManagerUpdateListOfSecondariesMessage, __FILE__, __LINE__);
 
@@ -5665,7 +5665,7 @@ void PrismFrameworkObjectManager::addNodesToClusterMessageHandler (FrameworkObje
 
 void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClusterContext *pAddNodesToClusterContext)
 {
-    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPWaveMessage ());
     UI32                                            numberOfNewNodes                                = pFrameworkObjectManagerAddNodesToClusterMessage->getNumberOfNewNodes ();
     UI32                                            i                                               = 0;
     string                                          thisLocationIpAddress                           = FrameworkToolKit::getThisLocationIpAddress ();
@@ -5740,7 +5740,7 @@ void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClust
 
 void PrismFrameworkObjectManager::addNodesToClusterAddKnownLocationsStep (AddNodesToClusterContext *pAddNodesToClusterContext)
 {
-    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPWaveMessage ());
     UI32                                            numberOfNewNodes                                = pFrameworkObjectManagerAddNodesToClusterMessage->getNumberOfNewNodes ();
     UI32                                            i                                               = 0;
     UI32                                            numberOfFailures                                = 0;
@@ -5789,7 +5789,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConnectToNewKnownLocationsSte
 {
     static const UI32                                            maximumNumberOfRetriesToConnectToARemoteLocation  = 30;
     static const UI32                                            maximumNumberOfSecondsToWaitToConnect             = 30;
-                 FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage   = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPPrismMessage ());
+                 FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage   = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPWaveMessage ());
                  UI32                                            numberOfNewLocationIds                            = pAddNodesToClusterContext->getNumberOfNewLocationIds ();
                  LocationId                                      newLocationId                                     = 0;
                  SI32                                            i                                                 = 0;
@@ -5840,7 +5840,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConnectToNewKnownLocationsSte
 
 void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep (AddNodesToClusterContext *pAddNodesToClusterContext)
 {
-    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPWaveMessage ());
     UI32                              numberOfNewLocationIds            = pAddNodesToClusterContext->getNumberOfNewLocationIds ();
     UI32                              i                                 = 0;
     LocationId                        thisLocationId                    = FrameworkToolKit::getThisLocationId ();
@@ -5897,7 +5897,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsSte
                 }
             }
 
-            WaveMessageStatus status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCallback), pAddNodesToClusterContext, s_clusterPhase0TimeoutInMilliseconds, newLocationId);
+            WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCallback), pAddNodesToClusterContext, s_clusterPhase0TimeoutInMilliseconds, newLocationId);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -5934,7 +5934,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsSte
 void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCallback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage, void *pContext)
 {
     AddNodesToClusterContext                       *pAddNodesToClusterContext                       = reinterpret_cast<AddNodesToClusterContext *> (pContext);
-    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPWaveMessage ());
     LocationId                                      newLocationId;
     string                                          ipAddress;
     SI32                                            port;
@@ -6072,7 +6072,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterValidateStep (DeleteNode
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::deleteNodesFromClusterValidateStep : Entering ...");
 
-    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPWaveMessage ());
     UI32                                                 numberOfNodes                                        = pFrameworkObjectManagerDeleteNodesFromClusterMessage->getNumberOfNodes ();
     UI32                                                 i                                                    = 0;
     string                                               ipAddress                                            = "";
@@ -6124,7 +6124,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocation
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsStep : Entering ...");
 
-    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPWaveMessage ());
     UI32                                                 numberOfLocationIds                                  = pDeleteNodesFromClusterContext->getNumberOfLocationIds ();
     LocationId                                           locationId                                           = 0;
     UI32                                                 i                                                    = 0;
@@ -6144,7 +6144,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocation
 
         prismAssert (NULL != pMessage, __FILE__, __LINE__);
 
-        messageStatus = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsCallback), pDeleteNodesFromClusterContext, 10000, locationId);
+        messageStatus = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsCallback), pDeleteNodesFromClusterContext, 10000, locationId);
 
         if (WAVE_MESSAGE_SUCCESS == messageStatus)
         {
@@ -6166,7 +6166,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocation
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsCallback : Entering ...");
 
     DeleteNodesFromClusterContext                       *pDeleteNodesFromClusterContext                       = reinterpret_cast<DeleteNodesFromClusterContext *> (pContext);
-    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPWaveMessage ());
     string                                               ipAddress                                            = "";
     SI32                                                 port                                                 = 0;
     ResourceId                                           completionStatus                                     = WAVE_MESSAGE_SUCCESS;
@@ -6209,7 +6209,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep : Entering ...");
 
-    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDeleteNodesFromClusterMessage *> (pDeleteNodesFromClusterContext->getPWaveMessage ());
     UI32                                                 numberOfLocationIds                                  = pDeleteNodesFromClusterContext->getNumberOfLocationIds ();
     LocationId                                           locationId                                           = 0;
     UI32                                                 i                                                    = 0;
@@ -6738,7 +6738,7 @@ void PrismFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsStep (D
 
         prismAssert (NULL != pMessage, __FILE__, __LINE__);
 
-        messageStatus = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsCallback), pDestroyClusterContext, 10000, locationId);
+        messageStatus = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsCallback), pDestroyClusterContext, 10000, locationId);
 
         if (WAVE_MESSAGE_SUCCESS == messageStatus)
         {
@@ -6846,7 +6846,7 @@ void PrismFrameworkObjectManager::destroyClusterTerminateClientConnectionsForKno
     {
         SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ()); 
 
-        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
         clusterPrimaryIpAddress = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
         clusterPrimaryPort      = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
@@ -6885,7 +6885,7 @@ void PrismFrameworkObjectManager::destroyClusterRemoveKnownLocationsStep (Destro
     {    
         SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ()); 
 
-        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ()); 
+        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ()); 
 
         clusterPrimaryIpAddress = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
         clusterPrimaryPort      = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
@@ -7052,7 +7052,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkO
 /// 
 void PrismFrameworkObjectManager::rejoinNodesToClusterValidateStep (RejoinNodesToClusterContext *pRejoinNodesToClusterContext)
 {
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
@@ -7140,7 +7140,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (Rejoin
     static const UI32  maximumNumberOfRetriesToConnectToARemoteLocation   = 30;
     static const UI32  maximumNumberOfSecondsToWaitToConnect              = 30;
 
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
@@ -7203,7 +7203,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (Rejoin
 
 void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesStep (RejoinNodesToClusterContext *pRejoinNodesToClusterContext)
 {
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
  
     prismAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
@@ -7279,7 +7279,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSt
             pMessage->setToAllowSendForOneWayCommunication (true);
 
             //send the message and lodge a callback. Note that the processing is Asynchronous here
-            status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallback), pRejoinNodesToClusterContext, s_clusterPhase0TimeoutInMilliseconds, locationId);
+            status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallback), pRejoinNodesToClusterContext, s_clusterPhase0TimeoutInMilliseconds, locationId);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -7338,7 +7338,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCall
 {
     RejoinNodesToClusterContext  *pRejoinNodesToClusterContext = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
 
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
@@ -7437,7 +7437,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterecondariesPhase1Step : Entering ...");
 
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
@@ -7473,7 +7473,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
                 trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1Step : No Database Backup is being sent to the lcoation.");
             }
    
-            status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback), pRejoinNodesToClusterContext, s_clusterPhase1TimeoutInMilliseconds, newLocationId1);
+            status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback), pRejoinNodesToClusterContext, s_clusterPhase1TimeoutInMilliseconds, newLocationId1);
     
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -7525,7 +7525,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 
     RejoinNodesToClusterContext *pRejoinNodesToClusterContext = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
 
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
@@ -7634,7 +7634,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 {
     trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterecondariesPhase2Step : Entering ...");
 
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
   
     prismAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
@@ -7662,7 +7662,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
             pMessage->setIsReplaceRejoin (pFrameworkObjectManagerRejoinNodesToClusterMessage->getIsReplaceRejoin ());
 
         //Note that a callback is being passed since the processing is Asynchronous
-            WaveMessageStatus status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback), pRejoinNodesToClusterContext, 120000, newLocationId1);
+            WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback), pRejoinNodesToClusterContext, 120000, newLocationId1);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -7729,7 +7729,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager:: rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback: Starting ...");
 
     RejoinNodesToClusterContext                       *pRejoinNodesToClusterContext                       = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
@@ -7900,7 +7900,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3Step : Starting ...");
 
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
     vector<LocationId>                                 successfullyAddedLocationIdVector                  = pRejoinNodesToClusterContext->getSuccessfullyAddedLocationIdVector ();
     UI32                                               numberOfSuccessfullyAddedNode                      = successfullyAddedLocationIdVector.size ();
     UI32                                               numberOfFailures                                   = 0;
@@ -7915,7 +7915,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 
         PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message = new PrismRejoinClusterSecondaryPhase3Message ();
 
-        WaveMessageStatus status = send (pPrismRejoinClusterSecondaryPhase3Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback), pRejoinNodesToClusterContext, 0, locationId);
+        WaveMessageStatus status = send (pPrismRejoinClusterSecondaryPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback), pRejoinNodesToClusterContext, 0, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -7972,7 +7972,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback: Starting ....");
 
     RejoinNodesToClusterContext                       *pRejoinNodesToClusterContext                       = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
-    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
@@ -8217,7 +8217,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNode
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::rejoinSecondaryNodeValidateStep : Entering ...");
 
-    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = reinterpret_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = reinterpret_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__,__LINE__);
 
@@ -8348,7 +8348,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNode
 /// none
 void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-   FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+   FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
    prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
  
@@ -8414,12 +8414,12 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep (Secon
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep : Entering\n");
     vector<WaveServiceId> prismServiceIds;
-    PrismThread::getListOfServiceIds (prismServiceIds);
+    WaveThread::getListOfServiceIds (prismServiceIds);
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     UI32  numberOfWaveServiceIds = prismServiceIds.size ();
 
-    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
 
     for (UI32 i = 0; i < numberOfWaveServiceIds; i++)
@@ -8504,7 +8504,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep (Secondary
     {
          trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
-         FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+         FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
          prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
 
          FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage *pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage = new FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage;
@@ -8513,7 +8513,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep (Secondary
 
          pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage->copyBuffersFrom (*pFrameworkObjectManagerRejoinClusterSecondaryMessage);  
 
-         ResourceId haPeerSendStatus = send (pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+         ResourceId haPeerSendStatus = send (pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
  
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -8628,7 +8628,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Secon
 
     static const UI32                                    maximumNumberOfRetriesToConnectToARemoteLocation     = 30;
     static const UI32                                    maximumNumberOfSecondsToWaitToConnect                = 30;
-    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
          
@@ -8719,7 +8719,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Secon
 void PrismFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep : Entering ...");
-    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
     prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__, __LINE__);
 
@@ -8965,7 +8965,7 @@ void PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandl
 
 void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     prismAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
@@ -8977,7 +8977,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep (SecondaryNo
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismRejoinClusterSecondaryHaPeerPhase1Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pPrismRejoinClusterSecondaryHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -9045,7 +9045,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (Framewo
 
 void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
-    PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPPrismMessage ());
+    PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
     prismAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
@@ -9057,7 +9057,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep (SecondaryN
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismRejoinClusterSecondaryHaPeerPhase3Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pPrismRejoinClusterSecondaryHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -9749,7 +9749,7 @@ void PrismFrameworkObjectManager::primaryChangedNotifyHaPeerStep ( SecondaryNode
     {
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::primaryChangedNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
-        FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = dynamic_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+        FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = dynamic_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
         prismAssert(NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__ , __LINE__);
 
         FrameworkObjectManagerPrimaryChangedHaPeerMessage *pFrameworkObjectManagerPrimaryChangedHaPeerMessage = new FrameworkObjectManagerPrimaryChangedHaPeerMessage;
@@ -9760,7 +9760,7 @@ void PrismFrameworkObjectManager::primaryChangedNotifyHaPeerStep ( SecondaryNode
 
         pFrameworkObjectManagerPrimaryChangedHaPeerMessage->copyBuffersFrom (*pFrameworkObjectManagerPrimaryChangedMessage);
 
-        ResourceId haPeerSendStatus = send (pFrameworkObjectManagerPrimaryChangedHaPeerMessage, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pFrameworkObjectManagerPrimaryChangedHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -9834,7 +9834,7 @@ void PrismFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback (Fra
 
 void PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    FrameworkObjectManagerPrimaryChangedPhase1Message *pFrameworkObjectManagerPrimaryChangedPhase1Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase1Message *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerPrimaryChangedPhase1Message *pFrameworkObjectManagerPrimaryChangedPhase1Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
@@ -9847,7 +9847,7 @@ void PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep (SecondaryNod
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -9915,7 +9915,7 @@ void PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback (Framewor
 
 void PrismFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
-    FrameworkObjectManagerPrimaryChangedPhase3Message *pFrameworkObjectManagerPrimaryChangedPhase3Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPPrismMessage ());
+    FrameworkObjectManagerPrimaryChangedPhase3Message *pFrameworkObjectManagerPrimaryChangedPhase3Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
@@ -9927,7 +9927,7 @@ void PrismFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep (SecondaryNo
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, reinterpret_cast<PrismMessageResponseHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::primaryChangedHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
@@ -10134,7 +10134,7 @@ void PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (Pr
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep : Starting ...");
 
-    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
     prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
@@ -10198,7 +10198,7 @@ void PrismFrameworkObjectManager::primaryChangedRemoveOldPrimaryLocationStep (Pr
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager:: primaryChangedRemoveOldPrimaryLocationStep : Starting ...");
 
 
-    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
     prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
@@ -10216,7 +10216,7 @@ void PrismFrameworkObjectManager::primaryChangedUpdatePrimaryDetailsStep (Second
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::primaryChangedUpdatePrimaryDetailsStep : Starting ...");
 
-    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
     prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
@@ -10281,7 +10281,7 @@ void PrismFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseS
         return;
     }
 
-    FrameworkObjectManagerPrimaryChangedPhase1Message *pFrameworkObjectManagerPrimaryChangedPhase1Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase1Message *> (pSecondaryNodeClusterContext->getPPrismMessage ());
+    FrameworkObjectManagerPrimaryChangedPhase1Message *pFrameworkObjectManagerPrimaryChangedPhase1Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     UI32                                              sizeOfTheDatabaseBackupFromPrimary                  = 0;
     char                                             *pBuffer                                             = reinterpret_cast<char *> (pFrameworkObjectManagerPrimaryChangedPhase1Message->findBuffer (pFrameworkObjectManagerPrimaryChangedPhase1Message->getDatabaseBackupBufferTag (), sizeOfTheDatabaseBackupFromPrimary));
 
@@ -10503,13 +10503,13 @@ void  PrismFrameworkObjectManager::savePrismConfigurationStep(PrismLinearSequenc
 
 void PrismFrameworkObjectManager::sendReplyBackToClusterGlobalService  (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    //PrismMessage *pMessage = pPrismLinearSequencerContext->getPPrismMessage ();
+    //WaveMessage *pMessage = pPrismLinearSequencerContext->getPWaveMessage ();
 
 //    pMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
 //    reply (pMessage);
 
-//    pPrismLinearSequencerContext->setPPrismMessage (NULL);
+//    pPrismLinearSequencerContext->setPWaveMessage (NULL);
 
     pPrismLinearSequencerContext->unholdAll ();
 
@@ -10876,7 +10876,7 @@ void PrismFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler
 }
 void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage = dynamic_cast<FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+    FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage = dynamic_cast<FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
 
     vector<string>     failedIpAddresses  = pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage->getFailedIpAddresses();
     vector<LocationId> failedLocationIds  = pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage->getFailedLocationIds ();
@@ -10984,7 +10984,7 @@ void PrismFrameworkObjectManager::validateNewPrincipalSelection (PrismLinearSequ
 
   prismAssert(m_pThisLocation->getLocationRole () == LOCATION_SECONDARY, __FILE__, __LINE__);
 
-  FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+  FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
 
   prismAssert(NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
 
@@ -10996,7 +10996,7 @@ void PrismFrameworkObjectManager::validateNewPrincipalSelection (PrismLinearSequ
 void PrismFrameworkObjectManager::processNewPrincipalEstablishedMessage (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
 
-   FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+   FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
 
    prismAssert (NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
 
@@ -11459,7 +11459,7 @@ void PrismFrameworkObjectManager::disconnectFromAllInstanceClientsHandler (Frame
 
 void PrismFrameworkObjectManager::disconnectAllInstanceClientsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-   FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage = dynamic_cast<FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+   FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage = dynamic_cast<FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
 
     string     clientIpAddress = pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage->getClientIpAddress();
 

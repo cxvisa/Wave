@@ -7,7 +7,7 @@
 #ifndef APPLICATIONSERVICEMESSAGES_H
 #define APPLICATIONSERVICEMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
@@ -23,7 +23,7 @@ typedef enum
     APPLICATION_SERVICE_GENERIC_MESSAGE_OUTPUT_BUFFER1 = 1
 } ApplicationServiceMessageBufgferTags;
 
-class ApplicationServiceMessage : public PrismMessage
+class ApplicationServiceMessage : public WaveMessage
 {
     private :
     protected :

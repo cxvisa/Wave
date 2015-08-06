@@ -94,11 +94,11 @@ ClusterLocalObjectManager::ClusterLocalObjectManager ()
 
     m_thisHardwareSyncState = WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_UNINITIALIZED;
 
-    addOperationMap (CLI_BLOCK_SERVICE_INDEPENDENT,                  reinterpret_cast<PrismMessageHandler> (&ClusterLocalObjectManager::cliBlockMessageHandler));
+    addOperationMap (CLI_BLOCK_SERVICE_INDEPENDENT,                  reinterpret_cast<WaveMessageHandler> (&ClusterLocalObjectManager::cliBlockMessageHandler));
     addServiceIndependentOperationMap (CLI_BLOCK_SERVICE_INDEPENDENT,reinterpret_cast<WaveServiceIndependentMessageHandler> (&ClusterLocalObjectManager::cliBlockMessageStaticHandler));
 
-    addOperationMap (CLUSTER_LOCAL_SET_CONTROLLER_DETAILS_MESSAGE,   reinterpret_cast<PrismMessageHandler> (&ClusterLocalObjectManager::setControllerDetailsMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_REPORT_AS_CLIENT_MESSAGE,         reinterpret_cast<PrismMessageHandler> (&ClusterLocalObjectManager::clientReportingToControllerMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SET_CONTROLLER_DETAILS_MESSAGE,   reinterpret_cast<WaveMessageHandler> (&ClusterLocalObjectManager::setControllerDetailsMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_REPORT_AS_CLIENT_MESSAGE,         reinterpret_cast<WaveMessageHandler> (&ClusterLocalObjectManager::clientReportingToControllerMessageHandler));
 }
 
 void  ClusterLocalObjectManager::cliBlockMessageStaticHandler (CliBlockServiceIndependentMessage *pCliBlockServiceIndependentMessage)
@@ -239,29 +239,29 @@ WaveManagedObject *ClusterLocalObjectManager::createManagedObjectInstance (const
     return (pWaveManagedObject);
 }
 
-PrismMessage *ClusterLocalObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *ClusterLocalObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLI_BLOCK_SERVICE_INDEPENDENT :
-            pPrismMessage = new CliBlockServiceIndependentMessage ();
+            pWaveMessage = new CliBlockServiceIndependentMessage ();
             break;
 
         case CLUSTER_LOCAL_SET_CONTROLLER_DETAILS_MESSAGE:
-            pPrismMessage = new ClusterLocalSetControllerDetailsMessage ();
+            pWaveMessage = new ClusterLocalSetControllerDetailsMessage ();
             break;
 
         case CLUSTER_LOCAL_REPORT_AS_CLIENT_MESSAGE:
-            pPrismMessage = new ClusterLocalReportToControllerAsClientMessage ();
+            pWaveMessage = new ClusterLocalReportToControllerAsClientMessage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void ClusterLocalObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -864,7 +864,7 @@ void ClusterLocalObjectManager::setControllerDetailsMessageHandler (ClusterLocal
         pClusterLocalReportToControllerAsClientMessage->setControllerClientPort          (thisNodePort);
 
 
-        ResourceId status = pWaveClientSynchronousConnection->sendToWaveServer (pClusterLocalReportToControllerAsClientMessage, reinterpret_cast<PrismMessageResponseHandler> (&ClusterLocalObjectManager::clusterLocalReportToControllerAsClientCallback), this, pWaveClientSynchronousConnection);
+        ResourceId status = pWaveClientSynchronousConnection->sendToWaveServer (pClusterLocalReportToControllerAsClientMessage, reinterpret_cast<WaveMessageResponseHandler> (&ClusterLocalObjectManager::clusterLocalReportToControllerAsClientCallback), this, pWaveClientSynchronousConnection);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -874,9 +874,9 @@ void ClusterLocalObjectManager::setControllerDetailsMessageHandler (ClusterLocal
     }
 }
 
-void ClusterLocalObjectManager::clusterLocalReportToControllerAsClientCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void ClusterLocalObjectManager::clusterLocalReportToControllerAsClientCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
-    ClusterLocalReportToControllerAsClientMessage *pClusterLocalReportToControllerAsClientMessage = dynamic_cast<ClusterLocalReportToControllerAsClientMessage *> (pPrismMessage);
+    ClusterLocalReportToControllerAsClientMessage *pClusterLocalReportToControllerAsClientMessage = dynamic_cast<ClusterLocalReportToControllerAsClientMessage *> (pWaveMessage);
 
     WaveClientSynchronousConnection *pWaveClientSynchronousConnection = reinterpret_cast<WaveClientSynchronousConnection *> (pContext);
 

@@ -7,14 +7,14 @@
 #ifndef FILEPUSHFILEFRAGMENTMESSAGE_H
 #define FILEPUSHFILEFRAGMENTMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace WaveNs;
 
 namespace WaveNs
 {
 
-    class FilePushFileFragmentMessage : public PrismMessage
+    class FilePushFileFragmentMessage : public WaveMessage
     {
         private:
         protected:

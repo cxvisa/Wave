@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-StartHaSyncDumpContext::StartHaSyncDumpContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps), 
+StartHaSyncDumpContext::StartHaSyncDumpContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps), 
       m_standbyMessage (NULL), 
       m_haVersion (0),
       m_isDbSyncRequired (false),
@@ -107,12 +107,12 @@ void StartHaSyncDumpContext::getValidationResultsForService (const WaveServiceId
     }
 }
 
-void StartHaSyncDumpContext::setStandbyMessage (PrismMessage *standbyMessage)
+void StartHaSyncDumpContext::setStandbyMessage (WaveMessage *standbyMessage)
 {
     m_standbyMessage = standbyMessage;
 }
 
-PrismMessage * StartHaSyncDumpContext::getStandbyMessage () 
+WaveMessage * StartHaSyncDumpContext::getStandbyMessage () 
 {
     return m_standbyMessage;
 }
@@ -178,8 +178,8 @@ SI32 StartHaSyncDumpContext::getHaPeerPort () const
 }
 
 
-ReceiveHaSyncDumpContext::ReceiveHaSyncDumpContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+ReceiveHaSyncDumpContext::ReceiveHaSyncDumpContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_isDbSyncRequired (false),
       m_contextInfo (0)
 {

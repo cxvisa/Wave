@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-PersistenceLocalExecuteTransactionContext::PersistenceLocalExecuteTransactionContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+PersistenceLocalExecuteTransactionContext::PersistenceLocalExecuteTransactionContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_currentTransactionId (0),
       m_isCommit (false),
       m_isRollback (false),

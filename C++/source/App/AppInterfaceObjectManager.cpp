@@ -20,12 +20,12 @@ namespace WaveNs
 AppInterfaceObjectManager::AppInterfaceObjectManager (string appInterfaceName, const UI32 &stackSize)
     : WaveLocalObjectManager (appInterfaceName, stackSize)
 {
-    addOperationMap (APP_REMOTE_COMMANDS,               reinterpret_cast<PrismMessageHandler> (&AppInterfaceObjectManager::processRemoteCommands));
-    addOperationMap (APP_INTERFACE_CREATE_CLUSTER_DONE, reinterpret_cast<PrismMessageHandler> (&AppInterfaceObjectManager::processCreateClusterDone));
-    addOperationMap (APP_INTERFACE_DELETE_CLUSTER_DONE, reinterpret_cast<PrismMessageHandler> (&AppInterfaceObjectManager::processDeleteClusterDone));
-    addOperationMap (APP_INTERFACE_ADD_NODE_DONE,       reinterpret_cast<PrismMessageHandler> (&AppInterfaceObjectManager::processAddNodeDone));
-    addOperationMap (APP_INTERFACE_JOIN_NODE_DONE,      reinterpret_cast<PrismMessageHandler> (&AppInterfaceObjectManager::processJoinNodeDone));
-    addOperationMap (APP_INTERFACE_DELETE_NODE_DONE,    reinterpret_cast<PrismMessageHandler> (&AppInterfaceObjectManager::processDeleteNodeDone));
+    addOperationMap (APP_REMOTE_COMMANDS,               reinterpret_cast<WaveMessageHandler> (&AppInterfaceObjectManager::processRemoteCommands));
+    addOperationMap (APP_INTERFACE_CREATE_CLUSTER_DONE, reinterpret_cast<WaveMessageHandler> (&AppInterfaceObjectManager::processCreateClusterDone));
+    addOperationMap (APP_INTERFACE_DELETE_CLUSTER_DONE, reinterpret_cast<WaveMessageHandler> (&AppInterfaceObjectManager::processDeleteClusterDone));
+    addOperationMap (APP_INTERFACE_ADD_NODE_DONE,       reinterpret_cast<WaveMessageHandler> (&AppInterfaceObjectManager::processAddNodeDone));
+    addOperationMap (APP_INTERFACE_JOIN_NODE_DONE,      reinterpret_cast<WaveMessageHandler> (&AppInterfaceObjectManager::processJoinNodeDone));
+    addOperationMap (APP_INTERFACE_DELETE_NODE_DONE,    reinterpret_cast<WaveMessageHandler> (&AppInterfaceObjectManager::processDeleteNodeDone));
 
     m_duplicateCommandHandler           = NULL;
     m_clusterCollectValidationHandler   = NULL;
@@ -71,41 +71,41 @@ WaveServiceId AppInterfaceObjectManager::getWaveServiceId ()
     return (getServiceId ());
 }
 
-PrismMessage *AppInterfaceObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *AppInterfaceObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case APP_REMOTE_COMMANDS :
-            pPrismMessage = new AppInterfaceObjectManagerRemoteCommandsMessage;
+            pWaveMessage = new AppInterfaceObjectManagerRemoteCommandsMessage;
             break;
 
         case APP_INTERFACE_CREATE_CLUSTER_DONE:
-            pPrismMessage = new ClusterInterfaceObjectManagerCreateClusterDoneMessage;
+            pWaveMessage = new ClusterInterfaceObjectManagerCreateClusterDoneMessage;
             break;
 
         case APP_INTERFACE_DELETE_CLUSTER_DONE:
-            pPrismMessage = new ClusterInterfaceObjectManagerDeleteClusterDoneMessage;
+            pWaveMessage = new ClusterInterfaceObjectManagerDeleteClusterDoneMessage;
             break;
 
         case APP_INTERFACE_ADD_NODE_DONE:
-            pPrismMessage = new ClusterInterfaceObjectManagerAddNodeDoneMessage;
+            pWaveMessage = new ClusterInterfaceObjectManagerAddNodeDoneMessage;
             break;
 
         case APP_INTERFACE_JOIN_NODE_DONE:
-            pPrismMessage = new ClusterInterfaceObjectManagerJoinNodeDoneMessage;
+            pWaveMessage = new ClusterInterfaceObjectManagerJoinNodeDoneMessage;
             break;
 
         case APP_INTERFACE_DELETE_NODE_DONE:
-            pPrismMessage = new ClusterInterfaceObjectManagerDeleteNodeDoneMessage;
+            pWaveMessage = new ClusterInterfaceObjectManagerDeleteNodeDoneMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 
@@ -118,7 +118,7 @@ void AppInterfaceObjectManager::clusterCreateCollectValidationData (WaveObjectMa
 {
     trace (TRACE_LEVEL_DEVEL, string ("AppInterfaceObjectManager::clusterCreateCollectValidationData : Entering ...service ") + getServiceId ());
 
-    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<PrismMessageHandler *> (pMessage), pPrismAsynchronousContext, getServiceId ());
+    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<WaveMessageHandler *> (pMessage), pPrismAsynchronousContext, getServiceId ());
     clusterCollectValidationHandler_t   clusterCollectValidationHandler;
 
     m_mutex.lock ();
@@ -183,7 +183,7 @@ void AppInterfaceObjectManager::clusterCreateValidate (WaveObjectManagerValidate
     clusterValidationHandler_t          clusterValidationHandler;
     void                               *pValidationData;
     UI32                                Validationlen;
-    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<PrismMessageHandler *> (pMessage), pPrismAsynchronousContext, getServiceId ());
+    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<WaveMessageHandler *> (pMessage), pPrismAsynchronousContext, getServiceId ());
 
     m_mutex.lock ();
     clusterValidationHandler = m_clusterValidationHandler;
@@ -494,7 +494,7 @@ WaveMessageStatus AppInterfaceObjectManager::sendCommands (CommandInfo *pCommand
     }
     else
     {
-        status = send (pRemoteCmdMessage, reinterpret_cast<PrismMessageResponseHandler> (&AppInterfaceObjectManager::processDuplicateCmdsReply), pCommandDetail, 0 /* timer */, locationId);
+        status = send (pRemoteCmdMessage, reinterpret_cast<WaveMessageResponseHandler> (&AppInterfaceObjectManager::processDuplicateCmdsReply), pCommandDetail, 0 /* timer */, locationId);
 
         (*expectedReply)++;
     }
@@ -831,7 +831,7 @@ CommandInfo::~CommandInfo ()
 {
 }
 
-MessageAndContext::MessageAndContext (PrismMessageHandler *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext, unsigned int appId)
+MessageAndContext::MessageAndContext (WaveMessageHandler *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext, unsigned int appId)
 {
     m_pMessage                  = pMessage;
     m_pPrismAsynchronousContext = pPrismAsynchronousContext;

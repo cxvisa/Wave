@@ -8,12 +8,12 @@
 #define PRISMPOSTPERSISTENTBOOTMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class PrismPostPersistenceBootMessage : public PrismMessage
+class PrismPostPersistenceBootMessage : public WaveMessage
 {
     private :
         virtual void           setupAttributesForSerialization();
@@ -52,7 +52,7 @@ class PrismPostPersistenceBootMessage : public PrismMessage
     public :
 };
 
-class PrismPostPersistenceBootServiceAndWaveSlotsMessage : public PrismMessage
+class PrismPostPersistenceBootServiceAndWaveSlotsMessage : public WaveMessage
 {
     private :
         virtual void            setupAttributesForSerialization                     ();

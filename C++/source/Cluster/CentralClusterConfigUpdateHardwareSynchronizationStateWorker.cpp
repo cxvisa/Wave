@@ -31,7 +31,7 @@ namespace WaveNs
 CentralClusterConfigUpdateHardwareSynchronizationStateWorker::CentralClusterConfigUpdateHardwareSynchronizationStateWorker (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager)
     : WaveWorker (pCentralClusterConfigObjectManager)
 {
-    addOperationMap (CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE, reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::updateHardwareSynchronizationStateMessageHandler));
+    addOperationMap (CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE, reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::updateHardwareSynchronizationStateMessageHandler));
 }
 
 /** 
@@ -42,21 +42,21 @@ CentralClusterConfigUpdateHardwareSynchronizationStateWorker::~CentralClusterCon
 {
 }
 
-PrismMessage *CentralClusterConfigUpdateHardwareSynchronizationStateWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CentralClusterConfigUpdateHardwareSynchronizationStateWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE :
-            pPrismMessage = new CentralClusterConfigUpdateHardwareSynchronizationStateMessage ();
+            pWaveMessage = new CentralClusterConfigUpdateHardwareSynchronizationStateMessage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 /** 
@@ -97,7 +97,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep : Entering ...");
 
-    CentralClusterConfigUpdateHardwareSynchronizationStateMessage* pCentralClusterConfigUpdateHardwareSynchronizationStateMessage = dynamic_cast<CentralClusterConfigUpdateHardwareSynchronizationStateMessage* >(pPrismLinearSequencerContext->getPPrismMessage());
+    CentralClusterConfigUpdateHardwareSynchronizationStateMessage* pCentralClusterConfigUpdateHardwareSynchronizationStateMessage = dynamic_cast<CentralClusterConfigUpdateHardwareSynchronizationStateMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
 
     if (NULL == pCentralClusterConfigUpdateHardwareSynchronizationStateMessage)
     {
@@ -120,7 +120,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
 
     WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback), pPrismLinearSequencerContext);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pClusterLocalSetHardwareSynchronizationStateMessage);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pClusterLocalSetHardwareSynchronizationStateMessage);
     pWaveSendToClusterContext->setLocationsToSendToForPhase1 (locationsForWaveNodeUpdate);
     pWaveSendToClusterContext->setPartialSuccessFlag (true);    
 
@@ -138,7 +138,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
         prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
     }
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext);
 
     pPrismLinearSequencerContext->executeNextStep(sendToClusterCompletionStatus); 

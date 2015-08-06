@@ -23,7 +23,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 class RunDebugScriptMessage: public ManagementInterfaceMessage
 {
@@ -49,7 +49,7 @@ class RunDebugScriptMessage: public ManagementInterfaceMessage
       vector<string>        m_outputStringVector;
 };
 
-class RunDebugScriptOnClusterMemberMessage : public PrismMessage
+class RunDebugScriptOnClusterMemberMessage : public WaveMessage
 {
    public:
                  RunDebugScriptOnClusterMemberMessage ();

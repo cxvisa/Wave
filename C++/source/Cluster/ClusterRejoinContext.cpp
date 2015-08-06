@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-ClusterRejoinContext::ClusterRejoinContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+ClusterRejoinContext::ClusterRejoinContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
     m_isReplaceRejoin             (false)
 {
 }

@@ -19,32 +19,32 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 class MessageTracker
 {
     private :
-        static bool isAKnownMessage (const PrismMessage *pPrismMessage);
-        static bool isAKnownMessageWithBt (const PrismMessage *pPrismMessage);
+        static bool isAKnownMessage (const WaveMessage *pWaveMessage);
+        static bool isAKnownMessageWithBt (const WaveMessage *pWaveMessage);
         static void clearCurrentlyAllocatedMessagesWithBt ();
 
-        static void getMessagesForAThread    (const PrismThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings); // no-lock
+        static void getMessagesForAThread    (const WaveThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings); // no-lock
 
     protected :
     public :
-        static void addToMessageTracker      (const PrismMessage *pPrismMessage);
-        static void deleteFromMessageTracker (const PrismMessage *pPrismMessage);
+        static void addToMessageTracker      (const WaveMessage *pWaveMessage);
+        static void deleteFromMessageTracker (const WaveMessage *pWaveMessage);
         static void getMessages              (const WaveServiceId &prismServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings);
         static void changeBtTrackerState     (const bool &btTrackerState);
 
     // Now the data members
 
     private :
-        static map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> > m_currentlyAllocatedMessagesByThread;
-        static map<const PrismMessage *, PrismThreadId>                             m_currentlyAllocatedMessages;
+        static map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> > m_currentlyAllocatedMessagesByThread;
+        static map<const WaveMessage *, WaveThreadId>                             m_currentlyAllocatedMessages;
 
         static bool                                                                 m_trackingMessagesWithBt;
-        static map<const PrismMessage *, string>                                    m_currentlyAllocatedMessagesWithBt;
+        static map<const WaveMessage *, string>                                    m_currentlyAllocatedMessagesWithBt;
 
         static PrismMutex                                                           m_messageTrackerMutex;
 

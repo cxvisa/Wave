@@ -38,7 +38,7 @@ namespace WaveNs
 DistributedDebugLocalObjectManager::DistributedDebugLocalObjectManager ()
   :WaveLocalObjectManager(getServiceName ())
 {
-    addOperationMap(RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE, reinterpret_cast<PrismMessageHandler> (&DistributedDebugLocalObjectManager::runDebugScriptOnClusterMemberMessageHandler));
+    addOperationMap(RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE, reinterpret_cast<WaveMessageHandler> (&DistributedDebugLocalObjectManager::runDebugScriptOnClusterMemberMessageHandler));
 
 }
 
@@ -90,18 +90,18 @@ string DistributedDebugLocalObjectManager::getServiceName ()
  * 
  * @param operationCode
  * 
- * @return PrismMessage*
+ * @return WaveMessage*
  */
-PrismMessage *DistributedDebugLocalObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DistributedDebugLocalObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
        case RUN_DEBUG_SCRIPT_ON_CLUSTER_MEMBER_MESSAGE:
 
 	    trace (TRACE_LEVEL_INFO, string ("DistributedDebugLocalObjectManager::createMessageInstance : operation code : ") + operationCode);
-            pPrismMessage = new RunDebugScriptOnClusterMemberMessage(); 
+            pWaveMessage = new RunDebugScriptOnClusterMemberMessage(); 
             break;
 
         default :
@@ -110,7 +110,7 @@ PrismMessage *DistributedDebugLocalObjectManager::createMessageInstance (const U
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 /** 
@@ -124,7 +124,7 @@ PrismMessage *DistributedDebugLocalObjectManager::createMessageInstance (const U
 void DistributedDebugLocalObjectManager::executeScriptStep (PrismSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext )
 {
 
-   RunDebugScriptOnClusterMemberMessage*  pRunDebugScriptOnClusterMemberMessage = static_cast<RunDebugScriptOnClusterMemberMessage* > (pRunDebugScriptMessageHandlerContext->getPPrismMessage());
+   RunDebugScriptOnClusterMemberMessage*  pRunDebugScriptOnClusterMemberMessage = static_cast<RunDebugScriptOnClusterMemberMessage* > (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
 
    FILE   *pPipe;
     

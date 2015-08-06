@@ -135,17 +135,17 @@ void CommandLineInterfaceReceiverWorkerThread::processMessages ()
                 if (NULL != pCommandLineInterfaceWorkerSendContext)
                 {
                     FrameworkStatus                                                         frameworkStatus                                                        = pCommandLineInterfaceWorkerSendContext->getFrameworkStatus             ();
-                    PrismMessage                                                           *pPrismMessage                                                          = pCommandLineInterfaceWorkerSendContext->getPPrismMessage               ();
-                    PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = pCommandLineInterfaceWorkerSendContext->getPrismMessageResponseHandler ();
-                    void                                                                   *pPrismMessageContext                                                   = pCommandLineInterfaceWorkerSendContext->getPPrismMessageContext        ();
+                    WaveMessage                                                           *pWaveMessage                                                          = pCommandLineInterfaceWorkerSendContext->getPWaveMessage               ();
+                    WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = pCommandLineInterfaceWorkerSendContext->getWaveMessageResponseHandler ();
+                    void                                                                   *pWaveMessageContext                                                   = pCommandLineInterfaceWorkerSendContext->getPWaveMessageContext        ();
 
-                    prismAssert (NULL != pPrismMessage,                                                          __FILE__, __LINE__);
+                    prismAssert (NULL != pWaveMessage,                                                          __FILE__, __LINE__);
                     prismAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
-                    prismAssert (NULL != pPrismMessageContext,                                                   __FILE__, __LINE__);
+                    prismAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
 
                     delete pCommandLineInterfaceWorkerSendContext;
 
-                    (this->*prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread) (frameworkStatus, pPrismMessage, pPrismMessageContext);
+                    (this->*prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread) (frameworkStatus, pWaveMessage, pWaveMessageContext);
                 }
             }
 
@@ -211,7 +211,7 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
 
     prismAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
 
-    ResourceId status = send (pWaveSystemManagementGetYangUserInterfaceMessage, reinterpret_cast<PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread> (&CommandLineInterfaceReceiverWorkerThread::getYangUserInterfaceCallback), pCommandLineInterfaceMessage);
+    ResourceId status = send (pWaveSystemManagementGetYangUserInterfaceMessage, reinterpret_cast<WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread> (&CommandLineInterfaceReceiverWorkerThread::getYangUserInterfaceCallback), pCommandLineInterfaceMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -269,7 +269,7 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
     
     pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage->setTtyName (ttyName);
 
-    ResourceId status = send (pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, reinterpret_cast<PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread> (&CommandLineInterfaceReceiverWorkerThread::showRunningConfigurationCallback), pCommandLineInterfaceMessage);
+    ResourceId status = send (pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, reinterpret_cast<WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread> (&CommandLineInterfaceReceiverWorkerThread::showRunningConfigurationCallback), pCommandLineInterfaceMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -320,9 +320,9 @@ WaveThreadStatus CommandLineInterfaceReceiverWorkerThread::start()
     return (WAVE_THREAD_SUCCESS);
 }
 
-WaveMessageStatus CommandLineInterfaceReceiverWorkerThread::send (PrismMessage *pPrismMessage, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId)
+WaveMessageStatus CommandLineInterfaceReceiverWorkerThread::send (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId)
 {
-    return (m_pCommandLineInterfaceReceiverObjectManager->send (pPrismMessage, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pPrismMessageContext, this, timeOutInMilliSeconds, locationId));
+    return (m_pCommandLineInterfaceReceiverObjectManager->send (pWaveMessage, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext, this, timeOutInMilliSeconds, locationId));
 }
 
 }

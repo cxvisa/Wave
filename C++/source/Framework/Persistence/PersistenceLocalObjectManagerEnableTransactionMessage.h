@@ -7,7 +7,7 @@
 #ifndef PERSISTENCELOCALOBJECTMANAGERENABLETRANSACTIONMESSAGE_H
 #define PERSISTENCELOCALOBJECTMANAGERENABLETRANSACTIONMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 #include <string>
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceLocalObjectManagerEnableTransactionMessage : public PrismMessage
+class PersistenceLocalObjectManagerEnableTransactionMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

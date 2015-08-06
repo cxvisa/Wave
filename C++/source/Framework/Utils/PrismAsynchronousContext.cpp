@@ -4,7 +4,7 @@
  ***************************************************************************/
 
 #include "Framework/Utils/PrismAsynchronousContext.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"

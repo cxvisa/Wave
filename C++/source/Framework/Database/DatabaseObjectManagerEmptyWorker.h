@@ -18,7 +18,7 @@ class DatabaseObjectManagerEmptyDatabaseParameterConfigureMessage;
 class DatabaseObjectManagerEmptyWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage   *createMessageInstance                        (const UI32 &operationCode);
+        virtual WaveMessage   *createMessageInstance                        (const UI32 &operationCode);
     protected :
     public :
                                DatabaseObjectManagerEmptyWorker              (WaveObjectManager *pWaveObjectManager);

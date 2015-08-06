@@ -65,7 +65,7 @@ ClusterObjectManagerCreateClusterMessage::~ClusterObjectManagerCreateClusterMess
 
 void ClusterObjectManagerCreateClusterMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString             (&m_primaryNodeName,         "primaryNodeName"));
      addSerializableAttribute (new AttributeUI32               (&m_nSecondaryNodes,         "nSecondaryNodes"));
@@ -248,7 +248,7 @@ void ClusterObjectManagerCreateClusterMessage::addFilenameToSync  ( const string
 }
 
 ClusterObjectManagerDeleteClusterMessage::ClusterObjectManagerDeleteClusterMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_DELETE_CLUSTER),
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_DELETE_CLUSTER),
       m_isRebootRequired (true)
 {
 }
@@ -259,7 +259,7 @@ ClusterObjectManagerDeleteClusterMessage::~ClusterObjectManagerDeleteClusterMess
 
 void ClusterObjectManagerDeleteClusterMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 void ClusterObjectManagerDeleteClusterMessage::setIsRebootRequired (const bool &isRebootRequired)
@@ -293,7 +293,7 @@ void ClusterObjectManagerAddNodeMessage::setupAttributesForSerialization ()
 
 
 ClusterObjectManagerJoinNodeMessage::ClusterObjectManagerJoinNodeMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_JOIN_NODE),
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_JOIN_NODE),
       m_nodePort (0)
 {
 }
@@ -338,7 +338,7 @@ SI32 ClusterObjectManagerJoinNodeMessage::getNodePort ()
 //None
 //
 ClusterObjectManagerRejoinNodeMessage::ClusterObjectManagerRejoinNodeMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_JOIN_NODE)
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_JOIN_NODE)
 {
     m_isReplaceRejoin = false;
 }
@@ -378,7 +378,7 @@ ClusterObjectManagerRejoinNodeMessage::~ClusterObjectManagerRejoinNodeMessage ()
 void ClusterObjectManagerRejoinNodeMessage::setupAttributesForSerialization ()
 {
 
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeStringVector (&m_nodeIpAddresses,   "nodeIpAddresses"));
      addSerializableAttribute (new AttributeUI32Vector  (&m_nodePorts,          "nodePorts"));
@@ -474,7 +474,7 @@ ResourceId ClusterObjectManagerRejoinNodeMessage::getNodeStatus (const string &n
 }
 
 ClusterObjectManagerDeleteNodeMessage::ClusterObjectManagerDeleteNodeMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_DELETE_NODE),
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_DELETE_NODE),
       m_isDisconnected (false)
 {
 }
@@ -488,7 +488,7 @@ ClusterObjectManagerDeleteNodeMessage::~ClusterObjectManagerDeleteNodeMessage ()
 ///
 void ClusterObjectManagerDeleteNodeMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeStringVector (&m_nodeName,          "nodeName"));
      addSerializableAttribute (new AttributeSI32Vector   (&m_nodePort,          "nodePort"));
@@ -597,7 +597,7 @@ bool ClusterObjectManagerDeleteNodeMessage::getIsDisconnected ()
 }
 
 LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage::LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_PRIMARY_NODE_CHANGED),
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_PRIMARY_NODE_CHANGED),
       m_thisNodePort    (0),
       m_nSecondaryNodes (0)
 {
@@ -701,7 +701,7 @@ SI32 LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage::getThisNode
 }
 
 LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage::LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_REMOVED_NODE_FROM_CLUSTER)
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_REMOVED_NODE_FROM_CLUSTER)
 {
 }
 
@@ -711,7 +711,7 @@ LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage::~LocalCluste
 
 #if 0
 LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage::LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_CENTERAL_HEART_BEAT)
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_CENTERAL_HEART_BEAT)
 {
 }
 
@@ -721,7 +721,7 @@ LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage::~LocalClusterConf
 
 void LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32    (&m_heartBeatNum,   "heartBeatNum"));
      addSerializableAttribute (new AttributeString  (&m_nodeName,       "nodeName"));
@@ -750,7 +750,7 @@ string LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage::getNodeNam
 
 
 CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage::CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_LOCAL_HEART_BEAT)
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CLUSTER_REPORT_LOCAL_HEART_BEAT)
 {
 }
 
@@ -761,7 +761,7 @@ CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage::~CenteralClusterC
 
 void CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32 (&m_heartBeatNum, "heartBeatNum"));
      addSerializableAttribute (new AttributeString (&m_nodeName, "nodeName"));
@@ -790,7 +790,7 @@ string CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage::getNodeNam
 
 
 LocalClusterConfigObjectManagerSetHeartBeatConfigMessage::LocalClusterConfigObjectManagerSetHeartBeatConfigMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_UPDATE_HEARTBEAT_CONFIG)
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_UPDATE_HEARTBEAT_CONFIG)
 {
 }
 
@@ -820,7 +820,7 @@ UI32 LocalClusterConfigObjectManagerSetHeartBeatConfigMessage::getNLostHeartBeat
 #endif
 
 LocalClusterConfigObjectManagerGetNodeRoleMessage::LocalClusterConfigObjectManagerGetNodeRoleMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_GET_NODE_ROLE),
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_GET_NODE_ROLE),
       m_nodeRole (0)
 {
 }
@@ -841,7 +841,7 @@ UI32 LocalClusterConfigObjectManagerGetNodeRoleMessage::getNodeRole ()
 
 
 LocalClusterConfigObjectManagerGetClusterConfigMessage::LocalClusterConfigObjectManagerGetClusterConfigMessage ()
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_GET_CLUSTER_CONFIG),
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId (), CLUSTER_GET_CLUSTER_CONFIG),
       m_primaryNodeStatus (0),
       m_nSecondaryNodes(0)
 {
@@ -953,7 +953,7 @@ void LocalClusterConfigObjectManagerGetClusterConfigMessage::setSecondaryNodeSta
 
 
 HeartBeatLostMessage::HeartBeatLostMessage (/* WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_LOST)
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_LOST)
 {
     m_dstIpAddress          =   dstIpAddress;
     m_dstPort               =   dstPort;
@@ -987,7 +987,7 @@ void HeartBeatLostMessage::setDstPort (UI32 dstPort)
 }
 
 HeartBeatResumedMessage::HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
-    : PrismMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_RESUMED)
+    : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_RESUMED)
 {
     m_dstIpAddress          =   dstIpAddress;
     m_dstPort               =   dstPort;
@@ -1036,7 +1036,7 @@ void HeartBeatResumedMessage::setDstPort (UI32 dstPort)
 //
 
 ClusterConfigObjectManagerGetClusterInfoMessage::ClusterConfigObjectManagerGetClusterInfoMessage()
-:PrismMessage(CentralClusterConfigObjectManager::getWaveServiceId (),CLUSTER_GET_DEBUGINFO),
+:WaveMessage(CentralClusterConfigObjectManager::getWaveServiceId (),CLUSTER_GET_DEBUGINFO),
 m_ClusterCreated(false),
 m_primaryNodePort(0),
 m_primaryNodeLocationId(0),
@@ -1221,7 +1221,7 @@ void ClusterConfigObjectManagerGetClusterInfoMessage::getSecondaryNodeDebugInfo(
 
 void ClusterConfigObjectManagerGetClusterInfoMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeBool   (&m_ClusterCreated, "ClusterCreated"));
      addSerializableAttribute (new AttributeString (&m_primaryNodeIpAddress, "primaryNodeIpAddress"));
@@ -1246,13 +1246,13 @@ void ClusterConfigObjectManagerGetClusterInfoMessage::setupAttributesForSerializ
  * Date :       05/05/2011
  */
 CentralClusterConfigUpdateHardwareSynchronizationStateMessage::CentralClusterConfigUpdateHardwareSynchronizationStateMessage ()
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_UNINITIALIZED)
 {
 }
 
 CentralClusterConfigUpdateHardwareSynchronizationStateMessage::CentralClusterConfigUpdateHardwareSynchronizationStateMessage (ResourceId hardwareSynchronizationState, const vector<LocationId> &locationIds)
-    : PrismMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
+    : WaveMessage (CentralClusterConfigObjectManager::getWaveServiceId (), CENTRAL_CLUSTER_CONFIG_UPDATE_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (hardwareSynchronizationState),
     m_locationIds                   (locationIds)
 {
@@ -1264,7 +1264,7 @@ CentralClusterConfigUpdateHardwareSynchronizationStateMessage::~CentralClusterCo
 
 void CentralClusterConfigUpdateHardwareSynchronizationStateMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeResourceId       (&m_hardwareSynchronizationState, "hardwareSynchronizationState"));
      addSerializableAttribute (new AttributeLocationIdVector (&m_locationIds, "locationIds"));

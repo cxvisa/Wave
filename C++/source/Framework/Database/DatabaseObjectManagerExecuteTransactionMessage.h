@@ -7,13 +7,13 @@
 #ifndef DATABASEOBJECTMANAGEREXECUTETRANSACTIONMESSAGE_H
 #define DATABASEOBJECTMANAGEREXECUTETRANSACTIONMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include <string>
 
 namespace WaveNs
 {
 
-class DatabaseObjectManagerExecuteTransactionMessage : public PrismMessage
+class DatabaseObjectManagerExecuteTransactionMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();

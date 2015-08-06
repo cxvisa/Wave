@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 class SerializableObject;
-class PrismMessage;
+class WaveMessage;
 class WaveBrokerBasedMessage;
 class WaveBrokerBasedMessagePayload;
 
@@ -38,7 +38,7 @@ class ClientStreamingSocket : private StreamingSocket
                       bool                   operator <<           (const string &dataString);
                       bool                   operator <<           (const FixedSizeBuffer &fixedsizeBuffer);
                       bool                   operator <<           (SerializableObject *pSerializableObject);
-                      bool                   operator <<           (PrismMessage *pPrismMessge);
+                      bool                   operator <<           (WaveMessage *pPrismMessge);
                       bool                   operator <<           (WaveBrokerBasedMessage *pWaveBrokerBasedMessage);
                       bool                   operator <<           (WaveBrokerBasedMessagePayload *pWaveBrokerBasedMessagePayload);
                       bool                   operator >>           (string &dataString);

@@ -16,7 +16,7 @@ namespace WaveNs
 PrismPostbootWorker::PrismPostbootWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_POSTBOOT, reinterpret_cast<PrismMessageHandler> (&PrismPostbootWorker::postbootHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_POSTBOOT, reinterpret_cast<WaveMessageHandler> (&PrismPostbootWorker::postbootHandler));
 }
 
 PrismPostbootWorker::~PrismPostbootWorker ()
@@ -53,7 +53,7 @@ void PrismPostbootWorker::postbootBootWorkersStep (PrismLinearSequencerContext *
     for (i = 0; i < numberOfWorkers; i++)
     {
         WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase = new WaveAsynchronousContextForPostbootPhase (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismPostbootWorker::postbootBootWorkersStepCallback), pPrismLinearSequencerContext);
-        pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pPrismLinearSequencerContext->getPPrismMessage());
+        pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pPrismLinearSequencerContext->getPWaveMessage());
         pWaveAsynchronousContextForPostbootPhase->setPassNum (pPrismPostbootObjectManagerMessage->getPassNum());
         pWaveAsynchronousContextForPostbootPhase->setPassName (pPrismPostbootObjectManagerMessage->getPassName());
         pWaveAsynchronousContextForPostbootPhase->setSlotNum (pPrismPostbootObjectManagerMessage->getSlotNum());
@@ -94,7 +94,7 @@ void PrismPostbootWorker::postbootBootSelfStep (PrismLinearSequencerContext *pPr
     trace (TRACE_LEVEL_DEVEL, "PrismPostbootWorker::postbootBootSelfStep : Entering ...");
 
     WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase = new WaveAsynchronousContextForPostbootPhase (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismPostbootWorker::postbootBootSelfStepCallback), pPrismLinearSequencerContext);
-    pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pPrismLinearSequencerContext->getPPrismMessage());
+    pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pPrismLinearSequencerContext->getPWaveMessage());
     pWaveAsynchronousContextForPostbootPhase->setPassNum (pPrismPostbootObjectManagerMessage->getPassNum());
     pWaveAsynchronousContextForPostbootPhase->setPassName (pPrismPostbootObjectManagerMessage->getPassName());
     pWaveAsynchronousContextForPostbootPhase->setSlotNum (pPrismPostbootObjectManagerMessage->getSlotNum());

@@ -10,12 +10,12 @@ namespace WaveNs
 {
 
 RegressionPrepareMessage::RegressionPrepareMessage (WaveServiceId id)
-    : PrismMessage (id, WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION)
+    : WaveMessage (id, WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION)
 {
 }
 
 RegressionPrepareMessage::RegressionPrepareMessage ()
-    : PrismMessage (0, WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION)
+    : WaveMessage (0, WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION)
 {
 }
 
@@ -25,7 +25,7 @@ RegressionPrepareMessage::~RegressionPrepareMessage ()
 
 void RegressionPrepareMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeStringVector (&m_inputStrings, "inputStrings"));
 }

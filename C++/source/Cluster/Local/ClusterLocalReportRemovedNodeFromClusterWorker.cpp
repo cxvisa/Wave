@@ -36,7 +36,7 @@ namespace WaveNs
 ClusterLocalReportRemovedNodeFromClusterWorker::ClusterLocalReportRemovedNodeFromClusterWorker (ClusterLocalObjectManager *pClusterLocalObjectManager)
     : WaveWorker (pClusterLocalObjectManager)
 {
-    addOperationMap (CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER, reinterpret_cast<PrismMessageHandler> (&ClusterLocalReportRemovedNodeFromClusterWorker::nodeRemovedMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER, reinterpret_cast<WaveMessageHandler> (&ClusterLocalReportRemovedNodeFromClusterWorker::nodeRemovedMessageHandler));
 }
 
 /// Name
@@ -98,7 +98,7 @@ void ClusterLocalReportRemovedNodeFromClusterWorker::updateWaveNodeManagedObject
 
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalRemoveNodeWorker::updateWaveNodeManagedObjectStep: Entering ...");
 
-    ClusterLocalReportRemovedNodeFromClusterMessage* pClusterLocalReportRemovedNodeFromClusterMessage = dynamic_cast<ClusterLocalReportRemovedNodeFromClusterMessage* >(pPrismLinearSequencerContext->getPPrismMessage());
+    ClusterLocalReportRemovedNodeFromClusterMessage* pClusterLocalReportRemovedNodeFromClusterMessage = dynamic_cast<ClusterLocalReportRemovedNodeFromClusterMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
 
     prismAssert(NULL != pClusterLocalReportRemovedNodeFromClusterMessage, __FILE__, __LINE__);
 

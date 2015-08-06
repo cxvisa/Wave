@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerCalculateDbCksumMessage::DatabaseObjectManagerCalculateDbCksumMessage ()
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM),
       m_pauseTheService (false)  
 {
 }
@@ -26,7 +26,7 @@ DatabaseObjectManagerCalculateDbCksumMessage::~DatabaseObjectManagerCalculateDbC
 
 void DatabaseObjectManagerCalculateDbCksumMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString   (&m_checksum,          "checksum"));
      addSerializableAttribute (new AttributeBool     (&m_pauseTheService,   "pauseTheService"));

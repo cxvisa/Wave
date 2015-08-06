@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/MultiThreading/PrismMessageQueue.h"
+#include "Framework/MultiThreading/WaveMessageQueue.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Core/PrismFrameworkMessages.h"
 
@@ -13,46 +13,46 @@ using namespace std;
 namespace WaveNs
 {
 
-template<class T> PrismMessageQueue<T>::PrismMessageQueue ()
+template<class T> WaveMessageQueue<T>::WaveMessageQueue ()
 {
 }
 
-template<class T> PrismMessageQueue<T>::~PrismMessageQueue ()
+template<class T> WaveMessageQueue<T>::~WaveMessageQueue ()
 {
 }
 
-template<class T> void PrismMessageQueue<T>::insertAtTheBack (T *&pPrismMessage)
+template<class T> void WaveMessageQueue<T>::insertAtTheBack (T *&pWaveMessage)
 {
     m_prismMutex.lock ();
-    m_messageQueue.push_back (pPrismMessage);
+    m_messageQueue.push_back (pWaveMessage);
     m_prismMutex.unlock ();
 }
 
-template<class T> void PrismMessageQueue<T>::insertAtTheFront (T *&pPrismMessage)
+template<class T> void WaveMessageQueue<T>::insertAtTheFront (T *&pWaveMessage)
 {
     m_prismMutex.lock ();
-    m_messageQueue.push_front (pPrismMessage);
+    m_messageQueue.push_front (pWaveMessage);
     m_prismMutex.unlock ();
 }
 
-template<class T> void PrismMessageQueue<T>::removeFromFront ()
+template<class T> void WaveMessageQueue<T>::removeFromFront ()
 {
     m_prismMutex.lock ();
     m_messageQueue.pop_front ();
     m_prismMutex.unlock ();
 }
 
-template<class T> WaveMessageStatus PrismMessageQueue<T>::remove (T *&pPrismMessage)
+template<class T> WaveMessageStatus WaveMessageQueue<T>::remove (T *&pWaveMessage)
 {
     m_prismMutex.lock ();
 
     WaveMessageStatus                    status  = WAVE_MESSAGE_ERROR_UNKNOWN_MESSAGE;
-    std::deque<PrismMessage *>::iterator element = m_messageQueue.begin ();
-    std::deque<PrismMessage *>::iterator end     = m_messageQueue.end ();
+    std::deque<WaveMessage *>::iterator element = m_messageQueue.begin ();
+    std::deque<WaveMessage *>::iterator end     = m_messageQueue.end ();
 
     while (element != end)
     {
-        if (pPrismMessage == (*element))
+        if (pWaveMessage == (*element))
         {
             m_messageQueue.erase (element);
             status = WAVE_MESSAGE_SUCCESS;
@@ -67,14 +67,14 @@ template<class T> WaveMessageStatus PrismMessageQueue<T>::remove (T *&pPrismMess
     return (status);
 }
 
-template<class T> UI32 PrismMessageQueue<T>::removeTimerExpirationsForTimer (const TimerHandle &timerHandle)
+template<class T> UI32 WaveMessageQueue<T>::removeTimerExpirationsForTimer (const TimerHandle &timerHandle)
 {
     m_prismMutex.lock ();
 
-    std::deque<PrismMessage *>::iterator   element                                = m_messageQueue.begin ();
-    std::deque<PrismMessage *>::iterator   end                                    = m_messageQueue.end ();
+    std::deque<WaveMessage *>::iterator   element                                = m_messageQueue.begin ();
+    std::deque<WaveMessage *>::iterator   end                                    = m_messageQueue.end ();
     PrismTimerExpiredObjectManagerMessage *pPrismTimerExpiredObjectManagerMessage = NULL;
-    std::deque<PrismMessage *>             tempMessageQueue;
+    std::deque<WaveMessage *>             tempMessageQueue;
     UI32                                   numberOfExpirationsEncountered         = 0;
 
     while (element != end)
@@ -114,7 +114,7 @@ template<class T> UI32 PrismMessageQueue<T>::removeTimerExpirationsForTimer (con
     return (numberOfExpirationsEncountered);
 }
 
-template<class T> T *PrismMessageQueue<T>::getFromFront ()
+template<class T> T *WaveMessageQueue<T>::getFromFront ()
 {
     m_prismMutex.lock ();
 
@@ -134,7 +134,7 @@ template<class T> T *PrismMessageQueue<T>::getFromFront ()
     }
 }
 
-template<class T> T *PrismMessageQueue<T>::removeAndGetFromFront ()
+template<class T> T *WaveMessageQueue<T>::removeAndGetFromFront ()
 {
     m_prismMutex.lock ();
 
@@ -156,7 +156,7 @@ template<class T> T *PrismMessageQueue<T>::removeAndGetFromFront ()
     }
 }
 
-template<class T> UI32 PrismMessageQueue<T>::getSize ()
+template<class T> UI32 WaveMessageQueue<T>::getSize ()
 {
     UI32 numberOfEntriesInTheMessageQueue = 0;
 
@@ -167,7 +167,7 @@ template<class T> UI32 PrismMessageQueue<T>::getSize ()
     return (numberOfEntriesInTheMessageQueue);
 }
 
-template<class T> bool PrismMessageQueue<T>::isEmpty ()
+template<class T> bool WaveMessageQueue<T>::isEmpty ()
 {
     bool isMessageQueueEmpty = true;
 

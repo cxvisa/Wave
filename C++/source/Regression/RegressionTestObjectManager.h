@@ -30,7 +30,7 @@ class RegressionTestObjectManager : public WaveLocalObjectManager
                 void          prepareAServiceTestMessageHandler   (RegressionTestObjectManagerPrepareTestForAServiceMessage *pMessage);
                 void          runAServiceTestMessageHandler       (RegressionTestObjectManagerRunTestForAServiceMessage *pMessage);
 
-        virtual PrismMessage *createMessageInstance               (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance               (const UI32 &operationCode);
 
     protected :
     public :

@@ -8,13 +8,13 @@
 #define CLUSTERLOCALSETHAROLEMESSAGE_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class PrismMessage;
-class ClusterLocalSetHaRoleMessage : public PrismMessage
+class WaveMessage;
+class ClusterLocalSetHaRoleMessage : public WaveMessage
 {
     private :
     protected :

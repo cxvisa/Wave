@@ -29,7 +29,7 @@ class  CentralClusterConfigGetDebugInfoWorker: public WaveWorker
 private :        
 
                   CentralClusterConfigGetDebugInfoWorker   (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager);
-    PrismMessage *createMessageInstance                    (const UI32 &operationCode);
+    WaveMessage *createMessageInstance                    (const UI32 &operationCode);
 
     //Called by the framework when it receives a ClusterConfigObjectManagerGetClusterInfoMessage
     void          getDebugInfoHandler                      (ClusterConfigObjectManagerGetClusterInfoMessage 

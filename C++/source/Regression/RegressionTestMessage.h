@@ -7,12 +7,12 @@
 #ifndef REGRESSIONTESTMESSAGE_H
 #define REGRESSIONTESTMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class RegressionTestMessage : public PrismMessage
+class RegressionTestMessage : public WaveMessage
 {
     private :
         RegressionTestMessage (WaveServiceId serviceCode);

@@ -23,7 +23,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 class PrismElement;
 class PrismLinearSequencerContext;
 class PrismAsynchronousContext;
@@ -41,7 +41,7 @@ class PrismLinearSequencerContext
 
     protected :
     public :
-                                             PrismLinearSequencerContext                   (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             PrismLinearSequencerContext                   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                              PrismLinearSequencerContext                   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                              PrismLinearSequencerContext                   (const PrismLinearSequencerContext &prismLinearSequencerContext);
         virtual                             ~PrismLinearSequencerContext                   ();
@@ -50,8 +50,8 @@ class PrismLinearSequencerContext
                 void                         start                                         ();
                 void                         executeNextStep                               (const ResourceId &currentStepStatus);
                 void                         executeSuccessStep                            ();
-                PrismMessage                *getPPrismMessage                              ();
-                void                         setPPrismMessage                              (PrismMessage *pPrismMessage);
+                WaveMessage                *getPWaveMessage                              ();
+                void                         setPWaveMessage                              (WaveMessage *pWaveMessage);
                 PrismAsynchronousContext    *getPPrismAsynchronousContext                  ();
                 PrismLinearSequencerContext &operator ++                                   ();
                 PrismLinearSequencerContext &operator --                                   ();
@@ -79,7 +79,7 @@ class PrismLinearSequencerContext
     // Now the data members
 
     private :
-        PrismMessage                *m_pPrismMessage;
+        WaveMessage                *m_pWaveMessage;
         PrismAsynchronousContext    *m_pPrismAsynchronousContext;
         PrismElement                *m_pPrismElement;
         PrismLinearSequencerStep    *m_pSteps;

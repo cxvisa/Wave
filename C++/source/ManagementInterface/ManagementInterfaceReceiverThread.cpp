@@ -259,14 +259,14 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
             }
             else
             {
-                // First create a PrismMessage from the contents of the FixedBuffer that we have read from the network.
+                // First create a WaveMessage from the contents of the FixedBuffer that we have read from the network.
                 // Now depending on the contents of the message that arrived decide if it is a new request or a response to a request
                 // this location sent out.
 
-                // We can safely cast from SerializableObject pointer to PrismMessage pointer since we know that only object that
-                // travels brtween two nodes in a Prism based cluster is a PrismMessage;
-                // FIXME : sagar : enforce that the object type that was returned is indeed a PrismMessage or a specialization of
-                //                 PrismMessage.
+                // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
+                // travels brtween two nodes in a Prism based cluster is a WaveMessage;
+                // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
+                //                 WaveMessage.
 
                 string messageString;
 
@@ -278,7 +278,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
 
                 //trace (TRACE_LEVEL_DEVEL, messageString);
 
-                //prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+                //prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
                 // Now read the buffer data
 
@@ -336,38 +336,38 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
                 }  
 
                 UI8              serializationType              = m_peerServerSerializationType;
-                UI32             messageIdAtOriginatingLocation = PrismMessage::getMessageIdAtOriginatingLocation (messageString, serializationType);
-                WaveMessageType  messageType                    = PrismMessage::getType (messageString, serializationType);
-                PrismMessage    *pPrismMessage                  = NULL;
-                bool             isLastReply                    = PrismMessage::getIsLastReply (messageString, serializationType);
+                UI32             messageIdAtOriginatingLocation = WaveMessage::getMessageIdAtOriginatingLocation (messageString, serializationType);
+                WaveMessageType  messageType                    = WaveMessage::getType (messageString, serializationType);
+                WaveMessage    *pWaveMessage                  = NULL;
+                bool             isLastReply                    = WaveMessage::getIsLastReply (messageString, serializationType);
 
                 if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                 {
-                    pPrismMessage = PrismMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType);
+                    pWaveMessage = WaveMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType);
 
-                    pPrismMessage->setSenderLocationId (FrameworkToolKit::getThisLocationId ());
-                    pPrismMessage->setOriginalMessageId (pPrismMessage->getMessageId ());
-                    pPrismMessage->setMessageIdAtOriginatingLocation (pPrismMessage->getMessageId ());
+                    pWaveMessage->setSenderLocationId (FrameworkToolKit::getThisLocationId ());
+                    pWaveMessage->setOriginalMessageId (pWaveMessage->getMessageId ());
+                    pWaveMessage->setMessageIdAtOriginatingLocation (pWaveMessage->getMessageId ());
                 }
                 else if (WAVE_MESSAGE_TYPE_RESPONSE == messageType)
                 {
                     if (true == isLastReply)
                     {
-                        pPrismMessage = (ManagementInterfaceObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
+                        pWaveMessage = (ManagementInterfaceObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
                     }
                     else
                     {    
-                        pPrismMessage = (ManagementInterfaceObjectManager::getInstance ())->getPendingMessageWithOutRemove (messageIdAtOriginatingLocation);
+                        pWaveMessage = (ManagementInterfaceObjectManager::getInstance ())->getPendingMessageWithOutRemove (messageIdAtOriginatingLocation);
                     }
                     
-                    if (NULL != pPrismMessage)
+                    if (NULL != pWaveMessage)
                     {
-                        tracePrintf (TRACE_LEVEL_DEBUG, "ManagementInterfaceReceiverThread::start : Response Reveived for Message with Service Code = %u\n", pPrismMessage->getServiceCode ());
+                        tracePrintf (TRACE_LEVEL_DEBUG, "ManagementInterfaceReceiverThread::start : Response Reveived for Message with Service Code = %u\n", pWaveMessage->getServiceCode ());
 
-                        pPrismMessage->removeAllBuffers ();
-                        pPrismMessage->loadFromSerializedData2 (messageString);
+                        pWaveMessage->removeAllBuffers ();
+                        pWaveMessage->loadFromSerializedData2 (messageString);
 
-                        pPrismMessage->setServiceCode (WaveUserInterfaceObjectManager::getWaveServiceId ());
+                        pWaveMessage->setServiceCode (WaveUserInterfaceObjectManager::getWaveServiceId ());
 
                     }
 
@@ -382,11 +382,11 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
 
                 numberOfBuffers = buffers.size ();
 
-                if (NULL != pPrismMessage)
+                if (NULL != pWaveMessage)
                 {
                     for (i = 0; i < numberOfBuffers; i++)
                     {
-                        pPrismMessage->addBuffer (bufferTags[i], bufferSizes[i], buffers[i], true);
+                        pWaveMessage->addBuffer (bufferTags[i], bufferSizes[i], buffers[i], true);
                     }
                 }
                 else
@@ -402,16 +402,16 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
 
                 ManagementInterfaceMessage *pManagementInterfaceMessage = NULL;
 
-                if (NULL != pPrismMessage)
+                if (NULL != pWaveMessage)
                 {
                     //Set the details of the client in the mmessage itself so that we know where to send it back.
 
-                    pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismMessage);
+                    pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pWaveMessage);
 
                     if (NULL == pManagementInterfaceMessage)
                     {
                         trace (TRACE_LEVEL_FATAL, "ManagementInterfaceReceiverThread::start : Please make sure that only the messages derived from ManagementInterfaceMessage are used in CLI/GUI clients.");
-                        trace (TRACE_LEVEL_FATAL, "ManagementInterfaceReceiverThread::start : The type of the failed message : " + string ((typeid (*pPrismMessage)).name ()));
+                        trace (TRACE_LEVEL_FATAL, "ManagementInterfaceReceiverThread::start : The type of the failed message : " + string ((typeid (*pWaveMessage)).name ()));
                         prismAssert (false, __FILE__, __LINE__);
                     }
                     else

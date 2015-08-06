@@ -24,26 +24,26 @@ namespace WaveNs
 WaveSystemManagementDisplayConfigurationWorker::WaveSystemManagementDisplayConfigurationWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_SYSTEM_MANAGEMENT_DISPLAY_CURRENT_CONFIGURATION_BY_QUALIFIED_YANG_PATH, reinterpret_cast<PrismMessageHandler> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathHandler));
-    addOperationMap (WAVE_SYSTEM_MANAGEMENT_DISPLAY_CURRENT_CONFIGURATION_BY_TARGET_NODE_NAME,    reinterpret_cast<PrismMessageHandler> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameHandler));
+    addOperationMap (WAVE_SYSTEM_MANAGEMENT_DISPLAY_CURRENT_CONFIGURATION_BY_QUALIFIED_YANG_PATH, reinterpret_cast<WaveMessageHandler> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathHandler));
+    addOperationMap (WAVE_SYSTEM_MANAGEMENT_DISPLAY_CURRENT_CONFIGURATION_BY_TARGET_NODE_NAME,    reinterpret_cast<WaveMessageHandler> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameHandler));
 }
 
 WaveSystemManagementDisplayConfigurationWorker::~WaveSystemManagementDisplayConfigurationWorker ()
 {
 }
 
-PrismMessage *WaveSystemManagementDisplayConfigurationWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveSystemManagementDisplayConfigurationWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_SYSTEM_MANAGEMENT_DISPLAY_CURRENT_CONFIGURATION_BY_QUALIFIED_YANG_PATH:
-            pPrismMessage = new WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage ();
+            pWaveMessage = new WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage ();
             break;
 
         case WAVE_SYSTEM_MANAGEMENT_DISPLAY_CURRENT_CONFIGURATION_BY_TARGET_NODE_NAME:
-            pPrismMessage = new WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage ();
+            pWaveMessage = new WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage ();
             break;
 
         default :
@@ -52,7 +52,7 @@ PrismMessage *WaveSystemManagementDisplayConfigurationWorker::createMessageInsta
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathHandler (WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage)
@@ -75,7 +75,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 {
     trace (TRACE_LEVEL_DEVEL, "WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathComputeYangDisplayConfigurationContextStep : Entering ...");
 
-    WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage = dynamic_cast<WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *> (pDisplayCurrentConfigurationContext->getPPrismMessage ());
+    WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage = dynamic_cast<WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *> (pDisplayCurrentConfigurationContext->getPWaveMessage ());
 
     prismAssert (NULL != pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage, __FILE__, __LINE__);
 
@@ -225,7 +225,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 {
     trace (TRACE_LEVEL_DEVEL, "WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameComputeYangDisplayConfigurationContextStep : Entering ...");
 
-    WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage = dynamic_cast<WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *> (pDisplayCurrentConfigurationContext->getPPrismMessage ());
+    WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage = dynamic_cast<WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *> (pDisplayCurrentConfigurationContext->getPWaveMessage ());
 
     prismAssert (NULL != pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, __FILE__, __LINE__);
 

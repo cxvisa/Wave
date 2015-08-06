@@ -17,11 +17,11 @@ LocalClusterConfigObjectManager::LocalClusterConfigObjectManager ()
     : WaveLocalObjectManager ("Local Cluster Configuration") /*, m_primaryNode (this) */
 {
 
-    addOperationMap (CLUSTER_PRIMARY_NODE_CHANGED,               reinterpret_cast<PrismMessageHandler> (&LocalClusterConfigObjectManager::reportPrimaryNodeChanged));
-    addOperationMap (CLUSTER_REPORT_REMOVED_NODE_FROM_CLUSTER,   reinterpret_cast<PrismMessageHandler> (&LocalClusterConfigObjectManager::reportRemovedNodeFromCluster));
-    addOperationMap (CLUSTER_GET_NODE_ROLE,                      reinterpret_cast<PrismMessageHandler> (&LocalClusterConfigObjectManager::getNodeRoleHandler));
-    addOperationMap (CLUSTER_GET_CLUSTER_CONFIG,                 reinterpret_cast<PrismMessageHandler> (&LocalClusterConfigObjectManager::getClusterConfigHandler));
-    addOperationMap (CLUSTER_HEARTBEAT_LOST,                     reinterpret_cast<PrismMessageHandler> (&LocalClusterConfigObjectManager::reportLostHeartBeat));
+    addOperationMap (CLUSTER_PRIMARY_NODE_CHANGED,               reinterpret_cast<WaveMessageHandler> (&LocalClusterConfigObjectManager::reportPrimaryNodeChanged));
+    addOperationMap (CLUSTER_REPORT_REMOVED_NODE_FROM_CLUSTER,   reinterpret_cast<WaveMessageHandler> (&LocalClusterConfigObjectManager::reportRemovedNodeFromCluster));
+    addOperationMap (CLUSTER_GET_NODE_ROLE,                      reinterpret_cast<WaveMessageHandler> (&LocalClusterConfigObjectManager::getNodeRoleHandler));
+    addOperationMap (CLUSTER_GET_CLUSTER_CONFIG,                 reinterpret_cast<WaveMessageHandler> (&LocalClusterConfigObjectManager::getClusterConfigHandler));
+    addOperationMap (CLUSTER_HEARTBEAT_LOST,                     reinterpret_cast<WaveMessageHandler> (&LocalClusterConfigObjectManager::reportLostHeartBeat));
 
 }
 
@@ -209,7 +209,7 @@ UI32 LocalClusterConfigObjectManager::informFrameworkLostHearBeat(string ipAddre
 
     pFrameworkLostHeartBeatMessage->addNodeIpAddressAndPort (ipAddress, port);
 
-    status = send (pFrameworkLostHeartBeatMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkHeartBeatLostReply), NULL);
+    status = send (pFrameworkLostHeartBeatMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigObjectManager::processFrameworkHeartBeatLostReply), NULL);
 
     return (status);
 

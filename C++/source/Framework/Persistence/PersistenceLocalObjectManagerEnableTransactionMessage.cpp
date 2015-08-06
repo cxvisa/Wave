@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerEnableTransactionMessage::PersistenceLocalObjectManagerEnableTransactionMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION)
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION)
 {
 }
 
@@ -22,7 +22,7 @@ PersistenceLocalObjectManagerEnableTransactionMessage::~PersistenceLocalObjectMa
 
 void PersistenceLocalObjectManagerEnableTransactionMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 }

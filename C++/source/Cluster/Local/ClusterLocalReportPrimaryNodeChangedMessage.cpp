@@ -3,7 +3,7 @@
  *   All rights reserved.                                                  *
  *   Author : Aashish                                                      *
  ***************************************************************************/
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/Local/ClusterLocalReportPrimaryNodeChangedMessage.h"
 #include "Cluster/Local/ClusterLocalTypes.h"
 #include "Cluster/Local/ClusterLocalObjectManager.h"
@@ -22,7 +22,7 @@ namespace WaveNs
 /// Return
 /// None
 ClusterLocalReportPrimaryNodeChangedMessage::ClusterLocalReportPrimaryNodeChangedMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_PRIMARY_NODE_CHANGED),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_PRIMARY_NODE_CHANGED),
       m_thisNodeIpAddress(""),
       m_thisNodePort(0),
       m_thisNodeLocationId(0)
@@ -44,7 +44,7 @@ ClusterLocalReportPrimaryNodeChangedMessage::ClusterLocalReportPrimaryNodeChange
 ClusterLocalReportPrimaryNodeChangedMessage::ClusterLocalReportPrimaryNodeChangedMessage (const string & thisNodeIpAddress,
                                                                                           const UI32   thisNodePort,
                                                                                           const LocationId   thisNodeLocationId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_PRIMARY_NODE_CHANGED),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_PRIMARY_NODE_CHANGED),
       m_thisNodeIpAddress(thisNodeIpAddress),
       m_thisNodePort(thisNodePort),
       m_thisNodeLocationId(thisNodeLocationId)
@@ -89,7 +89,7 @@ void ClusterLocalReportPrimaryNodeChangedMessage::setThisNodeLocationId(const UI
 
 void ClusterLocalReportPrimaryNodeChangedMessage::setupAttributesForSerialization ()
 {
-     PrismMessage::setupAttributesForSerialization ();
+     WaveMessage::setupAttributesForSerialization ();
       addSerializableAttribute (new AttributeString     (&m_thisNodeIpAddress,  "thisNodeIpAddress"));
       addSerializableAttribute (new AttributeUI32       (&m_thisNodePort,       "thisNodePort"));
       addSerializableAttribute (new AttributeLocationId (&m_thisNodeLocationId, "thisNodeLocationId"));

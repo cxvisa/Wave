@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 class WaveSendMulticastContext : public PrismAsynchronousContext
 {
@@ -26,8 +26,8 @@ class WaveSendMulticastContext : public PrismAsynchronousContext
     public:
                                             WaveSendMulticastContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                            ~WaveSendMulticastContext ();
-                void                        setPrismMessage          (PrismMessage *pPrismMessage);
-                PrismMessage*               getPrismMessage          ();
+                void                        setWaveMessage          (WaveMessage *pWaveMessage);
+                WaveMessage*               getWaveMessage          ();
                 vector<LocationId>          getAllLocationsToSent    () const;
                 void                        setAllLocationsToSent    (vector<LocationId> &locationIds);
                 ResourceId                  getStatusForALocation    (LocationId &loctionId);
@@ -37,7 +37,7 @@ class WaveSendMulticastContext : public PrismAsynchronousContext
                 void                        setMulticastStatus        (ResourceId &status);
     // Data Members
     private:
-        PrismMessage                   *m_pPrismMessage;
+        WaveMessage                   *m_pWaveMessage;
         vector<LocationId>              m_connectedLocationIds;
         map<LocationId, ResourceId>     m_locationStatus;
         ResourceId                      m_multicastStatus;

@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerGetDBSchemaInfoMessage::DatabaseObjectManagerGetDBSchemaInfoMessage ()
-    : PrismMessage                               (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_GET_DB_SCHEMA_INFO)
+    : WaveMessage                               (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_GET_DB_SCHEMA_INFO)
 {
 }
 

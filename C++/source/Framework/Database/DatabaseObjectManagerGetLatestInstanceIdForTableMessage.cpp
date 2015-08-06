@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerGetLatestInstanceIdForTableMessage::DatabaseObjectManagerGetLatestInstanceIdForTableMessage (const string &tableName)
-    : PrismMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_GET_LATEST_INSTANCE_ID_FOR_TABLE),
+    : WaveMessage (DatabaseObjectManager::getWaveServiceId (), DATABASE_OBJECT_MANAGER_GET_LATEST_INSTANCE_ID_FOR_TABLE),
       m_tableName (tableName),
       m_latestInstanceId (0)
 {

@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 class PrismElement;
 class PrismSynchronousLinearSequencerContext;
 class PrismAsynchronousContext;
@@ -34,15 +34,15 @@ class PrismSynchronousLinearSequencerContext
 
     protected :
     public :
-                                                        PrismSynchronousLinearSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                        PrismSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                         PrismSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                         PrismSynchronousLinearSequencerContext (const PrismSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext);
         virtual                                        ~PrismSynchronousLinearSequencerContext ();
                 PrismSynchronousLinearSequencerContext &operator =                             (const PrismSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext);
                 ResourceId                              getCompletionStatus                    ();
                 ResourceId                              execute                                ();
-                PrismMessage                           *getPPrismMessage                       ();
-                void                                    setPPrismMessage                       (PrismMessage *pPrismMessage);
+                WaveMessage                           *getPWaveMessage                       ();
+                void                                    setPWaveMessage                       (WaveMessage *pWaveMessage);
                 PrismAsynchronousContext               *getPPrismAsynchronousContext           ();
                 bool                                    getIsTransactionStartedByMe            () const;
                 void                                    setIsTransactionStartedByMe            (const bool &isTransactionStartedByMe);
@@ -56,7 +56,7 @@ class PrismSynchronousLinearSequencerContext
     // Now the data  members
 
     private :
-        PrismMessage                        *m_pPrismMessage;
+        WaveMessage                        *m_pWaveMessage;
         PrismAsynchronousContext            *m_pPrismAsynchronousContext;
         PrismElement                        *m_pPrismElement;
         PrismSynchronousLinearSequencerStep *m_pSteps;

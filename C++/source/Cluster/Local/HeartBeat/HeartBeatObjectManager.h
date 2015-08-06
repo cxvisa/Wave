@@ -26,7 +26,7 @@ class HeartBeatObjectManager : public WaveLocalObjectManager
 {
     private :
                                         HeartBeatObjectManager      ();
-        virtual PrismMessage           *createMessageInstance       (const UI32 &operationCode);
+        virtual WaveMessage           *createMessageInstance       (const UI32 &operationCode);
                 WaveManagedObject      *createManagedObjectInstance (const string &managedClassName);
                 void                    setThisLocationIpAddr       (const string &thisLocationIpAddr);
     protected :

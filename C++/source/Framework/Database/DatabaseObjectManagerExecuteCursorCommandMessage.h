@@ -7,7 +7,7 @@
 #ifndef DATABASEOBJECTMANAGEREXECUTECURSORCOMMANDMESSAGE_H
 #define DATABASEOBJECTMANAGEREXECUTECURSORCOMMANDMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
@@ -21,7 +21,7 @@ enum e_cursorOpCode
 };
 
 
-class DatabaseObjectManagerExecuteCursorCfgCommandMessage : public PrismMessage
+class DatabaseObjectManagerExecuteCursorCfgCommandMessage : public WaveMessage
 {
     private :
     protected :
@@ -47,7 +47,7 @@ class DatabaseObjectManagerExecuteCursorCfgCommandMessage : public PrismMessage
 };
 
 
-class DatabaseObjectManagerExecuteCursorQueryCommandMessage : public PrismMessage
+class DatabaseObjectManagerExecuteCursorQueryCommandMessage : public WaveMessage
 {
 	private :
 	protected :

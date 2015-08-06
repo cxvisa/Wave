@@ -8,14 +8,14 @@
 #define HEARTBEATMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/Local/HeartBeat/HeartBeatTypes.h"
 
 
 namespace WaveNs
 {
 
-class StartHeartBeatMessage : public PrismMessage
+class StartHeartBeatMessage : public WaveMessage
 {
     private :
     protected :
@@ -186,7 +186,7 @@ class ReportHeartBeatMessage : public StartHeartBeatMessage
     public :
 };
 
-class DisconnectFromNodeMessage : public PrismMessage
+class DisconnectFromNodeMessage : public WaveMessage
 {
  public:
   

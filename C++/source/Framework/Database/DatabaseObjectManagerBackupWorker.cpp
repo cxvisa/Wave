@@ -18,7 +18,7 @@ namespace WaveNs
 DatabaseObjectManagerBackupWorker::DatabaseObjectManagerBackupWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_BACKUP, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerBackupWorker::backupMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_BACKUP, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerBackupWorker::backupMessageHandler));
 }
 
 DatabaseObjectManagerBackupWorker::~DatabaseObjectManagerBackupWorker ()

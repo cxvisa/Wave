@@ -21,7 +21,7 @@ class WaveManagedObjectCreateContext : public WaveManagedObjectUpdateContext
     private :
     protected :
     public :
-                                    WaveManagedObjectCreateContext           (PrismMessage* pPrismMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                    WaveManagedObjectCreateContext           (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
                                     WaveManagedObjectCreateContext           (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
         virtual                    ~WaveManagedObjectCreateContext           ();
 

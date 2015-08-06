@@ -20,35 +20,35 @@ namespace WaveNs
 WaveDebugInformationWorker::WaveDebugInformationWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_GET_DEBUG_INFORMATION, reinterpret_cast<PrismMessageHandler> (&WaveDebugInformationWorker::getDebugInformationHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_RESET_DEBUG_INFORMATION, reinterpret_cast<PrismMessageHandler> (&WaveDebugInformationWorker::resetDebugInformationHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_GET_DEBUG_INFORMATION, reinterpret_cast<WaveMessageHandler> (&WaveDebugInformationWorker::getDebugInformationHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_RESET_DEBUG_INFORMATION, reinterpret_cast<WaveMessageHandler> (&WaveDebugInformationWorker::resetDebugInformationHandler));
 }
 
 WaveDebugInformationWorker::~WaveDebugInformationWorker ()
 {
 }
 
-PrismMessage *WaveDebugInformationWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveDebugInformationWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_GET_DEBUG_INFORMATION :
-            pPrismMessage = new WaveObjectManagerGetDebugInformationMessage;
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new WaveObjectManagerGetDebugInformationMessage;
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         case WAVE_OBJECT_MANAGER_RESET_DEBUG_INFORMATION :
-            pPrismMessage = new WaveObjectManagerResetDebugInformationMessage;
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new WaveObjectManagerResetDebugInformationMessage;
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveDebugInformationWorker::getDebugInformationHandler (WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage)
@@ -74,7 +74,7 @@ void WaveDebugInformationWorker::getDebugInformationWorkersStep (WaveDebugInform
 {
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::getDebugInformationWorkersStep : Entering ...");
 
-    //WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPPrismMessage ());
+    //WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
     prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
@@ -135,7 +135,7 @@ void WaveDebugInformationWorker::getDebugInformationObjectManagerStep (WaveDebug
 {
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::getDebugInformationObjectManagerStep : Entering ...");
 
-    //WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPPrismMessage ());
+    //WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation = new WaveAsynchronousContextForDebugInformation (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback), pWaveDebugInformationContext);
     prismAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
@@ -153,7 +153,7 @@ void WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback (W
     WaveDebugInformationContext                    *pWaveDebugInformationContext                    = reinterpret_cast<WaveDebugInformationContext *> (pWaveAsynchronousContextForDebugInformation->getPCallerContext ());
     prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
-    WaveObjectManagerGetDebugInformationMessage    *pWaveObjectManagerGetDebugInformationMessage    = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPPrismMessage ());
+    WaveObjectManagerGetDebugInformationMessage    *pWaveObjectManagerGetDebugInformationMessage    = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
     prismAssert (NULL != pWaveObjectManagerGetDebugInformationMessage, __FILE__, __LINE__);
 
     ResourceId                                      status                                          = pWaveAsynchronousContextForDebugInformation->getCompletionStatus ();
@@ -219,7 +219,7 @@ void WaveDebugInformationWorker::resetDebugInformationWorkersStep (WaveDebugInfo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::resetDebugInformationWorkersStep : Entering ...");
 
-    //WaveObjectManagerResetDebugInformationMessage *pWaveObjectManagerResetDebugInformationMessage = dynamic_cast<WaveObjectManagerResetDebugInformationMessage *> (pWaveDebugInformationContext->getPPrismMessage ());
+    //WaveObjectManagerResetDebugInformationMessage *pWaveObjectManagerResetDebugInformationMessage = dynamic_cast<WaveObjectManagerResetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
     prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
@@ -276,7 +276,7 @@ void WaveDebugInformationWorker::resetDebugInformationObjectManagerStep (WaveDeb
 {
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::resetDebugInformationObjectManagerStep : Entering ...");
 
-    //WaveObjectManagerResetDebugInformationMessage *pWaveObjectManagerResetDebugInformationMessage = dynamic_cast<WaveObjectManagerResetDebugInformationMessage *> (pWaveDebugInformationContext->getPPrismMessage ());
+    //WaveObjectManagerResetDebugInformationMessage *pWaveObjectManagerResetDebugInformationMessage = dynamic_cast<WaveObjectManagerResetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation = new WaveAsynchronousContextForDebugInformation (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveDebugInformationWorker::resetDebugInformationObjectManagerStepCallback), pWaveDebugInformationContext);
     prismAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);

@@ -19,7 +19,7 @@ namespace WaveNs
 
 class CommandLineInterfaceReceiverWorkerThread;
 
-typedef void (CommandLineInterfaceReceiverWorkerThread::* PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread) (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+typedef void (CommandLineInterfaceReceiverWorkerThread::* WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread) (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 
 class ServerStreamingSocket;
 class CommandLineInterfaceReceiverObjectManager;
@@ -36,7 +36,7 @@ class CommandLineInterfaceReceiverWorkerThread : public PrismPosixThread, WaveWo
                 CommandLineInterfaceWorkerMessage *getNextCommandLineInterfaceWorkerMessage                     ();
                 void                               processMessages                                              ();
                 void                               processSendCallbacks                                         (CommandLineInterfaceMessage *pCommandLineInterfaceMessage);
-        virtual WaveMessageStatus                  send                                                         (PrismMessage *pPrismMessage, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0);
+        virtual WaveMessageStatus                  send                                                         (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0);
 
         virtual WaveThreadStatus                   start                                                        ();
                 void                               processCommandLineInterfaceMessage                           (CommandLineInterfaceMessage *pCommandLineInterfaceMessage);

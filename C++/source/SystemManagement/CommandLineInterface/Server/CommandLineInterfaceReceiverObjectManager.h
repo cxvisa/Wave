@@ -29,13 +29,13 @@ class CommandLineInterfaceReceiverObjectManager : public WaveLocalObjectManagerF
         virtual void              listenForEvents                                     (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void              bootCompleteForThisLocationEventHandler             (const BootCompleteForThisLocationEvent *&pBootCompleteForThisLocationEvent);
 
-        virtual WaveMessageStatus send                                                (PrismMessage *pPrismMessage, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext,  CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0);
-                void              sendCallback                                        (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+        virtual WaveMessageStatus send                                                (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext,  CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0);
+                void              sendCallback                                        (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 
-                bool              isAMessageSentByThisObjectManager                   (PrismMessage *pPrismMessage);
-                void              addToCommandLineInterfaceReceiverMapsByMessage      (PrismMessage *pPrismMessage, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext);
-                void              removeFromCommandLineInterfaceReceiverMapsByMessage (PrismMessage *pPrismMessage);
-                void              getCommandLineInterfaceReceiverDetailsForMessage    (PrismMessage *pPrismMessage, CommandLineInterfaceReceiverWorkerThread *&pCommandLineInterfaceReceiverWorkerThread, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread &prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *&pPrismMessageContext);
+                bool              isAMessageSentByThisObjectManager                   (WaveMessage *pWaveMessage);
+                void              addToCommandLineInterfaceReceiverMapsByMessage      (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext);
+                void              removeFromCommandLineInterfaceReceiverMapsByMessage (WaveMessage *pWaveMessage);
+                void              getCommandLineInterfaceReceiverDetailsForMessage    (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *&pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread &prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *&pWaveMessageContext);
 
     protected :
     public :
@@ -51,7 +51,7 @@ class CommandLineInterfaceReceiverObjectManager : public WaveLocalObjectManagerF
         ServerStreamingSocket                                                             *m_pServerSocketForCommandLineInterfaceClients;
         CommandLineInterfaceReceiverThread                                                *m_pCommandLineInterfaceReceiverThread;
         map<UI32, CommandLineInterfaceReceiverWorkerThread *>                              m_commandLineInterfaceReceiverWorkerThreadMapByMessageId;
-        map<UI32, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread>  m_commandLineInterfaceReceiverCallbackMapByMessageId;
+        map<UI32, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread>  m_commandLineInterfaceReceiverCallbackMapByMessageId;
         map<UI32, void *>                                                                  m_commandLineInterfaceReceiverContextMapByMessageId;
 
     protected :

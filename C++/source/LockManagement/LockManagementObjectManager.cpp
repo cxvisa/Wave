@@ -28,8 +28,8 @@ LockManagementObjectManager::LockManagementObjectManager ()
     
     addManagedClass (LockManagedObject::getClassName ());
 
-    addOperationMap (LOCK_MANAGEMENT_OBJECT_MANAGER_ACQUIRE_LOCK, reinterpret_cast<PrismMessageHandler> (&LockManagementObjectManager::executeAcquireLockMessageHandler));
-    addOperationMap (LOCK_MANAGEMENT_OBJECT_MANAGER_RELEASE_LOCK, reinterpret_cast<PrismMessageHandler> (&LockManagementObjectManager::executeReleaseLockMessageHandler));
+    addOperationMap (LOCK_MANAGEMENT_OBJECT_MANAGER_ACQUIRE_LOCK, reinterpret_cast<WaveMessageHandler> (&LockManagementObjectManager::executeAcquireLockMessageHandler));
+    addOperationMap (LOCK_MANAGEMENT_OBJECT_MANAGER_RELEASE_LOCK, reinterpret_cast<WaveMessageHandler> (&LockManagementObjectManager::executeReleaseLockMessageHandler));
 }
 
 LockManagementObjectManager::~LockManagementObjectManager ()
@@ -71,18 +71,18 @@ WaveManagedObject *LockManagementObjectManager::createManagedObjectInstance (con
     return (pWaveManagedObject);
 }
 
-PrismMessage *LockManagementObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *LockManagementObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case LOCK_MANAGEMENT_OBJECT_MANAGER_ACQUIRE_LOCK:
-            pPrismMessage = new LockManagementObjectManagerAcquireLockMessage (); 
+            pWaveMessage = new LockManagementObjectManagerAcquireLockMessage (); 
             break;
 
         case LOCK_MANAGEMENT_OBJECT_MANAGER_RELEASE_LOCK:
-            pPrismMessage = new LockManagementObjectManagerReleaseLockMessage ();
+            pWaveMessage = new LockManagementObjectManagerReleaseLockMessage ();
             break;
 
         default :
@@ -91,7 +91,7 @@ PrismMessage *LockManagementObjectManager::createMessageInstance (const UI32 &op
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void LockManagementObjectManager::boot (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -150,7 +150,7 @@ void LockManagementObjectManager::executeAcquireLockMessageHandler (LockManageme
         reinterpret_cast<PrismSynchronousLinearSequencerStep> (&LockManagementObjectManager::prismSynchronousLinearSequencerFailedStep)
     };
 
-    LockManagementMessagingContext *pLockManagementMessagingContext = new LockManagementMessagingContext (reinterpret_cast<PrismMessage*> (pLockManagementObjectManagerAcquireLockMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    LockManagementMessagingContext *pLockManagementMessagingContext = new LockManagementMessagingContext (reinterpret_cast<WaveMessage*> (pLockManagementObjectManagerAcquireLockMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     pLockManagementMessagingContext->execute ();
     trace (TRACE_LEVEL_INFO, "LockManagementObjectManager::executeAcquireLockMessageHandler : Finished acquire message processing");
 }
@@ -171,7 +171,7 @@ ResourceId LockManagementObjectManager::validateAcquireLockStep (LockManagementM
 
 ResourceId LockManagementObjectManager::setServiceStringFromAcquireMessageStep (LockManagementMessagingContext *pLockManagementMessagingContext)
 {
-    LockManagementObjectManagerAcquireLockMessage  *pLockManagementObjectManagerAcquireLockMessage = reinterpret_cast<LockManagementObjectManagerAcquireLockMessage *> (pLockManagementMessagingContext->getPPrismMessage ());
+    LockManagementObjectManagerAcquireLockMessage  *pLockManagementObjectManagerAcquireLockMessage = reinterpret_cast<LockManagementObjectManagerAcquireLockMessage *> (pLockManagementMessagingContext->getPWaveMessage ());
     string                                          serviceString = pLockManagementObjectManagerAcquireLockMessage->getServiceString ();
     
     pLockManagementMessagingContext->setServiceString (serviceString);
@@ -234,7 +234,7 @@ ResourceId LockManagementObjectManager::queryLockManagedObjectFromServiceStringS
 ResourceId LockManagementObjectManager::createLockManagedObjectInDataBaseStep (LockManagementMessagingContext *pLockManagementMessagingContext)
 {
     ResourceId                                      status = WAVE_MESSAGE_ERROR;
-    LockManagementObjectManagerAcquireLockMessage  *pLockManagementObjectManagerAcquireLockMessage = reinterpret_cast<LockManagementObjectManagerAcquireLockMessage *> (pLockManagementMessagingContext->getPPrismMessage ());
+    LockManagementObjectManagerAcquireLockMessage  *pLockManagementObjectManagerAcquireLockMessage = reinterpret_cast<LockManagementObjectManagerAcquireLockMessage *> (pLockManagementMessagingContext->getPWaveMessage ());
     string                                          serviceString = pLockManagementObjectManagerAcquireLockMessage->getServiceString ();
     LocationId                                      locationId = pLockManagementObjectManagerAcquireLockMessage->getSenderLocationId ();
     WaveServiceId                                  serviceId = pLockManagementObjectManagerAcquireLockMessage->getSenderServiceCode ();
@@ -293,7 +293,7 @@ void LockManagementObjectManager::executeReleaseLockMessageHandler (LockManageme
         reinterpret_cast<PrismSynchronousLinearSequencerStep> (&LockManagementObjectManager::prismSynchronousLinearSequencerFailedStep)
     };
 
-    LockManagementMessagingContext *pLockManagementMessagingContext = new LockManagementMessagingContext (reinterpret_cast<PrismMessage*> (pLockManagementObjectManagerReleaseLockMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    LockManagementMessagingContext *pLockManagementMessagingContext = new LockManagementMessagingContext (reinterpret_cast<WaveMessage*> (pLockManagementObjectManagerReleaseLockMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     pLockManagementMessagingContext->execute ();
     trace (TRACE_LEVEL_INFO, "LockManagementObjectManager::executeReleaseLockMessageHandler: Finished release message processing");
 
@@ -301,7 +301,7 @@ void LockManagementObjectManager::executeReleaseLockMessageHandler (LockManageme
 
 ResourceId LockManagementObjectManager::setServiceStringFromReleaseMessageStep (LockManagementMessagingContext *pLockManagementMessagingContext)
 {
-    LockManagementObjectManagerReleaseLockMessage  *pLockManagementObjectManagerReleaseLockMessage = reinterpret_cast<LockManagementObjectManagerReleaseLockMessage *> (pLockManagementMessagingContext->getPPrismMessage ());
+    LockManagementObjectManagerReleaseLockMessage  *pLockManagementObjectManagerReleaseLockMessage = reinterpret_cast<LockManagementObjectManagerReleaseLockMessage *> (pLockManagementMessagingContext->getPWaveMessage ());
     string                                          serviceString = pLockManagementObjectManagerReleaseLockMessage->getServiceString ();
 
     pLockManagementMessagingContext->setServiceString (serviceString);
@@ -312,7 +312,7 @@ ResourceId LockManagementObjectManager::setServiceStringFromReleaseMessageStep (
 ResourceId LockManagementObjectManager::deleteLockManagedObjectFromDataBaseStep (LockManagementMessagingContext *pLockManagementMessagingContext)
 {
     ResourceId                                      status = WAVE_MESSAGE_ERROR;
-    LockManagementObjectManagerReleaseLockMessage  *pLockManagementObjectManagerReleaseLockMessage = reinterpret_cast<LockManagementObjectManagerReleaseLockMessage *> (pLockManagementMessagingContext->getPPrismMessage ());
+    LockManagementObjectManagerReleaseLockMessage  *pLockManagementObjectManagerReleaseLockMessage = reinterpret_cast<LockManagementObjectManagerReleaseLockMessage *> (pLockManagementMessagingContext->getPWaveMessage ());
     string                                          serviceString = pLockManagementObjectManagerReleaseLockMessage->getServiceString ();
     LockManagedObject                              *pLockManagedObject = pLockManagementMessagingContext->getPLockManagedObject ();
 

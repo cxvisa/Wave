@@ -15,12 +15,12 @@
 #ifndef CLUSTERLOCALSETHARDWARDSYNCHRONIZATIONMESSAGE_H 
 #define CLUSTERLOCALSETHARDWARDSYNCHRONIZATIONMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class ClusterLocalSetHardwareSynchronizationStateMessage : public PrismMessage
+class ClusterLocalSetHardwareSynchronizationStateMessage : public WaveMessage
 {
     private :
                 void                setupAttributesForSerialization                     ();

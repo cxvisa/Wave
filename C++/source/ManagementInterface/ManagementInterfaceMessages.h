@@ -8,12 +8,12 @@
 #define MANAGEMENTINTERFACEMESSAGES_H
 
 #include "Framework/Attributes/AttributesMap.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class RequestToManagementInterfaceMessage : public PrismMessage
+class RequestToManagementInterfaceMessage : public WaveMessage
 {
     private :
     protected :

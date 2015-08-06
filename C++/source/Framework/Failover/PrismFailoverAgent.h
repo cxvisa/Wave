@@ -49,14 +49,14 @@ class PrismFailoverAgent : protected WaveWorker
         void createDatabaseDump                                             ();
         void pausePersistenceForPrimaryChangeStep                           (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
         void informSecondaryLocationsToChangePrimaryStep                    (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
-        void informSecondaryLocationsToChangePrimaryCallback                (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+        void informSecondaryLocationsToChangePrimaryCallback                (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
         void informSecondaryLocationsToChangePrimaryPhase1Step              (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
-        void informSecondaryLocationsToChangePrimaryPhase1Callback          (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+        void informSecondaryLocationsToChangePrimaryPhase1Callback          (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
         void resumeDatabaseDumpStep                                         (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
         void informSecondaryLocationsToChangePrimaryPhase2Step              (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
-        void informSecondaryLocationsToChangePrimaryPhase2Callback          (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+        void informSecondaryLocationsToChangePrimaryPhase2Callback          (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
         void informSecondaryLocationsToChangePrimaryPhase3Step              (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
-        void informSecondaryLocationsToChangePrimaryPhase3Callback          (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+        void informSecondaryLocationsToChangePrimaryPhase3Callback          (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
         void removeOldPrimaryLocationStep                                   (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
         void resetThisLocationToPrimaryStep                                 (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);
         void startHeartBeatToSecondariesStep                                (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext);

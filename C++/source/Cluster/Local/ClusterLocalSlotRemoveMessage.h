@@ -7,7 +7,7 @@
 #ifndef CLUSTERLOCALSLOTREMOVEMESSAGE_H
 #define CLUSTERLOCALSLOTREMOVEMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/Local/ClusterLocalTypes.h"
 
 using namespace WaveNs;
@@ -15,7 +15,7 @@ using namespace WaveNs;
 namespace WaveNs
 {
 
-class ClusterLocalSlotRemoveMessage : public PrismMessage
+class ClusterLocalSlotRemoveMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

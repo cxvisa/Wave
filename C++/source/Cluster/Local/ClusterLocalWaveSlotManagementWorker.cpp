@@ -19,10 +19,10 @@ namespace WaveNs
 ClusterLocalWaveSlotManagementWorker::ClusterLocalWaveSlotManagementWorker (ClusterLocalObjectManager *pClusterLocalObjectmanager)
     : WaveWorker (pClusterLocalObjectmanager)
 {
-    addOperationMap (CLUSTER_LOCAL_SLOT_ONLINE_MESSAGE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotOnlineMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_SLOT_OFFLINE_MESSAGE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotOfflineMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotRemoveMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotRemoveAllMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SLOT_ONLINE_MESSAGE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotOnlineMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SLOT_OFFLINE_MESSAGE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotOfflineMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotRemoveMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SLOT_REMOVE_ALL_MESSAGE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalWaveSlotManagementWorker::slotRemoveAllMessageHandler));
 }
 
 ClusterLocalWaveSlotManagementWorker::~ClusterLocalWaveSlotManagementWorker ()
@@ -75,7 +75,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::getSlotObjects (ClusterLocalMes
 
 ResourceId ClusterLocalWaveSlotManagementWorker::validateSlotAdd (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
-    ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+    ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
     prismAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
     UI32 slotNumberInMsg = pClusterLocalSlotOnlineMessage->getSlotNumber();
     UI32 hwTypeInMsg = pClusterLocalSlotOnlineMessage->getHwType ();
@@ -107,7 +107,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::validateSlotAdd (ClusterLocalMe
 
 ResourceId ClusterLocalWaveSlotManagementWorker::createOrUpdateSlotManagedObject(ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
-    ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+    ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
     prismAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
     
     UI32 slotNumber = pClusterLocalSlotOnlineMessage->getSlotNumber();
@@ -180,7 +180,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfN
         updateWaveManagedObject (pWaveNode);    
 
         // Send the WaveNodeObjectId back
-        ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+        ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
 
         prismAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
     
@@ -226,7 +226,7 @@ void ClusterLocalWaveSlotManagementWorker::slotOnlineMessageHandler (ClusterLoca
         reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
     };
 
-    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<PrismMessage *> (pClusterLocalSlotOnlineMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pClusterLocalSlotOnlineMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     pClusterLocalMessagingContext->setSlotNumber(slotNumber);
     pClusterLocalMessagingContext->setHwType(hwType);
     pClusterLocalMessagingContext->setLocationId (locationId);
@@ -236,7 +236,7 @@ void ClusterLocalWaveSlotManagementWorker::slotOnlineMessageHandler (ClusterLoca
 
 ResourceId ClusterLocalWaveSlotManagementWorker::updateSlotManagedObject(ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
-    ClusterLocalSlotOfflineMessage *pClusterLocalSlotOfflineMessage = reinterpret_cast<ClusterLocalSlotOfflineMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+    ClusterLocalSlotOfflineMessage *pClusterLocalSlotOfflineMessage = reinterpret_cast<ClusterLocalSlotOfflineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
     prismAssert (pClusterLocalSlotOfflineMessage != NULL, __FILE__, __LINE__);
     
     UI32 slotNumber = pClusterLocalSlotOfflineMessage->getSlotNumber();
@@ -264,7 +264,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::updateSlotManagedObject(Cluster
 
 ResourceId ClusterLocalWaveSlotManagementWorker::validateSlotUpdate (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
-    ClusterLocalSlotOfflineMessage *pClusterLocalSlotOfflineMessage = reinterpret_cast<ClusterLocalSlotOfflineMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+    ClusterLocalSlotOfflineMessage *pClusterLocalSlotOfflineMessage = reinterpret_cast<ClusterLocalSlotOfflineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
     prismAssert (pClusterLocalSlotOfflineMessage != NULL, __FILE__, __LINE__);
     UI32 slotNumberInMsg = pClusterLocalSlotOfflineMessage->getSlotNumber();
     UI32 hwTypeInMsg = pClusterLocalSlotOfflineMessage->getHwType();
@@ -319,7 +319,7 @@ void ClusterLocalWaveSlotManagementWorker::slotOfflineMessageHandler (ClusterLoc
         reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
     };
 
-    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<PrismMessage *> (pClusterLocalSlotOfflineMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pClusterLocalSlotOfflineMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     pClusterLocalMessagingContext->setSlotNumber(slotNumber);
     pClusterLocalMessagingContext->setHwType(hwType);
     pClusterLocalMessagingContext->setLocationId (locationId);
@@ -328,7 +328,7 @@ void ClusterLocalWaveSlotManagementWorker::slotOfflineMessageHandler (ClusterLoc
 
 ResourceId ClusterLocalWaveSlotManagementWorker::removeSlot (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
-    ClusterLocalSlotRemoveMessage *pSlotRemoveMessage = reinterpret_cast<ClusterLocalSlotRemoveMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+    ClusterLocalSlotRemoveMessage *pSlotRemoveMessage = reinterpret_cast<ClusterLocalSlotRemoveMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
     prismAssert (pSlotRemoveMessage != NULL, __FILE__, __LINE__);
     UI32 slotNumber = pSlotRemoveMessage->getSlotNumber();
     UI32 hwType = pSlotRemoveMessage->getHwType ();
@@ -408,7 +408,7 @@ void ClusterLocalWaveSlotManagementWorker::slotRemoveMessageHandler (ClusterLoca
         reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
     };
 
-    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<PrismMessage *> (pSlotRemoveMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pSlotRemoveMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     pClusterLocalMessagingContext->setSlotNumber(slotNumber);
     pClusterLocalMessagingContext->setHwType(hwType);
     pClusterLocalMessagingContext->setLocationId (locationId);
@@ -417,7 +417,7 @@ void ClusterLocalWaveSlotManagementWorker::slotRemoveMessageHandler (ClusterLoca
    
 ResourceId ClusterLocalWaveSlotManagementWorker::removeAllSlots (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
-    ClusterLocalSlotRemoveAllMessage *pSlotRemoveAllMessage = reinterpret_cast<ClusterLocalSlotRemoveAllMessage *> (pClusterLocalMessagingContext->getPPrismMessage ());
+    ClusterLocalSlotRemoveAllMessage *pSlotRemoveAllMessage = reinterpret_cast<ClusterLocalSlotRemoveAllMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
     prismAssert (pSlotRemoveAllMessage != NULL, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalWaveSlotManagementWorker::removeAllSlots: remove all slots "));
@@ -478,7 +478,7 @@ void ClusterLocalWaveSlotManagementWorker::slotRemoveAllMessageHandler (ClusterL
         reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
     };
 
-    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<PrismMessage *> (pSlotRemoveAllMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pSlotRemoveAllMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     pClusterLocalMessagingContext->setLocationId (locationId);
     pClusterLocalMessagingContext->execute ();
 }

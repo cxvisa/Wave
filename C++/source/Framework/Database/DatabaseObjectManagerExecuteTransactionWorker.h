@@ -19,7 +19,7 @@ class WaveAsynchronousContextForDebugInformation;
 class DatabaseObjectManagerExecuteTransactionWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage   *createMessageInstance                           (const UI32 &operationCode);
+        virtual WaveMessage   *createMessageInstance                           (const UI32 &operationCode);
         virtual void            getDebugInformation                             (WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation);
         virtual void            resetDebugInformation                           (WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation);
 

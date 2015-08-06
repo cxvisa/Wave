@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/MultiThreading/PrismThread.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/MultiThreading/WaveThread.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Messaging/Local/PrismEvent.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -29,10 +29,10 @@ namespace WaveNs
 
 static WaveServiceMap                         *s_pWaveServiceMap                                       = NULL;
 
-       map<PrismThreadId, WaveObjectManager *>  PrismThread::m_prismThreadIdToWaveObjectManagerMap;
-       PrismMutex                               PrismThread::m_prismThreadIdToWaveObjectManagerMapMutex;
+       map<WaveThreadId, WaveObjectManager *>  WaveThread::m_prismThreadIdToWaveObjectManagerMap;
+       PrismMutex                               WaveThread::m_prismThreadIdToWaveObjectManagerMapMutex;
 
-PrismThread::PrismThread (WaveServiceId id, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
+WaveThread::WaveThread (WaveServiceId id, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : PrismPosixThread    (stackSize),
       m_prismServiceId    (id),
       m_wakeupCaller      (),
@@ -49,7 +49,7 @@ PrismThread::PrismThread (WaveServiceId id, const string &serviceName, const UI3
     initializeHoldCounts ();
 }
 
-PrismThread::PrismThread (WaveServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
+WaveThread::WaveThread (WaveServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : PrismPosixThread    (stackSize),
       m_prismServiceId    (id),
       m_wakeupCaller      (),
@@ -67,7 +67,7 @@ PrismThread::PrismThread (WaveServiceId id, WaveObjectManager *pWaveObjectManage
     initializeHoldCounts ();
 }
 
-PrismThread::~PrismThread ()
+WaveThread::~WaveThread ()
 {
     s_pWaveServiceMap->removeServiceMap (m_prismServiceId);
 
@@ -79,7 +79,7 @@ PrismThread::~PrismThread ()
         delete m_pWaveObjectManagers[i];
     }
 
-    PrismThreadId thisThreadId = pthread_self ();
+    WaveThreadId thisThreadId = pthread_self ();
 
     prismAssert (1 == numberOfWaveObjectManagers, __FILE__, __LINE__); // For now, enforce that there is exactly on Wave OM per thread.
 
@@ -90,10 +90,10 @@ PrismThread::~PrismThread ()
     m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
 }
 
-WaveThreadStatus PrismThread::start ()
+WaveThreadStatus WaveThread::start ()
 {
     UI32          numberOfWaveObjectManagers = m_pWaveObjectManagers.size ();
-    PrismThreadId thisThreadId               = pthread_self ();
+    WaveThreadId thisThreadId               = pthread_self ();
 
     prismAssert (1 == numberOfWaveObjectManagers, __FILE__, __LINE__); // For now, enfore that there is exactly on Wave OM per thread.
 
@@ -109,12 +109,12 @@ WaveThreadStatus PrismThread::start ()
 
     m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
     m_prismThreadIdToWaveObjectManagerMap[thisThreadId] = m_pWaveObjectManagers[0];
-    //trace (TRACE_LEVEL_INFO, string ("PrismThread::start : Prism Thread ID ") + thisThreadId + string (" corresponds to Wave OM : ") + (m_pWaveObjectManagers[0])->getName ());
+    //trace (TRACE_LEVEL_INFO, string ("WaveThread::start : Prism Thread ID ") + thisThreadId + string (" corresponds to Wave OM : ") + (m_pWaveObjectManagers[0])->getName ());
     m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
 
     setCpuAffinity (m_cpuAffinityVector);
 
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
     PrismEvent   *pPrismEvent   = NULL;
 
     while (true)
@@ -126,9 +126,9 @@ WaveThreadStatus PrismThread::start ()
 
         m_gateKeeper.lock ();
 
-        pPrismMessage = getNextMessageToProcess ();
+        pWaveMessage = getNextMessageToProcess ();
 
-        if (NULL == pPrismMessage)
+        if (NULL == pWaveMessage)
         {
             m_wakeupCaller.lock ();
             m_gateKeeper.unlock ();
@@ -141,22 +141,22 @@ WaveThreadStatus PrismThread::start ()
 
             WaveObjectManager *pWaveObjectManager = NULL;
 
-            switch (pPrismMessage->getType ())
+            switch (pWaveMessage->getType ())
             {
                 case WAVE_MESSAGE_TYPE_REQUEST :
-                    pWaveObjectManager = getWaveObjectManagerForOperationCode (pPrismMessage->getOperationCode ());
+                    pWaveObjectManager = getWaveObjectManagerForOperationCode (pWaveMessage->getOperationCode ());
 
                     if (NULL != pWaveObjectManager)
                     {
-                        pWaveObjectManager->handlePrismMessage (pPrismMessage);
+                        pWaveObjectManager->handleWaveMessage (pWaveMessage);
                     }
                     else
                     {
-                        pPrismMessage->setCompletionStatus (WAVE_THREAD_ERROR_COULD_NOT_FIND_OM);
+                        pWaveMessage->setCompletionStatus (WAVE_THREAD_ERROR_COULD_NOT_FIND_OM);
 
                         if (0 < m_pWaveObjectManagers.size ())
                         {
-                            m_pWaveObjectManagers[0]->reply (pPrismMessage);
+                            m_pWaveObjectManagers[0]->reply (pWaveMessage);
                         }
                         else
                         {
@@ -168,23 +168,23 @@ WaveThreadStatus PrismThread::start ()
                     break;
 
                 case WAVE_MESSAGE_TYPE_RESPONSE :
-                    pWaveObjectManager = getWaveObjectManagerForPrismMessageId (pPrismMessage->getMessageId ());
+                    pWaveObjectManager = getWaveObjectManagerForWaveMessageId (pWaveMessage->getMessageId ());
 
                     if (NULL != pWaveObjectManager)
                     {
-                        pWaveObjectManager->handlePrismMessageResponse (FRAMEWORK_SUCCESS, pPrismMessage);
+                        pWaveObjectManager->handleWaveMessageResponse (FRAMEWORK_SUCCESS, pWaveMessage);
                     }
                     else
                     {
                         trace (TRACE_LEVEL_FATAL, "Failed to deliver response : Could not find corresponding Prism Object Manager.");
-                        trace (TRACE_LEVEL_FATAL, string ("ServiceCode = ") + pPrismMessage->getServiceCode () + string (", OperationCode = ") + pPrismMessage->getOperationCode () +  string(", MessageId = ") + pPrismMessage->getMessageId ());
+                        trace (TRACE_LEVEL_FATAL, string ("ServiceCode = ") + pWaveMessage->getServiceCode () + string (", OperationCode = ") + pWaveMessage->getOperationCode () +  string(", MessageId = ") + pWaveMessage->getMessageId ());
                         prismAssert (false, __FILE__, __LINE__);
                     }
 
                     break;
 
                 case WAVE_MESSAGE_TYPE_EVENT :
-                    pPrismEvent = dynamic_cast<PrismEvent *> (pPrismMessage);
+                    pPrismEvent = dynamic_cast<PrismEvent *> (pWaveMessage);
                     prismAssert( NULL != pPrismEvent , __FILE__ , __LINE__);
 
                     pWaveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (pPrismEvent->getSenderLocationId (), pPrismEvent->getServiceCode (), pPrismEvent->getOperationCode ());
@@ -206,7 +206,7 @@ WaveThreadStatus PrismThread::start ()
                     break;
 
                 default :
-                    cerr << "PrismThread::start : Unknown message type : " << pPrismMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_prismServiceId) << endl;
+                    cerr << "WaveThread::start : Unknown message type : " << pWaveMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_prismServiceId) << endl;
                     prismAssert (false, __FILE__, __LINE__);
 
                     break;
@@ -223,7 +223,7 @@ WaveThreadStatus PrismThread::start ()
     return (WAVE_THREAD_SUCCESS);
 }
 
-WaveThreadStatus PrismThread::consumePendingMessages ()
+WaveThreadStatus WaveThread::consumePendingMessages ()
 {
     while (true)
     {
@@ -235,7 +235,7 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
         prismSleep (1);
     }
 
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
     PrismEvent   *pPrismEvent   = NULL;
 
     while (true)
@@ -247,9 +247,9 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
 
         m_gateKeeper.lock ();
 
-        pPrismMessage = getNextMessageToProcess ();
+        pWaveMessage = getNextMessageToProcess ();
 
-        if (NULL == pPrismMessage)
+        if (NULL == pWaveMessage)
         {
             m_gateKeeper.unlock ();
 
@@ -261,22 +261,22 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
 
             WaveObjectManager *pWaveObjectManager = NULL;
 
-            switch (pPrismMessage->getType ())
+            switch (pWaveMessage->getType ())
             {
                 case WAVE_MESSAGE_TYPE_REQUEST :
-                    pWaveObjectManager = getWaveObjectManagerForOperationCode (pPrismMessage->getOperationCode ());
+                    pWaveObjectManager = getWaveObjectManagerForOperationCode (pWaveMessage->getOperationCode ());
 
                     if (NULL != pWaveObjectManager)
                     {
-                        pWaveObjectManager->handlePrismMessage (pPrismMessage);
+                        pWaveObjectManager->handleWaveMessage (pWaveMessage);
                     }
                     else
                     {
-                        pPrismMessage->setCompletionStatus (WAVE_THREAD_ERROR_COULD_NOT_FIND_OM);
+                        pWaveMessage->setCompletionStatus (WAVE_THREAD_ERROR_COULD_NOT_FIND_OM);
 
                         if (0 < m_pWaveObjectManagers.size ())
                         {
-                            m_pWaveObjectManagers[0]->reply (pPrismMessage);
+                            m_pWaveObjectManagers[0]->reply (pWaveMessage);
                         }
                         else
                         {
@@ -288,16 +288,16 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
                     break;
 
                 case WAVE_MESSAGE_TYPE_RESPONSE :
-                    pWaveObjectManager = getWaveObjectManagerForPrismMessageId (pPrismMessage->getMessageId ());
+                    pWaveObjectManager = getWaveObjectManagerForWaveMessageId (pWaveMessage->getMessageId ());
 
                     if (NULL != pWaveObjectManager)
                     {
-                        pWaveObjectManager->handlePrismMessageResponse (FRAMEWORK_SUCCESS, pPrismMessage);
+                        pWaveObjectManager->handleWaveMessageResponse (FRAMEWORK_SUCCESS, pWaveMessage);
                     }
                     else
                     {
                         cout << ": Failed to deliver response : Could not find corresponding Prism Object Manager." << endl;
-                        cout << "ServiceCode = " << pPrismMessage->getServiceCode () << ", OperationCode = " << pPrismMessage->getOperationCode () << ", MessageId = " << pPrismMessage->getMessageId () << endl;
+                        cout << "ServiceCode = " << pWaveMessage->getServiceCode () << ", OperationCode = " << pWaveMessage->getOperationCode () << ", MessageId = " << pWaveMessage->getMessageId () << endl;
                         prismAssert (false, __FILE__, __LINE__);
                     }
 
@@ -305,7 +305,7 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
 
                 case WAVE_MESSAGE_TYPE_EVENT :
 
-                    pPrismEvent = dynamic_cast<PrismEvent *> (pPrismMessage);
+                    pPrismEvent = dynamic_cast<PrismEvent *> (pWaveMessage);
                     prismAssert( NULL != pPrismEvent , __FILE__ , __LINE__);
 
                     pWaveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (pPrismEvent->getSenderLocationId (), pPrismEvent->getServiceCode (), pPrismEvent->getOperationCode ());
@@ -327,7 +327,7 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
                     break;
 
                 default :
-                    cerr << "PrismThread::consumePendingMessages : Unknown message type : " << pPrismMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_prismServiceId) << endl;
+                    cerr << "WaveThread::consumePendingMessages : Unknown message type : " << pWaveMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_prismServiceId) << endl;
                     prismAssert (false, __FILE__, __LINE__);
 
                     break;
@@ -342,11 +342,11 @@ WaveThreadStatus PrismThread::consumePendingMessages ()
     return (WAVE_THREAD_SUCCESS);
 }
 
-WaveMessageStatus PrismThread::submitMessage (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveThread::submitMessage (WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    WaveMessagePriority messagePriority = pPrismMessage->getPriority ();
+    WaveMessagePriority messagePriority = pWaveMessage->getPriority ();
 
     // Check if the message has been submitted to a wrong thread.  This done by comparing this thread serviceid
     // to the message serviceid.
@@ -355,9 +355,9 @@ WaveMessageStatus PrismThread::submitMessage (PrismMessage *pPrismMessage)
 
     if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
          ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         (m_prismServiceId != (pPrismMessage->getServiceCode ())))
+         (m_prismServiceId != (pWaveMessage->getServiceCode ())))
     {
-        cerr << "PrismThread::submitMessage : Internal Error : Submitted message to a wrong Prism Thread." << endl;
+        cerr << "WaveThread::submitMessage : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_SUBMIT_TO_INVALID_THREAD);
     }
@@ -366,14 +366,14 @@ WaveMessageStatus PrismThread::submitMessage (PrismMessage *pPrismMessage)
     // We accept a few messages even before the service is enabled.  We accept messages like initialize
     // and enable messages.
 
-    UI32                operationCode       = pPrismMessage->getOperationCode ();
+    UI32                operationCode       = pWaveMessage->getOperationCode ();
     WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForOperationCode (operationCode);
 
     // by the time we reach here we must not encounter a NULL WaveObjectManager.
 
     if (NULL == pWaveObjectManager)
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismThread::submitMessage : There is no ObjectManager registered to rceive this operation code (") + operationCode + ").");
+        trace (TRACE_LEVEL_FATAL, string ("WaveThread::submitMessage : There is no ObjectManager registered to rceive this operation code (") + operationCode + ").");
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_NO_OM_TO_ACCEPT_MESSAGE);
     }
@@ -386,11 +386,11 @@ WaveMessageStatus PrismThread::submitMessage (PrismMessage *pPrismMessage)
                 // We cannot use trace method here.  It will lead to an infinite recursion because the trace service
                 // might not have been enabled.  Also the trace statement causes invoking subMitMessage.
 
-                // trace (TRACE_LEVEL_DEBUG, string ("PrismThread::submitMessage : Allowing the operation (") + operationCode + ") before enabling the service.");
+                // trace (TRACE_LEVEL_DEBUG, string ("WaveThread::submitMessage : Allowing the operation (") + operationCode + ") before enabling the service.");
             }
             else
             {
-                trace (TRACE_LEVEL_DEBUG, "PrismThread::submitMessage : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
+                trace (TRACE_LEVEL_DEBUG, "WaveThread::submitMessage : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
                 return (WAVE_MESSAGE_ERROR_SERVICE_NOT_ENABLED);
             }
         }
@@ -408,37 +408,37 @@ WaveMessageStatus PrismThread::submitMessage (PrismMessage *pPrismMessage)
     // messages.  Whenever the Timer service sends such a notification message that messages goes into a separate queue.  Otherwise
     // all the messages go into repective queues according to their priority and type.
 
-    UI32 opertionCode = pPrismMessage->getOperationCode ();
+    UI32 opertionCode = pWaveMessage->getOperationCode ();
 
-    if ((WAVE_OBJECT_MANAGER_RESUME == operationCode) || (true == pPrismMessage->getIsMessageSupportedWhenServiceIsPaused ()))
+    if ((WAVE_OBJECT_MANAGER_RESUME == operationCode) || (true == pWaveMessage->getIsMessageSupportedWhenServiceIsPaused ()))
     {
-        m_frameworkResumeMessages.insertAtTheBack (pPrismMessage);
+        m_frameworkResumeMessages.insertAtTheBack (pWaveMessage);
     }
     else if (WAVE_OBJECT_MANAGER_PAUSE == operationCode)
     {
-        m_frameworkMessages.insertAtTheFront (pPrismMessage);
+        m_frameworkMessages.insertAtTheFront (pWaveMessage);
     }
     else if (WAVE_OBJECT_MANAGER_TIMER_EXPIRED == opertionCode) // For Timer Expiration Messages
     {
-        m_timerExpirations.insertAtTheBack (pPrismMessage); // for all the other Framework messages like initialize, enable etc.,
+        m_timerExpirations.insertAtTheBack (pWaveMessage); // for all the other Framework messages like initialize, enable etc.,
     }
     else if (opertionCode >= (UINT_MAX - 1001))
     {
-        m_frameworkMessages.insertAtTheBack (pPrismMessage);
+        m_frameworkMessages.insertAtTheBack (pWaveMessage);
     }
     else
     {
         if (WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
         {
-            m_highPriorityMessages.insertAtTheBack (pPrismMessage);
+            m_highPriorityMessages.insertAtTheBack (pWaveMessage);
         }
         else if (WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
         {
-            m_messages.insertAtTheBack (pPrismMessage);
+            m_messages.insertAtTheBack (pWaveMessage);
         }
         else
         {
-            cout << "PrismThread::submitMessage : Submitting message with unknown priority (" << messagePriority << ")." << endl;
+            cout << "WaveThread::submitMessage : Submitting message with unknown priority (" << messagePriority << ")." << endl;
             prismAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR_UNKNOWN_PRIORITY;
         }
@@ -453,11 +453,11 @@ WaveMessageStatus PrismThread::submitMessage (PrismMessage *pPrismMessage)
     return (status);
 }
 
-WaveMessageStatus PrismThread::submitMessageAtFront (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveThread::submitMessageAtFront (WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    WaveMessagePriority messagePriority = pPrismMessage->getPriority ();
+    WaveMessagePriority messagePriority = pWaveMessage->getPriority ();
 
     // Check if the message has been submitted to a wrong thread.  This done by comparing this thread serviceid
     // to the message serviceid.
@@ -466,9 +466,9 @@ WaveMessageStatus PrismThread::submitMessageAtFront (PrismMessage *pPrismMessage
 
     if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
          ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         (m_prismServiceId != (pPrismMessage->getServiceCode ())))
+         (m_prismServiceId != (pWaveMessage->getServiceCode ())))
     {
-        cerr << "PrismThread::submitMessageAtFront : Internal Error : Submitted message to a wrong Prism Thread." << endl;
+        cerr << "WaveThread::submitMessageAtFront : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_SUBMIT_TO_INVALID_THREAD);
     }
@@ -477,14 +477,14 @@ WaveMessageStatus PrismThread::submitMessageAtFront (PrismMessage *pPrismMessage
     // We accept a few messages even before the service is enabled.  We accept messages like initialize
     // and enable messages.
 
-    UI32                operationCode       = pPrismMessage->getOperationCode ();
+    UI32                operationCode       = pWaveMessage->getOperationCode ();
     WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForOperationCode (operationCode);
 
     // by the time we reach here we must not encounter a NULL WaveObjectManager.
 
     if (NULL == pWaveObjectManager)
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismThread::submitMessageAtFront : There is no ObjectManager registered to rceive this operation code (") + operationCode + ").");
+        trace (TRACE_LEVEL_FATAL, string ("WaveThread::submitMessageAtFront : There is no ObjectManager registered to rceive this operation code (") + operationCode + ").");
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_NO_OM_TO_ACCEPT_MESSAGE);
     }
@@ -497,11 +497,11 @@ WaveMessageStatus PrismThread::submitMessageAtFront (PrismMessage *pPrismMessage
                 // We cannot use trace method here.  It will lead to an infinite recursion because the trace service
                 // might not have been enabled.  Also the trace statement causes invoking subMitMessage.
 
-                // trace (TRACE_LEVEL_DEBUG, string ("PrismThread::submitMessage : Allowing the operation (") + operationCode + ") before enabling the service.");
+                // trace (TRACE_LEVEL_DEBUG, string ("WaveThread::submitMessage : Allowing the operation (") + operationCode + ") before enabling the service.");
             }
             else
             {
-                trace (TRACE_LEVEL_DEBUG, "PrismThread::submitMessageAtFront : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
+                trace (TRACE_LEVEL_DEBUG, "WaveThread::submitMessageAtFront : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
                 return (WAVE_MESSAGE_ERROR_SERVICE_NOT_ENABLED);
             }
         }
@@ -519,37 +519,37 @@ WaveMessageStatus PrismThread::submitMessageAtFront (PrismMessage *pPrismMessage
     // messages.  Whenever the Timer service sends such a notification message that messages goes into a separate queue.  Otherwise
     // all the messages go into repective queues according to their priority and type.
 
-    UI32 opertionCode = pPrismMessage->getOperationCode ();
+    UI32 opertionCode = pWaveMessage->getOperationCode ();
 
     if (WAVE_OBJECT_MANAGER_RESUME == operationCode)
     {
-        m_frameworkResumeMessages.insertAtTheFront (pPrismMessage);
+        m_frameworkResumeMessages.insertAtTheFront (pWaveMessage);
     }
     else if (WAVE_OBJECT_MANAGER_PAUSE == operationCode)
     {
-        m_frameworkMessages.insertAtTheFront (pPrismMessage);
+        m_frameworkMessages.insertAtTheFront (pWaveMessage);
     }
     else if (WAVE_OBJECT_MANAGER_TIMER_EXPIRED == opertionCode) // For Timer Expiration Messages
     {
-        m_timerExpirations.insertAtTheFront (pPrismMessage); // for all the other Framework messages like initialize, enable etc.,
+        m_timerExpirations.insertAtTheFront (pWaveMessage); // for all the other Framework messages like initialize, enable etc.,
     }
     else if (opertionCode >= (UINT_MAX - 1001))
     {
-        m_frameworkMessages.insertAtTheFront (pPrismMessage);
+        m_frameworkMessages.insertAtTheFront (pWaveMessage);
     }
     else
     {
         if (WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
         {
-            m_highPriorityMessages.insertAtTheFront (pPrismMessage);
+            m_highPriorityMessages.insertAtTheFront (pWaveMessage);
         }
         else if (WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
         {
-            m_messages.insertAtTheFront (pPrismMessage);
+            m_messages.insertAtTheFront (pWaveMessage);
         }
         else
         {
-            cout << "PrismThread::submitMessageAtFront : Submitting message with unknown priority (" << messagePriority << ")." << endl;
+            cout << "WaveThread::submitMessageAtFront : Submitting message with unknown priority (" << messagePriority << ")." << endl;
             prismAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR_UNKNOWN_PRIORITY;
         }
@@ -564,11 +564,11 @@ WaveMessageStatus PrismThread::submitMessageAtFront (PrismMessage *pPrismMessage
     return (status);
 }
 
-WaveMessageStatus PrismThread::submitMessageAtBack (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveThread::submitMessageAtBack (WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    WaveMessagePriority messagePriority = pPrismMessage->getPriority ();
+    WaveMessagePriority messagePriority = pWaveMessage->getPriority ();
 
     // Check if the message has been submitted to a wrong thread.  This done by comparing this thread serviceid
     // to the message serviceid.
@@ -577,9 +577,9 @@ WaveMessageStatus PrismThread::submitMessageAtBack (PrismMessage *pPrismMessage)
 
     if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
          ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         (m_prismServiceId != (pPrismMessage->getServiceCode ())))
+         (m_prismServiceId != (pWaveMessage->getServiceCode ())))
     {
-        cerr << "PrismThread::submitMessageAtBack : Internal Error : Submitted message to a wrong Prism Thread." << endl;
+        cerr << "WaveThread::submitMessageAtBack : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_SUBMIT_TO_INVALID_THREAD);
     }
@@ -588,14 +588,14 @@ WaveMessageStatus PrismThread::submitMessageAtBack (PrismMessage *pPrismMessage)
     // We accept a few messages even before the service is enabled.  We accept messages like initialize
     // and enable messages.
 
-    UI32                operationCode       = pPrismMessage->getOperationCode ();
+    UI32                operationCode       = pWaveMessage->getOperationCode ();
     WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForOperationCode (operationCode);
 
     // by the time we reach here we must not encounter a NULL WaveObjectManager.
 
     if (NULL == pWaveObjectManager)
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismThread::submitMessageAtBack : There is no ObjectManager registered to rceive this operation code (") + operationCode + ").");
+        trace (TRACE_LEVEL_FATAL, string ("WaveThread::submitMessageAtBack : There is no ObjectManager registered to rceive this operation code (") + operationCode + ").");
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_NO_OM_TO_ACCEPT_MESSAGE);
     }
@@ -608,11 +608,11 @@ WaveMessageStatus PrismThread::submitMessageAtBack (PrismMessage *pPrismMessage)
                 // We cannot use trace method here.  It will lead to an infinite recursion because the trace service
                 // might not have been enabled.  Also the trace statement causes invoking subMitMessage.
 
-                // trace (TRACE_LEVEL_DEBUG, string ("PrismThread::submitMessage : Allowing the operation (") + operationCode + ") before enabling the service.");
+                // trace (TRACE_LEVEL_DEBUG, string ("WaveThread::submitMessage : Allowing the operation (") + operationCode + ") before enabling the service.");
             }
             else
             {
-                trace (TRACE_LEVEL_DEBUG, "PrismThread::submitMessageAtBack : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
+                trace (TRACE_LEVEL_DEBUG, "WaveThread::submitMessageAtBack : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
                 return (WAVE_MESSAGE_ERROR_SERVICE_NOT_ENABLED);
             }
         }
@@ -630,37 +630,37 @@ WaveMessageStatus PrismThread::submitMessageAtBack (PrismMessage *pPrismMessage)
     // messages.  Whenever the Timer service sends such a notification message that messages goes into a separate queue.  Otherwise
     // all the messages go into repective queues according to their priority and type.
 
-    UI32 opertionCode = pPrismMessage->getOperationCode ();
+    UI32 opertionCode = pWaveMessage->getOperationCode ();
 
     if (WAVE_OBJECT_MANAGER_RESUME == operationCode)
     {
-        m_frameworkResumeMessages.insertAtTheBack (pPrismMessage);
+        m_frameworkResumeMessages.insertAtTheBack (pWaveMessage);
     }
     else if (WAVE_OBJECT_MANAGER_PAUSE == operationCode)
     {
-        m_frameworkMessages.insertAtTheBack (pPrismMessage);
+        m_frameworkMessages.insertAtTheBack (pWaveMessage);
     }
     else if (WAVE_OBJECT_MANAGER_TIMER_EXPIRED == opertionCode) // For Timer Expiration Messages
     {
-        m_timerExpirations.insertAtTheBack (pPrismMessage); // for all the other Framework messages like initialize, enable etc.,
+        m_timerExpirations.insertAtTheBack (pWaveMessage); // for all the other Framework messages like initialize, enable etc.,
     }
     else if (opertionCode >= (UINT_MAX - 1001))
     {
-        m_frameworkMessages.insertAtTheBack (pPrismMessage);
+        m_frameworkMessages.insertAtTheBack (pWaveMessage);
     }
     else
     {
         if (WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
         {
-            m_highPriorityMessages.insertAtTheBack (pPrismMessage);
+            m_highPriorityMessages.insertAtTheBack (pWaveMessage);
         }
         else if (WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
         {
-            m_messages.insertAtTheBack (pPrismMessage);
+            m_messages.insertAtTheBack (pWaveMessage);
         }
         else
         {
-            cout << "PrismThread::submitMessageAtBack : Submitting message with unknown priority (" << messagePriority << ")." << endl;
+            cout << "WaveThread::submitMessageAtBack : Submitting message with unknown priority (" << messagePriority << ")." << endl;
             prismAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR_UNKNOWN_PRIORITY;
         }
@@ -675,24 +675,24 @@ WaveMessageStatus PrismThread::submitMessageAtBack (PrismMessage *pPrismMessage)
     return (status);
 }
 
-WaveMessageStatus PrismThread::recallMessage (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveThread::recallMessage (WaveMessage *pWaveMessage)
 {
     // We need not lock in this method since the message queues have built in locking mechanism.
 
     WaveMessageStatus   status          = WAVE_MESSAGE_SUCCESS;
-    WaveMessagePriority messagePriority = pPrismMessage->getPriority ();
+    WaveMessagePriority messagePriority = pWaveMessage->getPriority ();
 
     if (WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
     {
-        status = m_highPriorityMessageResponses.remove (pPrismMessage);
+        status = m_highPriorityMessageResponses.remove (pWaveMessage);
     }
     else if (WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
     {
-        status = m_messages.remove (pPrismMessage);
+        status = m_messages.remove (pWaveMessage);
     }
     else
     {
-        cout << "PrismThread::recallMessage : Submitting a reply message with unknown priority (" << messagePriority << ")." << endl;
+        cout << "WaveThread::recallMessage : Submitting a reply message with unknown priority (" << messagePriority << ")." << endl;
         prismAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR_RESPONSE_UNKNOWN_PRIORITY;
     }
@@ -700,28 +700,28 @@ WaveMessageStatus PrismThread::recallMessage (PrismMessage *pPrismMessage)
     return (status);
 }
 
-UI32 PrismThread::recallTimerExpirationMessagesForTimer (const TimerHandle &timerHandle)
+UI32 WaveThread::recallTimerExpirationMessagesForTimer (const TimerHandle &timerHandle)
 {
     // We need not lock in this method since the message queues have built in locking mechanism.
 
     return (m_timerExpirations.removeTimerExpirationsForTimer (timerHandle));
 }
 
-WaveMessageStatus PrismThread::submitReplyMessage (PrismMessage *pPrismMessage)
+WaveMessageStatus WaveThread::submitReplyMessage (WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    WaveMessagePriority messagePriority = pPrismMessage->getPriority ();
+    WaveMessagePriority messagePriority = pWaveMessage->getPriority ();
 
     // FIXME : Sagar make sure that the thread is up and ready for receiving messages
 
-    WaveServiceId senderServiceId = pPrismMessage->getSenderServiceCode ();
+    WaveServiceId senderServiceId = pWaveMessage->getSenderServiceCode ();
 
     // In general a thread accepts responses only for the messages that it sent out.
 
     if (m_prismServiceId != senderServiceId)
     {
-        cerr << "PrismThread::submitReplyMessage : Submitting reply message to a wrong Prism Thread." << endl;
+        cerr << "WaveThread::submitReplyMessage : Submitting reply message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_SUBMIT_RESPONSE_TO_INVALID_THREAD);
     }
@@ -732,29 +732,29 @@ WaveMessageStatus PrismThread::submitReplyMessage (PrismMessage *pPrismMessage)
 
     m_wakeupCaller.lock ();
 
-    UI32 opertionCode = pPrismMessage->getOperationCode ();
+    UI32 opertionCode = pWaveMessage->getOperationCode ();
 
     if (WAVE_OBJECT_MANAGER_TIMER_EXPIRED == opertionCode) // For Timer Expiration Message Responses
     {
-        m_timerExpirationResponses.insertAtTheBack (pPrismMessage); // for Responses to all the other Framework messages like initialize, enable etc.,
+        m_timerExpirationResponses.insertAtTheBack (pWaveMessage); // for Responses to all the other Framework messages like initialize, enable etc.,
     }
     else if (opertionCode >= (UINT_MAX - 1001))
     {
-        m_frameworkMessageResponses.insertAtTheBack (pPrismMessage);
+        m_frameworkMessageResponses.insertAtTheBack (pWaveMessage);
     }
     else
     {
         if (WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
         {
-            m_highPriorityMessageResponses.insertAtTheBack (pPrismMessage);
+            m_highPriorityMessageResponses.insertAtTheBack (pWaveMessage);
         }
         else if (WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
         {
-            m_messageResponses.insertAtTheBack (pPrismMessage);
+            m_messageResponses.insertAtTheBack (pWaveMessage);
         }
         else
         {
-            cout << "PrismThread::submitReplyMessage : Submitting a reply message with unknown priority (" << messagePriority << ")." << endl;
+            cout << "WaveThread::submitReplyMessage : Submitting a reply message with unknown priority (" << messagePriority << ")." << endl;
             prismAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR_RESPONSE_UNKNOWN_PRIORITY;
         }
@@ -769,7 +769,7 @@ WaveMessageStatus PrismThread::submitReplyMessage (PrismMessage *pPrismMessage)
     return (status);
 }
 
-WaveMessageStatus PrismThread::submitEvent (PrismEvent *pPrismEvent)
+WaveMessageStatus WaveThread::submitEvent (PrismEvent *pPrismEvent)
 {
     prismAssert (NULL != pPrismEvent, __FILE__, __LINE__);
 
@@ -784,7 +784,7 @@ WaveMessageStatus PrismThread::submitEvent (PrismEvent *pPrismEvent)
 
     if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) && (m_prismServiceId != (pPrismEvent->getReceiverServiceId ())))
     {
-        cerr << "PrismThread::submitEvent : Internal Error : Submitted message to a wrong Prism Thread." << endl;
+        cerr << "WaveThread::submitEvent : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_EVENT_ERROR_SUBMIT_TO_INVALID_THREAD);
     }
@@ -803,7 +803,7 @@ WaveMessageStatus PrismThread::submitEvent (PrismEvent *pPrismEvent)
 
     if (NULL == pWaveObjectManager)
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismThread::submitEvent : There is no ObjectManager registered to rceive this event operation code (") + eventOperationCode + ").");
+        trace (TRACE_LEVEL_FATAL, string ("WaveThread::submitEvent : There is no ObjectManager registered to rceive this event operation code (") + eventOperationCode + ").");
         prismAssert (false, __FILE__, __LINE__);
         return (WAVE_EVENT_ERROR_NO_OM_TO_ACCEPT_MESSAGE);
     }
@@ -816,11 +816,11 @@ WaveMessageStatus PrismThread::submitEvent (PrismEvent *pPrismEvent)
                 // We cannot use trace method here.  It will lead to an infinite recursion because the trace service
                 // might not have been enabled.  Also the trace statement causes invoking subMitMessage.
 
-                // trace (TRACE_LEVEL_DEBUG, string ("PrismThread::submitMessage : Allowing the operation (") + eventOperationCode + ") before enabling the service.");
+                // trace (TRACE_LEVEL_DEBUG, string ("WaveThread::submitMessage : Allowing the operation (") + eventOperationCode + ") before enabling the service.");
             }
             else
             {
-                trace (TRACE_LEVEL_DEBUG, "PrismThread::submitEvent : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
+                trace (TRACE_LEVEL_DEBUG, "WaveThread::submitEvent : The Service (" + FrameworkToolKit::getServiceNameById (pWaveObjectManager->getServiceId ()) + ") is not enabled yet.  Try later.");
                 return (WAVE_MESSAGE_ERROR_SERVICE_NOT_ENABLED);
             }
         }
@@ -832,9 +832,9 @@ WaveMessageStatus PrismThread::submitEvent (PrismEvent *pPrismEvent)
 
     m_wakeupCaller.lock ();
 
-    PrismMessage *pPrismMessage = dynamic_cast<PrismMessage *> (pPrismEvent);
+    WaveMessage *pWaveMessage = dynamic_cast<WaveMessage *> (pPrismEvent);
 
-    m_events.insertAtTheBack (pPrismMessage);
+    m_events.insertAtTheBack (pWaveMessage);
 
     m_wakeupCondition.resume ();
 
@@ -845,7 +845,7 @@ WaveMessageStatus PrismThread::submitEvent (PrismEvent *pPrismEvent)
     return (status);
 }
 
-PrismMessage *PrismThread::getNextMessageToProcess ()
+WaveMessage *WaveThread::getNextMessageToProcess ()
 {
     if (false == (m_frameworkResumeMessages.isEmpty ()))
     {
@@ -864,11 +864,11 @@ PrismMessage *PrismThread::getNextMessageToProcess ()
     {
         if (WAVE_MUTEX_SUCCESS == (m_frameworkMessagesMutex.tryLock ()))
         {
-            PrismMessage *pPrismMessage = m_frameworkMessages.removeAndGetFromFront ();
+            WaveMessage *pWaveMessage = m_frameworkMessages.removeAndGetFromFront ();
 
             m_frameworkMessagesMutex.unlock ();
 
-            return (pPrismMessage);
+            return (pWaveMessage);
         }
     }
 
@@ -891,11 +891,11 @@ PrismMessage *PrismThread::getNextMessageToProcess ()
     {
         if (WAVE_MUTEX_SUCCESS == (m_highPriorityMessagesMutex.tryLock ()))
         {
-            PrismMessage *pPrismMessage = m_highPriorityMessages.removeAndGetFromFront ();
+            WaveMessage *pWaveMessage = m_highPriorityMessages.removeAndGetFromFront ();
 
             m_highPriorityMessagesMutex.unlock ();
 
-            return (pPrismMessage);
+            return (pWaveMessage);
         }
     }
 
@@ -908,11 +908,11 @@ PrismMessage *PrismThread::getNextMessageToProcess ()
     {
         if (WAVE_MUTEX_SUCCESS == (m_eventsMutex.tryLock ()))
         {
-            PrismMessage *pPrismMessage = m_events.removeAndGetFromFront ();
+            WaveMessage *pWaveMessage = m_events.removeAndGetFromFront ();
 
             m_eventsMutex.unlock ();
 
-            return (pPrismMessage);
+            return (pWaveMessage);
         }
     }
 
@@ -920,51 +920,51 @@ PrismMessage *PrismThread::getNextMessageToProcess ()
     {
         if (WAVE_MUTEX_SUCCESS == (m_messagesMutex.tryLock ()))
         {
-            PrismMessage *pPrismMessage = m_messages.removeAndGetFromFront ();
+            WaveMessage *pWaveMessage = m_messages.removeAndGetFromFront ();
 
             m_messagesMutex.unlock ();
 
-            return (pPrismMessage);
+            return (pWaveMessage);
         }
     }
 
     return (NULL);
 }
 
-PrismThread *PrismThread::getPrismThreadForServiceId (WaveServiceId id)
+WaveThread *WaveThread::getWaveThreadForServiceId (WaveServiceId id)
 {
-    return (s_pWaveServiceMap->getPrismThreadForServiceId (id));
+    return (s_pWaveServiceMap->getWaveThreadForServiceId (id));
 }
 
-vector<UI32> PrismThread::getCpuAffinityVectorForServiceId (WaveServiceId id)
+vector<UI32> WaveThread::getCpuAffinityVectorForServiceId (WaveServiceId id)
 {
-    PrismThread  *pPrismThread       = getPrismThreadForServiceId (id);
+    WaveThread  *pWaveThread       = getWaveThreadForServiceId (id);
     vector<UI32>  cpuAffinityVector;
 
-    if (NULL != pPrismThread)
+    if (NULL != pWaveThread)
     {
-        cpuAffinityVector = pPrismThread->getCpuAffinityVector ();
+        cpuAffinityVector = pWaveThread->getCpuAffinityVector ();
     }
 
     return (cpuAffinityVector);
 }
 
-string PrismThread::getPrismServiceNameForServiceId (const WaveServiceId &id)
+string WaveThread::getPrismServiceNameForServiceId (const WaveServiceId &id)
 {
     return (s_pWaveServiceMap->getPrismServiceNameForServiceId (id));
 }
 
-WaveServiceId PrismThread::getWaveServiceIdForServiceName (const string &serviceName)
+WaveServiceId WaveThread::getWaveServiceIdForServiceName (const string &serviceName)
 {
     return (s_pWaveServiceMap->getWaveServiceIdForServiceName (serviceName));
 }
 
-void PrismThread::addWaveObjectManager (WaveObjectManager *pWaveObjectManager)
+void WaveThread::addWaveObjectManager (WaveObjectManager *pWaveObjectManager)
 {
     m_pWaveObjectManagers.push_back (pWaveObjectManager);
 }
 
-WaveObjectManager *PrismThread::getWaveObjectManagerForOperationCode (UI32 operationCode)
+WaveObjectManager *WaveThread::getWaveObjectManagerForOperationCode (UI32 operationCode)
 {
     vector<WaveObjectManager *>::iterator  element             = m_pWaveObjectManagers.begin ();
     vector<WaveObjectManager *>::iterator  limitingElement     = m_pWaveObjectManagers.end (); // last element + 1
@@ -985,7 +985,7 @@ WaveObjectManager *PrismThread::getWaveObjectManagerForOperationCode (UI32 opera
     return (NULL);
 }
 
-WaveObjectManager *PrismThread::getWaveObjectManagerForEventOperationCode (UI32 eventOperationCode)
+WaveObjectManager *WaveThread::getWaveObjectManagerForEventOperationCode (UI32 eventOperationCode)
 {
     vector<WaveObjectManager *>::iterator  element             = m_pWaveObjectManagers.begin ();
     vector<WaveObjectManager *>::iterator  limitingElement     = m_pWaveObjectManagers.end (); // last element + 1
@@ -1006,7 +1006,7 @@ WaveObjectManager *PrismThread::getWaveObjectManagerForEventOperationCode (UI32 
     return (NULL);
 }
 
-WaveObjectManager *PrismThread::getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode)
+WaveObjectManager *WaveThread::getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode)
 {
     vector<WaveObjectManager *>::iterator  element             = m_pWaveObjectManagers.begin ();
     vector<WaveObjectManager *>::iterator  limitingElement     = m_pWaveObjectManagers.end (); // last element + 1
@@ -1027,7 +1027,7 @@ WaveObjectManager *PrismThread::getWaveObjectManagerForEventOperationCodeForList
     return (NULL);
 }
 
-WaveObjectManager *PrismThread::getWaveObjectManagerForPrismMessageId  (UI32 prismMessageId)
+WaveObjectManager *WaveThread::getWaveObjectManagerForWaveMessageId  (UI32 prismMessageId)
 {
     vector<WaveObjectManager *>::iterator  element            = m_pWaveObjectManagers.begin ();
     vector<WaveObjectManager *>::iterator  limitingElement    = m_pWaveObjectManagers.end (); // last element + 1
@@ -1048,7 +1048,7 @@ WaveObjectManager *PrismThread::getWaveObjectManagerForPrismMessageId  (UI32 pri
     return (NULL);
 }
 
-WaveObjectManager *PrismThread::getWaveObjectManagerForManagedClass (const string &managedClass)
+WaveObjectManager *WaveThread::getWaveObjectManagerForManagedClass (const string &managedClass)
 {
     vector<WaveObjectManager *>::iterator  element             = m_pWaveObjectManagers.begin ();
     vector<WaveObjectManager *>::iterator  limitingElement     = m_pWaveObjectManagers.end (); // last element + 1
@@ -1069,12 +1069,12 @@ WaveObjectManager *PrismThread::getWaveObjectManagerForManagedClass (const strin
     return (NULL);
 }
 
-WaveServiceId PrismThread::getWaveServiceId () const
+WaveServiceId WaveThread::getWaveServiceId () const
 {
     return (m_prismServiceId);
 }
 
-bool PrismThread::hasWaveObjectManagers ()
+bool WaveThread::hasWaveObjectManagers ()
 {
     if (0 < m_pWaveObjectManagers.size ())
     {
@@ -1086,12 +1086,12 @@ bool PrismThread::hasWaveObjectManagers ()
     }
 }
 
-WaveThreadStatus PrismThread::joinAllThreads ()
+WaveThreadStatus WaveThread::joinAllThreads ()
 {
     return (s_pWaveServiceMap->joinAllThreads ());
 }
 
-void PrismThread::initializeHoldCounts ()
+void WaveThread::initializeHoldCounts ()
 {
     m_messagesHoldCount             = 0;
     m_highPriorityMessagesHoldCount = 0;
@@ -1099,7 +1099,7 @@ void PrismThread::initializeHoldCounts ()
     m_frameworkMessagesHoldCount    = 0;
 }
 
-void PrismThread::holdMessages ()
+void WaveThread::holdMessages ()
 {
     if (0 == m_messagesHoldCount)
     {
@@ -1109,7 +1109,7 @@ void PrismThread::holdMessages ()
     m_messagesHoldCount++;
 }
 
-void PrismThread::holdHighPriorityMessages ()
+void WaveThread::holdHighPriorityMessages ()
 {
     if (0 == m_highPriorityMessagesHoldCount)
     {
@@ -1119,7 +1119,7 @@ void PrismThread::holdHighPriorityMessages ()
     m_highPriorityMessagesHoldCount++;
 }
 
-void PrismThread::holdEvents ()
+void WaveThread::holdEvents ()
 {
     if (0 == m_eventsHoldCount)
     {
@@ -1129,7 +1129,7 @@ void PrismThread::holdEvents ()
     m_eventsHoldCount++;
 }
 
-void PrismThread::holdFrameworkMessages ()
+void WaveThread::holdFrameworkMessages ()
 {
     if (0 == m_frameworkMessagesHoldCount)
     {
@@ -1139,7 +1139,7 @@ void PrismThread::holdFrameworkMessages ()
     m_frameworkMessagesHoldCount++;
 }
 
-void PrismThread::holdAll ()
+void WaveThread::holdAll ()
 {
     holdMessages ();
     holdHighPriorityMessages ();
@@ -1147,11 +1147,11 @@ void PrismThread::holdAll ()
     holdFrameworkMessages ();
 }
 
-void PrismThread::unholdMessages ()
+void WaveThread::unholdMessages ()
 {
     if (0 == m_messagesHoldCount)
     {
-        trace (TRACE_LEVEL_FATAL, "PrismThread::unholdMessages: trying to unhold without hold.");
+        trace (TRACE_LEVEL_FATAL, "WaveThread::unholdMessages: trying to unhold without hold.");
         prismAssert (false, __FILE__, __LINE__);
     }
 
@@ -1163,11 +1163,11 @@ void PrismThread::unholdMessages ()
     }
 }
 
-void PrismThread::unholdHighPriorityMessages ()
+void WaveThread::unholdHighPriorityMessages ()
 {
     if (0 == m_highPriorityMessagesHoldCount)
     {
-        trace (TRACE_LEVEL_FATAL, "PrismThread::unholdHighPriorityMessages: trying to unhold without hold.");
+        trace (TRACE_LEVEL_FATAL, "WaveThread::unholdHighPriorityMessages: trying to unhold without hold.");
         prismAssert (false, __FILE__, __LINE__);
     }
     m_highPriorityMessagesHoldCount--;
@@ -1178,11 +1178,11 @@ void PrismThread::unholdHighPriorityMessages ()
     }
 }
 
-void PrismThread::unholdEvents ()
+void WaveThread::unholdEvents ()
 {
     if (0 == m_eventsHoldCount)
     {
-        trace (TRACE_LEVEL_FATAL, "PrismThread::unholdEvents: trying to unhold without hold.");
+        trace (TRACE_LEVEL_FATAL, "WaveThread::unholdEvents: trying to unhold without hold.");
         prismAssert (false, __FILE__, __LINE__);
     }
     m_eventsHoldCount--;
@@ -1193,11 +1193,11 @@ void PrismThread::unholdEvents ()
     }
 }
 
-void PrismThread::unholdFrameworkMessages ()
+void WaveThread::unholdFrameworkMessages ()
 {
     if (0 == m_frameworkMessagesHoldCount)
     {
-        trace (TRACE_LEVEL_FATAL, "PrismThread::unholdFrameworkMessages: trying to unhold without hold.");
+        trace (TRACE_LEVEL_FATAL, "WaveThread::unholdFrameworkMessages: trying to unhold without hold.");
         prismAssert (false, __FILE__, __LINE__);
     }
     m_frameworkMessagesHoldCount--;
@@ -1208,7 +1208,7 @@ void PrismThread::unholdFrameworkMessages ()
     }
 }
 
-void PrismThread::unholdAll ()
+void WaveThread::unholdAll ()
 {
     unholdMessages ();
     unholdHighPriorityMessages ();
@@ -1216,39 +1216,39 @@ void PrismThread::unholdAll ()
     unholdFrameworkMessages ();
 }
 
-PrismThread *PrismThread::getPrismThreadForMessageRemoteTransport ()
+WaveThread *WaveThread::getWaveThreadForMessageRemoteTransport ()
 {
-    //return (getPrismThreadForServiceId (InterLocationMessageTransportObjectManager::getWaveServiceId ()));
-    return (InterLocationMessageTransportObjectManager::getPrismThread ());
+    //return (getWaveThreadForServiceId (InterLocationMessageTransportObjectManager::getWaveServiceId ()));
+    return (InterLocationMessageTransportObjectManager::getWaveThread ());
 }
 
-PrismThread *PrismThread::getPrismThreadForMessageHaPeerTransport ()
+WaveThread *WaveThread::getWaveThreadForMessageHaPeerTransport ()
 {
-    return (HaPeerMessageTransportObjectManager::getPrismThread ());
+    return (HaPeerMessageTransportObjectManager::getWaveThread ());
 }
 
-UI32 PrismThread::getNumberOfPendingTimerExpirationMessages ()
+UI32 WaveThread::getNumberOfPendingTimerExpirationMessages ()
 {
     // The message queues are internally protected by locks.  We need not lock them explicitly here.
 
     return (m_timerExpirations.getSize ());
 }
 
-UI32 PrismThread::getNumberOfPendingNormalMessages ()
+UI32 WaveThread::getNumberOfPendingNormalMessages ()
 {
     // The message queues are internally protected by locks.  We need not lock them explicitly here.
 
     return (m_messages.getSize ());
 }
 
-UI32 PrismThread::getNumberOfPendingHighPriorityMessages ()
+UI32 WaveThread::getNumberOfPendingHighPriorityMessages ()
 {
     // The message queues are internally protected by locks.  We need not lock them explicitly here.
 
     return (m_highPriorityMessages.getSize ());
 }
 
-void PrismThread::getListOfServiceIds (vector<WaveServiceId> &serviceIds)
+void WaveThread::getListOfServiceIds (vector<WaveServiceId> &serviceIds)
 {
     if (NULL != s_pWaveServiceMap)
     {
@@ -1256,46 +1256,46 @@ void PrismThread::getListOfServiceIds (vector<WaveServiceId> &serviceIds)
     }
 }
 
-void PrismThread::emptyIncomingMessageQueuesForDisable (vector<PrismMessage *> &incomingMessages)
+void WaveThread::emptyIncomingMessageQueuesForDisable (vector<WaveMessage *> &incomingMessages)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     m_gateKeeper.lock ();
 
-    while (NULL != (pPrismMessage = m_timerExpirations.removeAndGetFromFront ()))
+    while (NULL != (pWaveMessage = m_timerExpirations.removeAndGetFromFront ()))
     {
-        incomingMessages.push_back (pPrismMessage);
+        incomingMessages.push_back (pWaveMessage);
     }
 
-    while (NULL != (pPrismMessage = m_highPriorityMessages.removeAndGetFromFront ()))
+    while (NULL != (pWaveMessage = m_highPriorityMessages.removeAndGetFromFront ()))
     {
-        incomingMessages.push_back (pPrismMessage);
+        incomingMessages.push_back (pWaveMessage);
     }
 
-    while (NULL != (pPrismMessage = m_messages.removeAndGetFromFront ()))
+    while (NULL != (pWaveMessage = m_messages.removeAndGetFromFront ()))
     {
-        incomingMessages.push_back (pPrismMessage);
+        incomingMessages.push_back (pWaveMessage);
     }
 
-    while (NULL != (pPrismMessage = m_events.removeAndGetFromFront ()))
+    while (NULL != (pWaveMessage = m_events.removeAndGetFromFront ()))
     {
-        incomingMessages.push_back (pPrismMessage);
+        incomingMessages.push_back (pWaveMessage);
     }
 
     m_gateKeeper.unlock ();
 }
 
-PrismThreadId PrismThread::getSelf ()
+WaveThreadId WaveThread::getSelf ()
 {
     return (pthread_self ());
 }
 
-vector<UI32> PrismThread::getCpuAffinityVector () const
+vector<UI32> WaveThread::getCpuAffinityVector () const
 {
     return (m_cpuAffinityVector);
 }
 
-void PrismThread::setCpuAffinity (const vector<UI32> &cpuAffinityVector)
+void WaveThread::setCpuAffinity (const vector<UI32> &cpuAffinityVector)
 {
     m_cpuAffinityVector = cpuAffinityVector;
 
@@ -1322,11 +1322,11 @@ void PrismThread::setCpuAffinity (const vector<UI32> &cpuAffinityVector)
 
         if (0 < (m_pWaveObjectManagers.size ()))
         {
-            trace (TRACE_LEVEL_DEBUG, "PrismThread::setCpuAffinity : Enabling CPU Affinity for Service : " + m_pWaveObjectManagers[0]->getName () + ", Affinity : " + cpuAffinityString);
+            trace (TRACE_LEVEL_DEBUG, "WaveThread::setCpuAffinity : Enabling CPU Affinity for Service : " + m_pWaveObjectManagers[0]->getName () + ", Affinity : " + cpuAffinityString);
         }
         else
         {
-            trace (TRACE_LEVEL_DEBUG, "PrismThread::setCpuAffinity : Enabling CPU Affinity for this thread.");
+            trace (TRACE_LEVEL_DEBUG, "WaveThread::setCpuAffinity : Enabling CPU Affinity for this thread.");
         }
 
         int setAffinityStatus = sched_setaffinity (syscall (SYS_gettid), sizeof (cpuSet), &cpuSet);
@@ -1399,14 +1399,14 @@ void PrismThread::setCpuAffinity (const vector<UI32> &cpuAffinityVector)
     m_cpuAffinityVector = effectiveCpuAffinityVector;
 }
 
-WaveObjectManager *PrismThread::getWaveObjectManagerForCurrentThread ()
+WaveObjectManager *WaveThread::getWaveObjectManagerForCurrentThread ()
 {
     WaveObjectManager *pWaveObjectManager = NULL;
 
     m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
 
-    map<PrismThreadId, WaveObjectManager *>::iterator element    = m_prismThreadIdToWaveObjectManagerMap.find (pthread_self ());
-    map<PrismThreadId, WaveObjectManager *>::iterator endElement = m_prismThreadIdToWaveObjectManagerMap.end ();
+    map<WaveThreadId, WaveObjectManager *>::iterator element    = m_prismThreadIdToWaveObjectManagerMap.find (pthread_self ());
+    map<WaveThreadId, WaveObjectManager *>::iterator endElement = m_prismThreadIdToWaveObjectManagerMap.end ();
 
     if (endElement != element)
     {
@@ -1422,15 +1422,15 @@ WaveObjectManager *PrismThread::getWaveObjectManagerForCurrentThread ()
     return (pWaveObjectManager);
 }
 
-WaveServiceId PrismThread::getWaveServiceIdForCurrentThread ()
+WaveServiceId WaveThread::getWaveServiceIdForCurrentThread ()
 {
     WaveObjectManager *pWaveObjectManager = NULL;
     WaveServiceId     prismServiceId;
 
     m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
 
-    map<PrismThreadId, WaveObjectManager *>::iterator element    = m_prismThreadIdToWaveObjectManagerMap.find (pthread_self ());
-    map<PrismThreadId, WaveObjectManager *>::iterator endElement = m_prismThreadIdToWaveObjectManagerMap.end ();
+    map<WaveThreadId, WaveObjectManager *>::iterator element    = m_prismThreadIdToWaveObjectManagerMap.find (pthread_self ());
+    map<WaveThreadId, WaveObjectManager *>::iterator endElement = m_prismThreadIdToWaveObjectManagerMap.end ();
 
     if (endElement != element)
     {
@@ -1450,7 +1450,7 @@ WaveServiceId PrismThread::getWaveServiceIdForCurrentThread ()
     return (prismServiceId);
 }
 
-void PrismThread::requestForThreadTermination ()
+void WaveThread::requestForThreadTermination ()
 {
     m_terminateThread = true;
 }

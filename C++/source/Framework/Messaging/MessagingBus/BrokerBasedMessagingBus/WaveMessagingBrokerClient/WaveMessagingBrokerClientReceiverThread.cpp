@@ -194,14 +194,14 @@ WaveThreadStatus WaveMessagingBrokerClientReceiverThread::start ()
             }
             else
             {
-                // First create a PrismMessage from the contents of the FixedBuffer that we have read from the network.
+                // First create a WaveMessage from the contents of the FixedBuffer that we have read from the network.
                 // Now depending on the contents of the message that arrived decide if it is a new request or a response to a request
                 // this location sent out.
 
-                // We can safely cast from SerializableObject pointer to PrismMessage pointer since we know that only object that
-                // travels between two nodes in a Prism based cluster is a PrismMessage;
-                // FIXME : sagar : enforce that the object type that was returned is indeed a PrismMessage or a specialization of
-                //                 PrismMessage.
+                // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
+                // travels between two nodes in a Prism based cluster is a WaveMessage;
+                // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
+                //                 WaveMessage.
 
                 UI8  *pMessageBuffer = NULL;
                 UI32  currentSize    = 0;
@@ -215,7 +215,7 @@ WaveThreadStatus WaveMessagingBrokerClientReceiverThread::start ()
 
                 //trace (TRACE_LEVEL_DEVEL, messageString);
 
-                //prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+                //prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
                 // Now read the buffer data
 

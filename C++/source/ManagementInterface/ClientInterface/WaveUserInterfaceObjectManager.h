@@ -27,7 +27,7 @@ class WaveUserInterfaceObjectManager : public WaveObjectManager
     private :
                                                                     WaveUserInterfaceObjectManager                          ();
 
-        virtual PrismMessage                                       *createMessageInstance                                   (const UI32 &operationCode);
+        virtual WaveMessage                                       *createMessageInstance                                   (const UI32 &operationCode);
 
                 void                                                genericManagementInterfaceMessageHandler                (ManagementInterfaceMessage *pManagementInterfaceMessage);
                 void                                                genericManagementInterfaceMessageHandlerForCApplication (ManagementInterfaceMessage *pManagementInterfaceMessage);
@@ -51,7 +51,7 @@ class WaveUserInterfaceObjectManager : public WaveObjectManager
         static  ManagementInterfaceMessageInstantiatorForClient   getManagementInterfaceMessageInstantiatorForClient (const string &clientName);
         static  void                                              addMessageHandlerForCStyleApplication              (const UI32 &operationCode, ManagementInterfaceMessageHandlerForCStyleClient handler);
         static  ManagementInterfaceMessageHandlerForCStyleClient  getMessageHandlerForCStyleApplication              (const UI32 &operationCode);
-                WaveMessageStatus                                 sendToWaveServer                                   (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, PrismElement *pPrismMessageSender = NULL);
+                WaveMessageStatus                                 sendToWaveServer                                   (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, PrismElement *pWaveMessageSender = NULL);
                 void                                              sendToWaveServerCallback                           (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, void *pInputContext);
             	WaveMessageStatus                                 sendOneWayToWaveServer                             (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, const LocationId &locationId = 0);
                 WaveMessageStatus                                 sendSynchronouslyToWaveServer                      (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, const LocationId &locationId = 0);

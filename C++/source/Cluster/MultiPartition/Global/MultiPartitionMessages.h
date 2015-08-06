@@ -82,7 +82,7 @@ class MultiPartitionDeletePartitionMessage : public ManagementInterfaceMessage
     public :
 };
 
-class MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage : public PrismMessage
+class MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage : public WaveMessage
 {
     private :
         void                    setupAttributesForSerialization                                 ();

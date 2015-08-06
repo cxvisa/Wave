@@ -8,7 +8,7 @@
 #define APPMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/ClusterTypes.h"
 #include "App/AppInterface.h"
 #include <string>
@@ -34,7 +34,7 @@ typedef enum
 
 } AppOpCodes;
 
-class  AppInterfaceObjectManagerRemoteCommandsMessage: public PrismMessage
+class  AppInterfaceObjectManagerRemoteCommandsMessage: public WaveMessage
 {
     private :
     protected :
@@ -77,7 +77,7 @@ class  AppInterfaceObjectManagerRemoteCommandsMessage: public PrismMessage
     public :
 };
 
-class ClusterInterfaceObjectManagerCreateClusterDoneMessage : public PrismMessage
+class ClusterInterfaceObjectManagerCreateClusterDoneMessage : public WaveMessage
 {
     private :
     protected :
@@ -126,7 +126,7 @@ class ClusterInterfaceObjectManagerCreateClusterDoneMessage : public PrismMessag
     public :
 };
 
-class ClusterInterfaceObjectManagerDeleteClusterDoneMessage : public PrismMessage
+class ClusterInterfaceObjectManagerDeleteClusterDoneMessage : public WaveMessage
 {
     private :
     protected :
@@ -151,7 +151,7 @@ class ClusterInterfaceObjectManagerDeleteClusterDoneMessage : public PrismMessag
     public :
 };
 
-class ClusterInterfaceObjectManagerAddNodeDoneMessage : public PrismMessage
+class ClusterInterfaceObjectManagerAddNodeDoneMessage : public WaveMessage
 {
     private :
     protected :
@@ -186,7 +186,7 @@ class ClusterInterfaceObjectManagerAddNodeDoneMessage : public PrismMessage
 
 
 
-class ClusterInterfaceObjectManagerJoinNodeDoneMessage : public PrismMessage
+class ClusterInterfaceObjectManagerJoinNodeDoneMessage : public WaveMessage
 {
     private :
     protected :
@@ -217,7 +217,7 @@ class ClusterInterfaceObjectManagerJoinNodeDoneMessage : public PrismMessage
     public :
 };
 
-class ClusterInterfaceObjectManagerDeleteNodeDoneMessage : public PrismMessage
+class ClusterInterfaceObjectManagerDeleteNodeDoneMessage : public WaveMessage
 {
     private :
     protected :

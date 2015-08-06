@@ -9,7 +9,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/PrismMutex.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/Messaging/Remote/InterLocationMulticastMessage.h"
@@ -18,8 +18,8 @@
 namespace WaveNs
 {
 
-PrismThread *s_pPrismThreadForInterLocationMessageTransportObjectManager = NULL;
-PrismMutex   s_mutexForPrismThreadForInterLocationMessageTransportObjectManager;
+WaveThread *s_pWaveThreadForInterLocationMessageTransportObjectManager = NULL;
+PrismMutex   s_mutexForWaveThreadForInterLocationMessageTransportObjectManager;
 
 InterLocationMessageTransportObjectManager::MessageMap::MessageMap ()
 {
@@ -39,12 +39,12 @@ void InterLocationMessageTransportObjectManager::MessageMap::unlockAccess ()
     m_accessMutex.unlock ();
 }
 
-WaveMessageStatus InterLocationMessageTransportObjectManager::MessageMap::addMessage (PrismMessage *pPrismMessage, UI32 originalMessageId)
+WaveMessageStatus InterLocationMessageTransportObjectManager::MessageMap::addMessage (WaveMessage *pWaveMessage, UI32 originalMessageId)
 {
     lockAccess ();
 
-    UI32               prismMessageId = pPrismMessage->getMessageId ();
-    PrismMessage      *pTempPrismMessage = findMessage (prismMessageId);
+    UI32               prismMessageId = pWaveMessage->getMessageId ();
+    WaveMessage      *pTempWaveMessage = findMessage (prismMessageId);
     WaveMessageStatus  status            = WAVE_MESSAGE_SUCCESS;
 
     if (0 != originalMessageId)
@@ -52,9 +52,9 @@ WaveMessageStatus InterLocationMessageTransportObjectManager::MessageMap::addMes
         prismMessageId = originalMessageId;
     }
 
-    if (NULL == pTempPrismMessage)
+    if (NULL == pTempWaveMessage)
     {
-        m_messagesMap[prismMessageId] = pPrismMessage;
+        m_messagesMap[prismMessageId] = pWaveMessage;
         status = WAVE_MESSAGE_SUCCESS;
     }
     else
@@ -67,70 +67,70 @@ WaveMessageStatus InterLocationMessageTransportObjectManager::MessageMap::addMes
     return (status);
 }
 
-PrismMessage *InterLocationMessageTransportObjectManager::MessageMap::findMessage (UI32 prismMessageId)
+WaveMessage *InterLocationMessageTransportObjectManager::MessageMap::findMessage (UI32 prismMessageId)
 {
-    map<UI32, PrismMessage *>::iterator  element       = m_messagesMap.find (prismMessageId);
-    map<UI32, PrismMessage *>::iterator  end           = m_messagesMap.end ();
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator  element       = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator  end           = m_messagesMap.end ();
+    WaveMessage                        *pWaveMessage = NULL;
 
     if (end != element)
     {
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-PrismMessage *InterLocationMessageTransportObjectManager::MessageMap::findMessageWithLock (UI32 prismMessageId)
+WaveMessage *InterLocationMessageTransportObjectManager::MessageMap::findMessageWithLock (UI32 prismMessageId)
 {
     lockAccess ();
 
-    map<UI32, PrismMessage *>::iterator  element       = m_messagesMap.find (prismMessageId);
-    map<UI32, PrismMessage *>::iterator  end           = m_messagesMap.end (); 
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator  element       = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator  end           = m_messagesMap.end (); 
+    WaveMessage                        *pWaveMessage = NULL;
 
     if (end != element)
     {   
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
     }   
 
     unlockAccess ();
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-PrismMessage *InterLocationMessageTransportObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
+WaveMessage *InterLocationMessageTransportObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
 {
     lockAccess ();
 
-    map<UI32, PrismMessage *>::iterator element      = m_messagesMap.find (prismMessageId);
-    map<UI32, PrismMessage *>::iterator end          = m_messagesMap.end ();
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator element      = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator end          = m_messagesMap.end ();
+    WaveMessage                        *pWaveMessage = NULL;
 
     if (end != element)
     {
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
         m_messagesMap.erase (element);
     }
 
     unlockAccess ();
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-void InterLocationMessageTransportObjectManager::MessageMap::getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<PrismMessage *> &messagesVector)
+void InterLocationMessageTransportObjectManager::MessageMap::getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<WaveMessage *> &messagesVector)
 {
     lockAccess ();
 
-    map<UI32, PrismMessage *>::iterator  element     = m_messagesMap.begin ();
-    map<UI32, PrismMessage *>::iterator  end         = m_messagesMap.end ();
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator  element     = m_messagesMap.begin ();
+    map<UI32, WaveMessage *>::iterator  end         = m_messagesMap.end ();
+    WaveMessage                        *pWaveMessage = NULL;
 
     while (element != end)
     {
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
 
-        InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pPrismMessage);
+        InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
 
         if (NULL != pInterLocationMulticastMessage)
         {
@@ -140,7 +140,7 @@ void InterLocationMessageTransportObjectManager::MessageMap::getPendingMessagesF
             {
                 if (true == pInterLocationMulticastMessage->isMessageSentToThisLocationNotReplied (locationId))
                 {
-                    messagesVector.push_back (pPrismMessage);
+                    messagesVector.push_back (pWaveMessage);
 
                     pInterLocationMulticastMessage->setMessageRepliedToThisLocation (locationId);                        
                 }
@@ -150,9 +150,9 @@ void InterLocationMessageTransportObjectManager::MessageMap::getPendingMessagesF
         }
         else
         {
-            if ((pPrismMessage->getReceiverLocationId ()) == locationId)
+            if ((pWaveMessage->getReceiverLocationId ()) == locationId)
             {
-                messagesVector.push_back (pPrismMessage);
+                messagesVector.push_back (pWaveMessage);
             }
         }
 
@@ -174,11 +174,11 @@ void InterLocationMessageTransportObjectManager::MessageMap::getPendingMessagesF
 InterLocationMessageTransportObjectManager::InterLocationMessageTransportObjectManager ()
     : WaveLocalObjectManager ("Remote Message Transport")
 {
-    s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.lock ();
+    s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.lock ();
 
-    s_pPrismThreadForInterLocationMessageTransportObjectManager = PrismThread::getPrismThreadForServiceId (getServiceId ());
+    s_pWaveThreadForInterLocationMessageTransportObjectManager = WaveThread::getWaveThreadForServiceId (getServiceId ());
 
-    s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.unlock ();
+    s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.unlock ();
 
     removeOperationMap (WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT);
 
@@ -189,8 +189,8 @@ InterLocationMessageTransportObjectManager::InterLocationMessageTransportObjectM
     removeOperationMap (WAVE_OBJECT_MANAGER_GET_CLIENT_DATA);
     removeOperationMap (WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECTS);
 
-    addOperationMap (INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND, reinterpret_cast<PrismMessageHandler> (&InterLocationMessageTransportObjectManager::interLocationMulticastMessageTransportHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&InterLocationMessageTransportObjectManager::interLocationMessageTransportHandler));
+    addOperationMap (INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND, reinterpret_cast<WaveMessageHandler> (&InterLocationMessageTransportObjectManager::interLocationMulticastMessageTransportHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&InterLocationMessageTransportObjectManager::interLocationMessageTransportHandler));
 
     // restrictMessageHistoryLogging                (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
     restrictMessageHistoryLogging                (false, false, false);
@@ -217,9 +217,9 @@ WaveServiceId InterLocationMessageTransportObjectManager::getWaveServiceId ()
 {
     WaveServiceId prismServiceId = 0;
 
-    s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.lock ();
+    s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.lock ();
 
-    if (NULL != s_pPrismThreadForInterLocationMessageTransportObjectManager)
+    if (NULL != s_pWaveThreadForInterLocationMessageTransportObjectManager)
     {
         prismServiceId = (getInstance ())->getServiceId ();
     }
@@ -228,22 +228,22 @@ WaveServiceId InterLocationMessageTransportObjectManager::getWaveServiceId ()
         prismServiceId = 0;
     }
 
-    s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.unlock ();
+    s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.unlock ();
 
     return (prismServiceId);
 }
 
-PrismThread *InterLocationMessageTransportObjectManager::getPrismThread ()
+WaveThread *InterLocationMessageTransportObjectManager::getWaveThread ()
 {
-    PrismThread *pPrismThread = NULL;
+    WaveThread *pWaveThread = NULL;
 
-    s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.lock ();
+    s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.lock ();
 
-    pPrismThread = s_pPrismThreadForInterLocationMessageTransportObjectManager;
+    pWaveThread = s_pWaveThreadForInterLocationMessageTransportObjectManager;
 
-    s_mutexForPrismThreadForInterLocationMessageTransportObjectManager.unlock ();
+    s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.unlock ();
 
-    return (pPrismThread);
+    return (pWaveThread);
 }
 
 void InterLocationMessageTransportObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -294,11 +294,11 @@ void InterLocationMessageTransportObjectManager::interLocationMulticastMessageTr
 
         // Since we have already cached this message remove it from the remote messages map.
 
-        PrismMessage *pTempPrismMessage = NULL;
+        WaveMessage *pTempWaveMessage = NULL;
 
-        pTempPrismMessage = m_remoteMessagesMap.removeMessage (originalMessageId);
+        pTempWaveMessage = m_remoteMessagesMap.removeMessage (originalMessageId);
 
-        prismAssert (pTempPrismMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
+        prismAssert (pTempWaveMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
 
         pInterLocationMulticastMessage->setCompletionStatus (status);
         reply (pInterLocationMulticastMessage);
@@ -308,7 +308,7 @@ void InterLocationMessageTransportObjectManager::interLocationMulticastMessageTr
 
 }
 
-void InterLocationMessageTransportObjectManager::interLocationMessageTransportHandler (PrismMessage *pPrismMessage)
+void InterLocationMessageTransportObjectManager::interLocationMessageTransportHandler (WaveMessage *pWaveMessage)
 {
     lockAccess1 ();
 
@@ -316,8 +316,8 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
 
     bool               isMessageCached                  = false;
     WaveMessageStatus  status                           = WAVE_MESSAGE_SUCCESS;
-    bool               isOneWayMessage                  = pPrismMessage->getIsOneWayMessage ();
-    bool               isSendAllowedForOneWayConnection = pPrismMessage->checkToSendForOneWayCommunication ();
+    bool               isOneWayMessage                  = pWaveMessage->getIsOneWayMessage ();
+    bool               isSendAllowedForOneWayConnection = pWaveMessage->checkToSendForOneWayCommunication ();
  
     // Cache the message before posting it to remote location if the message is not one way message.
     // for one way messages we do not cache the location because we do not care about the replies.
@@ -326,7 +326,7 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
     if (false == isOneWayMessage)
     {
         isMessageCached = true;
-        status          = m_remoteMessagesMap.addMessage (pPrismMessage);
+        status          = m_remoteMessagesMap.addMessage (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -339,7 +339,7 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
 
     if (false  == isSendAllowedForOneWayConnection)
     {
-        LocationId locationId = pPrismMessage->getReceiverLocationId ();
+        LocationId locationId = pWaveMessage->getReceiverLocationId ();
 
         if (false == FrameworkToolKit::isAConnectedLocation (locationId))
         {
@@ -349,7 +349,7 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        status = postToRemoteLocation (pPrismMessage);
+        status = postToRemoteLocation (pWaveMessage);
     }
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -358,17 +358,17 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
 
         // Since we have already cached this message remove it from the remote messages map.
 
-        UI32          messageId         = pPrismMessage->getMessageId ();
-        PrismMessage *pTempPrismMessage = NULL;
+        UI32          messageId         = pWaveMessage->getMessageId ();
+        WaveMessage *pTempWaveMessage = NULL;
 
         if (true == isMessageCached)
         {
-            pTempPrismMessage = m_remoteMessagesMap.removeMessage (messageId);
-            prismAssert (pTempPrismMessage == pPrismMessage, __FILE__, __LINE__);
+            pTempWaveMessage = m_remoteMessagesMap.removeMessage (messageId);
+            prismAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
         }
 
-        pPrismMessage->setCompletionStatus (status);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (status);
+        reply (pWaveMessage);
     }
     else
     {
@@ -379,15 +379,15 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
 
         // WARNING !!!!!  WARNING !!!!!  WARNING !!!!!
 
-        // We must not access the pPrismMessages in this member function beyond this comment since it can be concurrently accesed on a receiver thread
+        // We must not access the pWaveMessages in this member function beyond this comment since it can be concurrently accesed on a receiver thread
         // if the reply to the posted message is already arrived.  However there is one exception:  If we are sure of deleting the message due to the
         // message being a one way message it can be safely deleted since there will no replies to the message that will be received on the receiver
-        // thread.  Again, however the pPrismMessage must not beaccessed for any other reason.  that is why we cache the value in isOneWayMessage and test
+        // thread.  Again, however the pWaveMessage must not beaccessed for any other reason.  that is why we cache the value in isOneWayMessage and test
         // it against that variable.
 
         if (true == isOneWayMessage)
         {
-            delete pPrismMessage;
+            delete pWaveMessage;
         }
     }
 
@@ -414,7 +414,7 @@ void InterLocationMessageTransportObjectManager::unlockAccess1 ()
     m_accessMutexForMessagesMap.unlock ();
 }
 
-WaveMessageStatus InterLocationMessageTransportObjectManager::sendToBeUsedByReceiverThreads (PrismMessage *pPrismMessage)
+WaveMessageStatus InterLocationMessageTransportObjectManager::sendToBeUsedByReceiverThreads (WaveMessage *pWaveMessage)
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
@@ -426,17 +426,17 @@ WaveMessageStatus InterLocationMessageTransportObjectManager::sendToBeUsedByRece
 
     // We distinguish between normally sent messages verses one way messages.
 
-    if (false == (pPrismMessage->getIsOneWayMessage ()))
+    if (false == (pWaveMessage->getIsOneWayMessage ()))
     {
-        status = send (pPrismMessage,
-                    reinterpret_cast<PrismMessageResponseHandler> (&InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverThreads),
+        status = send (pWaveMessage,
+                    reinterpret_cast<WaveMessageResponseHandler> (&InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverThreads),
                     NULL);
     }
     else
     {
         // If the original message was sent as a one way message send it as one way.  We will never receive a response for this message.
 
-        status = sendOneWay (pPrismMessage);
+        status = sendOneWay (pWaveMessage);
     }
 
     unlockAccess ();
@@ -444,26 +444,26 @@ WaveMessageStatus InterLocationMessageTransportObjectManager::sendToBeUsedByRece
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        if (false == (pPrismMessage->getIsOneWayMessage ()))
+        if (false == (pWaveMessage->getIsOneWayMessage ()))
         {
-            pPrismMessage->setCompletionStatus (status);
+            pWaveMessage->setCompletionStatus (status);
 
             // We indicate that the FrameworkStatus is success and the actual failure is stored in the completion status of the message.
 
-            callbackForSendUsedByReceiverThreads (FRAMEWORK_SUCCESS, pPrismMessage, NULL);
+            callbackForSendUsedByReceiverThreads (FRAMEWORK_SUCCESS, pWaveMessage, NULL);
         }
         else
         {
             // Delete the one way message
 
-            delete pPrismMessage;
+            delete pWaveMessage;
         }
     }
 
     return (status);
 }
 
-void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     static PrismMutex callbackMutex;
 
@@ -480,9 +480,9 @@ void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverTh
     // but we know that we never requested a timeout period for this message while sending this message using send.  So make sure that the message
     // that we got back is a non NULL message.
 
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    pPrismMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
+    pWaveMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
 
     // Ensure that there is no context associated with this reposnse.
 
@@ -492,9 +492,9 @@ void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverTh
     // We must not cache this since it is a response.  We assume that we do not have to track this any more.  We are simply
     // acting as a remote transport agent.
 
-    if (false == (pPrismMessage->getDropReplyAcrossLocations ()))
+    if (false == (pWaveMessage->getDropReplyAcrossLocations ()))
     {
-        WaveMessageStatus status = postToRemoteLocation (pPrismMessage);
+        WaveMessageStatus status = postToRemoteLocation (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -508,9 +508,9 @@ void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverTh
 
     //Check if we need to disconnect and remove location after posting the message.
 
-    bool        disconnectFromNodeAfterReply  = pPrismMessage->checkToDisconnectNodeFromLocationAfterReply ();
-    bool        removeKnownLocationAfterReply = pPrismMessage->checkToRemoveNodeFromKnownLocationAfterReply ();
-    LocationId  locationId                    = pPrismMessage->getSenderLocationId ();
+    bool        disconnectFromNodeAfterReply  = pWaveMessage->checkToDisconnectNodeFromLocationAfterReply ();
+    bool        removeKnownLocationAfterReply = pWaveMessage->checkToRemoveNodeFromKnownLocationAfterReply ();
+    LocationId  locationId                    = pWaveMessage->getSenderLocationId ();
 
     if (true == disconnectFromNodeAfterReply)
     {
@@ -528,10 +528,10 @@ void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverTh
     // We created this message so that we can normal framework mechanisms to deliver the remote message locally to the corresponsing
     // service.  Either we succeeded sending the response to the message originating location or not we must destroy this object.
 
-    delete pPrismMessage;
+    delete pWaveMessage;
 }
 
-PrismMessage *InterLocationMessageTransportObjectManager::getPendingMessage (const UI32 &messageId)
+WaveMessage *InterLocationMessageTransportObjectManager::getPendingMessage (const UI32 &messageId)
 {
     // WARNING !!!!!  WARNING !!!!!  WARNING !!!!!
 
@@ -540,14 +540,14 @@ PrismMessage *InterLocationMessageTransportObjectManager::getPendingMessage (con
     // acquire the same lock so that it can receive data.  In extreme cases where the kernel buffers for the underlying sockets are full it can
     // cause deadlock conditions.
 
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
-    pPrismMessage = m_remoteMessagesMap.removeMessage (messageId);
+    pWaveMessage = m_remoteMessagesMap.removeMessage (messageId);
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-PrismMessage *InterLocationMessageTransportObjectManager::getPendingMessageWithoutRemove (const UI32 &messageId)
+WaveMessage *InterLocationMessageTransportObjectManager::getPendingMessageWithoutRemove (const UI32 &messageId)
 {
     // WARNING !!!!!  WARNING !!!!!  WARNING !!!!!
 
@@ -556,26 +556,26 @@ PrismMessage *InterLocationMessageTransportObjectManager::getPendingMessageWitho
     // acquire the same lock so that it can receive data.  In extreme cases where the kernel buffers for the underlying sockets are full it can
     // cause deadlock conditions.
 
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
-    pPrismMessage = m_remoteMessagesMap.findMessageWithLock (messageId);
+    pWaveMessage = m_remoteMessagesMap.findMessageWithLock (messageId);
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-void InterLocationMessageTransportObjectManager::replyToBeUsedByReceiverThreads (PrismMessage *pPrismMessage)
+void InterLocationMessageTransportObjectManager::replyToBeUsedByReceiverThreads (WaveMessage *pWaveMessage)
 {
     // This method Need not be protected with locking mechanism though it can be executed from mutiple receiver threads.
 
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "InterLocationMessageTransportObjectManager::replyToBeUsedByReceiverThreads : Someone is trying to forward a NULL remote response.  We are simply droping the response.");
         return;
     }
 
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 
     return;
 }
@@ -584,20 +584,20 @@ void InterLocationMessageTransportObjectManager::replyToBeUsedByReceiverThreads 
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    PrismMessage *pPrismMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "InterLocationMessageTransportObjectManager::replyToBeUsedByReceiverThreads : Some one is trying to forward a remote response to a message that does not exist.");
         return;
     }
 
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 
     return;
 }
 
-void InterLocationMessageTransportObjectManager::getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<PrismMessage *> &messagesVector)
+void InterLocationMessageTransportObjectManager::getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<WaveMessage *> &messagesVector)
 {
     // This method must be protected with lockAccess1 since this will be executed on the remote message receiver thread.  This member function
     // must not be executed before the corresponding interLocationMessageTransportHandler is completed executing.
@@ -611,7 +611,7 @@ void InterLocationMessageTransportObjectManager::getPendingMessagesForRemoteLoca
 
 void InterLocationMessageTransportObjectManager::replyToRemoteMessagesPendingOnLocation (LocationId locationId, ResourceId completionStatus)
 {
-    vector<PrismMessage*> messagesPendingOnRemoteLocation;
+    vector<WaveMessage*> messagesPendingOnRemoteLocation;
     UI32                numberOfPendingMessages          = 0;
     UI32                i                                = 0;
 
@@ -639,9 +639,9 @@ void InterLocationMessageTransportObjectManager::replyToRemoteMessagesPendingOnL
 
             if (true == pInterLocationMulticastMessage->areAllMessageReplyReceived ())
             {
-                PrismMessage *pTempPrismMessage = getPendingMessage (pInterLocationMulticastMessage->getMessageIdForMessageToMulticast ());
+                WaveMessage *pTempWaveMessage = getPendingMessage (pInterLocationMulticastMessage->getMessageIdForMessageToMulticast ());
 
-                prismAssert (pTempPrismMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
+                prismAssert (pTempWaveMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
 
                 pInterLocationMulticastMessage->messageOperationReleaseAccess ();
 

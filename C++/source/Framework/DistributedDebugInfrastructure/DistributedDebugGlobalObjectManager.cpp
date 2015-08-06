@@ -19,7 +19,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/Types/UI32Range.h"
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugInfrastructureMessages.h"
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugGlobalObjectManager.h" 
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugInfrastructureTypes.h" 
@@ -45,7 +45,7 @@ DistributedDebugGlobalObjectManager::DistributedDebugGlobalObjectManager ()
     : WaveObjectManager (getClassName ())
 {
 
-    addOperationMap (RUN_DEBUG_SCRIPT_MESSAGE, reinterpret_cast<PrismMessageHandler> (&DistributedDebugGlobalObjectManager::runDebugScriptMessageHandler));
+    addOperationMap (RUN_DEBUG_SCRIPT_MESSAGE, reinterpret_cast<WaveMessageHandler> (&DistributedDebugGlobalObjectManager::runDebugScriptMessageHandler));
 }
 
 /** 
@@ -113,18 +113,18 @@ string DistributedDebugGlobalObjectManager::getPrismServiceName()
  * 
  * @param operationCode
  * 
- * @return PrismMessage*
+ * @return WaveMessage*
  */
-PrismMessage *DistributedDebugGlobalObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DistributedDebugGlobalObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
     case RUN_DEBUG_SCRIPT_MESSAGE:
 
 	    trace (TRACE_LEVEL_INFO, string ("DistributedDebugGlobalObjectManager::createMessageInstance : operation code : ") + operationCode);
-            pPrismMessage = new RunDebugScriptMessage(); 
+            pWaveMessage = new RunDebugScriptMessage(); 
             break;
 
         default :
@@ -133,7 +133,7 @@ PrismMessage *DistributedDebugGlobalObjectManager::createMessageInstance (const 
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 
@@ -178,7 +178,7 @@ void    DistributedDebugGlobalObjectManager::createBufferForScriptFileStep ()
  */
 void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep (PrismLinearSequencerContext* pRunDebugScriptMessageHandlerContext)
 {
-    RunDebugScriptMessage *pRunDebugScriptMessage = dynamic_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPPrismMessage());
+    RunDebugScriptMessage *pRunDebugScriptMessage = dynamic_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
 
     prismAssert(NULL!=pRunDebugScriptMessage, __FILE__, __LINE__);
 
@@ -190,7 +190,7 @@ void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep (PrismLi
 
     WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback),pRunDebugScriptMessageHandlerContext);
     
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pRunDebugScriptOnClusterMemberMessage);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pRunDebugScriptOnClusterMemberMessage);
     pWaveSendToClusterContext->setPartialSuccessFlag(true);
 
     vector<LocationId> locationsToRunDebugScript = pRunDebugScriptMessage->getLocationsToRunDebugScript ();
@@ -247,7 +247,7 @@ void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback (Wav
 
    PrismLinearSequencerContext*   pRunDebugScriptMessageHandlerContext = static_cast<PrismLinearSequencerContext* > (pWaveSendToClusterContext->getPCallerContext());
 
-   RunDebugScriptMessage* pRunDebugScriptMessage = static_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPPrismMessage());
+   RunDebugScriptMessage* pRunDebugScriptMessage = static_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
    pRunDebugScriptMessage->setOutputStringVector(outputStringVector);
 
    pRunDebugScriptMessageHandlerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);

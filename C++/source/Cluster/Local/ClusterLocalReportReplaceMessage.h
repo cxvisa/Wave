@@ -9,11 +9,11 @@
 
 #include <string>
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 ///Class:
 ///ClusterLocalReportReplaceMessage
@@ -23,7 +23,7 @@ class PrismMessage;
 /// processing of an Replace Rejoin to the Local Cluster Service so that
 /// it can update its node status
  
-class ClusterLocalReportReplaceMessage: public  PrismMessage
+class ClusterLocalReportReplaceMessage: public  WaveMessage
 {
 
     public :

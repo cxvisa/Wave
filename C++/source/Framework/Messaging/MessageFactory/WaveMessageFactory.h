@@ -12,19 +12,19 @@
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 class WaveObjectManager;
 
-class PrismMessageFactory
+class WaveMessageFactory
 {
     private :
     protected :
     public :
-        static PrismMessage      *getMessageInstance                    (const WaveServiceId &serviceId, const UI32 &opcode);
+        static WaveMessage      *getMessageInstance                    (const WaveServiceId &serviceId, const UI32 &opcode);
         static WaveObjectManager *getWaveObjectManagerForMessage        (const WaveServiceId &serviceId, const UI32 &opcode);
         static WaveObjectManager *getWaveObjectManagerForEvent          (const WaveServiceId &serviceId, const UI32 &eventOpcode);
         static WaveObjectManager *getWaveObjectManagerForEventListener  (const LocationId &locationId, const WaveServiceId &serviceId, const UI32 &eventOpcode);
-        static PrismMessage      *getManagementInterfaceMessageInstance (const string &waveClientName, const WaveServiceId &serviceId, const UI32 &opcode);
+        static WaveMessage      *getManagementInterfaceMessageInstance (const string &waveClientName, const WaveServiceId &serviceId, const UI32 &opcode);
 
     // Now the data members
 

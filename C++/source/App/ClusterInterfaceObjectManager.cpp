@@ -72,7 +72,7 @@ int ClusterInterfaceObjectManager::createCluster (SI32 appId, int nSecondaryNode
         pMessage->setSecondaryNodeNameAndPort (string (secondaryNodes[i].nodeName), secondaryNodes[i].nodePort);
     }
 
-    status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&ClusterInterfaceObjectManager::createClusterCallBack), pMessageContext);
+    status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&ClusterInterfaceObjectManager::createClusterCallBack), pMessageContext);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "ClusterInterfaceObjectManager::createCluster: Failed to send message to createCluster ");
@@ -163,7 +163,7 @@ int ClusterInterfaceObjectManager::addNodeToCluster (SI32 appId, node_t node, ad
 //    pMessage->setResultCB (addNodeResultCB);
 //    pMessage->setContext (pContext);
 
-    status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&ClusterInterfaceObjectManager::addNodeCallBack), pMessageContext);
+    status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&ClusterInterfaceObjectManager::addNodeCallBack), pMessageContext);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR,"ClusterInterfaceObjectManager::addNodeCallBack: Failed to send message to addNodeToCluster ");
@@ -225,7 +225,7 @@ int ClusterInterfaceObjectManager::joinNodeToCluster (SI32 appId, node_t node, j
     //pMessage->setResultCB (joinNodeResultCB);
     //pMessage->setContext (pContext);
 
-    status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&ClusterInterfaceObjectManager::joinNodeCallBack), pMessageContext);
+    status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&ClusterInterfaceObjectManager::joinNodeCallBack), pMessageContext);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR,"ClusterInterfaceObjectManager::joinNodeToCluster Failed to send message to joinNodeToCluster ");
@@ -287,7 +287,7 @@ int ClusterInterfaceObjectManager::removeNodeFromCluster (SI32 appId, node_t nod
     //pMessage->setResultCB (removeNodeResultCB);
     //pMessage->setContext (pContext);
 
-    status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&ClusterInterfaceObjectManager::removeNodeCallBack), pMessageContext);
+    status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&ClusterInterfaceObjectManager::removeNodeCallBack), pMessageContext);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR,"ClusterInterfaceObjectManager::removeNodeFromCluster Failed to send message to removeNodeFromCluster ");
@@ -348,7 +348,7 @@ int ClusterInterfaceObjectManager::removeCluster (SI32 appId, removeClusterCallB
     //pMessage->setResultCB (removeClusterResultCB);
     //pMessage->setContext (pContext);
 
-    status = send (pMessage, reinterpret_cast<PrismMessageResponseHandler> (&ClusterInterfaceObjectManager::removeClusterCallBack), pMessageContext);
+    status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&ClusterInterfaceObjectManager::removeClusterCallBack), pMessageContext);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR,"ClusterInterfaceObjectManager::removeCluster: Failed to send message to removeCluster ");

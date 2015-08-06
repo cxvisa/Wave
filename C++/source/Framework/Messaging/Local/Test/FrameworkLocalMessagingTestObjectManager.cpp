@@ -85,13 +85,13 @@ void FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep
         FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -162,7 +162,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleOneWayMessageTestStep (Fram
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }
@@ -221,7 +221,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
     UI32                   numberOfMessagesToSend   = 100000;
     UI32                   i                        = 0;
     WaveMessageStatus     status                   = WAVE_MESSAGE_ERROR;
-    vector<PrismMessage *> messagesToCancel;
+    vector<WaveMessage *> messagesToCancel;
     UI32                   numberOfMessagesToCancel = 0;
     UI32                   numberOfFailuresToRecall = 0;
 
@@ -235,7 +235,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
     FrameworkTestabilityMessage5 *pFrameworkTestabilityMessage5 = new FrameworkTestabilityMessage5 ();
 
     status = send (pFrameworkTestabilityMessage5,
-                   reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage5Callback),
+                   reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage5Callback),
                    pFrameworkLocalMessagingTestContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -251,13 +251,13 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
         FrameworkTestabilityMessage6 *pMessage = new FrameworkTestabilityMessage6 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage6Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage6Callback),
                        pFrameworkLocalMessagingTestContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -353,7 +353,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestS
     UI32                   numberOfMessagesToSend   = 100000;
     UI32                   i                        = 0;
     WaveMessageStatus     status                   = WAVE_MESSAGE_ERROR;
-    vector<PrismMessage *> messagesToCancel;
+    vector<WaveMessage *> messagesToCancel;
     UI32                   numberOfMessagesToCancel = 0;
     UI32                   numberOfFailuresToRecall = 0;
 
@@ -371,13 +371,13 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestS
         FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -425,7 +425,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestSt
     UI32                   numberOfMessagesToSend   = 100000;
     UI32                   i                        = 0;
     WaveMessageStatus     status                   = WAVE_MESSAGE_ERROR;
-    vector<PrismMessage *> messagesToCancel;
+    vector<WaveMessage *> messagesToCancel;
     UI32                   numberOfMessagesToCancel = 0;
     UI32                   numberOfFailuresToRecall = 0;
 
@@ -443,13 +443,13 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestSt
         FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else

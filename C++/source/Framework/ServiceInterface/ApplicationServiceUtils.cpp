@@ -35,9 +35,9 @@ void *ApplicationServiceSendContext::getPApplicationServiceContext ()
     return (m_pApplicationServiceContext);
 }
 
-ApplicationServiceMessageHandlerContext::ApplicationServiceMessageHandlerContext (WaveObjectManager *pWaveObjectManager, PrismMessage *pPrismMessage)
+ApplicationServiceMessageHandlerContext::ApplicationServiceMessageHandlerContext (WaveObjectManager *pWaveObjectManager, WaveMessage *pWaveMessage)
     : m_pWaveObjectManager (pWaveObjectManager),
-     m_pPrismMessage        (pPrismMessage)
+     m_pWaveMessage        (pWaveMessage)
 {
 }
 
@@ -50,9 +50,9 @@ WaveObjectManager *ApplicationServiceMessageHandlerContext::getPWaveObjectManage
     return (m_pWaveObjectManager);
 }
 
-PrismMessage *ApplicationServiceMessageHandlerContext::getPPrismMessage ()
+WaveMessage *ApplicationServiceMessageHandlerContext::getPWaveMessage ()
 {
-    return (m_pPrismMessage);
+    return (m_pWaveMessage);
 }
 
 WaveServiceId ApplicationServiceUtils::getWaveServiceIdForApplicationServiceId (const UI32 &applicationServiceId)
@@ -114,7 +114,7 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
 
         prismAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
 
-        status = pApplicationLocalService->send (pApplicationServiceMessage, reinterpret_cast<PrismMessageResponseHandler> (&ApplicationLocalService::applicationLocalServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
+        status = pApplicationLocalService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationLocalService::applicationLocalServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -127,7 +127,7 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
 
         prismAssert (NULL != pApplicationService, __FILE__, __LINE__);
 
-        status = pApplicationService->send (pApplicationServiceMessage, reinterpret_cast<PrismMessageResponseHandler> (&ApplicationService::applicationServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
+        status = pApplicationService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationService::applicationServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -147,19 +147,19 @@ void ApplicationServiceUtils::replyToApplicationService (void *pOutputPayLoad, c
     prismAssert (NULL != pApplicationServiceMessageHandlerContext, __FILE__, __LINE__);
 
     WaveObjectManager *pWaveObjectManager = pApplicationServiceMessageHandlerContext->getPWaveObjectManager ();
-    PrismMessage       *pPrismMessage       = pApplicationServiceMessageHandlerContext->getPPrismMessage ();
+    WaveMessage       *pWaveMessage       = pApplicationServiceMessageHandlerContext->getPWaveMessage ();
 
     prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
-    prismAssert (NULL != pPrismMessage,       __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage,       __FILE__, __LINE__);
 
     if (NULL != pOutputPayLoad)
     {
-        pPrismMessage->addBuffer (APPLICATION_SERVICE_GENERIC_MESSAGE_OUTPUT_BUFFER1, outputPayLoadLength, pOutputPayLoad, false);
+        pWaveMessage->addBuffer (APPLICATION_SERVICE_GENERIC_MESSAGE_OUTPUT_BUFFER1, outputPayLoadLength, pOutputPayLoad, false);
     }
 
-    pPrismMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
-    pWaveObjectManager->reply (pPrismMessage);
+    pWaveObjectManager->reply (pWaveMessage);
 }
 
 }

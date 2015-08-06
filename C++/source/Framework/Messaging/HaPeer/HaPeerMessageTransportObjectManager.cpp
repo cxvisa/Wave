@@ -8,15 +8,15 @@
 #include "Framework/Core/PrismFrameworkObjectManagerHaSyncWorker.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/PrismMutex.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 
 namespace WaveNs
 {
 
-PrismThread *s_pPrismThreadForHaPeerMessageTransportObjectManager = NULL;
-PrismMutex   s_mutexForPrismThreadForHaPeerMessageTransportObjectManager;
+WaveThread *s_pWaveThreadForHaPeerMessageTransportObjectManager = NULL;
+PrismMutex   s_mutexForWaveThreadForHaPeerMessageTransportObjectManager;
 
 HaPeerMessageTransportObjectManager::MessageMap::MessageMap ()
 {
@@ -36,17 +36,17 @@ void HaPeerMessageTransportObjectManager::MessageMap::unlockAccess ()
     m_accessMutex.unlock ();
 }
 
-WaveMessageStatus HaPeerMessageTransportObjectManager::MessageMap::addMessage (PrismMessage *pPrismMessage)
+WaveMessageStatus HaPeerMessageTransportObjectManager::MessageMap::addMessage (WaveMessage *pWaveMessage)
 {
     lockAccess ();
 
-    UI32              prismMessageId    = pPrismMessage->getMessageId ();
-    PrismMessage       *pTempPrismMessage = findMessage (prismMessageId);
+    UI32              prismMessageId    = pWaveMessage->getMessageId ();
+    WaveMessage       *pTempWaveMessage = findMessage (prismMessageId);
     WaveMessageStatus  status          = WAVE_MESSAGE_SUCCESS;
 
-    if (NULL == pTempPrismMessage)
+    if (NULL == pTempWaveMessage)
     {
-        m_messagesMap[prismMessageId] = pPrismMessage;
+        m_messagesMap[prismMessageId] = pWaveMessage;
         status = WAVE_MESSAGE_SUCCESS;
     }
     else
@@ -59,54 +59,54 @@ WaveMessageStatus HaPeerMessageTransportObjectManager::MessageMap::addMessage (P
     return (status);
 }
 
-PrismMessage *HaPeerMessageTransportObjectManager::MessageMap::findMessage (UI32 prismMessageId)
+WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::findMessage (UI32 prismMessageId)
 {
-    map<UI32, PrismMessage *>::iterator  element     = m_messagesMap.find (prismMessageId);
-    map<UI32, PrismMessage *>::iterator  end         = m_messagesMap.end ();
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator  element     = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator  end         = m_messagesMap.end ();
+    WaveMessage                        *pWaveMessage = NULL;
 
     if (end != element)
     {
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-PrismMessage *HaPeerMessageTransportObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
+WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
 {
     lockAccess ();
 
-    map<UI32, PrismMessage *>::iterator element      = m_messagesMap.find (prismMessageId);
-    map<UI32, PrismMessage *>::iterator end          = m_messagesMap.end ();
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator element      = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator end          = m_messagesMap.end ();
+    WaveMessage                        *pWaveMessage = NULL;
 
     if (end != element)
     {
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
         m_messagesMap.erase (element);
     }
 
     unlockAccess ();
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-void HaPeerMessageTransportObjectManager::MessageMap::getPendingMessagesForRemoteLocation (LocationId locationId, vector<PrismMessage *> &messagesVector)
+void HaPeerMessageTransportObjectManager::MessageMap::getPendingMessagesForRemoteLocation (LocationId locationId, vector<WaveMessage *> &messagesVector)
 {
     lockAccess ();
 
-    map<UI32, PrismMessage *>::iterator  element     = m_messagesMap.begin ();
-    map<UI32, PrismMessage *>::iterator  end         = m_messagesMap.end ();
-    PrismMessage                        *pPrismMessage = NULL;
+    map<UI32, WaveMessage *>::iterator  element     = m_messagesMap.begin ();
+    map<UI32, WaveMessage *>::iterator  end         = m_messagesMap.end ();
+    WaveMessage                        *pWaveMessage = NULL;
 
     while (element != end)
     {
-        pPrismMessage = element->second;
+        pWaveMessage = element->second;
 
-        if ((pPrismMessage->getReceiverLocationId ()) == locationId)
+        if ((pWaveMessage->getReceiverLocationId ()) == locationId)
         {
-            messagesVector.push_back (pPrismMessage);
+            messagesVector.push_back (pWaveMessage);
         }
 
         element++;
@@ -126,15 +126,15 @@ void HaPeerMessageTransportObjectManager::MessageMap::getPendingMessagesForRemot
 HaPeerMessageTransportObjectManager::HaPeerMessageTransportObjectManager ()
     : WaveLocalObjectManager ("Ha Peer Message Transport")
 {
-    s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.lock ();
+    s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.lock ();
 
-    s_pPrismThreadForHaPeerMessageTransportObjectManager = PrismThread::getPrismThreadForServiceId (getServiceId ());
+    s_pWaveThreadForHaPeerMessageTransportObjectManager = WaveThread::getWaveThreadForServiceId (getServiceId ());
 
-    s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.unlock ();
+    s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.unlock ();
 
     removeOperationMap (WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT);
 
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler));
 }
 
 HaPeerMessageTransportObjectManager *HaPeerMessageTransportObjectManager::getInstance ()
@@ -158,9 +158,9 @@ WaveServiceId HaPeerMessageTransportObjectManager::getWaveServiceId ()
 {
     WaveServiceId prismServiceId = 0;
 
-    s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.lock ();
+    s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.lock ();
 
-    if (NULL != s_pPrismThreadForHaPeerMessageTransportObjectManager)
+    if (NULL != s_pWaveThreadForHaPeerMessageTransportObjectManager)
     {
         prismServiceId = (getInstance ())->getServiceId ();
     }
@@ -169,22 +169,22 @@ WaveServiceId HaPeerMessageTransportObjectManager::getWaveServiceId ()
         prismServiceId = 0;
     }
 
-    s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.unlock ();
+    s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.unlock ();
 
     return (prismServiceId);
 }
 
-PrismThread *HaPeerMessageTransportObjectManager::getPrismThread ()
+WaveThread *HaPeerMessageTransportObjectManager::getWaveThread ()
 {
-    PrismThread *pPrismThread = NULL;
+    WaveThread *pWaveThread = NULL;
 
-    s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.lock ();
+    s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.lock ();
 
-    pPrismThread = s_pPrismThreadForHaPeerMessageTransportObjectManager;
+    pWaveThread = s_pWaveThreadForHaPeerMessageTransportObjectManager;
 
-    s_mutexForPrismThreadForHaPeerMessageTransportObjectManager.unlock ();
+    s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.unlock ();
 
-    return (pPrismThread);
+    return (pWaveThread);
 }
 
 void HaPeerMessageTransportObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -202,7 +202,7 @@ void HaPeerMessageTransportObjectManager::listenForEvents (WaveAsynchronousConte
     pWaveAsynchronousContextForBootPhases->callback ();
 }
 
-void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (PrismMessage *pPrismMessage)
+void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (WaveMessage *pWaveMessage)
 {
     lockAccess1 ();
 
@@ -210,7 +210,7 @@ void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (PrismMe
 
     bool               isMessageCached = false;
     WaveMessageStatus status;
-    bool               isOneWayMessage = pPrismMessage->getIsOneWayMessage ();
+    bool               isOneWayMessage = pWaveMessage->getIsOneWayMessage ();
 
     // Cache the message before posting it to remote location if the message is not one way message.
     // for one way messages we do not cache the location because we do not care about the replies.
@@ -219,7 +219,7 @@ void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (PrismMe
     if (false == isOneWayMessage)
     {
         isMessageCached = true;
-        status          = m_remoteMessagesMap.addMessage (pPrismMessage);
+        status          = m_remoteMessagesMap.addMessage (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -230,7 +230,7 @@ void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (PrismMe
         }
     }
 
-    status = postToHaPeerLocation (pPrismMessage);
+    status = postToHaPeerLocation (pWaveMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -238,17 +238,17 @@ void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (PrismMe
 
         // Since we have already cached this message remove it from the remote messages map.
 
-        UI32          messageId         = pPrismMessage->getMessageId ();
-        PrismMessage *pTempPrismMessage = NULL;
+        UI32          messageId         = pWaveMessage->getMessageId ();
+        WaveMessage *pTempWaveMessage = NULL;
 
         if (true == isMessageCached)
         {
-            pTempPrismMessage = m_remoteMessagesMap.removeMessage (messageId);
-            prismAssert (pTempPrismMessage == pPrismMessage, __FILE__, __LINE__);
+            pTempWaveMessage = m_remoteMessagesMap.removeMessage (messageId);
+            prismAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
         }
 
-        pPrismMessage->setCompletionStatus (status);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (status);
+        reply (pWaveMessage);
     }
     else
     {
@@ -259,15 +259,15 @@ void HaPeerMessageTransportObjectManager::haPeerMessageTransportHandler (PrismMe
 
         // WARNING !!!!!  WARNING !!!!!  WARNING !!!!!
 
-        // We must not access the pPrismMessages in this member function beyond this comment since it can be concurrently accesed on a receiver thread
+        // We must not access the pWaveMessages in this member function beyond this comment since it can be concurrently accesed on a receiver thread
         // if the reply to the posted message is already arrived.  However there is one exception:  If we are sure of deleting the message due to the
         // message being a one way message it can be safely deleted since there will no replies to the message that will be received on the receiver
-        // thread.  Again, however the pPrismMessage must not beaccessed for any other reason.  that is why we cache the value in isOneWayMessage and test
+        // thread.  Again, however the pWaveMessage must not beaccessed for any other reason.  that is why we cache the value in isOneWayMessage and test
         // it against that variable.
 
         if (true == isOneWayMessage)
         {
-            delete pPrismMessage;
+            delete pWaveMessage;
         }
     }
 
@@ -294,7 +294,7 @@ void HaPeerMessageTransportObjectManager::unlockAccess1 ()
     m_accessMutexForMessagesMap.unlock ();
 }
 
-WaveMessageStatus HaPeerMessageTransportObjectManager::sendToBeUsedByReceiverThreads (PrismMessage *pPrismMessage)
+WaveMessageStatus HaPeerMessageTransportObjectManager::sendToBeUsedByReceiverThreads (WaveMessage *pWaveMessage)
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
@@ -306,17 +306,17 @@ WaveMessageStatus HaPeerMessageTransportObjectManager::sendToBeUsedByReceiverThr
 
     // We distinguish between normally sent messages verses one way messages.
 
-    if (false == (pPrismMessage->getIsOneWayMessage ()))
+    if (false == (pWaveMessage->getIsOneWayMessage ()))
     {
-        status = send (pPrismMessage,
-                    reinterpret_cast<PrismMessageResponseHandler> (&HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads),
+        status = send (pWaveMessage,
+                    reinterpret_cast<WaveMessageResponseHandler> (&HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads),
                     NULL);
     }
     else
     {
         // If the original message was sent as a one way message send it as one way.  We will never receive a response for this message.
 
-        status = sendOneWay (pPrismMessage);
+        status = sendOneWay (pWaveMessage);
     }
 
     unlockAccess ();
@@ -324,26 +324,26 @@ WaveMessageStatus HaPeerMessageTransportObjectManager::sendToBeUsedByReceiverThr
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        if (false == (pPrismMessage->getIsOneWayMessage ()))
+        if (false == (pWaveMessage->getIsOneWayMessage ()))
         {
-            pPrismMessage->setCompletionStatus (status);
+            pWaveMessage->setCompletionStatus (status);
 
             // We indicate that the FrameworkStatus is success and the actual failure is stored in the completion status of the message.
 
-            callbackForSendUsedByReceiverThreads (FRAMEWORK_SUCCESS, pPrismMessage, NULL);
+            callbackForSendUsedByReceiverThreads (FRAMEWORK_SUCCESS, pWaveMessage, NULL);
         }
         else
         {
             // Delete the one way message
 
-            delete pPrismMessage;
+            delete pWaveMessage;
         }
     }
 
     return (status);
 }
 
-void HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext)
+void HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
     static PrismMutex callbackMutex;
 
@@ -360,9 +360,9 @@ void HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (
     // but we know that we never requested a timeout period for this message while sending this message using send.  So make sure that the message
     // that we got back is a non NULL message.
 
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    pPrismMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
+    pWaveMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
 
     // Ensure that there is no context associated with this reposnse.
 
@@ -372,9 +372,9 @@ void HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (
     // We must not cache this since it is a response.  We assume that we do not have to track this any more.  We are simply
     // acting as a remote transport agent.
 
-    if (false == (pPrismMessage->getDropReplyAcrossLocations ()))
+    if (false == (pWaveMessage->getDropReplyAcrossLocations ()))
     {
-        WaveMessageStatus status = postToHaPeerLocation (pPrismMessage);
+        WaveMessageStatus status = postToHaPeerLocation (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -392,10 +392,10 @@ void HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (
     // We created this message so that we can normal framework mechanisms to deliver the remote message locally to the corresponsing
     // service.  Either we succeeded sending the response to the message originating location or not we must destroy this object.
 
-    delete pPrismMessage;
+    delete pWaveMessage;
 }
 
-PrismMessage *HaPeerMessageTransportObjectManager::getPendingMessage (const UI32 &messageId)
+WaveMessage *HaPeerMessageTransportObjectManager::getPendingMessage (const UI32 &messageId)
 {
     // WARNING !!!!!  WARNING !!!!!  WARNING !!!!!
 
@@ -404,26 +404,26 @@ PrismMessage *HaPeerMessageTransportObjectManager::getPendingMessage (const UI32
     // acquire the same lock so that it can receive data.  In extreme cases where the kernel buffers for the underlying sockets are full it can
     // cause deadlock conditions.
 
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
-    pPrismMessage = m_remoteMessagesMap.removeMessage (messageId);
+    pWaveMessage = m_remoteMessagesMap.removeMessage (messageId);
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-void HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads (PrismMessage *pPrismMessage)
+void HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads (WaveMessage *pWaveMessage)
 {
     // This method Need not be protected with locking mechanism though it can be executed from mutiple receiver threads.
 
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads : Someone is trying to forward a NULL remote response.  We are simply droping the response.");
         return;
     }
 
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 
     return;
 }
@@ -432,20 +432,20 @@ void HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads (UI32 p
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    PrismMessage *pPrismMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads : Some one is trying to forward a remote response to a message that does not exist.");
         return;
     }
 
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 
     return;
 }
 
-void HaPeerMessageTransportObjectManager::getPendingMessagesForRemoteLocation (LocationId locationId, vector<PrismMessage *> &messagesVector)
+void HaPeerMessageTransportObjectManager::getPendingMessagesForRemoteLocation (LocationId locationId, vector<WaveMessage *> &messagesVector)
 {
     // This method must be protected with lockAccess1 since this will be executed on the remote message receiver thread.  This member function
     // must not be executed before the corresponding haPeerMessageTransportHandler is completed executing.
@@ -459,7 +459,7 @@ void HaPeerMessageTransportObjectManager::getPendingMessagesForRemoteLocation (L
 
 void HaPeerMessageTransportObjectManager::replyToRemoteMessagesPendingOnLocation (LocationId locationId, ResourceId completionStatus)
 {
-    vector<PrismMessage*> messagesPendingOnRemoteLocation;
+    vector<WaveMessage*> messagesPendingOnRemoteLocation;
     UI32                numberOfPendingMessages          = 0;
     UI32                i                                = 0;
 

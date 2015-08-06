@@ -7,7 +7,7 @@
 #ifndef PERSISTENCELOCALOBJECTMANAGERPUSHCONFIGTOKERNELMESSAGE_H
 #define PERSISTENCELOCALOBJECTMANAGERPUSHCONFIGTOKERNELMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 #include <string>
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceLocalObjectManagerPushConfigToKernelMessaage : public PrismMessage
+class PersistenceLocalObjectManagerPushConfigToKernelMessaage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

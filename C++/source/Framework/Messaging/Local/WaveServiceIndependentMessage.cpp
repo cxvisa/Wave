@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 WaveServiceIndependentMessage::WaveServiceIndependentMessage (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismMessage (serviceCode, operationCode),
+    : WaveMessage (serviceCode, operationCode),
     WaveServiceIndependentMessageBase ()
 {
 }
@@ -26,7 +26,7 @@ WaveServiceIndependentMessage::~WaveServiceIndependentMessage ()
 
 void WaveServiceIndependentMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization (); 
+    WaveMessage::setupAttributesForSerialization (); 
 }
 
 }

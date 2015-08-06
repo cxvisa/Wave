@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManagerCommitTransactionContext.h"
@@ -60,7 +60,7 @@ void PrismElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContex
 {
     trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerSucceededStep : Entering ...");
 
-    PrismMessage             *pPrismMessage             = pPrismLinearSequencerContext->getPPrismMessage ();
+    WaveMessage             *pWaveMessage             = pPrismLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismLinearSequencerContext->getPPrismAsynchronousContext ();
 
     if (true == (pPrismLinearSequencerContext->getIsHoldAllRequested ()))
@@ -88,10 +88,10 @@ void PrismElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContex
         status = WAVE_COMMIT_TRANSACTION_FAILED;
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        pPrismMessage->setCompletionStatus (status);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (status);
+        reply (pWaveMessage);
     }
     else if (NULL != pPrismAsynchronousContext)
     {
@@ -106,7 +106,7 @@ void PrismElement::prismLinearSequencerFailedStep (PrismLinearSequencerContext *
 {
     trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerFailedStep : Entering ...");
 
-    PrismMessage             *pPrismMessage             = pPrismLinearSequencerContext->getPPrismMessage ();
+    WaveMessage             *pWaveMessage             = pPrismLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismLinearSequencerContext->getPPrismAsynchronousContext ();
 
     if (true == (pPrismLinearSequencerContext->getIsHoldAllRequested ()))
@@ -120,10 +120,10 @@ void PrismElement::prismLinearSequencerFailedStep (PrismLinearSequencerContext *
         rollbackTransaction ();
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        pPrismMessage->setCompletionStatus (pPrismLinearSequencerContext->getCompletionStatus ());
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (pPrismLinearSequencerContext->getCompletionStatus ());
+        reply (pWaveMessage);
     }
     else if (NULL != pPrismAsynchronousContext)
     {
@@ -180,7 +180,7 @@ ResourceId PrismElement::prismSynchronousLinearSequencerSucceededStep (PrismSync
 {
     trace (TRACE_LEVEL_DEVEL, "PrismElement::prismSynchronousLinearSequencerSucceededStep : Entering ...");
 
-    PrismMessage             *pPrismMessage             = pPrismSynchronousLinearSequencerContext->getPPrismMessage ();
+    WaveMessage             *pWaveMessage             = pPrismSynchronousLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismSynchronousLinearSequencerContext->getPPrismAsynchronousContext ();
     ResourceId                completionStatus          = pPrismSynchronousLinearSequencerContext->getCompletionStatus ();
 
@@ -200,10 +200,10 @@ ResourceId PrismElement::prismSynchronousLinearSequencerSucceededStep (PrismSync
         }
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        pPrismMessage->setCompletionStatus (completionStatus);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (completionStatus);
+        reply (pWaveMessage);
     }
     else if (NULL != pPrismAsynchronousContext)
     {
@@ -219,7 +219,7 @@ ResourceId PrismElement::prismSynchronousLinearSequencerFailedStep (PrismSynchro
 {
     trace (TRACE_LEVEL_DEVEL, "PrismElement::prismSynchronousLinearSequencerFailedStep : Entering ...");
 
-    PrismMessage             *pPrismMessage             = pPrismSynchronousLinearSequencerContext->getPPrismMessage ();
+    WaveMessage             *pWaveMessage             = pPrismSynchronousLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismSynchronousLinearSequencerContext->getPPrismAsynchronousContext ();
     ResourceId                completionStatus          = pPrismSynchronousLinearSequencerContext->getCompletionStatus ();
 
@@ -229,10 +229,10 @@ ResourceId PrismElement::prismSynchronousLinearSequencerFailedStep (PrismSynchro
         rollbackTransaction ();
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        pPrismMessage->setCompletionStatus (completionStatus);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (completionStatus);
+        reply (pWaveMessage);
     }
     else if (NULL != pPrismAsynchronousContext)
     {
@@ -293,7 +293,7 @@ WaveManagedObject *PrismElement::createManagedObjectInstance (const string &mana
     return (NULL);
 }
 
-PrismMessage *PrismElement::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PrismElement::createMessageInstance (const UI32 &operationCode)
 {
     trace (TRACE_LEVEL_ERROR, "PrismElement::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
     trace (TRACE_LEVEL_ERROR, "PrismElement::createMessageInstance : ObjectManagers and Workers MUST overwrite this virtual function.");

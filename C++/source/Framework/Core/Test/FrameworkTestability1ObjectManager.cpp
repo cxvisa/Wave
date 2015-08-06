@@ -40,22 +40,22 @@ FrameworkTestability1ObjectManager::FrameworkTestability1ObjectManager ()
     : WaveLocalObjectManager (getPrismServiceName ())
 {
     WaveUserInterfaceObjectManager::setManagementInterfaceMessageInstantiatorForClient ("Wave Client", &FrameworkTestability1ObjectManager::createManagementInterfaceMessageInstance);
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE1,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage1RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE2,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage2RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE3,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage3RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE4,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage4RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE5,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage5RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE6,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage6RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE7,                      reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage7RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE1,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage1RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE2,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage2RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE3,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage3RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE4,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage4RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE5,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage5RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE6,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage6RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE7,                      reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage7RequestHandler));
 
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE1, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage1RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE2, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage2RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE3, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage3RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE4, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage4RequestHandler));
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_MEMORY_LEAKS, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler)); 
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_OBJECT_LEAKS, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceObjectLeakMessageRequestHandler)); 
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_FILE_SERVICE_USAGE, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfacFileServiceUsageRequestHandler)); 
-    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_TRACK_LEAKS_WITH_BT, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceTrackLeaksWithBtMessageRequestHandler)); 
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE1, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage1RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE2, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage2RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE3, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage3RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE4, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage4RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_MEMORY_LEAKS, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler)); 
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_OBJECT_LEAKS, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceObjectLeakMessageRequestHandler)); 
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_FILE_SERVICE_USAGE, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfacFileServiceUsageRequestHandler)); 
+    addOperationMap (FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_TRACK_LEAKS_WITH_BT, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceTrackLeaksWithBtMessageRequestHandler)); 
 
 }
 
@@ -94,81 +94,81 @@ void FrameworkTestability1ObjectManager::listenForEvents (WaveAsynchronousContex
     pWaveAsynchronousContextForBootPhases->callback ();
 }
 
-PrismMessage *FrameworkTestability1ObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *FrameworkTestability1ObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_TESTABILITY_MESSAGE1 :
-            pPrismMessage = new FrameworkTestabilityMessage1;
+            pWaveMessage = new FrameworkTestabilityMessage1;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE2 :
-            pPrismMessage = new FrameworkTestabilityMessage2;
+            pWaveMessage = new FrameworkTestabilityMessage2;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE3 :
-            pPrismMessage = new FrameworkTestabilityMessage3;
+            pWaveMessage = new FrameworkTestabilityMessage3;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE4 :
-            pPrismMessage = new FrameworkTestabilityMessage4;
+            pWaveMessage = new FrameworkTestabilityMessage4;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE5 :
-            pPrismMessage = new FrameworkTestabilityMessage5;
+            pWaveMessage = new FrameworkTestabilityMessage5;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE6 :
-            pPrismMessage = new FrameworkTestabilityMessage6;
+            pWaveMessage = new FrameworkTestabilityMessage6;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE7 :
-            pPrismMessage = new FrameworkTestabilityMessage7;
+            pWaveMessage = new FrameworkTestabilityMessage7;
             break;
 
         case FRAMEWORK_TESTABILITY_MESSAGE8 :
-            pPrismMessage = new FrameworkTestabilityMessage8;
+            pWaveMessage = new FrameworkTestabilityMessage8;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE1:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceMessage1;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceMessage1;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE2:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceMessage2;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceMessage2;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE3:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceMessage3;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceMessage3;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE4:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceMessage4;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceMessage4;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_MEMORY_LEAKS:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceMessageLeakMessage;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceMessageLeakMessage;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_OBJECT_LEAKS:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceObjectLeakMessage;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceObjectLeakMessage;
             break;
 
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_FILE_SERVICE_USAGE:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceFileServiceUsageMessage;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceFileServiceUsageMessage;
             break;
             
         case FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_TRACK_LEAKS_WITH_BT:
-            pPrismMessage = new FrameworkTestabilityManagementInterfaceTrackLeaksWithBtMessage;
+            pWaveMessage = new FrameworkTestabilityManagementInterfaceTrackLeaksWithBtMessage;
             break;
             
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 ManagementInterfaceMessage *FrameworkTestability1ObjectManager::createManagementInterfaceMessageInstance (const UI32 &operationCode)
@@ -254,7 +254,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3RequestHand
 
 void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3ValidateInputBuffersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pPrismLinearSequencerContext->getPWaveMessage ());
     ResourceId                    status;
 
     if (true == (pMessage->validateInputBuffer1 ()))
@@ -283,7 +283,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3ValidateInp
 
 void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3AttachOutputBuffersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     pMessage->setupOutputBuffer1 ();
 
@@ -515,7 +515,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
     {
         ManagementInterfaceClientTestMessage2 *message = new ManagementInterfaceClientTestMessage2;
 
-        status = sendToWaveClient (pMessage->getClientName (), message, reinterpret_cast<PrismMessageResponseHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage2RequestCallBack), pMessage);
+        status = sendToWaveClient (pMessage->getClientName (), message, reinterpret_cast<WaveMessageResponseHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage2RequestCallBack), pMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -572,7 +572,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
 
     ManagementInterfaceClientTestMessage3 *message = new ManagementInterfaceClientTestMessage3;
 
-    status = sendToWaveClient (pMessage->getClientName (), message, reinterpret_cast<PrismMessageResponseHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage3RequestCallBack), pMessage);
+    status = sendToWaveClient (pMessage->getClientName (), message, reinterpret_cast<WaveMessageResponseHandler> (&FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage3RequestCallBack), pMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -637,7 +637,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSuccessTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Client with Buffers Async All Success Test.");
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4 = new ManagementInterfaceClientTestMessage4 ();
 
@@ -667,7 +667,7 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucces
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async All Success But Phase 2 Set Test.");
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage42 = new ManagementInterfaceClientTestMessage4 ();
@@ -704,7 +704,7 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailur
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async All Failure Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
@@ -739,7 +739,7 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailur
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async All Failure But Phase 2 Set Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage42 = new ManagementInterfaceClientTestMessage4 ();
@@ -781,7 +781,7 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucce
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async Some Success Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
@@ -825,7 +825,7 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuces
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async Some Success But Phase 2 Set Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage42 = new ManagementInterfaceClientTestMessage4 ();

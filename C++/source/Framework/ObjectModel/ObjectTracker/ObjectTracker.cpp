@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/ObjectModel/ObjectTracker/ObjectTracker.h"
-#include <Framework/MultiThreading/PrismThread.h>
+#include <Framework/MultiThreading/WaveThread.h>
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -16,8 +16,8 @@
 namespace WaveNs
 {
 
-map<PrismThreadId, map<const WaveManagedObject *, const WaveManagedObject *> > ObjectTracker::m_currentlyAllocatedObjectsByThread;
-map<const WaveManagedObject *,PrismThreadId>                                   ObjectTracker::m_currentlyAllocatedObjects;
+map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> > ObjectTracker::m_currentlyAllocatedObjectsByThread;
+map<const WaveManagedObject *,WaveThreadId>                                   ObjectTracker::m_currentlyAllocatedObjects;
 map<const WaveManagedObject *, bool>                                           ObjectTracker::m_currentlyAllocatedObjectsForQueyResults;
 bool                                                                           ObjectTracker::m_trackingObjectsWithBt = false;
 map<const WaveManagedObject *, string>                                         ObjectTracker::m_currentlyAllocatedObjectsWithBt;
@@ -27,8 +27,8 @@ bool ObjectTracker::isAKnownMessage (const WaveManagedObject *pWaveManagedObject
 {
     prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
-    map<const WaveManagedObject *, PrismThreadId>::iterator element    = m_currentlyAllocatedObjects.find (pWaveManagedObject);
-    map<const WaveManagedObject *, PrismThreadId>::iterator endElement = m_currentlyAllocatedObjects.end ();
+    map<const WaveManagedObject *, WaveThreadId>::iterator element    = m_currentlyAllocatedObjects.find (pWaveManagedObject);
+    map<const WaveManagedObject *, WaveThreadId>::iterator endElement = m_currentlyAllocatedObjects.end ();
     bool                                               found      = false;
 
     if (endElement != element)
@@ -69,15 +69,15 @@ void ObjectTracker::addToObjectTracker(const WaveManagedObject *pWaveManagedObje
         }
     }
 
-    PrismThreadId thisThread;
+    WaveThreadId thisThread;
 
     if (true == queryResults)
     {
-        thisThread = (PrismThread::getPrismThreadForServiceId (pWaveObjectManager->getServiceId ()))->getId ();
+        thisThread = (WaveThread::getWaveThreadForServiceId (pWaveObjectManager->getServiceId ()))->getId ();
     }
     else
     {
-        thisThread = PrismThread::getSelf ();
+        thisThread = WaveThread::getSelf ();
     }
 
     m_currentlyAllocatedObjectsByThread[thisThread][pWaveManagedObject] = pWaveManagedObject;
@@ -132,9 +132,9 @@ void ObjectTracker::getObjects (const WaveServiceId &prismServiceId, vector<stri
 {
     m_objectTrackerMutex.lock ();
 
-    PrismThread *pPrismThread = PrismThread::getPrismThreadForServiceId (prismServiceId);
+    WaveThread *pWaveThread = WaveThread::getWaveThreadForServiceId (prismServiceId);
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
         tracePrintf (TRACE_LEVEL_ERROR, true, false, "ObjectTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", prismServiceId);
 
@@ -142,9 +142,9 @@ void ObjectTracker::getObjects (const WaveServiceId &prismServiceId, vector<stri
         return;
     }
 
-    PrismThreadId                                                                            prismThreadId    = (PrismThread::getPrismThreadForServiceId (prismServiceId))->getId ();
-    map<PrismThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadElement    = m_currentlyAllocatedObjectsByThread.find (prismThreadId);
-    map<PrismThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadEndElement = m_currentlyAllocatedObjectsByThread.end  ();
+    WaveThreadId                                                                            prismThreadId    = (WaveThread::getWaveThreadForServiceId (prismServiceId))->getId ();
+    map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadElement    = m_currentlyAllocatedObjectsByThread.find (prismThreadId);
+    map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadEndElement = m_currentlyAllocatedObjectsByThread.end  ();
 
     string btstring = "";
     if (threadEndElement != threadElement)

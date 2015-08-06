@@ -44,18 +44,18 @@ WaveServiceId  FileObjectManager::getWaveServiceId()
         return ((getInstance ())->getServiceId ());
     }
 
-    PrismMessage  *FileObjectManager::createMessageInstance(const UI32 &operationCode)
+    WaveMessage  *FileObjectManager::createMessageInstance(const UI32 &operationCode)
     {
-        PrismMessage *pPrismMessage = NULL;
+        WaveMessage *pWaveMessage = NULL;
         switch (operationCode)
         {
 
             // Currently there is no opcode to be processed at the Global File Service level.
             default :
-                pPrismMessage = NULL;
+                pWaveMessage = NULL;
         }
 
-        return (pPrismMessage);
+        return (pWaveMessage);
     }
 
     WaveManagedObject  *FileObjectManager::createManagedObjectInstance(const string &managedClassName)
@@ -154,7 +154,7 @@ void FileObjectManager::failover (FailoverAsynchronousContext *pFailoverAsynchro
     WaveNs::prismAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);
     WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FileObjectManager::TriggerFailOverCallback), pFailoverAsynchronousContext);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pAbortFTMessage);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pAbortFTMessage);
        
     trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::savePrismConfigurationAtAllLocationsStep : sending to cluster");
     sendToWaveCluster (pWaveSendToClusterContext);
@@ -171,7 +171,7 @@ void FileObjectManager::TriggerFailOverCallback( WaveSendToClusterContext *pWave
     prismAssert (NULL != pFailoverAsynchronousContext, __FILE__, __LINE__);
 
     pFailoverAsynchronousContext->setCompletionStatus(pWaveSendToClusterContext->getCompletionStatus());
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
     
 

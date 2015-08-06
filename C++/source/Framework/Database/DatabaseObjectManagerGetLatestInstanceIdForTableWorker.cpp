@@ -19,7 +19,7 @@ namespace WaveNs
 DatabaseObjectManagerGetLatestInstanceIdForTableWorker::DatabaseObjectManagerGetLatestInstanceIdForTableWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_GET_LATEST_INSTANCE_ID_FOR_TABLE, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerGetLatestInstanceIdForTableWorker::getLatestInstanceIdForTableMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_GET_LATEST_INSTANCE_ID_FOR_TABLE, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerGetLatestInstanceIdForTableWorker::getLatestInstanceIdForTableMessageHandler));
 }
 
 DatabaseObjectManagerGetLatestInstanceIdForTableWorker::~DatabaseObjectManagerGetLatestInstanceIdForTableWorker ()

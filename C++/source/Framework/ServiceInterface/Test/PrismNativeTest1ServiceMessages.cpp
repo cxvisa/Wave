@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 PrismNativeTest1ServiceMessage1::PrismNativeTest1ServiceMessage1 ()
-    : PrismMessage (PrismNativeTest1Service::getWaveServiceId (), WAVE_NATIVE_TEST1_SERVICE_MESSAGE1)
+    : WaveMessage (PrismNativeTest1Service::getWaveServiceId (), WAVE_NATIVE_TEST1_SERVICE_MESSAGE1)
 {
 }
 

@@ -41,8 +41,8 @@ class ObjectTracker
     // Now the data members
 
     private :
-        static map<PrismThreadId, map<const WaveManagedObject *, const WaveManagedObject *> > m_currentlyAllocatedObjectsByThread;
-        static map<const WaveManagedObject *, PrismThreadId>                                  m_currentlyAllocatedObjects;
+        static map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> > m_currentlyAllocatedObjectsByThread;
+        static map<const WaveManagedObject *, WaveThreadId>                                  m_currentlyAllocatedObjects;
         static map<const WaveManagedObject *, bool>                                           m_currentlyAllocatedObjectsForQueyResults;
 
         static bool                                                                           m_trackingObjectsWithBt;

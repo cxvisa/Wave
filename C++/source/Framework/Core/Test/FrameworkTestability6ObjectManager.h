@@ -38,7 +38,7 @@ private :
     void                initialize                                                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
     WaveManagedObject *createManagedObjectInstance                                  (const string &managedClassName);
-    PrismMessage        *createMessageInstance                                          (const UI32 &operationCode);
+    WaveMessage        *createMessageInstance                                          (const UI32 &operationCode);
 
     void                frameworkTestabilityMessage11RequestHandler                 (FrameworkTestabilityMessage11   *pFrameworkTestabilityMessage8);
     void                simpleTransactionTestStep                                   (UpgradePersistenceTestContext *pUpgradePersistenceTestContext);

@@ -20,7 +20,7 @@ namespace WaveNs
 DatabaseObjectManagerExecuteCopySchemaWorker::DatabaseObjectManagerExecuteCopySchemaWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandler));
 
     // This is the order in which the schema tables needs to be copied
     m_tableType.push_back (ORM_DERIVATIONS_TABLE_TYPE);
@@ -32,14 +32,14 @@ DatabaseObjectManagerExecuteCopySchemaWorker::~DatabaseObjectManagerExecuteCopyS
 {
 }
 
-PrismMessage *DatabaseObjectManagerExecuteCopySchemaWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerExecuteCopySchemaWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_EXECUTE_COPY_SCHEMA :
-            pPrismMessage = new DatabaseObjectManagerExecuteCopySchemaMessage ();
+            pWaveMessage = new DatabaseObjectManagerExecuteCopySchemaMessage ();
             break;
 
         default :
@@ -47,7 +47,7 @@ PrismMessage *DatabaseObjectManagerExecuteCopySchemaWorker::createMessageInstanc
             prismAssert (false, __FILE__, __LINE__);
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandler (DatabaseObjectManagerExecuteCopySchemaMessage *pDatabaseObjectManagerExecuteCopySchemaMessage)

@@ -19,7 +19,7 @@ namespace WaveNs
 ClusterLocalSetThisNodeIpAddressWorker::ClusterLocalSetThisNodeIpAddressWorker (ClusterLocalObjectManager *pClusterLocalObjectManager)
     : WaveWorker (pClusterLocalObjectManager)
 {
-    addOperationMap (CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS, reinterpret_cast<PrismMessageHandler> (&ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS, reinterpret_cast<WaveMessageHandler> (&ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressMessageHandler));
 }
 
 ClusterLocalSetThisNodeIpAddressWorker::~ClusterLocalSetThisNodeIpAddressWorker ()
@@ -49,7 +49,7 @@ void ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressValidateStep (P
 {
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressValidateStep : Entering ...");
 
-    ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage = reinterpret_cast<ClusterLocalSetThisNodeIpAddressMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage = reinterpret_cast<ClusterLocalSetThisNodeIpAddressMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     string                                   ipAddress                                = pClusterLocalSetThisNodeIpAddressMessage->getIpAddress ();
     ResourceId                               status                                   = WAVE_MESSAGE_SUCCESS;
 
@@ -65,7 +65,7 @@ void ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdatePrismFram
 {
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdatePrismFrameworkObjectManagerStep : Entering ...");
 
-    ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage = reinterpret_cast<ClusterLocalSetThisNodeIpAddressMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage = reinterpret_cast<ClusterLocalSetThisNodeIpAddressMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     string                                   ipAddress                                = pClusterLocalSetThisNodeIpAddressMessage->getIpAddress ();
 
     PrismFrameworkObjectManager::updateIpAddressForThisLocation (ipAddress);
@@ -77,7 +77,7 @@ void ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveN
 {
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveNodeStep : Entering ...");
 
-    ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage = reinterpret_cast<ClusterLocalSetThisNodeIpAddressMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage = reinterpret_cast<ClusterLocalSetThisNodeIpAddressMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     string                                   ipAddress                                = pClusterLocalSetThisNodeIpAddressMessage->getIpAddress ();
     WaveManagedObject                       *pWaveManagedObject                       = NULL;
     ObjectId                                 thisWaveNodeObjectId                     = FrameworkToolKit::getThisWaveNodeObjectId ();

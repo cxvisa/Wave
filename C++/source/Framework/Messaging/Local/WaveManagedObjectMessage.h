@@ -7,13 +7,13 @@
 #ifndef WAVEMANAGEDOBJECTMESSAGE_H
 #define WAVEMANAGEDOBJECTMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 namespace WaveNs
 {
 
-class WaveManagedObjectMessage : public PrismMessage
+class WaveManagedObjectMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();

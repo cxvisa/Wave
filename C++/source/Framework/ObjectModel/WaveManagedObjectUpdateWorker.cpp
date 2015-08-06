@@ -23,29 +23,29 @@ namespace WaveNs
 WaveManagedObjectUpdateWorker::WaveManagedObjectUpdateWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_UPDATE_MANAGED_OBJECT, reinterpret_cast<PrismMessageHandler> (&WaveManagedObjectUpdateWorker::updateHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_UPDATE_RELATIONSHIP, reinterpret_cast<PrismMessageHandler> (&WaveManagedObjectUpdateWorker::updateRelationshipMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_UPDATE_MANAGED_OBJECT, reinterpret_cast<WaveMessageHandler> (&WaveManagedObjectUpdateWorker::updateHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_UPDATE_RELATIONSHIP, reinterpret_cast<WaveMessageHandler> (&WaveManagedObjectUpdateWorker::updateRelationshipMessageHandler));
 }
 
 WaveManagedObjectUpdateWorker::~WaveManagedObjectUpdateWorker ()
 {
 }
 
-PrismMessage *WaveManagedObjectUpdateWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveManagedObjectUpdateWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_UPDATE_MANAGED_OBJECT :
-            pPrismMessage = new WaveObjectManagerUpdateWaveManagedObjectMessage;
+            pWaveMessage = new WaveObjectManagerUpdateWaveManagedObjectMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveManagedObjectUpdateWorker::updateHandler (WaveObjectManagerUpdateWaveManagedObjectMessage *pWaveObjectManagerUpdateWaveManagedObjectMessage)
@@ -485,7 +485,7 @@ ObjectId WaveManagedObjectUpdateWorker::createAssociatedManagedObject (WaveManag
     vector<string>                                      associatedAttributeValues;
     UI32                                                status;
     WaveObjectManagerCreateWaveManagedObjectMessage    *pCreateMessage              = NULL; 
-    PrismMessage                                       *pAssociatedMessage          = pAssociatedContext->getMessage(); 
+    WaveMessage                                       *pAssociatedMessage          = pAssociatedContext->getMessage(); 
 
     pAssociatedContext->setAttributeVector (pWaveManagedObjectUpdateContext->getAttributes ());
     pAssociatedContext->setAttributeNames (pWaveManagedObjectUpdateContext->getAttributeNames ());
@@ -941,7 +941,7 @@ void WaveManagedObjectUpdateWorker::updateUpdateHardwareStepCallBack (GetHardwar
             {
                 status = pMessage->getCompletionStatus ();
 
-                WaveObjectManagerUpdateWaveManagedObjectMessage *pUpdateMessage = reinterpret_cast<WaveObjectManagerUpdateWaveManagedObjectMessage *> (pWaveManagedObjectUpdateContext->getPPrismMessage());
+                WaveObjectManagerUpdateWaveManagedObjectMessage *pUpdateMessage = reinterpret_cast<WaveObjectManagerUpdateWaveManagedObjectMessage *> (pWaveManagedObjectUpdateContext->getPWaveMessage());
                 pUpdateMessage->setWarningResourceId (pMessage->getWarningResourceId());
 
                 pWaveManagedObjectUpdateContext->setAttributeNamesFromBackend (pMessage->getAttributeNamesFromBackend ());

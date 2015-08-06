@@ -21,28 +21,28 @@ namespace WaveNs
 WaveManagedObjectCreateWorker::WaveManagedObjectCreateWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_MANAGED_OBJECT, reinterpret_cast<PrismMessageHandler> (&WaveManagedObjectCreateWorker::createHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_CREATE_MANAGED_OBJECT, reinterpret_cast<WaveMessageHandler> (&WaveManagedObjectCreateWorker::createHandler));
 }
 
 WaveManagedObjectCreateWorker::~WaveManagedObjectCreateWorker ()
 {
 }
 
-PrismMessage *WaveManagedObjectCreateWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveManagedObjectCreateWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_CREATE_MANAGED_OBJECT :
-            pPrismMessage = new WaveObjectManagerCreateWaveManagedObjectMessage;
+            pWaveMessage = new WaveObjectManagerCreateWaveManagedObjectMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveManagedObjectCreateWorker::createHandler (WaveObjectManagerCreateWaveManagedObjectMessage *pWaveObjectManagerCreateWaveManagedObjectMessage)
@@ -539,7 +539,7 @@ ObjectId WaveManagedObjectCreateWorker::createAssociatedManagedObject (WaveManag
     vector<string>                                      associatedAttributeValues;
     UI32                                                status;
     WaveObjectManagerCreateWaveManagedObjectMessage    *pCreateMessage              = NULL; 
-    PrismMessage                                       *pAssociatedMessage          = pAssociatedContext->getMessage(); 
+    WaveMessage                                       *pAssociatedMessage          = pAssociatedContext->getMessage(); 
 
     pAssociatedContext->setAttributeVector (pWaveManagedObjectCreateContext->getAttributes ());
     pAssociatedContext->setAttributeNames (pWaveManagedObjectCreateContext->getAttributeNames ());
@@ -716,7 +716,7 @@ void WaveManagedObjectCreateWorker::createUpdateManagedObjectStep (WaveManagedOb
         }
         else
         {
-            WaveObjectManagerCreateWaveManagedObjectMessage *pMessage = dynamic_cast<WaveObjectManagerCreateWaveManagedObjectMessage *> (pWaveManagedObjectCreateContext->getPPrismMessage()); 
+            WaveObjectManagerCreateWaveManagedObjectMessage *pMessage = dynamic_cast<WaveObjectManagerCreateWaveManagedObjectMessage *> (pWaveManagedObjectCreateContext->getPWaveMessage()); 
             WaveManagedObjectAsynchronousCreateContext      *pContext = dynamic_cast<WaveManagedObjectAsynchronousCreateContext *> (pWaveManagedObjectCreateContext->getPPrismAsynchronousContext ());
 
             /* Save the object Id in the message to be sent to caller */
@@ -1000,7 +1000,7 @@ void WaveManagedObjectCreateWorker::createUpdateHardwareStepCallBack (GetHardwar
             {
                 status = pMessage->getCompletionStatus ();
                 
-                WaveObjectManagerCreateWaveManagedObjectMessage *pCreateMessage = reinterpret_cast<WaveObjectManagerCreateWaveManagedObjectMessage *> (pWaveManagedObjectCreateContext->getPPrismMessage());
+                WaveObjectManagerCreateWaveManagedObjectMessage *pCreateMessage = reinterpret_cast<WaveObjectManagerCreateWaveManagedObjectMessage *> (pWaveManagedObjectCreateContext->getPWaveMessage());
                 if (pCreateMessage != NULL)
                 {
                     pCreateMessage->setWarningResourceId (pMessage->getWarningResourceId());   

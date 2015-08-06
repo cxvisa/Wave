@@ -24,7 +24,7 @@ FrameworkTestability5ObjectManager::FrameworkTestability5ObjectManager ()
     waveTestManagedObject9.setupOrm ();
     addManagedClass (WaveTestManagedObject9::getClassName ());
     
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE10, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability5ObjectManager::frameworkTestability10MessageHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE10, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability5ObjectManager::frameworkTestability10MessageHandler));
 }
 
 FrameworkTestability5ObjectManager *FrameworkTestability5ObjectManager::getInstance ()
@@ -49,21 +49,21 @@ WaveServiceId FrameworkTestability5ObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-PrismMessage *FrameworkTestability5ObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *FrameworkTestability5ObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_TESTABILITY_MESSAGE10 :
-            pPrismMessage = new FrameworkTestabilityMessage10;
+            pWaveMessage = new FrameworkTestabilityMessage10;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *FrameworkTestability5ObjectManager::createManagedObjectInstance (const string &managedClassName)

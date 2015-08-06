@@ -29,7 +29,7 @@ class ClusterLocalSetHardwareSynchronizationStateWorker : public WaveWorker
     private :
                 void            setHardwareSynchronizationStateMessageHandler       (ClusterLocalSetHardwareSynchronizationStateMessage *pClusterLocalSetHardwareSynchronizationStateMessage);
                 void            updateWaveNodeManagedObjectStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                PrismMessage   *createMessageInstance                               (const UI32 &operationCode);
+                WaveMessage   *createMessageInstance                               (const UI32 &operationCode);
 
     protected :
     public :

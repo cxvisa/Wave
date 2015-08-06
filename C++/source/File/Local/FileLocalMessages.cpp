@@ -13,14 +13,14 @@ namespace WaveNs
 {
 
 PushFileToHaPeerMessage::PushFileToHaPeerMessage ()
-    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILETOHAPEER),
+    : WaveMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILETOHAPEER),
       m_serviceVersion      (sFILESERVICEVERSION),
       m_fileSize            (0)
 {
 }
 
 PushFileToHaPeerMessage::PushFileToHaPeerMessage (const UI32 &serviceVersion, const string &transferHandle, const string &sourceFileName, const string &destinationFileName, const UI32 &fileSize)
-    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILETOHAPEER),
+    : WaveMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILETOHAPEER),
       m_serviceVersion      (serviceVersion),
       m_sourceFileName      (sourceFileName),
       m_destinationFileName (destinationFileName),
@@ -35,7 +35,7 @@ PushFileToHaPeerMessage::~PushFileToHaPeerMessage ()
 
 void PushFileToHaPeerMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeUI32     (&m_serviceVersion,     "ServiceVersion"));
     addSerializableAttribute (new AttributeString   (&m_sourceFileName,     "SourceFileName"));        
@@ -95,14 +95,14 @@ string PushFileToHaPeerMessage::getTransferHandle () const
 }
 
 FileDeleteRequestMessage::FileDeleteRequestMessage ()
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
       m_destinationFileName     (""),
       m_fileTransferFlag        (0)  
 {
 }
 
 FileDeleteRequestMessage::FileDeleteRequestMessage (const string &DestinationFileName, vector<UI32> &DestinationLocationIdList)
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
       m_destinationFileName      (DestinationFileName),
       m_vecDestinationLocationId (DestinationLocationIdList),
       m_vecLocationToReceiveNextMessage (DestinationLocationIdList),
@@ -111,7 +111,7 @@ FileDeleteRequestMessage::FileDeleteRequestMessage (const string &DestinationFil
 }
 
 FileDeleteRequestMessage::FileDeleteRequestMessage (const string &DestinationFileName, vector<UI32> &DestinationLocationIdList, const UI32 &fileTransferFlag)
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCREQUESTDELETEFILE),
       m_destinationFileName      (DestinationFileName),
       m_vecDestinationLocationId (DestinationLocationIdList),
       m_vecLocationToReceiveNextMessage (DestinationLocationIdList),
@@ -125,7 +125,7 @@ FileDeleteRequestMessage::~FileDeleteRequestMessage ()
 
 void FileDeleteRequestMessage::setupAttributesForSerialization()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
     addSerializableAttribute (new AttributeString(&m_destinationFileName,"DestinationFileName"));
     addSerializableAttribute (new AttributeUI32(&m_fileTransferFlag,"FileTransferFlag"));
     addSerializableAttribute (new AttributeResourceIdVector(&m_ResponseCodeList, "ResponseCodeList"));
@@ -201,21 +201,21 @@ void FileDeleteRequestMessage::setResponseCodeList(vector<ResourceId>  &response
 }
 
 FileDeleteFileMessage::FileDeleteFileMessage ()
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE ),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE ),
       m_destinationFileName     (""),
       m_fileTransferFlag        (0)    
 {
 }
 
 FileDeleteFileMessage::FileDeleteFileMessage (const string &DestinationFileName)
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE),
       m_destinationFileName     (DestinationFileName),
       m_fileTransferFlag        (0)
 {
 }
 
 FileDeleteFileMessage::FileDeleteFileMessage (const string &DestinationFileName, const UI32 &fileTransferFlag) 
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILE),
       m_destinationFileName     (DestinationFileName),
       m_fileTransferFlag        (fileTransferFlag)
 {
@@ -227,7 +227,7 @@ FileDeleteFileMessage::~FileDeleteFileMessage ()
 
 void FileDeleteFileMessage::setupAttributesForSerialization()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
     addSerializableAttribute (new AttributeString(&m_destinationFileName,"DestinationFileName"));
     addSerializableAttribute (new AttributeUI32(&m_fileTransferFlag,"FileTransferFlag"));    
 }
@@ -253,20 +253,20 @@ UI32 FileDeleteFileMessage::getFileTransferFlag() const
 }
 
 FileDeleteFileToHaPeerMessage::FileDeleteFileToHaPeerMessage ()
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
       m_destinationFileName     (""),
       m_fileTransferFlag        (0)  
 {
 }
 
 FileDeleteFileToHaPeerMessage::FileDeleteFileToHaPeerMessage (const string &DestinationFileName)
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
       m_destinationFileName      (DestinationFileName)
 {
 }
 
 FileDeleteFileToHaPeerMessage::FileDeleteFileToHaPeerMessage (const string &DestinationFileName, const UI32 &fileTransferFlag)
-    : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
+    : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCDELETEFILETOHAPEER ),
       m_destinationFileName     (DestinationFileName),
       m_fileTransferFlag        (fileTransferFlag)
 {
@@ -278,7 +278,7 @@ FileDeleteFileToHaPeerMessage::~FileDeleteFileToHaPeerMessage()
 
 void FileDeleteFileToHaPeerMessage::setupAttributesForSerialization()
 {   
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
     addSerializableAttribute (new AttributeString(&m_destinationFileName,"DestinationFileName"));
     addSerializableAttribute (new AttributeUI32(&m_fileTransferFlag,"FileTransferFlag"));
 }

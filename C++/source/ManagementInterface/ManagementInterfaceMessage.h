@@ -7,13 +7,13 @@
 #ifndef MANAGEMENTINTERFACEMESSAGE_H
 #define MANAGEMENTINTERFACEMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 //#include "Framework/Attributes/AttributesMap.h"
 
 namespace WaveNs
 {
 
-class ManagementInterfaceMessage : public PrismMessage
+class ManagementInterfaceMessage : public WaveMessage
 {
     private :
     protected :
@@ -52,7 +52,7 @@ class ManagementInterfaceMessage : public PrismMessage
                 string        getTtyName                    () const;
                 void          setTtyName                    (const string &ttyName);
 
-        virtual PrismMessage *clone                         ();
+        virtual WaveMessage *clone                         ();
 
     // Now the data members
 

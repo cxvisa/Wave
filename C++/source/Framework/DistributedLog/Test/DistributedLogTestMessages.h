@@ -7,13 +7,13 @@
 #ifndef DISTRIBUTEDLOGTESTMESSAGES_H
 #define DISTRIBUTEDLOGTESTMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 
 namespace WaveNs
 {
 
-class DistributedLogInvokeAddLogApiMessage : public PrismMessage
+class DistributedLogInvokeAddLogApiMessage : public WaveMessage
 {
     private:
                 void            setupAttributesForSerialization         ();

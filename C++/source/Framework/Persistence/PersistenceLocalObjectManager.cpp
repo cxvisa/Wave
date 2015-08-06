@@ -50,18 +50,18 @@ UpdateGlobalConfigInKernelHandlerFunction PersistenceLocalObjectManager::m_updat
 PersistenceLocalObjectManager::PersistenceLocalObjectManager ()
     : WaveLocalObjectManager (getServiceName ())
 {
-    addOperationMap (PERSISTENCE_SET_STARTUP_FILE,   reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::setStartupFileMessageHandler));
-    addOperationMap (PERSISTENCE_COPY_DEFAULT_CLUSTER,   reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::copyDefaultClusterMessageHandler));
-    addOperationMap (PERSISTENCE_SAVE_PRISM_CONFIGURATION,   reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::savePrismConfigurationMessageHandler));
-    addOperationMap (PERSISTENCE_COPY_SCHEMA, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::copySchemaMessageHandler));
-    addOperationMap (PERSISTENCE_SET_CONFIGURATION_VALID, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::setConfigurationValidMessageHandler));
-    addOperationMap (PERSISTENCE_DEBUG_SCHEMA_CHANGE, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::debugSchemaChangeMessageHandler));
-    addOperationMap (PERSISTENCE_LOCAL_OBJECT_MANAGER_UPDATE_INSTANCE_ID, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::updateInstanceIdMessageHandler));
-    addOperationMap (PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::executeTransactionMessageHandler));
-    addOperationMap (PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::enableTransactionMessageHandler));
-    addOperationMap (PERSISTENCE_SET_LIVE_SYNC_ENABLE, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::setLiveSyncEnableMessageHandler));
-    addOperationMap (PERSISTENCE_GET_LIVE_SYNC_ENABLE, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::getLiveSyncEnableMessageHandler));
-    addOperationMap (PERSISTENCE_PUSH_CONFIG_TO_KERNEL, reinterpret_cast<PrismMessageHandler> (&PersistenceLocalObjectManager::pushConfigToKernelMessageHandler));
+    addOperationMap (PERSISTENCE_SET_STARTUP_FILE,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::setStartupFileMessageHandler));
+    addOperationMap (PERSISTENCE_COPY_DEFAULT_CLUSTER,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::copyDefaultClusterMessageHandler));
+    addOperationMap (PERSISTENCE_SAVE_PRISM_CONFIGURATION,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::savePrismConfigurationMessageHandler));
+    addOperationMap (PERSISTENCE_COPY_SCHEMA, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::copySchemaMessageHandler));
+    addOperationMap (PERSISTENCE_SET_CONFIGURATION_VALID, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::setConfigurationValidMessageHandler));
+    addOperationMap (PERSISTENCE_DEBUG_SCHEMA_CHANGE, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::debugSchemaChangeMessageHandler));
+    addOperationMap (PERSISTENCE_LOCAL_OBJECT_MANAGER_UPDATE_INSTANCE_ID, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::updateInstanceIdMessageHandler));
+    addOperationMap (PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::executeTransactionMessageHandler));
+    addOperationMap (PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::enableTransactionMessageHandler));
+    addOperationMap (PERSISTENCE_SET_LIVE_SYNC_ENABLE, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::setLiveSyncEnableMessageHandler));
+    addOperationMap (PERSISTENCE_GET_LIVE_SYNC_ENABLE, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::getLiveSyncEnableMessageHandler));
+    addOperationMap (PERSISTENCE_PUSH_CONFIG_TO_KERNEL, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::pushConfigToKernelMessageHandler));
     addDebugFunction ((ShellCmdFunction) (&ManagedObjectSchemaInfoRepository::printMoRepositoryDebugShellWrapper), "printmorepository");
     addDebugFunction ((ShellCmdFunction) (&ManagedObjectSchemaInfoRepository::removeSchemaObjectDebugShellWrapper), "removeschemaobject");
 
@@ -99,65 +99,65 @@ string PersistenceLocalObjectManager::getServiceName ()
     return ("Persistence Local Object Manager");
 }
 
-PrismMessage *PersistenceLocalObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PersistenceLocalObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case PERSISTENCE_SET_STARTUP_FILE :
-            pPrismMessage = new PersistenceLocalObjectManagerSetStartupFileMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerSetStartupFileMessage ();
             break;
 
         case PERSISTENCE_SAVE_PRISM_CONFIGURATION :
-            pPrismMessage = new PersistenceLocalObjectManagerSavePrismConfigurationMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerSavePrismConfigurationMessage ();
             break;
 
         case PERSISTENCE_COPY_SCHEMA :
-            pPrismMessage = new PersistenceLocalObjectManagerCopySchemaMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerCopySchemaMessage ();
             break;
 
         case PERSISTENCE_COPY_DEFAULT_CLUSTER :
-            pPrismMessage = new PersistenceLocalObjectManagerCopyDefaultClusterMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerCopyDefaultClusterMessage ();
             break;
 
         case PERSISTENCE_SET_CONFIGURATION_VALID :
-            pPrismMessage = new PersistenceLocalObjectManagerSetConfigurationValidMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerSetConfigurationValidMessage ();
             break;
 
         case PERSISTENCE_DEBUG_SCHEMA_CHANGE :
-            pPrismMessage = new PersistenceLocalObjectManagerDebugSchemaChangeMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerDebugSchemaChangeMessage ();
             break;
 
         case PERSISTENCE_LOCAL_OBJECT_MANAGER_UPDATE_INSTANCE_ID :
-            pPrismMessage = new PersistenceLocalObjectManagerUpdateInstanceIdMesssage ();
+            pWaveMessage = new PersistenceLocalObjectManagerUpdateInstanceIdMesssage ();
             break;
 
         case PERSISTENCE_LOCAL_OBJECT_MANAGER_EXECUTE_TRANSACTION :
-            pPrismMessage = new PersistenceLocalObjectManagerExecuteTransactionMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerExecuteTransactionMessage ();
             break;
 
         case PERSISTENCE_LOCAL_OBJECT_MANAGER_ENABLE_TRANSACTION :
-            pPrismMessage = new PersistenceLocalObjectManagerEnableTransactionMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerEnableTransactionMessage ();
             break;
 
         case PERSISTENCE_SET_LIVE_SYNC_ENABLE :
-            pPrismMessage = new PersistenceLocalObjectManagerSetLiveSyncEnableMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerSetLiveSyncEnableMessage ();
             break;
 
         case PERSISTENCE_GET_LIVE_SYNC_ENABLE :
-            pPrismMessage = new PersistenceLocalObjectManagerGetLiveSyncEnableMessage ();
+            pWaveMessage = new PersistenceLocalObjectManagerGetLiveSyncEnableMessage ();
             break;
 
         case PERSISTENCE_PUSH_CONFIG_TO_KERNEL :
-            pPrismMessage = new PersistenceLocalObjectManagerPushConfigToKernelMessaage ();
+            pWaveMessage = new PersistenceLocalObjectManagerPushConfigToKernelMessaage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 PrismEvent *PersistenceLocalObjectManager::createEventInstance (const UI32 &eventOperationCode)
@@ -543,7 +543,7 @@ void PersistenceLocalObjectManager::sendTransactionToDatabase (PersistenceLocalE
     bool       isPrepare     = pPersistenceLocalExecuteTransactionContext->getIsPrepare ();
     bool       isConfigurationChange = pPersistenceLocalExecuteTransactionContext->getIsConfigurationChange ();
 
-    PersistenceLocalObjectManagerExecuteTransactionMessage *pPersistenceLocalObjectManagerExecuteTransactionMessage = reinterpret_cast<PersistenceLocalObjectManagerExecuteTransactionMessage *> (pPersistenceLocalExecuteTransactionContext->getPPrismMessage ());
+    PersistenceLocalObjectManagerExecuteTransactionMessage *pPersistenceLocalObjectManagerExecuteTransactionMessage = reinterpret_cast<PersistenceLocalObjectManagerExecuteTransactionMessage *> (pPersistenceLocalExecuteTransactionContext->getPWaveMessage ());
 
     const string &sqlString = pPersistenceLocalObjectManagerExecuteTransactionMessage->getSql ();
 
@@ -554,7 +554,7 @@ void PersistenceLocalObjectManager::sendTransactionToDatabase (PersistenceLocalE
     pDatabaseObjectManagerExecuteTransactionMessage->setIsCommit (isCommit);
     pDatabaseObjectManagerExecuteTransactionMessage->setIsPrepare (isPrepare);
 
-    status = send (pDatabaseObjectManagerExecuteTransactionMessage, reinterpret_cast<PrismMessageResponseHandler        > (&PersistenceLocalObjectManager::executeTransactionSendRequestCallback), pPersistenceLocalExecuteTransactionContext);
+    status = send (pDatabaseObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler        > (&PersistenceLocalObjectManager::executeTransactionSendRequestCallback), pPersistenceLocalExecuteTransactionContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -579,7 +579,7 @@ void PersistenceLocalObjectManager::sendTransactionToDatabase (PersistenceLocalE
         pDatabaseObjectManagerExecuteTransactionMessage2->setIsCommit (isCommit);
         pDatabaseObjectManagerExecuteTransactionMessage2->setIsPrepare (isPrepare);
 
-        status = send (pDatabaseObjectManagerExecuteTransactionMessage2, reinterpret_cast<PrismMessageResponseHandler> (&PersistenceLocalObjectManager::executeTransactionSendRequestStandbyCallback), pPersistenceLocalExecuteTransactionContext, 0, haPeerLocationId);
+        status = send (pDatabaseObjectManagerExecuteTransactionMessage2, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceLocalObjectManager::executeTransactionSendRequestStandbyCallback), pPersistenceLocalExecuteTransactionContext, 0, haPeerLocationId);
 
         if (status != WAVE_MESSAGE_SUCCESS)
         {
@@ -744,7 +744,7 @@ void PersistenceLocalObjectManager::handleTransactionResult (PersistenceLocalExe
          status = activeResult;
     }
 
-    PersistenceLocalObjectManagerExecuteTransactionMessage *pPersistenceLocalObjectManagerExecuteTransactionMessage = reinterpret_cast<PersistenceLocalObjectManagerExecuteTransactionMessage *> (pPersistenceLocalExecuteTransactionContext->getPPrismMessage ());
+    PersistenceLocalObjectManagerExecuteTransactionMessage *pPersistenceLocalObjectManagerExecuteTransactionMessage = reinterpret_cast<PersistenceLocalObjectManagerExecuteTransactionMessage *> (pPersistenceLocalExecuteTransactionContext->getPWaveMessage ());
 
     pPersistenceLocalObjectManagerExecuteTransactionMessage->setSql ("");
 

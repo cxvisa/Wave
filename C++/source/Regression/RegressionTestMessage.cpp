@@ -10,12 +10,12 @@ namespace WaveNs
 {
 
 RegressionTestMessage::RegressionTestMessage ()
-    : PrismMessage (0, WAVE_OBJECT_MANAGER_TEST)
+    : WaveMessage (0, WAVE_OBJECT_MANAGER_TEST)
 {
 }
 
 RegressionTestMessage::RegressionTestMessage (WaveServiceId serviceCode)
-    : PrismMessage (serviceCode, WAVE_OBJECT_MANAGER_TEST)
+    : WaveMessage (serviceCode, WAVE_OBJECT_MANAGER_TEST)
 {
 }
 
@@ -25,7 +25,7 @@ RegressionTestMessage::~RegressionTestMessage ()
 
 void RegressionTestMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 }

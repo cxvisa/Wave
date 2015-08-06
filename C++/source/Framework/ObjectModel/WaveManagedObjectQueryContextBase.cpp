@@ -1241,7 +1241,7 @@ bool WaveManagedObjectQueryContextBase::getSkipPropagatedPartitionFiltersFlag ()
 
 void WaveManagedObjectQueryContextBase::setPartitionFilter (const string &partitionName, const LocationId &partitionLocationId)
 {
-    WaveObjectManager *pWaveObjectManager = PrismThread::getWaveObjectManagerForCurrentThread ();
+    WaveObjectManager *pWaveObjectManager = WaveThread::getWaveObjectManagerForCurrentThread ();
     prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     // Object Id for partition is obtained by sending message to MultiPartitionObjectManager.

@@ -53,8 +53,8 @@ WaveUserInterfaceObjectManager::WaveUserInterfaceObjectManager ()
 
     addDebugFunction ((ShellCmdFunction) (&WaveClientDebug::debugConnect), "connecttoserver");
     addDebugFunction ((ShellCmdFunction) (&WaveClientDebug::debugClose),   "closeserver");
-    addOperationMap (WAVE_UPDATE_CLIENT_STATUS, reinterpret_cast<PrismMessageHandler> (&WaveUserInterfaceObjectManager::updateClientStatusFromServerMessageHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler));
+    addOperationMap (WAVE_UPDATE_CLIENT_STATUS, reinterpret_cast<WaveMessageHandler> (&WaveUserInterfaceObjectManager::updateClientStatusFromServerMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler));
 
     // restrictMessageHistoryLogging                (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
     restrictMessageHistoryLogging                (false, false, false);
@@ -85,39 +85,39 @@ string WaveUserInterfaceObjectManager::getPrismServiceName ()
     return ("Wave User Interface");
 }
 
-PrismMessage *WaveUserInterfaceObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveUserInterfaceObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
 
         case UNIFIEDCLIENTUPDATE:
-            pPrismMessage = new UnifiedClientUpdateMessage ();
+            pWaveMessage = new UnifiedClientUpdateMessage ();
             break;
         case UNIFIEDCLIENTCREATE:
-            pPrismMessage = new UnifiedClientCreateMessage ();
+            pWaveMessage = new UnifiedClientCreateMessage ();
             break;
         case UNIFIEDCLIENTDELETE:
-            pPrismMessage = new UnifiedClientDeleteMessage ();
+            pWaveMessage = new UnifiedClientDeleteMessage ();
             break;
         case UNIFIEDCLIENTPOSTBOOT:
-            pPrismMessage = new UnifiedClientPostbootMessage ();
+            pWaveMessage = new UnifiedClientPostbootMessage ();
             break;
         case  UNIFIEDCLIENTNOTIFY:
-            pPrismMessage = new UnifiedClientNotifyMessage ();
+            pWaveMessage = new UnifiedClientNotifyMessage ();
             break;
         case UNIFIEDCLIENTGETDATA:
-            pPrismMessage = new UnifiedClientGetDataFromClientMessage();
+            pWaveMessage = new UnifiedClientGetDataFromClientMessage();
             break;
         case WAVE_UPDATE_CLIENT_STATUS:
-             pPrismMessage = new WaveUpdateClientStatusMessage( );
+             pWaveMessage = new WaveUpdateClientStatusMessage( );
              break;
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    if (!pPrismMessage)
+    if (!pWaveMessage)
     {
         if (NULL == m_managementInterfaceMessageInstantiatorForClient)
         {
@@ -128,18 +128,18 @@ PrismMessage *WaveUserInterfaceObjectManager::createMessageInstance (const UI32 
         }
         else
         {
-            pPrismMessage = (*m_managementInterfaceMessageInstantiatorForClient) (operationCode);
+            pWaveMessage = (*m_managementInterfaceMessageInstantiatorForClient) (operationCode);
 
-            if (NULL == pPrismMessage)
+            if (NULL == pWaveMessage)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveUserInterfaceObjectManager::createMessageInstance : User defined Management Interface Message Instantitor returned NULL.");
 
-                prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+                prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             }
         }
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveUserInterfaceObjectManager::setManagementInterfaceMessageHandlerForClient (ManagementInterfaceMessageHandlerForClient managementInterfaceMessageHandlerForClient)
@@ -202,7 +202,7 @@ void WaveUserInterfaceObjectManager::replyToWaveServer (ManagementInterfaceMessa
     (WaveUserInterfaceObjectManager::getInstance ())->reply (pManagementInterfaceMessage);
 }
 
-WaveMessageStatus WaveUserInterfaceObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pPrismMessageSender)
+WaveMessageStatus WaveUserInterfaceObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
 {
     pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId (waveServerId);
@@ -210,7 +210,7 @@ WaveMessageStatus WaveUserInterfaceObjectManager::sendToWaveServer (const UI32 &
 
     addMessageCallbackHandlerAtClient (pManagementInterfaceMessage->getMessageId (), messageCallback);
 
-    return (send (pManagementInterfaceMessage, reinterpret_cast<PrismMessageResponseHandler> (&WaveUserInterfaceObjectManager::sendToWaveServerCallback), pInputContext, timeOutInMilliSeconds, locationId, pPrismMessageSender));
+    return (send (pManagementInterfaceMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveUserInterfaceObjectManager::sendToWaveServerCallback), pInputContext, timeOutInMilliSeconds, locationId, pWaveMessageSender));
 }
 
 void WaveUserInterfaceObjectManager::sendToWaveServerCallback (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, void *pInputContext)

@@ -10,14 +10,14 @@
 #ifndef PERSISTENCELOCALOBJECTMANAGERCOPYDEFAULTCLUSTERMESSAGE_H
 #define PERSISTENCELOCALOBJECTMANAGERCOPYDEFAULTCLUSTERMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace std;
 
 namespace WaveNs
 {
 
-    class PersistenceLocalObjectManagerCopyDefaultClusterMessage : public PrismMessage
+    class PersistenceLocalObjectManagerCopyDefaultClusterMessage : public WaveMessage
     { 
 
         public :

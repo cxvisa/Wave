@@ -18,7 +18,7 @@ class MultiPartitionSynchronousLinearSequencerContext : public PrismSynchronousL
     private:
     protected:
     public:
-                 MultiPartitionSynchronousLinearSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                 MultiPartitionSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~MultiPartitionSynchronousLinearSequencerContext (void); 
 
         void     setWavePartitionManagedObject(WavePartitionManagedObject *pObject);

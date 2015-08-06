@@ -21,7 +21,7 @@ class PrismFrameworkConfigurationContext : public PrismSynchronousLinearSequence
     private :
     protected :
     public :
-                                     PrismFrameworkConfigurationContext     (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &prismFrameworkConfigurationFileName);
+                                     PrismFrameworkConfigurationContext     (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &prismFrameworkConfigurationFileName);
                                     ~PrismFrameworkConfigurationContext     ();
 
         string                      &getPrismFrameworkConfigurationFileName ();

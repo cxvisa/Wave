@@ -22,7 +22,7 @@ namespace WaveNs
     {
         private:
                MultiPartitionLocalObjectManager                                 ();
-               PrismMessage      *createMessageInstance                       (const UI32 &operationCode);
+               WaveMessage      *createMessageInstance                       (const UI32 &operationCode);
                void               tenancyDeleteMessageHandler                 (MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage);
                         
                // More private methods.

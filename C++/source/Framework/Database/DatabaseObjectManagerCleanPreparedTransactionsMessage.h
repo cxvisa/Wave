@@ -7,12 +7,12 @@
 #ifndef DATABASEOBJECTMANAGERCLEANPREPAREDTRANSACTIONSMESSAGE_H
 #define DATABASEOBJECTMANAGERCLEANPREPAREDTRANSACTIONSMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class DatabaseObjectManagerCleanPreparedTransactionsMessage : public PrismMessage
+class DatabaseObjectManagerCleanPreparedTransactionsMessage : public WaveMessage
 {
     private :
     protected :

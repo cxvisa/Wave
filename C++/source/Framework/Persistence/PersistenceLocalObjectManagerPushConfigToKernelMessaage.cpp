@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerPushConfigToKernelMessaage::PersistenceLocalObjectManagerPushConfigToKernelMessaage (const string &globalConfigs)
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL),
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL),
       m_globalConfigs (globalConfigs)
 {
 }
 
 PersistenceLocalObjectManagerPushConfigToKernelMessaage::PersistenceLocalObjectManagerPushConfigToKernelMessaage()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL)
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_PUSH_CONFIG_TO_KERNEL)
 {
 }
 
@@ -28,7 +28,7 @@ PersistenceLocalObjectManagerPushConfigToKernelMessaage::~PersistenceLocalObject
 
 void PersistenceLocalObjectManagerPushConfigToKernelMessaage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeString (&m_globalConfigs, "globalConfigs"));
 }

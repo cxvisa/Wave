@@ -15,7 +15,7 @@ namespace WaveNs
 WaveDeliverBrokerPublishMessageWorker::WaveDeliverBrokerPublishMessageWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_DELIVER_WAVE_BROKER_PUBLISH_MESSAGE, reinterpret_cast<PrismMessageHandler> (&WaveDeliverBrokerPublishMessageWorker::deliverBrokerPublishMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_DELIVER_WAVE_BROKER_PUBLISH_MESSAGE, reinterpret_cast<WaveMessageHandler> (&WaveDeliverBrokerPublishMessageWorker::deliverBrokerPublishMessageHandler));
 }
 
 WaveDeliverBrokerPublishMessageWorker::~WaveDeliverBrokerPublishMessageWorker ()

@@ -19,7 +19,7 @@ class WaveSystemManagementGetPossibleCompletionsMessage;
 class WaveSystemManagementGetPossibleCompletionsWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage *createMessageInstance (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance (const UI32 &operationCode);
 
     protected :
     public :

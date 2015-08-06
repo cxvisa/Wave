@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-LoadOperationalDataSynchronousContext::LoadOperationalDataSynchronousContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismSynchronousLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+LoadOperationalDataSynchronousContext::LoadOperationalDataSynchronousContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismSynchronousLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_pWaveManagedObject                   (NULL)
 {
 }

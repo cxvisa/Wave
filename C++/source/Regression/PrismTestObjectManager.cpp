@@ -13,9 +13,9 @@ namespace WaveNs
 PrismTestObjectManager::PrismTestObjectManager (const string &prismTestObjectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : WaveLocalObjectManager (prismTestObjectManagerName, stackSize, pCpuAffinityVector)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_TEST,                   reinterpret_cast<PrismMessageHandler> (&PrismTestObjectManager::testRequestHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION, reinterpret_cast<PrismMessageHandler> (&PrismTestObjectManager::prepareForRegressionRequestHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2, reinterpret_cast<PrismMessageHandler> (&PrismTestObjectManager::prepareForRegressionRequestHandler2));
+    addOperationMap (WAVE_OBJECT_MANAGER_TEST,                   reinterpret_cast<WaveMessageHandler> (&PrismTestObjectManager::testRequestHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION, reinterpret_cast<WaveMessageHandler> (&PrismTestObjectManager::prepareForRegressionRequestHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2, reinterpret_cast<WaveMessageHandler> (&PrismTestObjectManager::prepareForRegressionRequestHandler2));
 
     RegressionTestObjectManager::addToRegressionShell (getServiceId (), true);
 }
@@ -56,29 +56,29 @@ void PrismTestObjectManager::prepareForRegressionRequestHandler2 (RegressionPrep
     reply (pMessage);
 }
 
-PrismMessage *PrismTestObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *PrismTestObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_TEST :
-            pPrismMessage = new RegressionTestMessage;
+            pWaveMessage = new RegressionTestMessage;
             break;
 
         case WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION :
-            pPrismMessage = new RegressionPrepareMessage;
+            pWaveMessage = new RegressionPrepareMessage;
             break;
 
         case WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2 :
-            pPrismMessage = new RegressionPrepareMessage2;
+            pWaveMessage = new RegressionPrepareMessage2;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 string PrismTestObjectManager::getTestParameterValue (const string &inputStringKey)

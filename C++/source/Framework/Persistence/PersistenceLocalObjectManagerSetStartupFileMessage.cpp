@@ -13,14 +13,14 @@ namespace WaveNs
 {
 
 PersistenceLocalObjectManagerSetStartupFileMessage::PersistenceLocalObjectManagerSetStartupFileMessage (const ResourceId &startupFileType, const string &fileName)
-    : PrismMessage      (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_STARTUP_FILE),
+    : WaveMessage      (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_STARTUP_FILE),
       m_startupFileType (startupFileType),
       m_fileName        (fileName)
 {
 }
 
 PersistenceLocalObjectManagerSetStartupFileMessage::PersistenceLocalObjectManagerSetStartupFileMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_STARTUP_FILE),
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_STARTUP_FILE),
       m_startupFileType(0)
 {
 }
@@ -31,7 +31,7 @@ PersistenceLocalObjectManagerSetStartupFileMessage::~PersistenceLocalObjectManag
 
 void PersistenceLocalObjectManagerSetStartupFileMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString  (&m_fileName,        "fileName"));
      addSerializableAttribute (new AttributeEnum    (&m_startupFileType, "startupFileType"));

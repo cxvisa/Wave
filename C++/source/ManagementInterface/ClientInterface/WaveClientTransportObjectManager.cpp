@@ -134,7 +134,7 @@ WaveClientTransportObjectManager::WaveClientTransportObjectManager ()
     removeOperationMap (WAVE_OBJECT_MANAGER_GET_DEBUG_INFORMATION);
     removeOperationMap (WAVE_OBJECT_MANAGER_RESET_DEBUG_INFORMATION);
 
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&WaveClientTransportObjectManager::managementInterfaceMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&WaveClientTransportObjectManager::managementInterfaceMessageHandler));
 
     // restrictMessageHistoryLogging                (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
     restrictMessageHistoryLogging                (false, false, false);
@@ -178,7 +178,7 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
 
     trace (TRACE_LEVEL_DEVEL, "WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep : Starting ...");
 
-    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__ );
 
@@ -262,7 +262,7 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
 
     unlockAccess1 ();
 
-    pPrismLinearSequencerContext->setPPrismMessage (NULL);
+    pPrismLinearSequencerContext->setPWaveMessage (NULL);
     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
@@ -301,7 +301,7 @@ WaveMessageStatus WaveClientTransportObjectManager::sendToBeUsedByReceiverThread
     if (false == (pManagementInterfaceMessage->getIsOneWayMessage ()))
     {
         status = send (pManagementInterfaceMessage,
-                    reinterpret_cast<PrismMessageResponseHandler> (&WaveClientTransportObjectManager::callbackForSendUsedByReceiverThreads),
+                    reinterpret_cast<WaveMessageResponseHandler> (&WaveClientTransportObjectManager::callbackForSendUsedByReceiverThreads),
                     NULL);
     }
     else
@@ -422,15 +422,15 @@ void WaveClientTransportObjectManager::replyToBeUsedByReceiverThreads (UI32 pris
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    PrismMessage *pPrismMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "WaveClientTransportObjectManager::replyToBeUsedByReceiverThreads : Some one is trying to forward a remote response to a message that does not exist.");
         return;
     }
 
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 
     return;
 }

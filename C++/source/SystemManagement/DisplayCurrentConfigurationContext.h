@@ -21,7 +21,7 @@ class DisplayCurrentConfigurationContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                                 DisplayCurrentConfigurationContext  (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                 DisplayCurrentConfigurationContext  (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                 ~DisplayCurrentConfigurationContext  ();
 
                 YangDisplayConfigurationContext *getPYangDisplayConfigurationContext ();

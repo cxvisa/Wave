@@ -17,28 +17,28 @@ namespace WaveNs
 WaveClientDataObjectGetWorker::WaveClientDataObjectGetWorker (WaveObjectManager *pWaveObjectManager)
  : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_GET_CLIENT_DATA, reinterpret_cast<PrismMessageHandler> (&WaveClientDataObjectGetWorker::getDataFromClientHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_GET_CLIENT_DATA, reinterpret_cast<WaveMessageHandler> (&WaveClientDataObjectGetWorker::getDataFromClientHandler));
 }
 
 WaveClientDataObjectGetWorker::~WaveClientDataObjectGetWorker ()
 {
 }
 
-PrismMessage *WaveClientDataObjectGetWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveClientDataObjectGetWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_GET_CLIENT_DATA :
-            pPrismMessage = new WaveObjectManagerGetDataFromClientMessage;
+            pWaveMessage = new WaveObjectManagerGetDataFromClientMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void WaveClientDataObjectGetWorker::getDataFromClientHandler (WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage)
@@ -135,7 +135,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( PrismLinearSeque
 {
     trace (TRACE_LEVEL_DEVEL, "WaveClientDataObjectGetWorker::sendMessageToAllNodesStep : entered-");
     
-    WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = reinterpret_cast<WaveObjectManagerGetDataFromClientMessage *>(pPrismLinearSequencerContext->getPPrismMessage());
+    WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = reinterpret_cast<WaveObjectManagerGetDataFromClientMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
     prismAssert ( NULL != pWaveObjectManagerGetDataFromClientMessage, __FILE__, __LINE__);            
 
     string clientName;
@@ -182,7 +182,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( PrismLinearSeque
 
     WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback), pPrismLinearSequencerContext);
         
-    pWaveSendToClusterContext->setPPrismMessageForPhase1(pMessageToAllNodes);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1(pMessageToAllNodes);
 
     if ( 0 != selectedLocationsVector.size() )
     {
@@ -203,7 +203,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback ( WaveSend
 
     if (NULL != pPrismLinearSequencerContext )
     {
-        WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = dynamic_cast<WaveObjectManagerGetDataFromClientMessage *>( pPrismLinearSequencerContext->getPPrismMessage ()) ;
+        WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = dynamic_cast<WaveObjectManagerGetDataFromClientMessage *>( pPrismLinearSequencerContext->getPWaveMessage ()) ;
  
         if ( NULL != pWaveObjectManagerGetDataFromClientMessage )
         {
@@ -234,7 +234,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback ( WaveSend
                 }
             }
 
-            delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+            delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
             delete pWaveSendToClusterContext;
 
             pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);

@@ -23,7 +23,7 @@ class DeleteNodeOnSecondaryContext : public PrismLinearSequencerContext
 
     protected :
     public :
-                                DeleteNodeOnSecondaryContext   (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                DeleteNodeOnSecondaryContext   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                 DeleteNodeOnSecondaryContext   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~DeleteNodeOnSecondaryContext   ();
 

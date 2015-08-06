@@ -17,7 +17,7 @@ class ZeroizeForFIPSLinearSequencerContext : public PrismLinearSequencerContext
 {
     protected:
     public:
-        ZeroizeForFIPSLinearSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+        ZeroizeForFIPSLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         ~ZeroizeForFIPSLinearSequencerContext (); 
 
         

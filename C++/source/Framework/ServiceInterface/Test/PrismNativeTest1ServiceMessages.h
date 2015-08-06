@@ -7,7 +7,7 @@
 #ifndef PRISMNATIVETEST1SERVICEMESSAGES_H
 #define PRISMNATIVETEST1SERVICEMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
@@ -17,7 +17,7 @@ typedef enum
     WAVE_NATIVE_TEST1_SERVICE_MESSAGE1
 } PrismNativeTest1ServiceMessageOpCodes;
 
-class PrismNativeTest1ServiceMessage1 : public PrismMessage
+class PrismNativeTest1ServiceMessage1 : public WaveMessage
 {
     private :
     protected :

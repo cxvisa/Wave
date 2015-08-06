@@ -82,7 +82,7 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
             reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
     
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
         
@@ -127,7 +127,7 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
             reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
 
@@ -158,7 +158,7 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
             reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
 
@@ -190,7 +190,7 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
             reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
     
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
 
@@ -224,7 +224,7 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
             reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
 
@@ -252,7 +252,7 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
             reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
 

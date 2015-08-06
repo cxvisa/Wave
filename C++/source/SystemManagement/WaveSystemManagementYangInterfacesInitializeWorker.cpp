@@ -24,21 +24,21 @@ WaveSystemManagementYangInterfacesInitializeWorker::WaveSystemManagementYangInte
       m_yinForYangUserInterface     (""),
       m_alreadyInitialized          (false)
 {
-    addOperationMap (WAVE_SYSTEM_MANAGEMENT_REBUILD_YANG_INTERFACES, reinterpret_cast<PrismMessageHandler> (&WaveSystemManagementYangInterfacesInitializeWorker::rebuildYangInterfacesMessageHandler));
+    addOperationMap (WAVE_SYSTEM_MANAGEMENT_REBUILD_YANG_INTERFACES, reinterpret_cast<WaveMessageHandler> (&WaveSystemManagementYangInterfacesInitializeWorker::rebuildYangInterfacesMessageHandler));
 }
 
 WaveSystemManagementYangInterfacesInitializeWorker::~WaveSystemManagementYangInterfacesInitializeWorker ()
 {
 }
 
-PrismMessage *WaveSystemManagementYangInterfacesInitializeWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveSystemManagementYangInterfacesInitializeWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_SYSTEM_MANAGEMENT_REBUILD_YANG_INTERFACES:
-            pPrismMessage = new WaveSystemManagementRebuildYangInterfacesMessage ();
+            pWaveMessage = new WaveSystemManagementRebuildYangInterfacesMessage ();
             break;
 
         default :
@@ -47,7 +47,7 @@ PrismMessage *WaveSystemManagementYangInterfacesInitializeWorker::createMessageI
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 void WaveSystemManagementYangInterfacesInitializeWorker::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {

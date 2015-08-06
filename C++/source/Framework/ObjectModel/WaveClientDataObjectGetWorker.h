@@ -17,7 +17,7 @@ class WaveSendToClusterContext;
 class WaveClientDataObjectGetWorker : public WaveWorker
 {
     private :
-                    PrismMessage       *createMessageInstance                   (const UI32 &operationCode);
+                    WaveMessage       *createMessageInstance                   (const UI32 &operationCode);
                     void                getDataFromClientHandler                (WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage);
                     void                getDataFromClientHandlerForSendToClient (WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage)
 ;

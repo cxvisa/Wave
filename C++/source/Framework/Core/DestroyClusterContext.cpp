@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-DestroyClusterContext::DestroyClusterContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : DeleteNodesFromClusterContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+DestroyClusterContext::DestroyClusterContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : DeleteNodesFromClusterContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_thisLocationRoleBeforeDestroy (LOCATION_STAND_ALONE),
       m_reasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED),
       m_isRebootRequired (true)

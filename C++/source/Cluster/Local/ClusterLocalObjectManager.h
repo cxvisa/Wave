@@ -42,7 +42,7 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
 
         WaveManagedObject *createManagedObjectInstance                      (const string &managedClassName);
 
-		//PrismMessage 	  *createMessageInstance (const UI32 &operationCode);
+		//WaveMessage 	  *createMessageInstance (const UI32 &operationCode);
 
         void               install                                          (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         void               boot                                             (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
@@ -66,7 +66,7 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
 
         void               setControllerDetailsMessageHandler               (ClusterLocalSetControllerDetailsMessage *pClusterLocalSetControllerDetailsMessage);
         void               clientReportingToControllerMessageHandler        (ClusterLocalReportToControllerAsClientMessage *pClusterLocalReportToControllerAsClientMessage);
-        void               clusterLocalReportToControllerAsClientCallback   (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+        void               clusterLocalReportToControllerAsClientCallback   (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 
         void               controllerClusterFormationDampeningTimerCallback (TimerHandle &timerHandle, void *pContext);
 
@@ -87,7 +87,7 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
         void                               dbInconsistencyCheck             (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         void                               cliBlockMessageHandler           (CliBlockServiceIndependentMessage *pCliBlockServiceIndependentMessage);
         static  void                       cliBlockMessageStaticHandler     (CliBlockServiceIndependentMessage *pCliBlockServiceIndependentMessage);
-        virtual PrismMessage*              createMessageInstance            (const UI32 &operationCode);
+        virtual WaveMessage*              createMessageInstance            (const UI32 &operationCode);
         virtual ResourceId                 blockCli                         (const ResourceId &reason, const bool &clusterWide);
         virtual ResourceId                 unblockCli                       (const ResourceId &reason, const bool &clusterWide);
 

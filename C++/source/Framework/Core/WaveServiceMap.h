@@ -18,7 +18,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismThread;
+class WaveThread;
 
 class WaveServiceMap
 {
@@ -27,10 +27,10 @@ class WaveServiceMap
     public :
                            WaveServiceMap                 ();
                           ~WaveServiceMap                 ();
-        void               addServiceMap                   (WaveServiceId id, PrismThread *pPrismThread, const string &serviceName);
+        void               addServiceMap                   (WaveServiceId id, WaveThread *pWaveThread, const string &serviceName);
         void               removeServiceMap                (WaveServiceId id);
         void               getListOfServiceIds             (vector<WaveServiceId> &serviceIds);
-        PrismThread       *getPrismThreadForServiceId      (WaveServiceId id);
+        WaveThread       *getWaveThreadForServiceId      (WaveServiceId id);
         string             getPrismServiceNameForServiceId (const WaveServiceId &id);
         WaveServiceId     getWaveServiceIdForServiceName (const string &serviceName);
         WaveThreadStatus  joinAllThreads                   ();
@@ -38,7 +38,7 @@ class WaveServiceMap
     // Now the data members
 
     private :
-        map<WaveServiceId, PrismThread *> m_servicesMap;
+        map<WaveServiceId, WaveThread *> m_servicesMap;
         map<WaveServiceId, string>        m_servicesNameMap;
         map<string, WaveServiceId>        m_servicesIdMap;
         PrismMutex                         m_mutex;

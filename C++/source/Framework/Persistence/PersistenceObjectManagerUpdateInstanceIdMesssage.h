@@ -7,14 +7,14 @@
 #ifndef PERSISTENCEOBJECTMANAGERUPDATEINSTANCEIDMESSAGE_H
 #define PERSISTENCEOBJECTMANAGERUPDATEINSTANCEMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace std;
 
 namespace WaveNs
 {
 
-class PersistenceObjectManagerUpdateInstanceIdMesssage : public PrismMessage
+class PersistenceObjectManagerUpdateInstanceIdMesssage : public WaveMessage
 {
     public:
                       PersistenceObjectManagerUpdateInstanceIdMesssage ();

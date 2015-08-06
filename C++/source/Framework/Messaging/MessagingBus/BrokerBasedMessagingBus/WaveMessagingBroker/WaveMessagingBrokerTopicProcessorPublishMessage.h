@@ -7,14 +7,14 @@
 #ifndef WAVEMESSAGINGBROKERTOPICPROCESSORPUBLISHMESSAGE_H
 #define WAVEMESSAGINGBROKERTOPICPROCESSORPUBLISHMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
 class WaveBrokerBasedMessagePayload;
 
-class WaveMessagingBrokerTopicProcessorPublishMessage : public PrismMessage
+class WaveMessagingBrokerTopicProcessorPublishMessage : public WaveMessage
 {
     private :
     protected :

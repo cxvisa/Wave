@@ -20,7 +20,7 @@ class WaveManagedObjectQueryContext;
 class WaveSystemManagementDisplayConfigurationWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage *createMessageInstance                                                           (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance                                                           (const UI32 &operationCode);
 
                 void displayCurrentConfigurationByQualifiedYangPathHandler                                    (WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage);
                 void displayCurrentConfigurationByQualifiedYangPathComputeYangDisplayConfigurationContextStep (DisplayCurrentConfigurationContext *pDisplayCurrentConfigurationContext);

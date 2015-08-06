@@ -80,7 +80,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTim
         FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext,
                        60000,
                        thisLocationId);
@@ -88,7 +88,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTim
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeoutTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeoutTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -152,7 +152,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuf
         pMessage->addBuffer (0, 256, pTemp, true);
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage1Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage1Callback),
                        pFrameworkLocalMessagingTestContext,
                        60000,
                        thisLocationId);
@@ -160,7 +160,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuf
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeoutTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeoutTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -197,7 +197,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageRespons
         FrameworkTestabilityMessage2 *pMessage = new FrameworkTestabilityMessage2 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage2Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage2Callback),
                        pFrameworkLocalMessagingTestContext,
                        10000,
                        thisLocationId);
@@ -205,7 +205,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageRespons
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageResponseDeliveryAfterTimeoutTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageResponseDeliveryAfterTimeoutTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -302,7 +302,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTim
         FrameworkTestabilityMessage7 *pMessage = new FrameworkTestabilityMessage7 ();
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Callback),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Callback),
                        pFrameworkLocalMessagingTestContext,
                        10000,
                        thisLocationId);
@@ -310,7 +310,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTim
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeoutTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeoutTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -417,7 +417,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuf
         pMessage->addBuffer (0, 256, pTemp, true);
 
         status = send (pMessage,
-                       reinterpret_cast<PrismMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Callback2),
+                       reinterpret_cast<WaveMessageResponseHandler> (&FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Callback2),
                        pFrameworkLocalMessagingTestContext,
                        10000,
                        thisLocationId);
@@ -425,7 +425,7 @@ void FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuf
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuffersWithTimeout2TestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuffersWithTimeout2TestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
         }
         else
         {

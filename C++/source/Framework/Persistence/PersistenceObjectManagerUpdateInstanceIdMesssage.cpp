@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerUpdateInstanceIdMesssage::PersistenceObjectManagerUpdateInstanceIdMesssage ()
-    : PrismMessage(PersistenceObjectManager::getWaveServiceId(), PERSISTENCE_OBJECT_MANAGER_UPDATE_INSTANCE_ID)
+    : WaveMessage(PersistenceObjectManager::getWaveServiceId(), PERSISTENCE_OBJECT_MANAGER_UPDATE_INSTANCE_ID)
 {
 
 }

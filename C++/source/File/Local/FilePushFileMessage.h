@@ -8,7 +8,7 @@
 #ifndef FILEPUSHFILEMESSAGE_H
 #define FILEPUSHFILEMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 
 using namespace WaveNs;
@@ -16,7 +16,7 @@ using namespace WaveNs;
 namespace WaveNs
 {
 
-    class FilePushFileMessage : public PrismMessage
+    class FilePushFileMessage : public WaveMessage
     {
         private:
                     void           InitInternalTables(vector<UI32> &DestinationLocationIdList);
@@ -81,7 +81,7 @@ namespace WaveNs
             
     };
 
-    class FilePushFileToHaPeerMessage : public PrismMessage
+    class FilePushFileToHaPeerMessage : public WaveMessage
     {
         private:
         protected:

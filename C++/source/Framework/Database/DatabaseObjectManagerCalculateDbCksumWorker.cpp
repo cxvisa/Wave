@@ -22,21 +22,21 @@ namespace WaveNs
 DatabaseObjectManagerCalculateDbCksumWorker::DatabaseObjectManagerCalculateDbCksumWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerCalculateDbCksumWorker::calculateDBCksumMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerCalculateDbCksumWorker::calculateDBCksumMessageHandler));
 }
 
 DatabaseObjectManagerCalculateDbCksumWorker::~DatabaseObjectManagerCalculateDbCksumWorker ()
 {
 }
 
-PrismMessage *DatabaseObjectManagerCalculateDbCksumWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerCalculateDbCksumWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_CALCULATE_DB_CKSUM :
-            pPrismMessage = new DatabaseObjectManagerCalculateDbCksumMessage ();
+            pWaveMessage = new DatabaseObjectManagerCalculateDbCksumMessage ();
             break;
 
         default :
@@ -44,7 +44,7 @@ PrismMessage *DatabaseObjectManagerCalculateDbCksumWorker::createMessageInstance
             prismAssert (false, __FILE__, __LINE__);
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerCalculateDbCksumWorker::calculateDBCksumMessageHandler (DatabaseObjectManagerCalculateDbCksumMessage *pDatabaseObjectManagerCalculateDbCksumMessage)

@@ -8,13 +8,13 @@
 #define TIMERMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Timer/TimerTypes.h"
 
 namespace WaveNs
 {
 
-class TimerObjectManagerAddTimerMessage : public PrismMessage
+class TimerObjectManagerAddTimerMessage : public WaveMessage
 {
     private :
     protected :
@@ -45,7 +45,7 @@ class TimerObjectManagerAddTimerMessage : public PrismMessage
     public :
 };
 
-class TimerObjectManagerDeleteTimerMessage : public PrismMessage
+class TimerObjectManagerDeleteTimerMessage : public WaveMessage
 {
     private :
     protected :
@@ -62,7 +62,7 @@ class TimerObjectManagerDeleteTimerMessage : public PrismMessage
 
 };
 
-class TimerObjectManagerDeleteAllTimersForServiceMessage : public PrismMessage
+class TimerObjectManagerDeleteAllTimersForServiceMessage : public WaveMessage
 {
     private :
     protected :

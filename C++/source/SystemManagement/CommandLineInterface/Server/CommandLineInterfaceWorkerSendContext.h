@@ -7,7 +7,7 @@
 #ifndef COMMANDLINEINTERFACEWORKERSENDCONTEXT_H
 #define COMMANDLINEINTERFACEWORKERSENDCONTEXT_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectModel/PrismElement.h"
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceReceiverWorkerThread.h"
 
@@ -19,21 +19,21 @@ class CommandLineInterfaceWorkerSendContext
     private :
     protected :
     public :
-                                                                                CommandLineInterfaceWorkerSendContext (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pPrismMessageContext);
+                                                                                CommandLineInterfaceWorkerSendContext (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext);
                                                                                ~CommandLineInterfaceWorkerSendContext ();
 
         FrameworkStatus                                                         getFrameworkStatus                    ();
-        PrismMessage                                                           *getPPrismMessage                      ();
-        PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  getPrismMessageResponseHandler        ();
-        void                                                                   *getPPrismMessageContext               ();
+        WaveMessage                                                           *getPWaveMessage                      ();
+        WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  getWaveMessageResponseHandler        ();
+        void                                                                   *getPWaveMessageContext               ();
 
     // Now the Data Members
 
     private :
         FrameworkStatus                                                         m_frameworkStatus;
-        PrismMessage                                                           *m_pPrismMessage;
-        PrismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  m_prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
-        void                                                                   *m_pPrismMessageContext;
+        WaveMessage                                                           *m_pWaveMessage;
+        WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  m_prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
+        void                                                                   *m_pWaveMessageContext;
 
     protected :
     public :

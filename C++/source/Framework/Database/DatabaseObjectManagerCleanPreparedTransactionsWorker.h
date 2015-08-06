@@ -24,7 +24,7 @@ class DatabaseObjectManagerCleanPreparedTransactionsWorker : public WaveWorker
     public :
                  DatabaseObjectManagerCleanPreparedTransactionsWorker (DatabaseObjectManager *pDatabaseObjectManager);
         virtual ~DatabaseObjectManagerCleanPreparedTransactionsWorker ();
-                 PrismMessage *createMessageInstance                  (const UI32 &operationCode);
+                 WaveMessage *createMessageInstance                  (const UI32 &operationCode);
 
     // Now the data members
 

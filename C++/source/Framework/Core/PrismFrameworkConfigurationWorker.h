@@ -41,7 +41,7 @@ class PrismFrameworkConfigurationWorker : public WaveWorker
                 ResourceId  loadPrismConfiguration            (const string &prismConfigurationFile);
                 bool        getPrismConfigurationValidity     ();
                 ResourceId  changePrismConfigurationValidity  (const bool &validity );      
-                PrismMessage *createMessageInstance           (const UI32 &operationCode);
+                WaveMessage *createMessageInstance           (const UI32 &operationCode);
                 ResourceId  syncPrismConfigurationMessageHandler (FrameworkObjectManagerSyncConfigurationMessage *pFrameworkObjectManagerSyncConfigurationMessage);      
 
     // Now the data members

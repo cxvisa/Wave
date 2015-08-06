@@ -77,7 +77,7 @@ class DatabaseObjectManager : public WaveLocalObjectManager
         static string                       getWaveDatabaseInstallCompletionFileName  ();
         static string                       getDBCorruptIdentifierFileName            ();
 
-        static PrismThreadId                getPrismThreadId                          ();
+        static WaveThreadId                getWaveThreadId                          ();
 
         static bool                         getIsDatabaseConnected                    ();
         static void                         setIsDatabaseConnected                    (bool isDatabaseConnected);

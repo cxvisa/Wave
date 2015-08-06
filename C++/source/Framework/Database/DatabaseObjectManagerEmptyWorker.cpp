@@ -21,26 +21,26 @@ namespace WaveNs
 DatabaseObjectManagerEmptyWorker::DatabaseObjectManagerEmptyWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_EMPTY, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerEmptyWorker::emptyMessageHandler));
-    addOperationMap (DATABASE_OBJECT_MANAGER_EMPTY_DATABASE_PARAMETER_CONFIGURE, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerEmptyWorker::emptyDatabaseParameterConfigureMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EMPTY, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerEmptyWorker::emptyMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EMPTY_DATABASE_PARAMETER_CONFIGURE, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerEmptyWorker::emptyDatabaseParameterConfigureMessageHandler));
 }
 
 DatabaseObjectManagerEmptyWorker::~DatabaseObjectManagerEmptyWorker ()
 {
 }
 
-PrismMessage *DatabaseObjectManagerEmptyWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerEmptyWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {   
         case DATABASE_OBJECT_MANAGER_EMPTY :
-            pPrismMessage = new DatabaseObjectManagerEmptyMessage (); 
+            pWaveMessage = new DatabaseObjectManagerEmptyMessage (); 
             break;
  
         case DATABASE_OBJECT_MANAGER_EMPTY_DATABASE_PARAMETER_CONFIGURE :
-            pPrismMessage = new DatabaseObjectManagerEmptyDatabaseParameterConfigureMessage ();
+            pWaveMessage = new DatabaseObjectManagerEmptyDatabaseParameterConfigureMessage ();
             break;
 
         default :
@@ -48,7 +48,7 @@ PrismMessage *DatabaseObjectManagerEmptyWorker::createMessageInstance (const UI3
             prismAssert (false, __FILE__, __LINE__);
     }   
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerEmptyWorker::emptyMessageHandler (DatabaseObjectManagerEmptyMessage *pDatabaseObjectManagerEmptyMessage)

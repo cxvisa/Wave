@@ -20,7 +20,7 @@ class CentralClusterConfigAddNodeWorker : public WaveWorker
     private :
                       CentralClusterConfigAddNodeWorker        (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager);
 
-        PrismMessage *createMessageInstance                    (const UI32 &operationCode);
+        WaveMessage *createMessageInstance                    (const UI32 &operationCode);
 
         void          addNodeMessageHandler                    (ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage);
         void          addNodeValidateStep                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);

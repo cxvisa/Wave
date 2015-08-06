@@ -36,7 +36,7 @@ map<string, ObjectId> WaveSystemManagementGatewayWorker::m_targetNodeNameObjectI
 WaveSystemManagementGatewayWorker::WaveSystemManagementGatewayWorker (WaveObjectManager *pWaveObjectManager)
     :   WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_SYSTEM_MANAGEMENT_GATEWAY_MESSAGE, reinterpret_cast<PrismMessageHandler> (&WaveSystemManagementGatewayWorker::gatewayMessageHandler));
+    addOperationMap (WAVE_SYSTEM_MANAGEMENT_GATEWAY_MESSAGE, reinterpret_cast<WaveMessageHandler> (&WaveSystemManagementGatewayWorker::gatewayMessageHandler));
 }
 
 WaveSystemManagementGatewayWorker::~WaveSystemManagementGatewayWorker ()

@@ -12,14 +12,14 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerCopySchemaMessage::PersistenceObjectManagerCopySchemaMessage (const string &sourceSchema, const string &destSchema)
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA),
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA),
       m_sourceSchema (sourceSchema),
       m_destSchema (destSchema)
 {
 }
 
 PersistenceObjectManagerCopySchemaMessage::PersistenceObjectManagerCopySchemaMessage ()
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA)
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_SCHEMA)
 {
 }
 
@@ -29,7 +29,7 @@ PersistenceObjectManagerCopySchemaMessage::~PersistenceObjectManagerCopySchemaMe
 
 void PersistenceObjectManagerCopySchemaMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_sourceSchema, "sourceSchema"));
      addSerializableAttribute (new AttributeString (&m_destSchema,   "destSchema"));

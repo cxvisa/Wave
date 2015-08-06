@@ -21,7 +21,7 @@ class CentralClusterConfigRejoinNodeWorker : public WaveWorker
     private :
                       CentralClusterConfigRejoinNodeWorker        (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager);
 
-virtual PrismMessage *createMessageInstance                       (const UI32 &operationCode);
+virtual WaveMessage *createMessageInstance                       (const UI32 &operationCode);
 
         void          rejoinNodeMessageHandler                    (ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage);
         void          rejoinNodeValidateStep                      (ClusterRejoinContext *pClusterRejoinContext);

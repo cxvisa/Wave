@@ -18,7 +18,7 @@ class DestroyClusterContext : public DeleteNodesFromClusterContext
     private :
     protected :
     public :
-                                                      DestroyClusterContext            (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      DestroyClusterContext            (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                       DestroyClusterContext            (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                      ~DestroyClusterContext            ();
 

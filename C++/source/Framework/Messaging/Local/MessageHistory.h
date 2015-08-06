@@ -15,13 +15,13 @@ using namespace std;
 
 namespace WaveNs
 {
-class PrismMessage;
+class WaveMessage;
 class MessageHistory {
 
     private :
     protected :
     public :
-                MessageHistory              (PrismMessage *pPrismMessage, WaveMessageSendType sendType, WaveMessageHistoryLogType messageHistoryLogType);
+                MessageHistory              (WaveMessage *pWaveMessage, WaveMessageSendType sendType, WaveMessageHistoryLogType messageHistoryLogType);
                 ~MessageHistory             ();
         void    getMessageHistoryString     (string &debugHistoryString);
 

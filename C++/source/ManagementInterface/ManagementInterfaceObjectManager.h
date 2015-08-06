@@ -76,7 +76,7 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
         void                        disconnectFromClient                       (const string &clientIpAddress, const SI32 &clientPort);
         void                        sendTimerExpiredCallback                   (TimerHandle timerHandle, void *pContext);
         void                        managementInterfaceClientListHandler       (ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage);
-        virtual     PrismMessage    *createMessageInstance                     (const UI32 &operationCode);
+        virtual     WaveMessage    *createMessageInstance                     (const UI32 &operationCode);
         void                        getClientsInformation                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);    
     
     protected :

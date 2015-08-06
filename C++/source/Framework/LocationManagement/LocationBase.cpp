@@ -8,7 +8,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Messaging/Remote/InterLocationMulticastMessage.h"
 #include <time.h>
 
@@ -152,7 +152,7 @@ ResourceId LocationBase::postToRemoteLocation (const string &bufferToPost, Locat
     return (true == isSuccessful ? WAVE_MESSAGE_SUCCESS : failureStatus);
 }
 
-ResourceId LocationBase::postToRemoteLocation (PrismMessage *pPrismMessage, LocationId locationId)
+ResourceId LocationBase::postToRemoteLocation (WaveMessage *pWaveMessage, LocationId locationId)
 {
     lockAccess ();
     ResourceId failureStatus = ((getClusterPrimaryLocationId() != locationId)? WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION:WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION_DUE_TO_PRINCIPAL_FAILOVER);
@@ -166,7 +166,7 @@ ResourceId LocationBase::postToRemoteLocation (PrismMessage *pPrismMessage, Loca
         return (failureStatus);
     }
 
-    isSuccessful = (*pClientStreamingSocket) << pPrismMessage;
+    isSuccessful = (*pClientStreamingSocket) << pWaveMessage;
 
     unlockAccess ();
     return (true == isSuccessful ? WAVE_MESSAGE_SUCCESS : failureStatus);
@@ -426,7 +426,7 @@ ResourceId LocationBase::postToHaPeerLocation (const string &bufferToPost)
     return (true == isSuccessful ? WAVE_MESSAGE_SUCCESS : WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE);
 }
 
-ResourceId LocationBase::postToHaPeerLocation (PrismMessage *pPrismMessage)
+ResourceId LocationBase::postToHaPeerLocation (WaveMessage *pWaveMessage)
 {
     lockAccess ();
 
@@ -440,7 +440,7 @@ ResourceId LocationBase::postToHaPeerLocation (PrismMessage *pPrismMessage)
         return (WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE);
     }
 
-    isSuccessful = (*pClientStreamingSocket) << pPrismMessage;
+    isSuccessful = (*pClientStreamingSocket) << pWaveMessage;
 
     unlockAccess ();
     return (true == isSuccessful ? WAVE_MESSAGE_SUCCESS : WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE);

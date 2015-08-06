@@ -11,8 +11,8 @@
 namespace WaveNs
 {
 
-WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (PrismMessage* pPrismMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_pInputWaveManagedObject        (NULL),
       m_pOperateOnWaveManagedObject    (NULL),
       m_childUserTag                   (0),
@@ -225,12 +225,12 @@ vector<string> WaveManagedObjectUpdateContext::getParentManagedObjectNames ()
      return (m_parentManagedObjectNames);
 }
 
-void WaveManagedObjectUpdateContext::setMessage (PrismMessage *pMessage)
+void WaveManagedObjectUpdateContext::setMessage (WaveMessage *pMessage)
 {
     m_pMessage = pMessage;
 }
 
-PrismMessage *WaveManagedObjectUpdateContext::getMessage ()
+WaveMessage *WaveManagedObjectUpdateContext::getMessage ()
 {
     return (m_pMessage);
 }

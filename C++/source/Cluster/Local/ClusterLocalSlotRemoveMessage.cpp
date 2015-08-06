@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage ()
-: PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
+: WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
     m_slotNumber (0),
     m_hwType (0x10) // hardcoded for SYS_SLOT_LC
 {
@@ -22,7 +22,7 @@ ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage ()
 }
     
 ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage (const UI32 &slotNumber)
-        : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
+        : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
         m_slotNumber (slotNumber),
         m_hwType (0x10) // hardcoded for SYS_SLOT_LC
 {
@@ -30,7 +30,7 @@ ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage (const UI32 &slotNu
 }
 
 ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage (const UI32 &slotNumber, const UI32 &hwType)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
         m_slotNumber (slotNumber),
         m_hwType (hwType)
 {
@@ -38,7 +38,7 @@ ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage (const UI32 &slotNu
 }
 
 ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage (const UI32 &slotNumber, const UI32 &hwType, const LocationId &locationId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SLOT_REMOVE_MESSAGE),
         m_slotNumber (slotNumber),
         m_hwType (hwType),
         m_locationId (locationId)
@@ -47,7 +47,7 @@ ClusterLocalSlotRemoveMessage::ClusterLocalSlotRemoveMessage (const UI32 &slotNu
 
 void ClusterLocalSlotRemoveMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32        (&m_slotNumber,     "slotNumber"));
      addSerializableAttribute (new AttributeUI32        (&m_hwType,         "hwType"));

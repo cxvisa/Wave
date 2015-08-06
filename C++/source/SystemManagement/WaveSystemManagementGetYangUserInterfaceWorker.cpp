@@ -17,7 +17,7 @@ WaveSystemManagementGetYangUserInterfaceWorker::WaveSystemManagementGetYangUserI
     : WaveWorker                           (pWaveSystemManagementObjectManager),
       m_pWaveSystemManagementObjectManager (pWaveSystemManagementObjectManager)
 {
-    addOperationMap (WAVE_SYSTEM_MANAGEMENT_GET_YANG_USER_INTERFACE, reinterpret_cast<PrismMessageHandler> (&WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceMessageHandler));
+    addOperationMap (WAVE_SYSTEM_MANAGEMENT_GET_YANG_USER_INTERFACE, reinterpret_cast<WaveMessageHandler> (&WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceMessageHandler));
 }
 
 WaveSystemManagementGetYangUserInterfaceWorker::~WaveSystemManagementGetYangUserInterfaceWorker ()
@@ -42,7 +42,7 @@ void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceMessage
 
 void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateYangUserInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage = dynamic_cast<WaveSystemManagementGetYangUserInterfaceMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage = dynamic_cast<WaveSystemManagementGetYangUserInterfaceMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
 

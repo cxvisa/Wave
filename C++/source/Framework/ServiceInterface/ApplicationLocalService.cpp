@@ -18,7 +18,7 @@ ApplicationLocalService::ApplicationLocalService (const string &applicationLocal
     : WaveLocalObjectManager (applicationLocalServiceName),
       m_applicationLocalServiceId (applicationLocalServiceId)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&ApplicationLocalService::applicationLocalServiceMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&ApplicationLocalService::applicationLocalServiceMessageHandler));
 
     map<UI32, ApplicationServiceMessageHandler> *pHandlersMap = ApplicationServiceHelper::getHandlersMapForApplicationService (m_applicationLocalServiceId);
 
@@ -40,20 +40,20 @@ ApplicationLocalService::~ApplicationLocalService ()
 {
 }
 
-PrismMessage *ApplicationLocalService::createMessageInstance (const UI32 &operationCode)
+WaveMessage *ApplicationLocalService::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case APPLICATION_SERVICE_GENERIC_MESSAGE:
-            pPrismMessage = new ApplicationServiceMessage ();
+            pWaveMessage = new ApplicationServiceMessage ();
             break;
         default:
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 UI32 ApplicationLocalService::registerNewApplicationLocalService (const string &newApplicationLocalServiceName)

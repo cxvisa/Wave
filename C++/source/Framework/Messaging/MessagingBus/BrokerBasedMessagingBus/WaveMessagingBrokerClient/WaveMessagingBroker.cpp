@@ -331,7 +331,7 @@ bool WaveMessagingBroker::operator << (WaveBrokerSubscribeMessage *pWaveBrokerSu
     {
         m_currentSubscritptions[topicNames[i]] = topicNames[i];
 
-        WaveServiceId prismServiceId = PrismThread::getWaveServiceIdForCurrentThread ();
+        WaveServiceId prismServiceId = WaveThread::getWaveServiceIdForCurrentThread ();
 
         addServiceSubscription (topicNames[i], prismServiceId);
     }

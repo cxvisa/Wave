@@ -8,7 +8,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/PrismMutex.h"
-#include "Framework/Messaging/MessageFactory/PrismMessageFactory.h"
+#include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 #include "Version/PrismVersion.h"
 //#include <xercesc/dom/DOM.hpp>
 //#include <xercesc/framework/MemBufInputSource.hpp>
@@ -372,7 +372,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const s
             {
                 SerializableObjectType sot = strtoul (pAttributeValue, NULL, 10);
 
-                pSerializableObject = PrismMessageFactory::getMessageInstance (sot);
+                pSerializableObject = WaveMessageFactory::getMessageInstance (sot);
                 prismAssert (NULL != pSerializableObject, __FILE__, __LINE__);
 
                 if (NULL != pSerializableObject)
@@ -488,7 +488,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const U
             {
                 SerializableObjectType sot = strtoul (pAttributeValue, NULL, 10);
 
-                pSerializableObject = PrismMessageFactory::getMessageInstance (sot);
+                pSerializableObject = WaveMessageFactory::getMessageInstance (sot);
                 prismAssert (NULL != pSerializableObject, __FILE__, __LINE__);
 
                 if (NULL != pSerializableObject)

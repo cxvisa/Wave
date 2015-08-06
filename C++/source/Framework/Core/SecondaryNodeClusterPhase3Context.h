@@ -19,7 +19,7 @@ class SecondaryNodeClusterPhase3Context: public SecondaryNodeClusterContext
     private :
     protected :
     public :
-                 SecondaryNodeClusterPhase3Context (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
+                 SecondaryNodeClusterPhase3Context (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
                  SecondaryNodeClusterPhase3Context (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
         virtual ~SecondaryNodeClusterPhase3Context ();
 

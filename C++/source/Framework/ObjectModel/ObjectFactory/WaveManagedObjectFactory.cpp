@@ -7,7 +7,7 @@
 #include "Framework/ObjectModel/ObjectFactory/WaveManagedObjectFactory.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -26,8 +26,8 @@ WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const
 
     if (NULL == pWaveManagedObject)
     {
-        trace (TRACE_LEVEL_FATAL, "PrismMessageFactory::getMessageInstance : Could not create Managed Object instance for  Service : " + FrameworkToolKit::getServiceNameById (prismServiceId) + ", Class Name = " + className + ".");
-        trace (TRACE_LEVEL_FATAL, "PrismMessageFactory::getMessageInstance : Have you implemented the createManagedObjectInstance on the object manager yet???.");
+        trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Could not create Managed Object instance for  Service : " + FrameworkToolKit::getServiceNameById (prismServiceId) + ", Class Name = " + className + ".");
+        trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Have you implemented the createManagedObjectInstance on the object manager yet???.");
         prismAssert (false, __FILE__, __LINE__);
     }
 
@@ -36,14 +36,14 @@ WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const
 
 WaveObjectManager *WaveManagedObjectFactory::getWaveObjectManagerForManagedObject (const WaveServiceId &prismServiceId, const  string &className)
 {
-    PrismThread        *pPrismThread        = NULL;
+    WaveThread        *pWaveThread        = NULL;
     WaveObjectManager *pWaveObjectManager = NULL;
 
-    pPrismThread = PrismThread::getPrismThreadForServiceId (prismServiceId);
+    pWaveThread = WaveThread::getWaveThreadForServiceId (prismServiceId);
 
-    if (NULL != pPrismThread)
+    if (NULL != pWaveThread)
     {
-        pWaveObjectManager = pPrismThread->getWaveObjectManagerForManagedClass (className);
+        pWaveObjectManager = pWaveThread->getWaveObjectManagerForManagedClass (className);
     }
 
     return (pWaveObjectManager);

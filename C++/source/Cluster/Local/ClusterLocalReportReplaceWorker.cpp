@@ -38,7 +38,7 @@ namespace WaveNs
 ClusterLocalReportReplaceWorker::ClusterLocalReportReplaceWorker (ClusterLocalObjectManager *pClusterLocalObjectManager)
     : WaveWorker (pClusterLocalObjectManager)
 {
-    addOperationMap (CLUSTER_LOCAL_REPORT_REPLACE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalReportReplaceWorker::replaceMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_REPORT_REPLACE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalReportReplaceWorker::replaceMessageHandler));
 }
 /// Name
 /// ClusterLocalReportReplaceWorker
@@ -101,7 +101,7 @@ void ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep(PrismLinea
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep: Entering ...");
 
     //Message from the context
-    ClusterLocalReportReplaceMessage* pClusterLocalReportReplaceMessage = dynamic_cast<ClusterLocalReportReplaceMessage* >(pPrismLinearSequencerContext->getPPrismMessage());
+    ClusterLocalReportReplaceMessage* pClusterLocalReportReplaceMessage = dynamic_cast<ClusterLocalReportReplaceMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
 
     prismAssert(NULL != pClusterLocalReportReplaceMessage, __FILE__, __LINE__);
 

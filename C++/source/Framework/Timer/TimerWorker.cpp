@@ -4,7 +4,7 @@
  *   Author : Amr Sabaa                                                    *
  ***************************************************************************/
 
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Core/PrismFrameworkMessages.h"
 #include "Framework/Timer/TimerObjectManager.h"
 #include "Framework/Timer/TimerWorker.h"
@@ -21,9 +21,9 @@ typedef multimap<WaveServiceId, UI32>::iterator multimapIterator;
 TimerWorker::TimerWorker (WaveObjectManager *pWaveObjectManager)
             :WaveWorker   (pWaveObjectManager), m_currTimerId (1)
 {
-    addOperationMap (TIMER_ADD_TIMER,                       reinterpret_cast<PrismMessageHandler> (&TimerWorker::addTimer));
-    addOperationMap (TIMER_DELETE_TIMER,                    reinterpret_cast<PrismMessageHandler> (&TimerWorker::deleteTimer));
-    addOperationMap (TIMER_DELETE_ALL_TIMERS_FOR_SERVICE,   reinterpret_cast<PrismMessageHandler> (&TimerWorker::deleteAllTimersForService));
+    addOperationMap (TIMER_ADD_TIMER,                       reinterpret_cast<WaveMessageHandler> (&TimerWorker::addTimer));
+    addOperationMap (TIMER_DELETE_TIMER,                    reinterpret_cast<WaveMessageHandler> (&TimerWorker::deleteTimer));
+    addOperationMap (TIMER_DELETE_ALL_TIMERS_FOR_SERVICE,   reinterpret_cast<WaveMessageHandler> (&TimerWorker::deleteAllTimersForService));
 
     m_maxDelay.tv_sec  = 0;
     m_maxDelay.tv_usec = 0;
@@ -423,18 +423,18 @@ void TimerWorker::showPendingTimers ()
 }
 
 
-void TimerWorker::timerReply (PrismMessage *pPrismMessage)
+void TimerWorker::timerReply (WaveMessage *pWaveMessage)
 {
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 }
 
-void TimerWorker::timerSendOneWay (PrismMessage *pPrismMessage)
+void TimerWorker::timerSendOneWay (WaveMessage *pWaveMessage)
 {
-    ResourceId status = sendOneWay (pPrismMessage);
+    ResourceId status = sendOneWay (pWaveMessage);
 
     if (status != WAVE_MESSAGE_SUCCESS)
     {
-        delete pPrismMessage;
+        delete pWaveMessage;
     }
 }
 
@@ -528,7 +528,7 @@ UI32 TimerWorker::removeTimer (TimerObjectManagerDeleteTimerMessage *pMessage, U
     vector<TimerData *>::iterator    theIterator;
     UI32                             i;
     UI32                             found = 0;
-    PrismThread                     *pPrismThread = NULL;
+    WaveThread                     *pWaveThread = NULL;
     UI32                             nTimersRecalled;
 
     for (i = 0; i < m_timerList.size(); i++)
@@ -548,16 +548,16 @@ UI32 TimerWorker::removeTimer (TimerObjectManagerDeleteTimerMessage *pMessage, U
         }
     }
 
-    pPrismThread = PrismThread::getPrismThreadForServiceId (pMessage->getSenderServiceCode());
+    pWaveThread = WaveThread::getWaveThreadForServiceId (pMessage->getSenderServiceCode());
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
         trace (TRACE_LEVEL_FATAL, "TimerWorker::removeTimer : Calling thread for delete timer is NULL");
         prismAssert (false, __FILE__, __LINE__);
         return 0;
     }
 
-    nTimersRecalled = pPrismThread->recallTimerExpirationMessagesForTimer (timerId);
+    nTimersRecalled = pWaveThread->recallTimerExpirationMessagesForTimer (timerId);
 
     if (0 != nTimersRecalled)
     {
@@ -645,12 +645,12 @@ ResourceId TimerWorker::removeAllTimersForService (UI32 serviceId)
     multimapIterator                            iterator;
     vector<TimerData *>::iterator               theIterator;
     UI32                                        i               = 0;
-    PrismThread                                *pPrismThread    = NULL;
+    WaveThread                                *pWaveThread    = NULL;
     ResourceId                                  status          = TIMER_SUCCESS;
 
-    pPrismThread = PrismThread::getPrismThreadForServiceId (serviceId);
+    pWaveThread = WaveThread::getWaveThreadForServiceId (serviceId);
     
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
         trace (TRACE_LEVEL_FATAL, "TimerWorker::removeAllTimersForService : Calling thread for delete timer is NULL");
         prismAssert (false, __FILE__, __LINE__);

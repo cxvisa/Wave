@@ -13,7 +13,7 @@
 #include <Framework/Types/Types.h>
 #include "Framework/Utils/ServerStreamingSocket.h"
 #include "Framework/Utils/ClientStreamingSocket.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/PrismMutex.h"
 
 using namespace std;
@@ -21,7 +21,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 class InterLocationMulticastMessage;
 
 class LocationBase
@@ -58,9 +58,9 @@ class LocationBase
         virtual       void                         removeKnownLocation                              (LocationId knownLocationId) = 0;
                       ResourceId                   postToRemoteLocation                             (const string &bufferToPost, LocationId locationId);
                       ResourceId                   postToRemoteLocation                             (InterLocationMulticastMessage *pInterLocationMulticastMessage, set<LocationId> locationsToSent);
-                      ResourceId                   postToRemoteLocation                             (PrismMessage *pPrismMessage, LocationId locationId);
+                      ResourceId                   postToRemoteLocation                             (WaveMessage *pWaveMessage, LocationId locationId);
                       ResourceId                   postToHaPeerLocation                             (const string &bufferToPost);
-                      ResourceId                   postToHaPeerLocation                             (PrismMessage *pPrismMessage);
+                      ResourceId                   postToHaPeerLocation                             (WaveMessage *pWaveMessage);
                       bool                         acceptNewConnection                              (ServerStreamingSocket &newSocket);
                       bool                         acceptHaPeerConnection                           (ServerStreamingSocket &newSocket);
                 const string                      &getIpAddress                                     () const;

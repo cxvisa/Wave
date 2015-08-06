@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 RequestToManagementInterfaceMessage::RequestToManagementInterfaceMessage (WaveServiceId serviceId, UI32 operationId, AttributesMap *pAttributesMap)
-    : PrismMessage (ManagementInterfaceObjectManager::getWaveServiceId (), MANAGEMENTINTERFACE_REQUEST),
+    : WaveMessage (ManagementInterfaceObjectManager::getWaveServiceId (), MANAGEMENTINTERFACE_REQUEST),
       m_pInputAttributesMap (pAttributesMap)
 {
 }

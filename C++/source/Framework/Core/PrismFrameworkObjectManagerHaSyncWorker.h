@@ -96,7 +96,7 @@ class PrismFrameworkObjectManagerHaSyncWorker : public WaveWorker
                 PrismFrameworkObjectManagerHaSyncWorker (WaveObjectManager *pWaveObjectManager);
         virtual ~PrismFrameworkObjectManagerHaSyncWorker ();
         static  PrismFrameworkObjectManagerHaSyncWorker *getInstance ();
-                PrismMessage *createMessageInstance (const UI32 &operationCode);
+                WaveMessage *createMessageInstance (const UI32 &operationCode);
 
                	bool getSyncDumpComplete                  ();
                 void initializeHaPeerServerCommunications ();

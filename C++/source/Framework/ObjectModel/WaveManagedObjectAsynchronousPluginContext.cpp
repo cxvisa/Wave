@@ -246,12 +246,12 @@ IsAssociatedManagedObjectToBeCreatedContext::~IsAssociatedManagedObjectToBeCreat
 
 }
 
-PrismMessage *IsAssociatedManagedObjectToBeCreatedContext::getMessage () const
+WaveMessage *IsAssociatedManagedObjectToBeCreatedContext::getMessage () const
 {
     return (m_pMessage);
 }
 
-void IsAssociatedManagedObjectToBeCreatedContext::setMessage(PrismMessage *pMessage)
+void IsAssociatedManagedObjectToBeCreatedContext::setMessage(WaveMessage *pMessage)
 {
     m_pMessage = pMessage;
 }

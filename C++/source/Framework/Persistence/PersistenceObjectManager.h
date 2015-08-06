@@ -24,7 +24,7 @@ class DatabaseObjectManagerExecuteCopySchemaMessage;
 class PersistenceLocalObjectManagerSetStartupFileMessage;
 class PersistenceExecuteTransactionContext;
 class PersistenceObjectManagerCompareDBMessage;
-class PrismMessage;
+class WaveMessage;
 class WaveAsynchronousContextForBootPhases;
 class ConfigurationManagedObject;
 class PersistenceObjectManagerInitializeBeforeBootCompleteMessage;
@@ -58,7 +58,7 @@ class PersistenceObjectManager : public WaveObjectManager
 
                 ResourceId                  copySchemaLocal                                                         (const string &sourceSchema, const string &destSchema);
 
-        virtual PrismMessage               *createMessageInstance                                                   (const UI32 &operationCode);
+        virtual WaveMessage               *createMessageInstance                                                   (const UI32 &operationCode);
         virtual WaveManagedObject          *createManagedObjectInstance                                             (const string &managedClassName);
 
 
@@ -135,7 +135,7 @@ class PersistenceObjectManager : public WaveObjectManager
 
                 void                        addXPathStringsMessageHandler                                           (PersistenceObjectManagerAddXPathStringsMessage *pPersistenceObjectManagerAddXPathStringsMessage);
                 void                        createXPathStringManagedObjectsStep                                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                        xPathStringManagedObjectsCommitCallback                                 (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
+                void                        xPathStringManagedObjectsCommitCallback                                 (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
                 void                        deleteXPathStringsMessageHandler                                        (PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage);
                 void                        deleteXPathStringManagedObjectsStep                                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
                 void                        getLastUpdateTimestampsForXPathStringsMessageHandler                    (PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage);

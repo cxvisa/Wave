@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/MessageTracker/MessageTracker.h"
-#include <Framework/MultiThreading/PrismThread.h>
+#include <Framework/MultiThreading/WaveThread.h>
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -18,18 +18,18 @@
 namespace WaveNs
 {
 
-map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> > MessageTracker::m_currentlyAllocatedMessagesByThread;
-map<const PrismMessage *,PrismThreadId>                              MessageTracker::m_currentlyAllocatedMessages;
+map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> > MessageTracker::m_currentlyAllocatedMessagesByThread;
+map<const WaveMessage *,WaveThreadId>                              MessageTracker::m_currentlyAllocatedMessages;
 bool                                                                 MessageTracker::m_trackingMessagesWithBt = false;
-map<const PrismMessage *, string>                                    MessageTracker::m_currentlyAllocatedMessagesWithBt;
+map<const WaveMessage *, string>                                    MessageTracker::m_currentlyAllocatedMessagesWithBt;
 PrismMutex                                                           MessageTracker::m_messageTrackerMutex;
 
-bool MessageTracker::isAKnownMessage (const PrismMessage *pPrismMessage)
+bool MessageTracker::isAKnownMessage (const WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    map<const PrismMessage *, PrismThreadId>::iterator element    = m_currentlyAllocatedMessages.find (pPrismMessage);
-    map<const PrismMessage *, PrismThreadId>::iterator endElement = m_currentlyAllocatedMessages.end ();
+    map<const WaveMessage *, WaveThreadId>::iterator element    = m_currentlyAllocatedMessages.find (pWaveMessage);
+    map<const WaveMessage *, WaveThreadId>::iterator endElement = m_currentlyAllocatedMessages.end ();
     bool                                               found      = false;
 
     if (endElement != element)
@@ -40,13 +40,13 @@ bool MessageTracker::isAKnownMessage (const PrismMessage *pPrismMessage)
     return (found);
 }
 
-void MessageTracker::addToMessageTracker(const PrismMessage* pPrismMessage)
+void MessageTracker::addToMessageTracker(const WaveMessage* pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     m_messageTrackerMutex.lock ();
 
-    if (true == (isAKnownMessage (pPrismMessage)))
+    if (true == (isAKnownMessage (pWaveMessage)))
     {
         trace (TRACE_LEVEL_FATAL, "MessageTracker::addToMessageTracker : Duplicate Tracking of a message detected.");
         prismAssert (false, __FILE__, __LINE__);
@@ -58,7 +58,7 @@ void MessageTracker::addToMessageTracker(const PrismMessage* pPrismMessage)
 
     if (true == MessageTracker::m_trackingMessagesWithBt)
     {
-        if (true == (isAKnownMessageWithBt (pPrismMessage)))
+        if (true == (isAKnownMessageWithBt (pWaveMessage)))
         {
             trace (TRACE_LEVEL_FATAL, "MessageTracker::addToMessageTracker : Duplicate Tracking of a Message with Bt detected.");
             prismAssert (false, __FILE__, __LINE__);
@@ -69,28 +69,28 @@ void MessageTracker::addToMessageTracker(const PrismMessage* pPrismMessage)
         }
     }
 
-    PrismThreadId thisThread = PrismThread::getSelf ();
+    WaveThreadId thisThread = WaveThread::getSelf ();
 
-    m_currentlyAllocatedMessagesByThread[thisThread][pPrismMessage] = pPrismMessage;
-    m_currentlyAllocatedMessages[pPrismMessage]                     = thisThread;
+    m_currentlyAllocatedMessagesByThread[thisThread][pWaveMessage] = pWaveMessage;
+    m_currentlyAllocatedMessages[pWaveMessage]                     = thisThread;
 
     if (true == MessageTracker::m_trackingMessagesWithBt)
     {
         string btstring;
         FrameworkToolKit::obtainBtString (2, 10, btstring);
-        m_currentlyAllocatedMessagesWithBt[pPrismMessage]           = btstring;
+        m_currentlyAllocatedMessagesWithBt[pWaveMessage]           = btstring;
     }
 
     m_messageTrackerMutex.unlock ();
 }
 
-void MessageTracker::deleteFromMessageTracker(const PrismMessage* pPrismMessage)
+void MessageTracker::deleteFromMessageTracker(const WaveMessage* pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     m_messageTrackerMutex.lock ();
 
-    if (false == (isAKnownMessage (pPrismMessage)))
+    if (false == (isAKnownMessage (pWaveMessage)))
     {
         // When bt tracker is turned off, we clear "Message pointer" --> "bt string" map too.
         trace (TRACE_LEVEL_FATAL, "MessageTracker::deleteFromMessageTracker :Deleting of an unknown message. Possible DOUBLE DELETION / MEMORY CORRUPTION Detected.");
@@ -103,50 +103,50 @@ void MessageTracker::deleteFromMessageTracker(const PrismMessage* pPrismMessage)
 
     if (true == MessageTracker::m_trackingMessagesWithBt)
     {
-        if (true == (isAKnownMessageWithBt (pPrismMessage)))
+        if (true == (isAKnownMessageWithBt (pWaveMessage)))
         {
-            m_currentlyAllocatedMessagesWithBt.erase(pPrismMessage);
+            m_currentlyAllocatedMessagesWithBt.erase(pWaveMessage);
         }
     }
 
-    m_currentlyAllocatedMessagesByThread[m_currentlyAllocatedMessages[pPrismMessage]].erase (pPrismMessage);
-    m_currentlyAllocatedMessages.erase (pPrismMessage);
+    m_currentlyAllocatedMessagesByThread[m_currentlyAllocatedMessages[pWaveMessage]].erase (pWaveMessage);
+    m_currentlyAllocatedMessages.erase (pWaveMessage);
 
     m_messageTrackerMutex.unlock ();
 }
 
 // private, no-lock.
-void MessageTracker::getMessagesForAThread (const PrismThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
+void MessageTracker::getMessagesForAThread (const WaveThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
 {
-    map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
-    map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::const_iterator end1 = m_currentlyAllocatedMessagesByThread.end ();
+    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
+    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator end1 = m_currentlyAllocatedMessagesByThread.end ();
 
     if (end1 == itr1)
     {
         return;
     }
 
-    const map<const PrismMessage *, const PrismMessage *> &messageMap = itr1->second;
+    const map<const WaveMessage *, const WaveMessage *> &messageMap = itr1->second;
 
-    map<const PrismMessage *, const PrismMessage *>::const_iterator itr2 = messageMap.begin ();
-    map<const PrismMessage *, const PrismMessage *>::const_iterator end2 = messageMap.end ();
+    map<const WaveMessage *, const WaveMessage *>::const_iterator itr2 = messageMap.begin ();
+    map<const WaveMessage *, const WaveMessage *>::const_iterator end2 = messageMap.end ();
 
     for (; end2 != itr2; itr2++)
     {
-        const PrismMessage *pPrismMessage = itr2->second;
-        prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+        const WaveMessage *pWaveMessage = itr2->second;
+        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-        messageServiceIds.push_back     (pPrismMessage->getServiceCode ());
-        messageOperationCodes.push_back (pPrismMessage->getOperationCode ());
-        messageTypes.push_back          (pPrismMessage->getType ());
+        messageServiceIds.push_back     (pWaveMessage->getServiceCode ());
+        messageOperationCodes.push_back (pWaveMessage->getOperationCode ());
+        messageTypes.push_back          (pWaveMessage->getType ());
 
-        string btstring; // = string (typeid (*pPrismMessage).name ()) + "\r\n"; // To print ClassName of message.
+        string btstring; // = string (typeid (*pWaveMessage).name ()) + "\r\n"; // To print ClassName of message.
 
         if (true == MessageTracker::m_trackingMessagesWithBt)
         {
-            if (isAKnownMessageWithBt (pPrismMessage))
+            if (isAKnownMessageWithBt (pWaveMessage))
             {
-                btstring += m_currentlyAllocatedMessagesWithBt[pPrismMessage];
+                btstring += m_currentlyAllocatedMessagesWithBt[pWaveMessage];
             }
         }
 
@@ -158,9 +158,9 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
 {
     m_messageTrackerMutex.lock ();
 
-    PrismThread *pPrismThread = PrismThread::getPrismThreadForServiceId (prismServiceId);
+    WaveThread *pWaveThread = WaveThread::getWaveThreadForServiceId (prismServiceId);
 
-    if (NULL == pPrismThread)
+    if (NULL == pWaveThread)
     {
         tracePrintf (TRACE_LEVEL_ERROR, true, false, "MessageTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", prismServiceId);
 
@@ -168,7 +168,7 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
         return;
     }
 
-    PrismThreadId prismThreadId = pPrismThread->getId ();
+    WaveThreadId prismThreadId = pWaveThread->getId ();
 
     getMessagesForAThread (prismThreadId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
 
@@ -178,24 +178,24 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
     {
         // 1. Get set of all thread ids tracked.
 
-        set<PrismThreadId> setOfAllPrismThreadIds;
+        set<WaveThreadId> setOfAllWaveThreadIds;
 
-        map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.begin ();
-        map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::const_iterator end1 = m_currentlyAllocatedMessagesByThread.end ();
+        map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.begin ();
+        map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator end1 = m_currentlyAllocatedMessagesByThread.end ();
 
         for (; end1 != itr1; itr1++)
         {
-            setOfAllPrismThreadIds.insert (itr1->first);
+            setOfAllWaveThreadIds.insert (itr1->first);
         }
 
 
         // 2. Get set of thread ids corresponding to all services.
 
-        set<PrismThreadId> setOfPrismThreadIdsForAllServices;
+        set<WaveThreadId> setOfWaveThreadIdsForAllServices;
 
         vector<WaveServiceId> allWaveServiceIds;
 
-        PrismThread::getListOfServiceIds (allWaveServiceIds);
+        WaveThread::getListOfServiceIds (allWaveServiceIds);
 
         vector<WaveServiceId>::const_iterator itr2 = allWaveServiceIds.begin ();
         vector<WaveServiceId>::const_iterator end2 = allWaveServiceIds.end ();
@@ -204,11 +204,11 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
         {
             WaveServiceId prismServiceIdForAService = *itr2;
 
-            PrismThread *pPrismThreadForAService = PrismThread::getPrismThreadForServiceId (prismServiceIdForAService);
+            WaveThread *pWaveThreadForAService = WaveThread::getWaveThreadForServiceId (prismServiceIdForAService);
 
-            if (NULL != pPrismThreadForAService)
+            if (NULL != pWaveThreadForAService)
             {
-                setOfPrismThreadIdsForAllServices.insert (pPrismThreadForAService->getId ());
+                setOfWaveThreadIdsForAllServices.insert (pWaveThreadForAService->getId ());
             }
         }
 
@@ -216,17 +216,17 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
         // 3. Prepare a vector of service ids corresponding to thread ids, each of which is 'not related to any service.'
         //    i.e. collect all the thread ids which are in '1.', but not in '2.'
 
-        vector<PrismThreadId> vectorOfNonServicePrismThreads (setOfAllPrismThreadIds.size ());
+        vector<WaveThreadId> vectorOfNonServiceWaveThreads (setOfAllWaveThreadIds.size ());
 
-        vector<PrismThreadId>::iterator endOfDifference = std::set_difference (setOfAllPrismThreadIds.begin (), setOfAllPrismThreadIds.end (), setOfPrismThreadIdsForAllServices.begin (), setOfPrismThreadIdsForAllServices.end (), vectorOfNonServicePrismThreads.begin ());
+        vector<WaveThreadId>::iterator endOfDifference = std::set_difference (setOfAllWaveThreadIds.begin (), setOfAllWaveThreadIds.end (), setOfWaveThreadIdsForAllServices.begin (), setOfWaveThreadIdsForAllServices.end (), vectorOfNonServiceWaveThreads.begin ());
 
-        vectorOfNonServicePrismThreads.resize (endOfDifference - vectorOfNonServicePrismThreads.begin ());
+        vectorOfNonServiceWaveThreads.resize (endOfDifference - vectorOfNonServiceWaveThreads.begin ());
 
 
         // 4. Get Message tracker information for thread ids obtained in '3.' above.
 
-        vector<PrismThreadId>::const_iterator itr3 = vectorOfNonServicePrismThreads.begin ();
-        vector<PrismThreadId>::const_iterator end3 = vectorOfNonServicePrismThreads.end ();
+        vector<WaveThreadId>::const_iterator itr3 = vectorOfNonServiceWaveThreads.begin ();
+        vector<WaveThreadId>::const_iterator end3 = vectorOfNonServiceWaveThreads.end ();
 
         for (; end3 != itr3; itr3++)
         {
@@ -235,31 +235,31 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
     }
 
 #if 0
-    PrismThreadId                                                                  prismThreadId    = (PrismThread::getPrismThreadForServiceId (prismServiceId))->getId ();
-    map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::iterator threadElement    = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
-    map<PrismThreadId, map<const PrismMessage *, const PrismMessage *> >::iterator threadEndElement = m_currentlyAllocatedMessagesByThread.end  ();
+    WaveThreadId                                                                  prismThreadId    = (WaveThread::getWaveThreadForServiceId (prismServiceId))->getId ();
+    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadElement    = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
+    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadEndElement = m_currentlyAllocatedMessagesByThread.end  ();
 
     string btstring = "";
     if (threadEndElement != threadElement)
     {
-        map<const PrismMessage *, const PrismMessage *>::iterator messageElement    = m_currentlyAllocatedMessagesByThread[prismThreadId].begin ();
-        map<const PrismMessage *, const PrismMessage *>::iterator messageEndElement = m_currentlyAllocatedMessagesByThread[prismThreadId].end   ();
+        map<const WaveMessage *, const WaveMessage *>::iterator messageElement    = m_currentlyAllocatedMessagesByThread[prismThreadId].begin ();
+        map<const WaveMessage *, const WaveMessage *>::iterator messageEndElement = m_currentlyAllocatedMessagesByThread[prismThreadId].end   ();
 
         while (messageEndElement != messageElement)
         {
-            const PrismMessage *pPrismMessage = messageElement->second;
+            const WaveMessage *pWaveMessage = messageElement->second;
 
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-            messageServiceIds.push_back (pPrismMessage->getServiceCode ());
-            messageOperationCodes.push_back (pPrismMessage->getOperationCode ());
-            messageTypes.push_back (pPrismMessage->getType ());
+            messageServiceIds.push_back (pWaveMessage->getServiceCode ());
+            messageOperationCodes.push_back (pWaveMessage->getOperationCode ());
+            messageTypes.push_back (pWaveMessage->getType ());
 
             if (true == MessageTracker::m_trackingMessagesWithBt)
             {
-                if (isAKnownMessageWithBt (pPrismMessage))
+                if (isAKnownMessageWithBt (pWaveMessage))
                 {
-                    btstring = m_currentlyAllocatedMessagesWithBt[pPrismMessage];
+                    btstring = m_currentlyAllocatedMessagesWithBt[pWaveMessage];
                 }
                 else
                 {
@@ -280,12 +280,12 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
     m_messageTrackerMutex.unlock ();
 }
 
-bool MessageTracker::isAKnownMessageWithBt (const PrismMessage *pPrismMessage)
+bool MessageTracker::isAKnownMessageWithBt (const WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    map<const PrismMessage *, string>::iterator element    = m_currentlyAllocatedMessagesWithBt.find (pPrismMessage);
-    map<const PrismMessage *, string>::iterator endElement = m_currentlyAllocatedMessagesWithBt.end ();
+    map<const WaveMessage *, string>::iterator element    = m_currentlyAllocatedMessagesWithBt.find (pWaveMessage);
+    map<const WaveMessage *, string>::iterator endElement = m_currentlyAllocatedMessagesWithBt.end ();
     bool                                        found      = false;
 
     if (endElement != element)

@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DatabaseObjectManagerExecuteCursorCfgCommandMessage::DatabaseObjectManagerExecuteCursorCfgCommandMessage (e_cursorOpCode opCode, string &cursorCommandString, const string &className)
-	: PrismMessage          (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_CFG_COMMAND),
+	: WaveMessage          (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_CFG_COMMAND),
       m_cursorCommandString	(cursorCommandString),
       m_commandType	        (opCode),
       m_className           (className)
@@ -49,7 +49,7 @@ void DatabaseObjectManagerExecuteCursorCfgCommandMessage::setClassName (const st
 
 DatabaseObjectManagerExecuteCursorQueryCommandMessage::DatabaseObjectManagerExecuteCursorQueryCommandMessage 
 (string &queryString)
-: PrismMessage (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_QUERY_COMMAND)
+: WaveMessage (DatabaseObjectManagerExecuteQueryMessage::getDatabaseObjectManagerServiceId (), DATABASE_OBJECT_MANAGER_EXECUTE_CURSOR_QUERY_COMMAND)
 {
 	m_cursorQueryString = queryString;
 }

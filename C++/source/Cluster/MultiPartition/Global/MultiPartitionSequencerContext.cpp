@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-MultiPartitionSynchronousLinearSequencerContext::MultiPartitionSynchronousLinearSequencerContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismSynchronousLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+MultiPartitionSynchronousLinearSequencerContext::MultiPartitionSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismSynchronousLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_pWavePartitionManagedObject(NULL)
 {
         // Do nothing.

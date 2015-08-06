@@ -18,7 +18,7 @@ class ClusterRejoinContext : public PrismLinearSequencerContext
     private:
     protected:
     public:
-                                ClusterRejoinContext       (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                ClusterRejoinContext       (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~ClusterRejoinContext       (); 
 
                 bool            getIsReplaceRejoin         () const;

@@ -28,11 +28,11 @@ UI32 messageCount = 0;
 RegressionTestObjectManager::RegressionTestObjectManager ()
     : WaveLocalObjectManager (getServiceName ())
 {
-    addOperationMap (REGRESSION_GET_TEST_SERVICE_ENTRIES,   reinterpret_cast<PrismMessageHandler> (&RegressionTestObjectManager::getTestServiceEntriesMessageHandler));
-    addOperationMap (REGRESSION_SET_TEST_SERVICE_STATE,     reinterpret_cast<PrismMessageHandler> (&RegressionTestObjectManager::setTestServiceStateMessageHandler));
-    addOperationMap (REGRESSION_START_REGRESSION,           reinterpret_cast<PrismMessageHandler> (&RegressionTestObjectManager::startRegressionMessageHandler));
-    addOperationMap (REGRESSION_PREPARE_TEST_FOR_A_SERVICE, reinterpret_cast<PrismMessageHandler> (&RegressionTestObjectManager::prepareAServiceTestMessageHandler));
-    addOperationMap (REGRESSION_RUN_TEST_FOR_A_SERVICE,     reinterpret_cast<PrismMessageHandler> (&RegressionTestObjectManager::runAServiceTestMessageHandler));
+    addOperationMap (REGRESSION_GET_TEST_SERVICE_ENTRIES,   reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::getTestServiceEntriesMessageHandler));
+    addOperationMap (REGRESSION_SET_TEST_SERVICE_STATE,     reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::setTestServiceStateMessageHandler));
+    addOperationMap (REGRESSION_START_REGRESSION,           reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::startRegressionMessageHandler));
+    addOperationMap (REGRESSION_PREPARE_TEST_FOR_A_SERVICE, reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::prepareAServiceTestMessageHandler));
+    addOperationMap (REGRESSION_RUN_TEST_FOR_A_SERVICE,     reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::runAServiceTestMessageHandler));
 }
 
 RegressionTestObjectManager *RegressionTestObjectManager::getInstance ()
@@ -54,37 +54,37 @@ string RegressionTestObjectManager::getServiceName ()
     return ("Regression");
 }
 
-PrismMessage *RegressionTestObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *RegressionTestObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case REGRESSION_GET_TEST_SERVICE_ENTRIES :
-            pPrismMessage = new RegressionTestObjectManagerGetTestServiceEntriesMessage;
+            pWaveMessage = new RegressionTestObjectManagerGetTestServiceEntriesMessage;
             break;
 
         case REGRESSION_SET_TEST_SERVICE_STATE :
-            pPrismMessage = new RegressionTestObjectManagerSetTestServiceStateMessage;
+            pWaveMessage = new RegressionTestObjectManagerSetTestServiceStateMessage;
             break;
 
         case REGRESSION_START_REGRESSION :
-            pPrismMessage = new RegressionTestObjectManagerStartRegressionMessage;
+            pWaveMessage = new RegressionTestObjectManagerStartRegressionMessage;
             break;
 
         case REGRESSION_PREPARE_TEST_FOR_A_SERVICE :
-            pPrismMessage = new RegressionTestObjectManagerPrepareTestForAServiceMessage;
+            pWaveMessage = new RegressionTestObjectManagerPrepareTestForAServiceMessage;
             break;
 
         case REGRESSION_RUN_TEST_FOR_A_SERVICE :
-            pPrismMessage = new RegressionTestObjectManagerRunTestForAServiceMessage;
+            pWaveMessage = new RegressionTestObjectManagerRunTestForAServiceMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void RegressionTestObjectManager::getTestServiceEntriesMessageHandler (RegressionTestObjectManagerGetTestServiceEntriesMessage *pMessage)

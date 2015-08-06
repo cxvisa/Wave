@@ -367,7 +367,7 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 LocationId    getLastUsedLocationIdInPrismFrameworkObjectManager               () const;
                 void          setLastUsedLocationIdInPrismFrameworkObjectManager               (const LocationId &locationId);
 
-        virtual PrismMessage *createMessageInstance                                            (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance                                            (const UI32 &operationCode);
                 void          secondaryNodeClusterFailureStep                                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          primaryNodeClusterSuccessStep                                    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
                 void          primaryNodeClusterFailureStep                                    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
@@ -599,10 +599,10 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 UI32                         getSyncState                                          ();
                 void                         setSyncState                                          (const UI32& syncState);
                 UI32                         getStandbySyncState                                   ();
-        static void                          addPrismThreadId                                      (const PrismThreadId &prismThreadId);
-        static void                          removePrismThreadId                                   (const PrismThreadId &prismThreadId);
-        static void                          getAllPrismThreads                                    (map<PrismThreadId, PrismThreadId> &prismThreadsMap);
-        static void                          deleteAllPrismThreads                                 ();
+        static void                          addWaveThreadId                                      (const WaveThreadId &prismThreadId);
+        static void                          removeWaveThreadId                                   (const WaveThreadId &prismThreadId);
+        static void                          getAllWaveThreads                                    (map<WaveThreadId, WaveThreadId> &prismThreadsMap);
+        static void                          deleteAllWaveThreads                                 ();
                 bool                         getPrismConfigurationValidity                         ();
                ClientStreamingSocket*        getClientStreamingSocketForRemoteLocation             (LocationId locationId);
         static  SI32                         getLocationPort                                       ();

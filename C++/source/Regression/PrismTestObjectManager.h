@@ -21,7 +21,7 @@ namespace WaveNs
 class PrismTestObjectManager : public WaveLocalObjectManager
 {
     private :
-        virtual PrismMessage *createMessageInstance (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance (const UI32 &operationCode);
 
     protected :
                      PrismTestObjectManager              (const string &prismTestObjectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);

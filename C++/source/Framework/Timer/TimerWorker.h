@@ -40,8 +40,8 @@ class TimerWorker : public WaveWorker
                             TimerWorker                             (WaveObjectManager *pWaveObjectManager);
                            ~TimerWorker                             ();
 
-                void        timerSendOneWay                         (PrismMessage *pPrismMessage);
-                void        timerReply                              (PrismMessage *pPrismMessage);
+                void        timerSendOneWay                         (WaveMessage *pWaveMessage);
+                void        timerReply                              (WaveMessage *pWaveMessage);
         static  void        processTimeOut                          ();
         static  void        resetMaxDelay                           ();
         static  void        showMaxDelay                            ();

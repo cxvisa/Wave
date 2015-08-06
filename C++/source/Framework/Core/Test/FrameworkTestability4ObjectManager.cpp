@@ -90,11 +90,11 @@ FrameworkTestability4ObjectManager::FrameworkTestability4ObjectManager ()
     addManagedClass (PrismTestManagedView1::getClassName ());
     addManagedClass (PrismTestManagedView2::getClassName ());
 
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE8,              reinterpret_cast<PrismMessageHandler> (&FrameworkTestability4ObjectManager::frameworkTestabilityMessage8RequestHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE8,              reinterpret_cast<WaveMessageHandler> (&FrameworkTestability4ObjectManager::frameworkTestabilityMessage8RequestHandler));
     
-    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE9, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability4ObjectManager::frameworkTestability9MessageHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_MESSAGE9, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability4ObjectManager::frameworkTestability9MessageHandler));
 
-    addOperationMap (FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS, reinterpret_cast<PrismMessageHandler> (&FrameworkTestability4ObjectManager::getManagedObjectsMessageHandler));
+    addOperationMap (FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS, reinterpret_cast<WaveMessageHandler> (&FrameworkTestability4ObjectManager::getManagedObjectsMessageHandler));
 }
 
 FrameworkTestability4ObjectManager::~FrameworkTestability4ObjectManager ()
@@ -128,25 +128,25 @@ void FrameworkTestability4ObjectManager::initialize (WaveAsynchronousContextForB
     pWaveAsynchronousContextForBootPhases->callback ();
 }
 
-PrismMessage *FrameworkTestability4ObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *FrameworkTestability4ObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS :
-            pPrismMessage = new FrameworkTestability4ObjectManagerGetManagedObjects;
+            pWaveMessage = new FrameworkTestability4ObjectManagerGetManagedObjects;
             break;
         
         case FRAMEWORK_TESTABILITY_MESSAGE9 :
-            pPrismMessage = new FrameworkTestabilityMessage9;
+            pWaveMessage = new FrameworkTestabilityMessage9;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *FrameworkTestability4ObjectManager::createManagedObjectInstance (const string &managedClassName)
@@ -671,7 +671,7 @@ void FrameworkTestability4ObjectManager::simpleTransactionTestStep (FrameworkPer
 {
     trace (TRACE_LEVEL_INFO, "Simple Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -1025,7 +1025,7 @@ void FrameworkTestability4ObjectManager::simpleQueryByAttributeTestStep (Framewo
 {
     trace (TRACE_LEVEL_INFO, "Simple Query By ATtributes Test ...");
 
-    FrameworkTestabilityMessage8   *pFrameworkTestabilityMessage8   = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8   *pFrameworkTestabilityMessage8   = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     UI32                            numberOfObjectsToCreate         = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (PrismTestManagedObject1::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability4ObjectManager::simpleQueryTestCallback), pFrameworkPersistenceTestContext);
 
@@ -2002,7 +2002,7 @@ void FrameworkTestability4ObjectManager::largeTransactionTestStep (FrameworkPers
 {
     trace (TRACE_LEVEL_INFO, "Large Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -2041,7 +2041,7 @@ void FrameworkTestability4ObjectManager::simpleOneToAssociationTransactionTestSt
 {
     trace (TRACE_LEVEL_INFO, "Simple One-One Association Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -2091,7 +2091,7 @@ void FrameworkTestability4ObjectManager::simpleOneToAssociationCanBeEmptyTransac
 {
     trace (TRACE_LEVEL_INFO, "Simple One-One Association Can Be Empty Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -2172,7 +2172,7 @@ void FrameworkTestability4ObjectManager::simpleOneToOneAssociationQueryUsingIsNo
 void FrameworkTestability4ObjectManager::simpleOneToOneAssociationQueryByManagedViewTestStep (FrameworkPersistenceTestContext *pFrameworkPersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple One-One Association Query By Managed View...");
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
 
@@ -2206,7 +2206,7 @@ void FrameworkTestability4ObjectManager::simpleOneToOneAssociationQueryByManaged
 void FrameworkTestability4ObjectManager::simpleOneToOneAssociationQueryByManagedViewWithUnionSqlTestStep (FrameworkPersistenceTestContext *pFrameworkPersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple One-One Association Query By Managed View With Union support Test...");
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
 
@@ -2782,7 +2782,7 @@ void FrameworkTestability4ObjectManager::largeOneToAssociationTransactionTestSte
 {
     trace (TRACE_LEVEL_INFO, "Large One-One Association Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -2831,7 +2831,7 @@ void FrameworkTestability4ObjectManager::simpleDerivationTransactionTestStep (Fr
 {
     trace (TRACE_LEVEL_INFO, "Simple Derivation Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -3197,7 +3197,7 @@ void FrameworkTestability4ObjectManager::largeDerivationTransactionTestStep (Fra
 {
     trace (TRACE_LEVEL_INFO, "Large Derivation Transaction Test ...");
 
-    FrameworkTestabilityMessage8      *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8      *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                         status                        = WAVE_MESSAGE_SUCCESS;
     UI32                               numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                               i                             = 0;
@@ -3249,7 +3249,7 @@ void FrameworkTestability4ObjectManager::simpleOneToManyAssociationTransactionTe
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Association Transaction Test ...");
 
-        FrameworkTestabilityMessage8         *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+        FrameworkTestabilityMessage8         *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -3789,7 +3789,7 @@ void FrameworkTestability4ObjectManager::largeOneToManyAssociationTransactionTes
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-Many Association Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -3858,7 +3858,7 @@ void FrameworkTestability4ObjectManager::simpleOneToManyMultipleAssociationsInHi
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Muiltiple Associations In Hierarchy Transaction Test ...");
 
-        FrameworkTestabilityMessage8         *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+        FrameworkTestabilityMessage8         *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -4240,7 +4240,7 @@ void FrameworkTestability4ObjectManager::largeOneToManyMultipleAssociationsInHie
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-Many Muiltiple Associations In Hierarchy Transaction Test ...");
 
-        FrameworkTestabilityMessage8         *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+        FrameworkTestabilityMessage8         *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -4312,7 +4312,7 @@ void FrameworkTestability4ObjectManager::simpleOneToOneCompositionTransactionTes
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-One Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -4442,7 +4442,7 @@ void FrameworkTestability4ObjectManager::simpleOneToOneCompositionUpdateTestStep
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-One Composition Update Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -4644,7 +4644,7 @@ void FrameworkTestability4ObjectManager::largeOneToOneCompositionTransactionTest
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-One Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -4693,7 +4693,7 @@ void FrameworkTestability4ObjectManager::simpleOneToManyCompositionTransactionTe
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -4838,7 +4838,7 @@ void FrameworkTestability4ObjectManager::simpleOneToManyCompositionUpdateTestSte
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Composition Update Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -5017,7 +5017,7 @@ void FrameworkTestability4ObjectManager::simpleOneToOneToOneCompositionTransacti
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-One-To-One Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -5492,7 +5492,7 @@ void FrameworkTestability4ObjectManager::largeOneToManyCompositionTransactionTes
 {
     trace (TRACE_LEVEL_INFO, "Large One-To-Many Composition Transaction Test ...");
 
-    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPPrismMessage ());
+    FrameworkTestabilityMessage8             *pFrameworkTestabilityMessage8 = reinterpret_cast<FrameworkTestabilityMessage8 *> (pFrameworkPersistenceTestContext->getPWaveMessage ());
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     UI32                                      numberOfObjectsToCreate       = pFrameworkTestabilityMessage8->getNumberOfObjectsToBeCreated ();
     UI32                                      i                             = 0;
@@ -5712,8 +5712,8 @@ void FrameworkTestability4ObjectManager::frameworkTestability9MessageHandler (Fr
 
     WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability4ObjectManager::frameworkTestability10MessageSendToWaveClusterCallback), pMessage);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage10);
-    pWaveSendToClusterContext->setPPrismMessageForPhase2 (NULL);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage10);
+    pWaveSendToClusterContext->setPWaveMessageForPhase2 (NULL);
     
     sendToWaveCluster (pWaveSendToClusterContext);
 
@@ -5734,7 +5734,7 @@ void FrameworkTestability4ObjectManager::frameworkTestability10MessageSendToWave
         status = WAVE_MESSAGE_SUCCESS;
     }
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
     
     pMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);

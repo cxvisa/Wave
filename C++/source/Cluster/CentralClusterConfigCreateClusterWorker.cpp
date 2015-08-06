@@ -23,28 +23,28 @@ namespace WaveNs
 CentralClusterConfigCreateClusterWorker::CentralClusterConfigCreateClusterWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (CLUSTER_CREATE_CLUSTER, reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigCreateClusterWorker::createClusterMessageHandler));
+    addOperationMap (CLUSTER_CREATE_CLUSTER, reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigCreateClusterWorker::createClusterMessageHandler));
 }
 
 CentralClusterConfigCreateClusterWorker::~CentralClusterConfigCreateClusterWorker ()
 {
 }
 
-PrismMessage *CentralClusterConfigCreateClusterWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CentralClusterConfigCreateClusterWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLUSTER_CREATE_CLUSTER :
-            pPrismMessage = new ClusterObjectManagerCreateClusterMessage;
+            pWaveMessage = new ClusterObjectManagerCreateClusterMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void CentralClusterConfigCreateClusterWorker::createClusterMessageHandler (ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage)
@@ -70,7 +70,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterValidateStep (PrismLi
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigCreateClusterWorker::createClusterValidateStep : starting ...");
 
-    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                                      i                                         = 0;
     string                                    nodeName;
     UI32                                      nodePort;
@@ -288,7 +288,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterResetThisNodeIpAddres
 
 void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                                      i                                         = 0;
     string                                    secondaryNode;
     UI32                                      secondaryNodePort;
@@ -310,7 +310,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
     
     pPrismCreateClusterWithNodesMessage->setIsAddNodeForSpecialCaseFlag (pClusterObjectManagerCreateClusterMessage->getIsAddNodeForSpecialCaseFlag ());
 
-    status = send (pPrismCreateClusterWithNodesMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback), pPrismLinearSequencerContext);
+    status = send (pPrismCreateClusterWithNodesMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback), pPrismLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -325,7 +325,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback : Entering ...");
 
     PrismLinearSequencerContext              *pPrismLinearSequencerContext              = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
-    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     ResourceId                                status                                    = WAVE_MESSAGE_SUCCESS;
     ResourceId                                completionStatus                          = WAVE_MESSAGE_SUCCESS;
     UI32                                      i                                         = 0;
@@ -377,7 +377,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
 
 void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                                      i                                         = 0;
     string                                    secondaryNode;
     UI32                                      secondaryNodePort;
@@ -473,7 +473,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (PrismLine
 
 void CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = reinterpret_cast<ClusterObjectManagerCreateClusterMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                                      i                                         = 0;
     string                                    secondaryNode;
     UI32                                      secondaryNodePort;

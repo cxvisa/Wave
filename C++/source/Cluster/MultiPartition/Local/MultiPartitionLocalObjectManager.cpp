@@ -21,7 +21,7 @@ namespace WaveNs
 
     MultiPartitionLocalObjectManager::MultiPartitionLocalObjectManager ()  : WaveLocalObjectManager  (getServiceName ())
     {
-        addOperationMap (MULTI_PARTITION_DELETE_LOCAL_PARTITION_INSTANCE,  reinterpret_cast<PrismMessageHandler> (&MultiPartitionLocalObjectManager::tenancyDeleteMessageHandler));    
+        addOperationMap (MULTI_PARTITION_DELETE_LOCAL_PARTITION_INSTANCE,  reinterpret_cast<WaveMessageHandler> (&MultiPartitionLocalObjectManager::tenancyDeleteMessageHandler));    
     }
 
     MultiPartitionLocalObjectManager::~MultiPartitionLocalObjectManager ()
@@ -47,22 +47,22 @@ namespace WaveNs
         return ((getInstance ())->getServiceId ());
     }
 
-    PrismMessage *MultiPartitionLocalObjectManager::createMessageInstance (const UI32 &operationCode)
+    WaveMessage *MultiPartitionLocalObjectManager::createMessageInstance (const UI32 &operationCode)
     {
-        PrismMessage *pPrismMessage = NULL;
+        WaveMessage *pWaveMessage = NULL;
 
         switch (operationCode)
         {
             case MULTI_PARTITION_DELETE_LOCAL_PARTITION_INSTANCE :
-                 pPrismMessage = new MultiPartitionDeleteLocalPartitionMessage ();
-                 prismAssert (NULL != pPrismMessage , __FILE__, __LINE__);
+                 pWaveMessage = new MultiPartitionDeleteLocalPartitionMessage ();
+                 prismAssert (NULL != pWaveMessage , __FILE__, __LINE__);
                  break;
 
             default :
-                pPrismMessage = NULL;
+                pWaveMessage = NULL;
         }
 
-        return (pPrismMessage);
+        return (pWaveMessage);
     }
 
     void  MultiPartitionLocalObjectManager::tenancyDeleteMessageHandler( MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage)
@@ -96,7 +96,7 @@ namespace WaveNs
 
          tracePrintf(TRACE_LEVEL_INFO,  "MultiPartitionLocalObjectManager::validateInputs called " );
 
-         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPPrismMessage ());
+         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
          WaveNs::prismAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
          
          do {
@@ -123,7 +123,7 @@ namespace WaveNs
 
          tracePrintf(TRACE_LEVEL_INFO,  "MultiPartitionLocalObjectManager::processPartitionObjectCleanup  called. " );
 
-         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPPrismMessage ());
+         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
          WaveNs::prismAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
 
          UI32 senderServiceId   = pDeleteMTMessage->getSenderServiceId ();

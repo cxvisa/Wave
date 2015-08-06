@@ -7,7 +7,7 @@
 #ifndef DATABASEOBJECTMANAGEREXECUTEQUERYMESSAGEFORCOUNT_H
 #define DATABASEOBJECTMANAGEREXECUTEQUERYMESSAGEFORCOUNT_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "libpq-fe.h"
 
 #include <string>
@@ -21,7 +21,7 @@ namespace WaveNs
 class WaveManagedObject;
 class WaveObjectManager;
 
-class DatabaseObjectManagerExecuteQueryMessageForCount : public PrismMessage
+class DatabaseObjectManagerExecuteQueryMessageForCount : public WaveMessage
 {
     private :
     protected :

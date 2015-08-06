@@ -44,7 +44,7 @@ PrismPosixThread::PrismPosixThread (const PrismPosixThread &prismPosixThread)
 
 PrismPosixThread::~PrismPosixThread ()
 {
-    PrismFrameworkObjectManager::removePrismThreadId (m_pThreadId);
+    PrismFrameworkObjectManager::removeWaveThreadId (m_pThreadId);
 }
 
 PrismPosixThread &PrismPosixThread::operator = (const PrismPosixThread &prismPosixThread)
@@ -117,7 +117,7 @@ WaveThreadStatus PrismPosixThread::run ()
     }
     else
     {
-        PrismFrameworkObjectManager::addPrismThreadId (m_pThreadId);
+        PrismFrameworkObjectManager::addWaveThreadId (m_pThreadId);
         return (WAVE_THREAD_SUCCESS);
     }
 }
@@ -148,7 +148,7 @@ const PrismPosixThreadContext *PrismPosixThread::getThreadContext()
     return (m_pThreadContext);
 }
 
-PrismThreadId PrismPosixThread::getId () const
+WaveThreadId PrismPosixThread::getId () const
 {
     return (m_pThreadId);
 }

@@ -20,8 +20,8 @@
 namespace WaveNs
 {
 
-FrameworkPersistenceTestContext::FrameworkPersistenceTestContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+FrameworkPersistenceTestContext::FrameworkPersistenceTestContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_numberOfObjectsToBeCreated (0),
       m_numberOfObjectsForPartialQuery (0),
     m_numberOfExpectedResults (0)

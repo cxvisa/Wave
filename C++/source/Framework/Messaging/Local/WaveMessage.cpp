@@ -3,16 +3,16 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#include "PrismMessage.h"
+#include "WaveMessage.h"
 #include "Framework/Utils/PrismCondition.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/PrismMutex.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/TraceUtils.h"
-#include "Framework/Messaging/MessageFactory/PrismMessageFactory.h"
+#include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 #include "Framework/Messaging/MessageTracker/MessageTracker.h"
 #include "Framework/Utils/MemoryUtils.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
 #include "Framework/Attributes/AttributeResourceId.h"
 
@@ -23,7 +23,7 @@ static UI32      s_numberOfMessagesInTheSystemSoFar = 0;
 static UI32      s_numberOfMessagesDeletedInTheSystemSoFar = 0;
 static PrismMutex *pMessageCreationMutex              = NULL;
 
-PrismMessage::PrismMessageBuffer::PrismMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMessage)
+WaveMessage::WaveMessageBuffer::WaveMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMessage)
     : m_size (size),
       m_pBuffer ((void *) pBuffer)
 {
@@ -34,7 +34,7 @@ PrismMessage::PrismMessageBuffer::PrismMessageBuffer (UI32 size, const void *pBu
     }
 }
 
-PrismMessage::PrismMessageBuffer::PrismMessageBuffer (const PrismMessage::PrismMessageBuffer &prismMessagebuffer)
+WaveMessage::WaveMessageBuffer::WaveMessageBuffer (const WaveMessage::WaveMessageBuffer &prismMessagebuffer)
 {
     m_size    = prismMessagebuffer.m_size;
 
@@ -42,12 +42,12 @@ PrismMessage::PrismMessageBuffer::PrismMessageBuffer (const PrismMessage::PrismM
     memcpy (m_pBuffer, prismMessagebuffer.m_pBuffer, m_size);
 }
 
-PrismMessage::PrismMessageBuffer::~PrismMessageBuffer ()
+WaveMessage::WaveMessageBuffer::~WaveMessageBuffer ()
 {
     destroy ();
 }
 
-PrismMessage::PrismMessageBuffer &PrismMessage::PrismMessageBuffer::operator = (const PrismMessage::PrismMessageBuffer &prismMessagebuffer)
+WaveMessage::WaveMessageBuffer &WaveMessage::WaveMessageBuffer::operator = (const WaveMessage::WaveMessageBuffer &prismMessagebuffer)
 {
     destroy ();
 
@@ -59,7 +59,7 @@ PrismMessage::PrismMessageBuffer &PrismMessage::PrismMessageBuffer::operator = (
     return (*this);
 }
 
-void PrismMessage::PrismMessageBuffer::destroy ()
+void WaveMessage::WaveMessageBuffer::destroy ()
 {
     m_size = 0;
 
@@ -70,28 +70,28 @@ void PrismMessage::PrismMessageBuffer::destroy ()
     }
 }
 
-void PrismMessage::PrismMessageBuffer::invalidateBuffer ()
+void WaveMessage::WaveMessageBuffer::invalidateBuffer ()
 {
     m_size    = 0;
     m_pBuffer = NULL;
 }
 
-UI32 PrismMessage::PrismMessageBuffer::getSize () const
+UI32 WaveMessage::WaveMessageBuffer::getSize () const
 {
     return (m_size);
 }
 
-void *PrismMessage::PrismMessageBuffer::getPBuffer () const
+void *WaveMessage::WaveMessageBuffer::getPBuffer () const
 {
     return (m_pBuffer);
 }
 
-void PrismMessage::PrismMessageBuffer::setPBuffer (void *pBuffer)
+void WaveMessage::WaveMessageBuffer::setPBuffer (void *pBuffer)
 {
     m_pBuffer = pBuffer;
 }
 
-PrismMessage::PrismMessage (WaveServiceId serviceCode, UI32 operationCode)
+WaveMessage::WaveMessage (WaveServiceId serviceCode, UI32 operationCode)
     : m_serviceCode                             (serviceCode),
       m_operationCode                           (operationCode),
       m_senderLocationId                        (FrameworkToolKit::getThisLocationId ()),
@@ -146,16 +146,16 @@ PrismMessage::PrismMessage (WaveServiceId serviceCode, UI32 operationCode)
 
     MessageTracker::addToMessageTracker (this);
 
-    m_prismMessageCreatorThreadId = PrismThread::getSelf ();
+    m_prismMessageCreatorThreadId = WaveThread::getSelf ();
 }
 
-PrismMessage::PrismMessage (const PrismMessage &prismMessage)
+WaveMessage::WaveMessage (const WaveMessage &prismMessage)
 {
-    trace (TRACE_LEVEL_FATAL, "PrismMessage::PrismMessage : Copy Constructing a PrismMessage does not make sense and hence not allowed.");
+    trace (TRACE_LEVEL_FATAL, "WaveMessage::WaveMessage : Copy Constructing a WaveMessage does not make sense and hence not allowed.");
     prismAssert (false, __FILE__, __LINE__);
 }
 
-PrismMessage::~PrismMessage ()
+WaveMessage::~WaveMessage ()
 {
     removeAllBuffers ();
 
@@ -173,147 +173,147 @@ PrismMessage::~PrismMessage ()
     pMessageCreationMutex->unlock ();
 }
 
-PrismMessage &PrismMessage::operator = (const PrismMessage &prismMessage)
+WaveMessage &WaveMessage::operator = (const WaveMessage &prismMessage)
 {
-    trace (TRACE_LEVEL_FATAL, "PrismMessage::operator = : Assigning to a PrismMessage does not make sense and hence not allowed.");
+    trace (TRACE_LEVEL_FATAL, "WaveMessage::operator = : Assigning to a WaveMessage does not make sense and hence not allowed.");
     prismAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
 
-WaveMessageType PrismMessage::getType () const
+WaveMessageType WaveMessage::getType () const
 {
     return (static_cast<WaveMessageType> (m_type));
 }
 
-void PrismMessage::setType (WaveMessageType type)
+void WaveMessage::setType (WaveMessageType type)
 {
     m_type = type;
 }
 
-WaveMessagePriority PrismMessage::getPriority () const
+WaveMessagePriority WaveMessage::getPriority () const
 {
     return (static_cast<WaveMessagePriority> (m_priority));
 }
 
-void PrismMessage::setPriority (WaveMessagePriority priority)
+void WaveMessage::setPriority (WaveMessagePriority priority)
 {
     m_priority = priority;
 }
 
-WaveServiceId PrismMessage::getServiceCode () const
+WaveServiceId WaveMessage::getServiceCode () const
 {
     return (m_serviceCode);
 }
 
-void PrismMessage::setServiceCode (const WaveServiceId &serviceCode)
+void WaveMessage::setServiceCode (const WaveServiceId &serviceCode)
 {
     m_serviceCode = serviceCode;
 }
 
-UI32 PrismMessage::getOperationCode () const
+UI32 WaveMessage::getOperationCode () const
 {
     return (m_operationCode);
 }
 
-WaveServiceId PrismMessage::getSenderServiceCode () const
+WaveServiceId WaveMessage::getSenderServiceCode () const
 {
     return (m_senderServiceCode);
 }
 
-UI32 PrismMessage::getMessageId () const
+UI32 WaveMessage::getMessageId () const
 {
     return (m_messageId);
 }
 
-UI32 PrismMessage::getMessageIdAtOriginatingLocation () const
+UI32 WaveMessage::getMessageIdAtOriginatingLocation () const
 {
     return (m_messageIdAtOriginatingLocation);
 }
 
-bool PrismMessage::getIsOneWayMessage () const
+bool WaveMessage::getIsOneWayMessage () const
 {
     return (m_isOneWayMessage);
 }
 
-void PrismMessage::setIsOneWayMessage (bool isOneWayMessage)
+void WaveMessage::setIsOneWayMessage (bool isOneWayMessage)
 {
     m_isOneWayMessage = isOneWayMessage;
 }
 
-bool PrismMessage::getIsSynchronousMessage () const
+bool WaveMessage::getIsSynchronousMessage () const
 {
     return (m_isSynchronousMessage);
 }
 
-void PrismMessage::setIsSynchronousMessage (bool isSynchronousMessage)
+void WaveMessage::setIsSynchronousMessage (bool isSynchronousMessage)
 {
     m_isSynchronousMessage = isSynchronousMessage;
 }
 
-ResourceId PrismMessage::getCompletionStatus () const
+ResourceId WaveMessage::getCompletionStatus () const
 {
     return (m_completionStatus);
 }
 
-PrismMutex *PrismMessage::getPSynchronizingMutex () const
+PrismMutex *WaveMessage::getPSynchronizingMutex () const
 {
     return (m_pSynchronizingMutex);
 }
 
-void PrismMessage::setPSynchronizingMutex (PrismMutex *pSynchronizingMutex)
+void WaveMessage::setPSynchronizingMutex (PrismMutex *pSynchronizingMutex)
 {
     m_pSynchronizingMutex = pSynchronizingMutex;
 }
 
-void PrismMessage::setCompletionStatus (const ResourceId completionStatus)
+void WaveMessage::setCompletionStatus (const ResourceId completionStatus)
 {
     m_completionStatus = completionStatus;
 }
 
-PrismCondition *PrismMessage::getPSynchronizingCondition () const
+PrismCondition *WaveMessage::getPSynchronizingCondition () const
 {
     return (m_pSynchronizingCondition);
 }
 
-void PrismMessage::setPSynchronizingCondition (PrismCondition *pPrismCondition)
+void WaveMessage::setPSynchronizingCondition (PrismCondition *pPrismCondition)
 {
     m_pSynchronizingCondition = pPrismCondition;
 }
 
-LocationId PrismMessage::getSenderLocationId () const
+LocationId WaveMessage::getSenderLocationId () const
 {
     return (m_senderLocationId);
 }
 
-void PrismMessage::setSenderLocationId (const LocationId &locationId)
+void WaveMessage::setSenderLocationId (const LocationId &locationId)
 {
     m_senderLocationId = locationId;
 }
 
-LocationId PrismMessage::getReceiverLocationId () const
+LocationId WaveMessage::getReceiverLocationId () const
 {
     return (m_receiverLocationId);
 }
 
-bool PrismMessage::getIsLastReply () const
+bool WaveMessage::getIsLastReply () const
 {
     return (m_isLastReply);
 }
 
-void PrismMessage::setIsLastReply (bool isLastReply)
+void WaveMessage::setIsLastReply (bool isLastReply)
 {
     m_isLastReply = isLastReply;
 }
 
-WaveMessageStatus PrismMessage::addBuffer (UI32 tag, UI32 size, const void *pBuffer, bool bufferWillBeOwnedByMessage)
+WaveMessageStatus WaveMessage::addBuffer (UI32 tag, UI32 size, const void *pBuffer, bool bufferWillBeOwnedByMessage)
 {
     UI32  tempSize;
     void *pTempBuffer = NULL;
 
     if (NULL == pBuffer)
     {
-        cout << "PrismMessage::addBuffer : Cannot add NULL buffer to a PrismMessage." << endl;
+        cout << "WaveMessage::addBuffer : Cannot add NULL buffer to a WaveMessage." << endl;
         prismAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_ADDING_NULL_BUFFER);
@@ -323,32 +323,32 @@ WaveMessageStatus PrismMessage::addBuffer (UI32 tag, UI32 size, const void *pBuf
 
     if (NULL != pTempBuffer)
     {
-        cout << "PrismMessage::addBuffer : A buffer already exists with the tag (" << tag << ")." << endl;
+        cout << "WaveMessage::addBuffer : A buffer already exists with the tag (" << tag << ")." << endl;
         prismAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_EXISTS);
     }
     else
     {
-        PrismMessageBuffer *pPrismMessageBuffer = new PrismMessageBuffer (size, pBuffer, bufferWillBeOwnedByMessage);
+        WaveMessageBuffer *pWaveMessageBuffer = new WaveMessageBuffer (size, pBuffer, bufferWillBeOwnedByMessage);
 
-        m_buffers[tag] = pPrismMessageBuffer;
+        m_buffers[tag] = pWaveMessageBuffer;
         return (WAVE_MESSAGE_SUCCESS);
     }
 }
 
-void *PrismMessage::findBuffer (UI32 tag, UI32 &size) const
+void *WaveMessage::findBuffer (UI32 tag, UI32 &size) const
 {
-    map<UI32, PrismMessageBuffer *>::const_iterator limitingElement = m_buffers.end ();
-    map<UI32, PrismMessageBuffer *>::const_iterator element         = m_buffers.find (tag);
+    map<UI32, WaveMessageBuffer *>::const_iterator limitingElement = m_buffers.end ();
+    map<UI32, WaveMessageBuffer *>::const_iterator element         = m_buffers.find (tag);
 
     if (limitingElement != element)
     {
-        PrismMessageBuffer *pPrismMessageBuffer = element->second;
+        WaveMessageBuffer *pWaveMessageBuffer = element->second;
 
-        size = pPrismMessageBuffer->getSize ();
+        size = pWaveMessageBuffer->getSize ();
 
-        return (pPrismMessageBuffer->getPBuffer ());
+        return (pWaveMessageBuffer->getPBuffer ());
     }
     else
     {
@@ -358,20 +358,20 @@ void *PrismMessage::findBuffer (UI32 tag, UI32 &size) const
     }
 }
 
-void *PrismMessage::transferBufferToUser (UI32 tag, UI32 &size)
+void *WaveMessage::transferBufferToUser (UI32 tag, UI32 &size)
 {
-    map<UI32, PrismMessageBuffer *>::iterator limitingElement = m_buffers.end ();
-    map<UI32, PrismMessageBuffer *>::iterator element         = m_buffers.find (tag);
+    map<UI32, WaveMessageBuffer *>::iterator limitingElement = m_buffers.end ();
+    map<UI32, WaveMessageBuffer *>::iterator element         = m_buffers.find (tag);
 
     if (limitingElement != element)
     {
-        PrismMessageBuffer *pPrismMessageBuffer = element->second;
-        void             *pTempBuffer       = pPrismMessageBuffer->getPBuffer ();
+        WaveMessageBuffer *pWaveMessageBuffer = element->second;
+        void             *pTempBuffer       = pWaveMessageBuffer->getPBuffer ();
 
         m_buffers.erase (element);
-        size = pPrismMessageBuffer->getSize ();
-        pPrismMessageBuffer->invalidateBuffer ();
-        delete pPrismMessageBuffer;
+        size = pWaveMessageBuffer->getSize ();
+        pWaveMessageBuffer->invalidateBuffer ();
+        delete pWaveMessageBuffer;
 
         return (pTempBuffer);
     }
@@ -383,7 +383,7 @@ void *PrismMessage::transferBufferToUser (UI32 tag, UI32 &size)
     }
 }
 
-WaveMessageStatus PrismMessage::removeBuffer (UI32 tag)
+WaveMessageStatus WaveMessage::removeBuffer (UI32 tag)
 {
     UI32  tempSize;
     void *pTempBuffer = NULL;
@@ -392,24 +392,24 @@ WaveMessageStatus PrismMessage::removeBuffer (UI32 tag)
 
     if (NULL == pTempBuffer)
     {
-        cout << "PrismMessage::addBuffer : A buffer does not exist with the tag (" << tag << ")." << endl;
+        cout << "WaveMessage::addBuffer : A buffer does not exist with the tag (" << tag << ")." << endl;
         prismAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_DOES_NOT_EXIST);
     }
     else
     {
-        map<UI32, PrismMessageBuffer *>::iterator element = m_buffers.find (tag);
+        map<UI32, WaveMessageBuffer *>::iterator element = m_buffers.find (tag);
 
-        PrismMessageBuffer *pPrismMessageBuffer = element->second;
+        WaveMessageBuffer *pWaveMessageBuffer = element->second;
         m_buffers.erase (element);
-        delete pPrismMessageBuffer;
+        delete pWaveMessageBuffer;
 
         return (WAVE_MESSAGE_SUCCESS);
     }
 }
 
-void PrismMessage::setupAttributesForSerializationInAttributeOrderFormat ()
+void WaveMessage::setupAttributesForSerializationInAttributeOrderFormat ()
 {   
     addAttributeNameForOrderToNameMapping ("waveMessageType");
     addAttributeNameForOrderToNameMapping ("messagePriority");
@@ -442,7 +442,7 @@ void PrismMessage::setupAttributesForSerializationInAttributeOrderFormat ()
     addAttributeNameForOrderToNameMapping ("xPathStringsVectorForTimestampUpdate");
 }
 
-void PrismMessage::setupAttributesForSerialization ()
+void WaveMessage::setupAttributesForSerialization ()
 {
     // Currently there is nothing that happens in the SerializableObject::setupAttributesForSerialization ()
     // method.  So we do not need to call it.  If there is somethign at a later time, the following line
@@ -498,35 +498,35 @@ void PrismMessage::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeBool                 (&m_isALastConfigReplay,                            "isALastConfigReplay")); 
 }
 
-void PrismMessage::copyFromRemoteResponse (PrismMessage *pRemotePrismMessageResponse)
+void WaveMessage::copyFromRemoteResponse (WaveMessage *pRemoteWaveMessageResponse)
 {
 #if 0
 //    string serializedData;
 
-//    pRemotePrismMessageResponse->serialize (serializedData);
+//    pRemoteWaveMessageResponse->serialize (serializedData);
 
 //    loadFromSerializedData (serializedData);
 #else
     // Locd the values from the remote response.
 
-    loadFromSerializableObject (pRemotePrismMessageResponse);
+    loadFromSerializableObject (pRemoteWaveMessageResponse);
 #endif
     // Now handle the buffers.
     // Remove all the exisiting buffers and transfer the buffers from the remote messge response to this message.
 
     removeAllBuffers ();
-    pRemotePrismMessageResponse->transferAllBuffers (this);
+    pRemoteWaveMessageResponse->transferAllBuffers (this);
 }
 
-UI32 PrismMessage::getNumberOfBuffers () const
+UI32 WaveMessage::getNumberOfBuffers () const
 {
     return (m_buffers.size ());
 }
 
-void PrismMessage::getBufferTags (vector<UI32> &bufferTagsVector) const
+void WaveMessage::getBufferTags (vector<UI32> &bufferTagsVector) const
 {
-    map<UI32, PrismMessageBuffer *>::const_iterator limitingElement = m_buffers.end ();
-    map<UI32, PrismMessageBuffer *>::const_iterator element         = m_buffers.begin ();
+    map<UI32, WaveMessageBuffer *>::const_iterator limitingElement = m_buffers.end ();
+    map<UI32, WaveMessageBuffer *>::const_iterator element         = m_buffers.begin ();
 
     while (element != limitingElement)
     {
@@ -536,16 +536,16 @@ void PrismMessage::getBufferTags (vector<UI32> &bufferTagsVector) const
     }
 }
 
-void PrismMessage::removeAllBuffers ()
+void WaveMessage::removeAllBuffers ()
 {
-    map<UI32, PrismMessageBuffer *>::iterator  element           = m_buffers.begin () ;
-    map<UI32, PrismMessageBuffer *>::iterator  limitingElement   = m_buffers.end ();
-    PrismMessageBuffer                        *pPrismMessageBuffer = NULL;
+    map<UI32, WaveMessageBuffer *>::iterator  element           = m_buffers.begin () ;
+    map<UI32, WaveMessageBuffer *>::iterator  limitingElement   = m_buffers.end ();
+    WaveMessageBuffer                        *pWaveMessageBuffer = NULL;
 
     while (element != limitingElement)
     {
-        pPrismMessageBuffer = element->second;
-        delete pPrismMessageBuffer;
+        pWaveMessageBuffer = element->second;
+        delete pWaveMessageBuffer;
 
         element++;
     }
@@ -553,28 +553,28 @@ void PrismMessage::removeAllBuffers ()
     m_buffers.clear ();
 }
 
-void PrismMessage::transferAllBuffers (PrismMessage *pPrismMessage)
+void WaveMessage::transferAllBuffers (WaveMessage *pWaveMessage)
 {
-    if (this == pPrismMessage)
+    if (this == pWaveMessage)
     {
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
 
-    map<UI32, PrismMessageBuffer *>::iterator  element           = m_buffers.begin () ;
-    map<UI32, PrismMessageBuffer *>::iterator  limitingElement   = m_buffers.end ();
+    map<UI32, WaveMessageBuffer *>::iterator  element           = m_buffers.begin () ;
+    map<UI32, WaveMessageBuffer *>::iterator  limitingElement   = m_buffers.end ();
     UI32                                     bufferTag;
-    PrismMessageBuffer                        *pPrismMessageBuffer = NULL;
+    WaveMessageBuffer                        *pWaveMessageBuffer = NULL;
 
     while (element != limitingElement)
     {
         bufferTag         = element->first;
-        pPrismMessageBuffer = element->second;
+        pWaveMessageBuffer = element->second;
 
-        pPrismMessage->addBuffer (bufferTag, pPrismMessageBuffer->getSize (), pPrismMessageBuffer->getPBuffer (), true);
+        pWaveMessage->addBuffer (bufferTag, pWaveMessageBuffer->getSize (), pWaveMessageBuffer->getPBuffer (), true);
 
-        pPrismMessageBuffer->setPBuffer (NULL);
-        delete pPrismMessageBuffer;
+        pWaveMessageBuffer->setPBuffer (NULL);
+        delete pWaveMessageBuffer;
 
         element++;
     }
@@ -582,17 +582,17 @@ void PrismMessage::transferAllBuffers (PrismMessage *pPrismMessage)
     m_buffers.clear ();
 }
 
-void PrismMessage::setDropReplyAcrossLocations (const bool &dropReplyAcrossLocations)
+void WaveMessage::setDropReplyAcrossLocations (const bool &dropReplyAcrossLocations)
 {
     m_dropReplyAcrossLocations = dropReplyAcrossLocations;
 }
 
-bool PrismMessage::getDropReplyAcrossLocations () const
+bool WaveMessage::getDropReplyAcrossLocations () const
 {
     return (m_dropReplyAcrossLocations);
 }
 
-WaveMessageType PrismMessage::getType (const string &serializedData, const UI8 serializationType)  //const string& messageVersion)
+WaveMessageType WaveMessage::getType (const string &serializedData, const UI8 serializationType)  //const string& messageVersion)
 {
     // We now the SerializableObjectAttributeId for Message Type is always 1. (This cannot be changed from 1)
     // So the corresponding attribute in the serialized XML will be tagged with A1.  So look for the data
@@ -630,7 +630,7 @@ WaveMessageType PrismMessage::getType (const string &serializedData, const UI8 s
     return (*pWaveMessageType);
 }
 
-UI32 PrismMessage::getMessageIdAtOriginatingLocation (const string &serializedData, const UI8 serializationType) 
+UI32 WaveMessage::getMessageIdAtOriginatingLocation (const string &serializedData, const UI8 serializationType) 
 {
     // We now the SerializableObjectAttributeId for Message Id at Originating Location is always 3. (This cannot be changed from 3)
     // So the corresponding attribute in the serialized XML will be tagged with A3.  So look for the data
@@ -659,7 +659,7 @@ UI32 PrismMessage::getMessageIdAtOriginatingLocation (const string &serializedDa
     return (sot);
 }
 
-UI32 PrismMessage::getWaveClientMessageId (const string &serializedData, const UI8 serializationType)  
+UI32 WaveMessage::getWaveClientMessageId (const string &serializedData, const UI8 serializationType)  
 {
     // We now the SerializableObjectAttributeId for Message Id at WaveClient is always 6. (This cannot be changed from 6)
     // So the corresponding attribute in the serialized XML will be tagged with A6.  So look for the data
@@ -689,7 +689,7 @@ UI32 PrismMessage::getWaveClientMessageId (const string &serializedData, const U
     return (sot);
 }
 
-UI32 PrismMessage::getMessageCompletionStatus (const string &serializedData, const UI8 serializationType)  
+UI32 WaveMessage::getMessageCompletionStatus (const string &serializedData, const UI8 serializationType)  
 {
 // Now Completion status of a message is at position 13 (This can not be changed form 13 now). 
 // So the corresponding attribute in the serialized XML will be tagged with A13. So look for the data
@@ -725,7 +725,7 @@ UI32 PrismMessage::getMessageCompletionStatus (const string &serializedData, con
     return (*pResourceId);
 }
 
-bool PrismMessage::getIsLastReply (const string &serializedData, const UI8 serializationType)  
+bool WaveMessage::getIsLastReply (const string &serializedData, const UI8 serializationType)  
 {
     SI32 index1            = 0; 
     SI32 index2            = 0; 
@@ -754,10 +754,10 @@ bool PrismMessage::getIsLastReply (const string &serializedData, const UI8 seria
     return (false);
 }  
 
-PrismMessage *PrismMessage::createAndLoadFromSerializedData2 (const string &serializedData, const WaveServiceId &assumedServiceCode, const UI8 serializationType) 
+WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const string &serializedData, const WaveServiceId &assumedServiceCode, const UI8 serializationType) 
 {
     // A4 attribute corresponds to the service code and A5 attribute corresponds to the operation code.
-    // We strictly depend on these numbers.  If the order in the setupAttributesForSerialization in PrismMessage
+    // We strictly depend on these numbers.  If the order in the setupAttributesForSerialization in WaveMessage
     // changes then these should be adjusted accordingly.
 
     string  ServiceCodeAttributeTag     = "";
@@ -796,24 +796,24 @@ PrismMessage *PrismMessage::createAndLoadFromSerializedData2 (const string &seri
         serviceId = assumedServiceCode;
     }
 
-    PrismMessage *pPrismMessage = PrismMessageFactory::getMessageInstance (serviceId, operationCode);
+    WaveMessage *pWaveMessage = WaveMessageFactory::getMessageInstance (serviceId, operationCode);
 
-    prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         return (NULL);
     }
 
     // Prepare for serialization and load the attributes from the serialized data.
 
-    pPrismMessage->prepareForSerialization ();
-    pPrismMessage->loadFromSerializedData2 (serializedData, serializationType); 
+    pWaveMessage->prepareForSerialization ();
+    pWaveMessage->loadFromSerializedData2 (serializedData, serializationType); 
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
-PrismMessage *PrismMessage::createAndLoadFromSerializedData2 (const UI8 *pData, const UI32 dataSize)
+WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const UI8 *pData, const UI32 dataSize)
 {
     prismAssert (NULL != pData, __FILE__, __LINE__);
     prismAssert (0 != dataSize, __FILE__, __LINE__);
@@ -841,37 +841,37 @@ PrismMessage *PrismMessage::createAndLoadFromSerializedData2 (const UI8 *pData, 
     return (createAndLoadFromSerializedData2 (serializedData));
 }
 
-void PrismMessage::setWaveClientOriginatingLocationId (const LocationId &waveClientOriginatingLocationId)
+void WaveMessage::setWaveClientOriginatingLocationId (const LocationId &waveClientOriginatingLocationId)
 {
     m_waveClientOriginatingLocationId = waveClientOriginatingLocationId;
 }
 
-LocationId PrismMessage::getWaveClientOriginatingLocationId () const
+LocationId WaveMessage::getWaveClientOriginatingLocationId () const
 {
     return (m_waveClientOriginatingLocationId);
 }
 
-void PrismMessage::setWaveNativeClientId (const UI32 &waveNativeClientId)
+void WaveMessage::setWaveNativeClientId (const UI32 &waveNativeClientId)
 {
     m_waveNativeClientId = waveNativeClientId;
 }
 
-UI32 PrismMessage::getWaveNativeClientId () const
+UI32 WaveMessage::getWaveNativeClientId () const
 {
     return (m_waveNativeClientId);
 }
 
-void PrismMessage::setWaveUserClientId (const UI32 &waveUserClientId)
+void WaveMessage::setWaveUserClientId (const UI32 &waveUserClientId)
 {
     m_waveUserClientId = waveUserClientId;
 }
 
-UI32 PrismMessage::getWaveUserClientId () const
+UI32 WaveMessage::getWaveUserClientId () const
 {
     return (m_waveUserClientId);
 }
 
-WaveClientSessionContext PrismMessage::getWaveClientSessionContext () const
+WaveClientSessionContext WaveMessage::getWaveClientSessionContext () const
 {
     WaveClientSessionContext waveClientSessionContext;
 
@@ -882,22 +882,22 @@ WaveClientSessionContext PrismMessage::getWaveClientSessionContext () const
     return (waveClientSessionContext);
 }
 
-void PrismMessage::setMessageIdAtOriginatingLocation  (const UI32 &messageIdAtOriginatingLocation)
+void WaveMessage::setMessageIdAtOriginatingLocation  (const UI32 &messageIdAtOriginatingLocation)
 {
     m_messageIdAtOriginatingLocation = messageIdAtOriginatingLocation;
 }
 
-UI32 PrismMessage::getOriginalMessageId () const
+UI32 WaveMessage::getOriginalMessageId () const
 {
     return (m_originalMessageId);
 }
 
-void PrismMessage::setOriginalMessageId (const UI32 &originalMessageId)
+void WaveMessage::setOriginalMessageId (const UI32 &originalMessageId)
 {
     m_originalMessageId = originalMessageId;
 }
 
-void PrismMessage::copyBuffersFrom (const PrismMessage &prismMessage)
+void WaveMessage::copyBuffersFrom (const WaveMessage &prismMessage)
 {
     vector<UI32> bufferTagsVector;
     UI32         numberOfBuffers   = 0;
@@ -922,23 +922,23 @@ void PrismMessage::copyBuffersFrom (const PrismMessage &prismMessage)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PrismMessage::copyBuffersFrom : Copying a Buffer Failed.  Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, "WaveMessage::copyBuffersFrom : Copying a Buffer Failed.  Status : " + FrameworkToolKit::localize (status));
             prismAssert (false, __FILE__, __LINE__);
         }
     }
 }
 
-PrismMessage *PrismMessage::clone ()
+WaveMessage *WaveMessage::clone ()
 {
-    PrismMessage *pClonedPrismMessage            = PrismMessageFactory::getMessageInstance (m_serviceCode, m_operationCode);
+    WaveMessage *pClonedWaveMessage            = WaveMessageFactory::getMessageInstance (m_serviceCode, m_operationCode);
     string        serializedData;
     UI32          messageIdAtOriginatingLocation = 0;
     UI32          originalMessageId              = 0;
     UI32          waveClientMessageId            = 0;
 
-    prismAssert (NULL != pClonedPrismMessage, __FILE__, __LINE__);
+    prismAssert (NULL != pClonedWaveMessage, __FILE__, __LINE__);
 
-    if (NULL == pClonedPrismMessage)
+    if (NULL == pClonedWaveMessage)
     {
         return (NULL);
     }
@@ -949,143 +949,143 @@ PrismMessage *PrismMessage::clone ()
 
     // Prepare for serialization and load the attributes from this message into the cloned message.
 
-    messageIdAtOriginatingLocation = pClonedPrismMessage->getMessageIdAtOriginatingLocation ();
-    originalMessageId              = pClonedPrismMessage->getOriginalMessageId ();
-    waveClientMessageId            = pClonedPrismMessage->getWaveClientMessageId ();
+    messageIdAtOriginatingLocation = pClonedWaveMessage->getMessageIdAtOriginatingLocation ();
+    originalMessageId              = pClonedWaveMessage->getOriginalMessageId ();
+    waveClientMessageId            = pClonedWaveMessage->getWaveClientMessageId ();
 
-    pClonedPrismMessage->prepareForSerialization ();
-    pClonedPrismMessage->loadFromSerializableObject (this);
+    pClonedWaveMessage->prepareForSerialization ();
+    pClonedWaveMessage->loadFromSerializableObject (this);
 
-    pClonedPrismMessage->setMessageIdAtOriginatingLocation (messageIdAtOriginatingLocation);
-    pClonedPrismMessage->setOriginalMessageId              (originalMessageId);
-    pClonedPrismMessage->setWaveClientMessageId            (waveClientMessageId);
+    pClonedWaveMessage->setMessageIdAtOriginatingLocation (messageIdAtOriginatingLocation);
+    pClonedWaveMessage->setOriginalMessageId              (originalMessageId);
+    pClonedWaveMessage->setWaveClientMessageId            (waveClientMessageId);
 
-    pClonedPrismMessage->m_isACopy                         = true;
+    pClonedWaveMessage->m_isACopy                         = true;
 
 
-    pClonedPrismMessage->copyBuffersFrom (*this);
+    pClonedWaveMessage->copyBuffersFrom (*this);
 
-    return (pClonedPrismMessage);
+    return (pClonedWaveMessage);
 }
 
-void PrismMessage::setMessageId (const UI32 &messageId)
+void WaveMessage::setMessageId (const UI32 &messageId)
 {
     m_messageId = messageId;
 }
 
 
-void PrismMessage::setSenderServiceCode(const WaveNs::WaveServiceId& senderServiceCode)
+void WaveMessage::setSenderServiceCode(const WaveNs::WaveServiceId& senderServiceCode)
 {
     m_senderServiceCode = senderServiceCode;
 }
 
-string PrismMessage::getMessageString()
+string WaveMessage::getMessageString()
 {
     return m_messageString;
 }
 
-void PrismMessage::setMessageString(string messageString)
+void WaveMessage::setMessageString(string messageString)
 {
     m_messageString = messageString;
 }
 
-bool PrismMessage::getIsConfigurationChange () const
+bool WaveMessage::getIsConfigurationChange () const
 {
     return (m_isConfigurationChanged);
 }
 
-void PrismMessage::setIsConfigurationChange (const bool &isConfigurationChanged)
+void WaveMessage::setIsConfigurationChange (const bool &isConfigurationChanged)
 {
     m_isConfigurationChanged = isConfigurationChanged;
     m_isConfigurationFlagSetByUser = true;
 }
 
-bool PrismMessage::getIsConfigurationTimeChange() const
+bool WaveMessage::getIsConfigurationTimeChange() const
 {
     return (m_isConfigurationTimeChanged);
 }
 
-void PrismMessage::setIsConfigurationTimeChange(const bool &isConfigurationTimeChanged)
+void WaveMessage::setIsConfigurationTimeChange(const bool &isConfigurationTimeChanged)
 {
     m_isConfigurationTimeChanged = isConfigurationTimeChanged;
 }
 
-bool PrismMessage::getIsConfigurationFlagSetByUser () const
+bool WaveMessage::getIsConfigurationFlagSetByUser () const
 {
     return (m_isConfigurationFlagSetByUser);
 }
 
-void PrismMessage::setWaveClientMessageId (const UI32 &waveClientMessageId)
+void WaveMessage::setWaveClientMessageId (const UI32 &waveClientMessageId)
 {
     m_waveClientMessageId = waveClientMessageId;
 }
 
-UI32 PrismMessage::getWaveClientMessageId () const
+UI32 WaveMessage::getWaveClientMessageId () const
 {
     return (m_waveClientMessageId);
 }
 
-UI32 PrismMessage::getTransactionCounter () const
+UI32 WaveMessage::getTransactionCounter () const
 {
     return m_transactionCounter;
 }
 
-void PrismMessage::setTransactionCounter (const UI32 transactionCounter)
+void WaveMessage::setTransactionCounter (const UI32 transactionCounter)
 {
     m_transactionCounter = transactionCounter;
 }
 
-string PrismMessage::getNestedSql () const
+string WaveMessage::getNestedSql () const
 {
     return m_nestedSql;
 }
 
-void PrismMessage::setNestedSql (const string &nestedSql)
+void WaveMessage::setNestedSql (const string &nestedSql)
 {
     m_nestedSql = nestedSql;
 }
 
-void PrismMessage::appendNestedSql (const string &nestedSql)
+void WaveMessage::appendNestedSql (const string &nestedSql)
 {
     m_nestedSql += nestedSql;
 }
 
-PrismThreadId  PrismMessage::getPrismMessageCreatorThreadId () const
+WaveThreadId  WaveMessage::getWaveMessageCreatorThreadId () const
 {
     return (m_prismMessageCreatorThreadId);
 }
 
-void PrismMessage::setSurrogatingForLocationId (LocationId disconnectedLocation)
+void WaveMessage::setSurrogatingForLocationId (LocationId disconnectedLocation)
 {
     m_surrogatingForLocationId = disconnectedLocation;
 }
 
-LocationId PrismMessage::getSurrogatingForLocationId () const
+LocationId WaveMessage::getSurrogatingForLocationId () const
 {
     return (m_surrogatingForLocationId);
 }
 
-void PrismMessage::setNeedSurrogateSupportFlag (bool needSurrogateSupport)
+void WaveMessage::setNeedSurrogateSupportFlag (bool needSurrogateSupport)
 {
     m_needSurrogateSupportFlag = needSurrogateSupport;
 }
 
-bool PrismMessage::getNeedSurrogateSupportFlag () const
+bool WaveMessage::getNeedSurrogateSupportFlag () const
 {
     return (m_needSurrogateSupportFlag);
 }
 
-void PrismMessage::setIsMessageBeingSurrogatedFlag (bool isMessageBeingSurrogated)
+void WaveMessage::setIsMessageBeingSurrogatedFlag (bool isMessageBeingSurrogated)
 {
     m_isMessageBeingSurrogatedFlag = isMessageBeingSurrogated;
 }
 
-bool PrismMessage::getIsMessageBeingSurrogatedFlag () const
+bool WaveMessage::getIsMessageBeingSurrogatedFlag () const
 {
     return (m_isMessageBeingSurrogatedFlag);
 }
 
-void PrismMessage::updateForCompletionStatusDuringSurrogacy ()
+void WaveMessage::updateForCompletionStatusDuringSurrogacy ()
 {
     m_completionStatus = WAVE_MESSAGE_SUCCESS;
 }
@@ -1100,7 +1100,7 @@ void PrismMessage::updateForCompletionStatusDuringSurrogacy ()
  *
  * @return:     none
  */
-void PrismMessage::addStatusPropagation (ResourceId statusResourceId, const string &localizedStatus)
+void WaveMessage::addStatusPropagation (ResourceId statusResourceId, const string &localizedStatus)
 {
     addStatusPropagation (statusResourceId, localizedStatus, FrameworkToolKit::getThisLocationId ());
 }
@@ -1117,9 +1117,9 @@ void PrismMessage::addStatusPropagation (ResourceId statusResourceId, const stri
  *
  * @return:     none
  */
-void PrismMessage::addStatusPropagation (ResourceId statusResourceId, const string &localizedStatus, LocationId locationId)
+void WaveMessage::addStatusPropagation (ResourceId statusResourceId, const string &localizedStatus, LocationId locationId)
 {
-    //trace (TRACE_LEVEL_DEVEL, "PrismMessage::addStatusPropagation : Entering ...");
+    //trace (TRACE_LEVEL_DEVEL, "WaveMessage::addStatusPropagation : Entering ...");
 
     vector<LocationId>::iterator it;
     bool                         locationExists = false;
@@ -1135,7 +1135,7 @@ void PrismMessage::addStatusPropagation (ResourceId statusResourceId, const stri
 
     if (true == locationExists)
     {
-        trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::addStatusPropagation : Propagated status for location id ") + locationId + " already exists, do not add the propagated status");
+        trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::addStatusPropagation : Propagated status for location id ") + locationId + " already exists, do not add the propagated status");
 
         return;
     }
@@ -1144,7 +1144,7 @@ void PrismMessage::addStatusPropagation (ResourceId statusResourceId, const stri
     m_localizedCompletionStatusForStatusPropagation.push_back (localizedStatus);
     m_locationsForStatusPropagation.push_back (locationId);
 
-    trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::addStatusPropagation : Resource Id : ") + statusResourceId + ", Localized Status : " + localizedStatus + ", Location : " + locationId);
+    trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::addStatusPropagation : Resource Id : ") + statusResourceId + ", Localized Status : " + localizedStatus + ", Location : " + locationId);
 }
 
 /**
@@ -1157,9 +1157,9 @@ void PrismMessage::addStatusPropagation (ResourceId statusResourceId, const stri
  *
  * @return:     none
  */
-void PrismMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveSendToClusterContext, ResourceId overAllCompletionStatus)
+void WaveMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveSendToClusterContext, ResourceId overAllCompletionStatus)
 {
-    //trace (TRACE_LEVEL_DEVEL, "PrismMessage::addClusterStatusPropagation : Entering ...");
+    //trace (TRACE_LEVEL_DEVEL, "WaveMessage::addClusterStatusPropagation : Entering ...");
 
     bool partialSuccessFlag = pWaveSendToClusterContext->getPartialSuccessFlag ();
 
@@ -1192,7 +1192,7 @@ void PrismMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveS
 
                     if (WAVE_MESSAGE_SUCCESS != completionStatus)
                     {
-                        PrismMessage   *pResultingMessageForPhase1          = pWaveSendToClusterContext->getResultingMessageForPhase1 (locationsSentForPhase1[i]);
+                        WaveMessage   *pResultingMessageForPhase1          = pWaveSendToClusterContext->getResultingMessageForPhase1 (locationsSentForPhase1[i]);
                         string          localizedStatus                     = "";
                         bool            locationFound                       = false;
                         ResourceId      status;
@@ -1206,13 +1206,13 @@ void PrismMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveS
 
                             addStatusPropagation (completionStatus, localizedStatus, locationsSentForPhase1[i]);
 
-                            trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::addClusterStatusPropagation : Propagated localized status with custom attribute(s).  Resource Id : ") + status + ", Localized Status : " + localizedStatus + ", Location Id : " + locationsSentForPhase1[i]);
+                            trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::addClusterStatusPropagation : Propagated localized status with custom attribute(s).  Resource Id : ") + status + ", Localized Status : " + localizedStatus + ", Location Id : " + locationsSentForPhase1[i]);
                         }
                         else
                         {
                             addStatusPropagation (completionStatus, FrameworkToolKit::localize (completionStatus), locationsSentForPhase1[i]);
 
-                            trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::addClusterStatusPropagation : Propagated error status.  Resource Id : ") + completionStatus + ", Localized Status : " + FrameworkToolKit::localize (completionStatus) + ", Location Id : " + locationsSentForPhase1[i]);
+                            trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::addClusterStatusPropagation : Propagated error status.  Resource Id : ") + completionStatus + ", Localized Status : " + FrameworkToolKit::localize (completionStatus) + ", Location Id : " + locationsSentForPhase1[i]);
                         }
                     }
                     else
@@ -1221,7 +1221,7 @@ void PrismMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveS
 
                         addStatusPropagation (completionStatus, FrameworkToolKit::localize (completionStatus), locationsSentForPhase1[i]);
 
-                        trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::addClusterStatusPropagation : Propagated success status.  Resource Id : ") + completionStatus + ", Localized Status : " + FrameworkToolKit::localize (completionStatus) + ", Location Id : " + locationsSentForPhase1[i]);
+                        trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::addClusterStatusPropagation : Propagated success status.  Resource Id : ") + completionStatus + ", Localized Status : " + FrameworkToolKit::localize (completionStatus) + ", Location Id : " + locationsSentForPhase1[i]);
                     }
                 }
             }
@@ -1245,15 +1245,15 @@ void PrismMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveS
  *
  * @return:     true, if propagated status exists and the provided location id was found.  Otherwise false.
  */
-bool PrismMessage::getStatusPropagationByLocationId (ResourceId &statusResourceId, string &localizedStatus, LocationId locationId)
+bool WaveMessage::getStatusPropagationByLocationId (ResourceId &statusResourceId, string &localizedStatus, LocationId locationId)
 {
-    //trace (TRACE_LEVEL_DEVEL, "PrismMessage::getStatusPropagationByLocationId : Entering...");
+    //trace (TRACE_LEVEL_DEVEL, "WaveMessage::getStatusPropagationByLocationId : Entering...");
 
     UI32 numberOfLocations  = m_locationsForStatusPropagation.size ();
     bool isLocationIdFound  = false;
     bool returnStatus       = false;
 
-    trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::getStatusPropagationByLocationId : Number of locations : ") + numberOfLocations);
+    trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::getStatusPropagationByLocationId : Number of locations : ") + numberOfLocations);
 
     if (0 < numberOfLocations)
     {
@@ -1266,7 +1266,7 @@ bool PrismMessage::getStatusPropagationByLocationId (ResourceId &statusResourceI
                 isLocationIdFound   = true;
                 returnStatus        = true;
 
-                trace (TRACE_LEVEL_DEBUG, string ("PrismMessage::getStatusPropagationByLocationId : Propagated status found : Resource Id : ") + m_completionStatusForStatusPropagation[i] + ", Localized Status : " + m_localizedCompletionStatusForStatusPropagation[i] + ", Location Id : " + locationId);
+                trace (TRACE_LEVEL_DEBUG, string ("WaveMessage::getStatusPropagationByLocationId : Propagated status found : Resource Id : ") + m_completionStatusForStatusPropagation[i] + ", Localized Status : " + m_localizedCompletionStatusForStatusPropagation[i] + ", Location Id : " + locationId);
 
                 break;
             }
@@ -1274,14 +1274,14 @@ bool PrismMessage::getStatusPropagationByLocationId (ResourceId &statusResourceI
 
         if (false == isLocationIdFound)
         {
-            trace (TRACE_LEVEL_ERROR, string ("PrismMessage::getStatusPropagationByLocationId : Propagated status for location id : ") + locationId + " could not be found.");
+            trace (TRACE_LEVEL_ERROR, string ("WaveMessage::getStatusPropagationByLocationId : Propagated status for location id : ") + locationId + " could not be found.");
 
             returnStatus = false;
         }
     }
     else
     {
-        trace (TRACE_LEVEL_DEBUG, "PrismMessage::getStatusPropagationByLocationId : Propagated status is currently empty.  Possibly no status has been propagated.");
+        trace (TRACE_LEVEL_DEBUG, "WaveMessage::getStatusPropagationByLocationId : Propagated status is currently empty.  Possibly no status has been propagated.");
 
         returnStatus = false;
     }
@@ -1302,7 +1302,7 @@ bool PrismMessage::getStatusPropagationByLocationId (ResourceId &statusResourceI
  *
  * @return:     true, if propagated status exists.  Otherwise false.
  */
-bool PrismMessage::getAllStatusPropagation (vector<ResourceId> &statusResourceIds, vector<string> &localizedStatus, vector<LocationId> &locationIds)
+bool WaveMessage::getAllStatusPropagation (vector<ResourceId> &statusResourceIds, vector<string> &localizedStatus, vector<LocationId> &locationIds)
 {
     UI32 numberOfCompletionStatus   = m_completionStatusForStatusPropagation.size ();
     bool returnStatus               = false;
@@ -1317,7 +1317,7 @@ bool PrismMessage::getAllStatusPropagation (vector<ResourceId> &statusResourceId
     }
     else
     {
-        trace (TRACE_LEVEL_DEBUG, "PrismMessage::getAllStatusPropagation : Propagated status is currently empty.  There is no valid propagated status to return.");
+        trace (TRACE_LEVEL_DEBUG, "WaveMessage::getAllStatusPropagation : Propagated status is currently empty.  There is no valid propagated status to return.");
 
         returnStatus = false;
     }
@@ -1331,7 +1331,7 @@ bool PrismMessage::getAllStatusPropagation (vector<ResourceId> &statusResourceId
  *
  * @return:     none
  */
-void PrismMessage::clearStatusPropagation ()
+void WaveMessage::clearStatusPropagation ()
 {
     m_locationsForStatusPropagation.clear ();
     m_completionStatusForStatusPropagation.clear ();
@@ -1344,7 +1344,7 @@ void PrismMessage::clearStatusPropagation ()
  *
  * @return:     Size of the status propagation vectors
  */
-UI32 PrismMessage::getNumberOfStatusPropagation () const
+UI32 WaveMessage::getNumberOfStatusPropagation () const
 {
     UI32 numberOfCompletionStatus = m_completionStatusForStatusPropagation.size ();
     UI32 numberOfLocalizedCompletionStatus = m_localizedCompletionStatusForStatusPropagation.size ();
@@ -1352,7 +1352,7 @@ UI32 PrismMessage::getNumberOfStatusPropagation () const
 
     if ((numberOfCompletionStatus != numberOfLocalizedCompletionStatus) || (numberOfCompletionStatus != numberOfLocations))
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismMessage::getNumberOfStatusPropagation : There is a mismatch between the size of the three status propagation vectors which should never happen.  Completion Status Vector Size: ") + numberOfCompletionStatus + ", Localized Completion Status Vector Size: " + numberOfLocalizedCompletionStatus + ", Locations Vector: " + numberOfLocations);
+        trace (TRACE_LEVEL_FATAL, string ("WaveMessage::getNumberOfStatusPropagation : There is a mismatch between the size of the three status propagation vectors which should never happen.  Completion Status Vector Size: ") + numberOfCompletionStatus + ", Localized Completion Status Vector Size: " + numberOfLocalizedCompletionStatus + ", Locations Vector: " + numberOfLocations);
 
         prismAssert (false, __FILE__, __LINE__);
     }
@@ -1360,166 +1360,166 @@ UI32 PrismMessage::getNumberOfStatusPropagation () const
     return (numberOfCompletionStatus);
 }
 
-bool PrismMessage::getIsMessageSupportedWhenServiceIsPaused () const
+bool WaveMessage::getIsMessageSupportedWhenServiceIsPaused () const
 {
     return (m_isMessageSupportedWhenServiceIsPaused);
 }
 
-void PrismMessage::setIsMessageSupportedWhenServiceIsPaused (bool isMessageSupportedWhenServiceIsPaused)
+void WaveMessage::setIsMessageSupportedWhenServiceIsPaused (bool isMessageSupportedWhenServiceIsPaused)
 {
     m_isMessageSupportedWhenServiceIsPaused = isMessageSupportedWhenServiceIsPaused;
 }
 
-void PrismMessage::addXPathStringsVectorForTimestampUpdate (const vector<string> &xPathStringsVectorForTimestampUpdate)
+void WaveMessage::addXPathStringsVectorForTimestampUpdate (const vector<string> &xPathStringsVectorForTimestampUpdate)
 {
     m_xPathStringsVectorForTimestampUpdate.insert (m_xPathStringsVectorForTimestampUpdate.end (), xPathStringsVectorForTimestampUpdate.begin (), xPathStringsVectorForTimestampUpdate.end ());
 }
 
-void PrismMessage::addXPathStringForTimestampUpdate (const string &xPathString)
+void WaveMessage::addXPathStringForTimestampUpdate (const string &xPathString)
 {
     m_xPathStringsVectorForTimestampUpdate.push_back (xPathString);
 }
 
-vector<string> PrismMessage::getXPathStringsVectorForTimestampUpdate () const
+vector<string> WaveMessage::getXPathStringsVectorForTimestampUpdate () const
 {
     return m_xPathStringsVectorForTimestampUpdate;
 }
 
 // Multi Partition.
-void PrismMessage::setPartitionName (const string &partitionName)
+void WaveMessage::setPartitionName (const string &partitionName)
 {
     m_isPartitionNameSetByUser = true;
 
     m_partitionName = partitionName;
 }
 
-string PrismMessage::getPartitionName (void) const
+string WaveMessage::getPartitionName (void) const
 {
     return m_partitionName;
 }
 
-void PrismMessage::setPartitionLocationIdForPropagation (const LocationId &partitionLocationIdForPropagation)
+void WaveMessage::setPartitionLocationIdForPropagation (const LocationId &partitionLocationIdForPropagation)
 {
     m_partitionLocationIdForPropagation = partitionLocationIdForPropagation;
 }
 
-LocationId PrismMessage::getPartitionLocationIdForPropagation () const
+LocationId WaveMessage::getPartitionLocationIdForPropagation () const
 {
     return m_partitionLocationIdForPropagation;
 }
 
-void PrismMessage::setIsPartitionContextPropagated (const bool &isPartitionContextPropagated)
+void WaveMessage::setIsPartitionContextPropagated (const bool &isPartitionContextPropagated)
 {
     m_isPartitionContextPropagated = isPartitionContextPropagated;
 }
 
-bool PrismMessage::getIsPartitionContextPropagated () const
+bool WaveMessage::getIsPartitionContextPropagated () const
 {
     return m_isPartitionContextPropagated;
 }
 
-bool PrismMessage::getIsPartitionNameSetByUser () const
+bool WaveMessage::getIsPartitionNameSetByUser () const
 {
     return m_isPartitionNameSetByUser;
 }
 
 
-vector<string> PrismMessage::getlocalizedCompletionStatusForStatusPropagationVector () const
+vector<string> WaveMessage::getlocalizedCompletionStatusForStatusPropagationVector () const
 {
     return (m_localizedCompletionStatusForStatusPropagation);
 }
 
-vector<ResourceId> PrismMessage::getcompletionStatusForStatusPropagationVector () const
+vector<ResourceId> WaveMessage::getcompletionStatusForStatusPropagationVector () const
 {
     return (m_completionStatusForStatusPropagation);
 }
 
-vector<LocationId> PrismMessage::getlocationsForStatusPropagationVector () const
+vector<LocationId> WaveMessage::getlocationsForStatusPropagationVector () const
 {
     return (m_locationsForStatusPropagation);
 }
 
-void PrismMessage::setlocalizedCompletionStatusForStatusPropagationVector (const vector<string> localizedCompletionStatusForStatusPropagation)
+void WaveMessage::setlocalizedCompletionStatusForStatusPropagationVector (const vector<string> localizedCompletionStatusForStatusPropagation)
 {
     m_localizedCompletionStatusForStatusPropagation= localizedCompletionStatusForStatusPropagation;
 }
 
-void PrismMessage::setcompletionStatusForStatusPropagationVector (const vector<ResourceId> completionStatusForStatusPropagation)
+void WaveMessage::setcompletionStatusForStatusPropagationVector (const vector<ResourceId> completionStatusForStatusPropagation)
 {
     m_completionStatusForStatusPropagation = completionStatusForStatusPropagation;
 }
 
-void PrismMessage::setlocationsForStatusPropagationVector (const vector<LocationId> locationsForStatusPropagation)
+void WaveMessage::setlocationsForStatusPropagationVector (const vector<LocationId> locationsForStatusPropagation)
 {
     m_locationsForStatusPropagation = locationsForStatusPropagation;
 }
 
-bool PrismMessage::getIsAConfigurationIntent () const
+bool WaveMessage::getIsAConfigurationIntent () const
 {
     return (m_isAConfigurationIntent);
 }
 
-void PrismMessage::setIsAConfigurationIntent (bool isAConfigurationIntent)
+void WaveMessage::setIsAConfigurationIntent (bool isAConfigurationIntent)
 {
     m_isAConfigurationIntent = isAConfigurationIntent;
 }
 
-bool PrismMessage::getIsConfigurationIntentStored () const
+bool WaveMessage::getIsConfigurationIntentStored () const
 {
     return (m_isConfigurationIntentStored);
 }
 
-void PrismMessage::setIsConfigurationIntentStored (bool isConfigurationIntentStored)
+void WaveMessage::setIsConfigurationIntentStored (bool isConfigurationIntentStored)
 {
     m_isConfigurationIntentStored = isConfigurationIntentStored;
 }
 
-bool PrismMessage::getIsALastConfigReplay () const
+bool WaveMessage::getIsALastConfigReplay () const
 {
     return (m_isALastConfigReplay);
 }
 
-void PrismMessage::setIsALastConfigReplay (bool isALastConfigReplay)
+void WaveMessage::setIsALastConfigReplay (bool isALastConfigReplay)
 {
     m_isALastConfigReplay = isALastConfigReplay;
 }
 
-void PrismMessage::setTimeOutInMilliSeconds (const UI32 timeOutInMilliSeconds)
+void WaveMessage::setTimeOutInMilliSeconds (const UI32 timeOutInMilliSeconds)
 {
     m_timeOutInMilliSeconds = timeOutInMilliSeconds;
 }
 
-UI32 PrismMessage::getTimeOutInMilliSeconds () const 
+UI32 WaveMessage::getTimeOutInMilliSeconds () const 
 {
     return (m_timeOutInMilliSeconds);
 }
 
-bool PrismMessage::checkToDisconnectNodeFromLocationAfterReply () const
+bool WaveMessage::checkToDisconnectNodeFromLocationAfterReply () const
 {
     return (m_disconnectFromNodeAfterReply);
 }
 
-void PrismMessage::setDisconnectFromLocationAfterReply (const bool &disconnectFlag)
+void WaveMessage::setDisconnectFromLocationAfterReply (const bool &disconnectFlag)
 {
     m_disconnectFromNodeAfterReply = disconnectFlag;
 }
 
-bool PrismMessage::checkToRemoveNodeFromKnownLocationAfterReply () const
+bool WaveMessage::checkToRemoveNodeFromKnownLocationAfterReply () const
 {
     return (m_removeNodeFromKnownLocationAfterReply);
 }
 
-void PrismMessage::setRemoveNodeFromKnownLocationAfterReply (const bool &removeLocation)
+void WaveMessage::setRemoveNodeFromKnownLocationAfterReply (const bool &removeLocation)
 {
     m_removeNodeFromKnownLocationAfterReply = removeLocation;
 }
 
-bool PrismMessage::checkToSendForOneWayCommunication () const
+bool WaveMessage::checkToSendForOneWayCommunication () const
 {
     return (m_sendForOneWayConnection);
 }
 
-void PrismMessage::setToAllowSendForOneWayCommunication (const bool &allowSend)
+void WaveMessage::setToAllowSendForOneWayCommunication (const bool &allowSend)
 {
     m_sendForOneWayConnection = allowSend;
 }

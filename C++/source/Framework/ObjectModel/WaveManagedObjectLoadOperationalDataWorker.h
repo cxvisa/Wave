@@ -19,7 +19,7 @@ class WaveManagedObjectLoadOperationalDataContext;
 class WaveManagedObjectLoadOperationalDataWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage *createMessageInstance                          (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance                          (const UI32 &operationCode);
 
                 void          loadOperationalDataHandler                     (PrismLoadOperationalDataForManagedObjectObjectManagerMessage *pPrismLoadOperationalDataForManagedObjectObjectManagerMessage);
                 void          loadOperationalDataQueryManagedObjectStep      (LoadOperationalDataContext *pLoadOperationalDataContext);

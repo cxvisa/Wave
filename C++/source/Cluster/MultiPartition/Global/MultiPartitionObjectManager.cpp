@@ -32,9 +32,9 @@ MultiPartitionObjectManager::MultiPartitionObjectManager ()
 
     addManagedClass (wavePartitionManagedObject.getClassName ());
 
-    addOperationMap (MULTI_PARTITION_ADD_PARTITION, reinterpret_cast<PrismMessageHandler> (&MultiPartitionObjectManager::addPartitionMessageHandler));
-    addOperationMap (MULTI_PARTITION_DELETE_PARTITION, reinterpret_cast<PrismMessageHandler> (&MultiPartitionObjectManager::deletePartitionMessageHandler));
-    addOperationMap (MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME, reinterpret_cast<PrismMessageHandler> (&MultiPartitionObjectManager::getObjectIdForPartitionNameMessageHandler));
+    addOperationMap (MULTI_PARTITION_ADD_PARTITION, reinterpret_cast<WaveMessageHandler> (&MultiPartitionObjectManager::addPartitionMessageHandler));
+    addOperationMap (MULTI_PARTITION_DELETE_PARTITION, reinterpret_cast<WaveMessageHandler> (&MultiPartitionObjectManager::deletePartitionMessageHandler));
+    addOperationMap (MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME, reinterpret_cast<WaveMessageHandler> (&MultiPartitionObjectManager::getObjectIdForPartitionNameMessageHandler));
 
 //    addDebugFunction ((ShellCmdFunction) (&MultiPartitionObjectManager::distributedLogAddLogEntryDebugHandler), "addlogentry");
 //    addDebugFunction ((ShellCmdFunction) (&MultiPartitionObjectManager::distributedLogUpdateMaxLogEntriesDebugHandler), "updatemaxlogentries");
@@ -63,32 +63,32 @@ WaveServiceId MultiPartitionObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-PrismMessage *MultiPartitionObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *MultiPartitionObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
     
     switch (operationCode)
     {
         case MULTI_PARTITION_ADD_PARTITION :
-            pPrismMessage = new MultiPartitionAddPartitionMessage;
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new MultiPartitionAddPartitionMessage;
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         case MULTI_PARTITION_DELETE_PARTITION :
-            pPrismMessage = new MultiPartitionDeletePartitionMessage; 
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new MultiPartitionDeletePartitionMessage; 
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         case MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME :
-            pPrismMessage = new MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage;
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage;
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *MultiPartitionObjectManager::createManagedObjectInstance (const string &managedClassName)
@@ -312,7 +312,7 @@ void MultiPartitionObjectManager::addPartitionMessageHandler(MultiPartitionAddPa
 
 ResourceId MultiPartitionObjectManager::validateInputsForAddPartition(MultiPartitionSynchronousLinearSequencerContext *pMultiPartitionSynchronousLinearSequencerContext)
 {
-    MultiPartitionAddPartitionMessage *pMultiPartitionAddPartitionMessage = dynamic_cast<MultiPartitionAddPartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPPrismMessage ());
+    MultiPartitionAddPartitionMessage *pMultiPartitionAddPartitionMessage = dynamic_cast<MultiPartitionAddPartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPWaveMessage ());
 
     prismAssert(NULL != pMultiPartitionAddPartitionMessage, __FILE__, __LINE__);
     string       partitionName              = pMultiPartitionAddPartitionMessage->getPartitionName ();
@@ -380,7 +380,7 @@ ResourceId MultiPartitionObjectManager::validateInputsForAddPartition(MultiParti
 
 ResourceId MultiPartitionObjectManager::createPartitionManagedObjectStep(MultiPartitionSynchronousLinearSequencerContext *pMultiPartitionSynchronousLinearSequencerContext)
 {
-    MultiPartitionAddPartitionMessage *pMultiPartitionAddPartitionMessage = dynamic_cast<MultiPartitionAddPartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPPrismMessage ());
+    MultiPartitionAddPartitionMessage *pMultiPartitionAddPartitionMessage = dynamic_cast<MultiPartitionAddPartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPWaveMessage ());
 
     prismAssert(NULL != pMultiPartitionAddPartitionMessage, __FILE__, __LINE__);
     string       partitionName  = pMultiPartitionAddPartitionMessage->getPartitionName ();
@@ -436,7 +436,7 @@ void MultiPartitionObjectManager::deletePartitionMessageHandler(MultiPartitionDe
 
 ResourceId MultiPartitionObjectManager::validateInputsForDeletePartition(MultiPartitionSynchronousLinearSequencerContext *pMultiPartitionSynchronousLinearSequencerContext)
 {
-    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPPrismMessage ());
+    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPWaveMessage ());
 
     prismAssert(NULL != pMultiPartitionDeletePartitionMessage, __FILE__, __LINE__);
     string       partitionName              = pMultiPartitionDeletePartitionMessage->getPartitionName ();
@@ -535,7 +535,7 @@ ResourceId MultiPartitionObjectManager::triggerPartitionCleanupForLocalServicesS
     // if The Internal List becomes empty, then delete the PartitionManagedObject also.
 
     trace (TRACE_LEVEL_INFO, "MultiPartitionObjectManager::triggerPartitionCleanupForLocalServicesStep called.");
-    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPPrismMessage ());
+    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPWaveMessage ());
 
     prismAssert(NULL != pMultiPartitionDeletePartitionMessage, __FILE__, __LINE__);
     string       partitionName              = pMultiPartitionDeletePartitionMessage->getPartitionName ();
@@ -590,7 +590,7 @@ ResourceId MultiPartitionObjectManager::triggerPartitionCleanupForGlocalServices
 
     trace (TRACE_LEVEL_INFO, "MultiPartitionObjectManager::triggerPartitionCleanupForGlocalServicesStep  called. ");
 
-    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPPrismMessage ());
+    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert(NULL != pMultiPartitionDeletePartitionMessage, __FILE__, __LINE__);
 
     string   partitionName     = pMultiPartitionDeletePartitionMessage->getPartitionName ();
@@ -626,7 +626,7 @@ ResourceId MultiPartitionObjectManager::deletePartitionManagedObject (MultiParti
     WavePartitionManagedObject *pWavePartitionManagedObject = pMultiPartitionSynchronousLinearSequencerContext->getWavePartitionManagedObject();
     prismAssert(NULL != pWavePartitionManagedObject, __FILE__, __LINE__);
 
-    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPPrismMessage ());
+    MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage = dynamic_cast<MultiPartitionDeletePartitionMessage *> (pMultiPartitionSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert(NULL != pMultiPartitionDeletePartitionMessage, __FILE__, __LINE__);
 
     if (true == pMultiPartitionDeletePartitionMessage->getIsPartialCleanup ())

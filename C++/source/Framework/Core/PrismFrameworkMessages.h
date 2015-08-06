@@ -6,7 +6,7 @@
 #ifndef PRISMFRAMEWORKMESSAGES_H
 #define PRISMFRAMEWORKMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 #include "Framework/ObjectModel/PrismElement.h"
 #include "Framework/ObjectModel/ObjectId.h"
@@ -22,7 +22,7 @@ namespace WaveNs
 
 class WaveBrokerPublishMessage;
 
-class PrismInitializeObjectManagerMessage : public PrismMessage
+class PrismInitializeObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -40,7 +40,7 @@ class PrismInitializeObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismInstallObjectManagerMessage : public PrismMessage
+class PrismInstallObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -58,7 +58,7 @@ class PrismInstallObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismEnableObjectManagerMessage : public PrismMessage
+class PrismEnableObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -75,7 +75,7 @@ class PrismEnableObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismUpgradeObjectManagerMessage : public PrismMessage
+class PrismUpgradeObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -92,7 +92,7 @@ class PrismUpgradeObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismBootObjectManagerMessage : public PrismMessage
+class PrismBootObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -109,7 +109,7 @@ class PrismBootObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismHaInstallObjectManagerMessage : public PrismMessage
+class PrismHaInstallObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -125,7 +125,7 @@ class PrismHaInstallObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismHaBootObjectManagerMessage : public PrismMessage
+class PrismHaBootObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -139,7 +139,7 @@ class PrismHaBootObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismPostbootObjectManagerMessage : public PrismMessage
+class PrismPostbootObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -160,7 +160,7 @@ class PrismPostbootObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismShutdownObjectManagerMessage : public PrismMessage
+class PrismShutdownObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -174,7 +174,7 @@ class PrismShutdownObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismDisableObjectManagerMessage : public PrismMessage
+class PrismDisableObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -188,7 +188,7 @@ class PrismDisableObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismUninstallObjectManagerMessage : public PrismMessage
+class PrismUninstallObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -202,7 +202,7 @@ class PrismUninstallObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismUninitializeObjectManagerMessage : public PrismMessage
+class PrismUninitializeObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -216,7 +216,7 @@ class PrismUninitializeObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismDestructObjectManagerMessage : public PrismMessage
+class PrismDestructObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -230,7 +230,7 @@ class PrismDestructObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismPingObjectManagerMessage : public PrismMessage
+class PrismPingObjectManagerMessage : public WaveMessage
 {
     private :
         PrismPingObjectManagerMessage (WaveServiceId id);
@@ -245,7 +245,7 @@ class PrismPingObjectManagerMessage : public PrismMessage
     public:
 };
 
-class PrismTimerExpiredObjectManagerMessage : public PrismMessage
+class PrismTimerExpiredObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -271,7 +271,7 @@ class PrismTimerExpiredObjectManagerMessage : public PrismMessage
 
 };
 
-class WaveObjectManagerDatabaseSanityCheckMessage : public PrismMessage
+class WaveObjectManagerDatabaseSanityCheckMessage : public WaveMessage
 {
     private :
     protected :
@@ -288,7 +288,7 @@ class WaveObjectManagerDatabaseSanityCheckMessage : public PrismMessage
     public :
 };
 
-class WaveObjectManagerCollectValidationDataMessage : public PrismMessage
+class WaveObjectManagerCollectValidationDataMessage : public WaveMessage
 {
     private :
     protected :
@@ -305,7 +305,7 @@ class WaveObjectManagerCollectValidationDataMessage : public PrismMessage
     public:
 };
 
-class WaveObjectManagerValidateClusterCreationMessage : public PrismMessage
+class WaveObjectManagerValidateClusterCreationMessage : public WaveMessage
 {
     private :
     protected :
@@ -324,7 +324,7 @@ class WaveObjectManagerValidateClusterCreationMessage : public PrismMessage
     public:
 };
 
-class WaveObjectManagerSendValidationResultsMessage : public PrismMessage
+class WaveObjectManagerSendValidationResultsMessage : public WaveMessage
 {
     private :
     protected :
@@ -346,7 +346,7 @@ class WaveObjectManagerSendValidationResultsMessage : public PrismMessage
     public:
 };
 
-class WaveObjectManagerHaSyncCollectValidationDataMessage : public PrismMessage
+class WaveObjectManagerHaSyncCollectValidationDataMessage : public WaveMessage
 {
     private :
     protected :
@@ -363,7 +363,7 @@ class WaveObjectManagerHaSyncCollectValidationDataMessage : public PrismMessage
     public:
 };
 
-class WaveObjectManagerHaSyncValidateDataMessage : public PrismMessage
+class WaveObjectManagerHaSyncValidateDataMessage : public WaveMessage
 {
     private :
     protected :
@@ -382,7 +382,7 @@ class WaveObjectManagerHaSyncValidateDataMessage : public PrismMessage
     public:
 };
 
-class WaveObjectManagerHaSyncSendValidationResultsMessage : public PrismMessage
+class WaveObjectManagerHaSyncSendValidationResultsMessage : public WaveMessage
 {
     private :
     protected :
@@ -401,7 +401,7 @@ class WaveObjectManagerHaSyncSendValidationResultsMessage : public PrismMessage
 };
 
 
-class WaveObjectManagerRegisterEventListenerMessage : public PrismMessage
+class WaveObjectManagerRegisterEventListenerMessage : public WaveMessage
 {
     private :
     protected :
@@ -427,7 +427,7 @@ class WaveObjectManagerRegisterEventListenerMessage : public PrismMessage
     public :
 };
 
-class PrismFailoverObjectManagerMessage : public PrismMessage
+class PrismFailoverObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -450,7 +450,7 @@ class PrismFailoverObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismPauseObjectManagerMessage : public PrismMessage
+class PrismPauseObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -464,7 +464,7 @@ class PrismPauseObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismResumeObjectManagerMessage : public PrismMessage
+class PrismResumeObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -478,7 +478,7 @@ class PrismResumeObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismSetCpuAffinityObjectManagerMessage : public PrismMessage
+class PrismSetCpuAffinityObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -497,7 +497,7 @@ class PrismSetCpuAffinityObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismListenForEventsObjectManagerMessage : public PrismMessage
+class PrismListenForEventsObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -511,7 +511,7 @@ class PrismListenForEventsObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismLoadOperationalDataForManagedObjectObjectManagerMessage : public PrismMessage
+class PrismLoadOperationalDataForManagedObjectObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -534,7 +534,7 @@ class PrismLoadOperationalDataForManagedObjectObjectManagerMessage : public Pris
     public :
 };
 
-class PrismHeartbeatFailureObjectManagerMessage : public PrismMessage
+class PrismHeartbeatFailureObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -554,7 +554,7 @@ class PrismHeartbeatFailureObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismExternalStateSynchronizationObjectManagerMessage : public PrismMessage
+class PrismExternalStateSynchronizationObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -574,7 +574,7 @@ class PrismExternalStateSynchronizationObjectManagerMessage : public PrismMessag
     public :
 };
 
-class PrismConfigReplayEndObjectManagerMessage : public PrismMessage
+class PrismConfigReplayEndObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -589,7 +589,7 @@ class PrismConfigReplayEndObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismFileReplayEndObjectManagerMessage : public PrismMessage
+class PrismFileReplayEndObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -604,7 +604,7 @@ class PrismFileReplayEndObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismSlotFailoverObjectManagerMessage : public PrismMessage
+class PrismSlotFailoverObjectManagerMessage : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
@@ -622,7 +622,7 @@ class PrismSlotFailoverObjectManagerMessage : public PrismMessage
     public :
 };
 
-class PrismMultiPartitionCleanupObjectManagerMessage : public PrismMessage
+class PrismMultiPartitionCleanupObjectManagerMessage : public WaveMessage
 {
     private :
         virtual     void    setupAttributesForSerialization                 ();
@@ -650,7 +650,7 @@ class PrismMultiPartitionCleanupObjectManagerMessage : public PrismMessage
     public :
 };
 
-class WaveObjectManagerBackendSyncUpMessage : public PrismMessage
+class WaveObjectManagerBackendSyncUpMessage : public WaveMessage
 {
     private :
     protected :
@@ -667,7 +667,7 @@ class WaveObjectManagerBackendSyncUpMessage : public PrismMessage
 };
 
 
-class WaveObjectManagerMessageHistoryDumpMessage : public PrismMessage
+class WaveObjectManagerMessageHistoryDumpMessage : public WaveMessage
 {
     private :
         virtual void                   setupAttributesForSerialization ();
@@ -688,7 +688,7 @@ class WaveObjectManagerMessageHistoryDumpMessage : public PrismMessage
     public :
 };
 
-class WaveObjectManagerMessageHistoryConfigMessage : public PrismMessage
+class WaveObjectManagerMessageHistoryConfigMessage : public WaveMessage
 {
     private :
         virtual void                    setupAttributesForSerialization ();
@@ -713,7 +713,7 @@ class WaveObjectManagerMessageHistoryConfigMessage : public PrismMessage
     public :
 };
 
-class WaveObjectManagerUpdateRelationshipMessage : public PrismMessage
+class WaveObjectManagerUpdateRelationshipMessage : public WaveMessage
 {
     private:
     protected:
@@ -741,7 +741,7 @@ class WaveObjectManagerUpdateRelationshipMessage : public PrismMessage
                 bool        m_isAddingRelationship;
 };
 
-class WaveObjectManagerUpdateWaveManagedObjectMessage: public PrismMessage
+class WaveObjectManagerUpdateWaveManagedObjectMessage: public WaveMessage
 {
     private :
     protected :
@@ -889,7 +889,7 @@ class WaveObjectManagerDeleteWaveManagedObjectsMessage: public WaveObjectManager
     public :
 };
 
-class PrismZeroizeObjectManagerMessage : public PrismMessage
+class PrismZeroizeObjectManagerMessage : public WaveMessage
 {
     private :
     protected :
@@ -943,7 +943,7 @@ class WaveObjectManagerResetDebugInformationMessage : public ManagementInterface
 
 };
 
-class WaveObjectManagerGetDataFromClientMessage : public PrismMessage
+class WaveObjectManagerGetDataFromClientMessage : public WaveMessage
 {
     private :
                     void            setupAttributesForSerialization                 ();
@@ -991,10 +991,10 @@ class WaveObjectManagerGetDataFromClientMessage : public PrismMessage
                     void            getMoreRecordsVector            (vector<bool> &moreRecordsVector) const;
 
                     void            setNewServiceCode               (const UI32 &serviceCode);
-                    void            copyClientDataFromMessage       (PrismMessage *pPrismMessage);
+                    void            copyClientDataFromMessage       (WaveMessage *pWaveMessage);
                     void            getDataSentFromAllClients       (vector<LocationId> &selectedNodes, vector<UI32> &clientStatus, vector<void *> &buffers, vector<bool> &moreRecordsVector);
 
-                    void            copyAllBuffersFromMessage       (const PrismMessage *pPrismMessage);
+                    void            copyAllBuffersFromMessage       (const WaveMessage *pWaveMessage);
 
  // Now the data members
 
@@ -1015,7 +1015,7 @@ class WaveObjectManagerGetDataFromClientMessage : public PrismMessage
                 vector<string>          m_commandStrings;
 };
 
-class WaveDeliverBrokerPublishMessage : public PrismMessage
+class WaveDeliverBrokerPublishMessage : public WaveMessage
 {
     private :
     protected :

@@ -7,7 +7,7 @@
 #ifndef WAVEMESSAGEPAYLOADBASE_H
 #define WAVEMESSAGEPAYLOADBASE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
@@ -19,13 +19,13 @@ class WaveMessagePayloadBase
         void addSerializableAttribute (Attribute *pAttribute);
 
     public :
-         WaveMessagePayloadBase (PrismMessage *pPrismMessage);
+         WaveMessagePayloadBase (WaveMessage *pWaveMessage);
         ~WaveMessagePayloadBase ();
 
     // now the data members
 
     private :
-        PrismMessage *m_pPrismMessage;
+        WaveMessage *m_pWaveMessage;
 
     protected :
     public :

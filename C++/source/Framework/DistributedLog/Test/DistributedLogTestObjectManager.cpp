@@ -29,7 +29,7 @@ namespace WaveNs
 DistributedLogTestObjectManager::DistributedLogTestObjectManager ()
     : PrismTestObjectManager (getServiceName())
 {
-    addOperationMap (DISTRIBUTED_LOG_INVOKE_ADD_LOG_API, reinterpret_cast<PrismMessageHandler> (&DistributedLogTestObjectManager::invokeAddLogApiMessageHandler));
+    addOperationMap (DISTRIBUTED_LOG_INVOKE_ADD_LOG_API, reinterpret_cast<WaveMessageHandler> (&DistributedLogTestObjectManager::invokeAddLogApiMessageHandler));
 }
 
 DistributedLogTestObjectManager::~DistributedLogTestObjectManager ()
@@ -55,21 +55,21 @@ string DistributedLogTestObjectManager::getServiceName ()
     return ("Distributed Log Test");
 }
 
-PrismMessage *DistributedLogTestObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DistributedLogTestObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DISTRIBUTED_LOG_INVOKE_ADD_LOG_API:
-            pPrismMessage = new DistributedLogInvokeAddLogApiMessage;
+            pWaveMessage = new DistributedLogInvokeAddLogApiMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 } 
 
 void DistributedLogTestObjectManager::invokeAddLogApiMessageHandler (DistributedLogInvokeAddLogApiMessage *pMessage)
@@ -786,7 +786,7 @@ void DistributedLogTestObjectManager::addAuditLog1UsingSendToWaveClusterTestStep
     pMessage1->setLogDescriptionType (logDescriptionType);
     pMessage1->setNumberOfLogsToAdd (BIST_NUMBER_OF_LOGS_TO_ADD);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage1);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage1);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -805,7 +805,7 @@ void DistributedLogTestObjectManager::addAuditLog2UsingSendToWaveClusterTestStep
     pMessage1->setLogDescriptionType (logDescriptionType);
     pMessage1->setNumberOfLogsToAdd (BIST_NUMBER_OF_LOGS_TO_ADD);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage1);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage1);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -824,7 +824,7 @@ void DistributedLogTestObjectManager::addAuditLog3UsingSendToWaveClusterTestStep
     pMessage1->setLogDescriptionType (logDescriptionType);
     pMessage1->setNumberOfLogsToAdd (BIST_NUMBER_OF_LOGS_TO_ADD);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage1);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage1);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -845,7 +845,7 @@ void DistributedLogTestObjectManager::addManagedObjectLog1UsingSendToWaveCluster
     pMessage1->setManagedObjectId (configInfoObjectId);
     pMessage1->setNumberOfLogsToAdd (BIST_NUMBER_OF_LOGS_TO_ADD);
 
-    pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage1);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage1);
 
     sendToWaveCluster (pWaveSendToClusterContext);
 }
@@ -855,7 +855,7 @@ void DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback (
     ResourceId                  sendToClusterStatus         = pWaveSendToClusterContext->getCompletionStatus ();
     DistributedLogTestContext  *pDistributedLogTestContext  = reinterpret_cast<DistributedLogTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1 ());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
  
     pDistributedLogTestContext->executeNextStep (sendToClusterStatus);

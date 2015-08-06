@@ -15,7 +15,7 @@ namespace WaveNs
 DatabaseObjectManagerGetDbAccessDetailsWorker::DatabaseObjectManagerGetDbAccessDetailsWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_GET_DB_ACCESS_DETAILS, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerGetDbAccessDetailsWorker::getDbAccessDetailsMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_GET_DB_ACCESS_DETAILS, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerGetDbAccessDetailsWorker::getDbAccessDetailsMessageHandler));
     addServiceIndependentOperationMap (DATABASE_OBJECT_MANAGER_GET_DB_ACCESS_DETAILS, reinterpret_cast<ManagementInterfaceServiceIndependentMessageHandler> (&DatabaseObjectManagerGetDbAccessDetailsWorker::getDbAccessDetailsMessageStaticHandler));
 }
 
@@ -23,14 +23,14 @@ DatabaseObjectManagerGetDbAccessDetailsWorker::~DatabaseObjectManagerGetDbAccess
 {
 }
 
-PrismMessage *DatabaseObjectManagerGetDbAccessDetailsWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerGetDbAccessDetailsWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_GET_DB_ACCESS_DETAILS :
-            pPrismMessage = new DatabaseObjectManagerGetDbAccessDetailsMessage ();
+            pWaveMessage = new DatabaseObjectManagerGetDbAccessDetailsMessage ();
             break;
 
         default :
@@ -39,7 +39,7 @@ PrismMessage *DatabaseObjectManagerGetDbAccessDetailsWorker::createMessageInstan
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerGetDbAccessDetailsWorker::getDbAccessDetailsMessageHandler (DatabaseObjectManagerGetDbAccessDetailsMessage *pDatabaseObjectManagerGetDbAccessDetailsMessage)

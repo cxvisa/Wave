@@ -7,14 +7,14 @@
 #ifndef FILETRANSFERHANDSHAKEMESSAGE_H
 #define FILETRANSFERHANDSHAKEMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 using namespace WaveNs;
 
 namespace WaveNs
 {
 
-    class FileTransferHandshakeMessage : public PrismMessage
+    class FileTransferHandshakeMessage : public WaveMessage
     {
         private:
         protected:

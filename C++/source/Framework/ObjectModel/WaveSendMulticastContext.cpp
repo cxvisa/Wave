@@ -14,7 +14,7 @@ namespace WaveNs
 
 WaveSendMulticastContext::WaveSendMulticastContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
-      m_pPrismMessage (NULL),
+      m_pWaveMessage (NULL),
       m_multicastStatus (WAVE_MESSAGE_SUCCESS)
 {
     FrameworkToolKit::getFullyConnectedLocations (m_connectedLocationIds);
@@ -23,20 +23,20 @@ WaveSendMulticastContext::WaveSendMulticastContext (PrismElement *pCaller, Prism
 
 WaveSendMulticastContext::~WaveSendMulticastContext ()
 {
-    if (NULL != m_pPrismMessage)
+    if (NULL != m_pWaveMessage)
     {
-        delete m_pPrismMessage;
+        delete m_pWaveMessage;
     }
 }
 
-void WaveSendMulticastContext::setPrismMessage (PrismMessage *pPrismMessage)
+void WaveSendMulticastContext::setWaveMessage (WaveMessage *pWaveMessage)
 {
-    m_pPrismMessage = pPrismMessage;
+    m_pWaveMessage = pWaveMessage;
 }
 
-PrismMessage *WaveSendMulticastContext::getPrismMessage ()
+WaveMessage *WaveSendMulticastContext::getWaveMessage ()
 {
-    return (m_pPrismMessage);
+    return (m_pWaveMessage);
 }
 
 void WaveSendMulticastContext::setAllLocationsToSent (vector<LocationId> &locationIds)

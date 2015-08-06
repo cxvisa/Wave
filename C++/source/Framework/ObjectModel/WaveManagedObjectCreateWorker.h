@@ -21,7 +21,7 @@ class WaveManagedObjectAsynchronousCreateContext;
 class WaveManagedObjectCreateWorker : public WaveWorker
 {
     private :
-        PrismMessage       *createMessageInstance                           (const UI32 &operationCode);
+        WaveMessage       *createMessageInstance                           (const UI32 &operationCode);
 
         void                createHandler                                   (WaveObjectManagerCreateWaveManagedObjectMessage *pWaveObjectManagerCreateWaveManagedObjectMessage);
         void                createQueryManagedObjectStep                    (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);

@@ -7,7 +7,7 @@
 #ifndef PERSISTENCELOCALOBJECTMANAGERSETSTARTUPFILEMESSAGE_H
 #define PERSISTENCELOCALOBJECTMANAGERSETSTARTUPFILEMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 #include <string>
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceLocalObjectManagerSetStartupFileMessage : public PrismMessage
+class PersistenceLocalObjectManagerSetStartupFileMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

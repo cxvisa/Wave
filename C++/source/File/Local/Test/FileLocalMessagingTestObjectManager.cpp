@@ -20,8 +20,8 @@ namespace WaveNs
 FileLocalMessagingTestObjectManager::FileLocalMessagingTestObjectManager ()
     : PrismTestObjectManager (getServiceName ())
 {
-    addOperationMap (FILE_LOCAL_TEST_COPY_FILE_WAVE_CLIENT_MESSAGE,reinterpret_cast<PrismMessageHandler> (&FileLocalMessagingTestObjectManager::copyFileWaveClientMessageHandler));
-    addOperationMap (FILE_LOCAL_TEST_COPY_FILE_TO_HA_PEER_WAVE_CLIENT_MESSAGE, reinterpret_cast<PrismMessageHandler> (&FileLocalMessagingTestObjectManager::copyFileToHaPeerWaveClientMessageHandler));
+    addOperationMap (FILE_LOCAL_TEST_COPY_FILE_WAVE_CLIENT_MESSAGE,reinterpret_cast<WaveMessageHandler> (&FileLocalMessagingTestObjectManager::copyFileWaveClientMessageHandler));
+    addOperationMap (FILE_LOCAL_TEST_COPY_FILE_TO_HA_PEER_WAVE_CLIENT_MESSAGE, reinterpret_cast<WaveMessageHandler> (&FileLocalMessagingTestObjectManager::copyFileToHaPeerWaveClientMessageHandler));
     // TraceLevel traceLevel = TRACE_LEVEL_DEVEL; setTraceLevel (traceLevel);
 }
 
@@ -52,24 +52,24 @@ string FileLocalMessagingTestObjectManager::getServiceName ()
     return ("File Service Local Messaging Test");
 }
 
-PrismMessage *FileLocalMessagingTestObjectManager::createMessageInstance(const UI32 &operationCode)
+WaveMessage *FileLocalMessagingTestObjectManager::createMessageInstance(const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
 
         case FILE_LOCAL_TEST_COPY_FILE_WAVE_CLIENT_MESSAGE :
-            pPrismMessage = new CopyFileWaveClientMessage ();
+            pWaveMessage = new CopyFileWaveClientMessage ();
             break;
         case FILE_LOCAL_TEST_COPY_FILE_TO_HA_PEER_WAVE_CLIENT_MESSAGE :
-            pPrismMessage = new CopyFileToHaPeerWaveClientMessage ();
+            pWaveMessage = new CopyFileToHaPeerWaveClientMessage ();
             break;
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 void FileLocalMessagingTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
@@ -221,11 +221,11 @@ void FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLoc
           sDestFilename += buff;     
           FilePushFileMessage *pMessage = new FilePushFileMessage(sSourceFileName, sDestFilename,  FrameworkToolKit::getThisLocationId(), connectedLocationsVector);
           pMessage->setFileTransferFlag(FILE_OVERWRITE_DEST_FILE_IF_EXIST);
-          status = send(pMessage, reinterpret_cast<PrismMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocationIdTestCallback), pPrismLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
+          status = send(pMessage, reinterpret_cast<WaveMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocationIdTestCallback), pPrismLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                pPrismLinearSequencerContext->incrementNumberOfFailures ();
-               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
                delete pMessage;
           }
           else
@@ -294,7 +294,7 @@ void FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLoca
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                trace (TRACE_LEVEL_DEBUG, string ("FSVCLocalMessagingTestOMgr::simpleSyncPushFileWith1KDatatoGoodLocationIdTest: Sending a message to [") +         
-                                                                                PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
+                                                                                WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
           }
           trace (TRACE_LEVEL_INFO, string("FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLocationIdTest: After doing the sendSynchronous call and before deleting the PushFileMessage object....\n"));
           delete pMessage;
@@ -326,11 +326,11 @@ void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDa
           sDestFilename += buff;     
           FilePushFileMessage *pMessage = new FilePushFileMessage(sSourceFileName, sDestFilename,  FrameworkToolKit::getThisLocationId(), connectedLocationsVector);
           pMessage->setFileTransferFlag(FILE_OVERWRITE_DEST_FILE_IF_EXIST);
-          status = send(pMessage, reinterpret_cast<PrismMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback), pPrismLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
+          status = send(pMessage, reinterpret_cast<WaveMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback), pPrismLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                pPrismLinearSequencerContext->incrementNumberOfFailures ();
-               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
                delete pMessage;
           }
           else
@@ -397,7 +397,7 @@ void FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatato
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                trace (TRACE_LEVEL_DEBUG, string ("FSVCLocalMessagingTestOMgr::DistributeFileWith1MBDatatoAllGoodLocationIdTest : Sending a message to [") +         
-                                                                                PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
+                                                                                WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
           }
           delete pMessage;
           pMessage = NULL;

@@ -14,14 +14,14 @@
 namespace WaveNs
 {
 
-MessageHistory::MessageHistory (PrismMessage *pPrismMessage, WaveMessageSendType sendType, WaveMessageHistoryLogType messageHistoryLogType)
+MessageHistory::MessageHistory (WaveMessage *pWaveMessage, WaveMessageSendType sendType, WaveMessageHistoryLogType messageHistoryLogType)
 {
-    m_originalMessageId     = pPrismMessage->getMessageIdAtOriginatingLocation ();
-    m_type                  = pPrismMessage->getType ();
-    m_destinationLocationID = pPrismMessage->getReceiverLocationId ();
-    m_destinationServiceId  = pPrismMessage->getServiceCode ();
-    m_opcode                = pPrismMessage->getOperationCode ();
-    m_completionStatus      = pPrismMessage->getCompletionStatus ();
+    m_originalMessageId     = pWaveMessage->getMessageIdAtOriginatingLocation ();
+    m_type                  = pWaveMessage->getType ();
+    m_destinationLocationID = pWaveMessage->getReceiverLocationId ();
+    m_destinationServiceId  = pWaveMessage->getServiceCode ();
+    m_opcode                = pWaveMessage->getOperationCode ();
+    m_completionStatus      = pWaveMessage->getCompletionStatus ();
     m_sendType              = sendType;
     m_messageHistoryLogType = messageHistoryLogType;
 

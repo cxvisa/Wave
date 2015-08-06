@@ -275,14 +275,14 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
             }
             else
             {
-                // First create a PrismMessage from the contents of the FixedBuffer that we have read from the network.
+                // First create a WaveMessage from the contents of the FixedBuffer that we have read from the network.
                 // Now depending on the contents of the message that arrived decide if it is a new request or a response to a request
                 // this location sent out.
 
-                // We can safely cast from SerializableObject pointer to PrismMessage pointer since we know that only object that
-                // travels brtween two nodes in a Prism based cluster is a PrismMessage;
-                // FIXME : sagar : enforce that the object type that was returned is indeed a PrismMessage or a specialization of
-                //                 PrismMessage.
+                // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
+                // travels brtween two nodes in a Prism based cluster is a WaveMessage;
+                // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
+                //                 WaveMessage.
 
                 string messageString;
 
@@ -349,27 +349,27 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                 }
 
                 UI8              serializationType              = m_peerServerSerializationType;
-                UI32             messageIdAtOriginatingLocation = PrismMessage::getMessageIdAtOriginatingLocation (messageString, serializationType);
-                WaveMessageType  messageType                    = PrismMessage::getType (messageString, serializationType);  
-                PrismMessage    *pPrismMessage                  = NULL;
+                UI32             messageIdAtOriginatingLocation = WaveMessage::getMessageIdAtOriginatingLocation (messageString, serializationType);
+                WaveMessageType  messageType                    = WaveMessage::getType (messageString, serializationType);  
+                WaveMessage    *pWaveMessage                  = NULL;
 
                 if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                 {
-                    pPrismMessage = PrismMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType);
+                    pWaveMessage = WaveMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType);
                 }
                 else if (WAVE_MESSAGE_TYPE_RESPONSE == messageType)
                 {
                     (InterLocationMessageTransportObjectManager::getInstance ())->lockGlobalAccessMutexForMulticastMessaging ();
 
-                    pPrismMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessageWithoutRemove (messageIdAtOriginatingLocation);
+                    pWaveMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessageWithoutRemove (messageIdAtOriginatingLocation);
 
-                    if (NULL != pPrismMessage)
+                    if (NULL != pWaveMessage)
                     {
-                        if ((INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND == pPrismMessage->getOperationCode ()) && (pPrismMessage->getServiceCode () == (InterLocationMessageTransportObjectManager::getInstance ())->getServiceId ()))
+                        if ((INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND == pWaveMessage->getOperationCode ()) && (pWaveMessage->getServiceCode () == (InterLocationMessageTransportObjectManager::getInstance ())->getServiceId ()))
                         {
-                            ResourceId                     completionStatus               = PrismMessage::getMessageCompletionStatus (messageString);
+                            ResourceId                     completionStatus               = WaveMessage::getMessageCompletionStatus (messageString);
                             LocationId                     receiverLocationId             = FrameworkToolKit::getLocationIdForIpAddressAndPort (peerServerIpAddress, peerServerPort);
-                            InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pPrismMessage);
+                            InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
         
                             prismAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
 
@@ -389,12 +389,12 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                         {
                             isMulticastMessage = false;
 
-                            pPrismMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
+                            pWaveMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
             
                             (InterLocationMessageTransportObjectManager::getInstance ())->unlockGlobalAccessMutexForMulticastMessaging ();
 
-                            pPrismMessage->removeAllBuffers ();
-                            pPrismMessage->loadFromSerializedData2 (messageString, serializationType);
+                            pWaveMessage->removeAllBuffers ();
+                            pWaveMessage->loadFromSerializedData2 (messageString, serializationType);
                         }
                     }
                     else
@@ -414,11 +414,11 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
                 numberOfBuffers = buffers.size ();
 
-                if (NULL != pPrismMessage)
+                if (NULL != pWaveMessage)
                 {
                     for (i = 0; i < numberOfBuffers; i++)
                     {
-                        pPrismMessage->addBuffer (bufferTags[i], bufferSizes[i], buffers[i], true);
+                        pWaveMessage->addBuffer (bufferTags[i], bufferSizes[i], buffers[i], true);
                     }
                 }
                 else
@@ -433,13 +433,13 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                 // if we have a message at hand
                 // Now depending on the message type process it.
 
-                if (NULL != pPrismMessage)
+                if (NULL != pWaveMessage)
                 {
                     if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                     {
                         trace (TRACE_LEVEL_DEVEL, "InterLocationMessageReceiverThread::start : We received a Remote message destined to this location and delivering it to corresponding service.");
 
-                        WaveServiceIndependentMessage *pWaveServiceIndependentMessage = dynamic_cast<WaveServiceIndependentMessage *> (pPrismMessage);
+                        WaveServiceIndependentMessage *pWaveServiceIndependentMessage = dynamic_cast<WaveServiceIndependentMessage *> (pWaveMessage);
 
                         if (NULL != pWaveServiceIndependentMessage)
                         {
@@ -467,11 +467,11 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
                             if (true == isSuccessful)
                             {
-                                (InterLocationMessageTransportObjectManager::getInstance ())->sendToBeUsedByReceiverThreads (pPrismMessage);
+                                (InterLocationMessageTransportObjectManager::getInstance ())->sendToBeUsedByReceiverThreads (pWaveMessage);
                             }
                             else
                             {
-                                delete pPrismMessage;
+                                delete pWaveMessage;
                             }
                         }
                     }
@@ -484,7 +484,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
                         if (true == isMulticastMessage)
                         {
-                            InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pPrismMessage);
+                            InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
     
                             prismAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
 
@@ -498,15 +498,15 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
                             if (true == pInterLocationMulticastMessage->areAllMessageReplyReceived ())
                             {
-                                PrismMessage *pTempPrismMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
+                                WaveMessage *pTempWaveMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
 
-                                prismAssert (pTempPrismMessage == pPrismMessage, __FILE__, __LINE__);
+                                prismAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
 
                                 (InterLocationMessageTransportObjectManager::getInstance ())->unlockGlobalAccessMutexForMulticastMessaging ();
 
                                 pInterLocationMulticastMessage->messageOperationReleaseAccess ();
                                 
-                                (InterLocationMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pPrismMessage);
+                                (InterLocationMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pWaveMessage);
                             }
                             else
                             {
@@ -519,10 +519,10 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                         {
                             if (false == isSuccessful)
                             {
-                                pPrismMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_INCOMPLETE_BUFFER_READ_FROM_REMOTE_LOCATION);
+                                pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_INCOMPLETE_BUFFER_READ_FROM_REMOTE_LOCATION);
                             }
                             
-                            (InterLocationMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pPrismMessage);
+                            (InterLocationMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pWaveMessage);
                         }
                     }
                     else

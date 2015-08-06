@@ -21,7 +21,7 @@ class WaveObjectManager;
 class WaveDebugInformationWorker : public WaveWorker
 {
     private :
-                PrismMessage   *createMessageInstance                           (const UI32 &operationCode);
+                WaveMessage   *createMessageInstance                           (const UI32 &operationCode);
 
                 void            getDebugInformationHandler                      (WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage);
                 void            getDebugInformationWorkersStep                  (WaveDebugInformationContext *pWaveDebugInformationContext);

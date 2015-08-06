@@ -14,14 +14,14 @@ namespace WaveNs
 {
 
     FilePushFileMessage::FilePushFileMessage ()
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
          m_sourceLocationId(0),        
          m_fileTransferFlag(0)
     {
     }
 
     FilePushFileMessage::FilePushFileMessage (const string &SourceFileName,const string &DestinationFileName,const UI32 &SourceLocationId, vector<UI32> &DestinationLocationIdList, UI32 &fileTransferFlag)
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
         m_sourceFileName           (SourceFileName),
         m_destinationFileName      (DestinationFileName),
         m_sourceLocationId         (SourceLocationId),
@@ -35,7 +35,7 @@ namespace WaveNs
     
             
     FilePushFileMessage::FilePushFileMessage (const string &SourceFileName,const string &DestinationFileName,const UI32 &SourceLocationId, vector<UI32> &DestinationLocationIdList)
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCPUSHFILE),
         m_sourceFileName           (SourceFileName),
         m_destinationFileName      (DestinationFileName),
         m_sourceLocationId         (SourceLocationId),
@@ -64,7 +64,7 @@ namespace WaveNs
 
     void  FilePushFileMessage::setupAttributesForSerialization()
     {
-        PrismMessage::setupAttributesForSerialization ();
+        WaveMessage::setupAttributesForSerialization ();
         addSerializableAttribute (new AttributeString(&m_sourceFileName,"SourceFileName"));
         addSerializableAttribute (new AttributeString(&m_destinationFileName,"DestinationFileName"));
         addSerializableAttribute (new AttributeUI32(&m_sourceLocationId,"SourceLocationId"));
@@ -182,13 +182,13 @@ namespace WaveNs
 
 
 FilePushFileToHaPeerMessage::FilePushFileToHaPeerMessage ()
-    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCFILEPUSHFILETOHAPEER),
+    : WaveMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCFILEPUSHFILETOHAPEER),
       m_fileSize            (0)
 {
 }
 
 FilePushFileToHaPeerMessage::FilePushFileToHaPeerMessage (const string &sourceFileName, const string &destinationFileName)
-    : PrismMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCFILEPUSHFILETOHAPEER),
+    : WaveMessage          (FileLocalObjectManager::getWaveServiceId (), FILESVCFILEPUSHFILETOHAPEER),
       m_sourceFileName      (sourceFileName),
       m_destinationFileName (destinationFileName),
       m_fileSize            (0)
@@ -201,7 +201,7 @@ FilePushFileToHaPeerMessage::~FilePushFileToHaPeerMessage ()
 
 void FilePushFileToHaPeerMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeString (&m_sourceFileName,       "SourceFileName"));
     addSerializableAttribute (new AttributeString (&m_destinationFileName,  "DestinationFileName"));

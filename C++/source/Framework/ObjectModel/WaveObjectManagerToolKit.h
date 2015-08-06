@@ -21,7 +21,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 class WaveManagedObjectSynchronousQueryContext;
 class WaveManagedObject;
 class ManagementInterfaceMessage;
@@ -37,11 +37,11 @@ class WaveObjectManagerToolKit
     private :
     protected :
     public :
-        static WaveMessageStatus            sendOneWay                      (PrismMessage *pPrismMessage, const LocationId &locationId = 0);
-        static WaveMessageStatus            sendOneWayToFront               (PrismMessage *pPrismMessage, const LocationId &locationId = 0);
-        static WaveMessageStatus            sendSynchronously               (PrismMessage *pPrismMessage, const LocationId &locationId = 0);
+        static WaveMessageStatus            sendOneWay                      (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
+        static WaveMessageStatus            sendOneWayToFront               (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
+        static WaveMessageStatus            sendSynchronously               (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
         static ResourceId                   sendSynchronouslyToWaveClient   (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
-        static WaveMessageStatus            sendToWaveServer                (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismMessageResponseHandler messageCallback, PrismElement *pPrismMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
+        static WaveMessageStatus            sendToWaveServer                (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
         static ResourceId                   sendOneWayToAllWaveClients      (ManagementInterfaceMessage *pManagementInterfaceMessage);
 
         static vector<WaveManagedObject *> *querySynchronously       (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext);

@@ -23,28 +23,28 @@ namespace WaveNs
 CentralClusterConfigAddNodeWorker::CentralClusterConfigAddNodeWorker (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager)
     : WaveWorker (pCentralClusterConfigObjectManager)
 {
-    addOperationMap (CLUSTER_ADD_NODE, reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigAddNodeWorker::addNodeMessageHandler));
+    addOperationMap (CLUSTER_ADD_NODE, reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigAddNodeWorker::addNodeMessageHandler));
 }
 
 CentralClusterConfigAddNodeWorker::~CentralClusterConfigAddNodeWorker ()
 {
 }
 
-PrismMessage *CentralClusterConfigAddNodeWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CentralClusterConfigAddNodeWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLUSTER_ADD_NODE :
-            pPrismMessage = new ClusterObjectManagerAddNodeMessage;
+            pWaveMessage = new ClusterObjectManagerAddNodeMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void CentralClusterConfigAddNodeWorker::addNodeMessageHandler (ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage)
@@ -71,7 +71,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigAddNodeWorker::addNodeValidateStep : starting ...");
 
-    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     string                               nodeName;
     UI32                                 nodePort;
@@ -187,7 +187,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
 
 void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ClusterObjectManagerAddNodeMessage             *pClusterObjectManagerAddNodeMessage             = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerAddNodeMessage             *pClusterObjectManagerAddNodeMessage             = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = new FrameworkObjectManagerAddNodesToClusterMessage ();
     UI32                                            noNewNodes                                      = pClusterObjectManagerAddNodeMessage->getNSecondaryNodes ();
@@ -213,7 +213,7 @@ void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep (Pr
     pFrameworkObjectManagerAddNodesToClusterMessage->setFilenamesToSync ( filenamesToSync );
     filenamesToSync.clear();
 
-    status = send (pFrameworkObjectManagerAddNodesToClusterMessage, reinterpret_cast<PrismMessageResponseHandler> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack), pPrismLinearSequencerContext);
+    status = send (pFrameworkObjectManagerAddNodesToClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack), pPrismLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -230,7 +230,7 @@ void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack
 
     PrismLinearSequencerContext              *pPrismLinearSequencerContext         = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
 
-    ClusterObjectManagerAddNodeMessage       *pClusterObjectManagerAddNodeMessage  = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerAddNodeMessage       *pClusterObjectManagerAddNodeMessage  = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     ResourceId                                status                               = WAVE_MESSAGE_SUCCESS;
     ResourceId                                completionStatus                     = WAVE_MESSAGE_SUCCESS;
@@ -281,7 +281,7 @@ void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack
 
 void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     string                                    newNode;
     UI32                                      newNodePort;
     ResourceId                                newNodeStatus;
@@ -383,7 +383,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerC
 
 void CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     UI32                                      noNewNode                     = pClusterObjectManagerAddNodeMessage->getNSecondaryNodes ();
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     string                                    newNode;

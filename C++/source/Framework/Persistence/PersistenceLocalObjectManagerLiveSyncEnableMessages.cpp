@@ -16,7 +16,7 @@ namespace WaveNs
 //---------------------------------------------------------------------------------------------------------------------------
 
 PersistenceLocalObjectManagerGetLiveSyncEnableMessage::PersistenceLocalObjectManagerGetLiveSyncEnableMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_GET_LIVE_SYNC_ENABLE), 
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_GET_LIVE_SYNC_ENABLE), 
       m_isLiveSyncEnabled (false)
 {
 }
@@ -27,7 +27,7 @@ PersistenceLocalObjectManagerGetLiveSyncEnableMessage::~PersistenceLocalObjectMa
 
 void PersistenceLocalObjectManagerGetLiveSyncEnableMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeBool (&m_isLiveSyncEnabled, "isLiveSyncEnabled"));
 }
@@ -47,14 +47,14 @@ void PersistenceLocalObjectManagerGetLiveSyncEnableMessage::setIsLiveSyncEnabled
 //---------------------------------------------------------------------------------------------------------------------------
 
 PersistenceLocalObjectManagerSetLiveSyncEnableMessage::PersistenceLocalObjectManagerSetLiveSyncEnableMessage ()
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
       m_isLiveSyncEnabled (false)
 {
     setIsMessageSupportedWhenServiceIsPaused (true);
 }
 
 PersistenceLocalObjectManagerSetLiveSyncEnableMessage::PersistenceLocalObjectManagerSetLiveSyncEnableMessage (const bool &isLiveSyncEnabled)
-    : PrismMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
+    : WaveMessage (PersistenceLocalObjectManager::getWaveServiceId (), PERSISTENCE_SET_LIVE_SYNC_ENABLE), 
       m_isLiveSyncEnabled (isLiveSyncEnabled)
 {
     setIsMessageSupportedWhenServiceIsPaused (true);
@@ -66,7 +66,7 @@ PersistenceLocalObjectManagerSetLiveSyncEnableMessage::~PersistenceLocalObjectMa
 
 void PersistenceLocalObjectManagerSetLiveSyncEnableMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeBool (&m_isLiveSyncEnabled, "isLiveSyncEnabled"));
 }

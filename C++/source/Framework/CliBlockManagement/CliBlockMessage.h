@@ -7,13 +7,13 @@
 #ifndef CLIBLOCKMESSAGE_H
 #define CLIBLOCKMESSAGE_H 
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
 class CliBlockDetail;
-class CliBlockMessage : public PrismMessage
+class CliBlockMessage : public WaveMessage
 {
     private :
     protected :

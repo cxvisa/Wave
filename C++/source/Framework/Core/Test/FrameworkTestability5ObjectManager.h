@@ -18,7 +18,7 @@ class FrameworkTestability5ObjectManager : public WaveLocalObjectManager
 {
     private :
                             FrameworkTestability5ObjectManager     ();
-        PrismMessage       *createMessageInstance                  (const UI32 &operationCode);
+        WaveMessage       *createMessageInstance                  (const UI32 &operationCode);
         WaveManagedObject  *createManagedObjectInstance            (const string &managedClassName);
 
         void                frameworkTestability10MessageHandler    (FrameworkTestabilityMessage10 *pMessage);

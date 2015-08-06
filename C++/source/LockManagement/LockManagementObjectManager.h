@@ -21,7 +21,7 @@ class LockManagementObjectManager : public WaveObjectManager
     private :
                               LockManagementObjectManager ();
 
-                virtual       PrismMessage             *createMessageInstance    (const UI32 &operationCode);
+                virtual       WaveMessage             *createMessageInstance    (const UI32 &operationCode);
                 virtual       WaveManagedObject        *createManagedObjectInstance (const string &managedClassName);
 
 

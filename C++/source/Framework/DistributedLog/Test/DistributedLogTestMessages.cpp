@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 DistributedLogInvokeAddLogApiMessage::DistributedLogInvokeAddLogApiMessage ()
-    : PrismMessage (DistributedLogTestObjectManager::getWaveServiceId (), DISTRIBUTED_LOG_INVOKE_ADD_LOG_API),
+    : WaveMessage (DistributedLogTestObjectManager::getWaveServiceId (), DISTRIBUTED_LOG_INVOKE_ADD_LOG_API),
     m_logType               (),
     m_logDescriptionType    (),
     m_managedObjectId       (),
@@ -27,7 +27,7 @@ DistributedLogInvokeAddLogApiMessage::~DistributedLogInvokeAddLogApiMessage ()
 
 void DistributedLogInvokeAddLogApiMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
     
      addSerializableAttribute (new AttributeResourceId (&m_logType,             "logType"));
      addSerializableAttribute (new AttributeResourceId (&m_logDescriptionType,  "logDescriptionType"));

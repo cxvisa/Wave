@@ -22,11 +22,11 @@ class UnifiedClientDeleteMessage;
 class WaveManagedObjectDeleteWorker : public WaveWorker
 {
     private :
-        PrismMessage   *createMessageInstance         (const UI32 &operationCode);
+        WaveMessage   *createMessageInstance         (const UI32 &operationCode);
 
         void            deleteHandlerForMultipleDelete                      (WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage);
         void            sendAsynchronousDeleteMessagesStep              (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);
-        void            deleteHandlerForMultipleDeleteCallback              (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void* pCallerContext);
+        void            deleteHandlerForMultipleDeleteCallback              (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void* pCallerContext);
         void            deleteHandler                                   (WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage);
         void            deleteQueryManagedObjectStep                    (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);
         void            deleteValidateManagedObjectStep                 (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);

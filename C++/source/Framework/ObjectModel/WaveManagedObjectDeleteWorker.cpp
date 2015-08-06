@@ -30,34 +30,34 @@ namespace WaveNs
 WaveManagedObjectDeleteWorker::WaveManagedObjectDeleteWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECT, reinterpret_cast<PrismMessageHandler> (&WaveManagedObjectDeleteWorker::deleteHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECTS, reinterpret_cast<PrismMessageHandler> (&WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDelete));
+    addOperationMap (WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECT, reinterpret_cast<WaveMessageHandler> (&WaveManagedObjectDeleteWorker::deleteHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECTS, reinterpret_cast<WaveMessageHandler> (&WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDelete));
 }
 
 WaveManagedObjectDeleteWorker::~WaveManagedObjectDeleteWorker ()
 {
 }
 
-PrismMessage *WaveManagedObjectDeleteWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveManagedObjectDeleteWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECT :
-            pPrismMessage = new WaveObjectManagerDeleteWaveManagedObjectMessage;
+            pWaveMessage = new WaveObjectManagerDeleteWaveManagedObjectMessage;
             break;
 
         case WAVE_OBJECT_MANAGER_DELETE_MANAGED_OBJECTS :
-            pPrismMessage = new WaveObjectManagerDeleteWaveManagedObjectsMessage;
+            pWaveMessage = new WaveObjectManagerDeleteWaveManagedObjectsMessage;
             break;
 
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 
@@ -81,7 +81,7 @@ void WaveManagedObjectDeleteWorker::sendAsynchronousDeleteMessagesStep (WaveMana
 {
     trace(TRACE_LEVEL_DEVEL,"WaveManagedObjectDeleteWorker::sendAsynchronousDeleteMessagesStep entering ..");
 
-    WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pWaveManagedObjectDeleteContextForMultipleDelete->getPPrismMessage ());
+    WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pWaveManagedObjectDeleteContextForMultipleDelete->getPWaveMessage ());
 
     vector<ObjectId> managedObjectIdVector = pWaveObjectManagerDeleteWaveManagedObjectsMessage->getManagedObjectsIdVector();
     WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage = NULL;
@@ -110,7 +110,7 @@ void WaveManagedObjectDeleteWorker::sendAsynchronousDeleteMessagesStep (WaveMana
            pWaveObjectManagerDeleteWaveManagedObjectMessage->setAttributeUserTags ((pWaveObjectManagerDeleteWaveManagedObjectsMessage->getAttributeUserTagVectorVector())[i]);
        }
 
-       WaveMessageStatus sendStatus = send (pWaveObjectManagerDeleteWaveManagedObjectMessage, reinterpret_cast<PrismMessageResponseHandler> (&WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback), pWaveManagedObjectDeleteContextForMultipleDelete);
+       WaveMessageStatus sendStatus = send (pWaveObjectManagerDeleteWaveManagedObjectMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback), pWaveManagedObjectDeleteContextForMultipleDelete);
 
        if (WAVE_MESSAGE_SUCCESS == sendStatus)
        {
@@ -128,7 +128,7 @@ void WaveManagedObjectDeleteWorker::sendAsynchronousDeleteMessagesStep (WaveMana
     pWaveManagedObjectDeleteContextForMultipleDelete->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void* pCallerContext)
+void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void* pCallerContext)
 {
     trace (TRACE_LEVEL_DEVEL,"WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback entering ..");
 
@@ -137,12 +137,12 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
     ResourceId status           = WAVE_MESSAGE_SUCCESS;
     ResourceId completionStatus = WAVE_MESSAGE_SUCCESS;
 
-    WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectMessage *> (pPrismMessage);
+    WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectMessage *> (pWaveMessage);
 
     WaveManagedObjectDeleteContext *pPrismLinearSequencerContext = reinterpret_cast<WaveManagedObjectDeleteContext *> (pCallerContext);
     prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
 
-    WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pPrismLinearSequencerContext->getPPrismMessage ()); 
+    WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ()); 
 
     prismAssert (NULL != pWaveObjectManagerDeleteWaveManagedObjectsMessage, __FILE__, __LINE__);
 
@@ -166,7 +166,7 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
     }
     else
     {
-        completionStatus = pPrismMessage->getCompletionStatus();
+        completionStatus = pWaveMessage->getCompletionStatus();
         
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
@@ -179,9 +179,9 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
         }
     }
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
-        delete pPrismMessage;
+        delete pWaveMessage;
     }
 
     pPrismLinearSequencerContext->executeNextStep (status);
@@ -906,7 +906,7 @@ void WaveManagedObjectDeleteWorker::deleteUpdateHardwareStepCallBack (GetHardwar
             {
                 status = pMessage->getCompletionStatus ();
 
-                WaveObjectManagerDeleteWaveManagedObjectMessage *pDeleteMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectMessage *> (pWaveManagedObjectDeleteContext->getPPrismMessage());
+                WaveObjectManagerDeleteWaveManagedObjectMessage *pDeleteMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectMessage *> (pWaveManagedObjectDeleteContext->getPWaveMessage());
                 pDeleteMessage->setWarningResourceId (pMessage->getWarningResourceId());
             }
             else
@@ -1289,7 +1289,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
                     //Call the Virtual function where plugin developer sets the non-UP message.
                     pWaveManagedObject->isManagedObjectsAssociatedToCurrentMONeedsToBeDeleted (pWaveManagedObjectDeleteContext);
  
-                    PrismMessage             *pMessage                  = pWaveManagedObjectDeleteContext->getMessage();
+                    WaveMessage             *pMessage                  = pWaveManagedObjectDeleteContext->getMessage();
                     WaveSendToClusterContext *pWaveSendToClusterContext = NULL;
                     vector<LocationId>        locationIds;
                     LocationId                handlingLocation          = 0;
@@ -1326,7 +1326,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
  
                         pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback>(&WaveManagedObjectDeleteWorker::deleteAssociationCallback), pWaveManagedObjectDeleteContext);
  
-                        pWaveSendToClusterContext->setPPrismMessageForPhase1 (pMessage);
+                        pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
  
                         if (0 != locationIds.size())
                         {
@@ -1407,7 +1407,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
  
                            pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback>(&WaveManagedObjectDeleteWorker::deleteAssociationCallback), pWaveManagedObjectDeleteContext);
  
-                           pWaveSendToClusterContext->setPPrismMessageForPhase1 (pDeleteMessage);
+                           pWaveSendToClusterContext->setPWaveMessageForPhase1 (pDeleteMessage);
                         
                            prismAssert (1 == locationIds.size(), __FILE__, __LINE__); 
  
@@ -1468,7 +1468,7 @@ void WaveManagedObjectDeleteWorker::deleteAssociationCallback (WaveSendToCluster
  
     WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext = reinterpret_cast<WaveManagedObjectDeleteContext*>(pWaveSendToClusterContext->getPCallerContext());
  
-    delete (pWaveSendToClusterContext->getPPrismMessageForPhase1());
+    delete (pWaveSendToClusterContext->getPWaveMessageForPhase1());
     delete (pWaveSendToClusterContext);
 
     --(*pWaveManagedObjectDeleteContext);

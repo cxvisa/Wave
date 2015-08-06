@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 PrismPostPersistenceBootMessage::PrismPostPersistenceBootMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES),
+    : WaveMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES),
     m_isPostbootRequired            (true),
     m_executeConfigReplaySequence   (true),
     m_executeNodeReadySequence      (true),
@@ -25,7 +25,7 @@ PrismPostPersistenceBootMessage::PrismPostPersistenceBootMessage ()
 }
 
 PrismPostPersistenceBootMessage::PrismPostPersistenceBootMessage (bool isPostbootRequired, bool executeConfigReplaySequence, bool executeNodeReadySequence, bool isBannerOutputToClientsRequired)
-    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES),
+    : WaveMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES),
     m_isPostbootRequired                (isPostbootRequired),
     m_executeConfigReplaySequence       (executeConfigReplaySequence),
     m_executeNodeReadySequence          (executeNodeReadySequence),
@@ -37,7 +37,7 @@ PrismPostPersistenceBootMessage::PrismPostPersistenceBootMessage (bool isPostboo
 }
 
     PrismPostPersistenceBootMessage::PrismPostPersistenceBootMessage (const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType)
-    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES),
+    : WaveMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_PASSES),
       m_isPostbootRequired            (true),
       m_executeConfigReplaySequence   (true),
       m_executeNodeReadySequence      (true),
@@ -54,7 +54,7 @@ PrismPostPersistenceBootMessage::~PrismPostPersistenceBootMessage ()
 
 void  PrismPostPersistenceBootMessage::setupAttributesForSerialization()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeBool (&m_isPostbootRequired,                "isPostbootRequired"));
      addSerializableAttribute (new AttributeBool (&m_executeConfigReplaySequence,       "executeConfigReplaySequence"));
@@ -138,7 +138,7 @@ void PrismPostPersistenceBootMessage::setIsBannerOutputToClientsRequired (bool i
 
 
 PrismPostPersistenceBootServiceAndWaveSlotsMessage::PrismPostPersistenceBootServiceAndWaveSlotsMessage ()
-    : PrismMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_SERVICE_AND_WAVE_SLOTS)
+    : WaveMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POST_PERSISTENT_BOOT_SERVICE_AND_WAVE_SLOTS)
 {
 }
 
@@ -148,7 +148,7 @@ PrismPostPersistenceBootServiceAndWaveSlotsMessage::~PrismPostPersistenceBootSer
 
 void PrismPostPersistenceBootServiceAndWaveSlotsMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 }
 
 }

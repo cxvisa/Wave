@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerCopyFileMessage::PersistenceObjectManagerCopyFileMessage (const ResourceId &startupFileType, const string &startupFileName, const bool &isLocalFileCopy)
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
       m_startupFileType (startupFileType),
       m_startupFileName (startupFileName),
       m_isLocalFileCopy (isLocalFileCopy)
@@ -21,7 +21,7 @@ PersistenceObjectManagerCopyFileMessage::PersistenceObjectManagerCopyFileMessage
 }
 
 PersistenceObjectManagerCopyFileMessage::PersistenceObjectManagerCopyFileMessage ()
-    : PrismMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
+    : WaveMessage (PersistenceObjectManager::getWaveServiceId (), PERSISTENCE_OBNJECT_MANAGER_COPY_FILE),
       m_startupFileType (0),
       m_isLocalFileCopy(false)
 {
@@ -33,7 +33,7 @@ PersistenceObjectManagerCopyFileMessage::~PersistenceObjectManagerCopyFileMessag
 
 void PersistenceObjectManagerCopyFileMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString (&m_startupFileName, "startupFileName"));
      addSerializableAttribute (new AttributeEnum (&m_startupFileType,   "startupFileType"));

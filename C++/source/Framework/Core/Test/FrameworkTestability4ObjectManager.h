@@ -29,7 +29,7 @@ class FrameworkTestability4ObjectManager: public WaveLocalObjectManager
         void                initialize                                                                          (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
         WaveManagedObject *createManagedObjectInstance                                                          (const string &managedClassName);
-        PrismMessage      *createMessageInstance                                                                (const UI32 &operationCode);
+        WaveMessage      *createMessageInstance                                                                (const UI32 &operationCode);
 
         void                frameworkTestabilityMessage8RequestHandler                                          (FrameworkTestabilityMessage8    *pFrameworkTestabilityMessage8);
         void                frameworkTestability9MessageHandler                                                 (FrameworkTestabilityMessage9    *pMessage);

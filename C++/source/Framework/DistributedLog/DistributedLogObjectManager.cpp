@@ -42,9 +42,9 @@ DistributedLogObjectManager::DistributedLogObjectManager ()
     addManagedClass (DistributedLogConfigurationManagedObject::getClassName ());
     addManagedClass (DistributedLogEntryManagedObject::getClassName ());
 
-    addOperationMap (DISTRIBUTED_LOG_ADD_LOG_ENTRY, reinterpret_cast<PrismMessageHandler> (&DistributedLogObjectManager::distributedLogAddLogEntryMessageHandler));
-    addOperationMap (DISTRIBUTED_LOG_UPDATE_MAX_LOG_ENTRIES, reinterpret_cast<PrismMessageHandler> (&DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesMessageHandler));
-    addOperationMap (DISTRIBUTED_LOG_UPDATE_IN_MEMORY_LOG_ID, reinterpret_cast<PrismMessageHandler> (&DistributedLogObjectManager::distributedLogUpdateInMemoryLogIdMessageHandler));
+    addOperationMap (DISTRIBUTED_LOG_ADD_LOG_ENTRY, reinterpret_cast<WaveMessageHandler> (&DistributedLogObjectManager::distributedLogAddLogEntryMessageHandler));
+    addOperationMap (DISTRIBUTED_LOG_UPDATE_MAX_LOG_ENTRIES, reinterpret_cast<WaveMessageHandler> (&DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesMessageHandler));
+    addOperationMap (DISTRIBUTED_LOG_UPDATE_IN_MEMORY_LOG_ID, reinterpret_cast<WaveMessageHandler> (&DistributedLogObjectManager::distributedLogUpdateInMemoryLogIdMessageHandler));
 
     addDebugFunction ((ShellCmdFunction) (&DistributedLogObjectManager::distributedLogAddLogEntryDebugHandler), "addlogentry");
     addDebugFunction ((ShellCmdFunction) (&DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesDebugHandler), "updatemaxlogentries");
@@ -73,27 +73,27 @@ WaveServiceId DistributedLogObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-PrismMessage *DistributedLogObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DistributedLogObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DISTRIBUTED_LOG_ADD_LOG_ENTRY :
-            pPrismMessage = new DistributedLogAddLogEntryMessage ();
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new DistributedLogAddLogEntryMessage ();
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         case DISTRIBUTED_LOG_UPDATE_MAX_LOG_ENTRIES :
-            pPrismMessage = new DistributedLogUpdateMaxLogEntriesMessage ();
-            prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+            pWaveMessage = new DistributedLogUpdateMaxLogEntriesMessage ();
+            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 WaveManagedObject *DistributedLogObjectManager::createManagedObjectInstance (const string &managedClassName)
@@ -462,7 +462,7 @@ void DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesMessageHandle
 
 ResourceId DistributedLogObjectManager::distributedLogSetupADelayedCommitTransactionIfRequiredStep (DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext)
 {
-    DistributedLogAddLogEntryMessage *pDistributedLogAddLogEntryMessage = dynamic_cast<DistributedLogAddLogEntryMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPPrismMessage ());
+    DistributedLogAddLogEntryMessage *pDistributedLogAddLogEntryMessage = dynamic_cast<DistributedLogAddLogEntryMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pDistributedLogAddLogEntryMessage, __FILE__, __LINE__);
 
     ResourceId                        logDescriptionType                = pDistributedLogAddLogEntryMessage->getLogDescriptionType ();
@@ -484,7 +484,7 @@ ResourceId DistributedLogObjectManager::distributedLogSetupADelayedCommitTransac
 
 ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext)
 {
-    DistributedLogAddLogEntryMessage *pDistributedLogAddLogEntryMessage = dynamic_cast<DistributedLogAddLogEntryMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPPrismMessage ());
+    DistributedLogAddLogEntryMessage *pDistributedLogAddLogEntryMessage = dynamic_cast<DistributedLogAddLogEntryMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pDistributedLogAddLogEntryMessage, __FILE__, __LINE__);
 
     ResourceId                        logType                           = pDistributedLogAddLogEntryMessage->getLogType ();
@@ -605,7 +605,7 @@ ResourceId DistributedLogObjectManager::distributedLogUpdateFirstAndNextLogIdSte
 
 ResourceId DistributedLogObjectManager::distributedLogRemoveLogEntriesIfRequiredStep (DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext)
 {
-    DistributedLogUpdateMaxLogEntriesMessage *pDistributedLogUpdateMaxLogEntriesMessage = dynamic_cast<DistributedLogUpdateMaxLogEntriesMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPPrismMessage ());
+    DistributedLogUpdateMaxLogEntriesMessage *pDistributedLogUpdateMaxLogEntriesMessage = dynamic_cast<DistributedLogUpdateMaxLogEntriesMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPWaveMessage ());
     UI64                                      newMaxLogEntries                          = pDistributedLogUpdateMaxLogEntriesMessage->getMaxLogEntries ();
     ResourceId                                status                                    = WAVE_MESSAGE_SUCCESS;
 
@@ -649,7 +649,7 @@ ResourceId DistributedLogObjectManager::distributedLogRemoveLogEntriesIfRequired
 
 ResourceId DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesStep (DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext)
 {
-    DistributedLogUpdateMaxLogEntriesMessage *pDistributedLogUpdateMaxLogEntriesMessage = dynamic_cast<DistributedLogUpdateMaxLogEntriesMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPPrismMessage ());
+    DistributedLogUpdateMaxLogEntriesMessage *pDistributedLogUpdateMaxLogEntriesMessage = dynamic_cast<DistributedLogUpdateMaxLogEntriesMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPWaveMessage ());
     UI64                                      newMaxLogEntries                          = pDistributedLogUpdateMaxLogEntriesMessage->getMaxLogEntries ();
     ResourceId                                status                                    = WAVE_MESSAGE_SUCCESS;
 

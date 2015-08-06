@@ -17,7 +17,7 @@ class AddNodesToClusterContext : public CreateClusterWithNodesContext
     private :
     protected :
     public :
-                 AddNodesToClusterContext (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                 AddNodesToClusterContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~AddNodesToClusterContext ();
 
     // Now the data members

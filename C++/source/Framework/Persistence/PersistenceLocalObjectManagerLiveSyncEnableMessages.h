@@ -7,7 +7,7 @@
 #ifndef PERSISTENCELOCALOBJECTMANAGERLIVESYNCENABLEMESSAGES_H
 #define PERSISTENCELOCALOBJECTMANAGERLIVESYNCENABLEMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 #include <string>
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceLocalObjectManagerGetLiveSyncEnableMessage : public PrismMessage
+class PersistenceLocalObjectManagerGetLiveSyncEnableMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();
@@ -37,7 +37,7 @@ class PersistenceLocalObjectManagerGetLiveSyncEnableMessage : public PrismMessag
     public :
 };
 
-class PersistenceLocalObjectManagerSetLiveSyncEnableMessage : public PrismMessage
+class PersistenceLocalObjectManagerSetLiveSyncEnableMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();

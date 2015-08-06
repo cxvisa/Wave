@@ -18,7 +18,7 @@ class DistributedLogTestContext;
 class DistributedLogTestObjectManager : public PrismTestObjectManager
 {
     private :
-        virtual PrismMessage                       *createMessageInstance                                   (const UI32 &operationCode);
+        virtual WaveMessage                       *createMessageInstance                                   (const UI32 &operationCode);
                 void                                invokeAddLogApiMessageHandler                           (DistributedLogInvokeAddLogApiMessage *pMessage);
                 void                                testRequestHandler                                      (RegressionTestMessage *pMessage);
                 void                                dumpAndSaveOriginalStatsTestStep                        (DistributedLogTestContext *pDistributedLogTestContext);

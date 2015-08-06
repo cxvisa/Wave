@@ -7,7 +7,7 @@
 #ifndef REGRESSIONSERVICEMESSAGES_H
 #define REGRESSIONSERVICEMESSAGES_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Types/Types.h"
 #include "Regression/RegressionTestEntry.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
@@ -44,7 +44,7 @@ class RegressionTestObjectManagerGetTestServiceEntriesMessage : public Managemen
         friend class RegressionTestObjectManager;
 };
 
-class RegressionTestObjectManagerSetTestServiceStateMessage : public PrismMessage
+class RegressionTestObjectManagerSetTestServiceStateMessage : public WaveMessage
 {
     private :
     protected :
@@ -66,7 +66,7 @@ class RegressionTestObjectManagerSetTestServiceStateMessage : public PrismMessag
     public :
 };
 
-class RegressionTestObjectManagerStartRegressionMessage : public PrismMessage
+class RegressionTestObjectManagerStartRegressionMessage : public WaveMessage
 {
     private :
     protected :

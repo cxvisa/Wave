@@ -25,21 +25,21 @@ WaveSystemManagementGetPossibleCompletionsWorker::WaveSystemManagementGetPossibl
     m_isInitializationDone                              (false)
 
 {
-    addOperationMap (WAVE_SYSTEM_MANAGEMENT_GET_POSSIBLE_COMPLETIONS_MESSAGE, reinterpret_cast<PrismMessageHandler> (&WaveSystemManagementGetPossibleCompletionsWorker::getPossibleCompletionsMessageHandler));
+    addOperationMap (WAVE_SYSTEM_MANAGEMENT_GET_POSSIBLE_COMPLETIONS_MESSAGE, reinterpret_cast<WaveMessageHandler> (&WaveSystemManagementGetPossibleCompletionsWorker::getPossibleCompletionsMessageHandler));
 }
 
 WaveSystemManagementGetPossibleCompletionsWorker::~WaveSystemManagementGetPossibleCompletionsWorker ()
 {
 }
 
-PrismMessage *WaveSystemManagementGetPossibleCompletionsWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveSystemManagementGetPossibleCompletionsWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case WAVE_SYSTEM_MANAGEMENT_GET_POSSIBLE_COMPLETIONS_MESSAGE:
-            pPrismMessage = new WaveSystemManagementGetPossibleCompletionsMessage ();
+            pWaveMessage = new WaveSystemManagementGetPossibleCompletionsMessage ();
             break;
 
         default :
@@ -48,7 +48,7 @@ PrismMessage *WaveSystemManagementGetPossibleCompletionsWorker::createMessageIns
             break;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
                 
 void WaveSystemManagementGetPossibleCompletionsWorker::getPossibleCompletionsMessageHandler (WaveSystemManagementGetPossibleCompletionsMessage *pWaveSystemManagementGetPossibleCompletionsMessage)

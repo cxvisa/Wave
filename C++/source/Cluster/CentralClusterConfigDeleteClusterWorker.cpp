@@ -23,28 +23,28 @@ namespace WaveNs
 CentralClusterConfigDeleteClusterWorker::CentralClusterConfigDeleteClusterWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (CLUSTER_DELETE_CLUSTER, reinterpret_cast<PrismMessageHandler> (&CentralClusterConfigDeleteClusterWorker::deleteClusterMessageHandler));
+    addOperationMap (CLUSTER_DELETE_CLUSTER, reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigDeleteClusterWorker::deleteClusterMessageHandler));
 }
 
 CentralClusterConfigDeleteClusterWorker::~CentralClusterConfigDeleteClusterWorker ()
 {
 }
 
-PrismMessage *CentralClusterConfigDeleteClusterWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *CentralClusterConfigDeleteClusterWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLUSTER_DELETE_CLUSTER :
-            pPrismMessage = new ClusterObjectManagerDeleteClusterMessage;
+            pWaveMessage = new ClusterObjectManagerDeleteClusterMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void CentralClusterConfigDeleteClusterWorker::deleteClusterMessageHandler (ClusterObjectManagerDeleteClusterMessage *pClusterObjectManagerDeleteClusterMessage)
@@ -120,7 +120,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
     ResourceId                                   status                 = WAVE_MESSAGE_SUCCESS;
     vector<WaveManagedObject *>                 *pSecondaryNodeResults  = NULL;
     UI32                                         numberOfResults        = 0;
-    ClusterObjectManagerDeleteClusterMessage    *pMessage               = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPPrismMessage ());
+    ClusterObjectManagerDeleteClusterMessage    *pMessage               = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPWaveMessage ());
     WaveNode                                     tempNode               (getPWaveObjectManager (), FrameworkToolKit::getThisLocationId (), FrameworkToolKit::getThisLocationIpAddress (), FrameworkToolKit::getThisLocationPort ());
 
     prismAssert (NULL != pPrismCluster, __FILE__, __LINE__);
@@ -242,7 +242,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDel
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDeleteClusterStep : Entering ...");
 
-    ClusterObjectManagerDeleteClusterMessage    *pClusterObjectManagerDeleteClusterMessage    = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPPrismMessage ());
+    ClusterObjectManagerDeleteClusterMessage    *pClusterObjectManagerDeleteClusterMessage    = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPWaveMessage ());
     WaveServiceId                               serderServiceId                              = pClusterObjectManagerDeleteClusterMessage->getSenderServiceCode ();
 
     FrameworkObjectManagerDestroyClusterMessage *pFrameworkObjectManagerDestroyClusterMessage = new FrameworkObjectManagerDestroyClusterMessage ();

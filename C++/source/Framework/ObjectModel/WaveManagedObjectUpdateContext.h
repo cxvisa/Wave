@@ -22,7 +22,7 @@ class WaveManagedObjectUpdateContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                           WaveManagedObjectUpdateContext               (PrismMessage* pPrismMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                           WaveManagedObjectUpdateContext               (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
                                            WaveManagedObjectUpdateContext               (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
         virtual                           ~WaveManagedObjectUpdateContext               ();
 
@@ -72,8 +72,8 @@ class WaveManagedObjectUpdateContext : public PrismLinearSequencerContext
                  void                      setParentManagedObjectNames                  (vector<string> parentManagedObjectNames);
                  vector<string>            getParentManagedObjectNames                  ();
                  
-                 void                      setMessage                                   (PrismMessage *pMessage);
-                 PrismMessage*             getMessage                                   ();
+                 void                      setMessage                                   (WaveMessage *pMessage);
+                 WaveMessage*             getMessage                                   ();
 
                  void                      setAssociatedFromManagedObjectName           (string associatedFromMOName);
                  string                    getAssociatedFromManagedObjectName           (); 
@@ -108,7 +108,7 @@ class WaveManagedObjectUpdateContext : public PrismLinearSequencerContext
         bool                                    m_isDatabaseUpdateRequired;
         bool                                    m_isBackendUpdateRequired;    
         vector<string>                          m_parentManagedObjectNames;
-        PrismMessage                           *m_pMessage;
+        WaveMessage                           *m_pMessage;
         string                                  m_associatedFromMOName;
         UI32                                    m_choiceUserTagNeedToRemove;
         bool                                    m_isConfigReplayInProgress;

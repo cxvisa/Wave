@@ -20,8 +20,8 @@ WaveMessagingBrokerConnectionObjectManager::WaveMessagingBrokerConnectionObjectM
     : WaveLocalObjectManager      (getServiceName ()),
       m_tryIntervalInMilliSeconds (5000)
 {
-    addOperationMap (WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_REQUEST_TO_TRY_FOR_CONNECTION,        reinterpret_cast<PrismMessageHandler> (&WaveMessagingBrokerConnectionObjectManager::requestToTryForConnectionMessageHandler));
-    addOperationMap (WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_CANCEL_REQUEST_TO_TRY_FOR_CONNECTION, reinterpret_cast<PrismMessageHandler> (&WaveMessagingBrokerConnectionObjectManager::cancelRequestToTryForConnectionMessageHandler));
+    addOperationMap (WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_REQUEST_TO_TRY_FOR_CONNECTION,        reinterpret_cast<WaveMessageHandler> (&WaveMessagingBrokerConnectionObjectManager::requestToTryForConnectionMessageHandler));
+    addOperationMap (WAVE_MESSAGING_BROKER_CONNECTION_OBJECT_MANAGER_CANCEL_REQUEST_TO_TRY_FOR_CONNECTION, reinterpret_cast<WaveMessageHandler> (&WaveMessagingBrokerConnectionObjectManager::cancelRequestToTryForConnectionMessageHandler));
 }
 
 WaveMessagingBrokerConnectionObjectManager::~WaveMessagingBrokerConnectionObjectManager ()

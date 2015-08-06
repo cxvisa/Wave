@@ -24,28 +24,28 @@ SoftwareManagementVersionWorker::SoftwareManagementVersionWorker (SoftwareManage
 {
     addDebugFunction ((ShellCmdFunction) (&SoftwareManagementVersionWorker::debugGetVersion), "getversion");
 
-    addOperationMap (SOFTWAREMANAGEMENT_GET_VERSION, reinterpret_cast<PrismMessageHandler> (&SoftwareManagementVersionWorker::softwareManagementGetVersionMessageHandler));
+    addOperationMap (SOFTWAREMANAGEMENT_GET_VERSION, reinterpret_cast<WaveMessageHandler> (&SoftwareManagementVersionWorker::softwareManagementGetVersionMessageHandler));
 }
 
 SoftwareManagementVersionWorker::~SoftwareManagementVersionWorker ()
 {
 }
 
-PrismMessage *SoftwareManagementVersionWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *SoftwareManagementVersionWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case SOFTWAREMANAGEMENT_GET_VERSION :
-            pPrismMessage = new SoftwareManagementGetVersionMessage;
+            pWaveMessage = new SoftwareManagementGetVersionMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void SoftwareManagementVersionWorker::softwareManagementGetVersionMessageHandler (SoftwareManagementGetVersionMessage *pSoftwareManagementGetVersionMessage)
@@ -66,7 +66,7 @@ void SoftwareManagementVersionWorker::getVersionStep (PrismLinearSequencerContex
 {
     trace (TRACE_LEVEL_DEVEL, "SoftwareManagementVersionWorker::getVersionStep : Entering ...");
 
-          SoftwareManagementGetVersionMessage *pSoftwareManagementGetVersionMessage = reinterpret_cast<SoftwareManagementGetVersionMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+          SoftwareManagementGetVersionMessage *pSoftwareManagementGetVersionMessage = reinterpret_cast<SoftwareManagementGetVersionMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     const PrismVersion                        *pPrismVersion                        = PrismVersion::getInstance ();
     const string                               version                              = pPrismVersion->getMajor () + "." + pPrismVersion->getMinor () + "." + pPrismVersion->getPatch () + "." + pPrismVersion->getRevision () + "-" + pPrismVersion->getBuildType () + "." + pPrismVersion->getBuildNumber ();
 

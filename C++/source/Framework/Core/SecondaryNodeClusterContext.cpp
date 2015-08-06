@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-SecondaryNodeClusterContext::SecondaryNodeClusterContext(PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag, bool clusterHaSyncInProgressFlag)
-    : PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps),
+SecondaryNodeClusterContext::SecondaryNodeClusterContext(WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag, bool clusterHaSyncInProgressFlag)
+    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
       m_isDBEmptyRequired (true),
       m_clusterPrimaryPort (0),
       m_clusterPrimaryLocationId (0)

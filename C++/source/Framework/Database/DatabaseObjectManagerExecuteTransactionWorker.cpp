@@ -33,7 +33,7 @@ DatabaseObjectManagerExecuteTransactionWorker::DatabaseObjectManagerExecuteTrans
 {
     addDebugFunction ((ShellCmdFunction) (&DatabaseObjectManagerExecuteTransactionWorker::printTransactionStats), "printtransactionstats");
 
-    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerExecuteTransactionWorker::executeTransactionMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerExecuteTransactionWorker::executeTransactionMessageHandler));
 
     DatabaseStatisticsTracker::setVacuumInterval (s_numberCommandsBetweenVacuums);
 }
@@ -42,14 +42,14 @@ DatabaseObjectManagerExecuteTransactionWorker::~DatabaseObjectManagerExecuteTran
 {
 }
 
-PrismMessage *DatabaseObjectManagerExecuteTransactionWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerExecuteTransactionWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_EXECUTE_TRANSACTION :
-            pPrismMessage = new DatabaseObjectManagerExecuteTransactionMessage ();
+            pWaveMessage = new DatabaseObjectManagerExecuteTransactionMessage ();
             break;
 
         default :
@@ -57,7 +57,7 @@ PrismMessage *DatabaseObjectManagerExecuteTransactionWorker::createMessageInstan
             prismAssert (false, __FILE__, __LINE__);
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerExecuteTransactionWorker::executeTransactionMessageHandler (DatabaseObjectManagerExecuteTransactionMessage *pDatabaseObjectManagerExecuteTransactionMessage)

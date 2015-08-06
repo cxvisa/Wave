@@ -13,7 +13,7 @@
 namespace WaveNs
 {
 
-class PrismThread;
+class WaveThread;
 class InterLocationMulticastMessage;
 
 class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
@@ -28,16 +28,16 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
             public :
                                            MessageMap                                    ();
                                           ~MessageMap                                    ();
-                       WaveMessageStatus   addMessage                                    (PrismMessage *pPrismMessage, UI32 prismMessageId = 0);
-                       PrismMessage       *findMessage                                   (UI32 prismMessageId);
-                       PrismMessage       *findMessageWithLock                           (UI32 prismMessageId);
-                       PrismMessage       *removeMessage                                 (UI32 prismMessageId);
-                       void                getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<PrismMessage *> &messagesVector);
+                       WaveMessageStatus   addMessage                                    (WaveMessage *pWaveMessage, UI32 prismMessageId = 0);
+                       WaveMessage       *findMessage                                   (UI32 prismMessageId);
+                       WaveMessage       *findMessageWithLock                           (UI32 prismMessageId);
+                       WaveMessage       *removeMessage                                 (UI32 prismMessageId);
+                       void                getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<WaveMessage *> &messagesVector);
 
             // Now the data members
 
             private :
-                map<UI32, PrismMessage *> m_messagesMap;
+                map<UI32, WaveMessage *> m_messagesMap;
                 PrismMutex                m_accessMutex;
 
             protected :
@@ -48,20 +48,20 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
 
         void                initialize                                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         void                listenForEvents                                 (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void                interLocationMessageTransportHandler            (PrismMessage *pPrismMessage);
+        void                interLocationMessageTransportHandler            (WaveMessage *pWaveMessage);
         void                interLocationMulticastMessageTransportHandler   (InterLocationMulticastMessage *pInterLocationMulticastMessage);
 
         void                lockAccess                                      ();
         void                unlockAccess                                    ();
         void                lockAccess1                                     ();
         void                unlockAccess1                                   ();
-        WaveMessageStatus   sendToBeUsedByReceiverThreads                   (PrismMessage *pPrismMessage);
-        void                callbackForSendUsedByReceiverThreads            (FrameworkStatus frameworkStatus, PrismMessage *pPrismMessage, void *pContext);
-        PrismMessage       *getPendingMessage                               (const UI32 &messageId);
-        PrismMessage       *getPendingMessageWithoutRemove                  (const UI32 &messageId);
-        void                replyToBeUsedByReceiverThreads                  (PrismMessage *pPrismMessage);
+        WaveMessageStatus   sendToBeUsedByReceiverThreads                   (WaveMessage *pWaveMessage);
+        void                callbackForSendUsedByReceiverThreads            (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
+        WaveMessage       *getPendingMessage                               (const UI32 &messageId);
+        WaveMessage       *getPendingMessageWithoutRemove                  (const UI32 &messageId);
+        void                replyToBeUsedByReceiverThreads                  (WaveMessage *pWaveMessage);
         void                replyToBeUsedByReceiverThreads                  (UI32 prismMessageId);
-        void                getPendingMessagesForRemoteLocationForReplying  (LocationId locationId, vector<PrismMessage *> &messagesVector);
+        void                getPendingMessagesForRemoteLocationForReplying  (LocationId locationId, vector<WaveMessage *> &messagesVector);
         void                replyToRemoteMessagesPendingOnLocation          (LocationId locationId, ResourceId completionStatus);
 
         void                interLocationEventTransportHandler              (const PrismEvent *&pPrismEvent);
@@ -75,7 +75,7 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
         static  InterLocationMessageTransportObjectManager *getInstance                                ();
         static  WaveServiceId                              getWaveServiceId                          ();
 
-        static  PrismThread                                *getPrismThread                             ();
+        static  WaveThread                                *getWaveThread                             ();
 
     // Now the data members
 

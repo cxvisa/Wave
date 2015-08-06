@@ -14,8 +14,8 @@ namespace WaveNs
 
 WaveSendToClusterContext::WaveSendToClusterContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
-      m_pPrismMessageForPhase1                  (NULL),
-      m_pPrismMessageForPhase2                  (NULL),
+      m_pWaveMessageForPhase1                  (NULL),
+      m_pWaveMessageForPhase2                  (NULL),
       m_timeoutForPhase1                        (0),
       m_timeoutForPhase2                        (0),
       m_numberOfFailuresForPhase1               (0),
@@ -35,8 +35,8 @@ WaveSendToClusterContext::WaveSendToClusterContext (PrismElement *pCaller, Prism
 
 WaveSendToClusterContext::~WaveSendToClusterContext ()
 {
-    map<LocationId, PrismMessage *>::iterator       element    = m_resultingMessageForPhase1.begin ();
-    map<LocationId, PrismMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
+    map<LocationId, WaveMessage *>::iterator       element    = m_resultingMessageForPhase1.begin ();
+    map<LocationId, WaveMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
 
     while (endElement != element)
     {
@@ -44,8 +44,8 @@ WaveSendToClusterContext::~WaveSendToClusterContext ()
         element++;
     }
 
-    map<LocationId, PrismMessage *>::iterator       element2    = m_resultingMessageForPhase2.begin ();
-    map<LocationId, PrismMessage *>::const_iterator endElement2 = m_resultingMessageForPhase2.end ();
+    map<LocationId, WaveMessage *>::iterator       element2    = m_resultingMessageForPhase2.begin ();
+    map<LocationId, WaveMessage *>::const_iterator endElement2 = m_resultingMessageForPhase2.end ();
 
     while (endElement2 != element2)
     {
@@ -54,31 +54,31 @@ WaveSendToClusterContext::~WaveSendToClusterContext ()
     }
 }
 
-PrismMessage *WaveSendToClusterContext::getPPrismMessageForPhase1 () const
+WaveMessage *WaveSendToClusterContext::getPWaveMessageForPhase1 () const
 {
-    return (m_pPrismMessageForPhase1);
+    return (m_pWaveMessageForPhase1);
 }
 
-void WaveSendToClusterContext::setPPrismMessageForPhase1 (PrismMessage *pPrismMessageForPhase1)
+void WaveSendToClusterContext::setPWaveMessageForPhase1 (WaveMessage *pWaveMessageForPhase1)
 {
-    m_pPrismMessageForPhase1 = pPrismMessageForPhase1;
+    m_pWaveMessageForPhase1 = pWaveMessageForPhase1;
 }
 
-PrismMessage *WaveSendToClusterContext::getPPrismMessageForPhase2 () const
+WaveMessage *WaveSendToClusterContext::getPWaveMessageForPhase2 () const
 {
-    return (m_pPrismMessageForPhase2);
+    return (m_pWaveMessageForPhase2);
 }
 
-void WaveSendToClusterContext::setPPrismMessageForPhase2 (PrismMessage *pPrismMessageForPhase2)
+void WaveSendToClusterContext::setPWaveMessageForPhase2 (WaveMessage *pWaveMessageForPhase2)
 {
-    if (pPrismMessageForPhase2 && m_returnSuccessForPartialSuccessFlag)
+    if (pWaveMessageForPhase2 && m_returnSuccessForPartialSuccessFlag)
     {
-        trace (TRACE_LEVEL_ERROR, "WaveSendToClusterContext::setPPrismMessageForPhase2: PartialSuccess flag and rollback message can't be set at a time.");  
-        trace (TRACE_LEVEL_ERROR, "WaveSendToClusterContext::setPPrismMessageForPhase2: Be sure about the expected behaviour - If rollback message to be sent on failure or should it be considered as PartialSuccess.");  
+        trace (TRACE_LEVEL_ERROR, "WaveSendToClusterContext::setPWaveMessageForPhase2: PartialSuccess flag and rollback message can't be set at a time.");  
+        trace (TRACE_LEVEL_ERROR, "WaveSendToClusterContext::setPWaveMessageForPhase2: Be sure about the expected behaviour - If rollback message to be sent on failure or should it be considered as PartialSuccess.");  
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    m_pPrismMessageForPhase2 = pPrismMessageForPhase2;
+    m_pWaveMessageForPhase2 = pWaveMessageForPhase2;
 }
 
 UI32 WaveSendToClusterContext::getTimeoutForPhase1 () const
@@ -172,39 +172,39 @@ void WaveSendToClusterContext::setCompletionStatusForPhase1 (const LocationId &l
     m_completionStatusForPhase1[locationId] = completionStatusForPhase1;
 }
 
-PrismMessage *WaveSendToClusterContext::getResultingMessageForPhase1 (const LocationId &locationId)
+WaveMessage *WaveSendToClusterContext::getResultingMessageForPhase1 (const LocationId &locationId)
 {
-    map<LocationId, PrismMessage *>::const_iterator element    = m_resultingMessageForPhase1.find (locationId);
-    map<LocationId, PrismMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
+    map<LocationId, WaveMessage *>::const_iterator element    = m_resultingMessageForPhase1.find (locationId);
+    map<LocationId, WaveMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
 
     prismAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_resultingMessageForPhase1[locationId]);
 }
 
-void WaveSendToClusterContext::setResultingMessageForPhase1 (const LocationId &locationId, PrismMessage *pPrismMessage)
+void WaveSendToClusterContext::setResultingMessageForPhase1 (const LocationId &locationId, WaveMessage *pWaveMessage)
 {
-    map<LocationId, PrismMessage *>::const_iterator element    = m_resultingMessageForPhase1.find (locationId);
-    map<LocationId, PrismMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
+    map<LocationId, WaveMessage *>::const_iterator element    = m_resultingMessageForPhase1.find (locationId);
+    map<LocationId, WaveMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
 
     prismAssert (endElement == element, __FILE__, __LINE__);
 
-    m_resultingMessageForPhase1[locationId] = pPrismMessage;
+    m_resultingMessageForPhase1[locationId] = pWaveMessage;
 }
 
-PrismMessage *WaveSendToClusterContext::transferResultingMessageForPhase1 (const LocationId &locationId)
+WaveMessage *WaveSendToClusterContext::transferResultingMessageForPhase1 (const LocationId &locationId)
 {
-    map<LocationId, PrismMessage *>::const_iterator  element       = m_resultingMessageForPhase1.find (locationId);
-    map<LocationId, PrismMessage *>::const_iterator  endElement    = m_resultingMessageForPhase1.end ();
-    PrismMessage                                    *pPrismMessage = NULL;
+    map<LocationId, WaveMessage *>::const_iterator  element       = m_resultingMessageForPhase1.find (locationId);
+    map<LocationId, WaveMessage *>::const_iterator  endElement    = m_resultingMessageForPhase1.end ();
+    WaveMessage                                    *pWaveMessage = NULL;
 
     prismAssert (endElement != element, __FILE__, __LINE__);
 
-    pPrismMessage = m_resultingMessageForPhase1[locationId];
+    pWaveMessage = m_resultingMessageForPhase1[locationId];
 
    m_resultingMessageForPhase1.erase (locationId);
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 UI32 WaveSendToClusterContext::getNumberOfFailuresForPhase1 () const
@@ -297,39 +297,39 @@ void WaveSendToClusterContext::setCompletionStatusForPhase2 (const LocationId &l
     m_completionStatusForPhase2[locationId] = completionStatusForPhase2;
 }
 
-PrismMessage *WaveSendToClusterContext::getResultingMessageForPhase2 (const LocationId &locationId)
+WaveMessage *WaveSendToClusterContext::getResultingMessageForPhase2 (const LocationId &locationId)
 {
-    map<LocationId, PrismMessage *>::const_iterator element    = m_resultingMessageForPhase2.find (locationId);
-    map<LocationId, PrismMessage *>::const_iterator endElement = m_resultingMessageForPhase2.end ();
+    map<LocationId, WaveMessage *>::const_iterator element    = m_resultingMessageForPhase2.find (locationId);
+    map<LocationId, WaveMessage *>::const_iterator endElement = m_resultingMessageForPhase2.end ();
 
     prismAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_resultingMessageForPhase2[locationId]);
 }
 
-void WaveSendToClusterContext::setResultingMessageForPhase2 (const LocationId &locationId, PrismMessage *pPrismMessage)
+void WaveSendToClusterContext::setResultingMessageForPhase2 (const LocationId &locationId, WaveMessage *pWaveMessage)
 {
-    map<LocationId, PrismMessage *>::const_iterator element    = m_resultingMessageForPhase2.find (locationId);
-    map<LocationId, PrismMessage *>::const_iterator endElement = m_resultingMessageForPhase2.end ();
+    map<LocationId, WaveMessage *>::const_iterator element    = m_resultingMessageForPhase2.find (locationId);
+    map<LocationId, WaveMessage *>::const_iterator endElement = m_resultingMessageForPhase2.end ();
 
     prismAssert (endElement == element, __FILE__, __LINE__);
 
-    m_resultingMessageForPhase2[locationId] = pPrismMessage;
+    m_resultingMessageForPhase2[locationId] = pWaveMessage;
 }
 
-PrismMessage *WaveSendToClusterContext::transferResultingMessageForPhase2 (const LocationId &locationId)
+WaveMessage *WaveSendToClusterContext::transferResultingMessageForPhase2 (const LocationId &locationId)
 {
-    map<LocationId, PrismMessage *>::const_iterator  element       = m_resultingMessageForPhase2.find (locationId);
-    map<LocationId, PrismMessage *>::const_iterator  endElement    = m_resultingMessageForPhase2.end ();
-    PrismMessage                                    *pPrismMessage = NULL;
+    map<LocationId, WaveMessage *>::const_iterator  element       = m_resultingMessageForPhase2.find (locationId);
+    map<LocationId, WaveMessage *>::const_iterator  endElement    = m_resultingMessageForPhase2.end ();
+    WaveMessage                                    *pWaveMessage = NULL;
 
     prismAssert (endElement != element, __FILE__, __LINE__);
 
-    pPrismMessage = m_resultingMessageForPhase2[locationId];
+    pWaveMessage = m_resultingMessageForPhase2[locationId];
 
     m_resultingMessageForPhase2.erase (locationId);
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 UI32 WaveSendToClusterContext::getNumberOfFailuresForPhase2 () const
@@ -359,7 +359,7 @@ bool WaveSendToClusterContext::getPartialSuccessFlag () const
 
 void WaveSendToClusterContext::setPartialSuccessFlag (const bool &partialSuccessFlag)
 {
-    if (partialSuccessFlag && m_pPrismMessageForPhase2)
+    if (partialSuccessFlag && m_pWaveMessageForPhase2)
     {
         trace (TRACE_LEVEL_ERROR, "WaveSendToClusterContext::setPartialSuccessFlag: PartialSuccess flag and rollback message can't be set at a time.");  
         trace (TRACE_LEVEL_ERROR, "WaveSendToClusterContext::setPartialSuccessFlag: Be sure about the expected behaviour - If rollback message to be sent on failure or should it be considered as PartialSuccess.");  
@@ -410,7 +410,7 @@ void WaveSendToClusterContext::setIsSendOneWayToWaveCluster (bool isSendOneWayTo
 {
     if (true == isSendOneWayToWaveCluster)
     {
-        if (NULL != m_pPrismMessageForPhase2)
+        if (NULL != m_pWaveMessageForPhase2)
         {
             trace (TRACE_LEVEL_FATAL, "WaveSendToClusterContext::setIsSendOneWayToWaveCluster : Send one way to wave cluster and setting a phase2 rollback message are not allowed.");  
             prismAssert (false, __FILE__, __LINE__);

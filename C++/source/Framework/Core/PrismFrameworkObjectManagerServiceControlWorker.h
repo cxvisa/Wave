@@ -18,7 +18,7 @@ class FrameworkObjectManagerServiceSetCpuAffinityMessage;
 class PrismFrameworkObjectManagerServiceControlWorker : public WaveWorker
 {
     private :
-        virtual PrismMessage *createMessageInstance               (const UI32 &operationCode);
+        virtual WaveMessage *createMessageInstance               (const UI32 &operationCode);
 
                 void          serviceControlListMessageHandler    (FrameworkObjectManagerServiceControlListMessage *pFrameworkObjectManagerServiceControlListMessage);
                 void          serviceSetCpuAffinityMessageHandler (FrameworkObjectManagerServiceSetCpuAffinityMessage *pFrameworkObjectManagerServiceSetCpuAffinityMessage);

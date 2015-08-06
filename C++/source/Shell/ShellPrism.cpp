@@ -140,7 +140,7 @@ UI32 ShellPrism::shellExecuteHelp (UI32 argc, vector<string> argv)
 {
     shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteHelp : Entering ...");
 
-    cout << endl << "Size of Prism Msg: " << sizeof(PrismMessage) << endl;
+    cout << endl << "Size of Prism Msg: " << sizeof(WaveMessage) << endl;
     usageShellPrismHelp ();
     return SHELL_OK;
 }
@@ -193,9 +193,9 @@ void ShellPrism::usageShellPrismHelp ()
 }
 
 
-WaveMessageStatus ShellPrism::shellSendSynchronously (PrismMessage *pPrismMessage)
+WaveMessageStatus ShellPrism::shellSendSynchronously (WaveMessage *pWaveMessage)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->sendSynchronously (pPrismMessage));
+    return ((ShellObjectManager::getInstance ())->m_pPrismShell->sendSynchronously (pWaveMessage));
 }
 
 void  ShellPrism::shellTrace (TraceLevel shellTraceLevel, const string &stringToTrace)

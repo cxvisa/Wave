@@ -216,14 +216,14 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
             }
             else
             {
-                // First create a PrismMessage from the contents of the FixedBuffer that we have read from the network.
+                // First create a WaveMessage from the contents of the FixedBuffer that we have read from the network.
                 // Now depending on the contents of the message that arrived decide if it is a new request or a response to a request
                 // this location sent out.
 
-                // We can safely cast from SerializableObject pointer to PrismMessage pointer since we know that only object that
-                // travels brtween two nodes in a Prism based cluster is a PrismMessage;
-                // FIXME : sagar : enforce that the object type that was returned is indeed a PrismMessage or a specialization of
-                //                 PrismMessage.
+                // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
+                // travels brtween two nodes in a Prism based cluster is a WaveMessage;
+                // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
+                //                 WaveMessage.
 
                 string messageString;
 
@@ -236,22 +236,22 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                 //trace (TRACE_LEVEL_DEVEL, messageString);
 
                 UI8                 serializationType               = m_peerServerSerializationType;
-                UI32                messageIdAtOriginatingLocation  = PrismMessage::getMessageIdAtOriginatingLocation (messageString, serializationType); 
-                WaveMessageType     messageType                     = PrismMessage::getType (messageString, serializationType); 
-                PrismMessage       *pPrismMessage                   = NULL;
+                UI32                messageIdAtOriginatingLocation  = WaveMessage::getMessageIdAtOriginatingLocation (messageString, serializationType); 
+                WaveMessageType     messageType                     = WaveMessage::getType (messageString, serializationType); 
+                WaveMessage       *pWaveMessage                   = NULL;
 
                 if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                 {
-                    pPrismMessage = PrismMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType); 
+                    pWaveMessage = WaveMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType); 
                 }
                 else if (WAVE_MESSAGE_TYPE_RESPONSE == messageType)
                 {
-                    pPrismMessage = (HaPeerMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
+                    pWaveMessage = (HaPeerMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
 
-                    if (NULL != pPrismMessage)
+                    if (NULL != pWaveMessage)
                     {
-                        pPrismMessage->removeAllBuffers ();
-                        pPrismMessage->loadFromSerializedData2 (messageString, serializationType); 
+                        pWaveMessage->removeAllBuffers ();
+                        pWaveMessage->loadFromSerializedData2 (messageString, serializationType); 
                     }
                 }
                 else
@@ -259,7 +259,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                     prismAssert (false, __FILE__, __LINE__);
                 }
 
-                //prismAssert (NULL != pPrismMessage, __FILE__, __LINE__);
+                //prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
                 // Now read the buffer data
 
@@ -309,15 +309,15 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                         // If we have a message at hand then attach the buffer to the message.
                         // Otherwise destroy the buffer.
 
-                        if (NULL != pPrismMessage)
+                        if (NULL != pWaveMessage)
                         {
                             if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                             {
-                                pPrismMessage->addBuffer (bufferTag, bufferSize, pBuffer, true);
+                                pWaveMessage->addBuffer (bufferTag, bufferSize, pBuffer, true);
                             }
                             else if (WAVE_MESSAGE_TYPE_RESPONSE == messageType)
                             {
-                                pPrismMessage->addBuffer (bufferTag, bufferSize, pBuffer, true);
+                                pWaveMessage->addBuffer (bufferTag, bufferSize, pBuffer, true);
                             }
                             else
                             {
@@ -335,13 +335,13 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                 // if we have a message at hand
                 // Now depending on the message type process it.
 
-                if (NULL != pPrismMessage)
+                if (NULL != pWaveMessage)
                 {
                     if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                     {
                         trace (TRACE_LEVEL_DEVEL, "HaPeerMessageReceiverThread::start : We received a Remote message destined to this location and delivering it to corresponding service.");
 
-                        WaveServiceIndependentMessage *pWaveServiceIndependentMessage = dynamic_cast<WaveServiceIndependentMessage *> (pPrismMessage);
+                        WaveServiceIndependentMessage *pWaveServiceIndependentMessage = dynamic_cast<WaveServiceIndependentMessage *> (pWaveMessage);
 
                         if (NULL != pWaveServiceIndependentMessage)
                         {
@@ -369,11 +369,11 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
 
                             if (true == isSuccessful)
                             {
-                                (HaPeerMessageTransportObjectManager::getInstance ())->sendToBeUsedByReceiverThreads (pPrismMessage);
+                                (HaPeerMessageTransportObjectManager::getInstance ())->sendToBeUsedByReceiverThreads (pWaveMessage);
                             }
                             else
                             {
-                                delete pPrismMessage;
+                                delete pWaveMessage;
                             }
                         }
                     }
@@ -386,10 +386,10 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
 
                         if (false == isSuccessful)
                         {
-                            pPrismMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_INCOMPLETE_BUFFER_READ_FROM_REMOTE_LOCATION);
+                            pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_INCOMPLETE_BUFFER_READ_FROM_REMOTE_LOCATION);
                         }
 
-                        (HaPeerMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pPrismMessage);
+                        (HaPeerMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pWaveMessage);
                     }
                     else
                     {

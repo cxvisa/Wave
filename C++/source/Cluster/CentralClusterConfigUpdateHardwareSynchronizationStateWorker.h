@@ -31,7 +31,7 @@ class CentralClusterConfigUpdateHardwareSynchronizationStateWorker : public Wave
                 void            updateHardwareSynchronizationStateMessageHandler                (CentralClusterConfigUpdateHardwareSynchronizationStateMessage *pCentralClusterConfigUpdateHardwareSynchronizationStateMessage);
                 void            sendUpdateWaveNodesToClusterLocalStep                           (PrismLinearSequencerContext *pPrismLinearSequencerContext);
                 void            sendUpdateWaveNodesToClusterLocalStepCallback                   (WaveSendToClusterContext *pWaveSendToClusterContext);
-                PrismMessage   *createMessageInstance                                           (const UI32 &operationCode);
+                WaveMessage   *createMessageInstance                                           (const UI32 &operationCode);
     protected :
     public :
                                 CentralClusterConfigUpdateHardwareSynchronizationStateWorker    (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager);

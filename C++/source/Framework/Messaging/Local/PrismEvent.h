@@ -7,13 +7,13 @@
 #ifndef PRISMEVENT_H
 #define PRISMEVENT_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/PrismMutex.h"
 
 namespace WaveNs
 {
 
-class PrismEvent : public PrismMessage
+class PrismEvent : public WaveMessage
 {
     private :
         UI32 getReferenceCountForEventNotifications       () const;

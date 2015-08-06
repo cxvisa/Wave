@@ -43,7 +43,7 @@ class ShellPrism : public ShellBase
     	static  void                usageShellPrismWyserService         ();
         static  void                usageShellPrismLoadScript           ();
         static  void                usageShellPrismHelp                 ();
-        static  WaveMessageStatus   shellSendSynchronously              (PrismMessage *pPrismMessage);
+        static  WaveMessageStatus   shellSendSynchronously              (WaveMessage *pWaveMessage);
         static  void                shellTrace                          (TraceLevel traceLevel, const string &stringToTrace);
                 ShellRegression    *getRegressionShell                  ();
                 ShellDebug         *getDebugShell                       ();

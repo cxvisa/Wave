@@ -184,12 +184,12 @@ ResourceId MultiPartitionDeletePartitionMessage::getPartialCleanupTag ()
 // Get Object Id for a Partition Name.
 
 MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage::MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage ()
-    : PrismMessage              (MultiPartitionObjectManager::getWaveServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME)
+    : WaveMessage              (MultiPartitionObjectManager::getWaveServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME)
 {
 }
 
 MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage::MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage (const string &partitionName)
-    : PrismMessage              (MultiPartitionObjectManager::getWaveServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME),
+    : WaveMessage              (MultiPartitionObjectManager::getWaveServiceId (), MULTI_PARTITION_GET_OBJECTID_FOR_PARTITION_NAME),
       m_partitionName           (partitionName)
 {
 }
@@ -200,7 +200,7 @@ MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage::~MultiPartitionOb
 
 void MultiPartitionObjectManagerGetObjectIdForPartitionNameMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeString       (&m_partitionName,     "partitionName"));
      addSerializableAttribute (new AttributeObjectId     (&m_partitionObjectId, "partitionObjectId"));

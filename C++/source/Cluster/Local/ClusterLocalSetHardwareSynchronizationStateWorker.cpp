@@ -31,7 +31,7 @@ namespace WaveNs
 ClusterLocalSetHardwareSynchronizationStateWorker::ClusterLocalSetHardwareSynchronizationStateWorker (ClusterLocalObjectManager *pClusterLocalObjectManager)
     : WaveWorker (pClusterLocalObjectManager)
 {
-    addOperationMap (CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE, reinterpret_cast<PrismMessageHandler> (&ClusterLocalSetHardwareSynchronizationStateWorker::setHardwareSynchronizationStateMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE, reinterpret_cast<WaveMessageHandler> (&ClusterLocalSetHardwareSynchronizationStateWorker::setHardwareSynchronizationStateMessageHandler));
 }
 
 /** 
@@ -42,21 +42,21 @@ ClusterLocalSetHardwareSynchronizationStateWorker::~ClusterLocalSetHardwareSynch
 {
 }
 
-PrismMessage *ClusterLocalSetHardwareSynchronizationStateWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *ClusterLocalSetHardwareSynchronizationStateWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE :
-            pPrismMessage = new ClusterLocalSetHardwareSynchronizationStateMessage ();
+            pWaveMessage = new ClusterLocalSetHardwareSynchronizationStateMessage ();
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 /** 
@@ -95,7 +95,7 @@ void ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObj
 {
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep : Entering ...");
 
-    ClusterLocalSetHardwareSynchronizationStateMessage* pClusterLocalSetHardwareSynchronizationStateMessage = dynamic_cast<ClusterLocalSetHardwareSynchronizationStateMessage* >(pPrismLinearSequencerContext->getPPrismMessage());
+    ClusterLocalSetHardwareSynchronizationStateMessage* pClusterLocalSetHardwareSynchronizationStateMessage = dynamic_cast<ClusterLocalSetHardwareSynchronizationStateMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
 
     if (NULL == pClusterLocalSetHardwareSynchronizationStateMessage)
     {

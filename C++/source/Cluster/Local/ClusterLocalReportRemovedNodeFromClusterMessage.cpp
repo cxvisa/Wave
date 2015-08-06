@@ -3,7 +3,7 @@
  *   All rights reserved.                                                  *
  *   Author : Aashish                                                      *
  ***************************************************************************/
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/Local/ClusterLocalReportRemovedNodeFromClusterMessage.h"
 #include "Cluster/Local/ClusterLocalTypes.h"
 #include "Cluster/Local/ClusterLocalObjectManager.h"
@@ -24,7 +24,7 @@ namespace WaveNs
 /// None
 
 ClusterLocalReportRemovedNodeFromClusterMessage::ClusterLocalReportRemovedNodeFromClusterMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),
       m_thisNodePort  (0),
       m_thisNodeLocationId(0)
 {
@@ -44,7 +44,7 @@ ClusterLocalReportRemovedNodeFromClusterMessage::ClusterLocalReportRemovedNodeFr
 
 
 ClusterLocalReportRemovedNodeFromClusterMessage::ClusterLocalReportRemovedNodeFromClusterMessage (const string & thisNodeIpAddress,UI32 thisNodePort, LocationId thisNodeLocationId)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),m_thisNodeIpAddress(thisNodeIpAddress), m_thisNodePort(thisNodePort), m_thisNodeLocationId(thisNodeLocationId)
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_REPORT_NODE_REMOVED_FROM_CLUSTER),m_thisNodeIpAddress(thisNodeIpAddress), m_thisNodePort(thisNodePort), m_thisNodeLocationId(thisNodeLocationId)
 
 {
 }
@@ -83,7 +83,7 @@ void ClusterLocalReportRemovedNodeFromClusterMessage::setThisNodeLocationId(cons
 
 void ClusterLocalReportRemovedNodeFromClusterMessage::setupAttributesForSerialization()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
      addSerializableAttribute (new AttributeString      (&m_thisNodeIpAddress,  "thisNodeIpAddress"));
      addSerializableAttribute (new AttributeUI32        (&m_thisNodePort,       "thisNodePort"));
      addSerializableAttribute (new AttributeLocationId  (&m_thisNodeLocationId, "thisNodeLocationId"));

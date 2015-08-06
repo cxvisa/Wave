@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-class DatabaseObjectManagerCreateInMemoryManagedObjectMessage : public PrismMessage
+class DatabaseObjectManagerCreateInMemoryManagedObjectMessage : public WaveMessage
 {
     private :
     protected :

@@ -148,7 +148,7 @@ void PersistenceTestObjectManager::nestedTransactionForObjectCreationStep (Prism
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_DEBUG, string ("PersistenceTestObjectManager::nestedTransactionForObjectCreationStep : Sending a message to [") + PrismThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("PersistenceTestObjectManager::nestedTransactionForObjectCreationStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }

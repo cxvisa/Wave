@@ -19,8 +19,8 @@ class FileLocalMessagingTestObjectManager : public PrismTestObjectManager
 {
      private :
           FileLocalMessagingTestObjectManager ();
-          WaveMessageStatus                                                          simpleSynchronousMessageTest            (PrismMessage *message);
-          WaveMessageStatus                                                          simpleAsynchronousMessageTest           (PrismLinearSequencerContext *&pPrismLinearSequencerContext, vector<PrismMessage *>&sagesVector);
+          WaveMessageStatus                                                          simpleSynchronousMessageTest            (WaveMessage *message);
+          WaveMessageStatus                                                          simpleAsynchronousMessageTest           (PrismLinearSequencerContext *&pPrismLinearSequencerContext, vector<WaveMessage *>&sagesVector);
           void                                                                       CleanupTempFiles                        (void);
           void                                                                       SetupTempFileForTransfer                (UI32 nFileSize, const string &sFileName);
           void                                                                       ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, PrismLinearSequencerContext          
@@ -34,7 +34,7 @@ class FileLocalMessagingTestObjectManager : public PrismTestObjectManager
           void                                                                       testRequestHandler                      (RegressionTestMessage *pMessage);
           static  FileLocalMessagingTestObjectManager                               *getInstance                             ();
           static  string                                                             getServiceName                          ();
-                  PrismMessage                                                      *createMessageInstance                   (const UI32 &operationCode);
+                  WaveMessage                                                      *createMessageInstance                   (const UI32 &operationCode);
 
 
           void    simplePushFileWithInvalidFilenameTest                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);

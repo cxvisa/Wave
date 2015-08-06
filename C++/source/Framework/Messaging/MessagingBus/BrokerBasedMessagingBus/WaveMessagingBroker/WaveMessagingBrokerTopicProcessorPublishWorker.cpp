@@ -21,7 +21,7 @@ WaveMessagingBrokerTopicProcessorPublishWorker::WaveMessagingBrokerTopicProcesso
 {
     prismAssert (NULL != m_pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
 
-    addOperationMap (WAVE_MESSAGING_BROKER_TOPIC_PROCESSOR_PUBLISH, reinterpret_cast<PrismMessageHandler> (&WaveMessagingBrokerTopicProcessorPublishWorker::publishMessageHandler));
+    addOperationMap (WAVE_MESSAGING_BROKER_TOPIC_PROCESSOR_PUBLISH, reinterpret_cast<WaveMessageHandler> (&WaveMessagingBrokerTopicProcessorPublishWorker::publishMessageHandler));
 }
 
 WaveMessagingBrokerTopicProcessorPublishWorker::~WaveMessagingBrokerTopicProcessorPublishWorker ()

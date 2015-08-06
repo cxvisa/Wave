@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 /**
  * @addtogroup PartialSuccess Partial success from sendToWaveCluster
@@ -53,11 +53,11 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
                                                  WaveSendToClusterContext           (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                                 ~WaveSendToClusterContext           ();
 
-                PrismMessage                    *getPPrismMessageForPhase1          () const;
-                void                             setPPrismMessageForPhase1          (PrismMessage *pPrismMessageForPhase1);
+                WaveMessage                    *getPWaveMessageForPhase1          () const;
+                void                             setPWaveMessageForPhase1          (WaveMessage *pWaveMessageForPhase1);
 
-                PrismMessage                    *getPPrismMessageForPhase2          () const;
-                void                             setPPrismMessageForPhase2          (PrismMessage *pPrismMessageForPhase2);
+                WaveMessage                    *getPWaveMessageForPhase2          () const;
+                void                             setPWaveMessageForPhase2          (WaveMessage *pWaveMessageForPhase2);
 
                 UI32                             getTimeoutForPhase1                () const;
                 void                             setTimeoutForPhase1                (const UI32 &timeoutForPhase1);
@@ -83,9 +83,9 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
                 UI32                             getNumberOfDisconnectedNodesForPhase1    () const;
                 void                             setNumberOfDisconnectedNodesForPhase1    (const UI32 &numberOfDisconnectsForPhase1);
 
-                PrismMessage                    *getResultingMessageForPhase1       (const LocationId &locationId);
-                void                             setResultingMessageForPhase1       (const LocationId &locationId, PrismMessage *pPrismMessage);
-                PrismMessage                    *transferResultingMessageForPhase1  (const LocationId &locationId);
+                WaveMessage                    *getResultingMessageForPhase1       (const LocationId &locationId);
+                void                             setResultingMessageForPhase1       (const LocationId &locationId, WaveMessage *pWaveMessage);
+                WaveMessage                    *transferResultingMessageForPhase1  (const LocationId &locationId);
 
                 vector<LocationId>               getLocationsToSendToForPhase2      () const;
                 void                             setLocationsToSendToForPhase2      (const vector<UI32> &locationsToSendToForPhase2);
@@ -102,9 +102,9 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
                 UI32                             getNumberOfFailuresForPhase2       () const;
                 void                             setNumberOfFailuresForPhase2       (const UI32 &numberOfFailuresForPhase2);
 
-                PrismMessage                    *getResultingMessageForPhase2       (const LocationId &locationId);
-                void                             setResultingMessageForPhase2       (const LocationId &locationId, PrismMessage *pPrismMessage);
-                PrismMessage                    *transferResultingMessageForPhase2  (const LocationId &locationId);
+                WaveMessage                    *getResultingMessageForPhase2       (const LocationId &locationId);
+                void                             setResultingMessageForPhase2       (const LocationId &locationId, WaveMessage *pWaveMessage);
+                WaveMessage                    *transferResultingMessageForPhase2  (const LocationId &locationId);
 
                 bool                             getTreatFailureOnFailingOverAsSuccessFlag  () const;
                 void                             setTreatFailureOnFailingOverAsSuccessFlag  (const bool &treatFailureOnFailingOverAsSuccessFlag);
@@ -123,8 +123,8 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
     // Now the data members
 
     private :
-        PrismMessage                       *m_pPrismMessageForPhase1;
-        PrismMessage                       *m_pPrismMessageForPhase2;
+        WaveMessage                       *m_pWaveMessageForPhase1;
+        WaveMessage                       *m_pWaveMessageForPhase2;
         UI32                                m_timeoutForPhase1;
         UI32                                m_timeoutForPhase2;
 
@@ -133,7 +133,7 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
         map<LocationId, WaveMessageStatus>  m_sendStatusForPhase1;
         map<LocationId, FrameworkStatus>    m_frameworkStatusForPhase1;
         map<LocationId, ResourceId>         m_completionStatusForPhase1;
-        map<LocationId, PrismMessage *>     m_resultingMessageForPhase1;
+        map<LocationId, WaveMessage *>     m_resultingMessageForPhase1;
 
         UI32                                m_numberOfFailuresForPhase1;
         UI32                                m_numberOfDisconnectedNodesForPhase1;
@@ -143,7 +143,7 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
         map<LocationId, WaveMessageStatus>  m_sendStatusForPhase2;
         map<LocationId, FrameworkStatus>    m_frameworkStatusForPhase2;
         map<LocationId, ResourceId>         m_completionStatusForPhase2;
-        map<LocationId, PrismMessage *>     m_resultingMessageForPhase2;
+        map<LocationId, WaveMessage *>     m_resultingMessageForPhase2;
 
         UI32                                m_numberOfFailuresForPhase2;
 

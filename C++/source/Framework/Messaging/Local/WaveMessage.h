@@ -19,24 +19,24 @@ using namespace std;
 namespace WaveNs
 {
 
-template<class T> class PrismMessageQueue;
+template<class T> class WaveMessageQueue;
 
 class PrismMutex;
 class PrismCondition;
 class WaveSendToClusterContext;
 
-class PrismMessage : virtual public SerializableObject
+class WaveMessage : virtual public SerializableObject
 {
     private :
-        class PrismMessageBuffer
+        class WaveMessageBuffer
         {
             private :
             protected :
             public :
-                                    PrismMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMesage = false);
-                                    PrismMessageBuffer (const PrismMessageBuffer &prismMessagebuffer);
-                                   ~PrismMessageBuffer ();
-                PrismMessageBuffer &operator =         (const PrismMessageBuffer &prismMessageBuffer);
+                                    WaveMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMesage = false);
+                                    WaveMessageBuffer (const WaveMessageBuffer &prismMessagebuffer);
+                                   ~WaveMessageBuffer ();
+                WaveMessageBuffer &operator =         (const WaveMessageBuffer &prismMessageBuffer);
 
                 void                destroy            ();
                 UI32                getSize            () const;
@@ -61,25 +61,25 @@ class PrismMessage : virtual public SerializableObject
         void            setPSynchronizingMutex       (PrismMutex *pPrismMutex);
         PrismCondition *getPSynchronizingCondition   () const;
         void            setPSynchronizingCondition   (PrismCondition *pPrismCondition);
-        PrismThreadId   getPrismMessageCreatorThreadId () const;
+        WaveThreadId   getWaveMessageCreatorThreadId () const;
 
     protected :
-                              PrismMessage                    (WaveServiceId serviceCode, UI32 operationCode);
-                              PrismMessage                    (const PrismMessage &prismMessage);
+                              WaveMessage                    (WaveServiceId serviceCode, UI32 operationCode);
+                              WaveMessage                    (const WaveMessage &prismMessage);
         virtual void          setupAttributesForSerialization ();
         virtual void          setupAttributesForSerializationInAttributeOrderFormat ();
                 void          setType                         (WaveMessageType type);
         virtual void          setServiceCode                  (const WaveServiceId &serviceCode);
 
-                void          copyBuffersFrom                 (const PrismMessage &prismMessage);
+                void          copyBuffersFrom                 (const WaveMessage &prismMessage);
 
                 void          setMessageId                    (const UI32 &messageId);
                 void          setSenderServiceCode            (const WaveServiceId &senderServiceCode);
                 void                        setIsMessageSupportedWhenServiceIsPaused    (bool isMessageSupportedWhenServiceIsPaused);
 
     public :
-        virtual                          ~PrismMessage                             ();
-                PrismMessage             &operator =                               (const PrismMessage &prismMessage);
+        virtual                          ~WaveMessage                             ();
+                WaveMessage             &operator =                               (const WaveMessage &prismMessage);
                 WaveMessageType           getType                                  () const;
                 UI32                      getMessageId                             () const;
                 UI32                      getMessageIdAtOriginatingLocation        () const;
@@ -107,12 +107,12 @@ class PrismMessage : virtual public SerializableObject
         virtual void                     *findBuffer                               (UI32 tag, UI32 &size) const;
         virtual void                     *transferBufferToUser                     (UI32 tag, UI32 &size);
         virtual WaveMessageStatus         removeBuffer                             (UI32 tag);
-        virtual void                      copyFromRemoteResponse                   (PrismMessage *pRemotePrismMessageResponse);
+        virtual void                      copyFromRemoteResponse                   (WaveMessage *pRemoteWaveMessageResponse);
 
                 void                      setDropReplyAcrossLocations              (const bool &dropReplyAcrossLocations);
                 bool                      getDropReplyAcrossLocations              () const;
                 void                      removeAllBuffers                         ();
-                void                      transferAllBuffers                       (PrismMessage *pPrismMessage);
+                void                      transferAllBuffers                       (WaveMessage *pWaveMessage);
 
         static  WaveMessageType           getType                                  (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& messageVersion = "");
         static  UI32                      getMessageIdAtOriginatingLocation        (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& messageVersion = "");
@@ -120,8 +120,8 @@ class PrismMessage : virtual public SerializableObject
         static  UI32                      getMessageCompletionStatus               (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& messageVersion = "");
         static  bool                      getIsLastReply                           (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& messageVersion = "");     
 
-        static  PrismMessage             *createAndLoadFromSerializedData2         (const string &serializedData, const WaveServiceId &assumedServiceCode = 0, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& targetMessageVersion = "");
-        static  PrismMessage             *createAndLoadFromSerializedData2         (const UI8 *pData, const UI32 dataSize);
+        static  WaveMessage             *createAndLoadFromSerializedData2         (const string &serializedData, const WaveServiceId &assumedServiceCode = 0, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); // const string& targetMessageVersion = "");
+        static  WaveMessage             *createAndLoadFromSerializedData2         (const UI8 *pData, const UI32 dataSize);
 
                 void                      setWaveClientOriginatingLocationId       (const LocationId &waveClientOriginatingLocationId);
                 LocationId                getWaveClientOriginatingLocationId       () const;
@@ -134,7 +134,7 @@ class PrismMessage : virtual public SerializableObject
 
                 WaveClientSessionContext  getWaveClientSessionContext              () const;
 
-        virtual PrismMessage             *clone                                    ();
+        virtual WaveMessage             *clone                                    ();
                 string                    getMessageString                         ();
                 void                      setMessageString                         (string errorString);
                 UI32                      getTransactionCounter                    () const;
@@ -232,14 +232,14 @@ class PrismMessage : virtual public SerializableObject
                LocationId                       m_waveClientOriginatingLocationId;
                UI32                             m_waveNativeClientId;
                UI32                             m_waveUserClientId;
-               map<UI32, PrismMessageBuffer *>  m_buffers;
+               map<UI32, WaveMessageBuffer *>  m_buffers;
                bool                             m_dropReplyAcrossLocations;
                string                           m_messageString;
                bool                             m_isConfigurationChanged;
                bool                             m_isConfigurationFlagSetByUser;
                string                           m_nestedSql;
                UI32                             m_transactionCounter;
-               PrismThreadId                    m_prismMessageCreatorThreadId;
+               WaveThreadId                    m_prismMessageCreatorThreadId;
                LocationId                       m_surrogatingForLocationId;
                bool                             m_needSurrogateSupportFlag ;
                bool                             m_isMessageBeingSurrogatedFlag;
@@ -273,7 +273,7 @@ class PrismMessage : virtual public SerializableObject
 
     friend class WaveObjectManager;
     friend class PrismFrameworkObjectManager;
-    friend class PrismThread;
+    friend class WaveThread;
     friend class RegressionTestObjectManager; // Delete this line as soon as possible.  Using it for testing in the initial phases ...
     friend class WaveClientTransportObjectManager;
     friend class WaveClientSynchronousConnection;

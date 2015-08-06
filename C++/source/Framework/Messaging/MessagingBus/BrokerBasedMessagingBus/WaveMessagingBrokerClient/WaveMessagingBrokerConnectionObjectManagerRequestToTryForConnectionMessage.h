@@ -7,12 +7,12 @@
 #ifndef WAVEMESSAGINGBROKERCONNECTIONOBJECTMANAGERREQUESTTOTRYFORCONNECTIONMESSAGE_H
 #define WAVEMESSAGINGBROKERCONNECTIONOBJECTMANAGERREQUESTTOTRYFORCONNECTIONMESSAGE_H
 
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs
 {
 
-class WaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage : public PrismMessage
+class WaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage : public WaveMessage
 {
     private :
     protected :

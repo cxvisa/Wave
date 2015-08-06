@@ -35,7 +35,7 @@ class MultiPartitionObjectManager : public WaveObjectManager
                                                 MultiPartitionObjectManager                     ();
         virtual                                ~MultiPartitionObjectManager                     ();
 
-        virtual PrismMessage                   *createMessageInstance                           (const UI32 &operationCode);
+        virtual WaveMessage                   *createMessageInstance                           (const UI32 &operationCode);
                 WaveManagedObject              *createManagedObjectInstance                     (const string &managedClassName);
                 void                            initialize                                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                            install                                         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);

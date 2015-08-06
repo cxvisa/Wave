@@ -20,7 +20,7 @@ class CentralClusterConfigDeleteNodeWorker : public WaveWorker {
     private :
                       CentralClusterConfigDeleteNodeWorker     (CentralClusterConfigObjectManager *pCentralClusterConfigObjectManager);
 
-        PrismMessage *createMessageInstance                      (const UI32 &operationCode);
+        WaveMessage *createMessageInstance                      (const UI32 &operationCode);
         void          deleteNodeMessageHandler                   (ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage);
         void          deleteNodeValidateStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
         void          deleteNodeStopHeartBeatsStep               (PrismLinearSequencerContext *pPrismLinearSequencerContext);

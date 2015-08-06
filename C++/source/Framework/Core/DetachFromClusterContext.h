@@ -18,7 +18,7 @@ class DetachFromClusterContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                                      DetachFromClusterContext         (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      DetachFromClusterContext         (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                       DetachFromClusterContext         (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                      ~DetachFromClusterContext         ();
 

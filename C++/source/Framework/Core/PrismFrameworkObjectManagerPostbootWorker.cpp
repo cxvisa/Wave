@@ -6,7 +6,7 @@
 
 #include "Framework/Core/PrismFrameworkObjectManagerPostbootWorker.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Framework/MultiThreading/PrismThread.h"
+#include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/Postboot/PrismPostbootAgent.h"
@@ -18,7 +18,7 @@ namespace WaveNs
 PrismFrameworkObjectManagerPostbootWorker::PrismFrameworkObjectManagerPostbootWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker (pWaveObjectManager)
 {
-    addOperationMap (FRAMEWORK_OBJECT_MANAGER_EXECUTE_POSTBOOT_PASSES, reinterpret_cast<PrismMessageHandler> (&PrismFrameworkObjectManagerPostbootWorker::postbootMessageHandler));
+    addOperationMap (FRAMEWORK_OBJECT_MANAGER_EXECUTE_POSTBOOT_PASSES, reinterpret_cast<WaveMessageHandler> (&PrismFrameworkObjectManagerPostbootWorker::postbootMessageHandler));
 }
 
 PrismFrameworkObjectManagerPostbootWorker::~PrismFrameworkObjectManagerPostbootWorker ()

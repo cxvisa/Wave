@@ -15,7 +15,7 @@
 namespace WaveNs
 {
 
-class PrismMessage;
+class WaveMessage;
 
 typedef PrismApplicationServiceMessageHandler ApplicationServiceMessageHandler;
 

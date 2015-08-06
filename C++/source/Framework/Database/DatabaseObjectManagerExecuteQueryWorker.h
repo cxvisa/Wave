@@ -45,7 +45,7 @@ class DatabaseObjectManagerExecuteQueryWorker : public WaveWorker
 
                 PGconn *getDatabaseServerConnection (const string &className);
 
-        virtual PrismMessage                *createMessageInstance                          (const UI32 &operationCode);
+        virtual WaveMessage                *createMessageInstance                          (const UI32 &operationCode);
 
                 ResourceId                   pqExecWrapper                                  (const string &sqlString, PGresult *&pPGresult, UI32 &numberOfResults);
                 void                         freePqResultsWrapper                           (PGresult *&pPGresult);

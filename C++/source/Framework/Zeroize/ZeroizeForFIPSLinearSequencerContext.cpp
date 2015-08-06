@@ -13,12 +13,12 @@ namespace WaveNs
 	
     ZeroizeForFIPSLinearSequencerContext::ZeroizeForFIPSLinearSequencerContext 
     (
-        PrismMessage                *pPrismMessage, 
+        WaveMessage                *pWaveMessage, 
         PrismElement                *pPrismElement, 
         PrismLinearSequencerStep    *pSteps, 
         UI32                        numberOfSteps
 
-    ): PrismLinearSequencerContext (pPrismMessage, pPrismElement, pSteps, numberOfSteps)
+    ): PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps)
     {
     }
 

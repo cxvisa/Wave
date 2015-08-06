@@ -135,9 +135,9 @@ ManagementInterfaceObjectManager::ManagementInterfaceObjectManager ()
 {
     setTraceLevel (TRACE_LEVEL_ERROR);
 
-    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<PrismMessageHandler> (&ManagementInterfaceObjectManager::managementInterfaceMessageHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_ANY_OPCODE, reinterpret_cast<WaveMessageHandler> (&ManagementInterfaceObjectManager::managementInterfaceMessageHandler));
 
-    addOperationMap (MANAGEMENTINTERFACE_CLIENT_LIST, reinterpret_cast<PrismMessageHandler> (&ManagementInterfaceObjectManager::managementInterfaceClientListHandler));
+    addOperationMap (MANAGEMENTINTERFACE_CLIENT_LIST, reinterpret_cast<WaveMessageHandler> (&ManagementInterfaceObjectManager::managementInterfaceClientListHandler));
 
     // restrictMessageHistoryLogging                (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
     restrictMessageHistoryLogging                (false, false, false);
@@ -171,20 +171,20 @@ string ManagementInterfaceObjectManager::getServiceName ()
 }
 
 
-PrismMessage *ManagementInterfaceObjectManager::createMessageInstance (const UI32 &operationCode)
+WaveMessage *ManagementInterfaceObjectManager::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
  
     switch (operationCode)
     {
         case  MANAGEMENTINTERFACE_CLIENT_LIST:
-            pPrismMessage = new ManagementInterfaceClientListMessage();
+            pWaveMessage = new ManagementInterfaceClientListMessage();
             break;
         default :
-           pPrismMessage = NULL;
+           pWaveMessage = NULL;
     }
  
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 
@@ -220,7 +220,7 @@ void ManagementInterfaceObjectManager::managementInterfaceClientListHandler (Man
 
 void ManagementInterfaceObjectManager::getClientsInformation (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage = dynamic_cast<ManagementInterfaceClientListMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage = dynamic_cast<ManagementInterfaceClientListMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
     
     prismAssert( NULL != pManagementInterfaceClientListMessage , __FILE__ , __LINE__);
 
@@ -237,7 +237,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
 
     trace (TRACE_LEVEL_DEVEL, "ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep : Starting ...");
 
-    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismLinearSequencerContext->getPPrismMessage ());
+    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
 
     prismAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__); 
 
@@ -319,7 +319,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
 
     unlockAccess1 ();
 
-    pPrismLinearSequencerContext->setPPrismMessage (NULL);
+    pPrismLinearSequencerContext->setPWaveMessage (NULL);
     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
@@ -329,14 +329,14 @@ void ManagementInterfaceObjectManager::sendTimerExpiredCallback (TimerHandle tim
  
     UI32 messageId = reinterpret_cast<ULI> (pContext);
     
-    PrismMessage *pPrismMessage = getPendingMessage (messageId);
+    WaveMessage *pWaveMessage = getPendingMessage (messageId);
 
-    if (NULL != pPrismMessage)
+    if (NULL != pWaveMessage)
     {
         trace(TRACE_LEVEL_INFO,"ManagementInterfaceObjectManager::sendTimerExpiredCallback Message is not NULL");
 
-        pPrismMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_SEND_TIMEDOUT);
-        reply (pPrismMessage);
+        pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_SEND_TIMEDOUT);
+        reply (pWaveMessage);
     }
 }
 
@@ -375,7 +375,7 @@ WaveMessageStatus ManagementInterfaceObjectManager::sendToBeUsedByReceiverThread
     if (false == (pManagementInterfaceMessage->getIsOneWayMessage ()))
     {
         status = send (pManagementInterfaceMessage,
-                    reinterpret_cast<PrismMessageResponseHandler> (&ManagementInterfaceObjectManager::callbackForSendUsedByReceiverThreads),
+                    reinterpret_cast<WaveMessageResponseHandler> (&ManagementInterfaceObjectManager::callbackForSendUsedByReceiverThreads),
                     NULL);
     }
     else
@@ -512,15 +512,15 @@ void ManagementInterfaceObjectManager::replyToBeUsedByReceiverThreads (UI32 pris
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    PrismMessage *pPrismMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
 
-    if (NULL == pPrismMessage)
+    if (NULL == pWaveMessage)
     {
         trace (TRACE_LEVEL_ERROR, "ManagementInterfaceObjectManager::replyToBeUsedByReceiverThreads : Some one is trying to forward a remote response to a message that does not exist.");
         return;
     }
 
-    reply (pPrismMessage);
+    reply (pWaveMessage);
 
     return;
 }

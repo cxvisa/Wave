@@ -13,7 +13,7 @@
  */
 
 #include "Cluster/Local/ClusterLocalSetHardwareSynchronizationStateMessage.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/Local/ClusterLocalTypes.h"
 #include "Cluster/Local/ClusterLocalObjectManager.h"
 #include "Framework/Attributes/AttributeResourceId.h"
@@ -22,13 +22,13 @@ namespace WaveNs
 {
 
 ClusterLocalSetHardwareSynchronizationStateMessage::ClusterLocalSetHardwareSynchronizationStateMessage ()
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_UNINITIALIZED)
 {
 }
 
 ClusterLocalSetHardwareSynchronizationStateMessage::ClusterLocalSetHardwareSynchronizationStateMessage (ResourceId hardwareSynchronizationState)
-    : PrismMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
+    : WaveMessage (ClusterLocalObjectManager::getWaveServiceId (), CLUSTER_LOCAL_SET_HARDWARE_SYNCHRONIZATION_STATE),
     m_hardwareSynchronizationState  (hardwareSynchronizationState)
 {
 }
@@ -39,7 +39,7 @@ ClusterLocalSetHardwareSynchronizationStateMessage::~ClusterLocalSetHardwareSync
 
 void ClusterLocalSetHardwareSynchronizationStateMessage::setupAttributesForSerialization ()
 {
-    PrismMessage::setupAttributesForSerialization ();
+    WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeResourceId       (&m_hardwareSynchronizationState, "hardwareSynchronizationState"));
 }

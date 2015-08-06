@@ -18,28 +18,28 @@ namespace WaveNs
 DatabaseObjectManagerCleanPreparedTransactionsWorker::DatabaseObjectManagerCleanPreparedTransactionsWorker (DatabaseObjectManager *pDatabaseObjectManager)
     : WaveWorker (pDatabaseObjectManager)
 {
-    addOperationMap (DATABASE_OBJECT_MANAGER_CLEAN_PREPARED_TRANSACTIONS, reinterpret_cast<PrismMessageHandler> (&DatabaseObjectManagerCleanPreparedTransactionsWorker::cleanPreparedTransactionsMessageHandler));
+    addOperationMap (DATABASE_OBJECT_MANAGER_CLEAN_PREPARED_TRANSACTIONS, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManagerCleanPreparedTransactionsWorker::cleanPreparedTransactionsMessageHandler));
 }
 
 DatabaseObjectManagerCleanPreparedTransactionsWorker::~DatabaseObjectManagerCleanPreparedTransactionsWorker ()
 {
 }
 
-PrismMessage *DatabaseObjectManagerCleanPreparedTransactionsWorker::createMessageInstance (const UI32 &operationCode)
+WaveMessage *DatabaseObjectManagerCleanPreparedTransactionsWorker::createMessageInstance (const UI32 &operationCode)
 {
-    PrismMessage *pPrismMessage = NULL;
+    WaveMessage *pWaveMessage = NULL;
 
     switch (operationCode)
     {
         case DATABASE_OBJECT_MANAGER_CLEAN_PREPARED_TRANSACTIONS:
-            pPrismMessage = new DatabaseObjectManagerCleanPreparedTransactionsMessage;
+            pWaveMessage = new DatabaseObjectManagerCleanPreparedTransactionsMessage;
             break;
 
         default :
-            pPrismMessage = NULL;
+            pWaveMessage = NULL;
     }
 
-    return (pPrismMessage);
+    return (pWaveMessage);
 }
 
 void DatabaseObjectManagerCleanPreparedTransactionsWorker::cleanPreparedTransactionsMessageHandler (DatabaseObjectManagerCleanPreparedTransactionsMessage *pDatabaseObjectManagerCleanPreparedTransactionsMessage)

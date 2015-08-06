@@ -10,7 +10,7 @@
 
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/PrismLinearSequencerContext.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Trace/TraceTypes.h"
 #include <vector>
 
@@ -22,7 +22,7 @@ class TraceTestContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                               TraceTestContext             (PrismMessage *pPrismMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                               TraceTestContext             (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual               ~TraceTestContext             ();
                 void           clearTraceClientsInformation ();
                 UI32           getNumberOfTraceClients      ();

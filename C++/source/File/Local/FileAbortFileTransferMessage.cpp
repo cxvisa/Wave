@@ -12,12 +12,12 @@ namespace WaveNs
 {
 
     FileAbortFileTransferMessage::FileAbortFileTransferMessage ()
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCABORTFILETRANSFER)
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCABORTFILETRANSFER)
     {
     }
 
     FileAbortFileTransferMessage::FileAbortFileTransferMessage (vector<LocationId> &vecLocationIdList)
-        : PrismMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCABORTFILETRANSFER),
+        : WaveMessage (FileLocalObjectManager::getWaveServiceId (), FILESVCABORTFILETRANSFER),
        m_vecLocationId(vecLocationIdList)
     {
     }
@@ -28,7 +28,7 @@ namespace WaveNs
 
     void  FileAbortFileTransferMessage::setupAttributesForSerialization()
     {
-        PrismMessage::setupAttributesForSerialization ();
+        WaveMessage::setupAttributesForSerialization ();
         addSerializableAttribute (new AttributeUI32Vector(&m_vecLocationId, "vecLocationId"));
     }
 

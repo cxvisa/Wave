@@ -21,10 +21,10 @@ namespace WaveNs
 ClusterLocalGetObjectIdWorker::ClusterLocalGetObjectIdWorker (ClusterLocalObjectManager *pClusterLocalObjectManager)
     : WaveWorker (pClusterLocalObjectManager)
 {
-    addOperationMap (CLUSTER_LOCAL_GET_SLOT_OBJECTID, reinterpret_cast<PrismMessageHandler> (&ClusterLocalGetObjectIdWorker::getSlotObjectIdMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_GET_LOCATION_OBJECTID, reinterpret_cast<PrismMessageHandler> (&ClusterLocalGetObjectIdWorker::getLocationObjectIdMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_GET_SLOTNUMBER, reinterpret_cast<PrismMessageHandler> (&ClusterLocalGetObjectIdWorker::getSlotNumberMessageHandler));
-    addOperationMap (CLUSTER_LOCAL_GET_LOCATIONID, reinterpret_cast<PrismMessageHandler> (&ClusterLocalGetObjectIdWorker::getLocationIdMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_GET_SLOT_OBJECTID, reinterpret_cast<WaveMessageHandler> (&ClusterLocalGetObjectIdWorker::getSlotObjectIdMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_GET_LOCATION_OBJECTID, reinterpret_cast<WaveMessageHandler> (&ClusterLocalGetObjectIdWorker::getLocationObjectIdMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_GET_SLOTNUMBER, reinterpret_cast<WaveMessageHandler> (&ClusterLocalGetObjectIdWorker::getSlotNumberMessageHandler));
+    addOperationMap (CLUSTER_LOCAL_GET_LOCATIONID, reinterpret_cast<WaveMessageHandler> (&ClusterLocalGetObjectIdWorker::getLocationIdMessageHandler));
 }
 
 ClusterLocalGetObjectIdWorker::~ClusterLocalGetObjectIdWorker ()

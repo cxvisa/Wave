@@ -6,7 +6,7 @@
 
 #include "Framework/Utils/ClientStreamingSocket.h"
 #include "Framework/ObjectModel/SerializableObject.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveBrokerBasedMessage.h"
@@ -122,17 +122,17 @@ bool ClientStreamingSocket::operator << (SerializableObject *pSerializableObject
     }
 }
 
-bool ClientStreamingSocket::operator << (PrismMessage *pPrismMessage)
+bool ClientStreamingSocket::operator << (WaveMessage *pWaveMessage)
 {
     string bufferToPost;
 
     // Make sure that the message has been prepared for serialization.
 
-    //pPrismMessage->serialize2 (bufferToPost, getToMessageVersion ());
-    pPrismMessage->serialize2 (bufferToPost, getToSerializationType ());
+    //pWaveMessage->serialize2 (bufferToPost, getToMessageVersion ());
+    pWaveMessage->serialize2 (bufferToPost, getToSerializationType ());
 
     UI32   bufferSize      = bufferToPost.size ();
-    UI32   numberOfBuffers = pPrismMessage->getNumberOfBuffers ();
+    UI32   numberOfBuffers = pWaveMessage->getNumberOfBuffers ();
     bool   isSuccessful    = false;
 
     UI32  bufferSizeToBeSentOverNetwork = htonl (bufferSize);
@@ -254,7 +254,7 @@ bool ClientStreamingSocket::operator << (PrismMessage *pPrismMessage)
 
     if (numberOfBuffers > 0)
     {
-        pPrismMessage->getBufferTags (bufferTagsVector);
+        pWaveMessage->getBufferTags (bufferTagsVector);
     }
 
 #if 0
@@ -274,7 +274,7 @@ bool ClientStreamingSocket::operator << (PrismMessage *pPrismMessage)
         UI32  bufferTag  = bufferTagsVector[i];
         void *pBuffer    = NULL;
 
-        pBuffer = pPrismMessage->findBuffer(bufferTag, bufferSize);
+        pBuffer = pWaveMessage->findBuffer(bufferTag, bufferSize);
 
         FixedSizeBuffer tempBuffer (bufferSize, pBuffer);
 

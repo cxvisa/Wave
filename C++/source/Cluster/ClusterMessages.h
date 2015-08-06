@@ -8,7 +8,7 @@
 #define CLUSTERMESSAGES_H
 
 #include "Framework/ObjectModel/PrismElement.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/NodeManagedObject.h"
 #include "Cluster/ClusterTypes.h"
 #include "App/AppInterface.h"
@@ -68,7 +68,7 @@ class ClusterObjectManagerCreateClusterMessage : public ManagementInterfaceMessa
     public :
 };
 
-class ClusterObjectManagerDeleteClusterMessage : public PrismMessage
+class ClusterObjectManagerDeleteClusterMessage : public WaveMessage
 {
     private :
     protected :
@@ -114,7 +114,7 @@ class ClusterObjectManagerAddNodeMessage : public ClusterObjectManagerCreateClus
 //by the framework to the Principal Node to initiate the rejoin
 // of the nodes in the message
 
-class ClusterObjectManagerRejoinNodeMessage : public PrismMessage
+class ClusterObjectManagerRejoinNodeMessage : public WaveMessage
 {
     private :
     protected :
@@ -149,7 +149,7 @@ class ClusterObjectManagerRejoinNodeMessage : public PrismMessage
     public :
 };
 
-class ClusterObjectManagerJoinNodeMessage : public PrismMessage
+class ClusterObjectManagerJoinNodeMessage : public WaveMessage
 {
     private :
     protected :
@@ -173,7 +173,7 @@ class ClusterObjectManagerJoinNodeMessage : public PrismMessage
     public :
 };
 
-class ClusterObjectManagerDeleteNodeMessage : public PrismMessage
+class ClusterObjectManagerDeleteNodeMessage : public WaveMessage
 {
     private :
     protected :
@@ -207,7 +207,7 @@ class ClusterObjectManagerDeleteNodeMessage : public PrismMessage
 };
 
 #if 0
-class LocalClusterConfigObjectManagerRegisterHeartBeatLossCBMessage : public PrismMessage
+class LocalClusterConfigObjectManagerRegisterHeartBeatLossCBMessage : public WaveMessage
 {
     private :
     protected :
@@ -226,7 +226,7 @@ class LocalClusterConfigObjectManagerRegisterHeartBeatLossCBMessage : public Pri
     public :
 };
 
-class LocalClusterConfigObjectManagerRegisterMemberJoinedCBMessage : public PrismMessage
+class LocalClusterConfigObjectManagerRegisterMemberJoinedCBMessage : public WaveMessage
 {
     private :
     protected :
@@ -245,7 +245,7 @@ class LocalClusterConfigObjectManagerRegisterMemberJoinedCBMessage : public Pris
 };
 #endif
 
-class LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage : public PrismMessage
+class LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage : public WaveMessage
 {
     private :
     protected :
@@ -282,7 +282,7 @@ class LocalClusterConfigObjectManagerReportPrimaryNodeChangedMessage : public Pr
     public :
 };
 
-class LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage : public PrismMessage
+class LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage : public WaveMessage
 {
     private :
     protected :
@@ -299,7 +299,7 @@ class LocalClusterConfigObjectManagerReportRemovedNodeFromClusterMessage : publi
 };
 
 #if 0
-class LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage : public PrismMessage
+class LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage : public WaveMessage
 {
     private :
     protected :
@@ -322,7 +322,7 @@ class LocalClusterConfigObjectManagerReportCenteralHeartBeatMessage : public Pri
 
 };
 
-class CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage : public PrismMessage
+class CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage : public WaveMessage
 {
     private :
     protected :
@@ -347,7 +347,7 @@ class CenteralClusterConfigObjectManagerReportLocalHeartBeatMessage : public Pri
 
 
 
-class LocalClusterConfigObjectManagerSetHeartBeatConfigMessage : public PrismMessage
+class LocalClusterConfigObjectManagerSetHeartBeatConfigMessage : public WaveMessage
 {
     private :
     protected :
@@ -369,7 +369,7 @@ class LocalClusterConfigObjectManagerSetHeartBeatConfigMessage : public PrismMes
 
 #endif
 
-class LocalClusterConfigObjectManagerGetNodeRoleMessage : public PrismMessage
+class LocalClusterConfigObjectManagerGetNodeRoleMessage : public WaveMessage
 {
     private :
     protected :
@@ -393,7 +393,7 @@ typedef struct
     SI32            nodeStatus;
 } nodeStatus_t;
 
-class LocalClusterConfigObjectManagerGetClusterConfigMessage : public PrismMessage
+class LocalClusterConfigObjectManagerGetClusterConfigMessage : public WaveMessage
 {
     private :
     protected :
@@ -429,7 +429,7 @@ class LocalClusterConfigObjectManagerGetClusterConfigMessage : public PrismMessa
 };
 
 
-class HeartBeatLostMessage : public PrismMessage
+class HeartBeatLostMessage : public WaveMessage
 {
     private :
     protected :
@@ -451,7 +451,7 @@ class HeartBeatLostMessage : public PrismMessage
     public :
 };
 
-class HeartBeatResumedMessage : public PrismMessage
+class HeartBeatResumedMessage : public WaveMessage
 {
     private :
     protected :
@@ -484,7 +484,7 @@ class HeartBeatResumedMessage : public PrismMessage
 // and Secondary nodes is filled. Then teh Principal sends this
 // message back to the calling node's CLI.
 
-class ClusterConfigObjectManagerGetClusterInfoMessage : public PrismMessage
+class ClusterConfigObjectManagerGetClusterInfoMessage : public WaveMessage
 {
     private :
     protected :
@@ -552,7 +552,7 @@ class ClusterConfigObjectManagerGetClusterInfoMessage : public PrismMessage
     public :
 };
 
-class CentralClusterConfigUpdateHardwareSynchronizationStateMessage : public PrismMessage
+class CentralClusterConfigUpdateHardwareSynchronizationStateMessage : public WaveMessage
 {
     private :
                 void                setupAttributesForSerialization                                 ();
