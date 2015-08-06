@@ -6,6 +6,8 @@
 
 package com.CxWave.Wave.Framework.MultiThreading;
 
+import static com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutexStatus.WAVE_MUTEX_SUCCESS;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,5 +113,91 @@ public class WaveThread extends Thread
     public void run ()
     {
 
+    }
+
+    WaveMessage getNextMessageToProcess ()
+    {
+        if (false == (m_frameworkResumeMessages.isEmpty ()))
+        {
+            // This queue shall not be affected by the holdall call and hence we do not need to empty any mutex locking though these are messages (not responses).
+            // Replies for these messages will be submitted as normal framework messages and hence there is no corresponding reponses queue.
+
+            return (m_frameworkResumeMessages.removeAndGetFromFront ());
+        }
+
+        if (false == (m_frameworkMessageResponses.isEmpty ()))
+        {
+            return (m_frameworkMessageResponses.removeAndGetFromFront ());
+        }
+
+        if (false == (m_frameworkMessages.isEmpty ()))
+        {
+            if (WAVE_MUTEX_SUCCESS == (m_frameworkMessagesMutex.tryLockWithStatus ()))
+            {
+                WaveMessage waveMessage = m_frameworkMessages.removeAndGetFromFront ();
+
+                m_frameworkMessagesMutex.unlock ();
+
+                return (waveMessage);
+            }
+        }
+
+        if (false == (m_timerExpirationResponses.isEmpty ()))
+        {
+            return (m_timerExpirationResponses.removeAndGetFromFront ());
+        }
+
+        if (false == (m_timerExpirations.isEmpty ()))
+        {
+            return (m_timerExpirations.removeAndGetFromFront ());
+        }
+
+        if (false == (m_highPriorityMessageResponses.isEmpty ()))
+        {
+            return (m_highPriorityMessageResponses.removeAndGetFromFront ());
+        }
+
+        if (false == (m_highPriorityMessages.isEmpty ()))
+        {
+            if (WAVE_MUTEX_SUCCESS == (m_highPriorityMessagesMutex.tryLockWithStatus ()))
+            {
+                WaveMessage waveMessage = m_highPriorityMessages.removeAndGetFromFront ();
+
+                m_highPriorityMessagesMutex.unlock ();
+
+                return (waveMessage);
+            }
+        }
+
+        if (false == (m_messageResponses.isEmpty ()))
+        {
+            return (m_messageResponses.removeAndGetFromFront ());
+        }
+
+        if (false == (m_events.isEmpty ()))
+        {
+            if (WAVE_MUTEX_SUCCESS == (m_eventsMutex.tryLockWithStatus ()))
+            {
+                WaveMessage waveMessage = m_events.removeAndGetFromFront ();
+
+                m_eventsMutex.unlock ();
+
+                return (waveMessage);
+            }
+        }
+
+        if (false == (m_messages.isEmpty ()))
+        {
+            if (WAVE_MUTEX_SUCCESS == (m_messagesMutex.tryLockWithStatus ()))
+            {
+                WaveMessage waveMessage = m_messages.removeAndGetFromFront ();
+
+                m_messagesMutex.unlock ();
+
+                return (waveMessage);
+            }
+        }
+
+        return (null);
     }
 }
