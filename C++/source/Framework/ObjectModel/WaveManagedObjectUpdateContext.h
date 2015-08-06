@@ -8,7 +8,7 @@
 #define WAVEMANAGEDOBJECTUPDATECONTEXT_H
 
 #include "ObjectId.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
@@ -17,7 +17,7 @@ class WaveManagedObject;
 class WaveManagedObjectCreateContext;
 class Attribute;
 
-class WaveManagedObjectUpdateContext : public PrismLinearSequencerContext
+class WaveManagedObjectUpdateContext : public WaveLinearSequencerContext
 {
     private :
     protected :

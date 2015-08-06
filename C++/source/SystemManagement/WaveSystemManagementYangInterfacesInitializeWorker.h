@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class WaveAsynchronousContextForBootPhases;
 class WaveSystemManagementRebuildYangInterfacesMessage;
 
@@ -24,9 +24,9 @@ class WaveSystemManagementYangInterfacesInitializeWorker: public WaveWorker
         virtual WaveMessage   *createMessageInstance (const UI32 &operationCode);
         
                 void            initialize                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-                void            initializeSystemManagementInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void            initializeSystemManagementInterfaceStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
-                void            rebuildSystemManagementInterfaceStep    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void            rebuildSystemManagementInterfaceStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 void            buildSystemManagementInterface          (YangModuleCollection *yangModuleCollection, YangUserInterface *yangUserInterface, string &yinForYangUserInterface);
 

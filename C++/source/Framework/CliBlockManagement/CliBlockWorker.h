@@ -22,7 +22,7 @@ class CliBlockWorker : public WaveWorker
         virtual WaveMessage *createMessageInstance                                            (const UI32 &operationCode);
 
                 void          cliBlockMessageHandler                                           (CliBlockMessage *pCliBlockMessage);
-                void          processCliBlockMessageForConnectedLocationStep                   (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          processCliBlockMessageForConnectedLocationStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          processCliBlockMessageForConnectedLocationStepCallback           (WaveSendToClusterContext *pWaveSendToClusterContext);
 
     protected :

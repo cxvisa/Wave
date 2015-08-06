@@ -16,7 +16,7 @@
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 
 namespace WaveNs
@@ -77,25 +77,25 @@ void ClusterLocalSetHardwareSynchronizationStateWorker::setHardwareSynchronizati
         reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pClusterLocalSetHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalSetHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     // serialize the handling of this message
-    pPrismLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->holdAll ();
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 /** 
  *Name:         updateWaveNodeManagedObjectStep
  *Description:  Asynchronous linear sequencer step to update the WaveNodeMO
  * 
- * @param       PrismLinearSequencerContext* : Asynchronous linear sequencer context
+ * @param       WaveLinearSequencerContext* : Asynchronous linear sequencer context
  */ 
-void ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep : Entering ...");
 
-    ClusterLocalSetHardwareSynchronizationStateMessage* pClusterLocalSetHardwareSynchronizationStateMessage = dynamic_cast<ClusterLocalSetHardwareSynchronizationStateMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
+    ClusterLocalSetHardwareSynchronizationStateMessage* pClusterLocalSetHardwareSynchronizationStateMessage = dynamic_cast<ClusterLocalSetHardwareSynchronizationStateMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
     if (NULL == pClusterLocalSetHardwareSynchronizationStateMessage)
     {
@@ -116,9 +116,9 @@ void ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObj
 
     // Clean up of queried Managed Objects are marked now and properly deleted later during sequencer's destructor
 
-    pPrismLinearSequencerContext->addManagedObjectForGarbageCollection (pWaveNode);
+    pWaveLinearSequencerContext->addManagedObjectForGarbageCollection (pWaveNode);
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS); 
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS); 
 }
 
 }

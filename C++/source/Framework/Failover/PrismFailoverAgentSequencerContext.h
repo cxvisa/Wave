@@ -7,7 +7,7 @@
 #ifndef PRISMFAILOVERAGENTSEQUENCERCONTEXT_H
 #define PRISMFAILOVERAGENTSEQUENCERCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 #include <vector>
 #include <map>
@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismFailoverAgentSequencerContext : public PrismLinearSequencerContext
+class PrismFailoverAgentSequencerContext : public WaveLinearSequencerContext
 {
     private :
     protected :

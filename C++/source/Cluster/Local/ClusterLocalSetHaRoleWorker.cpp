@@ -8,7 +8,7 @@
 #include "Cluster/Local/ClusterLocalObjectManager.h"
 #include "Cluster/Local/ClusterLocalTypes.h"
 #include  "Framework/Types/Types.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Core/PrismFrameworkObjectManager.h"
@@ -77,11 +77,11 @@ void ClusterLocalSetHaRoleWorker::setHaRoleMessageHandler (ClusterLocalSetHaRole
     };
 
     //Note: Memory is freed inside the framework in the Succeeeded or Failure step
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pClusterLocalSetHaRoleMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalSetHaRoleMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
     tracePrintf(TRACE_LEVEL_INFO, "Number of Steps = %d",sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
 /// Name
@@ -90,19 +90,19 @@ void ClusterLocalSetHaRoleWorker::setHaRoleMessageHandler (ClusterLocalSetHaRole
 /// In this step the local WaveNode MO's node status is updated 
 /// and committed back to the DB
 /// Input
-/// PrismLinearSequencerContext *
+/// WaveLinearSequencerContext *
 /// Output
 /// None
 /// Return
 /// None
-void ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
     trace (TRACE_LEVEL_INFO, "ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep: Entering ...");
 
 #if 0
     //Message from the context
-    ClusterLocalSetHaRoleMessage* pClusterLocalSetHaRoleMessage = dynamic_cast<ClusterLocalSetHaRoleMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
+    ClusterLocalSetHaRoleMessage* pClusterLocalSetHaRoleMessage = dynamic_cast<ClusterLocalSetHaRoleMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
     prismAssert(NULL != pClusterLocalSetHaRoleMessage, __FILE__, __LINE__);
 
@@ -128,7 +128,7 @@ void ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep(PrismLinearS
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pWaveHaNodeMOs);
 #endif
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS); 
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS); 
 
     return;
 }

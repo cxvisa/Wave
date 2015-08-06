@@ -22,9 +22,9 @@ class CentralClusterConfigDeleteNodeWorker : public WaveWorker {
 
         WaveMessage *createMessageInstance                      (const UI32 &operationCode);
         void          deleteNodeMessageHandler                   (ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage);
-        void          deleteNodeValidateStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void          deleteNodeStopHeartBeatsStep               (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void          deleteNodeRequestFrameworkToDeleteNodeStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void          deleteNodeValidateStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void          deleteNodeStopHeartBeatsStep               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void          deleteNodeRequestFrameworkToDeleteNodeStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          deleteNodeRequestFrameworkToDeleteNodeCallback (FrameworkStatus frameworkStatus, FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage, void *pContext);
 
     protected :     

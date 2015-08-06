@@ -7,7 +7,7 @@
 #ifndef DISPLAYCURRENTCONFIGURATIONCONTEXT_H
 #define DISPLAYCURRENTCONFIGURATIONCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
@@ -16,7 +16,7 @@ class YangDisplayConfigurationContext;
 class YangElement;
 class WaveManagedObjectQueryContext;
 
-class DisplayCurrentConfigurationContext : public PrismLinearSequencerContext
+class DisplayCurrentConfigurationContext : public WaveLinearSequencerContext
 {
     private :
     protected :

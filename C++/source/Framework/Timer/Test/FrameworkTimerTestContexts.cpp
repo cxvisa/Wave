@@ -10,7 +10,7 @@ namespace WaveNs
 {
 
 FrameworkTimerTestContext::FrameworkTimerTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_numberOfFailures (0)
 {
 }

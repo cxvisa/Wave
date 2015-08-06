@@ -7,7 +7,7 @@
 #ifndef PERSISTENCELOCALEXECUTETRANSACTIONCONTEXT_H
 #define PERSISTENCELOCALEXECUTETRANSACTIONCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/Types/Types.h"
 
@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceLocalExecuteTransactionContext : public PrismLinearSequencerContext
+class PersistenceLocalExecuteTransactionContext : public WaveLinearSequencerContext
 {
     private :
     protected :

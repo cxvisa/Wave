@@ -14,7 +14,7 @@ namespace WaveNs
 
 class ClusterLocalObjectManager;
 class ClusterLocalReportPrimaryNodeChangedMessage;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class WaveWorker;
 
 ///Class:
@@ -31,7 +31,7 @@ class ClusterLocalReportPrimaryNodeChangedWorker : public WaveWorker
         //Handler for the ClusterLocalReportPrimaryNodeChnagedMessage received from the F/W
         void primaryNodeChangedMessageHandler                    (ClusterLocalReportPrimaryNodeChangedMessage *pClusterLocalReportPrimaryNodeChangedMessage);
         //Update the node status in the WaveNode MO
-        void updateWaveNodeManagedObjectStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void updateWaveNodeManagedObjectStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
    
     protected :
     public :

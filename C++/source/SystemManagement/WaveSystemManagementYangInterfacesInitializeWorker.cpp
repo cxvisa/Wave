@@ -4,7 +4,7 @@
  *   Author : Jayanth Venkataraman / Mandar Datar                          *
  ***************************************************************************/
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "SystemManagement/WaveSystemManagementYangInterfacesInitializeWorker.h"
 #include "SystemManagement/WaveSystemManagementRebuildYangInterfacesMessage.h"
@@ -58,12 +58,12 @@ void WaveSystemManagementYangInterfacesInitializeWorker::initialize (WaveAsynchr
         reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagementInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagementInterfaceStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == m_alreadyInitialized)
     {
@@ -77,7 +77,7 @@ void WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagem
         m_pYangUserInterface        = pYangUserInterface;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 
@@ -90,12 +90,12 @@ void WaveSystemManagementYangInterfacesInitializeWorker::rebuildYangInterfacesMe
         reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveSystemManagementRebuildYangInterfacesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSystemManagementRebuildYangInterfacesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveSystemManagementYangInterfacesInitializeWorker::rebuildSystemManagementInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveSystemManagementYangInterfacesInitializeWorker::rebuildSystemManagementInterfaceStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (true == m_alreadyInitialized) 
     {
@@ -123,7 +123,7 @@ void WaveSystemManagementYangInterfacesInitializeWorker::rebuildSystemManagement
         m_pYangUserInterface = pYangUserInterface;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveSystemManagementYangInterfacesInitializeWorker::buildSystemManagementInterface (YangModuleCollection *yangModuleCollection, YangUserInterface *yangUserInterface, string &yinForYangUserInterface)

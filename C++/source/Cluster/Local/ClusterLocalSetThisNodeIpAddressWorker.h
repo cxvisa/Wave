@@ -14,15 +14,15 @@ namespace WaveNs
 
 class ClusterLocalObjectManager;
 class ClusterLocalSetThisNodeIpAddressMessage;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 
 class ClusterLocalSetThisNodeIpAddressWorker : public WaveWorker
 {
     private :
         void setThisNodeIpAddressMessageHandler                        (ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage);
-        void setThisNodeIpAddressValidateStep                          (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void setThisNodeIpAddressUpdatePrismFrameworkObjectManagerStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void setThisNodeIpAddressUpdateThisWaveNodeStep                (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void setThisNodeIpAddressValidateStep                          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void setThisNodeIpAddressUpdatePrismFrameworkObjectManagerStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void setThisNodeIpAddressUpdateThisWaveNodeStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

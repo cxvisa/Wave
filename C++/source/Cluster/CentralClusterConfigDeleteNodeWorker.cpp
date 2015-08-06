@@ -49,7 +49,7 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeMessageHandler (ClusterObje
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigAddNodeWorker::deleteNodeMessageHandler : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext;
+    WaveLinearSequencerContext *pWaveLinearSequencerContext;
 
     // In case of deletion of a disconnected node, we do not need to explicitly stop HB as it would have been
     // done during HB failure.    
@@ -63,7 +63,7 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeMessageHandler (ClusterObje
             reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
         };
 
-        pPrismLinearSequencerContext = new PrismLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerForDisconnectedSteps, sizeof (sequencerForDisconnectedSteps) / sizeof (sequencerForDisconnectedSteps[0]));
+        pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerForDisconnectedSteps, sizeof (sequencerForDisconnectedSteps) / sizeof (sequencerForDisconnectedSteps[0]));
     }
     else  
     {
@@ -76,19 +76,19 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeMessageHandler (ClusterObje
             reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
         };
 
-        pPrismLinearSequencerContext = new PrismLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     }
-    //  pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    //  pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 
 }
 
-void CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "CentralClusterConfigdeleteNodeWorker::deleteNodeValidateStep : starting ...");
 
-    ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     string                               nodeName;
     SI32                                 nodePort;
@@ -181,14 +181,14 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep (PrismLinearSe
     pResults->clear ();
     delete pResults;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatStep : starting ...");
 
-    ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     string                               nodeName;
     UI32                                 nodePort;
     ResourceId                           status   = WAVE_MESSAGE_SUCCESS;
@@ -225,15 +225,15 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatsStep (PrismLi
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 
 }
 
-void CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "CentralClusterConfigDeleteClusterWorker::deleteNodeRequestFrameworkToDeleteNodeStep : Entering ...");
 
-        ClusterObjectManagerDeleteNodeMessage               *pClusterObjectManagerDeleteNodeMessage               = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+        ClusterObjectManagerDeleteNodeMessage               *pClusterObjectManagerDeleteNodeMessage               = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
         FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage = new FrameworkObjectManagerDeleteNodesFromClusterMessage ();
         ResourceId                                           status                                               = WAVE_MESSAGE_SUCCESS;
         UI32                                                 i                                                    = 0;
@@ -257,28 +257,28 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNod
             pFrameworkObjectManagerDeleteNodesFromClusterMessage->setIsDisconnected(true);
         }
 
-        status = send (pFrameworkObjectManagerDeleteNodesFromClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeCallback), pPrismLinearSequencerContext);
+        status = send (pFrameworkObjectManagerDeleteNodesFromClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeCallback), pWaveLinearSequencerContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_ERROR, "CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep : Error in requesting framework to delete cluster.  status : " + FrameworkToolKit::localize (status));
 
-            pPrismLinearSequencerContext->executeNextStep (status);         
+            pWaveLinearSequencerContext->executeNextStep (status);         
         
             return;
         } else {
             trace (TRACE_LEVEL_INFO, "CentralClusterConfigDeleteClusterWorker::deleteNodeRequestFrameworkToDeleteNodeStep : Sent ...");
         }
 
-//    pPrismLinearSequencerContext->executeNextStep (status);  
+//    pWaveLinearSequencerContext->executeNextStep (status);  
 }
 
 void CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeCallback (FrameworkStatus frameworkStatus, FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext  = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
-    ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext  = reinterpret_cast<WaveLinearSequencerContext *> (pContext);
+    ClusterObjectManagerDeleteNodeMessage *pClusterObjectManagerDeleteNodeMessage = reinterpret_cast<ClusterObjectManagerDeleteNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ResourceId                                status                                    = WAVE_MESSAGE_SUCCESS;
     string                                               nodeName;
@@ -317,7 +317,7 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNod
 
     delete (pFrameworkObjectManagerDeleteNodesFromClusterMessage);
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 }

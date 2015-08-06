@@ -21,7 +21,7 @@ class SoftwareManagementVersionWorker : public WaveWorker
         virtual WaveMessage *createMessageInstance                      (const UI32 &operationCode);
 
                 void          softwareManagementGetVersionMessageHandler (SoftwareManagementGetVersionMessage *psoftwareManagementGetVersionMessage);
-                void          getVersionStep                             (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          getVersionStep                             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
         static  void          debugGetVersion                            (UI32 argc, vector<string> argv);
 

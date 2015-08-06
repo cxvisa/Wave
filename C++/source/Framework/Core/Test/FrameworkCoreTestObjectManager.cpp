@@ -49,10 +49,10 @@ void FrameworkCoreTestObjectManager::testRequestHandler (RegressionTestMessage *
         reinterpret_cast<PrismLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
 void FrameworkCoreTestObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -66,7 +66,7 @@ void FrameworkCoreTestObjectManager::initialize (WaveAsynchronousContextForBootP
     pWaveAsynchronousContextForBootPhases->callback ();
 }
 
-void FrameworkCoreTestObjectManager::frameworkCoreTestFormattedErrorStringValidationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkCoreTestObjectManager::frameworkCoreTestFormattedErrorStringValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     UI32                    i                               = 0;
     UI32                    NumberOfMessages                = 100;
@@ -99,7 +99,7 @@ void FrameworkCoreTestObjectManager::frameworkCoreTestFormattedErrorStringValida
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 }

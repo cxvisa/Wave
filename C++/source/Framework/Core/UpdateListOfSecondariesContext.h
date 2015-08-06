@@ -7,7 +7,7 @@
 #ifndef UPDATELISTOFSECONDARIESCONTEXT_H
 #define UPDATELISTOFSECONDARIESCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 #include <string>
 #include <vector>
@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class UpdateListOfSecondariesContext : public PrismLinearSequencerContext
+class UpdateListOfSecondariesContext : public WaveLinearSequencerContext
 {
     private :
     protected :

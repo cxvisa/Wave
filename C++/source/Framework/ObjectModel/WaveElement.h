@@ -10,7 +10,7 @@
 #include "Framework/Utils/StringUtils.h"
 //#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Trace/TraceMessages.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
@@ -81,10 +81,10 @@ class WaveElement
         virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL) = 0;
         virtual ResourceId                    deleteTimer                                          (TimerHandle timerHandle) = 0;
 
-                void                          prismLinearSequencerSucceededStep                    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                          prismLinearSequencerFailedStep                       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                          prismLinearSequencerStartTransactionStep             (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                          prismLinearSequencerCommitTransactionStep            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                          prismLinearSequencerSucceededStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                          prismLinearSequencerFailedStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                          prismLinearSequencerStartTransactionStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                          prismLinearSequencerCommitTransactionStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 ResourceId                    prismSynchronousLinearSequencerSucceededStep         (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
                 ResourceId                    prismSynchronousLinearSequencerFailedStep            (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
                 ResourceId                    prismSynchronousLinearSequencerStartTransactionStep  (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
@@ -187,7 +187,7 @@ class WaveElement
 
     public :
 
-    friend class PrismLinearSequencerContext;
+    friend class WaveLinearSequencerContext;
     friend class DatabaseObjectManagerExecuteQueryWorker;
     friend class PrismSynchronousLinearSequencerContext;
 };

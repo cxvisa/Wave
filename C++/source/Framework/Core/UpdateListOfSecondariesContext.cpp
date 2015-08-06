@@ -13,12 +13,12 @@ namespace WaveNs
 {
 
 UpdateListOfSecondariesContext::UpdateListOfSecondariesContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),m_isThisNodeNew(false)
+    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),m_isThisNodeNew(false)
 {
 }
 
 UpdateListOfSecondariesContext::UpdateListOfSecondariesContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),m_isThisNodeNew(false)
+    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),m_isThisNodeNew(false)
 {
 }
 

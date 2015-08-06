@@ -8,7 +8,7 @@
 #include "SystemManagement/WaveSystemManagementGetYangUserInterfaceMessage.h"
 #include "SystemManagement/WaveSystemManagementObjectManager.h"
 #include "SystemManagement/WaveSystemManagementTypes.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
@@ -34,15 +34,15 @@ void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceMessage
         reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveSystemManagementGetYangUserInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSystemManagementGetYangUserInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateYangUserInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateYangUserInterfaceStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage = dynamic_cast<WaveSystemManagementGetYangUserInterfaceMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage = dynamic_cast<WaveSystemManagementGetYangUserInterfaceMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
 
@@ -56,12 +56,12 @@ void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateY
     WaveSystemManagementObjectManager::getYinForYangUserInterface (pWaveSystemManagementGetYangUserInterfaceMessage->getYangUserInterface ());
 #endif
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceApplyAAAOnYangUserInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceApplyAAAOnYangUserInterfaceStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 }

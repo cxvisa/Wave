@@ -125,17 +125,17 @@ void WaveClientDataObjectGetWorker::getDataFromClientHandlerForSendToCluster (Wa
         reinterpret_cast<PrismLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerGetDataFromClientMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerGetDataFromClientMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 
 }
 
-void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( PrismLinearSequencerContext *pPrismLinearSequencerContext )
+void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( WaveLinearSequencerContext *pWaveLinearSequencerContext )
 {
     trace (TRACE_LEVEL_DEVEL, "WaveClientDataObjectGetWorker::sendMessageToAllNodesStep : entered-");
     
-    WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = reinterpret_cast<WaveObjectManagerGetDataFromClientMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+    WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = reinterpret_cast<WaveObjectManagerGetDataFromClientMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
     prismAssert ( NULL != pWaveObjectManagerGetDataFromClientMessage, __FILE__, __LINE__);            
 
     string clientName;
@@ -180,7 +180,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( PrismLinearSeque
         */ 
         //Testing End
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback), pPrismLinearSequencerContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback), pWaveLinearSequencerContext);
         
     pWaveSendToClusterContext->setPWaveMessageForPhase1(pMessageToAllNodes);
 
@@ -199,11 +199,11 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback ( WaveSend
 {
     trace (TRACE_LEVEL_INFO, string("WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : got response from sendToWaveCluster "));
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *>(pWaveSendToClusterContext->getPCallerContext());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *>(pWaveSendToClusterContext->getPCallerContext());
 
-    if (NULL != pPrismLinearSequencerContext )
+    if (NULL != pWaveLinearSequencerContext )
     {
-        WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = dynamic_cast<WaveObjectManagerGetDataFromClientMessage *>( pPrismLinearSequencerContext->getPWaveMessage ()) ;
+        WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = dynamic_cast<WaveObjectManagerGetDataFromClientMessage *>( pWaveLinearSequencerContext->getPWaveMessage ()) ;
  
         if ( NULL != pWaveObjectManagerGetDataFromClientMessage )
         {
@@ -237,17 +237,17 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback ( WaveSend
             delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
             delete pWaveSendToClusterContext;
 
-            pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+            pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
         }    
         else
         {
-            trace (TRACE_LEVEL_FATAL, "WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : dynamic cast to WaveObjectManagerGetDataFromClientMessage in PrismLinearSequencerContext failed.");
+            trace (TRACE_LEVEL_FATAL, "WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : dynamic cast to WaveObjectManagerGetDataFromClientMessage in WaveLinearSequencerContext failed.");
             prismAssert (false, __FILE__, __LINE__);
         }
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, " WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : PrismLinearSequencerContext pointer is NULL.");
+        trace (TRACE_LEVEL_FATAL, " WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : WaveLinearSequencerContext pointer is NULL.");
         prismAssert (false, __FILE__, __LINE__);
     }
 }

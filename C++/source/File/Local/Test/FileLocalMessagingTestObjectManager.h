@@ -20,12 +20,12 @@ class FileLocalMessagingTestObjectManager : public PrismTestObjectManager
      private :
           FileLocalMessagingTestObjectManager ();
           WaveMessageStatus                                                          simpleSynchronousMessageTest            (WaveMessage *message);
-          WaveMessageStatus                                                          simpleAsynchronousMessageTest           (PrismLinearSequencerContext *&pPrismLinearSequencerContext, vector<WaveMessage *>&sagesVector);
+          WaveMessageStatus                                                          simpleAsynchronousMessageTest           (WaveLinearSequencerContext *&pWaveLinearSequencerContext, vector<WaveMessage *>&sagesVector);
           void                                                                       CleanupTempFiles                        (void);
           void                                                                       SetupTempFileForTransfer                (UI32 nFileSize, const string &sFileName);
-          void                                                                       ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, PrismLinearSequencerContext          
-                                                                                                                                                           *pPrismLinearSequencerContext);
-          void                                                                       ASyncPushFileWith1KDatatoGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext);
+          void                                                                       ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, WaveLinearSequencerContext          
+                                                                                                                                                           *pWaveLinearSequencerContext);
+          void                                                                       ASyncPushFileWith1KDatatoGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext);
           
      protected :
      public :
@@ -37,16 +37,16 @@ class FileLocalMessagingTestObjectManager : public PrismTestObjectManager
                   WaveMessage                                                      *createMessageInstance                   (const UI32 &operationCode);
 
 
-          void    simplePushFileWithInvalidFilenameTest                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-          void    simplePushFileWithInvalidFilesizeTest                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-          void    simplePushFileWithInvalidLocationIdTest                            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+          void    simplePushFileWithInvalidFilenameTest                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+          void    simplePushFileWithInvalidFilesizeTest                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+          void    simplePushFileWithInvalidLocationIdTest                            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
           
-          void    simpleSyncPushFileWith1KDatatoGoodLocationIdTest                   (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-          void    simpleASyncPushFileWith1KDatatoGoodLocationIdTest                  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+          void    simpleSyncPushFileWith1KDatatoGoodLocationIdTest                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+          void    simpleASyncPushFileWith1KDatatoGoodLocationIdTest                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
           
-          void    SynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest        (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-          void    ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-          void    CleanupTempTestFiles                                               (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+          void    SynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+          void    ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+          void    CleanupTempTestFiles                                               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
           void    copyFileWaveClientMessageHandler                                   (CopyFileWaveClientMessage *pCopyFileWaveClientMessage);
           void    copyFileToHaPeerWaveClientMessageHandler                           (CopyFileToHaPeerWaveClientMessage *pCopyFileToHaPeerWaveClientMessage);

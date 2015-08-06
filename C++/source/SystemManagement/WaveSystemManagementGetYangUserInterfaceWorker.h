@@ -19,8 +19,8 @@ class WaveSystemManagementGetYangUserInterfaceWorker : public WaveWorker
 {
     private :
         void getYangUserInterfaceMessageHandler                  (WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage);
-        void getYangUserInterfaceCreateYangUserInterfaceStep     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void getYangUserInterfaceApplyAAAOnYangUserInterfaceStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void getYangUserInterfaceCreateYangUserInterfaceStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void getYangUserInterfaceApplyAAAOnYangUserInterfaceStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
 
     protected :

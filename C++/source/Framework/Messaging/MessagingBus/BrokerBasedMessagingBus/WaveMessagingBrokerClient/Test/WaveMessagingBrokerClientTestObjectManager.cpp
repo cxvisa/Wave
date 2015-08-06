@@ -7,7 +7,7 @@
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveMessagingBrokerClient/Test/WaveMessagingBrokerClientTestObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveMessagingBrokerClient/Test/WaveBrokerPublishTest1Message.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveBrokerPublishMessageFactory.h"
@@ -56,12 +56,12 @@ void WaveMessagingBrokerClientTestObjectManager::testRequestHandler (RegressionT
         reinterpret_cast<PrismLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerConnectTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerConnectTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     string brokerName         = "broker1";
     bool   runConnectingTests = false;
@@ -92,10 +92,10 @@ void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerConnectTestStep
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     string brokerName                = "broker1";
     bool   runPublishingTests        = false;
@@ -147,10 +147,10 @@ void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageT
         delete pWaveBrokerPublishTest1Message;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerSubscribeMessageTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerSubscribeMessageTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     string brokerName        = "broker1";
     bool   runSubscribeTests = false;
@@ -178,7 +178,7 @@ void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerSubscribeMessag
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveMessagingBrokerClientTestObjectManager::simpleSubscriptionCallback (const WaveBrokerPublishMessage * const pWaveBrokerPublishMessage)

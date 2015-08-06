@@ -25,7 +25,7 @@ string WaveSourceGeneratorForLinearSequencerContext::generateClassName () const
 
 string WaveSourceGeneratorForLinearSequencerContext::generateHIncludes () const
 {
-    string hIncludes = "#include \"Framework/Utils/PrismLinearSequencerContext.h\"\n"
+    string hIncludes = "#include \"Framework/Utils/WaveLinearSequencerContext.h\"\n"
                        "\n";
 
     return (hIncludes);
@@ -33,7 +33,7 @@ string WaveSourceGeneratorForLinearSequencerContext::generateHIncludes () const
 
 string WaveSourceGeneratorForLinearSequencerContext::generateHClassBegin () const
 {
-    string classBegin = "class " + generateClassName () + " : public PrismLinearSequencerContext\n"
+    string classBegin = "class " + generateClassName () + " : public WaveLinearSequencerContext\n"
                         "{\n";
 
     return (classBegin);
@@ -53,7 +53,7 @@ string WaveSourceGeneratorForLinearSequencerContext::generateCppMemberFunctions 
     string memberFunctions;
 
     memberFunctions += generateClassName () + "::" + generateClassName () + " (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)\n"
-                       "    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)\n"
+                       "    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)\n"
                        "{\n"
                        "}\n"
                        "\n";

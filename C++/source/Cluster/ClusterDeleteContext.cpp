@@ -12,14 +12,14 @@ namespace WaveNs
 {
 
 ClusterDeleteContext::ClusterDeleteContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_pPrismCluster             (NULL),
       m_pSecondaryNodes           (NULL)
 {
 }
 
 ClusterDeleteContext::ClusterDeleteContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_pPrismCluster             (NULL),
       m_pSecondaryNodes           (NULL)
 {

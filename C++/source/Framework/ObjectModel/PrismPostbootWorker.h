@@ -18,9 +18,9 @@ class PrismPostbootWorker : public WaveWorker
 {
     private :
                 void        postbootHandler                     (PrismPostbootObjectManagerMessage *pPostbootMessage);
-                void        postbootBootWorkersStep             (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void        postbootBootWorkersStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void        postbootBootWorkersStepCallback     (WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase);
-                void        postbootBootSelfStep                (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void        postbootBootSelfStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void        postbootBootSelfStepCallback        (WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase);
 
     protected :

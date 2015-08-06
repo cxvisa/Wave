@@ -7,13 +7,13 @@
 #ifndef CLUSTERTESTCONTEXTS_H
 #define CLUSTERTESTCONTEXTS_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 
 namespace WaveNs
 {
 
-class ClusterTestContext : public PrismLinearSequencerContext
+class ClusterTestContext : public WaveLinearSequencerContext
 {
     private :
     protected :

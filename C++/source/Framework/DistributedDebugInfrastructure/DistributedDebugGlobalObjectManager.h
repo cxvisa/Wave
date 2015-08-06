@@ -45,7 +45,7 @@ private:
 
                 virtual WaveMessage *createMessageInstance    (const UI32 &operationCode);
 
-                void sendDebugScriptToAllNodesStep (PrismLinearSequencerContext* pRunDebugScriptMessageHandlerContext);
+                void sendDebugScriptToAllNodesStep (WaveLinearSequencerContext* pRunDebugScriptMessageHandlerContext);
 
                 void sendDebugScriptToAllNodesCallback (WaveSendToClusterContext *pWaveSendToClusterContext);
 };

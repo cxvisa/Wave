@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class WaveBrokerPublishMessage;
 
 class WaveMessagingBrokerClientTestObjectManager : public PrismTestObjectManager
@@ -22,9 +22,9 @@ class WaveMessagingBrokerClientTestObjectManager : public PrismTestObjectManager
     private :
         virtual void testRequestHandler                       (RegressionTestMessage *pRegressionTestMessage);
 
-                void simpleWaveBrokerConnectTestStep          (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void simpleWaveBrokerSubscribeMessageTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void simpleWaveBrokerPublishMessageTestStep   (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void simpleWaveBrokerConnectTestStep          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void simpleWaveBrokerSubscribeMessageTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void simpleWaveBrokerPublishMessageTestStep   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 void simpleSubscriptionCallback               (const WaveBrokerPublishMessage * const pWaveBrokerPublishMessage);
 

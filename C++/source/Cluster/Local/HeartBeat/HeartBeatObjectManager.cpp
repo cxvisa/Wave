@@ -740,18 +740,18 @@ void HeartBeatObjectManager::disconnectFromNodeMessageHandler(DisconnectFromNode
     reinterpret_cast<PrismLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pDisconnectFromNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDisconnectFromNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
     
 }
 
-void HeartBeatObjectManager::validateDisconnectFromNodeRequest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void HeartBeatObjectManager::validateDisconnectFromNodeRequest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace(TRACE_LEVEL_DEVEL, "HeartBeatObjectManager::validateDisconnectFromNodeRequest..Entering");
     /* Nothing fro now */
-    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
     prismAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
 
     LocationId locationId = pDisconnectFromNodeMessage->getLocationId ();
@@ -759,18 +759,18 @@ void HeartBeatObjectManager::validateDisconnectFromNodeRequest (PrismLinearSeque
 
     if (locationId == thisLocationId) {
         trace(TRACE_LEVEL_ERROR, "HeartBeatObjectManager::validateDisconnectFromNodeRequest: Validation Failed");
-        pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_ERROR);
     } else {
-        pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
     }
 
 }
 
-void HeartBeatObjectManager::processDisconnectFromNodeMessage (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void HeartBeatObjectManager::processDisconnectFromNodeMessage (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace(TRACE_LEVEL_DEVEL, "HeartBeatObjectManager::processDisconnectFromNodeMessage..Entering");
 
-    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+    DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
     prismAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
 
     LocationId locationId = pDisconnectFromNodeMessage->getLocationId ();
@@ -781,7 +781,7 @@ void HeartBeatObjectManager::processDisconnectFromNodeMessage (PrismLinearSequen
 
     (WaveClientTransportObjectManager::getInstance ())->replyToPendingMessagesForServer (pDisconnectFromNodeMessage->getServerIpAddress (), (SI32) pDisconnectFromNodeMessage->getServerPort ());
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 
  
 }

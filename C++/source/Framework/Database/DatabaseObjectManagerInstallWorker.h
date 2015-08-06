@@ -11,17 +11,17 @@ namespace WaveNs
 {
 
 class PrismAsynchronousContext;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 
 class DatabaseObjectManagerInstallWorker : public WaveWorker
 {
     private :
         void  install                        (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void  installValidateStep            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  installDatabaseStep            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  installBootDatabaseStep        (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  installShutdownDatabaseStep    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  installCreatePrismDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void  installValidateStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  installDatabaseStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  installBootDatabaseStep        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  installShutdownDatabaseStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  installCreatePrismDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

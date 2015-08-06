@@ -7,14 +7,14 @@
 #ifndef PRISMFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
 #define PRISMFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
 
 class PrismFailoverAgent;
 
-class PrismFrameworkFailoverWorkerSequencerContext : public PrismLinearSequencerContext
+class PrismFrameworkFailoverWorkerSequencerContext : public WaveLinearSequencerContext
 {
     private :
     protected :

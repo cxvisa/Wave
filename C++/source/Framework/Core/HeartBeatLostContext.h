@@ -7,14 +7,14 @@
 #ifndef HEARTBEATLOSTCONTEXT_H
 #define HEARTBEATLOSTCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include <vector>
 #include <string>
 
 namespace WaveNs
 {
 
-class HeartBeatLostContext : public PrismLinearSequencerContext
+class HeartBeatLostContext : public WaveLinearSequencerContext
 {
     private :
     protected :

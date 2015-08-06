@@ -13,7 +13,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class RegressionTestMessage;
 
 class PersistenceTestObjectManager : PrismTestObjectManager
@@ -22,8 +22,8 @@ class PersistenceTestObjectManager : PrismTestObjectManager
                      PersistenceTestObjectManager           ();
 
         virtual void testRequestHandler                     (RegressionTestMessage *pRegressionTestMessage);
-                void simpleTransactionForObjectCreationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void nestedTransactionForObjectCreationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void simpleTransactionForObjectCreationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void nestedTransactionForObjectCreationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void frameworkTestability9MessageCallback   (FrameworkStatus frameworkStatus, FrameworkTestabilityMessage9 *pMessage);
 
     protected :

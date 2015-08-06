@@ -7,13 +7,13 @@
 #ifndef DISTRIBUTEDLOGTESTCONTEXT_H
 #define DISTRIBUTEDLOGTESTCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 namespace WaveNs
 {
 
-class DistributedLogTestContext : public PrismLinearSequencerContext
+class DistributedLogTestContext : public WaveLinearSequencerContext
 {
     private:
     protected:

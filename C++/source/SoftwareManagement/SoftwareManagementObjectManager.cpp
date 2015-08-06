@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "SoftwareManagement/SoftwareManagementObjectManager.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Version/PrismVersion.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "SoftwareManagement/SoftwareManagementVersionWorker.h"
@@ -62,12 +62,12 @@ void SoftwareManagementObjectManager::initialize (WaveAsynchronousContextForBoot
         reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void SoftwareManagementObjectManager::displayVersionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void SoftwareManagementObjectManager::displayVersionStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "SoftwareManagementObjectManager::displayVersionStep : Entering ...");
 
@@ -77,7 +77,7 @@ void SoftwareManagementObjectManager::displayVersionStep (PrismLinearSequencerCo
     trace (TRACE_LEVEL_INFO, "Prism Build   : " + pPrismVersion->getUser () + "@" + pPrismVersion->getHost () + "." + pPrismVersion->getDomain ());
     trace (TRACE_LEVEL_INFO, "Prism Date    : " + pPrismVersion->getDate ());
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 }

@@ -5,8 +5,8 @@
  *********************************************************************/
 
 #include "Framework/Failover/FailoverAsynchronousContext.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "File/Global/FileObjectManager.h"
 #include "File/Local/FileAbortFileTransferMessage.h"
 #include "Framework/Utils/FrameworkToolKit.h"

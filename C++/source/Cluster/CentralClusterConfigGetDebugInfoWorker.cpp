@@ -106,12 +106,12 @@ void CentralClusterConfigGetDebugInfoWorker::getDebugInfoHandler(ClusterConfigOb
   };
 
   //Note that this is freed in SequencerSucceeded step inside the framework code
-  PrismLinearSequencerContext* pPrismLinearSequencerContext = new PrismLinearSequencerContext(pClusterObjectManagerGetClusterInfoMsg,
+  WaveLinearSequencerContext* pWaveLinearSequencerContext = new WaveLinearSequencerContext(pClusterObjectManagerGetClusterInfoMsg,
 								 this,
 								 sequencerSteps,
 								 sizeof(sequencerSteps)/sizeof(sequencerSteps[0]));  
-  pPrismLinearSequencerContext->holdAll();
-  pPrismLinearSequencerContext->start();
+  pWaveLinearSequencerContext->holdAll();
+  pWaveLinearSequencerContext->start();
 
   return;
 }
@@ -121,17 +121,17 @@ void CentralClusterConfigGetDebugInfoWorker::getDebugInfoHandler(ClusterConfigOb
 /// Description
 /// packs  primary node information into ClusterConfigObjectManagerGetClusterInfoMessage
 /// Input
-/// PrismLinearSequencerContext : Used by the f/w
+/// WaveLinearSequencerContext : Used by the f/w
 /// Output
 /// none
 /// Return
 /// none
-void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
      trace (TRACE_LEVEL_DEVEL, 
 	    " CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep:Begin");
 
-     ClusterConfigObjectManagerGetClusterInfoMessage* pClusterObjectManagerGetClusterInfoMsg =dynamic_cast<ClusterConfigObjectManagerGetClusterInfoMessage*>(pPrismLinearSequencerContext->getPWaveMessage());
+     ClusterConfigObjectManagerGetClusterInfoMessage* pClusterObjectManagerGetClusterInfoMsg =dynamic_cast<ClusterConfigObjectManagerGetClusterInfoMessage*>(pWaveLinearSequencerContext->getPWaveMessage());
 
       prismAssert(pClusterObjectManagerGetClusterInfoMsg!=0,__FILE__,__LINE__);
 
@@ -142,7 +142,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(PrismLinea
      if (NULL == pResults)
      {         
 	 trace(TRACE_LEVEL_INFO ,"MO for cluster not found");
-	 pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+	 pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
 	 return;
      }
 
@@ -155,7 +155,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(PrismLinea
 	 prismAssert (false, __FILE__, __LINE__);
 
          WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
-	 pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+	 pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
 	 return;
      }
 
@@ -165,7 +165,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(PrismLinea
 	 trace (TRACE_LEVEL_DEBUG, " CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep: There is no Cluster Created");
 	 pClusterObjectManagerGetClusterInfoMsg->setClusterCreated(0);
          WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
-	 pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+	 pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 	 return;
      }
 
@@ -213,7 +213,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(PrismLinea
      trace (TRACE_LEVEL_DEVEL, 
 	    " CentralClusterConfigGetDebugInfoWorker::getPrincipalNodesInfoStep:End");
 
-     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
      return;
 }
 
@@ -222,18 +222,18 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(PrismLinea
 /// Description
 /// packs  secondary node information into ClusterConfigObjectManagerGetClusterInfoMessage
 /// Input
-/// PrismLinearSequencerContext : Used by the f/w
+/// WaveLinearSequencerContext : Used by the f/w
 /// Output
 /// none
 /// Return
 /// none
 
-void CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
      trace (TRACE_LEVEL_DEVEL, 
 	    " CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep:Begin");
 
-     ClusterConfigObjectManagerGetClusterInfoMessage* pClusterObjectManagerGetClusterInfoMsg = dynamic_cast<ClusterConfigObjectManagerGetClusterInfoMessage*>(pPrismLinearSequencerContext->getPWaveMessage());
+     ClusterConfigObjectManagerGetClusterInfoMessage* pClusterObjectManagerGetClusterInfoMsg = dynamic_cast<ClusterConfigObjectManagerGetClusterInfoMessage*>(pWaveLinearSequencerContext->getPWaveMessage());
 
      prismAssert(NULL != pClusterObjectManagerGetClusterInfoMsg,__FILE__,__LINE__);
      //Populate the secondary Node vectors
@@ -280,7 +280,7 @@ void CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep(PrismLine
      WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
      trace (TRACE_LEVEL_DEVEL, 
 	    " CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep:End");
-         pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
      return;
 }   
 

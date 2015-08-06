@@ -14,7 +14,7 @@ namespace WaveNs
 
 class ClusterLocalObjectManager;
 class ClusterLocalSetHaRoleMessage;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class WaveWorker;
 
 class ClusterLocalSetHaRoleWorker : public WaveWorker
@@ -22,7 +22,7 @@ class ClusterLocalSetHaRoleWorker : public WaveWorker
     private :
         void setHaRoleMessageHandler                           (ClusterLocalSetHaRoleMessage* pClusterLocalSetHaRoleMessage);
 
-        void updateWaveHaNodeManagedObjectStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void updateWaveHaNodeManagedObjectStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                     
     protected :
     public :

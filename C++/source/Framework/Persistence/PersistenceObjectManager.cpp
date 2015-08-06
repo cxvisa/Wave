@@ -1972,14 +1972,14 @@ void PersistenceObjectManager::addXPathStringsMessageHandler (PersistenceObjectM
         reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPersistenceObjectManagerAddXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerAddXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PersistenceObjectManager::createXPathStringManagedObjectsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceObjectManager::createXPathStringManagedObjectsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    PersistenceObjectManagerAddXPathStringsMessage *pPersistenceObjectManagerAddXPathStringsMessage = dynamic_cast<PersistenceObjectManagerAddXPathStringsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PersistenceObjectManagerAddXPathStringsMessage *pPersistenceObjectManagerAddXPathStringsMessage = dynamic_cast<PersistenceObjectManagerAddXPathStringsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pPersistenceObjectManagerAddXPathStringsMessage, __FILE__, __LINE__);
 
     vector<string>  xPathStrings                = pPersistenceObjectManagerAddXPathStringsMessage->getXPathStrings ();
@@ -1987,7 +1987,7 @@ void PersistenceObjectManager::createXPathStringManagedObjectsStep (PrismLinearS
 
     if (0 == numberOfInputXPathStrings)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -2006,7 +2006,7 @@ void PersistenceObjectManager::createXPathStringManagedObjectsStep (PrismLinearS
 
     if (NULL == pWaveManagedObjectQueryResultVector)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
@@ -2043,17 +2043,17 @@ void PersistenceObjectManager::createXPathStringManagedObjectsStep (PrismLinearS
 
     if (true == sqlString.empty ())
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     PersistenceObjectManagerExecuteTransactionMessage *pPersistenceObjectManagerExecuteTransactionMessage = new PersistenceObjectManagerExecuteTransactionMessage (sqlString);
-    ResourceId sendStatus = send (pPersistenceObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceObjectManager::xPathStringManagedObjectsCommitCallback), (void *) pPrismLinearSequencerContext);
+    ResourceId sendStatus = send (pPersistenceObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceObjectManager::xPathStringManagedObjectsCommitCallback), (void *) pWaveLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != sendStatus)
     {
         delete pPersistenceObjectManagerExecuteTransactionMessage;
-        pPrismLinearSequencerContext->executeNextStep (sendStatus);
+        pWaveLinearSequencerContext->executeNextStep (sendStatus);
         return;
     }
 }
@@ -2096,10 +2096,10 @@ void PersistenceObjectManager::xPathStringManagedObjectsCommitCallback (Framewor
         nextStepStatus = frameworkStatus;
     }
 
-    PrismLinearSequencerContext* pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    WaveLinearSequencerContext* pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pContext);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
-    pPrismLinearSequencerContext->executeNextStep (nextStepStatus);
+    pWaveLinearSequencerContext->executeNextStep (nextStepStatus);
 }
 
 void PersistenceObjectManager::deleteXPathStringsMessageHandler (PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage)
@@ -2112,14 +2112,14 @@ void PersistenceObjectManager::deleteXPathStringsMessageHandler (PersistenceObje
         reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPersistenceObjectManagerDeleteXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerDeleteXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage = dynamic_cast<PersistenceObjectManagerDeleteXPathStringsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage = dynamic_cast<PersistenceObjectManagerDeleteXPathStringsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pPersistenceObjectManagerDeleteXPathStringsMessage, __FILE__, __LINE__);
 
     vector<string>  xPathStrings                = pPersistenceObjectManagerDeleteXPathStringsMessage->getXPathStrings ();
@@ -2127,7 +2127,7 @@ void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (PrismLinearS
 
     if (0 == numberOfInputXPathStrings)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -2144,7 +2144,7 @@ void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (PrismLinearS
 
     if (NULL == pWaveManagedObjectQueryResultVector)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
@@ -2164,17 +2164,17 @@ void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (PrismLinearS
 
     if (true == sqlString.empty ())
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     PersistenceObjectManagerExecuteTransactionMessage *pPersistenceObjectManagerExecuteTransactionMessage = new PersistenceObjectManagerExecuteTransactionMessage (sqlString);
-    ResourceId sendStatus = send (pPersistenceObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceObjectManager::xPathStringManagedObjectsCommitCallback), (void *) pPrismLinearSequencerContext);
+    ResourceId sendStatus = send (pPersistenceObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceObjectManager::xPathStringManagedObjectsCommitCallback), (void *) pWaveLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != sendStatus)
     {
         delete pPersistenceObjectManagerExecuteTransactionMessage;
-        pPrismLinearSequencerContext->executeNextStep (sendStatus);
+        pWaveLinearSequencerContext->executeNextStep (sendStatus);
         return;
     }
 }
@@ -2190,14 +2190,14 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsMessageHand
         reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage = dynamic_cast<PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage = dynamic_cast<PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, __FILE__, __LINE__);
 
     vector<string>  xPathStrings                = pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage->getXPathStrings ();
@@ -2208,7 +2208,7 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (Prism
     {
         if (0 == m_XPathStringToXPathStringManagedObjectMapAsCache.size ())
         {
-            pPrismLinearSequencerContext->executeNextStep (WAVE_PERSISTENCE_XPATHS_REGISTRATION_TABLE_IS_EMPTY);
+            pWaveLinearSequencerContext->executeNextStep (WAVE_PERSISTENCE_XPATHS_REGISTRATION_TABLE_IS_EMPTY);
             return;
         }
 
@@ -2241,7 +2241,7 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (Prism
             else
             {
                 lastUpdatedTimestamps.clear ();
-                pPrismLinearSequencerContext->executeNextStep (WAVE_PERSISTENCE_UNKNOWN_XPATHS);
+                pWaveLinearSequencerContext->executeNextStep (WAVE_PERSISTENCE_UNKNOWN_XPATHS);
                 return;
             }
         }
@@ -2249,7 +2249,7 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (Prism
         pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage->setLastUpdatedTimestamps (lastUpdatedTimestamps);
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PersistenceObjectManager::resetXPathStringsTimestampsMessageHandler (PersistenceObjectManagerResetXPathStringsTimestampsMessage *pPersistenceObjectManagerResetXPathStringsTimestampsMessage)
@@ -2262,22 +2262,22 @@ void PersistenceObjectManager::resetXPathStringsTimestampsMessageHandler (Persis
         reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPersistenceObjectManagerResetXPathStringsTimestampsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerResetXPathStringsTimestampsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PersistenceObjectManager::resetXPathStringsTimestampsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceObjectManager::resetXPathStringsTimestampsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     vector<WaveManagedObject *> *pWaveManagedObjectQueryResultVector = querySynchronously (XPathStringManagedObject::getClassName ());
 
     if (NULL == pWaveManagedObjectQueryResultVector)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
-    pPrismLinearSequencerContext->addManagedObjectsForGarbageCollection (*pWaveManagedObjectQueryResultVector);
+    pWaveLinearSequencerContext->addManagedObjectsForGarbageCollection (*pWaveManagedObjectQueryResultVector);
 
     UI32 numberOfXPathManagedObjects = pWaveManagedObjectQueryResultVector->size ();
 
@@ -2298,17 +2298,17 @@ void PersistenceObjectManager::resetXPathStringsTimestampsStep (PrismLinearSeque
 
     if (true == sqlString.empty ())
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     PersistenceObjectManagerExecuteTransactionMessage *pPersistenceObjectManagerExecuteTransactionMessage = new PersistenceObjectManagerExecuteTransactionMessage (sqlString);
-    ResourceId sendStatus = send (pPersistenceObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceObjectManager::xPathStringManagedObjectsCommitCallback), (void *) pPrismLinearSequencerContext);
+    ResourceId sendStatus = send (pPersistenceObjectManagerExecuteTransactionMessage, reinterpret_cast<WaveMessageResponseHandler> (&PersistenceObjectManager::xPathStringManagedObjectsCommitCallback), (void *) pWaveLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != sendStatus)
     {
         delete pPersistenceObjectManagerExecuteTransactionMessage;
-        pPrismLinearSequencerContext->executeNextStep (sendStatus);
+        pWaveLinearSequencerContext->executeNextStep (sendStatus);
         return;
     }
 }
@@ -2524,15 +2524,15 @@ void PersistenceObjectManager::addDelayedTransactionMessageHandler (PersistenceO
         reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPersistenceObjectManagerAddDelayedTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerAddDelayedTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PersistenceObjectManager::addDelayedTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceObjectManager::addDelayedTransactionStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    PersistenceObjectManagerAddDelayedTransactionMessage *pPersistenceObjectManagerAddDelayedTransactionMessage = dynamic_cast<PersistenceObjectManagerAddDelayedTransactionMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PersistenceObjectManagerAddDelayedTransactionMessage *pPersistenceObjectManagerAddDelayedTransactionMessage = dynamic_cast<PersistenceObjectManagerAddDelayedTransactionMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     prismAssert (NULL != pPersistenceObjectManagerAddDelayedTransactionMessage, __FILE__, __LINE__);
 
     string      sql                     = pPersistenceObjectManagerAddDelayedTransactionMessage->getSql ();
@@ -2564,7 +2564,7 @@ void PersistenceObjectManager::addDelayedTransactionStep (PrismLinearSequencerCo
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 UI32 PersistenceObjectManager::isDelayedTransactionsEmpty ()

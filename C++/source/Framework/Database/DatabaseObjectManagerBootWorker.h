@@ -18,10 +18,10 @@ class DatabaseObjectManagerBootWorker : public WaveWorker
 {
     private :
         void  boot                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void  bootValidateStep          (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  bootDatabaseStep          (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  bootConnectToDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void  bootReconnectToDatabaseOnInstallIfRequiredStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void  bootValidateStep          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  bootDatabaseStep          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  bootConnectToDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  bootReconnectToDatabaseOnInstallIfRequiredStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

@@ -6,7 +6,7 @@
 
 #include "ManagementInterface/ClientInterface/WaveClientTransportObjectManager.h"
 #include "ManagementInterface/ManagementInterfaceTypes.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -167,18 +167,18 @@ void WaveClientTransportObjectManager::managementInterfaceMessageHandler (Manage
         reinterpret_cast<PrismLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     lockAccess1 ();
 
     trace (TRACE_LEVEL_DEVEL, "WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep : Starting ...");
 
-    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__ );
 
@@ -262,8 +262,8 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
 
     unlockAccess1 ();
 
-    pPrismLinearSequencerContext->setPWaveMessage (NULL);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->setPWaveMessage (NULL);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveClientTransportObjectManager::lockAccess ()

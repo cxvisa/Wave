@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class SoftwareManagementVersionWorker;
 
 class SoftwareManagementObjectManager : public WaveObjectManager
@@ -20,7 +20,7 @@ class SoftwareManagementObjectManager : public WaveObjectManager
     private :
              SoftwareManagementObjectManager ();
         void initialize                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void displayVersionStep              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void displayVersionStep              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

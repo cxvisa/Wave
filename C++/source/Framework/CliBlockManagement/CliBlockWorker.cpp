@@ -8,7 +8,7 @@
 #include "Framework/CliBlockManagement/CliBlockMessage.h"
 #include "Framework/CliBlockManagement/CliBlockServiceIndependentMessage.h"
 #include "Framework/CliBlockManagement/CliBlockManagementToolKit.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Cluster/CentralClusterConfigObjectManager.h"
@@ -54,17 +54,17 @@ void CliBlockWorker::cliBlockMessageHandler (CliBlockMessage *pCliBlockMessage)
         reinterpret_cast<PrismLinearSequencerStep> (&CliBlockWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pCliBlockMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pCliBlockMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 void CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback (WaveSendToClusterContext *pWaveSendToClusterContext)
 {
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     ResourceId  sendToClusterCompletionStatus   = pWaveSendToClusterContext->getCompletionStatus ();
 
@@ -73,20 +73,20 @@ void CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback (Wav
 
     trace (TRACE_LEVEL_DEBUG, "CliBlockWorker::processCliBlockMessageForConnectedLocationStep : Finish.");
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClusterCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClusterCompletionStatus);
 
 }
 
-void CliBlockWorker::processCliBlockMessageForConnectedLocationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CliBlockWorker::processCliBlockMessageForConnectedLocationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
     trace (TRACE_LEVEL_INFO, "CliBlockWorker::processCliBlockMessageForConnectedLocationStep : Entering ...");
 
-    CliBlockMessage *pCliBlockMessage = reinterpret_cast<CliBlockMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    CliBlockMessage *pCliBlockMessage = reinterpret_cast<CliBlockMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     CliBlockServiceIndependentMessage *pCliBlockServiceIndependentMessage1 = new CliBlockServiceIndependentMessage (*pCliBlockMessage);
  
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback), pPrismLinearSequencerContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback), pWaveLinearSequencerContext);
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 

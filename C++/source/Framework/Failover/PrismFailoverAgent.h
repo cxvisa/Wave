@@ -10,7 +10,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include <vector>
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Core/FrameworkSequenceGenerator.h"
 
 namespace WaveNs

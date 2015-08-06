@@ -22,14 +22,14 @@ namespace WaveNs
 
 class CentralClusterConfigObjectManager;
 class CentralClusterConfigUpdateHardwareSynchronizationStateMessage;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class WaveSendToClusterContext;
 
 class CentralClusterConfigUpdateHardwareSynchronizationStateWorker : public WaveWorker
 {
     private :
                 void            updateHardwareSynchronizationStateMessageHandler                (CentralClusterConfigUpdateHardwareSynchronizationStateMessage *pCentralClusterConfigUpdateHardwareSynchronizationStateMessage);
-                void            sendUpdateWaveNodesToClusterLocalStep                           (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void            sendUpdateWaveNodesToClusterLocalStep                           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void            sendUpdateWaveNodesToClusterLocalStepCallback                   (WaveSendToClusterContext *pWaveSendToClusterContext);
                 WaveMessage   *createMessageInstance                                           (const UI32 &operationCode);
     protected :

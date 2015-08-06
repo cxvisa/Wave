@@ -10,14 +10,14 @@ namespace WaveNs
 {
 
 DetachFromClusterContext::DetachFromClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext     (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext     (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_thisLocationRoleBeforeDetach  (LOCATION_STAND_ALONE),
       m_reasonForDetachingFromCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED)
 {
 }
 
 DetachFromClusterContext::DetachFromClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_thisLocationRoleBeforeDetach  (LOCATION_STAND_ALONE),
       m_reasonForDetachingFromCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED)
 {

@@ -16,7 +16,7 @@
 #include "Cluster/Local/ClusterLocalSetHardwareSynchronizationStateMessage.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 
 namespace WaveNs
@@ -75,12 +75,12 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::updateHardwar
         reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pCentralClusterConfigUpdateHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pCentralClusterConfigUpdateHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     // serialize the handling of this message
-    pPrismLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->holdAll ();
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 /** 
@@ -91,13 +91,13 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::updateHardwar
  *              id.  From these results, the WaveNodeMO's hardware sync state
  *              will be updated.  This is a batched update.
  * 
- * @param       PrismLinearSequencerContext* : Asynchronous linear sequencer context
+ * @param       WaveLinearSequencerContext* : Asynchronous linear sequencer context
  */ 
-void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep : Entering ...");
 
-    CentralClusterConfigUpdateHardwareSynchronizationStateMessage* pCentralClusterConfigUpdateHardwareSynchronizationStateMessage = dynamic_cast<CentralClusterConfigUpdateHardwareSynchronizationStateMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
+    CentralClusterConfigUpdateHardwareSynchronizationStateMessage* pCentralClusterConfigUpdateHardwareSynchronizationStateMessage = dynamic_cast<CentralClusterConfigUpdateHardwareSynchronizationStateMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
     if (NULL == pCentralClusterConfigUpdateHardwareSynchronizationStateMessage)
     {
@@ -118,7 +118,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
  
     // Use sendToWaveCluster to allow ClusterLocal to update the WaveNode hardware sync state attribute.
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback), pPrismLinearSequencerContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback), pWaveLinearSequencerContext);
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pClusterLocalSetHardwareSynchronizationStateMessage);
     pWaveSendToClusterContext->setLocationsToSendToForPhase1 (locationsForWaveNodeUpdate);
@@ -129,19 +129,19 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
 
 void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback (WaveSendToClusterContext *pWaveSendToClusterContext)
 {
-    PrismLinearSequencerContext    *pPrismLinearSequencerContext    = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
+    WaveLinearSequencerContext    *pWaveLinearSequencerContext    = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
     ResourceId                      sendToClusterCompletionStatus   = pWaveSendToClusterContext->getCompletionStatus ();
 
-    if (NULL == pPrismLinearSequencerContext)
+    if (NULL == pWaveLinearSequencerContext)
     {
-        trace (TRACE_LEVEL_FATAL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback : Failed to cast PrismLinearSequencerContext.");
-        prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+        trace (TRACE_LEVEL_FATAL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback : Failed to cast WaveLinearSequencerContext.");
+        prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
     }
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext);
 
-    pPrismLinearSequencerContext->executeNextStep(sendToClusterCompletionStatus); 
+    pWaveLinearSequencerContext->executeNextStep(sendToClusterCompletionStatus); 
 } 
 
 }

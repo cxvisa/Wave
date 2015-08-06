@@ -23,12 +23,12 @@ class CentralClusterConfigCreateClusterWorker : public WaveWorker
         WaveMessage *createMessageInstance                                (const UI32 &operationCode);
 
         void          createClusterMessageHandler                          (ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage);
-        void          createClusterValidateStep                            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void          createClusterResetThisNodeIpAddressIfRequiredStep    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void          createClusterRequestFrameworkToCreateClusterStep     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void          createClusterValidateStep                            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void          createClusterResetThisNodeIpAddressIfRequiredStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void          createClusterRequestFrameworkToCreateClusterStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          createClusterRequestFrameworkToCreateClusterCallback (FrameworkStatus frameworkStatus, PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage, void *pContext);
-        void          createClusterCommitStep                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void          createClusterStartHeartBeatsStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void          createClusterCommitStep                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void          createClusterStartHeartBeatsStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

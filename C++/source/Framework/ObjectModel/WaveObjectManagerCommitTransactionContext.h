@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class PrismSynchronousLinearSequencerContext;
 
 class WaveObjectManagerCommitTransactionContext
@@ -19,7 +19,7 @@ class WaveObjectManagerCommitTransactionContext
     protected :
     public :
                                         WaveObjectManagerCommitTransactionContext   ();
-                                        WaveObjectManagerCommitTransactionContext   (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                                        WaveObjectManagerCommitTransactionContext   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                                         WaveObjectManagerCommitTransactionContext   (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
         virtual                        ~WaveObjectManagerCommitTransactionContext   ();
 

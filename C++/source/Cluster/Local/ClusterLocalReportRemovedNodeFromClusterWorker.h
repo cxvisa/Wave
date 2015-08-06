@@ -14,7 +14,7 @@ namespace WaveNs
 
 class ClusterLocalObjectManager;
 class ClusterLocalReportRemovedNodeFromClusterMessage;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class WaveWorker;
 
 ///Class:
@@ -32,7 +32,7 @@ class ClusterLocalReportRemovedNodeFromClusterWorker : public WaveWorker
         void nodeRemovedMessageHandler                           (ClusterLocalReportRemovedNodeFromClusterMessage* pClusterLocalReportRemovedNodeFromClusterMessage);
 
         //Update the node status in the WaveNode MO
-        void updateWaveNodeManagedObjectStep                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void updateWaveNodeManagedObjectStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                     
     protected :
     public :

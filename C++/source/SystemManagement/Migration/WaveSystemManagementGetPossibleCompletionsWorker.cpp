@@ -6,7 +6,7 @@
 
 #include "SystemManagement/Migration/WaveSystemManagementGetPossibleCompletionsWorker.h"
 #include "SystemManagement/WaveSystemManagementTypes.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "SystemManagement/WaveSystemManagementObjectManager.h"
 #include "Modeling/YANG/ObjectModel/YangElement.h"
 #include "Modeling/YANG/ObjectModel/YangUserInterface.h"

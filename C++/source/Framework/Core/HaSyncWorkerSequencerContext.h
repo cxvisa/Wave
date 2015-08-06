@@ -7,7 +7,7 @@
 #ifndef HASYNCWORKERSEQUENCERCONTEXT_H
 #define HASYNCWORKERSEQUENCERCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 
 using namespace std;
@@ -15,7 +15,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class StartHaSyncDumpContext : public PrismLinearSequencerContext
+class StartHaSyncDumpContext : public WaveLinearSequencerContext
 {
     private :
     protected :
@@ -70,7 +70,7 @@ class StartHaSyncDumpContext : public PrismLinearSequencerContext
         void                    setHaPeerPort                   (const SI32& port);    
 };
 
-class ReceiveHaSyncDumpContext : public PrismLinearSequencerContext
+class ReceiveHaSyncDumpContext : public WaveLinearSequencerContext
 {
     private :
     protected :

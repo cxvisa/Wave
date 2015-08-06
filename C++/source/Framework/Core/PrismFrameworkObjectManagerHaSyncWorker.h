@@ -26,28 +26,28 @@ class PrismFrameworkObjectManagerHaSyncWorker : public WaveWorker
 {
     private :
                 void initHaIpAddressHandler (FrameworkObjectManagerInitHaIpAddressMessage *pFrameworkObjectManagerInitHaIpAddressMessage);
-                void initHaIpAddressStep    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void initHaIpAddressStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 void startHaSyncDumpHandler (FrameworkObjectManagerStartHaSyncMessage *pFrameworkObjectManagerStartHaSyncMessage);
-                void connectToHaPeerStep    (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void ccmdConnectToHaPeerStep          (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncCollectValidationDataStep  (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncValidateVersionStep        (StartHaSyncDumpContext *pPrismLinearSequencerContext);
+                void connectToHaPeerStep    (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void ccmdConnectToHaPeerStep          (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncCollectValidationDataStep  (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncValidateVersionStep        (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void haSyncValidateVersionCallback    (FrameworkStatus frameworkStatus, FrameworkObjectManagerGetFirmwareVersionMessage *pFrameworkObjectManagerGetFirmwareVersionMessage, void *pContext);
-                void haSyncCreateStandbyMessageStep   (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncGetStartupDataStep         (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncGetVcsClusterDataStep      (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncGetConfigurationFileStep   (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncCreateDatabaseDumpStep     (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncGetValidationDetailsStep   (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncSendDatabaseDumpStep       (StartHaSyncDumpContext *pPrismLinearSequencerContext);
+                void haSyncCreateStandbyMessageStep   (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncGetStartupDataStep         (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncGetVcsClusterDataStep      (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncGetConfigurationFileStep   (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncCreateDatabaseDumpStep     (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncGetValidationDetailsStep   (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncSendDatabaseDumpStep       (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void haSyncSendDatabaseDumpCallback   (FrameworkStatus frameworkStatus, PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage, void *pContext);
                 bool isServiceToBeExcludedInHaSyncCommunications (const WaveServiceId &prismServiceId);
                 void createDatabaseBackupBuffer       (char * &pDatabaseBackupBuffer, SI32 &sizeOfBackupFile);
                 void resumeDatabase                   ();
-                void haSyncGetValidationResultsStep   (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void setSyncCompletionStatusStep      (StartHaSyncDumpContext *pPrismLinearSequencerContext);
-                void haSyncFailedStep                 (StartHaSyncDumpContext *pPrismLinearSequencerContext);
+                void haSyncGetValidationResultsStep   (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void setSyncCompletionStatusStep      (StartHaSyncDumpContext *pWaveLinearSequencerContext);
+                void haSyncFailedStep                 (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void configureStandbyHandler               (PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage);
                 void removePreviousDatabaseBackupFile      (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                 void configureStandbyValidateVersionStep   (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
@@ -70,7 +70,7 @@ class PrismFrameworkObjectManagerHaSyncWorker : public WaveWorker
                 void configureStandbySetInSyncStep         (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
 
                 void startHaSyncUpdateHandler              (FrameworkObjectManagerHaSyncUpdateMessage *pFrameworkObjectManagerHaSyncUpdateMessage);
-                void haSyncUpdateValidationStep            (StartHaSyncDumpContext *pPrismLinearSequencerContext);
+                void haSyncUpdateValidationStep            (StartHaSyncDumpContext *pWaveLinearSequencerContext);
 
                 void getFirmwareVersionHandler             (FrameworkObjectManagerGetFirmwareVersionMessage *pFrameworkObjectManagerGetFirmwareVersionMessage);
                	void sendFirmwareVersionStep               (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
@@ -78,7 +78,7 @@ class PrismFrameworkObjectManagerHaSyncWorker : public WaveWorker
 
                 void startCcmdHaSyncDumpHandler            (FrameworkObjectManagerStartCcmdHaSyncMessage *pFrameworkObjectManagerStartCcmdHaSyncMessage);
                 void startCcmdHaSyncUpdateHandler          (FrameworkObjectManagerCcmdHaSyncUpdateMessage *pFrameworkObjectManagerCcmdHaSyncUpdateMessage);
-                void ccmdHaSyncUpdateValidationStep        (StartHaSyncDumpContext *pPrismLinearSequencerContext);
+                void ccmdHaSyncUpdateValidationStep        (StartHaSyncDumpContext *pWaveLinearSequencerContext);
 
                	string getFirmwareVersion                  ();
                	void   setFirmwareVersion                  (const string &firmwareVersion);

@@ -7,13 +7,13 @@
 #ifndef SECONDARYNODECLUSTERCONTEXT_H
 #define SECONDARYNODECLUSTERCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class SecondaryNodeClusterContext: public PrismLinearSequencerContext
+class SecondaryNodeClusterContext: public WaveLinearSequencerContext
 {
     private :
     protected :

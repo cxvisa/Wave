@@ -9,7 +9,7 @@
 
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Trace/TraceTypes.h"
 #include <vector>
@@ -17,7 +17,7 @@
 namespace WaveNs
 {
 
-class TraceTestContext : public PrismLinearSequencerContext
+class TraceTestContext : public WaveLinearSequencerContext
 {
     private :
     protected :

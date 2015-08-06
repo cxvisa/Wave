@@ -7,7 +7,7 @@
 #ifndef LOADOPERATIONALDATACONTEXT_H
 #define LOADOPERATIONALDATACONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
@@ -18,7 +18,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class LoadOperationalDataContext : public PrismLinearSequencerContext
+class LoadOperationalDataContext : public WaveLinearSequencerContext
 {
     private :
     protected :

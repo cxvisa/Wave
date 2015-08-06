@@ -61,17 +61,17 @@ void CentralClusterConfigAddNodeWorker::addNodeMessageHandler (ClusterObjectMana
         reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pClusterObjectManagerAddNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
-//    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerAddNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
+//    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 
 }
 
-void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigAddNodeWorker::addNodeValidateStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigAddNodeWorker::addNodeValidateStep : starting ...");
 
-    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     string                               nodeName;
     UI32                                 nodePort;
@@ -91,7 +91,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
 
     if (NULL == pResults)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
     UI32 numberOfResults = pResults->size();
@@ -103,7 +103,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigAddNodeWorker::AddNodeValidateStep : There can only be one cluster in the system.  Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
@@ -111,7 +111,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::AddNodeValidateStep : There is no Cluster Created");
 
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR_CLUSTER_VALIDATION_FAILED);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR_CLUSTER_VALIDATION_FAILED);
         return;
     }
 
@@ -143,7 +143,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
                     trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::AddNodeValidateStep: WaveNode result entry found NULL");
                     prismAssert (false, __FILE__, __LINE__);
                     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
-                    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+                    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
                     return;
                 }
 
@@ -155,7 +155,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
                     //Invalid Node Name or port
                     trace (TRACE_LEVEL_ERROR, "CentralClusterConfigAddNodeWorker::AddNodeValidateStep: Invalid Node Name/ port");
         		    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
-                    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+                    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
                     return;
                 }
 
@@ -170,7 +170,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
                     trace (TRACE_LEVEL_ERROR, "CentralClusterConfigAddNodeWorker::AddNodeValidateStep: Trying to add Duplicate Node");
 
 		    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
-                    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+                    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
                     return;
                 }
 
@@ -181,13 +181,13 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (PrismLinearSequence
     //Validated the ip and port name of secondary node
     //delete the vector and node and proceed to next step
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 
-void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    ClusterObjectManagerAddNodeMessage             *pClusterObjectManagerAddNodeMessage             = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerAddNodeMessage             *pClusterObjectManagerAddNodeMessage             = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = new FrameworkObjectManagerAddNodesToClusterMessage ();
     UI32                                            noNewNodes                                      = pClusterObjectManagerAddNodeMessage->getNSecondaryNodes ();
@@ -213,13 +213,13 @@ void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep (Pr
     pFrameworkObjectManagerAddNodesToClusterMessage->setFilenamesToSync ( filenamesToSync );
     filenamesToSync.clear();
 
-    status = send (pFrameworkObjectManagerAddNodesToClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack), pPrismLinearSequencerContext);
+    status = send (pFrameworkObjectManagerAddNodesToClusterMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack), pWaveLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "CentralClusterConfigAddNodeWorker::createClusterRequestFrameworkToAddNodeStep : Could not request Framework For Adding Nodes.  Status " + FrameworkToolKit::localize (status));
 
-        pPrismLinearSequencerContext->executeNextStep (status);
+        pWaveLinearSequencerContext->executeNextStep (status);
     }
 
 }
@@ -228,9 +228,9 @@ void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigAddNodeWorker::createClusterRequestFrameworkToAddNodeCallback : Entering ...");
 
-    PrismLinearSequencerContext              *pPrismLinearSequencerContext         = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
+    WaveLinearSequencerContext              *pWaveLinearSequencerContext         = reinterpret_cast<WaveLinearSequencerContext *> (pContext);
 
-    ClusterObjectManagerAddNodeMessage       *pClusterObjectManagerAddNodeMessage  = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerAddNodeMessage       *pClusterObjectManagerAddNodeMessage  = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ResourceId                                status                               = WAVE_MESSAGE_SUCCESS;
     ResourceId                                completionStatus                     = WAVE_MESSAGE_SUCCESS;
@@ -276,12 +276,12 @@ void CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeCallBack
 
     delete pFrameworkObjectManagerAddNodesToClusterMessage;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     string                                    newNode;
     UI32                                      newNodePort;
     ResourceId                                newNodeStatus;
@@ -297,7 +297,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerC
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeCommitStep : PrismCluster Query Returns NULL");
         prismAssert (false, __FILE__, __LINE__);
         WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
@@ -308,7 +308,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerC
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigAddNodeWorker::AddNodeValidateStep : There can only be one cluster in the system.          Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
         prismAssert (false, __FILE__, __LINE__);
         WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
@@ -316,7 +316,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerC
     {
         trace (TRACE_LEVEL_WARN, "CentralClusterConfigAddNodeWorker::addNodeCommitStep : There is no Cluster, Cluster is Deleted. Can Not Continue With Add Node");
 
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
@@ -364,7 +364,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerC
     }
     else
     {
-        // Reset the status so that it can be used to pass on to the pPrismLinearSequencerContext.
+        // Reset the status so that it can be used to pass on to the pWaveLinearSequencerContext.
 
         status = WAVE_MESSAGE_SUCCESS;
     }
@@ -378,12 +378,12 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (PrismLinearSequencerC
 
     
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = reinterpret_cast<ClusterObjectManagerAddNodeMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32                                      noNewNode                     = pClusterObjectManagerAddNodeMessage->getNSecondaryNodes ();
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS;
     string                                    newNode;
@@ -427,7 +427,7 @@ void CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep (PrismLinearS
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 }

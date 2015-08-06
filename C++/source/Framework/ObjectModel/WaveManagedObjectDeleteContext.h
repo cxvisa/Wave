@@ -8,7 +8,7 @@
 #define WAVEMANAGEDOBJECTDELETECONTEXT_H
 
 #include "ObjectId.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectUpdateContext.h"
 
 namespace WaveNs

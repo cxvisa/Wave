@@ -9,7 +9,7 @@
 #include "Cluster/Local/ClusterLocalObjectManager.h"
 #include "Cluster/Local/ClusterLocalTypes.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Core/PrismFrameworkObjectManager.h"
@@ -78,10 +78,10 @@ void ClusterLocalReportReplaceWorker::replaceMessageHandler (ClusterLocalReportR
     };
 
     //Note: Memory is freed inside the framework in the Succeeeded or Failure step
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pClusterLocalReportReplaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalReportReplaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
 /// Name
@@ -90,18 +90,18 @@ void ClusterLocalReportReplaceWorker::replaceMessageHandler (ClusterLocalReportR
 /// In this step the local WaveNode MO's node status is updated 
 /// and committed back to the DB
 /// Input
-/// PrismLinearSequencerContext *
+/// WaveLinearSequencerContext *
 /// Output
 /// None
 /// Return
 /// None
-void ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
     trace (TRACE_LEVEL_DEVEL, "ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep: Entering ...");
 
     //Message from the context
-    ClusterLocalReportReplaceMessage* pClusterLocalReportReplaceMessage = dynamic_cast<ClusterLocalReportReplaceMessage* >(pPrismLinearSequencerContext->getPWaveMessage());
+    ClusterLocalReportReplaceMessage* pClusterLocalReportReplaceMessage = dynamic_cast<ClusterLocalReportReplaceMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
     prismAssert(NULL != pClusterLocalReportReplaceMessage, __FILE__, __LINE__);
 
@@ -135,7 +135,7 @@ void ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep(PrismLinea
 
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pWaveNodeMOs);
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS); 
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS); 
 
     return;
 }

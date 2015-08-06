@@ -3,7 +3,7 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
@@ -15,7 +15,7 @@ using namespace std;
 namespace WaveNs
 {
 
-PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                              = pWaveMessage;
     m_pPrismAsynchronousContext                  = NULL;
@@ -37,7 +37,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMess
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "PrismLinearSequencerContext::PrismLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -46,7 +46,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMess
 
     if (NULL == m_pSteps)
     {
-        cerr << "PrismLinearSequencerContext::PrismLinearSequencerContext : Could not allocate memory for steps." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : Could not allocate memory for steps." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -61,7 +61,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMess
     return;
 }
 
-PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+WaveLinearSequencerContext::WaveLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                              = NULL;
     m_pPrismAsynchronousContext                  = pPrismAsynchronousContext;
@@ -83,7 +83,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousConte
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "PrismLinearSequencerContext::PrismLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -92,7 +92,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousConte
 
     if (NULL == m_pSteps)
     {
-        cerr << "PrismLinearSequencerContext::PrismLinearSequencerContext : Could not allocate memory for steps." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : Could not allocate memory for steps." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -107,7 +107,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousConte
     return;
 }
 
-PrismLinearSequencerContext::PrismLinearSequencerContext (const PrismLinearSequencerContext &prismLinearSequencerContext)
+WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequencerContext &prismLinearSequencerContext)
 {
     m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
@@ -130,7 +130,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (const PrismLinearSeque
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "PrismLinearSequencerContext::PrismLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -139,7 +139,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (const PrismLinearSeque
 
     if (NULL == m_pSteps)
     {
-        cerr << "PrismLinearSequencerContext::PrismLinearSequencerContext : Could not allocate memory for steps." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : Could not allocate memory for steps." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -154,7 +154,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (const PrismLinearSeque
     return;
 }
 
-PrismLinearSequencerContext::~PrismLinearSequencerContext ()
+WaveLinearSequencerContext::~WaveLinearSequencerContext ()
 {
     if (NULL != m_pSteps)
     {
@@ -178,7 +178,7 @@ PrismLinearSequencerContext::~PrismLinearSequencerContext ()
     garbageCollect ();
 }
 
-PrismLinearSequencerContext &PrismLinearSequencerContext::operator = (const PrismLinearSequencerContext &prismLinearSequencerContext)
+WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLinearSequencerContext &prismLinearSequencerContext)
 {
     m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
@@ -200,7 +200,7 @@ PrismLinearSequencerContext &PrismLinearSequencerContext::operator = (const Pris
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "PrismLinearSequencerContext::operator = : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::operator = : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (*this);
     }
@@ -209,7 +209,7 @@ PrismLinearSequencerContext &PrismLinearSequencerContext::operator = (const Pris
 
     if (NULL == m_pSteps)
     {
-        cerr << "PrismLinearSequencerContext::operator = : Could not allocate memory for steps." << endl;
+        cerr << "WaveLinearSequencerContext::operator = : Could not allocate memory for steps." << endl;
         prismAssert (false, __FILE__, __LINE__);
         return (*this);
     }
@@ -224,12 +224,12 @@ PrismLinearSequencerContext &PrismLinearSequencerContext::operator = (const Pris
     return (*this);
 }
 
-void PrismLinearSequencerContext::advanceCurrentStep ()
+void WaveLinearSequencerContext::advanceCurrentStep ()
 {
     m_currentStep++;
 }
 
-void PrismLinearSequencerContext::executeCurrentStep ()
+void WaveLinearSequencerContext::executeCurrentStep ()
 {
     if (m_currentStep < (m_numberOfSteps - 2))
     {
@@ -244,12 +244,12 @@ void PrismLinearSequencerContext::executeCurrentStep ()
     (m_pWaveElement->*(m_pSteps[m_currentStep])) (this);
 }
 
-ResourceId PrismLinearSequencerContext::getCompletionStatus ()
+ResourceId WaveLinearSequencerContext::getCompletionStatus ()
 {
     return (m_completionStatus);
 }
 
-void PrismLinearSequencerContext::start ()
+void WaveLinearSequencerContext::start ()
 {
     SI32 returnValue = pthread_getcpuclockid (pthread_self (), &m_clockId);
 
@@ -270,11 +270,11 @@ void PrismLinearSequencerContext::start ()
  * Note, make sure that a call to this function is followed by a return.
  * There should be absolutely no call to "executeNextStep" after calling this function.
  */
-void PrismLinearSequencerContext::executeSuccessStep ()
+void WaveLinearSequencerContext::executeSuccessStep ()
 {
     if (m_currentStep >= (m_numberOfSteps - 2))
     {
-        cerr << "PrismLinearSequencerContext::jumpToSuccessStep : Invalid state for this operation. Step (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
+        cerr << "WaveLinearSequencerContext::jumpToSuccessStep : Invalid state for this operation. Step (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
         executeNextStep(WAVE_MESSAGE_SUCCESS);
         return;
     }
@@ -287,7 +287,7 @@ void PrismLinearSequencerContext::executeSuccessStep ()
     return;
 }
 
-void PrismLinearSequencerContext::executeNextStep (const ResourceId &currentStepStatus)
+void WaveLinearSequencerContext::executeNextStep (const ResourceId &currentStepStatus)
 {
     UI32     numberOfSeconds     = 0;
     SI32     numberOfNanoSeconds = 0;
@@ -332,7 +332,7 @@ void PrismLinearSequencerContext::executeNextStep (const ResourceId &currentStep
 
     if ((m_numberOfSteps - 2) < m_currentStep)
     {
-        cerr << "PrismLinearSequencerContext::executeNextStep : Trying to execute beyond the end of the sequencer. (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
+        cerr << "WaveLinearSequencerContext::executeNextStep : Trying to execute beyond the end of the sequencer. (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
         prismAssert (false, __FILE__, __LINE__);
         return;
     }
@@ -352,41 +352,41 @@ void PrismLinearSequencerContext::executeNextStep (const ResourceId &currentStep
     }
 }
 
-WaveMessage *PrismLinearSequencerContext::getPWaveMessage ()
+WaveMessage *WaveLinearSequencerContext::getPWaveMessage ()
 {
     return (m_pWaveMessage);
 }
 
-void PrismLinearSequencerContext::setPWaveMessage (WaveMessage *pWaveMessage)
+void WaveLinearSequencerContext::setPWaveMessage (WaveMessage *pWaveMessage)
 {
     m_pWaveMessage = pWaveMessage;
 }
 
-PrismAsynchronousContext *PrismLinearSequencerContext::getPPrismAsynchronousContext ()
+PrismAsynchronousContext *WaveLinearSequencerContext::getPPrismAsynchronousContext ()
 {
     return (m_pPrismAsynchronousContext);
 }
 
-PrismLinearSequencerContext &PrismLinearSequencerContext::operator ++ ()
+WaveLinearSequencerContext &WaveLinearSequencerContext::operator ++ ()
 {
     ++m_numberOfCallbacksBeforeAdvancingToNextStep;
 
     return (*this);
 }
 
-PrismLinearSequencerContext &PrismLinearSequencerContext::operator -- ()
+WaveLinearSequencerContext &WaveLinearSequencerContext::operator -- ()
 {
     --m_numberOfCallbacksBeforeAdvancingToNextStep;
 
     return (*this);
 }
 
-UI32 PrismLinearSequencerContext::getNumberOfCallbacksBeforeAdvancingToNextStep ()
+UI32 WaveLinearSequencerContext::getNumberOfCallbacksBeforeAdvancingToNextStep ()
 {
     return (m_numberOfCallbacksBeforeAdvancingToNextStep);
 }
 
-void PrismLinearSequencerContext::holdAll ()
+void WaveLinearSequencerContext::holdAll ()
 {
     prismAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
 
@@ -394,7 +394,7 @@ void PrismLinearSequencerContext::holdAll ()
     m_isHoldAllRequested = true;
 }
 
-void PrismLinearSequencerContext::unholdAll ()
+void WaveLinearSequencerContext::unholdAll ()
 {
     prismAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
 
@@ -402,64 +402,64 @@ void PrismLinearSequencerContext::unholdAll ()
     m_isHoldAllRequested = false;
 }
 
-bool PrismLinearSequencerContext::getIsHoldAllRequested ()
+bool WaveLinearSequencerContext::getIsHoldAllRequested ()
 {
     return (m_isHoldAllRequested);
 }
 
-bool PrismLinearSequencerContext::getIsTransactionStartedByMe () const
+bool WaveLinearSequencerContext::getIsTransactionStartedByMe () const
 {
     return (m_isTransactionStartedByMe);
 }
 
-void PrismLinearSequencerContext::setIsTransactionStartedByMe (const bool &isTransactionStartedByMe)
+void WaveLinearSequencerContext::setIsTransactionStartedByMe (const bool &isTransactionStartedByMe)
 {
     m_isTransactionStartedByMe = isTransactionStartedByMe;
 }
 
-UI32 PrismLinearSequencerContext::getNumberOfFailures () const
+UI32 WaveLinearSequencerContext::getNumberOfFailures () const
 {
     return (m_numberOfFailures);
 }
 
-void PrismLinearSequencerContext::setNumberOfFailures (const UI32 &numberOfFailures)
+void WaveLinearSequencerContext::setNumberOfFailures (const UI32 &numberOfFailures)
 {
     m_numberOfFailures = numberOfFailures;
 }
 
-void PrismLinearSequencerContext::incrementNumberOfFailures ()
+void WaveLinearSequencerContext::incrementNumberOfFailures ()
 {
     m_numberOfFailures++;
 }
 
-void PrismLinearSequencerContext::incrementNumberOfFailures (const UI32 &numberOfFailures)
+void WaveLinearSequencerContext::incrementNumberOfFailures (const UI32 &numberOfFailures)
 {
     m_numberOfFailures += numberOfFailures;
 }
 
-vector<WaveManagedObject *> *PrismLinearSequencerContext::getPQueryResults () const
+vector<WaveManagedObject *> *WaveLinearSequencerContext::getPQueryResults () const
 {
     return (m_pQueryResults);
 }
 
-void PrismLinearSequencerContext::setPQueryResults (vector<WaveManagedObject *> *pQueryResults)
+void WaveLinearSequencerContext::setPQueryResults (vector<WaveManagedObject *> *pQueryResults)
 {
     m_pQueryResults = pQueryResults;
 }
 
-void PrismLinearSequencerContext::addManagedObjectsForGarbageCollection (const vector<WaveManagedObject *> &managedObjectsForGarbageCollection)
+void WaveLinearSequencerContext::addManagedObjectsForGarbageCollection (const vector<WaveManagedObject *> &managedObjectsForGarbageCollection)
 {
     m_managedObjectsForGarbageCollection.insert (m_managedObjectsForGarbageCollection.end (), managedObjectsForGarbageCollection.begin (), managedObjectsForGarbageCollection.end ());
 }
 
-void PrismLinearSequencerContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)
+void WaveLinearSequencerContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)
 {
     prismAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
 
     m_managedObjectsForGarbageCollection.push_back (pWaveManagedObjectForGarbageCollection);
 }
 
-void PrismLinearSequencerContext::garbageCollect ()
+void WaveLinearSequencerContext::garbageCollect ()
 {
     UI32 numberOfManagedObjectsForGarbageCollection = m_managedObjectsForGarbageCollection.size ();
     UI32 i                                          = 0;
@@ -472,12 +472,12 @@ void PrismLinearSequencerContext::garbageCollect ()
     }
 }
 
-bool PrismLinearSequencerContext::getIsADelayedCommitTransaction () const
+bool WaveLinearSequencerContext::getIsADelayedCommitTransaction () const
 {
     return (m_isADelayedCommitTransaction);
 }
 
-void PrismLinearSequencerContext::setIsADelayedCommitTransaction (const bool &isADelayedCommitTransaction)
+void WaveLinearSequencerContext::setIsADelayedCommitTransaction (const bool &isADelayedCommitTransaction)
 {
     m_isADelayedCommitTransaction = isADelayedCommitTransaction;
 }

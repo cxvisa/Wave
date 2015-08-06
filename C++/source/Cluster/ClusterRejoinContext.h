@@ -7,13 +7,13 @@
 #ifndef CLUSTERREJOINCONTEXT_H
 #define CLUSTERREJOINCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 namespace WaveNs
 {
 
-class ClusterRejoinContext : public PrismLinearSequencerContext
+class ClusterRejoinContext : public WaveLinearSequencerContext
 {
     private:
     protected:

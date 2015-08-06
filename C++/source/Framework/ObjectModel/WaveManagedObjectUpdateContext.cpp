@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_pInputWaveManagedObject        (NULL),
       m_pOperateOnWaveManagedObject    (NULL),
       m_childUserTag                   (0),
@@ -22,7 +22,7 @@ WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveMessage* pWa
 }
 
 WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_pInputWaveManagedObject        (NULL),
       m_pOperateOnWaveManagedObject    (NULL),
       m_childUserTag                   (0),
@@ -191,7 +191,7 @@ void WaveManagedObjectUpdateContext::addManagedObjectForGarbageCollection (WaveM
     }
     else
     {
-        PrismLinearSequencerContext::addManagedObjectForGarbageCollection (pWaveManagedObjectForGarbageCollection);
+        WaveLinearSequencerContext::addManagedObjectForGarbageCollection (pWaveManagedObjectForGarbageCollection);
     }
 }
 

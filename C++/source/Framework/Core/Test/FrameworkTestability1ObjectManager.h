@@ -13,7 +13,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 
 class FrameworkTestabilityMessage1;
 class FrameworkTestabilityMessage2;
@@ -51,8 +51,8 @@ class FrameworkTestability1ObjectManager : public WaveLocalObjectManager
                 void                                frameworkTestabilityMessage1RequestHandler                    (FrameworkTestabilityMessage1 *pMessage);
                 void                                frameworkTestabilityMessage2RequestHandler                    (FrameworkTestabilityMessage2 *pMessage);
                 void                                frameworkTestabilityMessage3RequestHandler                    (FrameworkTestabilityMessage3 *pMessage);
-                void                                frameworkTestabilityMessage3ValidateInputBuffersStep          (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                                frameworkTestabilityMessage3AttachOutputBuffersStep           (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                                frameworkTestabilityMessage3ValidateInputBuffersStep          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                frameworkTestabilityMessage3AttachOutputBuffersStep           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                                frameworkTestabilityMessage4RequestHandler                    (FrameworkTestabilityMessage4 *pMessage);
                 void                                frameworkTestabilityMessage5RequestHandler                    (FrameworkTestabilityMessage5 *pMessage);
                 void                                frameworkTestabilityMessage6RequestHandler                    (FrameworkTestabilityMessage6 *pMessage);
@@ -83,17 +83,17 @@ class FrameworkTestability1ObjectManager : public WaveLocalObjectManager
                 void                                frameworkTestabilityManagementInterfaceMessage3RequestCallBack (FrameworkStatus frameworkStatus, ManagementInterfaceClientTestMessage3 *message, void *pcontext);
                 void                                frameworkTestabilityManagementInterfaceTrackLeaksWithBtMessageRequestHandler (FrameworkTestabilityManagementInterfaceTrackLeaksWithBtMessage *pMessage);
                 void                                frameworkTestabilityManagementInterfaceMessage4RequestHandler (FrameworkTestabilityManagementInterfaceMessage4 *pMessage);
-                void                                sendToClientsWithBuffersPhase1AllSuccessTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                                sendToClientsWithBuffersPhase1AllSuccessTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                                sendToClientsWithBuffersPhase1AllSuccessTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext);
-		void                                sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+		void                                sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 		void                                sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext);
-		void                                sendToClientsWithBuffersPhase1AllFailureTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+		void                                sendToClientsWithBuffersPhase1AllFailureTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 		void                                sendToClientsWithBuffersPhase1AllFailureTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext);
-		void                                sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+		void                                sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 		void                                sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext);
-		void                                sendToClientsWithBuffersPhase1SomeSuccessTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+		void                                sendToClientsWithBuffersPhase1SomeSuccessTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 		void                                sendToClientsWithBuffersPhase1SomeSuccessTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext);
-		void                                sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+		void                                sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 		void                                sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext);
 
     // Now the data members

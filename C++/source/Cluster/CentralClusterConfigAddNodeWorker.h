@@ -23,11 +23,11 @@ class CentralClusterConfigAddNodeWorker : public WaveWorker
         WaveMessage *createMessageInstance                    (const UI32 &operationCode);
 
         void          addNodeMessageHandler                    (ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage);
-        void          addNodeValidateStep                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-        void          addNodeRequestFrameworkToAddNodeStep     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void          addNodeValidateStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void          addNodeRequestFrameworkToAddNodeStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          addNodeRequestFrameworkToAddNodeCallBack (FrameworkStatus frameworkStatus, FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage, void *pContext);
-        void          addNodeCommitStep                        (PrismLinearSequencerContext *pPrismLinearSequencerContex);
-        void          addNodeStartHeartBeatsStep               (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void          addNodeCommitStep                        (WaveLinearSequencerContext *pPrismLinearSequencerContex);
+        void          addNodeStartHeartBeatsStep               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
     protected :
     public :
 

@@ -40,26 +40,26 @@ void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandMes
 		reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerExecuteCursorCommandWorker::prismLinearSequencerFailedStep),
 	};
 
-	PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pDatabaseObjectManagerExecuteCursorCfgCommandMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
-	pPrismLinearSequencerContext->holdAll ();
-	pPrismLinearSequencerContext->start ();
+	WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDatabaseObjectManagerExecuteCursorCfgCommandMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+	pWaveLinearSequencerContext->holdAll ();
+	pWaveLinearSequencerContext->start ();
 
 }
 
 
-void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHandler (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHandler (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
 
 	DatabaseObjectManagerExecuteCursorCfgCommandMessage *pDatabaseObjectManagerExecuteCursorCfgCommandMessage =
-	dynamic_cast<DatabaseObjectManagerExecuteCursorCfgCommandMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+	dynamic_cast<DatabaseObjectManagerExecuteCursorCfgCommandMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
     prismAssert( NULL != pDatabaseObjectManagerExecuteCursorCfgCommandMessage , __FILE__, __LINE__ );
 
 	if ((false == (DatabaseObjectManager::getIsDatabaseEnabled ())) && (false == m_isMultiDatabaseMode))
 	{
 		trace (TRACE_LEVEL_DEVEL, "DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHandler : No support for Persistent Store will be provided.");
-		pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+		pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 		return;
 	}
 
@@ -98,7 +98,7 @@ void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHan
 		PQclear (pResult);
 	}
 
-	pPrismLinearSequencerContext->executeNextStep (status);
+	pWaveLinearSequencerContext->executeNextStep (status);
 
 }
 

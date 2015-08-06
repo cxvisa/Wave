@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "SystemManagement/WaveSystemManagementObjectManager.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Version/PrismVersion.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "SoftwareManagement/SoftwareManagementVersionWorker.h"

@@ -7,7 +7,7 @@
 #ifndef PERSISTENCEEXECUTETRANSACTIONCONTEXT_H
 #define PERSISTENCEEXECUTETRANSACTIONCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/Types/Types.h"
 #include "Framework/Persistence/ConfigurationManagedObject.h"
@@ -21,7 +21,7 @@ namespace WaveNs
 
 class PersistenceObjectManagerExecuteTransactionMessage;
 
-class PersistenceExecuteTransactionContext : public PrismLinearSequencerContext
+class PersistenceExecuteTransactionContext : public WaveLinearSequencerContext
 {
     private :
     protected :

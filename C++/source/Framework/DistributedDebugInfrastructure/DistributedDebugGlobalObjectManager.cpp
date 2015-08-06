@@ -25,7 +25,7 @@
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugInfrastructureTypes.h" 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismCondition.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -176,7 +176,7 @@ void    DistributedDebugGlobalObjectManager::createBufferForScriptFileStep ()
  * 
  * @param pRunDebugScriptMessageHandlerContext
  */
-void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep (PrismLinearSequencerContext* pRunDebugScriptMessageHandlerContext)
+void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep (WaveLinearSequencerContext* pRunDebugScriptMessageHandlerContext)
 {
     RunDebugScriptMessage *pRunDebugScriptMessage = dynamic_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
 
@@ -245,7 +245,7 @@ void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback (Wav
   }
 
 
-   PrismLinearSequencerContext*   pRunDebugScriptMessageHandlerContext = static_cast<PrismLinearSequencerContext* > (pWaveSendToClusterContext->getPCallerContext());
+   WaveLinearSequencerContext*   pRunDebugScriptMessageHandlerContext = static_cast<WaveLinearSequencerContext* > (pWaveSendToClusterContext->getPCallerContext());
 
    RunDebugScriptMessage* pRunDebugScriptMessage = static_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
    pRunDebugScriptMessage->setOutputStringVector(outputStringVector);
@@ -272,7 +272,7 @@ void  DistributedDebugGlobalObjectManager::runDebugScriptMessageHandler  (RunDeb
         reinterpret_cast<PrismLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new PrismLinearSequencerContext (pRunDebugScriptMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new WaveLinearSequencerContext (pRunDebugScriptMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pRunDebugScriptMessageHandlerContext->start ();
 

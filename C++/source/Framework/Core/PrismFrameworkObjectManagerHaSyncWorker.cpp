@@ -226,16 +226,16 @@ void PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressHandler (FrameworkO
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerInitHaIpAddressMessage, this, sequencerSteps,sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerInitHaIpAddressMessage, this, sequencerSteps,sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker:: initHaIpAddressStep");
 
-    FrameworkObjectManagerInitHaIpAddressMessage *pFrameworkObjectManagerInitHaIpAddressMessage = dynamic_cast<FrameworkObjectManagerInitHaIpAddressMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+    FrameworkObjectManagerInitHaIpAddressMessage *pFrameworkObjectManagerInitHaIpAddressMessage = dynamic_cast<FrameworkObjectManagerInitHaIpAddressMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
     string localHaIp = pFrameworkObjectManagerInitHaIpAddressMessage->getLocalHaIpAddress();
 
@@ -245,7 +245,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::initHaIpAddressStep (PrismLinearSe
     LocationBase *pThisLocation = pPrismFrameworkObjectManager->getThisLocation ();
 
     pThisLocation->resetIpAddressForHaInterface(localHaIp);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManagerHaSyncWorker::startHaSyncDumpHandler (FrameworkObjectManagerStartHaSyncMessage *pFrameworkObjectManagerStartHaSyncMessage)

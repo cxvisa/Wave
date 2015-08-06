@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 
 class WaveNodeBackendSyncUpAgent: protected WaveWorker
 {

@@ -7,7 +7,7 @@
 #ifndef CLUSTERDELETECONTEXT_H
 #define CLUSTERDELETECONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 #include <vector>
 
@@ -19,7 +19,7 @@ namespace WaveNs
 class PrismCluster;
 class WaveManagedObject;
 
-class ClusterDeleteContext : public PrismLinearSequencerContext
+class ClusterDeleteContext : public WaveLinearSequencerContext
 {
     private :
     protected :

@@ -35,8 +35,8 @@ private :
     void          getDebugInfoHandler                      (ClusterConfigObjectManagerGetClusterInfoMessage 
 							    *pClusterObjectManagerGetClusterInfoMessage);
     //Steps in the processing of the message
-    void          getPrincipalNodeInfoStep                  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-    void          getSecondaryNodesInfoStep                  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+    void          getPrincipalNodeInfoStep                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+    void          getSecondaryNodesInfoStep                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
 protected :
 

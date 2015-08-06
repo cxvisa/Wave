@@ -8,7 +8,7 @@
 #include "Framework/Core/Test/FrameworkTestabilityMessages.h"
 #include "Framework/Core/Test/FrameworkTestabilityManagementInterfaceMessages.h"
 #include "Framework/Messaging/Local/Test/FrameworkTestabilityEvents.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -246,15 +246,15 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3RequestHand
         reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability1ObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3ValidateInputBuffersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3ValidateInputBuffersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pWaveLinearSequencerContext->getPWaveMessage ());
     ResourceId                    status;
 
     if (true == (pMessage->validateInputBuffer1 ()))
@@ -278,16 +278,16 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3ValidateInp
     }
 
     trace (TRACE_LEVEL_DEBUG, string("FrameworkTestability1ObjectManager::frameworkTestabilityMessage3AttachOutputBuffersStep : isBeingSurrogated returned :") + isBeingSurrogated ()); 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3AttachOutputBuffersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3AttachOutputBuffersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityMessage3 *pMessage = reinterpret_cast<FrameworkTestabilityMessage3 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     pMessage->setupOutputBuffer1 ();
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void FrameworkTestability1ObjectManager::frameworkTestabilityMessage4RequestHandler (FrameworkTestabilityMessage4 *pMessage)
@@ -627,21 +627,21 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
         reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability1ObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
 
-void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSuccessTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSuccessTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Client with Buffers Async All Success Test.");
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4 = new ManagementInterfaceClientTestMessage4 ();
 
-    WaveSendToClientsContext *pWaveSendToClientsContext = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSuccessTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
+    WaveSendToClientsContext *pWaveSendToClientsContext = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSuccessTestCallback), pWaveLinearSequencerContext, pMessage->getClientName ());
 
     pManagementInterfaceClientTestMessage4->setupInputBuffer1 ();
     pManagementInterfaceClientTestMessage4->setCompletionStatusType (0);
@@ -654,24 +654,24 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucces
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSuccessTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
     ResourceId                          sendToClientsCompletionStatus       = pWaveSendToClientsContext->getCompletionStatus ();
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ());
     delete pWaveSendToClientsContext;
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
 }
 
-void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async All Success But Phase 2 Set Test.");
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage42 = new ManagementInterfaceClientTestMessage4 ();
-    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
+    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestCallback), pWaveLinearSequencerContext, pMessage->getClientName ());
 
     pManagementInterfaceClientTestMessage4->setupInputBuffer1 ();
     pManagementInterfaceClientTestMessage4->setCompletionStatusType (0);
@@ -689,25 +689,25 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucess
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllSucesssButPhase2MessageSetTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
     ResourceId                          sendToClientsCompletionStatus       = pWaveSendToClientsContext->getCompletionStatus ();
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ());
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase2 ());
     delete pWaveSendToClientsContext;
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
 }
 
-void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async All Failure Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
-    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
+    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureTestCallback), pWaveLinearSequencerContext, pMessage->getClientName ());
 
     pManagementInterfaceClientTestMessage4->setupInputBuffer1 ();
     pManagementInterfaceClientTestMessage4->setCompletionStatusType (1);
@@ -720,9 +720,9 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailur
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
     ResourceId                          sendToClientsCompletionStatus       = pWaveSendToClientsContext->getCompletionStatus ();
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ());
     delete pWaveSendToClientsContext;
@@ -732,18 +732,18 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailur
         sendToClientsCompletionStatus = WAVE_MESSAGE_SUCCESS;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
 }
 
-void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async All Failure But Phase 2 Set Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage42 = new ManagementInterfaceClientTestMessage4 ();
-    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
+    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestCallback), pWaveLinearSequencerContext, pMessage->getClientName ());
 
     pManagementInterfaceClientTestMessage4->setupInputBuffer1 ();
     pManagementInterfaceClientTestMessage4->setCompletionStatusType (1);
@@ -761,9 +761,9 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailur
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
     ResourceId                          sendToClientsCompletionStatus       = pWaveSendToClientsContext->getCompletionStatus ();
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ());
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase2 ());
@@ -774,17 +774,17 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailur
         sendToClientsCompletionStatus = WAVE_MESSAGE_SUCCESS;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
 }
 
-void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async Some Success Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
-    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
+    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestCallback), pWaveLinearSequencerContext, pMessage->getClientName ());
 
     pManagementInterfaceClientTestMessage4->setupInputBuffer1 ();
     pManagementInterfaceClientTestMessage4->setCompletionStatusType (2);
@@ -797,9 +797,9 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucce
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
     ResourceId                          sendToClientsCompletionStatus       = pWaveSendToClientsContext->getCompletionStatus ();
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ());
     delete pWaveSendToClientsContext;
@@ -818,18 +818,18 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucce
         trace (TRACE_LEVEL_ERROR, "FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestCallback : Status " + FrameworkToolKit::localize (sendToClientsCompletionStatus));
     }
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
 }
 
-void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Send To Clients with Buffers Async Some Success But Phase 2 Set Test.");
 
-    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkTestabilityManagementInterfaceMessage4 *pMessage = reinterpret_cast<FrameworkTestabilityManagementInterfaceMessage4 *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage4  = new ManagementInterfaceClientTestMessage4 ();
     ManagementInterfaceClientTestMessage4 *pManagementInterfaceClientTestMessage42 = new ManagementInterfaceClientTestMessage4 ();
-    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestCallback), pPrismLinearSequencerContext, pMessage->getClientName ());
+    WaveSendToClientsContext     *pWaveSendToClientsContext      = new WaveSendToClientsContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestCallback), pWaveLinearSequencerContext, pMessage->getClientName ());
 
     pManagementInterfaceClientTestMessage4->setupInputBuffer1 ();
     pManagementInterfaceClientTestMessage4->setCompletionStatusType (2);
@@ -848,9 +848,9 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuces
 void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestCallback (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
     ResourceId                          sendToClientsCompletionStatus       = pWaveSendToClientsContext->getCompletionStatus ();
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClientsContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ());
     delete (pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase2 ());
@@ -870,7 +870,7 @@ void FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuces
         trace (TRACE_LEVEL_ERROR, "FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessButPhase2MessageSetTestCallback : Status " + FrameworkToolKit::localize (sendToClientsCompletionStatus));
     }
 
-    pPrismLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (sendToClientsCompletionStatus);
 }
 
 void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler (FrameworkTestabilityManagementInterfaceMessageLeakMessage *pMessage)

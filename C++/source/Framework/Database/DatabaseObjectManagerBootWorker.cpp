@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Database/DatabaseObjectManagerBootWorker.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/Database/DatabaseConnection.h"
@@ -38,22 +38,22 @@ void DatabaseObjectManagerBootWorker::boot (WaveAsynchronousContextForBootPhases
         reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void DatabaseObjectManagerBootWorker::bootValidateStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerBootWorker::bootValidateStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerBootWorker::bootDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerBootWorker::bootDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
         trace (TRACE_LEVEL_DEVEL, "DatabaseObjectManagerBootWorker::bootDatabaseStep : No support for Persistent Store will be provided.");
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -141,15 +141,15 @@ void DatabaseObjectManagerBootWorker::bootDatabaseStep (PrismLinearSequencerCont
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
         trace (TRACE_LEVEL_DEVEL, "DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep : No support for Persistent Store will be provided.");
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -177,10 +177,10 @@ void DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep (PrismLinearSequ
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     trace (TRACE_LEVEL_DEBUG, string("DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep : getIsDatabaseConnected = ") + DatabaseObjectManager::getIsDatabaseConnected () + string(" ,getIsDbRestoreIncomplete = ") + FrameworkToolKit::getIsDbRestoreIncomplete ());
@@ -232,7 +232,7 @@ void DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequired
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 }

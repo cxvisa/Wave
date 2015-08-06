@@ -7,7 +7,7 @@
 #ifndef UPGRADEPERSISTENCETESTCONTEXT_H
 #define UPGRADEPERSISTENCETESTCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 #include <vector>
@@ -18,7 +18,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class UpgradeTestManagedObject1;
 class UpgradeTestManagedObject2;
 class UpgradeTestManagedObject3;
@@ -27,7 +27,7 @@ class UpgradeTestManagedObject5;
 class UpgradeTestManagedObject6;
 class UpgradeTestManagedObject7;
 
-class UpgradePersistenceTestContext : public PrismLinearSequencerContext
+class UpgradePersistenceTestContext : public WaveLinearSequencerContext
 {
 private :
 protected :

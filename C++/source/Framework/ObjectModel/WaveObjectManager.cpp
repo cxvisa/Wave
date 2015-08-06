@@ -64,7 +64,7 @@
 #include "Cluster/ClusterMessages.h"
 #include "Framework/ObjectModel/ServiceIndependentMessageHandlerMap.h"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaDifferenceInfo.h"
-#include "Framework/ObjectModel/PrismLinearSequencerContextForUpgradePhase.h"
+#include "Framework/ObjectModel/WaveLinearSequencerContextForUpgradePhase.h"
 #include "Cluster/MultiPartition/Global/WavePartitionManagedObject.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
@@ -78,7 +78,7 @@
 #include "ManagementInterface/ClientInterface/UnifiedClientCommon.h"
 #include "ManagementInterface/ClientInterface/UnifiedClientNotifyMessage.h"
 #include "ManagementInterface/ClientInterface/UnifiedClientBackendDetails.h"
-#include "Framework/ObjectModel/PrismLinearSequencerContextForShutdownPhase.h"
+#include "Framework/ObjectModel/WaveLinearSequencerContextForShutdownPhase.h"
 #include "Framework/Attributes/AttributeManagedObjectComposition.h"
 #include "Framework/Attributes/AttributeManagedObjectVectorComposition.h"
 #include "Framework/Attributes/AttributeUC.h"
@@ -2467,48 +2467,48 @@ void WaveObjectManager::initializeHandler (PrismInitializeObjectManagerMessage *
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pInitializeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pInitializeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::initializeInitializeWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::initializeInitializeWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::initializeInitializeWorkersStep : Entering ...");
 
-    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::initializeInitializeWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::initializeInitializeWorkersStepCallback), pWaveLinearSequencerContext);
 
         prismAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pPrismInitializeObjectManagerMessage->getReason ());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->initialize (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::initializeInitializeWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::initializeInitializeWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -2516,27 +2516,27 @@ void WaveObjectManager::initializeInitializeWorkersStepCallback (WaveAsynchronou
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::initializeInitializeWorkersStepCallback : Initializing one worker failed.");
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
         //prismAssert (false, __FILE__, __LINE__);
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::initializeInitializeSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::initializeInitializeSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::initializeInitializeSelfStep : Entering ...");
 
-    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::initializeInitializeSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::initializeInitializeSelfStepCallback), pWaveLinearSequencerContext);
 
     prismAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
 
@@ -2549,11 +2549,11 @@ void WaveObjectManager::initializeInitializeSelfStepCallback (WaveAsynchronousCo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::initializeInitializeSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -2572,40 +2572,40 @@ void WaveObjectManager::listenForEventsHandler (PrismListenForEventsObjectManage
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pListenForEventsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pListenForEventsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::listenForEventsWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::listenForEventsWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::listenForEventsWorkersStep : Entering ...");
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::listenForEventsWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::listenForEventsWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->listenForEvents (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::listenForEventsWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::listenForEventsWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -2613,23 +2613,23 @@ void WaveObjectManager::listenForEventsWorkersStepCallback (WaveAsynchronousCont
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::listenForEventsWorkersStepCallback : Initializing one worker failed.");
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
         //prismAssert (false, __FILE__, __LINE__);
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::listenForEventsSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::listenForEventsSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::listenForEventsSelfStep : Entering ...");
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::listenForEventsSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::listenForEventsSelfStepCallback), pWaveLinearSequencerContext);
 
     listenForEvents (pWaveAsynchronousContextForBootPhases);
 }
@@ -2638,11 +2638,11 @@ void WaveObjectManager::listenForEventsSelfStepCallback (WaveAsynchronousContext
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::listenForEventsSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -2661,44 +2661,44 @@ void WaveObjectManager::installHandler (PrismInstallObjectManagerMessage *pInsta
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pInstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pInstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 
-void WaveObjectManager::installInstallWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::installInstallWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::installInstallWorkersStep : Entering ...");
 
-    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = reinterpret_cast<PrismInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = reinterpret_cast<PrismInstallObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32                              numberOfWorkers                   = m_workers.size ();
     UI32                              i                                 = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::installInstallWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::installInstallWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pPrismInstallObjectManagerMessage->getReason ());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->install (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::installInstallWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::installInstallWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                         = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -2706,24 +2706,24 @@ void WaveObjectManager::installInstallWorkersStepCallback (WaveAsynchronousConte
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::installInstallWorkersStepCallback : Installing one worker failed.");
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
         //prismAssert (false, __FILE__, __LINE__);
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::installInstallSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::installInstallSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::installInstallSelfStep : Entering ...");
 
-    PrismInstallObjectManagerMessage     *pPrismInstallObjectManagerMessage     = reinterpret_cast<PrismInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::installInstallSelfStepCallback), pPrismLinearSequencerContext);
+    PrismInstallObjectManagerMessage     *pPrismInstallObjectManagerMessage     = reinterpret_cast<PrismInstallObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::installInstallSelfStepCallback), pWaveLinearSequencerContext);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismInstallObjectManagerMessage->getReason ());
 
@@ -2734,11 +2734,11 @@ void WaveObjectManager::installInstallSelfStepCallback (WaveAsynchronousContextF
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::installInstallSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                         = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::install (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -2759,40 +2759,40 @@ void WaveObjectManager::enableHandler (PrismEnableObjectManagerMessage *pEnableM
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pEnableMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pEnableMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::enableEnableWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::enableEnableWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::enableEnableWorkersStep : Entering ...");
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::enableEnableWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::enableEnableWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->enable (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::enableEnableWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::enableEnableWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -2800,22 +2800,22 @@ void WaveObjectManager::enableEnableWorkersStepCallback (WaveAsynchronousContext
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::enableEnableWorkersStepCallback : Enabling one worker failed.");
         //prismAssert (false, __FILE__, __LINE__);
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::enableEnableSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::enableEnableSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::enableEnableSelfStep : Entering ...");
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::enableEnableSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::enableEnableSelfStepCallback), pWaveLinearSequencerContext);
 
     enable (pWaveAsynchronousContextForBootPhases);
 }
@@ -2824,7 +2824,7 @@ void WaveObjectManager::enableEnableSelfStepCallback (WaveAsynchronousContextFor
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::enableEnableSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                         = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     // Indicate that now we are ready to accept Messages to provide services.
@@ -2841,7 +2841,7 @@ void WaveObjectManager::enableEnableSelfStepCallback (WaveAsynchronousContextFor
     }
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::enable (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -2863,12 +2863,12 @@ void WaveObjectManager::upgradeHandler (PrismUpgradeObjectManagerMessage *pUpgra
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContextForUpgradePhase *pPrismLinearSequencerContextForUpgradePhase = new PrismLinearSequencerContextForUpgradePhase (pUpgradeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase = new WaveLinearSequencerContextForUpgradePhase (pUpgradeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContextForUpgradePhase->start ();
+    pWaveLinearSequencerContextForUpgradePhase->start ();
 }
 
-void WaveObjectManager::upgradeDefaultValueStep (PrismLinearSequencerContextForUpgradePhase *pPrismLinearSequencerContextForUpgradePhase)
+void WaveObjectManager::upgradeDefaultValueStep (WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::upgradeDefaultValueStep : Entering ...");
 
@@ -2999,11 +2999,11 @@ void WaveObjectManager::upgradeDefaultValueStep (PrismLinearSequencerContextForU
         pSchemaChangeInfo->setRemovedManagedObjectNames (removedManagedObjects);
         pSchemaChangeInfo->setModifiedManagedObjectInfo (modifiedManagedObjects);
 
-        pPrismLinearSequencerContextForUpgradePhase->setSchemaChangeInfo (pSchemaChangeInfo);
+        pWaveLinearSequencerContextForUpgradePhase->setSchemaChangeInfo (pSchemaChangeInfo);
     }
 
 
-    pPrismLinearSequencerContextForUpgradePhase->executeNextStep (status);
+    pWaveLinearSequencerContextForUpgradePhase->executeNextStep (status);
 }
 
 void WaveObjectManager::checkIfUpgradeIsNecessary (const map<string, ModifiedManagedObjectSchemaDifference*>& modifiedManagedObjects)
@@ -3077,41 +3077,41 @@ void WaveObjectManager::checkIfUpgradeIsNecessary (const map<string, ModifiedMan
     }
 }
 
-void WaveObjectManager::upgradeUpgradeWorkersStep (PrismLinearSequencerContextForUpgradePhase *pPrismLinearSequencerContextForUpgradePhase)
+void WaveObjectManager::upgradeUpgradeWorkersStep (WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::upgradeUpgradeWorkersStep : Entering ...");
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContextForUpgradePhase);
+    ++(*pWaveLinearSequencerContextForUpgradePhase);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase = new WaveAsynchronousContextForUpgradePhase (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::upgradeUpgradeWorkersStepCallback), pPrismLinearSequencerContextForUpgradePhase);
+        WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase = new WaveAsynchronousContextForUpgradePhase (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::upgradeUpgradeWorkersStepCallback), pWaveLinearSequencerContextForUpgradePhase);
 
 /*
-         pWaveAsynchronousContextForUpgradePhase->setChangedManagedObjects (pPrismLinearSequencerContextForUpgradePhase->getChangedManagedObjects ());
-         pWaveAsynchronousContextForUpgradePhase->setNewManagedObjects (pPrismLinearSequencerContextForUpgradePhase->getNewManagedObjects ());
+         pWaveAsynchronousContextForUpgradePhase->setChangedManagedObjects (pWaveLinearSequencerContextForUpgradePhase->getChangedManagedObjects ());
+         pWaveAsynchronousContextForUpgradePhase->setNewManagedObjects (pWaveLinearSequencerContextForUpgradePhase->getNewManagedObjects ());
 */
-        pWaveAsynchronousContextForUpgradePhase->setSchemaChangeInfo (pPrismLinearSequencerContextForUpgradePhase->getSchemaChangeInfo());
+        pWaveAsynchronousContextForUpgradePhase->setSchemaChangeInfo (pWaveLinearSequencerContextForUpgradePhase->getSchemaChangeInfo());
 
-        ++(*pPrismLinearSequencerContextForUpgradePhase);
+        ++(*pWaveLinearSequencerContextForUpgradePhase);
         m_workers[i]->upgrade (pWaveAsynchronousContextForUpgradePhase);
     }
 
-    --(*pPrismLinearSequencerContextForUpgradePhase);
-    pPrismLinearSequencerContextForUpgradePhase->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContextForUpgradePhase);
+    pWaveLinearSequencerContextForUpgradePhase->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::upgradeUpgradeWorkersStepCallback (WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::upgradeUpgradeWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContextForUpgradePhase *pPrismLinearSequencerContextForUpgradePhase   = reinterpret_cast<PrismLinearSequencerContextForUpgradePhase *> (pWaveAsynchronousContextForUpgradePhase->getPCallerContext ());
+    WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase   = reinterpret_cast<WaveLinearSequencerContextForUpgradePhase *> (pWaveAsynchronousContextForUpgradePhase->getPCallerContext ());
     ResourceId                 status                           = pWaveAsynchronousContextForUpgradePhase->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContextForUpgradePhase);
+    --(*pWaveLinearSequencerContextForUpgradePhase);
 
     delete pWaveAsynchronousContextForUpgradePhase;
 
@@ -3120,20 +3120,20 @@ void WaveObjectManager::upgradeUpgradeWorkersStepCallback (WaveAsynchronousConte
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::upgradeUpgradeWorkersStepCallback : Enabling one worker failed.");
     }
 
-    pPrismLinearSequencerContextForUpgradePhase->executeNextStep (status);
+    pWaveLinearSequencerContextForUpgradePhase->executeNextStep (status);
 }
 
-void WaveObjectManager::upgradeUpgradeSelfStep (PrismLinearSequencerContextForUpgradePhase *pPrismLinearSequencerContextForUpgradePhase)
+void WaveObjectManager::upgradeUpgradeSelfStep (WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::upgradeUpgradeSelfStep : Entering ...");
 
-    WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase = new WaveAsynchronousContextForUpgradePhase (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::upgradeUpgradeSelfStepCallback), pPrismLinearSequencerContextForUpgradePhase);
+    WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase = new WaveAsynchronousContextForUpgradePhase (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::upgradeUpgradeSelfStepCallback), pWaveLinearSequencerContextForUpgradePhase);
 
 /*
-    pWaveAsynchronousContextForUpgradePhase->setChangedManagedObjects (pPrismLinearSequencerContextForUpgradePhase->getChangedManagedObjects ());
-    pWaveAsynchronousContextForUpgradePhase->setNewManagedObjects (pPrismLinearSequencerContextForUpgradePhase->getNewManagedObjects ());
+    pWaveAsynchronousContextForUpgradePhase->setChangedManagedObjects (pWaveLinearSequencerContextForUpgradePhase->getChangedManagedObjects ());
+    pWaveAsynchronousContextForUpgradePhase->setNewManagedObjects (pWaveLinearSequencerContextForUpgradePhase->getNewManagedObjects ());
 */
-    pWaveAsynchronousContextForUpgradePhase->setSchemaChangeInfo (pPrismLinearSequencerContextForUpgradePhase->getSchemaChangeInfo());
+    pWaveAsynchronousContextForUpgradePhase->setSchemaChangeInfo (pWaveLinearSequencerContextForUpgradePhase->getSchemaChangeInfo());
 
     upgrade (pWaveAsynchronousContextForUpgradePhase);
 }
@@ -3142,7 +3142,7 @@ void WaveObjectManager::upgradeUpgradeSelfStepCallback (WaveAsynchronousContextF
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::upgradeUpgradeSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContextForUpgradePhase *pPrismLinearSequencerContextForUpgradePhase   = reinterpret_cast<PrismLinearSequencerContextForUpgradePhase *> (pWaveAsynchronousContextForUpgradePhase->getPCallerContext ());
+    WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase   = reinterpret_cast<WaveLinearSequencerContextForUpgradePhase *> (pWaveAsynchronousContextForUpgradePhase->getPCallerContext ());
     ResourceId                 status                         = pWaveAsynchronousContextForUpgradePhase->getCompletionStatus ();
 
     // Indicate that now we are ready to accept Messages to provide services.
@@ -3154,7 +3154,7 @@ void WaveObjectManager::upgradeUpgradeSelfStepCallback (WaveAsynchronousContextF
     }
 
     delete pWaveAsynchronousContextForUpgradePhase;
-    pPrismLinearSequencerContextForUpgradePhase->executeNextStep (status);
+    pWaveLinearSequencerContextForUpgradePhase->executeNextStep (status);
 }
 
 void WaveObjectManager::upgrade (WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase)
@@ -3183,45 +3183,45 @@ void WaveObjectManager::bootHandler (PrismBootObjectManagerMessage *pBootMessage
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pBootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pBootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::bootBootWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::bootBootWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::bootBootWorkersStep : Entering ...");
 
-    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::bootBootWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::bootBootWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pPrismBootObjectManagerMessage->getReason ());
         pWaveAsynchronousContextForBootPhases->setRollBackFlag (pPrismBootObjectManagerMessage->getRollBackFlag ());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->boot (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::bootBootWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::bootBootWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -3230,26 +3230,26 @@ void WaveObjectManager::bootBootWorkersStepCallback (WaveAsynchronousContextForB
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::bootBootWorkersStepCallback : Booting one worker failed.");
         //prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::bootBootSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::bootBootSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::bootBootSelfStep : Entering ...");
 
 //    checkMessageAttributesInSerialization ();
 
-    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = reinterpret_cast<PrismBootObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::bootBootSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::bootBootSelfStepCallback), pWaveLinearSequencerContext);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismBootObjectManagerMessage->getReason ());
     pWaveAsynchronousContextForBootPhases->setRollBackFlag (pPrismBootObjectManagerMessage->getRollBackFlag ());
@@ -3261,7 +3261,7 @@ void WaveObjectManager::bootBootSelfStepCallback (WaveAsynchronousContextForBoot
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::bootBootSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
@@ -3279,7 +3279,7 @@ void WaveObjectManager::bootBootSelfStepCallback (WaveAsynchronousContextForBoot
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::boot (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -3300,44 +3300,44 @@ void WaveObjectManager::hainstallHandler (PrismHaInstallObjectManagerMessage *pH
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pHaInstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pHaInstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 
-void WaveObjectManager::hainstallInstallWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::hainstallInstallWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::hainstallInstallWorkersStep : Entering ...");
 
-    PrismHaInstallObjectManagerMessage *pPrismHaInstallObjectManagerMessage = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismHaInstallObjectManagerMessage *pPrismHaInstallObjectManagerMessage = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32                              numberOfWorkers                   = m_workers.size ();
     UI32                              i                                 = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::hainstallInstallWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::hainstallInstallWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pPrismHaInstallObjectManagerMessage->getReason ());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->hainstall (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::hainstallInstallWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::hainstallInstallWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                         = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -3348,19 +3348,19 @@ void WaveObjectManager::hainstallInstallWorkersStepCallback (WaveAsynchronousCon
         // FIXME : sagar : handle Worker installation failures here.
         //                 Typically there is nothing we can do except simply proceeding.
         //                 May be, we can tun off the services provided by the worker.
-        //                 But we must not return here.  The execution of next step on the PrismLinearSequencerContext
+        //                 But we must not return here.  The execution of next step on the WaveLinearSequencerContext
         //                 is crucial.
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::hainstallInstallSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::hainstallInstallSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::hainstallInstallSelfStep : Entering ...");
 
-    PrismHaInstallObjectManagerMessage     *pPrismHaInstallObjectManagerMessage     = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::hainstallInstallSelfStepCallback), pPrismLinearSequencerContext);
+    PrismHaInstallObjectManagerMessage     *pPrismHaInstallObjectManagerMessage     = reinterpret_cast<PrismHaInstallObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::hainstallInstallSelfStepCallback), pWaveLinearSequencerContext);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismHaInstallObjectManagerMessage->getReason ());
 
@@ -3371,11 +3371,11 @@ void WaveObjectManager::hainstallInstallSelfStepCallback (WaveAsynchronousContex
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::hainstallInstallSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                         = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::hainstall (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -3396,44 +3396,44 @@ void WaveObjectManager::habootHandler (PrismHaBootObjectManagerMessage *pHaBootM
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pHaBootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pHaBootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::habootBootWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::habootBootWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::habootBootWorkersStep : Entering ...");
 
-    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::habootBootWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::habootBootWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pPrismHaBootObjectManagerMessage->getReason ());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->boot (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::habootBootWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::habootBootWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -3444,20 +3444,20 @@ void WaveObjectManager::habootBootWorkersStepCallback (WaveAsynchronousContextFo
         // FIXME : sagar : handle Worker boot failures here.
         //                 Typically there is nothing we can do except simply proceeding.
         //                 May be, we can tun off the services provided by the worker.
-        //                 But we must not return here.  The execution of next step on the PrismLinearSequencerContext
+        //                 But we must not return here.  The execution of next step on the WaveLinearSequencerContext
         //                 is crucial.
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::habootBootSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::habootBootSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::habootBootSelfStep : Entering ...");
 
-    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismHaBootObjectManagerMessage *pPrismHaBootObjectManagerMessage = reinterpret_cast<PrismHaBootObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::habootBootSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::habootBootSelfStepCallback), pWaveLinearSequencerContext);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismHaBootObjectManagerMessage->getReason ());
 
@@ -3468,7 +3468,7 @@ void WaveObjectManager::habootBootSelfStepCallback (WaveAsynchronousContextForBo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::habootBootSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
@@ -3486,7 +3486,7 @@ void WaveObjectManager::habootBootSelfStepCallback (WaveAsynchronousContextForBo
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::haboot (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -4428,40 +4428,40 @@ void WaveObjectManager::shutdownHandler (PrismShutdownObjectManagerMessage *pShu
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pShutdownMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pShutdownMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::shutdownShutdownWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::shutdownShutdownWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::shutdownShutdownWorkersStep : Entering ...");
 
     UI32 numberOfWorkers                            = m_workers.size ();
     UI32 i                                          = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::shutdownShutdownWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::shutdownShutdownWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->shutdown (pWaveAsynchronousContextForShutDownPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::shutdownShutdownWorkersStepCallback (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::shutdownShutdownWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForShutDownPhases;
 
@@ -4470,22 +4470,22 @@ void WaveObjectManager::shutdownShutdownWorkersStepCallback (WaveAsynchronousCon
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::shutdownShutdownWorkersStepCallback : Shutdowning one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::shutdownShutdownSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::shutdownShutdownSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::shutdownShutdownSelfStep : Entering ...");
 
-    WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::shutdownShutdownSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::shutdownShutdownSelfStepCallback), pWaveLinearSequencerContext);
 
     shutdown (pWaveAsynchronousContextForShutDownPhases);
 }
@@ -4494,11 +4494,11 @@ void WaveObjectManager::shutdownShutdownSelfStepCallback (WaveAsynchronousContex
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::shutdownShutdownSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                   status                       = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForShutDownPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 
@@ -4516,10 +4516,10 @@ void WaveObjectManager::shutdown (WaveAsynchronousContextForShutDownPhases *pWav
                 reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
             };
 
-            PrismLinearSequencerContextForShutdownPhase *pPrismLinearSequencerContext = new PrismLinearSequencerContextForShutdownPhase (pWaveAsynchronousContextForShutDownPhases,  this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+            WaveLinearSequencerContextForShutdownPhase *pWaveLinearSequencerContext = new WaveLinearSequencerContextForShutdownPhase (pWaveAsynchronousContextForShutDownPhases,  this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-            pPrismLinearSequencerContext->setBackendMap(backendShutdownMapIterator->second);
-            pPrismLinearSequencerContext->start ();
+            pWaveLinearSequencerContext->setBackendMap(backendShutdownMapIterator->second);
+            pWaveLinearSequencerContext->start ();
         }
     }
     else
@@ -4530,13 +4530,13 @@ void WaveObjectManager::shutdown (WaveAsynchronousContextForShutDownPhases *pWav
 
 }
 
-void WaveObjectManager::notifyStep (PrismLinearSequencerContextForShutdownPhase *pPrismLinearSequencerContext)
+void WaveObjectManager::notifyStep (WaveLinearSequencerContextForShutdownPhase *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "WaveObjectManager::notifyStep : Entering ...");
 
     ResourceId status =  WAVE_MESSAGE_SUCCESS ;
 
-    map<string, UnifiedClientBackendDetails*> backendMap = pPrismLinearSequencerContext->getBackendMap();
+    map<string, UnifiedClientBackendDetails*> backendMap = pWaveLinearSequencerContext->getBackendMap();
 
     if (false == backendMap.empty ())
     {
@@ -4584,7 +4584,7 @@ void WaveObjectManager::notifyStep (PrismLinearSequencerContextForShutdownPhase 
         }//BackendMAp contains notify entry
     }//if(BackendMap is not empty)
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void  WaveObjectManager::setBackendAttributeMap(const map<string, map<string,UnifiedClientBackendDetails*> > &backendAttributeMap)
@@ -4607,40 +4607,40 @@ void WaveObjectManager::uninstallHandler (PrismUninstallObjectManagerMessage *pU
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pUninstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pUninstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::uninstallUninstallWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::uninstallUninstallWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninstallUninstallWorkersStep : Entering ...");
 
     UI32 numberOfWorkers                            = m_workers.size ();
     UI32 i                                          = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninstallUninstallWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninstallUninstallWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->uninstall (pWaveAsynchronousContextForShutDownPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::uninstallUninstallWorkersStepCallback (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninstallUninstallWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForShutDownPhases;
 
@@ -4649,22 +4649,22 @@ void WaveObjectManager::uninstallUninstallWorkersStepCallback (WaveAsynchronousC
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::uninstallUninstallWorkersStepCallback : Shutdowning one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::uninstallUninstallSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::uninstallUninstallSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninstallUninstallSelfStep : Entering ...");
 
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninstallUninstallSelfStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninstallUninstallSelfStepCallback), pWaveLinearSequencerContext);
 
     uninstall (pWaveAsynchronousContextForShutDownPhases);
 }
@@ -4673,11 +4673,11 @@ void WaveObjectManager::uninstallUninstallSelfStepCallback (WaveAsynchronousCont
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninstallUninstallSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                   status                       = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForShutDownPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::uninstall (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
@@ -4699,49 +4699,49 @@ void WaveObjectManager::disableHandler (PrismDisableObjectManagerMessage *pDisab
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pDisableMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDisableMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::disableUnlistenEventsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::disableUnlistenEventsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::disableUnlistenEventsStep : Entering ...");
 
     unlistenEvents ();
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::disableDisableWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::disableDisableWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::disableDisableWorkersStep : Entering ...");
 
     UI32 numberOfWorkers                            = m_workers.size ();
     UI32 i                                          = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::disableDisableWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::disableDisableWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->disable (pWaveAsynchronousContextForShutDownPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::disableDisableWorkersStepCallback (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::disableDisableWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForShutDownPhases;
 
@@ -4750,22 +4750,22 @@ void WaveObjectManager::disableDisableWorkersStepCallback (WaveAsynchronousConte
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::disableDisableWorkersStepCallback : Disabling one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::disableDisableSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::disableDisableSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::disableDisableSelfStep : Entering ...");
 
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::disableDisableSelfStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::disableDisableSelfStepCallback), pWaveLinearSequencerContext);
 
     disable (pWaveAsynchronousContextForShutDownPhases);
 }
@@ -4774,7 +4774,7 @@ void WaveObjectManager::disableDisableSelfStepCallback (WaveAsynchronousContextF
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::disableDisableSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                   status                       = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
     // Cancel any outstanding timers for this service
@@ -4817,7 +4817,7 @@ void WaveObjectManager::disableDisableSelfStepCallback (WaveAsynchronousContextF
     }
 
     delete pWaveAsynchronousContextForShutDownPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::disable (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
@@ -4838,40 +4838,40 @@ void WaveObjectManager::uninitializeHandler (PrismUninitializeObjectManagerMessa
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pUninitializeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pUninitializeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::uninitializeUninitializeWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::uninitializeUninitializeWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninitializeUninitializeWorkersStep : Entering ...");
 
     UI32 numberOfWorkers                            = m_workers.size ();
     UI32 i                                          = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninitializeUninitializeWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninitializeUninitializeWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->uninitialize (pWaveAsynchronousContextForShutDownPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::uninitializeUninitializeWorkersStepCallback (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninitializeUninitializeWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForShutDownPhases;
 
@@ -4880,22 +4880,22 @@ void WaveObjectManager::uninitializeUninitializeWorkersStepCallback (WaveAsynchr
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::uninitializeUninitializeWorkersStepCallback : Shutdowning one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::uninitializeUninitializeSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::uninitializeUninitializeSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninitializeUninitializeSelfStep : Entering ...");
 
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninitializeUninitializeSelfStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::uninitializeUninitializeSelfStepCallback), pWaveLinearSequencerContext);
 
     uninitialize (pWaveAsynchronousContextForShutDownPhases);
 }
@@ -4904,11 +4904,11 @@ void WaveObjectManager::uninitializeUninitializeSelfStepCallback (WaveAsynchrono
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::uninitializeUninitializeSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                   status                       = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForShutDownPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::uninitialize (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
@@ -4929,40 +4929,40 @@ void WaveObjectManager::destructHandler (PrismDestructObjectManagerMessage *pDes
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pDestructMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDestructMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::destructDestructWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::destructDestructWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::destructDestructWorkersStep : Entering ...");
 
     UI32 numberOfWorkers                            = m_workers.size ();
     UI32 i                                          = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::destructDestructWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::destructDestructWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->destruct (pWaveAsynchronousContextForShutDownPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::destructDestructWorkersStepCallback (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::destructDestructWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForShutDownPhases;
 
@@ -4971,22 +4971,22 @@ void WaveObjectManager::destructDestructWorkersStepCallback (WaveAsynchronousCon
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::destructDestructWorkersStepCallback : Destructing one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::destructDestructSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::destructDestructSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::destructDestructSelfStep : Entering ...");
 
-    WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::destructDestructSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::destructDestructSelfStepCallback), pWaveLinearSequencerContext);
 
     destruct (pWaveAsynchronousContextForShutDownPhases);
 }
@@ -4995,11 +4995,11 @@ void WaveObjectManager::destructDestructSelfStepCallback (WaveAsynchronousContex
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::destructDestructSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                   status                       = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForShutDownPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::destruct (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
@@ -5028,40 +5028,40 @@ void WaveObjectManager::heartbeatFailureHandler (PrismHeartbeatFailureObjectMana
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pHeartbeatFailureMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pHeartbeatFailureMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::heartbeatFailureWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::heartbeatFailureWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::heartbeatFailureWorkersStep : Entering ...");
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::heartbeatFailureWorkersStepCallback), pPrismLinearSequencerContext);
+        PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::heartbeatFailureWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->heartBeatFailure (pPrismAsynchronousContext);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::heartbeatFailureWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::heartbeatFailureWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                 status                     = pPrismAsynchronousContext->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pPrismAsynchronousContext;
 
@@ -5070,22 +5070,22 @@ void WaveObjectManager::heartbeatFailureWorkersStepCallback (PrismAsynchronousCo
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::heartbeatFailureWorkersStepCallback : Sending heartbeatFailure for one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::heartbeatFailureSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::heartbeatFailureSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::heartbeatFailureSelfStep : Entering ...");
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::heartbeatFailureSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::heartbeatFailureSelfStepCallback), pWaveLinearSequencerContext);
 
     heartbeatFailure (pPrismAsynchronousContext);
 }
@@ -5094,7 +5094,7 @@ void WaveObjectManager::heartbeatFailureSelfStepCallback (PrismAsynchronousConte
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::heartbeatFailureSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                 status                     = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
@@ -5112,7 +5112,7 @@ void WaveObjectManager::heartbeatFailureSelfStepCallback (PrismAsynchronousConte
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::heartbeatFailure (PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -5133,12 +5133,12 @@ void WaveObjectManager::configReplayEndHandler (PrismConfigReplayEndObjectManage
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pConfigReplayEndMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pConfigReplayEndMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::configReplayEndWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::configReplayEndWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::configReplayEndWorkersStep : Entering ...");
 
@@ -5148,32 +5148,32 @@ void WaveObjectManager::configReplayEndWorkersStep (PrismLinearSequencerContext 
      * Please refer externalStateSynchronization for the method to use it.
     */
 
-    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd = new WaveAsynchronousContextForConfigReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::configReplayEndWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd = new WaveAsynchronousContextForConfigReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::configReplayEndWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->configReplayEnd(pWaveAsynchronousContextForConfigReplayEnd);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::configReplayEndWorkersStepCallback (WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::configReplayEndWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForConfigReplayEnd->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForConfigReplayEnd->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForConfigReplayEnd->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForConfigReplayEnd;
 
@@ -5182,18 +5182,18 @@ void WaveObjectManager::configReplayEndWorkersStepCallback (WaveAsynchronousCont
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::configReplayEndWorkersStepCallback : Sending configReplayEnd for one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::configReplayEndSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::configReplayEndSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::configReplayEndSelfStep : Entering ...");
 
@@ -5202,9 +5202,9 @@ void WaveObjectManager::configReplayEndSelfStep (PrismLinearSequencerContext *pP
      * message and pass it onto the WaveAsynchronousContextForConfigReplayEnd.
      * Please refer externalStateSynchronization for the method to use it.
     */
-    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    //PrismConfigReplayEndObjectManagerMessage *pPrismConfigReplayEndObjectManagerMessage = reinterpret_cast<PrismConfigReplayEndObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd = new WaveAsynchronousContextForConfigReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::configReplayEndSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd = new WaveAsynchronousContextForConfigReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::configReplayEndSelfStepCallback), pWaveLinearSequencerContext);
 
     configReplayEnd (pWaveAsynchronousContextForConfigReplayEnd);
 }
@@ -5213,12 +5213,12 @@ void WaveObjectManager::configReplayEndSelfStepCallback (WaveAsynchronousContext
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::configReplayEndSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForConfigReplayEnd->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForConfigReplayEnd->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForConfigReplayEnd->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForConfigReplayEnd;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::configReplayEnd (WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd)
@@ -5239,43 +5239,43 @@ void WaveObjectManager::slotFailoverHandler (PrismSlotFailoverObjectManagerMessa
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pSlotFailoverMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pSlotFailoverMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::slotFailoverWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::slotFailoverWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::slotFailoverEndWorkersStep : Entering ...");
 
-    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover = new WaveAsynchronousContextForSlotFailover (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::slotFailoverWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover = new WaveAsynchronousContextForSlotFailover (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::slotFailoverWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForSlotFailover->setSlotNumber (pPrismSlotFailoverObjectManagerMessage->getSlotNumber () );
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->slotFailover (pWaveAsynchronousContextForSlotFailover);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::slotFailoverWorkersStepCallback (WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::slotFailoverWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForSlotFailover->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForSlotFailover->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForSlotFailover->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForSlotFailover;
 
@@ -5285,16 +5285,16 @@ void WaveObjectManager::slotFailoverWorkersStepCallback (WaveAsynchronousContext
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::slotFailoverSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::slotFailoverSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::slotFailoverSelfStep : Entering ...");
 
-    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismSlotFailoverObjectManagerMessage *pPrismSlotFailoverObjectManagerMessage = reinterpret_cast<PrismSlotFailoverObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover = new WaveAsynchronousContextForSlotFailover (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::slotFailoverSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover = new WaveAsynchronousContextForSlotFailover (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::slotFailoverSelfStepCallback), pWaveLinearSequencerContext);
     pWaveAsynchronousContextForSlotFailover->setSlotNumber (pPrismSlotFailoverObjectManagerMessage->getSlotNumber () );
 
     slotFailover (pWaveAsynchronousContextForSlotFailover);
@@ -5304,12 +5304,12 @@ void WaveObjectManager::slotFailoverSelfStepCallback (WaveAsynchronousContextFor
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::slotFailoverSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForSlotFailover->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForSlotFailover->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForSlotFailover->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForSlotFailover;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::slotFailover (WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover)
@@ -5330,31 +5330,31 @@ void WaveObjectManager::multiPartitionCleanupHandler (PrismMultiPartitionCleanup
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMultiPartitionCleanupMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMultiPartitionCleanupMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::multiPartitionCleanupWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::multiPartitionCleanupWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::multiPartitionCleanupEndWorkersStep : Entering ...");
 
-    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     bool isPartialCleanup   = pPrismMultiPartitionCleanupObjectManagerMessage->getIsPartialCleanup ();
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup = new WaveAsynchronousContextForMultiPartitionCleanup (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::multiPartitionCleanupWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup = new WaveAsynchronousContextForMultiPartitionCleanup (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::multiPartitionCleanupWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForMultiPartitionCleanup->setPartitionName (pPrismMultiPartitionCleanupObjectManagerMessage->getPartitionName () );
         pWaveAsynchronousContextForMultiPartitionCleanup->setOwnerPartitionManagedObjectId (pPrismMultiPartitionCleanupObjectManagerMessage->getOwnerPartitionManagedObjectId ());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
 
         if (false == isPartialCleanup)
         {
@@ -5367,18 +5367,18 @@ void WaveObjectManager::multiPartitionCleanupWorkersStep (PrismLinearSequencerCo
         }
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::multiPartitionCleanupWorkersStepCallback (WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::multiPartitionCleanupWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForMultiPartitionCleanup->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForMultiPartitionCleanup->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForMultiPartitionCleanup->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForMultiPartitionCleanup;
 
@@ -5388,18 +5388,18 @@ void WaveObjectManager::multiPartitionCleanupWorkersStepCallback (WaveAsynchrono
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::multiPartitionCleanupSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::multiPartitionCleanupSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::multiPartitionCleanupSelfStep : Entering ...");
 
-    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismMultiPartitionCleanupObjectManagerMessage *pPrismMultiPartitionCleanupObjectManagerMessage = reinterpret_cast<PrismMultiPartitionCleanupObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     bool isPartialCleanup   = pPrismMultiPartitionCleanupObjectManagerMessage->getIsPartialCleanup ();
 
-    WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup = new WaveAsynchronousContextForMultiPartitionCleanup (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::multiPartitionCleanupSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup = new WaveAsynchronousContextForMultiPartitionCleanup (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::multiPartitionCleanupSelfStepCallback), pWaveLinearSequencerContext);
 
     pWaveAsynchronousContextForMultiPartitionCleanup->setPartitionName (pPrismMultiPartitionCleanupObjectManagerMessage->getPartitionName () );
     pWaveAsynchronousContextForMultiPartitionCleanup->setOwnerPartitionManagedObjectId (pPrismMultiPartitionCleanupObjectManagerMessage->getOwnerPartitionManagedObjectId ());
@@ -5419,12 +5419,12 @@ void WaveObjectManager::multiPartitionCleanupSelfStepCallback (WaveAsynchronousC
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::multiPartitionCleanupSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForMultiPartitionCleanup->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForMultiPartitionCleanup->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForMultiPartitionCleanup->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForMultiPartitionCleanup;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::multiPartitionCleanup (WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup)
@@ -5504,12 +5504,12 @@ void WaveObjectManager::fileReplayEndHandler (PrismFileReplayEndObjectManagerMes
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFileReplayEndMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFileReplayEndMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::fileReplayEndWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::fileReplayEndWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::fileReplayEndWorkersStep : Entering ...");
 
@@ -5519,32 +5519,32 @@ void WaveObjectManager::fileReplayEndWorkersStep (PrismLinearSequencerContext *p
      * Please refer externalStateSynchronization for the method to use it.
     */
 
-    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd = new WaveAsynchronousContextForFileReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::fileReplayEndWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd = new WaveAsynchronousContextForFileReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::fileReplayEndWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->fileReplayEnd(pWaveAsynchronousContextForFileReplayEnd);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::fileReplayEndWorkersStepCallback (WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::fileReplayEndWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForFileReplayEnd->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForFileReplayEnd->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForFileReplayEnd->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForFileReplayEnd;
 
@@ -5553,18 +5553,18 @@ void WaveObjectManager::fileReplayEndWorkersStepCallback (WaveAsynchronousContex
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::fileReplayEndWorkersStepCallback : Sending fileReplayEnd for one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::fileReplayEndSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::fileReplayEndSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::fileReplayEndSelfStep : Entering ...");
 
@@ -5573,9 +5573,9 @@ void WaveObjectManager::fileReplayEndSelfStep (PrismLinearSequencerContext *pPri
      * message and pass it onto the WaveAsynchronousContextForFileReplayEnd.
      * Please refer externalStateSynchronization for the method to use it.
     */
-    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    //PrismFileReplayEndObjectManagerMessage *pPrismFileReplayEndObjectManagerMessage = reinterpret_cast<PrismFileReplayEndObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd = new WaveAsynchronousContextForFileReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::fileReplayEndSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd = new WaveAsynchronousContextForFileReplayEnd (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::fileReplayEndSelfStepCallback), pWaveLinearSequencerContext);
 
     fileReplayEnd (pWaveAsynchronousContextForFileReplayEnd);
 }
@@ -5584,12 +5584,12 @@ void WaveObjectManager::fileReplayEndSelfStepCallback (WaveAsynchronousContextFo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::fileReplayEndSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForFileReplayEnd->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForFileReplayEnd->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForFileReplayEnd->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForFileReplayEnd;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::fileReplayEnd (WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd)
@@ -5610,43 +5610,43 @@ void WaveObjectManager::externalStateSynchronizationHandler (PrismExternalStateS
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pExternalStateSynchronizationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pExternalStateSynchronizationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::externalStateSynchronizationWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::externalStateSynchronizationWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::externalStateSynchronizationWorkersStep : Entering ...");
 
-    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization = new WaveAsynchronousContextForExternalStateSynchronization (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::externalStateSynchronizationWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization = new WaveAsynchronousContextForExternalStateSynchronization (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::externalStateSynchronizationWorkersStepCallback), pWaveLinearSequencerContext);
         pWaveAsynchronousContextForExternalStateSynchronization->setFssStageNumber (pPrismExternalStateSynchronizationObjectManagerMessage->getFssStageNumber ());
         pWaveAsynchronousContextForExternalStateSynchronization->setServiceType    (pPrismExternalStateSynchronizationObjectManagerMessage->getServiceType());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->externalStateSynchronization(pWaveAsynchronousContextForExternalStateSynchronization);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::externalStateSynchronizationWorkersStepCallback (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::externalStateSynchronizationWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForExternalStateSynchronization->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForExternalStateSynchronization->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForExternalStateSynchronization->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForExternalStateSynchronization;
 
@@ -5655,24 +5655,24 @@ void WaveObjectManager::externalStateSynchronizationWorkersStepCallback (WaveAsy
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::externalStateSynchronizationWorkersStepCallback : Sending externalStateSynchronization for one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::externalStateSynchronizationSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::externalStateSynchronizationSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::externalStateSynchronizationSelfStep : Entering ...");
 
-    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismExternalStateSynchronizationObjectManagerMessage *pPrismExternalStateSynchronizationObjectManagerMessage = reinterpret_cast<PrismExternalStateSynchronizationObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization = new WaveAsynchronousContextForExternalStateSynchronization (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::externalStateSynchronizationSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization = new WaveAsynchronousContextForExternalStateSynchronization (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::externalStateSynchronizationSelfStepCallback), pWaveLinearSequencerContext);
 
     pWaveAsynchronousContextForExternalStateSynchronization->setFssStageNumber (pPrismExternalStateSynchronizationObjectManagerMessage->getFssStageNumber ());
     pWaveAsynchronousContextForExternalStateSynchronization->setServiceType    (pPrismExternalStateSynchronizationObjectManagerMessage->getServiceType());
@@ -5684,7 +5684,7 @@ void WaveObjectManager::externalStateSynchronizationSelfStepCallback (WaveAsynch
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::externalStateSynchronizationSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForExternalStateSynchronization->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForExternalStateSynchronization->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForExternalStateSynchronization->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForExternalStateSynchronization;
@@ -5702,7 +5702,7 @@ void WaveObjectManager::externalStateSynchronizationSelfStepCallback (WaveAsynch
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::externalStateSynchronization (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization)
@@ -6277,27 +6277,27 @@ void WaveObjectManager::clusterCreateCollectValidationDataHandler (WaveObjectMan
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerCollectValidationDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerCollectValidationDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::clusterCreateCollectValidationDataWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::clusterCreateCollectValidationDataWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::clusterCreateCollectValidationDataWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
 {
 }
 
-void WaveObjectManager::clusterCreateCollectValidationDataSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::clusterCreateCollectValidationDataSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerCollectValidationDataMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerCollectValidationDataMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback), pWaveLinearSequencerContext);
 
     clusterCreateCollectValidationData (pMessage, pPrismAsynchronousContext);
 }
@@ -6306,11 +6306,11 @@ void WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback (Pris
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::clusterCreateCollectValidationData (WaveObjectManagerCollectValidationDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -6331,27 +6331,27 @@ void WaveObjectManager::clusterCreateValidateHandler (WaveObjectManagerValidateC
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerValidateClusterCreationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerValidateClusterCreationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::clusterCreateValidateWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::clusterCreateValidateWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::clusterCreateValidateWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
 {
 }
 
-void WaveObjectManager::clusterCreateValidateSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::clusterCreateValidateSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerValidateClusterCreationMessage *pMessage = reinterpret_cast<WaveObjectManagerValidateClusterCreationMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerValidateClusterCreationMessage *pMessage = reinterpret_cast<WaveObjectManagerValidateClusterCreationMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateValidateSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateValidateSelfStepCallback), pWaveLinearSequencerContext);
 
     clusterCreateValidate (pMessage, pPrismAsynchronousContext);
 }
@@ -6360,11 +6360,11 @@ void WaveObjectManager::clusterCreateValidateSelfStepCallback (PrismAsynchronous
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::clusterCreateValidate (WaveObjectManagerValidateClusterCreationMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -6385,27 +6385,27 @@ void WaveObjectManager::clusterCreateSendValidationResultsHandler (WaveObjectMan
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerSendValidationResultsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerSendValidationResultsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::clusterCreateSendValidationResultsWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::clusterCreateSendValidationResultsWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::clusterCreateSendValidationResultsWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
 {
 }
 
-void WaveObjectManager::clusterCreateSendValidationResultsSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::clusterCreateSendValidationResultsSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateSendValidationResultsSelfStep : Entering ...");
 
-    WaveObjectManagerSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerSendValidationResultsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerSendValidationResultsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateSendValidationResultsSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::clusterCreateSendValidationResultsSelfStepCallback), pWaveLinearSequencerContext);
 
     clusterCreateSendValidationResults (pMessage, pPrismAsynchronousContext);
 }
@@ -6414,11 +6414,11 @@ void WaveObjectManager::clusterCreateSendValidationResultsSelfStepCallback (Pris
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::clusterCreateCollectValidationDataSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::clusterCreateSendValidationResults (WaveObjectManagerSendValidationResultsMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -6439,23 +6439,23 @@ void WaveObjectManager::haSyncCollectValidationDataHandler (WaveObjectManagerHaS
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerHaSyncCollectValidationDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerHaSyncCollectValidationDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::haSyncCollectValidationDataWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::haSyncCollectValidationDataWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::haSyncCollectValidationDataSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::haSyncCollectValidationDataSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncCollectValidationDataMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncCollectValidationDataMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncCollectValidationDataSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncCollectValidationDataSelfStepCallback), pWaveLinearSequencerContext);
 
     haSyncCollectValidationData (pMessage, pPrismAsynchronousContext);
 }
@@ -6464,11 +6464,11 @@ void WaveObjectManager::haSyncCollectValidationDataSelfStepCallback (PrismAsynch
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncCollectValidationDataSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::haSyncCollectValidationData (WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -6489,23 +6489,23 @@ void WaveObjectManager::haSyncValidateDataHandler (WaveObjectManagerHaSyncValida
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerHaSyncValidateDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerHaSyncValidateDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::haSyncValidateDataWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::haSyncValidateDataWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::haSyncValidateDataSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::haSyncValidateDataSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncCollectValidationDataSelfStep : Entering ...");
 
-    WaveObjectManagerHaSyncValidateDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncValidateDataMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerHaSyncValidateDataMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncValidateDataMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncValidateDataSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncValidateDataSelfStepCallback), pWaveLinearSequencerContext);
 
     haSyncValidateData (pMessage, pPrismAsynchronousContext);
 }
@@ -6514,11 +6514,11 @@ void WaveObjectManager::haSyncValidateDataSelfStepCallback (PrismAsynchronousCon
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncValidateDataSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::haSyncValidateData (WaveObjectManagerHaSyncValidateDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -6539,24 +6539,24 @@ void WaveObjectManager::haSyncSendValidationResultsHandler (WaveObjectManagerHaS
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerHaSyncSendValidationResultsMessage, this, sequencerSteps, sizeof
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerHaSyncSendValidationResultsMessage, this, sequencerSteps, sizeof
 (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::haSyncSendValidationResultsWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::haSyncSendValidationResultsWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::haSyncSendValidationResultsSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::haSyncSendValidationResultsSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncSendValidationResultsSelfStep : Entering ...");
 
-    WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncSendValidationResultsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage = reinterpret_cast<WaveObjectManagerHaSyncSendValidationResultsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncSendValidationResultsSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::haSyncSendValidationResultsSelfStepCallback), pWaveLinearSequencerContext);
 
     haSyncSendValidationResults (pMessage, pPrismAsynchronousContext);
 }
@@ -6565,11 +6565,11 @@ void WaveObjectManager::haSyncSendValidationResultsSelfStepCallback (PrismAsynch
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::haSyncSendValidationResultsSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::haSyncSendValidationResults (WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -6606,45 +6606,45 @@ void WaveObjectManager::failoverHandler (PrismFailoverObjectManagerMessage *pPri
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPrismFailoverObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPrismFailoverObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::failoverWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::failoverWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::failoverWorkersStep : Entering ...");
 
     UI32                               numberOfWorkers = m_workers.size ();
     UI32                               i               = 0;
-    PrismFailoverObjectManagerMessage *pMessage        = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismFailoverObjectManagerMessage *pMessage        = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     FrameworkObjectManagerFailoverReason failoverReason                     = pMessage->getFailoverReason ();
     vector<LocationId>                   failedLocationIds                  = pMessage->getFailedLocationIds ();
     bool                                 isPrincipalChangedWithThisFailover = pMessage->getIsPrincipalChangedWithThisFailover ();
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        FailoverAsynchronousContext *pFailoverAsynchronousContext = new FailoverAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::failoverWorkersStepCallback), pPrismLinearSequencerContext, failoverReason, failedLocationIds, isPrincipalChangedWithThisFailover);
+        FailoverAsynchronousContext *pFailoverAsynchronousContext = new FailoverAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::failoverWorkersStepCallback), pWaveLinearSequencerContext, failoverReason, failedLocationIds, isPrincipalChangedWithThisFailover);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         //m_workers[i]->failover (pMessage->getFailoverReason (), pMessage->getFailedLocationIds (), pPrismAsynchronousContext);
         m_workers[i]->failover (pFailoverAsynchronousContext);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::failoverWorkersStepCallback (FailoverAsynchronousContext *pFailoverAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::failoverWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pFailoverAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pFailoverAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pFailoverAsynchronousContext->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pFailoverAsynchronousContext;
 
@@ -6653,28 +6653,28 @@ void WaveObjectManager::failoverWorkersStepCallback (FailoverAsynchronousContext
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::failoverWorkersStepCallback : Failover one worker failed.");
         prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::failoverSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::failoverSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::failoverSelfStep : Entering ...");
 
-    PrismFailoverObjectManagerMessage *pMessage = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    PrismFailoverObjectManagerMessage *pMessage = reinterpret_cast<PrismFailoverObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     FrameworkObjectManagerFailoverReason failoverReason                     = pMessage->getFailoverReason ();
     vector<LocationId>                   failedLocationIds                  = pMessage->getFailedLocationIds ();
     bool                                 isPrincipalChangedWithThisFailover = pMessage->getIsPrincipalChangedWithThisFailover ();
 
-    FailoverAsynchronousContext *pFailoverAsynchronousContext = new FailoverAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::failoverSelfStepCallback), pPrismLinearSequencerContext, failoverReason, failedLocationIds, isPrincipalChangedWithThisFailover);
+    FailoverAsynchronousContext *pFailoverAsynchronousContext = new FailoverAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::failoverSelfStepCallback), pWaveLinearSequencerContext, failoverReason, failedLocationIds, isPrincipalChangedWithThisFailover);
 
     //failover (pMessage->getFailoverReason (), pMessage->getFailedLocationIds (), pPrismAsynchronousContext);
     failover (pFailoverAsynchronousContext);
@@ -6684,11 +6684,11 @@ void WaveObjectManager::failoverSelfStepCallback (FailoverAsynchronousContext *p
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::failoverSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pFailoverAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pFailoverAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pFailoverAsynchronousContext->getCompletionStatus ();
 
     delete pFailoverAsynchronousContext;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 /*
 void WaveObjectManager::failover (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> failedLocationIds, PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -8636,16 +8636,16 @@ void WaveObjectManager::sendToWaveClients (WaveSendToClientsContext *pWaveSendTo
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveSendToClientsContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendToClientsContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::sendPhase1MessageToAllInstancesStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase1MessageToAllInstancesStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::sendPhase1MessageToAllInstancesStep : Entering ...");
 
-    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
@@ -8658,7 +8658,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (PrismLinearSequence
     prismAssert (NULL != pManagementInterfaceMessageForPhase1, __FILE__, __LINE__);
     UI32                      timeoutForPhase1          = pWaveSendToClientsContext->getTimeoutForPhase1 ();
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::sendPhase1MessageToAllInstancesStep : Name=") + pWaveSendToClientsContext->getClientName() + string(" Instances=") + numberOfInstancesToSendTo);
 
@@ -8740,31 +8740,31 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (PrismLinearSequence
         pClonedManagementInterfaceMessageForPhase1->setClientName (clientName);
         pClonedManagementInterfaceMessageForPhase1->setSlotInstance (instancesForPhase1[i]);
 
-        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllInstancesCallback), pPrismLinearSequencerContext, timeoutForPhase1);
+        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllInstancesCallback), pWaveLinearSequencerContext, timeoutForPhase1);
 
         pWaveSendToClientsContext->setSendStatusForPhase1 (instancesForPhase1[i], status);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
             delete pClonedManagementInterfaceMessageForPhase1;
         }
         else
         {
-            ++(*pPrismLinearSequencerContext);
+            ++(*pWaveLinearSequencerContext);
         }
     }
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase1MessageToAllInstancesCallback (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase1MessageToAllInstancesCallback (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
     prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
@@ -8779,7 +8779,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesCallback (FrameworkStatus
 
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
     else
     {
@@ -8791,18 +8791,18 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesCallback (FrameworkStatus
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::computeFailedInstancesForPhase1Step (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::computeFailedInstancesForPhase1Step (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::computeFailedInstancesForPhase1Step : Entering ...");
 
-    WaveSendToClientsContext *pWaveSendToClientsContext           = reinterpret_cast<WaveSendToClientsContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClientsContext *pWaveSendToClientsContext           = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
@@ -8815,7 +8815,7 @@ void WaveObjectManager::computeFailedInstancesForPhase1Step (PrismLinearSequence
     vector<SI32>        succeededInstancesForPhase1;
     vector<SI32>        succeededSubInstancesForPhase1;
     UI32                numberOfSucceededInstancesForPhase1 = 0;
-    UI32                failureCountFromContext             = pPrismLinearSequencerContext->getNumberOfFailures ();
+    UI32                failureCountFromContext             = pWaveLinearSequencerContext->getNumberOfFailures ();
     bool                needSubInstance                     = pWaveSendToClientsContext->getIsSubInstanceToBeIncluded ();
 
     for (i = 0; i < numberOfInstancesToSendToForPhase1; i++)
@@ -8875,14 +8875,14 @@ void WaveObjectManager::computeFailedInstancesForPhase1Step (PrismLinearSequence
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::computeFailedInstancesForPhase1Step : Success=") + numberOfSucceededInstancesForPhase1 + string (" Fail=") + numberOfFailedInstancesForPhase1);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep : Entering ...");
 
-    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
     vector<SI32>              instancesToSendToForPhase1          = pWaveSendToClientsContext->getInstancesToSendToForPhase1 ();
@@ -8896,25 +8896,25 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (PrismLi
 
     ManagementInterfaceMessage      *pManagementInterfaceMessageForPhase2  = pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase2 ();
 
-    pPrismLinearSequencerContext->setNumberOfFailures (0);
+    pWaveLinearSequencerContext->setNumberOfFailures (0);
 
     if (numberOfInstancesToSendToForPhase1 == numberOfFailedInstancesForPhase1)
     {
         trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep : not applicable 1");
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     if (NULL == pManagementInterfaceMessageForPhase2)
     {
         trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep : not applicable 2");
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     UI32                      timeoutForPhase2          = pWaveSendToClientsContext->getTimeoutForPhase2 ();
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     pManagementInterfaceMessageForPhase2->setClientNameWithoutExtension (pWaveSendToClientsContext->getClientName ());
     pManagementInterfaceMessageForPhase2->setClientName (pWaveSendToClientsContext->getClientName ());
@@ -8944,7 +8944,7 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (PrismLi
         pClonedManagementInterfaceMessageForPhase2->setServiceCode (ManagementInterfaceObjectManager::getWaveServiceId ());
         pClonedManagementInterfaceMessageForPhase2->setSlotInstance (instancesToSendToForPhase2[i]);
 
-        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2);
+        WaveMessageStatus status = send (pClonedManagementInterfaceMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback), pWaveLinearSequencerContext, timeoutForPhase2);
 
         tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep : Instance %u : Send Status : %s", instancesToSendToForPhase2[i], (FrameworkToolKit::localize (status)).c_str ());
 
@@ -8952,25 +8952,25 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (PrismLi
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
             delete pClonedManagementInterfaceMessageForPhase2;
         }
         else
         {
-            ++(*pPrismLinearSequencerContext);
+            ++(*pWaveLinearSequencerContext);
         }
     }
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
@@ -8986,7 +8986,7 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback (Fra
 
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
     else
     {
@@ -8998,23 +8998,23 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback (Fra
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
         }
         else
         {
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 
 
-void WaveObjectManager::computeOverallInstancesStatusStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::computeOverallInstancesStatusStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::computeOverallStatusStep : Entering ...");
 
-    WaveSendToClientsContext *pWaveSendToClientsContext           = reinterpret_cast<WaveSendToClientsContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClientsContext *pWaveSendToClientsContext           = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
@@ -9028,7 +9028,7 @@ void WaveObjectManager::computeOverallInstancesStatusStep (PrismLinearSequencerC
     UI32                numberOfFailedInstancesForPhase2    = 0;
     vector<SI32>        succeededInstancesForPhase2;
     UI32                numberOfSucceededInstancesForPhase2 = 0;
-    UI32                failureCountFromContext             = pPrismLinearSequencerContext->getNumberOfFailures ();
+    UI32                failureCountFromContext             = pWaveLinearSequencerContext->getNumberOfFailures ();
     ResourceId          overAllCompletionStatus             = WAVE_MESSAGE_ERROR;
 
     ManagementInterfaceMessage             *pManagementInterfaceMessageForPhase2              = pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase2 ();
@@ -9111,7 +9111,7 @@ void WaveObjectManager::computeOverallInstancesStatusStep (PrismLinearSequencerC
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::computeOverallStatusStep : ") + FrameworkToolKit::localize (overAllCompletionStatus));
 
-    pPrismLinearSequencerContext->executeNextStep (overAllCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (overAllCompletionStatus);
 }
 
 bool WaveObjectManager::getAllowAutomaticallyUnlistenForEvents () const
@@ -9297,9 +9297,9 @@ void WaveObjectManager::sendOneWayToWaveCluster (WaveSendToClusterContext *pWave
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveSendToClusterContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendToClusterContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 void WaveObjectManager::sendToWaveCluster (WaveSendToClusterContext *pWaveSendToClusterContext)
@@ -9319,16 +9319,16 @@ void WaveObjectManager::sendToWaveCluster (WaveSendToClusterContext *pWaveSendTo
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveSendToClusterContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendToClusterContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::computeDisconnectedNodesIfSurrogateStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::computeDisconnectedNodesIfSurrogateStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::computeDisconnectedNodesIfSurrogateStep : Entering ...");
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     WaveMessage *pWaveMessageForPhase1 = pWaveSendToClusterContext->getPWaveMessageForPhase1 ();
@@ -9337,7 +9337,7 @@ void WaveObjectManager::computeDisconnectedNodesIfSurrogateStep (PrismLinearSequ
     if (false == pWaveMessageForPhase1->getNeedSurrogateSupportFlag ())
     {
         trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::computeDisconnectedNodesIfSurrogateStep : Message doesn't need Surrogate support.");
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -9436,19 +9436,19 @@ void WaveObjectManager::computeDisconnectedNodesIfSurrogateStep (PrismLinearSequ
             trace (TRACE_LEVEL_INFO, "WaveObjectManager::computeDisconnectedNodesIfSurrogateStep : sendToWaveCluster issued during Add node operation.");
             //Commented below to handle the case when sendToWaveCluster is issued during cluster operations(add node)
 
-            //pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+            //pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
             //return;
         }
 
     }
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase1MessageToAllNodesStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Entering ...");
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
@@ -9463,7 +9463,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
     UI32                      timeoutForPhase1          = pWaveSendToClusterContext->getTimeoutForPhase1 ();
     bool                      isSendOneWayToWaveCluster = pWaveSendToClusterContext->getIsSendOneWayToWaveCluster ();
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfLocationsToSendTo; i++)
     {
@@ -9498,7 +9498,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
             {
                 // Perform regular asynchronous send to wave cluster.
 
-                status = send (pClonedWaveMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pPrismLinearSequencerContext, timeoutForPhase1, locationToSurrogate);
+                status = send (pClonedWaveMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pWaveLinearSequencerContext, timeoutForPhase1, locationToSurrogate);
 
                 tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Location Id %u surrogating for %u : Send Status : %s", locationToSurrogate, locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
             }
@@ -9515,7 +9515,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
             {
                 // Perform regular asynchronous send to wave cluster.
 
-                status = send (pClonedWaveMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pPrismLinearSequencerContext, timeoutForPhase1, locationsToSendTo[i]);
+                status = send (pClonedWaveMessageForPhase1, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase1MessageToAllNodesCallback), pWaveLinearSequencerContext, timeoutForPhase1, locationsToSendTo[i]);
 
                 tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase1MessageToAllNodesStep : Location Id %u : Send Status : %s", locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
             }
@@ -9526,28 +9526,28 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (PrismLinearSequencerCon
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
             delete pClonedWaveMessageForPhase1;
         }
         else
         {
             if (false == isSendOneWayToWaveCluster)
             {
-                ++(*pPrismLinearSequencerContext);
+                ++(*pWaveLinearSequencerContext);
             }
         }
     }
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
     prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
@@ -9571,7 +9571,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus fra
 
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
     else
     {
@@ -9583,21 +9583,21 @@ void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus fra
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
         }
         else
         {
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::computeFailedNodesForPhase1Step (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::computeFailedNodesForPhase1Step (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::computeFailedNodesForPhase1Step : Entering ...");
 
-    WaveSendToClusterContext *pWaveSendToClusterContext           = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext           = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
@@ -9610,7 +9610,7 @@ void WaveObjectManager::computeFailedNodesForPhase1Step (PrismLinearSequencerCon
     UI32                      numberOfDisconnectedLocationsForPhase1    = 0;
     vector<LocationId>        succeededLocationsForPhase1;
     UI32                      numberOfSucceededLocationsForPhase1 = 0;
-    UI32                      failureCountFromContext             = pPrismLinearSequencerContext->getNumberOfFailures ();
+    UI32                      failureCountFromContext             = pWaveLinearSequencerContext->getNumberOfFailures ();
 
     for (i = 0; i < numberOfLocationsToSendToForPhase1; i++)
     {
@@ -9692,14 +9692,14 @@ void WaveObjectManager::computeFailedNodesForPhase1Step (PrismLinearSequencerCon
     {
         tracePrintf (TRACE_LEVEL_DEVEL, true, false, "WaveObjectManager::computeFailedNodesForPhase1Step : succeeded location Id %u", succeededLocationsForPhase1[i]);
     }
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep : Entering ...");
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
     vector<LocationId>        locationsToSendToForPhase1          = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();
@@ -9712,23 +9712,23 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
     UI32                      i                         = 0;
     WaveMessage             *pWaveMessageForPhase2    = pWaveSendToClusterContext->getPWaveMessageForPhase2 ();
 
-    pPrismLinearSequencerContext->setNumberOfFailures (0);
+    pWaveLinearSequencerContext->setNumberOfFailures (0);
 
     if (numberOfLocationsToSendToForPhase1 == (numberOfFailedLocationsForPhase1 + numberOfDisconnectedLocationsForPhase1))
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     if (NULL == pWaveMessageForPhase2)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     UI32                      timeoutForPhase2          = pWaveSendToClusterContext->getTimeoutForPhase2 ();
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfLocationsToSendTo; i++)
     {
@@ -9736,8 +9736,8 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
         {
             tracePrintf (TRACE_LEVEL_ERROR, true, false, "WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep : incorrect location-id specified. %d", locationsToSendTo[i]);
 
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
-            pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
             return;
         }
 
@@ -9745,7 +9745,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
 
         prismAssert (NULL != pClonedWaveMessageForPhase2, __FILE__, __LINE__);
 
-        WaveMessageStatus status = send (pClonedWaveMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback), pPrismLinearSequencerContext, timeoutForPhase2, locationsToSendTo[i]);
+        WaveMessageStatus status = send (pClonedWaveMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback), pWaveLinearSequencerContext, timeoutForPhase2, locationsToSendTo[i]);
 
         tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep : Location Id %u : Send Status : %s", locationsToSendTo[i], (FrameworkToolKit::localize (status)).c_str ());
 
@@ -9753,25 +9753,25 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (PrismLinear
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
             delete pClonedWaveMessageForPhase2;
         }
         else
         {
-            ++(*pPrismLinearSequencerContext);
+            ++(*pWaveLinearSequencerContext);
         }
     }
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
@@ -9787,7 +9787,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (Framewo
 
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
     else
     {
@@ -9799,21 +9799,21 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (Framewo
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
         }
         else
         {
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveObjectManager::computeOverallStatusStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::computeOverallStatusStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::computeOverallStatusStep : Entering ...");
 
-    WaveSendToClusterContext *pWaveSendToClusterContext           = reinterpret_cast<WaveSendToClusterContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendToClusterContext *pWaveSendToClusterContext           = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
     prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
@@ -9828,7 +9828,7 @@ void WaveObjectManager::computeOverallStatusStep (PrismLinearSequencerContext *p
     UI32                      numberOfFailedLocationsForPhase2    = 0;
     vector<LocationId>        succeededLocationsForPhase2;
     UI32                      numberOfSucceededLocationsForPhase2 = 0;
-    UI32                      failureCountFromContext             = pPrismLinearSequencerContext->getNumberOfFailures ();
+    UI32                      failureCountFromContext             = pWaveLinearSequencerContext->getNumberOfFailures ();
     ResourceId                overAllCompletionStatus             = WAVE_MESSAGE_ERROR;
 
     WaveMessage             *pWaveMessageForPhase2              = pWaveSendToClusterContext->getPWaveMessageForPhase2 ();
@@ -9947,7 +9947,7 @@ void WaveObjectManager::computeOverallStatusStep (PrismLinearSequencerContext *p
     }
 
     tracePrintf (TRACE_LEVEL_DEBUG, true, false, "WaveObjectManager:::computeOverallStatusStep : overAllCompletionStatus = %s", (FrameworkToolKit::localize (overAllCompletionStatus)).c_str ());
-    pPrismLinearSequencerContext->executeNextStep (overAllCompletionStatus);
+    pWaveLinearSequencerContext->executeNextStep (overAllCompletionStatus);
 }
 
 ResourceId WaveObjectManager::addLog (ResourceId logType, ResourceId logDescriptionType, const vector<Attribute *> &logDescriptionArguments)
@@ -10123,40 +10123,40 @@ void WaveObjectManager::backendSyncUpHandler (WaveObjectManagerBackendSyncUpMess
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveObjectManagerBackendSyncUpMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerBackendSyncUpMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::backendSyncUpWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::backendSyncUpWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::backendSyncUpWorkersStep : Entering ...");
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::backendSyncUpWorkersStepCallback), pPrismLinearSequencerContext);
+        PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::backendSyncUpWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->backendSyncUp (pPrismAsynchronousContext);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::backendSyncUpWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::backendSyncUpWorkersStepCallback: Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                 status                     = pPrismAsynchronousContext->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pPrismAsynchronousContext;
 
@@ -10165,22 +10165,22 @@ void WaveObjectManager::backendSyncUpWorkersStepCallback (PrismAsynchronousConte
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::: Sync up with back end for one of the service failed.");
         //prismAssert (false, __FILE__, __LINE__);
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::backendSyncUpSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::backendSyncUpSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::backendSyncUpSelfStep : Entering ...");
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::backendSyncUpSelfStepCallback), pPrismLinearSequencerContext);
+    PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::backendSyncUpSelfStepCallback), pWaveLinearSequencerContext);
 
     backendSyncUp (pPrismAsynchronousContext);
 }
@@ -10189,12 +10189,12 @@ void WaveObjectManager::backendSyncUpSelfStepCallback (PrismAsynchronousContext 
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::backendSyncUpSelfStepCallback: Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                 status                     = pPrismAsynchronousContext->getCompletionStatus ();
 
     delete pPrismAsynchronousContext;
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::backendSyncUp (PrismAsynchronousContext *pPrismAsynchronousContext)
@@ -10593,47 +10593,47 @@ void WaveObjectManager::databaseSanityCheckHandler (WaveObjectManagerDatabaseSan
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::checkBasicDatabaseSanityWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::checkBasicDatabaseSanityWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkBasicDatabaseSanityWorkersStep: Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
     ResourceId status    = WAVE_MESSAGE_SUCCESS;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pWaveObjectManagerDatabaseSanityCheckMessage->getBootReason ());
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->dbBasicSanityCheck (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    --(*pWaveLinearSequencerContext);
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback: Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -10641,25 +10641,25 @@ void WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback (WaveAsynchr
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback: DBSanityCheck one worker failed.");
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
         //prismAssert (false, __FILE__, __LINE__);
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::checkBasicDatabaseSanitySelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::checkBasicDatabaseSanitySelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkBasicDatabaseSanitySelfStep : Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkBasicDatabaseSanitySelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkBasicDatabaseSanitySelfStepCallback), pWaveLinearSequencerContext);
     pWaveAsynchronousContextForBootPhases->setBootReason (pWaveObjectManagerDatabaseSanityCheckMessage->getBootReason ());
 
     dbBasicSanityCheck (pWaveAsynchronousContextForBootPhases);
@@ -10669,11 +10669,11 @@ void WaveObjectManager::checkBasicDatabaseSanitySelfStepCallback (WaveAsynchrono
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkBasicDatabaseSanitySelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::dbBasicSanityCheck (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
@@ -10682,42 +10682,42 @@ void WaveObjectManager::dbBasicSanityCheck (WaveAsynchronousContextForBootPhases
     pWaveAsynchronousContextForBootPhases->callback ();
 }
 
-void WaveObjectManager::checkIncorrectEntriesWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::checkIncorrectEntriesWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkIncorrectEntriesWorkersStep : Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
     ResourceId status    = WAVE_MESSAGE_SUCCESS;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkIncorrectEntriesWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkIncorrectEntriesWorkersStepCallback), pWaveLinearSequencerContext);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pWaveObjectManagerDatabaseSanityCheckMessage->getBootReason ());
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->dbInconsistencyCheck (pWaveAsynchronousContextForBootPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    --(*pWaveLinearSequencerContext);
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::checkIncorrectEntriesWorkersStepCallback (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkIncorrectEntriesWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForBootPhases;
 
@@ -10725,25 +10725,25 @@ void WaveObjectManager::checkIncorrectEntriesWorkersStepCallback (WaveAsynchrono
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::checkIncorrectEntriesWorkersStepCallback : DBInconsistencyCheck one worker failed.");
 
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
         //prismAssert (false, __FILE__, __LINE__);
     }
 
-    if (0 != pPrismLinearSequencerContext->getNumberOfFailures ())
+    if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
     {
         status = WAVE_MESSAGE_ERROR;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::checkIncorrectEntriesSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::checkIncorrectEntriesSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkIncorrectEntriesSelfStep : Entering ...");
 
-    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    WaveObjectManagerDatabaseSanityCheckMessage *pWaveObjectManagerDatabaseSanityCheckMessage = reinterpret_cast<WaveObjectManagerDatabaseSanityCheckMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkIncorrectEntriesSelfStepCallback), pPrismLinearSequencerContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::checkIncorrectEntriesSelfStepCallback), pWaveLinearSequencerContext);
     pWaveAsynchronousContextForBootPhases->setBootReason (pWaveObjectManagerDatabaseSanityCheckMessage->getBootReason ());
 
     dbInconsistencyCheck (pWaveAsynchronousContextForBootPhases);
@@ -10753,11 +10753,11 @@ void WaveObjectManager::checkIncorrectEntriesSelfStepCallback (WaveAsynchronousC
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::checkIncorrectEntriesSelfStep : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForBootPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForBootPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForBootPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 /*
@@ -10782,40 +10782,40 @@ void WaveObjectManager::zeroizeHandler (PrismZeroizeObjectManagerMessage *pMessa
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::zeroizeWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::zeroizeWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::zeroizeWorkersStep : Entering ...");
 
     UI32 numberOfWorkers                            = m_workers.size ();
     UI32 i                                          = 0;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::zeroizeWorkersStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::zeroizeWorkersStepCallback), pWaveLinearSequencerContext);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         m_workers[i]->zeroize (pWaveAsynchronousContextForShutDownPhases);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void WaveObjectManager::zeroizeWorkersStepCallback (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::zeroizeWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForShutDownPhases;
 
@@ -10825,14 +10825,14 @@ void WaveObjectManager::zeroizeWorkersStepCallback (WaveAsynchronousContextForSh
         //FIXME: Not sure if we need to assert here.
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void WaveObjectManager::zeroizeSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::zeroizeSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::zeroizeSelfStep : Entering ...");
 
-        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::zeroizeSelfStepCallback), pPrismLinearSequencerContext);
+        WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases = new WaveAsynchronousContextForShutDownPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::zeroizeSelfStepCallback), pWaveLinearSequencerContext);
 
     zeroize (pWaveAsynchronousContextForShutDownPhases);
 }
@@ -10841,11 +10841,11 @@ void WaveObjectManager::zeroizeSelfStepCallback (WaveAsynchronousContextForShutD
 {
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::zeroizeSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForShutDownPhases->getPCallerContext ());
     ResourceId                   status                       = pWaveAsynchronousContextForShutDownPhases->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForShutDownPhases;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveObjectManager::zeroize (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
@@ -11086,14 +11086,14 @@ void WaveObjectManager::sendMulticast (WaveSendMulticastContext *pWaveSendMultic
         reinterpret_cast<PrismLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveSendMulticastContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendMulticastContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveObjectManager::performSendMulticast (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    WaveSendMulticastContext       *pWaveSendMulticastContext = dynamic_cast<WaveSendMulticastContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveSendMulticastContext       *pWaveSendMulticastContext = dynamic_cast<WaveSendMulticastContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
     vector<LocationId>              locationsToSend           = pWaveSendMulticastContext->getAllLocationsToSent ();
     LocationId                      thisLocationId            = FrameworkToolKit::getThisLocationId ();
     UI32                            numberOfLocations         = locationsToSend.size ();
@@ -11118,7 +11118,7 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
         }
     }
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     pWaveMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
@@ -11132,7 +11132,7 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
         pInterLocationMulticastMessage->setLocationsToSend (remoteLocations);
         pInterLocationMulticastMessage->setMessageIdForMessageToMulticast (pWaveMessage->getMessageId ());
 
-        status = send (pInterLocationMulticastMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastRemoteCallback), pPrismLinearSequencerContext);
+        status = send (pInterLocationMulticastMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastRemoteCallback), pWaveLinearSequencerContext);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -11158,30 +11158,30 @@ void WaveObjectManager::performSendMulticast (PrismLinearSequencerContext *pPris
         }
         else
         {
-            ++(*pPrismLinearSequencerContext);
+            ++(*pWaveLinearSequencerContext);
         }
     }
 
     if (true == isThisLocationInvolved)
     {
-        status = send (pWaveMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastLocalCallback), pPrismLinearSequencerContext);
+        status = send (pWaveMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastLocalCallback), pWaveLinearSequencerContext);
 
         prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
     }
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
-    pPrismLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
+    pWaveLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
 }
 
 void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
-    WaveSendMulticastContext    *pWaveSendMulticastContext    = dynamic_cast<WaveSendMulticastContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pContext);
+    WaveSendMulticastContext    *pWaveSendMulticastContext    = dynamic_cast<WaveSendMulticastContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     prismAssert (FRAMEWORK_SUCCESS == frameworkStatus, __FILE__, __LINE__);
 
@@ -11201,13 +11201,13 @@ void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frame
         pWaveSendMulticastContext->setMulticastStatus (overallStatus);
     }
 
-    pPrismLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
+    pWaveLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
 }
 
 void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
-    PrismLinearSequencerContext    *pPrismLinearSequencerContext    = reinterpret_cast<PrismLinearSequencerContext *> (pContext);
-    WaveSendMulticastContext       *pWaveSendMulticastContext       = dynamic_cast<WaveSendMulticastContext *> (pPrismLinearSequencerContext->getPPrismAsynchronousContext ());
+    WaveLinearSequencerContext    *pWaveLinearSequencerContext    = reinterpret_cast<WaveLinearSequencerContext *> (pContext);
+    WaveSendMulticastContext       *pWaveSendMulticastContext       = dynamic_cast<WaveSendMulticastContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
     InterLocationMulticastMessage  *pInterLocationMulticastMessage  = dynamic_cast<InterLocationMulticastMessage *> (pWaveMessage);
     set<LocationId>::iterator       locationIterator;
 
@@ -11216,7 +11216,7 @@ void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus fram
 
     set<LocationId>                 remoteLocationsId;
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     pInterLocationMulticastMessage->getLocationsToSend (remoteLocationsId);
 
@@ -11240,7 +11240,7 @@ void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus fram
     delete pInterLocationMulticastMessage;
     pInterLocationMulticastMessage = NULL;
 
-    pPrismLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
+    pWaveLinearSequencerContext->executeNextStep (pWaveSendMulticastContext->getOverallMulticastStatus ());
 }
 
 void WaveObjectManager::getAllOwnedManagedObjectClassNames (vector<string> &ownedManagedObjectClassNames)  const

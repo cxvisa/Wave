@@ -56,23 +56,23 @@ WaveElement &WaveElement::operator = (const WaveElement &prismElement)
  * the transaction will be commited to preserve the semantics, even though if there is
  * no db update by the step and then the reply will happen as usual.
  */
-void WaveElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerSucceededStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerSucceededStep : Entering ...");
 
-    WaveMessage             *pWaveMessage             = pPrismLinearSequencerContext->getPWaveMessage ();
-    PrismAsynchronousContext *pPrismAsynchronousContext = pPrismLinearSequencerContext->getPPrismAsynchronousContext ();
+    WaveMessage             *pWaveMessage             = pWaveLinearSequencerContext->getPWaveMessage ();
+    PrismAsynchronousContext *pPrismAsynchronousContext = pWaveLinearSequencerContext->getPPrismAsynchronousContext ();
 
-    if (true == (pPrismLinearSequencerContext->getIsHoldAllRequested ()))
+    if (true == (pWaveLinearSequencerContext->getIsHoldAllRequested ()))
     {
-        pPrismLinearSequencerContext->unholdAll ();
+        pWaveLinearSequencerContext->unholdAll ();
     }
 
     ResourceId status = FRAMEWORK_SUCCESS;
 
-    if (true == (pPrismLinearSequencerContext->getIsTransactionStartedByMe ()))
+    if (true == (pWaveLinearSequencerContext->getIsTransactionStartedByMe ()))
     {
-        pPrismLinearSequencerContext->setIsTransactionStartedByMe (false);
+        pWaveLinearSequencerContext->setIsTransactionStartedByMe (false);
 
         // commit the transaction to preserve the semantics of the executeSuccessStep and if the transaction
         // has no data to be committed, framework will immediately return without having to go to DB.
@@ -99,66 +99,66 @@ void WaveElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContext
         pPrismAsynchronousContext->callback ();
     }
 
-    delete pPrismLinearSequencerContext;
+    delete pWaveLinearSequencerContext;
 }
 
-void WaveElement::prismLinearSequencerFailedStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerFailedStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerFailedStep : Entering ...");
 
-    WaveMessage             *pWaveMessage             = pPrismLinearSequencerContext->getPWaveMessage ();
-    PrismAsynchronousContext *pPrismAsynchronousContext = pPrismLinearSequencerContext->getPPrismAsynchronousContext ();
+    WaveMessage             *pWaveMessage             = pWaveLinearSequencerContext->getPWaveMessage ();
+    PrismAsynchronousContext *pPrismAsynchronousContext = pWaveLinearSequencerContext->getPPrismAsynchronousContext ();
 
-    if (true == (pPrismLinearSequencerContext->getIsHoldAllRequested ()))
+    if (true == (pWaveLinearSequencerContext->getIsHoldAllRequested ()))
     {
-        pPrismLinearSequencerContext->unholdAll ();
+        pWaveLinearSequencerContext->unholdAll ();
     }
 
-    if (true == (pPrismLinearSequencerContext->getIsTransactionStartedByMe ()))
+    if (true == (pWaveLinearSequencerContext->getIsTransactionStartedByMe ()))
     {
-        pPrismLinearSequencerContext->setIsTransactionStartedByMe (false);
+        pWaveLinearSequencerContext->setIsTransactionStartedByMe (false);
         rollbackTransaction ();
     }
 
     if (NULL != pWaveMessage)
     {
-        pWaveMessage->setCompletionStatus (pPrismLinearSequencerContext->getCompletionStatus ());
+        pWaveMessage->setCompletionStatus (pWaveLinearSequencerContext->getCompletionStatus ());
         reply (pWaveMessage);
     }
     else if (NULL != pPrismAsynchronousContext)
     {
-        pPrismAsynchronousContext->setCompletionStatus (pPrismLinearSequencerContext->getCompletionStatus ());
+        pPrismAsynchronousContext->setCompletionStatus (pWaveLinearSequencerContext->getCompletionStatus ());
         pPrismAsynchronousContext->callback ();
     }
 
-    delete pPrismLinearSequencerContext;
+    delete pWaveLinearSequencerContext;
 }
 
-void WaveElement::prismLinearSequencerStartTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerStartTransactionStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerStartTransactionStep : Entering ...");
 
     if (false == (isTransactionInProgress ()))
     {
-        pPrismLinearSequencerContext->setIsTransactionStartedByMe (true);
+        pWaveLinearSequencerContext->setIsTransactionStartedByMe (true);
 
         startTransaction ();
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveElement::prismLinearSequencerCommitTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerCommitTransactionStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerCommitTransactionStep : Entering ...");
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    if (true == (pPrismLinearSequencerContext->getIsTransactionStartedByMe ()))
+    if (true == (pWaveLinearSequencerContext->getIsTransactionStartedByMe ()))
     {
-        pPrismLinearSequencerContext->setIsTransactionStartedByMe (false);
+        pWaveLinearSequencerContext->setIsTransactionStartedByMe (false);
 
-        WaveObjectManagerCommitTransactionContext commitTransactionContext (pPrismLinearSequencerContext);
+        WaveObjectManagerCommitTransactionContext commitTransactionContext (pWaveLinearSequencerContext);
 
         status = commitTransaction (&commitTransactionContext);
 
@@ -168,7 +168,7 @@ void WaveElement::prismLinearSequencerCommitTransactionStep (PrismLinearSequence
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 /**

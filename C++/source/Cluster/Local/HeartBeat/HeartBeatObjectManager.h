@@ -54,8 +54,8 @@ class HeartBeatObjectManager : public WaveLocalObjectManager
                 void                    showStatistic               (ShowHeartBeatStatMessage *pMessage);
 
                 void                    disconnectFromNodeMessageHandler    (DisconnectFromNodeMessage *pDisconnectFromNodeMessage);
-                void                    validateDisconnectFromNodeRequest   (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                    processDisconnectFromNodeMessage    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                    validateDisconnectFromNodeRequest   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                    processDisconnectFromNodeMessage    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 
                 

@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Database/DatabaseObjectManagerInstallWorker.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -66,24 +66,24 @@ void DatabaseObjectManagerInstallWorker::install (WaveAsynchronousContextForBoot
         reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     m_fullInstallRequried = true;
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void DatabaseObjectManagerInstallWorker::installValidateStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInstallWorker::installValidateStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerInstallWorker::installDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInstallWorker::installDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
         trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManagerInstallWorker::installDatabaseStep : No support for Persistent Store will be provided.");
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -145,20 +145,20 @@ void DatabaseObjectManagerInstallWorker::installDatabaseStep (PrismLinearSequenc
 #endif
     trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManagerInstallWorker::installDatabaseStep : Done.");
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     if (false == m_fullInstallRequried)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -242,20 +242,20 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (PrismLinearSeq
 
     prismSleep (5);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     if (false == m_fullInstallRequried)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -273,20 +273,20 @@ void DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep (PrismLi
     completionfileNew.close ();
     completionfileNew.clear ();
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
     if (false == m_fullInstallRequried)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
@@ -295,7 +295,7 @@ void DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep (PrismLinea
     string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" -o \" -p ") + DatabaseObjectManager::getDatabasePort () + "\" stop > /dev/null";
     system (commandString.c_str ());
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 }

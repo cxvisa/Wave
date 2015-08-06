@@ -27,7 +27,7 @@ class DatabaseObjectManagerExecuteCursorCommandWorker : public WaveWorker
         virtual      ~DatabaseObjectManagerExecuteCursorCommandWorker ();
 
                 void  executeCursorCfgCommandMessageHandler           (DatabaseObjectManagerExecuteCursorCfgCommandMessage *pDatabaseObjectManagerExecuteCursorCfgCommandMessage);
-                void  executeCursorCfgCommandHandler                  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void  executeCursorCfgCommandHandler                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 	
                 void  executeCursorQueryCommandMessageHandler         (DatabaseObjectManagerExecuteCursorQueryCommandMessage *pDatabaseObjectManagerExecuteCursorQueryCommandMessage);
 

@@ -46,7 +46,7 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
 
                                     WaveClientTransportObjectManager                ();
         void                        managementInterfaceMessageHandler               (ManagementInterfaceMessage *pManagementInterfaceMessage);
-        void                        managementInterfaceMessagePostToServerStep      (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void                        managementInterfaceMessagePostToServerStep      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
         void                        lockAccess                                      ();
         void                        unlockAccess                                    ();

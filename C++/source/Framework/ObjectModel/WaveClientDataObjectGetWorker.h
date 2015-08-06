@@ -23,7 +23,7 @@ class WaveClientDataObjectGetWorker : public WaveWorker
 ;
                     void                getDataFromClientHandlerForSendToCluster(WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage);
 
-                    void                sendMessageToAllNodesStep               (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                    void                sendMessageToAllNodesStep               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                     void                sendMessageToAllNodesStepCallback       (WaveSendToClusterContext *pWaveSendToClusterContext);
 

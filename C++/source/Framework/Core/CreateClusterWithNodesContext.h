@@ -7,7 +7,7 @@
 #ifndef CREATECLUSTERWITHNODESCONTEXT_H
 #define CREATECLUSTERWITHNODESCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include <vector>
 #include <map>
@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class CreateClusterWithNodesContext : public PrismLinearSequencerContext
+class CreateClusterWithNodesContext : public WaveLinearSequencerContext
 {
     private :
         bool doesLocationExist (const LocationId &locationId);

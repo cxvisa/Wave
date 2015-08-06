@@ -14,16 +14,16 @@ namespace WaveNs
 
 class WaveObjectManager;
 class PrismAsynchronousContext;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 
 class DatabaseObjectManagerInitializeWorker : public WaveWorker
 {
     private :
                 void initialize                                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-                void initializeCreateObjectRelationalMappingStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void initializeCreateObjectRelationalMappingStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         virtual void zeroize						             (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForBootPhases);
-                void zeroizeDatabaseStep                         (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void zeroizeDatabaseBackupFilesStep              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void zeroizeDatabaseStep                         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void zeroizeDatabaseBackupFilesStep              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

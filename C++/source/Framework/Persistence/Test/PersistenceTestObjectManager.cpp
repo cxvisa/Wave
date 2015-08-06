@@ -7,7 +7,7 @@
 #include "Framework/Persistence/Test/PersistenceTestObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Regression/RegressionTestObjectManager.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Core/Test/FrameworkTestabilityMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Regression/RegressionTestMessage.h"
@@ -48,12 +48,12 @@ void PersistenceTestObjectManager::testRequestHandler (RegressionTestMessage *pR
         reinterpret_cast<PrismLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PersistenceTestObjectManager::simpleTransactionForObjectCreationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceTestObjectManager::simpleTransactionForObjectCreationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PersistenceTestObjectManager::simpleTransactionForObjectCreationStep : Entering ...");
 
@@ -76,7 +76,7 @@ void PersistenceTestObjectManager::simpleTransactionForObjectCreationStep (Prism
     {
         trace (TRACE_LEVEL_ERROR, "PersistenceTestObjectManager::simpleTransactionForObjectCreationStep : Failed to send message to test Persistence.  Status : " + FrameworkToolKit::localize (status));
 
-        pPrismLinearSequencerContext->executeNextStep (status);
+        pWaveLinearSequencerContext->executeNextStep (status);
         return;
     }
     else
@@ -87,7 +87,7 @@ void PersistenceTestObjectManager::simpleTransactionForObjectCreationStep (Prism
         {
             trace (TRACE_LEVEL_ERROR, "PersistenceTestObjectManager::simpleTransactionForObjectCreationStep : Persistence Test failed.  Completion Status : " + FrameworkToolKit::localize (status));
 
-            pPrismLinearSequencerContext->executeNextStep (status);
+            pWaveLinearSequencerContext->executeNextStep (status);
             return;
         }
     }
@@ -120,10 +120,10 @@ void PersistenceTestObjectManager::simpleTransactionForObjectCreationStep (Prism
     }
 
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void PersistenceTestObjectManager::nestedTransactionForObjectCreationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PersistenceTestObjectManager::nestedTransactionForObjectCreationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Starting Simple Nested Transaction Test. More nesting ");
 
@@ -153,7 +153,7 @@ void PersistenceTestObjectManager::nestedTransactionForObjectCreationStep (Prism
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 }

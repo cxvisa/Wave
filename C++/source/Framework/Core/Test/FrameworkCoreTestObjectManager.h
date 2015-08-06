@@ -23,7 +23,7 @@ class FrameworkCoreTestObjectManager : public PrismTestObjectManager
         static  FrameworkCoreTestObjectManager *getInstance                                         ();
         static  WaveServiceId                  getWaveServiceId                                   ();
                 void                            testRequestHandler                                  (RegressionTestMessage *pMessage);
-                void                            frameworkCoreTestFormattedErrorStringValidationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                            frameworkCoreTestFormattedErrorStringValidationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     // Now the data members
 

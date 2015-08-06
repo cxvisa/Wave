@@ -34,7 +34,7 @@ class PersistenceObjectManagerPrintOrmMessage;
 class XPathStringManagedObject;
 class WaveConfigManagedObject;
 class PersistenceObjectManagerAddXPathStringsMessage;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class PersistenceObjectManagerDeleteXPathStringsMessage;
 class PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage;
 class PersistenceObjectManagerResetXPathStringsTimestampsMessage;
@@ -83,7 +83,7 @@ class PersistenceObjectManager : public WaveObjectManager
          static void                        getAllClassNamesMessageStaticHandler                                    (PersistenceObjectManagerGetAllClassNamesMessage *pPersistenceObjectManagerGetAllClassNamesMessage);
 
                 void                        addDelayedTransactionMessageHandler                                     (PersistenceObjectManagerAddDelayedTransactionMessage *pPersistenceObjectManagerAddDelayedTransactionMessage);
-                void                        addDelayedTransactionStep                                               (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                        addDelayedTransactionStep                                               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
     
                 UI32                        isDelayedTransactionsEmpty                                              ();
                 void                        addDelayedTransaction                                                   (const string &delayedSqlTransaction);
@@ -134,15 +134,15 @@ class PersistenceObjectManager : public WaveObjectManager
                 void                        printOrmMessageHandler                                                  (PersistenceObjectManagerPrintOrmMessage *pPersistenceObjectManagerPrintOrmMessage);
 
                 void                        addXPathStringsMessageHandler                                           (PersistenceObjectManagerAddXPathStringsMessage *pPersistenceObjectManagerAddXPathStringsMessage);
-                void                        createXPathStringManagedObjectsStep                                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                        createXPathStringManagedObjectsStep                                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                        xPathStringManagedObjectsCommitCallback                                 (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
                 void                        deleteXPathStringsMessageHandler                                        (PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage);
-                void                        deleteXPathStringManagedObjectsStep                                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                        deleteXPathStringManagedObjectsStep                                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                        getLastUpdateTimestampsForXPathStringsMessageHandler                    (PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage);
-                void                        getLastUpdateTimestampsForXPathStringsStep                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                        getLastUpdateTimestampsForXPathStringsStep                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 void                        resetXPathStringsTimestampsMessageHandler                               (PersistenceObjectManagerResetXPathStringsTimestampsMessage *pPersistenceObjectManagerResetXPathStringsTimestampsMessage);
-                void                        resetXPathStringsTimestampsStep                                         (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                        resetXPathStringsTimestampsStep                                         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         static  void                        setAnyConfigurationChangeTrackingNumber                                 (UI64 &trackingNumber);
         static  UI64                        getAnyConfigurationChangeTrackingNumber                                 ();
                 string                      getWaveConfigSerializedData                                             ();

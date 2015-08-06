@@ -7,7 +7,7 @@
 #ifndef PRISMLINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H
 #define PRISMLINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/ObjectRelationalMapping/OMSpecificSchemaChangeInfoForUpgrade.h"
@@ -19,13 +19,13 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismLinearSequencerContextForUpgradePhase : public PrismLinearSequencerContext
+class WaveLinearSequencerContextForUpgradePhase : public WaveLinearSequencerContext
 {
     private :
     protected :
     public :
-                           PrismLinearSequencerContextForUpgradePhase (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-        virtual           ~PrismLinearSequencerContextForUpgradePhase ();
+                           WaveLinearSequencerContextForUpgradePhase (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+        virtual           ~WaveLinearSequencerContextForUpgradePhase ();
 
 /*
         vector<string>     getNewManagedObjects         () const;

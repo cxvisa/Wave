@@ -7,7 +7,7 @@
 #ifndef DELETENODEONSECONDARYCONTEXT_H
 #define DELETENODEONSECONDARYCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include <vector>
 #include <map>
@@ -17,7 +17,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class DeleteNodeOnSecondaryContext : public PrismLinearSequencerContext
+class DeleteNodeOnSecondaryContext : public WaveLinearSequencerContext
 {
     private :
 

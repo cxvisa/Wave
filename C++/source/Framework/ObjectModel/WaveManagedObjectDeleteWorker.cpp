@@ -139,10 +139,10 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
 
     WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectMessage *> (pWaveMessage);
 
-    WaveManagedObjectDeleteContext *pPrismLinearSequencerContext = reinterpret_cast<WaveManagedObjectDeleteContext *> (pCallerContext);
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    WaveManagedObjectDeleteContext *pWaveLinearSequencerContext = reinterpret_cast<WaveManagedObjectDeleteContext *> (pCallerContext);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
-    WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pPrismLinearSequencerContext->getPWaveMessage ()); 
+    WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ()); 
 
     prismAssert (NULL != pWaveObjectManagerDeleteWaveManagedObjectsMessage, __FILE__, __LINE__);
 
@@ -157,7 +157,7 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
 
     pWaveObjectManagerDeleteWaveManagedObjectsMessage->setlocationsForStatusPropagationVector (pWaveObjectManagerDeleteWaveManagedObjectMessage->getlocationsForStatusPropagationVector ());
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
@@ -184,7 +184,7 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
         delete pWaveMessage;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 void WaveManagedObjectDeleteWorker::deleteHandler (WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage)

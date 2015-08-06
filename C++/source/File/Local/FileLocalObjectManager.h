@@ -7,7 +7,7 @@
 #ifndef FILELOCALOBJECTMANAGER_H
 #define FILELOCALOBJECTMANAGER_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 #include "File/Local/FilePushFileMessage.h"
 #include "File/Local/FileAbortFileTransferMessage.h"
@@ -42,24 +42,24 @@ namespace WaveNs
                void               PushFileMessageHandler                      (FilePushFileMessage *pPushFileMessage);
                void               FileTransferHandshakeMessageHandler         (FileTransferHandshakeMessage *pFileTransferHandshakeMessage);
                void               PushFileFragmentMessageHandler              (FilePushFileFragmentMessage *pPushFileFragmentMessage);
-            // ResourceId         StartFileTransferCallback                   (FrameworkStatus frameworkStatus, FilePushFileFragmentMessage *pMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext);          
-            // ResourceId         TriggerFileTransferHandshake                (PrismLinearSequencerContext *pPrismLinearSequencerContext);            
-            // ResourceId         TriggerFileTransferHandshakeCallback        (FrameworkStatus frameworkStatus, FileTransferHandshakeMessage *pMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext);
+            // ResourceId         StartFileTransferCallback                   (FrameworkStatus frameworkStatus, FilePushFileFragmentMessage *pMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext);          
+            // ResourceId         TriggerFileTransferHandshake                (WaveLinearSequencerContext *pWaveLinearSequencerContext);            
+            // ResourceId         TriggerFileTransferHandshakeCallback        (FrameworkStatus frameworkStatus, FileTransferHandshakeMessage *pMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext);
                         
                void               StartFileTransferCallback                   (WaveSendToClusterContext *pWaveSendToClusterContext);
-               ResourceId         TriggerAsyncFileTransferHandshake           (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               ResourceId         TriggerAsyncFileTransferHandshake           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                void               TriggerFileTransferHandshakeCallback        (WaveSendToClusterContext *pWaveSendToClusterContext);
 
                // More private methods.
-               ResourceId         ValidateInputs                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               ResourceId         ValidateInputs                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
-               void               validateLocationIdAndVersion				  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-               void               validateTransferFlag						  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-               void               addToIncomingQueue						  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               void               validateLocationIdAndVersion				  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+               void               validateTransferFlag						  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+               void               addToIncomingQueue						  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
-               ResourceId         StartAsyncFileTransfer                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-               ResourceId         ProcessFileFragmentMessage                  (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-               ResourceId         ProcessAbortFileTransferMessage             (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               ResourceId         StartAsyncFileTransfer                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+               ResourceId         ProcessFileFragmentMessage                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+               ResourceId         ProcessAbortFileTransferMessage             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                ResourceId         sendFileToHaPeer                            (const string &fthandle, const string &sourceFileName, const string &destinationFileName, const UI32 &fileSize);
 
@@ -71,18 +71,18 @@ namespace WaveNs
                ResourceId         pushFileToHaPeerSendFileStep                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
 
                void               FileDeleteRequestFromServiceHandler         (FileDeleteRequestMessage *pFileDeleteRequestMessage);
-               void               DeleteValidateStep                          ( PrismLinearSequencerContext *pPrismLinearSequencerContext ); 
-               void               DeleteRequestFileTransferHandshake          (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               void               DeleteValidateStep                          ( WaveLinearSequencerContext *pWaveLinearSequencerContext ); 
+               void               DeleteRequestFileTransferHandshake          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                void               DeleteRequestFileTransferHandshakeCallback  (WaveSendToClusterContext *pWaveSendToClusterContext);    
-               void               sendDeleteMessageToAll                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);  
+               void               sendDeleteMessageToAll                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);  
                void               sendDeleteMessageToAllCallback              (WaveSendToClusterContext *pWaveSendToClusterContext); 
 
                void               DeleteFileMessageHandler                    (FileDeleteFileMessage *pFileDeleteFileMessage);
-               void               DeleteFileStep                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               void               DeleteFileStep                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                ResourceId         sendDeleteFileToHAPeer                      ( const string &filename, const UI32 &transferFlag );   
 
                void               DeleteFileOnHaPeerMessageHandler            (FileDeleteFileToHaPeerMessage *pFileDeleteFileToHaPeerMessage);
-               void               DeleteFileHaPeerStep                        (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+               void               DeleteFileHaPeerStep                        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                SI32               DeleteFile                                  (const string &filename);        
 
         protected:

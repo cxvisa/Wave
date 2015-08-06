@@ -7,7 +7,7 @@
 #ifndef FRAMEWORKPERSISTENCETESTCONTEXT_H
 #define FRAMEWORKPERSISTENCETESTCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 #include <vector>
@@ -18,7 +18,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class PrismTestManagedObject1;
 class PrismTestManagedObject2;
 class PrismTestManagedObject3;
@@ -30,7 +30,7 @@ class WaveTestManagedObject10;
 class WaveTestManagedObject11;
 class WaveTestManagedObject12;
 
-class FrameworkPersistenceTestContext : public PrismLinearSequencerContext
+class FrameworkPersistenceTestContext : public WaveLinearSequencerContext
 {
     private :
     protected :

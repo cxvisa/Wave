@@ -49,7 +49,7 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
 
                                     ManagementInterfaceObjectManager           ();
         void                        managementInterfaceMessageHandler          (ManagementInterfaceMessage *pManagementInterfaceMessage);
-        void                        managementInterfaceMessagePostToClientStep (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+        void                        managementInterfaceMessagePostToClientStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
         void                        lockAccess                                 ();
         void                        unlockAccess                               ();
@@ -77,7 +77,7 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
         void                        sendTimerExpiredCallback                   (TimerHandle timerHandle, void *pContext);
         void                        managementInterfaceClientListHandler       (ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage);
         virtual     WaveMessage    *createMessageInstance                     (const UI32 &operationCode);
-        void                        getClientsInformation                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);    
+        void                        getClientsInformation                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);    
     
     protected :
     public :

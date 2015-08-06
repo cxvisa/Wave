@@ -9,7 +9,7 @@
 #include "Framework/OsLayer/PrismOsLayer.h"
 #include "Framework/Core/PrismFrameworkObjectManager.h"
 #include "Framework/Core/PrismFrameworkObjectManagerInitializeWorker.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Core/SecondaryNodeClusterContext.h"
 #include "Framework/Core/SecondaryNodeClusterPhase2Context.h"
 #include "Framework/Core/SecondaryNodeClusterPhase3Context.h"
@@ -3518,7 +3518,7 @@ void PrismFrameworkObjectManager::updateLocationRoleStepInPhase1 (SecondaryNodeC
     }
 }
 
-void PrismFrameworkObjectManager::rollbackNodeIfRequiredStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     LocationRole                           thisLocationRole                       = m_pThisLocation->getLocationRole ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
@@ -3558,7 +3558,7 @@ void PrismFrameworkObjectManager::rollbackNodeIfRequiredStep (PrismLinearSequenc
         
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
@@ -4710,17 +4710,17 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbySte
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void PrismFrameworkObjectManager::primaryNodeClusterSuccessStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::primaryNodeClusterSuccessStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    PrismFrameworkObjectManager::prismLinearSequencerSucceededStep (pPrismLinearSequencerContext);
+    PrismFrameworkObjectManager::prismLinearSequencerSucceededStep (pWaveLinearSequencerContext);
 
     setPrimaryNodeClusterOperationFlag (false);
     resumePostponedMessages ();
 }
 
-void PrismFrameworkObjectManager::primaryNodeClusterFailureStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::primaryNodeClusterFailureStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    PrismFrameworkObjectManager::prismLinearSequencerFailedStep (pPrismLinearSequencerContext);
+    PrismFrameworkObjectManager::prismLinearSequencerFailedStep (pWaveLinearSequencerContext);
 
     setPrimaryNodeClusterOperationFlag (false);
     resumePostponedMessages ();
@@ -4778,7 +4778,7 @@ void PrismFrameworkObjectManager::secondaryNodeClusterFailureStep (SecondaryNode
     resumePostponedMessages ();
 }
 
-void PrismFrameworkObjectManager::startClusterPhaseTimer (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::startClusterPhaseTimer (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, " PrismFrameworkObjectManager::startClusterPhaseTimer ");
 
@@ -4792,10 +4792,10 @@ void PrismFrameworkObjectManager::startClusterPhaseTimer (PrismLinearSequencerCo
 
     startTimer (m_clusterPhaseTimerHandler, 300000, reinterpret_cast<PrismTimerExpirationHandler> (&PrismFrameworkObjectManager::clusterPhaseTimerCallback));
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void PrismFrameworkObjectManager::stopClusterPhaseTimer(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::stopClusterPhaseTimer(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "Stopping Cluster Phase Timer as expected phase is received");
 
@@ -4806,7 +4806,7 @@ void PrismFrameworkObjectManager::stopClusterPhaseTimer(PrismLinearSequencerCont
         m_clusterPhaseTimerHandler = 0;
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHandle, void * pContext)
@@ -9718,13 +9718,13 @@ void PrismFrameworkObjectManager::primaryChangedHaPeerPhase1MessageHandler (Fram
 
 }
 
-void PrismFrameworkObjectManager::primaryChangedValidateStep ( PrismLinearSequencerContext *pPrismLinearSequencerContext )
+void PrismFrameworkObjectManager::primaryChangedValidateStep ( WaveLinearSequencerContext *pWaveLinearSequencerContext )
 {
 
     if (getNumberOfLineCardPostBootCurrentlyRunning ())
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::primaryChangedValidateStep :LC Postboot in progress. Returning error.");
-        pPrismLinearSequencerContext->executeNextStep (FRAMEWORK_LINECARD_POSTBOOT_IN_PROGRESS);
+        pWaveLinearSequencerContext->executeNextStep (FRAMEWORK_LINECARD_POSTBOOT_IN_PROGRESS);
         return;
     }    
 
@@ -9732,12 +9732,12 @@ void PrismFrameworkObjectManager::primaryChangedValidateStep ( PrismLinearSequen
 
     if ( LOCATION_SECONDARY == locationRole)
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     }
     else
     {
         trace (TRACE_LEVEL_WARN, string("PrismFrameworkObjectManager::primaryChangedValidateStep : received Message in incorrect location role : ") + FrameworkToolKit::localize(locationRole) + (", return with error"));
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
     }
 }
 
@@ -10130,11 +10130,11 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     reply (pFrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage);
 }
 
-void PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep : Starting ...");
 
-    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
     prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
@@ -10149,7 +10149,7 @@ void PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (Pr
 
     if (!isSchemaReceivedFromPrimaryCompatible (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds))
     {
-        pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR_SCHEMA_MISMATCH);
+        pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR_SCHEMA_MISMATCH);
         return;
     }
 
@@ -10189,16 +10189,16 @@ void PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (Pr
     //Also Disconnect From Old Primary
     disconnectFromLocation (oldPrimaryLocationId);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 
 }
 
-void PrismFrameworkObjectManager::primaryChangedRemoveOldPrimaryLocationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::primaryChangedRemoveOldPrimaryLocationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager:: primaryChangedRemoveOldPrimaryLocationStep : Starting ...");
 
 
-    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
     prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
@@ -10209,7 +10209,7 @@ void PrismFrameworkObjectManager::primaryChangedRemoveOldPrimaryLocationStep (Pr
         removeKnownLocation(oldPrimaryLocationId);
         tracePrintf (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager:: primaryChangedRemoveOldPrimaryLocationStep :Removing the old primary location id %u due to controlled failover", oldPrimaryLocationId);
     }
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManager::primaryChangedUpdatePrimaryDetailsStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
@@ -10493,27 +10493,27 @@ void PrismFrameworkObjectManager::broadcastPrimaryChangedEventForPlugins (Second
     pSecondaryNodeClusterPhase3Context->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void  PrismFrameworkObjectManager::savePrismConfigurationStep(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void  PrismFrameworkObjectManager::savePrismConfigurationStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace(TRACE_LEVEL_DEVEL,"PrismFrameworkObjectManager::savePrismConfigurationStep: Entering");
     FrameworkToolKit::savePrismConfiguration(true);
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 
 }
 
-void PrismFrameworkObjectManager::sendReplyBackToClusterGlobalService  (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::sendReplyBackToClusterGlobalService  (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    //WaveMessage *pMessage = pPrismLinearSequencerContext->getPWaveMessage ();
+    //WaveMessage *pMessage = pWaveLinearSequencerContext->getPWaveMessage ();
 
 //    pMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
 //    reply (pMessage);
 
-//    pPrismLinearSequencerContext->setPWaveMessage (NULL);
+//    pWaveLinearSequencerContext->setPWaveMessage (NULL);
 
-    pPrismLinearSequencerContext->unholdAll ();
+    pWaveLinearSequencerContext->unholdAll ();
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 FrameworkSequenceGenerator &PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ()
@@ -10868,15 +10868,15 @@ void PrismFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
     
 }
-void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage = dynamic_cast<FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+    FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage = dynamic_cast<FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
     vector<string>     failedIpAddresses  = pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage->getFailedIpAddresses();
     vector<LocationId> failedLocationIds  = pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage->getFailedLocationIds ();
@@ -10892,7 +10892,7 @@ void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(PrismLinearS
     {
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler::Initiating Primary Controlled Failover.");
 
-        pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback), pPrismLinearSequencerContext);
+        pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback), pWaveLinearSequencerContext);
 
         prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
         prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -10905,7 +10905,7 @@ void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(PrismLinearS
     {
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler::Initiating Primary Un-Controlled Failover.");
 
-        pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pPrismLinearSequencerContext);
+        pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
         prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
         prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -10958,14 +10958,14 @@ void PrismFrameworkObjectManager::newPrincipalSelectedAfterFaioverMessageHandler
     
     setPrimaryNodeClusterOperationFlag (true);
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerNewPrincipalEstablishedMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerNewPrincipalEstablishedMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
     
 }
 
-void PrismFrameworkObjectManager::validateNewPrincipalSelection (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::validateNewPrincipalSelection (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
   trace(TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::validateNewPrincipalSelection..Entering");
 
@@ -10978,25 +10978,25 @@ void PrismFrameworkObjectManager::validateNewPrincipalSelection (PrismLinearSequ
 
   if ((true == PrismFrameworkObjectManager::getSecondaryNodeClusterCreationFlag ()) || (LOCATION_PRIMARY_UNCONFIRMED == locationRole) || (LOCATION_SECONDARY_UNCONFIRMED == locationRole))
   {
-      pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR_CLUSTER_OPERATION_IN_PROGRESS);
+      pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR_CLUSTER_OPERATION_IN_PROGRESS);
       return;
   }
 
   prismAssert(m_pThisLocation->getLocationRole () == LOCATION_SECONDARY, __FILE__, __LINE__);
 
-  FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+  FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
   prismAssert(NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
 
-  pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+  pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 
 
 }
 
-void PrismFrameworkObjectManager::processNewPrincipalEstablishedMessage (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
-   FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+   FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
    prismAssert (NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
 
@@ -11011,7 +11011,7 @@ void PrismFrameworkObjectManager::processNewPrincipalEstablishedMessage (PrismLi
    // Activate the Secondary Uncontrolled Failover Agent.
   
 
-    PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pPrismLinearSequencerContext);
+    PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
     prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -11043,10 +11043,10 @@ void PrismFrameworkObjectManager::disconnectFromAllNodesHandler (FrameworkObject
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllNodesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllNodesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
 void PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler (FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage* pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage)
@@ -11057,15 +11057,15 @@ void PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler (F
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerSucceededStep),
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerFailedStep)
     };
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 
 
 }
 
-void PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootStep");
 
@@ -11073,10 +11073,10 @@ void PrismFrameworkObjectManager::establishPrincipalAfterClusterRebootStep (Pris
     
     FrameworkToolKit::savePrismConfiguration (true);
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
-void PrismFrameworkObjectManager::disconnectAllKnownLocationStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::disconnectAllKnownLocationStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     vector<LocationId> connectedLocationsVector;
     LocationId         nodeLocationId;
@@ -11095,7 +11095,7 @@ void PrismFrameworkObjectManager::disconnectAllKnownLocationStep (PrismLinearSeq
         trace (TRACE_LEVEL_INFO, string ("PrismFrameworkObjectManager::disconnectAllKnownLocationStep ")+nodeLocationId);
     }
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManager::invalidateClientStreamingSocketForRemoteLocation (LocationId locationId)
@@ -11131,14 +11131,14 @@ void PrismFrameworkObjectManager::resetNodeForClusterMergeHandler (FrameworkObje
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerResetNodeToUnconfirmRole, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerResetNodeToUnconfirmRole, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 
 }
 
-void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     vector<LocationId> failedLocationIds;
     LocationId         thisLocationId = FrameworkToolKit::getThisLocationId ();
@@ -11148,7 +11148,7 @@ void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (
     PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = NULL;
 
 
-    pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCallback), pPrismLinearSequencerContext);
+    pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCallback), pWaveLinearSequencerContext);
 
     prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -11172,18 +11172,18 @@ void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCa
 {
     prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId                   status                       = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pPrismLinearSequencerContext, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 
-void PrismFrameworkObjectManager::configureNodeForResetAndStartServices (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::configureNodeForResetAndStartServices (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
@@ -11208,16 +11208,16 @@ void PrismFrameworkObjectManager::configureNodeForResetAndStartServices (PrismLi
         prismAssert (false, __FILE__, __LINE__);
     }
     
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
-void PrismFrameworkObjectManager::disconnectFromAllNodes (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::disconnectFromAllNodes (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::disconnectFromAllNodes Entering....");
 
     disconnectFromAllConnectedNodes ();
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManager::disconnectFromAllConnectedNodes ()
@@ -11236,7 +11236,7 @@ void PrismFrameworkObjectManager::disconnectFromAllConnectedNodes ()
     }
 }
 
-void PrismFrameworkObjectManager::stopHeartBeatToNode (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::stopHeartBeatToNode (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     LocationRole locationRole = m_pThisLocation->getLocationRole ();
     LocationId   locationId   = 0;
@@ -11316,7 +11316,7 @@ void PrismFrameworkObjectManager::stopHeartBeatToNode (PrismLinearSequencerConte
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
 bool PrismFrameworkObjectManager::getIsPostBootNeededDuringRejoin ()
@@ -11364,13 +11364,13 @@ void PrismFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler
     reply (pFrameworkObjectManagerRemoveKnownLocationsMessage);
 }
 
-void PrismFrameworkObjectManager::removePreviousDatabaseBackupFile (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::removePreviousDatabaseBackupFile (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     string commandToRemoveDatabaseBackupFile = string ("rm -rf " + FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + FrameworkToolKit::getDatabaseBackupFileName2 ());
 
     system (commandToRemoveDatabaseBackupFile.c_str ());
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismFrameworkObjectManager::setGetInstancesFunction (GetInstancesFunction getInstancesFunction)
@@ -11451,15 +11451,15 @@ void PrismFrameworkObjectManager::disconnectFromAllInstanceClientsHandler (Frame
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->holdAll ();
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->holdAll ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PrismFrameworkObjectManager::disconnectAllInstanceClientsStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismFrameworkObjectManager::disconnectAllInstanceClientsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-   FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage = dynamic_cast<FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *>(pPrismLinearSequencerContext->getPWaveMessage());
+   FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage = dynamic_cast<FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
     string     clientIpAddress = pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage->getClientIpAddress();
 
@@ -11467,7 +11467,7 @@ void PrismFrameworkObjectManager::disconnectAllInstanceClientsStep (PrismLinearS
 
     trace (TRACE_LEVEL_INFO, string ("PrismFrameworkObjectManager::disconnectAllInstanceClientsStep: ")+clientIpAddress);
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 // ZEROIZE_FOR_FIPS

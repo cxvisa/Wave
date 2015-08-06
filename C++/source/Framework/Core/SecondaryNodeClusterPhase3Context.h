@@ -7,7 +7,7 @@
 #ifndef SECONDARYNODECLUSTERPHASE3CONTEXT_H
 #define SECONDARYNODECLUSTERPHASE3CONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/Core/SecondaryNodeClusterContext.h"
 

@@ -7,13 +7,13 @@
 #ifndef ZEROIZEFORFIPSLINEARSEQUENCERCONTEXT_H
 #define ZEROIZEFORFIPSLINEARSEQUENCERCONTEXT_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class ZeroizeForFIPSLinearSequencerContext : public PrismLinearSequencerContext
+class ZeroizeForFIPSLinearSequencerContext : public WaveLinearSequencerContext
 {
     protected:
     public:

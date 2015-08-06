@@ -33,12 +33,12 @@ void PrismPostbootWorker::postbootHandler (PrismPostbootObjectManagerMessage *pP
         reinterpret_cast<PrismLinearSequencerStep> (&PrismPostbootWorker::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPrismPostbootObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPrismPostbootObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void PrismPostbootWorker::postbootBootWorkersStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismPostbootWorker::postbootBootWorkersStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismPostbootWorker::postbootBootWorkersStep : Entering ...");
 
@@ -48,33 +48,33 @@ void PrismPostbootWorker::postbootBootWorkersStep (PrismLinearSequencerContext *
     UI32                                i = 0;
     PrismPostbootObjectManagerMessage   *pPrismPostbootObjectManagerMessage;
 
-    ++(*pPrismLinearSequencerContext);
+    ++(*pWaveLinearSequencerContext);
 
     for (i = 0; i < numberOfWorkers; i++)
     {
-        WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase = new WaveAsynchronousContextForPostbootPhase (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismPostbootWorker::postbootBootWorkersStepCallback), pPrismLinearSequencerContext);
-        pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pPrismLinearSequencerContext->getPWaveMessage());
+        WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase = new WaveAsynchronousContextForPostbootPhase (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismPostbootWorker::postbootBootWorkersStepCallback), pWaveLinearSequencerContext);
+        pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pWaveLinearSequencerContext->getPWaveMessage());
         pWaveAsynchronousContextForPostbootPhase->setPassNum (pPrismPostbootObjectManagerMessage->getPassNum());
         pWaveAsynchronousContextForPostbootPhase->setPassName (pPrismPostbootObjectManagerMessage->getPassName());
         pWaveAsynchronousContextForPostbootPhase->setSlotNum (pPrismPostbootObjectManagerMessage->getSlotNum());
         pWaveAsynchronousContextForPostbootPhase->setRecoveryType (pPrismPostbootObjectManagerMessage->getRecoveryType());
 
-        ++(*pPrismLinearSequencerContext);
+        ++(*pWaveLinearSequencerContext);
         waveWorkers[i]->postboot (pWaveAsynchronousContextForPostbootPhase);
     }
 
-    --(*pPrismLinearSequencerContext);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    --(*pWaveLinearSequencerContext);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void PrismPostbootWorker::postbootBootWorkersStepCallback (WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismPostbootWorker::postbootBootWorkersStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForPostbootPhase->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForPostbootPhase->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForPostbootPhase->getCompletionStatus ();
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     delete pWaveAsynchronousContextForPostbootPhase;
 
@@ -84,17 +84,17 @@ void PrismPostbootWorker::postbootBootWorkersStepCallback (WaveAsynchronousConte
         prismAssert (false, __FILE__, __LINE__);
     }
 
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void PrismPostbootWorker::postbootBootSelfStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void PrismPostbootWorker::postbootBootSelfStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     PrismPostbootObjectManagerMessage   *pPrismPostbootObjectManagerMessage;
 
     trace (TRACE_LEVEL_DEVEL, "PrismPostbootWorker::postbootBootSelfStep : Entering ...");
 
-    WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase = new WaveAsynchronousContextForPostbootPhase (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismPostbootWorker::postbootBootSelfStepCallback), pPrismLinearSequencerContext);
-    pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pPrismLinearSequencerContext->getPWaveMessage());
+    WaveAsynchronousContextForPostbootPhase *pWaveAsynchronousContextForPostbootPhase = new WaveAsynchronousContextForPostbootPhase (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismPostbootWorker::postbootBootSelfStepCallback), pWaveLinearSequencerContext);
+    pPrismPostbootObjectManagerMessage = reinterpret_cast<PrismPostbootObjectManagerMessage*> (pWaveLinearSequencerContext->getPWaveMessage());
     pWaveAsynchronousContextForPostbootPhase->setPassNum (pPrismPostbootObjectManagerMessage->getPassNum());
     pWaveAsynchronousContextForPostbootPhase->setPassName (pPrismPostbootObjectManagerMessage->getPassName());
     pWaveAsynchronousContextForPostbootPhase->setSlotNum (pPrismPostbootObjectManagerMessage->getSlotNum());
@@ -108,11 +108,11 @@ void PrismPostbootWorker::postbootBootSelfStepCallback (WaveAsynchronousContextF
 {
     trace (TRACE_LEVEL_DEVEL, "PrismPostbootWorker::postbootBootSelfStepCallback : Entering ...");
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = reinterpret_cast<PrismLinearSequencerContext *> (pWaveAsynchronousContextForPostbootPhase->getPCallerContext ());
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveAsynchronousContextForPostbootPhase->getPCallerContext ());
     ResourceId                 status                     = pWaveAsynchronousContextForPostbootPhase->getCompletionStatus ();
 
     delete pWaveAsynchronousContextForPostbootPhase;
-    pPrismLinearSequencerContext->executeNextStep (status);
+    pWaveLinearSequencerContext->executeNextStep (status);
 }
 
 }

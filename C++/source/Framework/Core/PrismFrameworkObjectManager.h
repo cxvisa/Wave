@@ -18,7 +18,7 @@ namespace WaveNs
 
 class PrismFrameworkObjectManagerInitializeWorker;
 class PrismFrameworkConfigurationWorker;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class PrismInitializeObjectManagerMessage;
 class LocationBase;
 class PrismCreateClusterWithNodesMessage;
@@ -151,12 +151,12 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 void          createClusterWithNodesSendValidationResultsStep                  (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          createClusterWithNodesSendListOfSecondariesToAllNodesStep        (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          createClusterWithNodesSendListOfSecondariesToAllNodesCallback    (FrameworkStatus frameworkStatus, FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage, void *pContext);
-                void          sendReplyBackToClusterGlobalService                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          sendReplyBackToClusterGlobalService                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          startHeartBeatToSecondaryNodes                                   (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          broadcastNewNodesAddedEventOnPrimaryStep                         (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          configureSecondaryNodeMessageHandler                             (PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage);
                 void          configureSecondaryNodeHaPeerMessageHandler                       (PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage);
-                void          rollbackNodeIfRequiredStep                                       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          rollbackNodeIfRequiredStep                                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          prepareNodeForAddNodeIfRequired                                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          prepareSecondaryNodeForAddNodeIfRequiredCallback                 (PrismAsynchronousContext *pPrismAsynchronousContext);
                 void          preparePrimaryNodeForAddNodeIfRequiredCallBack                   (DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext);
@@ -321,15 +321,15 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
 
                 void          primaryChangedMessageHandler                                     (FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage);
                 void          primaryChangedHaPeerMessageHandler                               (FrameworkObjectManagerPrimaryChangedHaPeerMessage *pFrameworkObjectManagerPrimaryChangedHaPeerMessage);
-                void          primaryChangedValidateStep                                       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          primaryChangedValidateStep                                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          primaryChangedNotifyHaPeerStep                                   (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          primaryChangedNotifyHaPeerMessageCallback                        (FrameworkStatus frameworkStatus, FrameworkObjectManagerPrimaryChangedHaPeerMessage *pFrameworkObjectManagerPrimaryChangedHaPeerMessage, void *pContext);
                 void          primaryChangedHaPeerPrePhaseStep                                 (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          primaryChangedHaPeerPrePhaseCallback                             (FrameworkStatus frameworkStatus, FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, void *pContext);
                 void          primaryChangedHaPeerPostPhaseStep                                (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
                 void          primaryChangedHaPeerPostPhaseCallback                            (FrameworkStatus frameworkStatus, FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, void *pContext);
-                void          primaryChangedStopHeartBeatToOldPrimayStep                       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void          primaryChangedRemoveOldPrimaryLocationStep                       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          primaryChangedStopHeartBeatToOldPrimayStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          primaryChangedRemoveOldPrimaryLocationStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          primaryChangedUpdatePrimaryDetailsStep                           (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          primaryChangedEmptyDatabaseStep                                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          primaryChangedLoadDatabaseFromPrimaryDatabaseStep                (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
@@ -339,16 +339,16 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 void          primaryChangedPhase3MessageHandler                               (FrameworkObjectManagerPrimaryChangedPhase3Message *pFrameworkObjectManagerPrimaryChangedPhase3Message);
                 void          primaryChangedHaPeerPhase3MessageHandler                         (FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message);
                 void          prepareStandbyAfterClusterPhaseSync                              (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
-                void          savePrismConfigurationStep                                       (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          savePrismConfigurationStep                                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          resetNodeForClusterMergeHandler                                  (FrameworkObjectManagerResetNodeToUnconfirmRole *pFrameworkObjectManagerResetNodeToUnconfirmRole);
-                void          stopHeartBeatToNode                                              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void          disconnectFromAllNodes                                           (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          stopHeartBeatToNode                                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          disconnectFromAllNodes                                           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          disconnectFromAllConnectedNodes                                  ();
-                void          resetNodeShutdownServicesStep                                    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void          configureNodeForResetAndStartServices                            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void          triggerUncontrolledFailoverForRemainingNodes                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          resetNodeShutdownServicesStep                                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          configureNodeForResetAndStartServices                            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          triggerUncontrolledFailoverForRemainingNodes                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          triggerUncontrolledFailoverForRemainingNodesCallback             (PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext);
-                void          removePreviousDatabaseBackupFile                                 (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          removePreviousDatabaseBackupFile                                 (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 void          startExternalStateSynchronizationHandler                         (FrameworkObjectManagerStartExternalStateSynchronizationMessage *pFrameworkObjectManagerStartExternalStateSynchronizationMessage);
                 void          startSlotFailoverHandler                                         (FrameworkObjectManagerStartSlotFailoverMessage *pFrameworkObjectManagerStartSlotFailoverMessage);
@@ -369,8 +369,8 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
 
         virtual WaveMessage *createMessageInstance                                            (const UI32 &operationCode);
                 void          secondaryNodeClusterFailureStep                                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
-                void          primaryNodeClusterSuccessStep                                    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void          primaryNodeClusterFailureStep                                    (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          primaryNodeClusterSuccessStep                                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          primaryNodeClusterFailureStep                                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          cleanupManageObject                                              (LocationId locationId);
                 void          deleteObjects                                                    (vector<WaveManagedObject *> *pResults);
 
@@ -421,8 +421,8 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 string        getNodeReadyForAllCommandsTimeStamp                              ();
 
                 void          generateTimeStamp                                                (string & timeString);
-                void          startClusterPhaseTimer                                           (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void          stopClusterPhaseTimer                                            (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void          startClusterPhaseTimer                                           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          stopClusterPhaseTimer                                            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          clusterPhaseTimerCallback                                        (TimerHandle timerHandle, void * pContext);
 
                 void          createDatabaseBackupBuffer                                       (char * &pDatabaseBackupBuffer, SI32 &sizeOfBackupFile);
@@ -523,11 +523,11 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 ResourceId                   getStartupFileType                                    () const;
 
                 void                         newPrincipalSelectedAfterFaioverMessageHandler        (FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage);
-                void                         validateNewPrincipalSelection                         (PrismLinearSequencerContext *pPrismLinearSequencerContext);
-                void                         processNewPrincipalEstablishedMessage                 (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                         validateNewPrincipalSelection                         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                         processNewPrincipalEstablishedMessage                 (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
                 void                         secondaryNodeFailureNotificationMessageHandler        (FrameworkObjectManagerSecondaryNodeFailureNotificationMessage *pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage);
-                void                         processSecondeyNodeFailureMessage                     (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                         processSecondeyNodeFailureMessage                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
 
                 bool                         getSecondaryNodeClusterCreationFlag                   ();
@@ -539,14 +539,14 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 void                         resumePostponedMessages                               ();
 
                 void                         disconnectFromAllNodesHandler                         (FrameworkObjectManagerDisconnectFromAllNodesMessage *pFrameworkObjectManagerDisconnectFromAllNodesMessage);
-                void                         disconnectAllKnownLocationStep                        (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                         disconnectAllKnownLocationStep                        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                         establishPrincipalAfterClusterRebootHandler           (FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage* pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage);
-                void                         establishPrincipalAfterClusterRebootStep              (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                         establishPrincipalAfterClusterRebootStep              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                  
                 void                         invalidateClientStreamingSocketForRemoteLocation      (LocationId locationId);
         static  void                         disconnectFromAllKnownLocations                       (); 
                 void                         disconnectFromAllInstanceClientsHandler 			   (FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage);
-                void                         disconnectAllInstanceClientsStep                      (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+                void                         disconnectAllInstanceClientsStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                         prepareNodeForWarmRecoveryWithDefaultConfiguration    (FrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration *pFrameworkObjectManagerPrepareForWarmRecoveryWithDefaultConfiguration);
         static  void                         setGetInstancesFunction                               (GetInstancesFunction getInstancesFunction);
         static  void                         setGetThisSlotInstanceFunction                        (GetThisSlotInstanceFunction getThisSlotInstanceFunction);

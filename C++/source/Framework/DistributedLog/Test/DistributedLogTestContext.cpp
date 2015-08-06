@@ -10,7 +10,7 @@ namespace WaveNs
 {
 
 DistributedLogTestContext::DistributedLogTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
     m_originalMaxAllowedLogEntries  (0),
     m_currentMaxAllowedLogEntries   (0),
     m_firstLogId                    (0),

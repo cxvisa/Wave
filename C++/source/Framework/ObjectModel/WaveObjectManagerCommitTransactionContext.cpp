@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/ObjectModel/WaveObjectManagerCommitTransactionContext.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
 
 namespace WaveNs
@@ -16,8 +16,8 @@ WaveObjectManagerCommitTransactionContext::WaveObjectManagerCommitTransactionCon
 {
 }
 
-WaveObjectManagerCommitTransactionContext::WaveObjectManagerCommitTransactionContext (PrismLinearSequencerContext *pPrismLinearSequencerContext) :
-    m_isADelayedCommitTransaction (pPrismLinearSequencerContext->getIsADelayedCommitTransaction ())
+WaveObjectManagerCommitTransactionContext::WaveObjectManagerCommitTransactionContext (WaveLinearSequencerContext *pWaveLinearSequencerContext) :
+    m_isADelayedCommitTransaction (pWaveLinearSequencerContext->getIsADelayedCommitTransaction ())
 {
 }
 

@@ -7,7 +7,7 @@
 #include "ManagementInterface/ManagementInterfaceObjectManager.h"
 #include "ManagementInterface/ManagementInterfaceReceiverObjectManager.h"
 #include "ManagementInterface/ManagementInterfaceTypes.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -199,9 +199,9 @@ void ManagementInterfaceObjectManager::managementInterfaceMessageHandler (Manage
         reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
 void ManagementInterfaceObjectManager::managementInterfaceClientListHandler (ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage)
@@ -213,14 +213,14 @@ void ManagementInterfaceObjectManager::managementInterfaceClientListHandler (Man
         reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
     };
  
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pManagementInterfaceClientListMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceClientListMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
  
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }    
 
-void ManagementInterfaceObjectManager::getClientsInformation (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void ManagementInterfaceObjectManager::getClientsInformation (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage = dynamic_cast<ManagementInterfaceClientListMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage = dynamic_cast<ManagementInterfaceClientListMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     
     prismAssert( NULL != pManagementInterfaceClientListMessage , __FILE__ , __LINE__);
 
@@ -228,16 +228,16 @@ void ManagementInterfaceObjectManager::getClientsInformation (PrismLinearSequenc
 
     pManagementInterfaceClientListMessage->setConnectedClients (clientsConnected);
      
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     lockAccess1 ();
 
     trace (TRACE_LEVEL_DEVEL, "ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep : Starting ...");
 
-    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pPrismLinearSequencerContext->getPWaveMessage ());
+    ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
     prismAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__); 
 
@@ -319,8 +319,8 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
 
     unlockAccess1 ();
 
-    pPrismLinearSequencerContext->setPWaveMessage (NULL);
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->setPWaveMessage (NULL);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void ManagementInterfaceObjectManager::sendTimerExpiredCallback (TimerHandle timerHandle, void *pContext)

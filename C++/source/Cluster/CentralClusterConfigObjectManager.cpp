@@ -14,7 +14,7 @@
 #include "Framework/Utils/StringUtils.h"
 #include "Cluster/NodeManagedObject.h"
 #include "Cluster/PrismCluster.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Cluster/ClusterDeleteContext.h"
 #include "Cluster/ClusterFailoverContext.h"

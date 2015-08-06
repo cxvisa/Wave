@@ -8,12 +8,12 @@
 #define WAVEDEBUGINFORMATIONCONTEXT_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
 
-class WaveDebugInformationContext : public PrismLinearSequencerContext
+class WaveDebugInformationContext : public WaveLinearSequencerContext
 {
     private :
     protected :

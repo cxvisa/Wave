@@ -10,7 +10,7 @@ namespace WaveNs
 {
 
 FrameworkLocalMessagingTestContext::FrameworkLocalMessagingTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_remoteLocationId          (0),
       m_numberOfMessagesToSend    (0),
       m_numberOfMessagesSend      (0)

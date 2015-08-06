@@ -93,12 +93,12 @@ void FileLocalMessagingTestObjectManager::testRequestHandler (RegressionTestMess
         reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilenameTest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilenameTest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
           
           trace (TRACE_LEVEL_INFO, "Starting Synchronous Messaging for Push File with Invalid Filename.");
@@ -128,10 +128,10 @@ void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilenameTest 
           }
 
           delete pMessage;
-          pPrismLinearSequencerContext->executeNextStep (status);
+          pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilesizeTest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilesizeTest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
           trace (TRACE_LEVEL_INFO, "Starting PushFile with a Invalid File size test...");
@@ -162,10 +162,10 @@ void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilesizeTest 
           }
 
           delete pMessage;
-          pPrismLinearSequencerContext->executeNextStep (status);
+          pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidLocationIdTest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidLocationIdTest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
           trace (TRACE_LEVEL_INFO, "Starting PushFile with a Invalid LocationId test...");
@@ -196,10 +196,10 @@ void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidLocationIdTes
                trace (TRACE_LEVEL_INFO, "FileLocalMessagingTestObjectManager::simplePushFileWithInvalidLocationIdTest: Failure to process PushFile message. Status: " + FrameworkToolKit::localize(status));
           }
           delete pMessage;
-          pPrismLinearSequencerContext->executeNextStep (status);
+          pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
      // Send a file which is smaller than a single fragment.
@@ -212,7 +212,7 @@ void FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLoc
      
      FrameworkToolKit::getConnectedLocations(connectedLocationsVector);
 
-     ++(*pPrismLinearSequencerContext);
+     ++(*pWaveLinearSequencerContext);
      int i = 0;
      for(i=0; i< 10; i++) // Send 10 messages
      {     
@@ -221,48 +221,48 @@ void FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLoc
           sDestFilename += buff;     
           FilePushFileMessage *pMessage = new FilePushFileMessage(sSourceFileName, sDestFilename,  FrameworkToolKit::getThisLocationId(), connectedLocationsVector);
           pMessage->setFileTransferFlag(FILE_OVERWRITE_DEST_FILE_IF_EXIST);
-          status = send(pMessage, reinterpret_cast<WaveMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocationIdTestCallback), pPrismLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
+          status = send(pMessage, reinterpret_cast<WaveMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocationIdTestCallback), pWaveLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
           if (WAVE_MESSAGE_SUCCESS != status)
           {
-               pPrismLinearSequencerContext->incrementNumberOfFailures ();
+               pWaveLinearSequencerContext->incrementNumberOfFailures ();
                trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
                delete pMessage;
           }
           else
           {
-               ++(*pPrismLinearSequencerContext);
+               ++(*pWaveLinearSequencerContext);
           }                    
           sleep(1);  // Sleep for 1 sec before next request.
      }
-     --(*pPrismLinearSequencerContext);     
-     pPrismLinearSequencerContext->executeNextStep (((pPrismLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);                       
+     --(*pWaveLinearSequencerContext);     
+     pWaveLinearSequencerContext->executeNextStep (((pWaveLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);                       
 
 }
 
-void    FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void    FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
         prismAssert (pMessage, __FILE__, __LINE__);
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
         }
     }
     else
     {
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
      if (NULL != pMessage)
      {
           delete pMessage;
      }    
-    pPrismLinearSequencerContext->executeNextStep (((pPrismLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (((pWaveLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);
 }
 
-void FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLocationIdTest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLocationIdTest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
      // Send a file which is smaller than a single fragment.
      trace (TRACE_LEVEL_INFO, "Starting PushFile of size 2k to a good known location...");
@@ -303,10 +303,10 @@ void FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLoca
           sleep(1);  // Sleep for 1 sec before next request.
      }
      
-     pPrismLinearSequencerContext->executeNextStep (status);
+     pWaveLinearSequencerContext->executeNextStep (status);
 }
 
-void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest      (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest      (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
      trace (TRACE_LEVEL_INFO, "Starting Asynchronous pushFile of size 1MB to a list of known good location...");
      char buff[64] = {0};
@@ -317,7 +317,7 @@ void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDa
      
      FrameworkToolKit::getConnectedLocations(connectedLocationsVector);
 
-     ++(*pPrismLinearSequencerContext);  
+     ++(*pWaveLinearSequencerContext);  
      int i = 0;          
      for(i=0; i< 10; i++) // Send 10 messages
      {     
@@ -326,54 +326,54 @@ void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDa
           sDestFilename += buff;     
           FilePushFileMessage *pMessage = new FilePushFileMessage(sSourceFileName, sDestFilename,  FrameworkToolKit::getThisLocationId(), connectedLocationsVector);
           pMessage->setFileTransferFlag(FILE_OVERWRITE_DEST_FILE_IF_EXIST);
-          status = send(pMessage, reinterpret_cast<WaveMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback), pPrismLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
+          status = send(pMessage, reinterpret_cast<WaveMessageResponseHandler> (&FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback), pWaveLinearSequencerContext, 0, FrameworkToolKit::getThisLocationId());                    
           if (WAVE_MESSAGE_SUCCESS != status)
           {
-               pPrismLinearSequencerContext->incrementNumberOfFailures ();
+               pWaveLinearSequencerContext->incrementNumberOfFailures ();
                trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
                delete pMessage;
           }
           else
           {
-               ++(*pPrismLinearSequencerContext);
+               ++(*pWaveLinearSequencerContext);
           }
           sleep(1);  // Sleep for 1 sec before next request.
      }
 
-     --(*pPrismLinearSequencerContext);     
+     --(*pWaveLinearSequencerContext);     
        
-     pPrismLinearSequencerContext->executeNextStep (((pPrismLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);                       
+     pWaveLinearSequencerContext->executeNextStep (((pWaveLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);                       
 
 }
 
-void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTestCallback(FrameworkStatus frameworkStatus, FilePushFileMessage *pMessage, WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
-    --(*pPrismLinearSequencerContext);
+    --(*pWaveLinearSequencerContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
         prismAssert (pMessage, __FILE__, __LINE__);
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
-            pPrismLinearSequencerContext->incrementNumberOfFailures ();
+            pWaveLinearSequencerContext->incrementNumberOfFailures ();
         }
         delete pMessage;
     }
     else
     {
-        pPrismLinearSequencerContext->incrementNumberOfFailures ();
+        pWaveLinearSequencerContext->incrementNumberOfFailures ();
         if (NULL != pMessage)
         {
             delete pMessage;
         }
     }
 
-    pPrismLinearSequencerContext->executeNextStep (((pPrismLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (((pWaveLinearSequencerContext->getNumberOfFailures ()) > 0) ? WAVE_MESSAGE_ERROR : WAVE_MESSAGE_SUCCESS);
 
 }
 
-void FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
      trace (TRACE_LEVEL_INFO, "Starting PushFile of size 1MB to a list of known good location...");
@@ -404,15 +404,15 @@ void FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatato
           sleep(1);  // Sleep for 1 sec before next request.
      }
     
-     pPrismLinearSequencerContext->executeNextStep (status);
+     pWaveLinearSequencerContext->executeNextStep (status);
      
 }
 
 
-void FileLocalMessagingTestObjectManager::CleanupTempTestFiles (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void FileLocalMessagingTestObjectManager::CleanupTempTestFiles (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 //   system("/bin/rm -rf /tmp/tempfile*");  // For now we know all the temp files are being created under /tmp folder with the file name starting with "tempfile*" signature.
-     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);     
+     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);     
 }
 
 void FileLocalMessagingTestObjectManager::SetupTempFileForTransfer(UI32 nFileSize, const string &sFileName)

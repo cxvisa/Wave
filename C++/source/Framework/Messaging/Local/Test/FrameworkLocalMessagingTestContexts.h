@@ -7,12 +7,12 @@
 #ifndef FRAMEWORKLOCALMESSAGINGTESTCONTEXTS_H
 #define FRAMEWORKLOCALMESSAGINGTESTCONTEXTS_H
 
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
 
-class FrameworkLocalMessagingTestContext : public PrismLinearSequencerContext
+class FrameworkLocalMessagingTestContext : public WaveLinearSequencerContext
 {
     private :
     protected :

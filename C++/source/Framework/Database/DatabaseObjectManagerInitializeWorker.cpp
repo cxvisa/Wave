@@ -7,7 +7,7 @@
 #include "Framework/Database/DatabaseObjectManagerInitializeWorker.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForShutdownPhases.h"
@@ -34,14 +34,14 @@ void DatabaseObjectManagerInitializeWorker::initialize (WaveAsynchronousContextF
         reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void DatabaseObjectManagerInitializeWorker::initializeCreateObjectRelationalMappingStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInitializeWorker::initializeCreateObjectRelationalMappingStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 void DatabaseObjectManagerInitializeWorker::zeroize (WaveAsynchronousContextForShutDownPhases *pPrismAsynchronousContext)
@@ -55,12 +55,12 @@ void DatabaseObjectManagerInitializeWorker::zeroize (WaveAsynchronousContextForS
         reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
     };
 
-    PrismLinearSequencerContext *pPrismLinearSequencerContext = new PrismLinearSequencerContext (pPrismAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPrismAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pPrismLinearSequencerContext->start ();
+    pWaveLinearSequencerContext->start ();
 }
 
-void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
 
     string          dbDirPath         = FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + DatabaseObjectManager::getDatabaseDirectory () ;
@@ -91,12 +91,12 @@ void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep (PrismLinearSequ
 
     trace (TRACE_LEVEL_INFO,"PrismFrameworkObjectManager::zeroizeDatabaseStep:Database Cleanup Complete");
 
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 	
 // The database backup files should be cleaned up once the file is restored using pg_restore.
 // Cleaning them here just for precaution.
-void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {   
     string dbBackupFile = string (FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + FrameworkToolKit::getDatabaseBackupFileName ());
     FrameworkToolKit::secureClearFile(dbBackupFile, true);
@@ -113,7 +113,7 @@ void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep (Pris
     FrameworkToolKit::secureClearFile("/mnt" + dbBackupFile, true);
 
     trace (TRACE_LEVEL_INFO,"PrismFrameworkObjectManager::zeroizeDatabaseBackupFilesStep:Database Backup files Cleanup Complete");
-    pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
 }

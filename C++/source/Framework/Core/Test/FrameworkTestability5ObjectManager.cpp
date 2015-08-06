@@ -8,7 +8,7 @@
 #include "Framework/Core/Test/FrameworkTestabilityMessages.h"
 #include "Framework/Core/Test/WaveTestManagedObject9.h"
 #include "Framework/Messaging/Local/Test/FrameworkTestabilityEvents.h"
-#include "Framework/Utils/PrismLinearSequencerContext.h"
+#include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Messaging/Local/Test/FrameworkLocalMessagingTestTypes.h"
 #include "Framework/Messaging/Local/Test/FrameworkLocalMessagingTestObjectManager.h"

@@ -25,13 +25,13 @@ namespace WaveNs
 
 class WaveMessage;
 class WaveElement;
-class PrismLinearSequencerContext;
+class WaveLinearSequencerContext;
 class PrismAsynchronousContext;
 class WaveManagedObject;
 
-typedef void (WaveElement::* PrismLinearSequencerStep) (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+typedef void (WaveElement::* PrismLinearSequencerStep) (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
-class PrismLinearSequencerContext
+class WaveLinearSequencerContext
 {
     private :
         void advanceCurrentStep ();
@@ -41,11 +41,11 @@ class PrismLinearSequencerContext
 
     protected :
     public :
-                                             PrismLinearSequencerContext                   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                             PrismLinearSequencerContext                   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                             PrismLinearSequencerContext                   (const PrismLinearSequencerContext &prismLinearSequencerContext);
-        virtual                             ~PrismLinearSequencerContext                   ();
-                PrismLinearSequencerContext &operator =                                    (const PrismLinearSequencerContext &prismLinearSequencerContext);
+                                             WaveLinearSequencerContext                   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             WaveLinearSequencerContext                   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             WaveLinearSequencerContext                   (const WaveLinearSequencerContext &prismLinearSequencerContext);
+        virtual                             ~WaveLinearSequencerContext                   ();
+                WaveLinearSequencerContext &operator =                                    (const WaveLinearSequencerContext &prismLinearSequencerContext);
                 ResourceId                   getCompletionStatus                           ();
                 void                         start                                         ();
                 void                         executeNextStep                               (const ResourceId &currentStepStatus);
@@ -53,8 +53,8 @@ class PrismLinearSequencerContext
                 WaveMessage                *getPWaveMessage                              ();
                 void                         setPWaveMessage                              (WaveMessage *pWaveMessage);
                 PrismAsynchronousContext    *getPPrismAsynchronousContext                  ();
-                PrismLinearSequencerContext &operator ++                                   ();
-                PrismLinearSequencerContext &operator --                                   ();
+                WaveLinearSequencerContext &operator ++                                   ();
+                WaveLinearSequencerContext &operator --                                   ();
                 UI32                         getNumberOfCallbacksBeforeAdvancingToNextStep ();
                 void                         holdAll                                       ();
                 void                         unholdAll                                     ();
