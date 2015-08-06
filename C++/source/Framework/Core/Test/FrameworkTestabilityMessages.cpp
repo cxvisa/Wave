@@ -393,9 +393,9 @@ FrameworkTestabilityMessage4::FrameworkTestabilityMessage4 ()
     m_prismMessageType2 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType2; // WaveMessageType
     m_prismMessageType3 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType3; // WaveMessageType
                                                                // 
-    m_prismServiceId1 = 0;                                     // WaveServiceId         m_prismServiceId1;
-    m_prismServiceId2 = 0;                                     // WaveServiceId         m_prismServiceId2;
-    m_prismServiceId3 = 0;                                     // WaveServiceId         m_prismServiceId3;
+    m_waveServiceId1 = 0;                                     // WaveServiceId         m_waveServiceId1;
+    m_waveServiceId2 = 0;                                     // WaveServiceId         m_waveServiceId2;
+    m_waveServiceId3 = 0;                                     // WaveServiceId         m_waveServiceId3;
                                                                // 
     m_serializableObjectType1 = 0;                             // SerializableObjectType m_serializableObjectType1;
     m_serializableObjectType2 = 0;                             // SerializableObjectType m_serializableObjectType2;
@@ -539,9 +539,9 @@ void FrameworkTestabilityMessage4::setupAttributesForSerialization ()
      addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType2, "prismMessageType2"));
      addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType3, "prismMessageType3"));
 
-     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId1, "prismServiceId1"));
-     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId2, "prismServiceId2"));
-     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId3, "prismServiceId3"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId1, "prismServiceId1"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId2, "prismServiceId2"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId3, "prismServiceId3"));
 
      addSerializableAttribute (new AttributeSerializableObjectType (&m_serializableObjectType1, "serializableObjectType1"));
      addSerializableAttribute (new AttributeSerializableObjectType (&m_serializableObjectType2, "serializableObjectType2"));
@@ -1101,24 +1101,24 @@ bool FrameworkTestabilityMessage4::validateWaveMessageTypeContent ()
 
 void FrameworkTestabilityMessage4::setupWaveServiceIdInput ()
 {
-    m_prismServiceId1 = FrameworkCoreTestObjectManager::getWaveServiceId ();
-    m_prismServiceId2 = FrameworkTestability1ObjectManager::getWaveServiceId ();
-    m_prismServiceId3 = FrameworkTestability2ObjectManager::getWaveServiceId ();
+    m_waveServiceId1 = FrameworkCoreTestObjectManager::getWaveServiceId ();
+    m_waveServiceId2 = FrameworkTestability1ObjectManager::getWaveServiceId ();
+    m_waveServiceId3 = FrameworkTestability2ObjectManager::getWaveServiceId ();
 }
 
 bool FrameworkTestabilityMessage4::validateWaveServiceIdContent ()
 {
-    if ((FrameworkCoreTestObjectManager::getWaveServiceId ()) != m_prismServiceId1)
+    if ((FrameworkCoreTestObjectManager::getWaveServiceId ()) != m_waveServiceId1)
     {
         return (false);
     }
 
-    if ((FrameworkTestability1ObjectManager::getWaveServiceId ()) != m_prismServiceId2)
+    if ((FrameworkTestability1ObjectManager::getWaveServiceId ()) != m_waveServiceId2)
     {
         return (false);
     }
 
-    if ((FrameworkTestability2ObjectManager::getWaveServiceId ()) != m_prismServiceId3)
+    if ((FrameworkTestability2ObjectManager::getWaveServiceId ()) != m_waveServiceId3)
     {
         return (false);
     }

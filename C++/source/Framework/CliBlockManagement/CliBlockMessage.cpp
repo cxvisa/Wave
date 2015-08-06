@@ -20,7 +20,7 @@ CliBlockMessage::CliBlockMessage (bool operation, const CliBlockDetail &cliBlock
     m_operation         = operation;
     m_reason            = (cliBlockDetail.getCliBlockContext ()).getReason ();
     m_originator        = cliBlockDetail.getOriginator ();
-    m_prismServiceId    = cliBlockDetail.getWaveServiceId ();
+    m_waveServiceId    = cliBlockDetail.getWaveServiceId ();
 }
 
 CliBlockMessage::CliBlockMessage ()
@@ -29,7 +29,7 @@ CliBlockMessage::CliBlockMessage ()
     m_operation      = true;
     m_reason         = WAVE_FRAMEWORK_STATE_UNKNOWN_STATE;
     m_originator     = 0;
-    m_prismServiceId = 0;
+    m_waveServiceId = 0;
 }
 
 CliBlockMessage::~CliBlockMessage ()
@@ -44,7 +44,7 @@ void CliBlockMessage::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeBool (&m_operation, "operation"));
     addSerializableAttribute (new AttributeResourceId (&m_reason, "reason"));
     addSerializableAttribute (new AttributeLocationId (&m_originator, "originator"));
-    addSerializableAttribute (new AttributeUI32 (&m_prismServiceId, "prismServiceId"));
+    addSerializableAttribute (new AttributeUI32 (&m_waveServiceId, "prismServiceId"));
 
 }
 
@@ -65,7 +65,7 @@ const LocationId CliBlockMessage::getOriginator () const
 
 const WaveServiceId CliBlockMessage::getWaveServiceId () const
 {
-    return (m_prismServiceId);
+    return (m_waveServiceId);
 }
 
 }

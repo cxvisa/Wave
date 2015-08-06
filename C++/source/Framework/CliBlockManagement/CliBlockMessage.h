@@ -35,7 +35,7 @@ class CliBlockMessage : public WaveMessage
         bool                m_operation; //true is block, false is unblock
         ResourceId          m_reason;
         LocationId          m_originator;
-        WaveServiceId      m_prismServiceId;
+        WaveServiceId      m_waveServiceId;
 
     protected :
     public :

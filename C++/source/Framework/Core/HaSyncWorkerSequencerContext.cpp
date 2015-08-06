@@ -42,17 +42,17 @@ StartHaSyncDumpContext::~StartHaSyncDumpContext ()
 
 vector<WaveServiceId> &StartHaSyncDumpContext::getWaveServiceIdsToCommunicate ()
 {
-    return (m_prismServiceIdsToCommunicate);
+    return (m_waveServiceIdsToCommunicate);
 }
 
 vector<WaveServiceId> &StartHaSyncDumpContext::getWaveServiceIdsVector ()
 {
-    return (m_prismServiceIdsVector);
+    return (m_waveServiceIdsVector);
 }
 
 void StartHaSyncDumpContext::addValidationDetailsForService (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size)
 {
-    m_prismServiceIdsVector.push_back        (prismServiceId);
+    m_waveServiceIdsVector.push_back        (prismServiceId);
     m_validationDetailsVector.push_back      (pValidationDetials);
     m_validationDetailsSizesVector.push_back (size);
 }

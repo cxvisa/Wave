@@ -62,27 +62,27 @@ class FrameworkSequenceGenerator
 
     private :
     protected :
-        vector<WaveServiceId> m_prismServiceIdsToInitializeDuringPrePhase;
-        vector<WaveServiceId> m_prismServiceIdsToEnableDuringPrePhase;
-        vector<WaveServiceId> m_prismServiceIdsToInstallDuringPrePhase;
-        vector<WaveServiceId> m_prismServiceIdsToBootDuringPrePhase;
+        vector<WaveServiceId> m_waveServiceIdsToInitializeDuringPrePhase;
+        vector<WaveServiceId> m_waveServiceIdsToEnableDuringPrePhase;
+        vector<WaveServiceId> m_waveServiceIdsToInstallDuringPrePhase;
+        vector<WaveServiceId> m_waveServiceIdsToBootDuringPrePhase;
 
-        vector<WaveServiceId> m_prismServiceIdsToInitialize;
-        vector<WaveServiceId> m_prismServiceIdsToEnable;
-        vector<WaveServiceId> m_prismServiceIdsToInstall;
-        vector<WaveServiceId> m_prismServiceIdsToBoot;
-        vector<WaveServiceId> m_prismServiceIdsToShutdown;
-        vector<WaveServiceId> m_prismServiceIdsToUninstall;
-        vector<WaveServiceId> m_prismServiceIdsToUninitialize;
-        vector<WaveServiceId> m_prismServiceIdsToDisable;
+        vector<WaveServiceId> m_waveServiceIdsToInitialize;
+        vector<WaveServiceId> m_waveServiceIdsToEnable;
+        vector<WaveServiceId> m_waveServiceIdsToInstall;
+        vector<WaveServiceId> m_waveServiceIdsToBoot;
+        vector<WaveServiceId> m_waveServiceIdsToShutdown;
+        vector<WaveServiceId> m_waveServiceIdsToUninstall;
+        vector<WaveServiceId> m_waveServiceIdsToUninitialize;
+        vector<WaveServiceId> m_waveServiceIdsToDisable;
 
-        vector<WaveServiceId> m_prismServiceIdsToShutdownDuringPostPhase;
-        vector<WaveServiceId> m_prismServiceIdsToUninstallDuringPostPhase;
-        vector<WaveServiceId> m_prismServiceIdsToUninitializeDuringPostPhase;
-        vector<WaveServiceId> m_prismServiceIdsToDisableDuringPostPhase;
+        vector<WaveServiceId> m_waveServiceIdsToShutdownDuringPostPhase;
+        vector<WaveServiceId> m_waveServiceIdsToUninstallDuringPostPhase;
+        vector<WaveServiceId> m_waveServiceIdsToUninitializeDuringPostPhase;
+        vector<WaveServiceId> m_waveServiceIdsToDisableDuringPostPhase;
 
-        vector<WaveServiceId> m_prismServiceIdsToFailover;
-        vector<WaveServiceId> m_prismServiceIdsToZeroize;
+        vector<WaveServiceId> m_waveServiceIdsToFailover;
+        vector<WaveServiceId> m_waveServiceIdsToZeroize;
 
     public :
 };

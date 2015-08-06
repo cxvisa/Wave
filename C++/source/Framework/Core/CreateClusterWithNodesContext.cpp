@@ -101,14 +101,14 @@ UI32 CreateClusterWithNodesContext::getNumberOfNewLocationIds ()
 
 void CreateClusterWithNodesContext::addValidationDetailsForService (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size)
 {
-    m_prismServiceIdsVector.push_back        (prismServiceId);
+    m_waveServiceIdsVector.push_back        (prismServiceId);
     m_validationDetailsVector.push_back      (pValidationDetials);
     m_validationDetailsSizesVector.push_back (size);
 }
 
 vector<WaveServiceId> &CreateClusterWithNodesContext::getWaveServiceIdsVector ()
 {
-    return (m_prismServiceIdsVector);
+    return (m_waveServiceIdsVector);
 }
 
 vector<void *> &CreateClusterWithNodesContext::getValidationDetailsVector ()
@@ -189,7 +189,7 @@ void CreateClusterWithNodesContext::getValidationResultsForService (const string
 
 vector<WaveServiceId> &CreateClusterWithNodesContext::getWaveServiceIdsToCommunicate ()
 {
-    return (m_prismServiceIdsToCommunicate);
+    return (m_waveServiceIdsToCommunicate);
 }
 
 bool CreateClusterWithNodesContext::getIsDeletion ()    const

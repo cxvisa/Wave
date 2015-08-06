@@ -94,7 +94,7 @@ class WaveThread : public PrismPosixThread
     // Now the member variables
 
     private :
-               WaveServiceId                          m_prismServiceId;
+               WaveServiceId                          m_waveServiceId;
 
                WaveMessageQueue<WaveMessage>         m_messages;
                WaveMessageQueue<WaveMessage>         m_messageResponses;

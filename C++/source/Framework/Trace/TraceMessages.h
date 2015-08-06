@@ -249,7 +249,7 @@ class TraceObjectManagerMessageHistoryDumpForAServiceMessage : public Management
     // Now the data members
 
     private :
-        WaveServiceId      m_prismServiceId;
+        WaveServiceId      m_waveServiceId;
         vector<string>      m_messageHistoryDumpStringVector;
 
     protected :
@@ -276,7 +276,7 @@ class TraceObjectManagerMessageHistoryConfigForAServiceMessage : public Manageme
     // Now the data members
 
     private :
-        WaveServiceId      m_prismServiceId;
+        WaveServiceId      m_waveServiceId;
         bool                m_messageHistoryState;
         UI32                m_messageHistoryMaxSize;
 

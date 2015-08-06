@@ -15,7 +15,7 @@ DistributedLogTestContext::DistributedLogTestContext (WaveMessage *pWaveMessage,
     m_currentMaxAllowedLogEntries   (0),
     m_firstLogId                    (0),
     m_nextLogId                     (0),
-    m_prismServiceId              (0),
+    m_waveServiceId              (0),
     m_numberOfFailures              (0)
 {
 }
@@ -66,12 +66,12 @@ void DistributedLogTestContext::setNextLogId (const UI64 &nextLogId)
 
 WaveServiceId DistributedLogTestContext::getWaveServiceId () const
 {
-    return (m_prismServiceId);
+    return (m_waveServiceId);
 }
 
 void DistributedLogTestContext::setWaveServiceId (const WaveServiceId &prismServiceId)
 {
-    m_prismServiceId = prismServiceId;
+    m_waveServiceId = prismServiceId;
 }
 
 ObjectId DistributedLogTestContext::getManagedObjectId () const

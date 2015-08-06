@@ -57,7 +57,7 @@ class DistributedLogEntryManagedObject : public WaveManagedObject
                 ResourceId      m_logType;
                 ResourceId      m_logDescriptionType;
                 DateTime        m_dateTimeStamp;
-                WaveServiceId  m_prismServiceId;
+                WaveServiceId  m_waveServiceId;
                 string          m_username;
                 string          m_description;
                 ObjectId        m_waveNodeObjectId;

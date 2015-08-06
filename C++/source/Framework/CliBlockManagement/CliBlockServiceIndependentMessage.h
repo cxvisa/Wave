@@ -35,7 +35,7 @@ class CliBlockServiceIndependentMessage : public WaveServiceIndependentMessage
         bool                m_operation;
         ResourceId          m_reason;
         LocationId          m_originator;
-        WaveServiceId      m_prismServiceId;
+        WaveServiceId      m_waveServiceId;
 
     protected :
     public :

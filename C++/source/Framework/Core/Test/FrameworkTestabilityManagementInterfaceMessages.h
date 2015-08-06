@@ -116,7 +116,7 @@ class FrameworkTestabilityManagementInterfaceMessageLeakMessage : public Managem
     // now the data members
 
     private :
-                WaveServiceId          m_prismServiceId;
+                WaveServiceId          m_waveServiceId;
                 vector<WaveServiceId>  m_messageServiceIds;
                 vector<UI32>            m_messageOperationCodes;
                 vector<string>          m_btStrings;
@@ -142,7 +142,7 @@ class FrameworkTestabilityManagementInterfaceObjectLeakMessage : public Manageme
     // now the data members
 
     private :
-                WaveServiceId          m_prismServiceId;
+                WaveServiceId          m_waveServiceId;
                 vector<string>          m_managedObjectClassNames;
                 vector<string>          m_managedObjectNames;
                 vector<bool>            m_queryResults;

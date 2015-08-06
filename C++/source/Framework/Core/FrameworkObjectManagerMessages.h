@@ -776,7 +776,7 @@ class FrameworkObjectManagerServiceControlListMessage : public ManagementInterfa
     // Now the data members
 
     private :
-        vector<WaveServiceId> m_prismServiceIds;
+        vector<WaveServiceId> m_waveServiceIds;
         vector<string>         m_serviceNames;
         vector<bool>           m_enabled;
         vector<bool>           m_local;
@@ -803,7 +803,7 @@ class FrameworkObjectManagerServiceSetCpuAffinityMessage : public ManagementInte
     // Now the data members
 
     private :
-        WaveServiceId m_prismServiceId;
+        WaveServiceId m_waveServiceId;
         vector<UI32>   m_cpuAffinityVector;
 
     protected :

@@ -425,13 +425,13 @@ void TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::decrementOutsta
 
 TraceObjectManagerMessageHistoryDumpForAServiceMessage::TraceObjectManagerMessageHistoryDumpForAServiceMessage (WaveServiceId prismServiceId)
     : ManagementInterfaceMessage (TraceObjectManager::getClassName (), TRACE_OPERATION_CODE_MESSAGE_HISTORY_DUMP_FOR_A_SERVICE),
-    m_prismServiceId            (prismServiceId)
+    m_waveServiceId            (prismServiceId)
 {
 }
 
 TraceObjectManagerMessageHistoryDumpForAServiceMessage::TraceObjectManagerMessageHistoryDumpForAServiceMessage ()
     : ManagementInterfaceMessage (TraceObjectManager::getClassName (), TRACE_OPERATION_CODE_MESSAGE_HISTORY_DUMP_FOR_A_SERVICE),
-    m_prismServiceId (0)
+    m_waveServiceId (0)
 {
 }
 
@@ -441,7 +441,7 @@ TraceObjectManagerMessageHistoryDumpForAServiceMessage::~TraceObjectManagerMessa
 
 WaveServiceId TraceObjectManagerMessageHistoryDumpForAServiceMessage::getWaveServiceId () const
 {
-    return m_prismServiceId;
+    return m_waveServiceId;
 }
 
 vector<string> &TraceObjectManagerMessageHistoryDumpForAServiceMessage::getMessageHistoryDumpStringVector ()
@@ -458,14 +458,14 @@ void TraceObjectManagerMessageHistoryDumpForAServiceMessage::setupAttributesForS
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeUI32         (&m_prismServiceId,                "prismServiceId"));
+     addSerializableAttribute (new AttributeUI32         (&m_waveServiceId,                "prismServiceId"));
      addSerializableAttribute (new AttributeStringVector (&m_messageHistoryDumpStringVector,"messageHistoryDumpStringVector"));
 }
 
 
 TraceObjectManagerMessageHistoryConfigForAServiceMessage::TraceObjectManagerMessageHistoryConfigForAServiceMessage ()
     : ManagementInterfaceMessage (TraceObjectManager::getClassName (), TRACE_OPERATION_CODE_MESSAGE_HISTORY_CONFIG_FOR_A_SERVICE),
-    m_prismServiceId            (0),
+    m_waveServiceId            (0),
     m_messageHistoryState       (false),
     m_messageHistoryMaxSize     (0)
 {
@@ -473,7 +473,7 @@ TraceObjectManagerMessageHistoryConfigForAServiceMessage::TraceObjectManagerMess
 
 TraceObjectManagerMessageHistoryConfigForAServiceMessage::TraceObjectManagerMessageHistoryConfigForAServiceMessage (WaveServiceId prismServiceId)
     : ManagementInterfaceMessage (TraceObjectManager::getClassName (), TRACE_OPERATION_CODE_MESSAGE_HISTORY_CONFIG_FOR_A_SERVICE),
-    m_prismServiceId            (prismServiceId),
+    m_waveServiceId            (prismServiceId),
     m_messageHistoryState       (false),
     m_messageHistoryMaxSize     (0)
 {
@@ -485,7 +485,7 @@ TraceObjectManagerMessageHistoryConfigForAServiceMessage::~TraceObjectManagerMes
 
 WaveServiceId TraceObjectManagerMessageHistoryConfigForAServiceMessage::getWaveServiceId () const
 {
-    return m_prismServiceId;
+    return m_waveServiceId;
 }
 
 bool TraceObjectManagerMessageHistoryConfigForAServiceMessage::getMessageHistoryState () const
@@ -512,7 +512,7 @@ void TraceObjectManagerMessageHistoryConfigForAServiceMessage::setupAttributesFo
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeUI32 (&m_prismServiceId,        "prismServiceId"));
+     addSerializableAttribute (new AttributeUI32 (&m_waveServiceId,        "prismServiceId"));
      addSerializableAttribute (new AttributeBool (&m_messageHistoryState,   "messageHistoryState"));
      addSerializableAttribute (new AttributeUI32 (&m_messageHistoryMaxSize, "messageHistoryMaxSize"));
 }

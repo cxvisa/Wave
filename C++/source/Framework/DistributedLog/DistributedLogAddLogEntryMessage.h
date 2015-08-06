@@ -52,7 +52,7 @@ class DistributedLogAddLogEntryMessage : public ManagementInterfaceMessage
                 ResourceId      m_logDescriptionType;
                 string          m_description;
                 string          m_username;
-                WaveServiceId  m_prismServiceId;
+                WaveServiceId  m_waveServiceId;
                 DateTime        m_dateTimeStamp;
                 ObjectId        m_waveNodeObjectId;
                 ObjectId        m_managedObjectId;

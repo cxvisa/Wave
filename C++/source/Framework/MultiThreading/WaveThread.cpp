@@ -34,7 +34,7 @@ static WaveServiceMap                         *s_pWaveServiceMap                
 
 WaveThread::WaveThread (WaveServiceId id, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : PrismPosixThread    (stackSize),
-      m_prismServiceId    (id),
+      m_waveServiceId    (id),
       m_wakeupCaller      (),
       m_wakeupCondition   (&m_wakeupCaller),
       m_cpuAffinityVector (*pCpuAffinityVector),
@@ -45,13 +45,13 @@ WaveThread::WaveThread (WaveServiceId id, const string &serviceName, const UI32 
         s_pWaveServiceMap = new WaveServiceMap ();
     }
 
-    s_pWaveServiceMap->addServiceMap (m_prismServiceId, this, serviceName);
+    s_pWaveServiceMap->addServiceMap (m_waveServiceId, this, serviceName);
     initializeHoldCounts ();
 }
 
 WaveThread::WaveThread (WaveServiceId id, WaveObjectManager *pWaveObjectManager, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : PrismPosixThread    (stackSize),
-      m_prismServiceId    (id),
+      m_waveServiceId    (id),
       m_wakeupCaller      (),
       m_wakeupCondition   (&m_wakeupCaller),
       m_cpuAffinityVector (*pCpuAffinityVector),
@@ -62,14 +62,14 @@ WaveThread::WaveThread (WaveServiceId id, WaveObjectManager *pWaveObjectManager,
         s_pWaveServiceMap = new WaveServiceMap ();
     }
 
-    s_pWaveServiceMap->addServiceMap (m_prismServiceId, this, serviceName);
+    s_pWaveServiceMap->addServiceMap (m_waveServiceId, this, serviceName);
     addWaveObjectManager (pWaveObjectManager);
     initializeHoldCounts ();
 }
 
 WaveThread::~WaveThread ()
 {
-    s_pWaveServiceMap->removeServiceMap (m_prismServiceId);
+    s_pWaveServiceMap->removeServiceMap (m_waveServiceId);
 
     UI32 numberOfWaveObjectManagers = m_pWaveObjectManagers.size ();
     UI32 i                          = 0;
@@ -206,7 +206,7 @@ WaveThreadStatus WaveThread::start ()
                     break;
 
                 default :
-                    cerr << "WaveThread::start : Unknown message type : " << pWaveMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_prismServiceId) << endl;
+                    cerr << "WaveThread::start : Unknown message type : " << pWaveMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_waveServiceId) << endl;
                     prismAssert (false, __FILE__, __LINE__);
 
                     break;
@@ -327,7 +327,7 @@ WaveThreadStatus WaveThread::consumePendingMessages ()
                     break;
 
                 default :
-                    cerr << "WaveThread::consumePendingMessages : Unknown message type : " << pWaveMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_prismServiceId) << endl;
+                    cerr << "WaveThread::consumePendingMessages : Unknown message type : " << pWaveMessage->getType () << ", Service : " << s_pWaveServiceMap->getPrismServiceNameForServiceId (m_waveServiceId) << endl;
                     prismAssert (false, __FILE__, __LINE__);
 
                     break;
@@ -353,9 +353,9 @@ WaveMessageStatus WaveThread::submitMessage (WaveMessage *pWaveMessage)
     // there is a n exception to this.  If the this thread serviceid is WAVE_SERVICE_INTER_LOCATION_MESSAGE_TRANSPORT, then
     // the thread will receive messages destined for other services since the thread has to transport to remote locations.
 
-    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         (m_prismServiceId != (pWaveMessage->getServiceCode ())))
+    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) &&
+         ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) &&
+         (m_waveServiceId != (pWaveMessage->getServiceCode ())))
     {
         cerr << "WaveThread::submitMessage : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
@@ -464,9 +464,9 @@ WaveMessageStatus WaveThread::submitMessageAtFront (WaveMessage *pWaveMessage)
     // there is a n exception to this.  If the this thread serviceid is WAVE_SERVICE_INTER_LOCATION_MESSAGE_TRANSPORT, then
     // the thread will receive messages destined for other services since the thread has to transport to remote locations.
 
-    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         (m_prismServiceId != (pWaveMessage->getServiceCode ())))
+    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) &&
+         ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) &&
+         (m_waveServiceId != (pWaveMessage->getServiceCode ())))
     {
         cerr << "WaveThread::submitMessageAtFront : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
@@ -575,9 +575,9 @@ WaveMessageStatus WaveThread::submitMessageAtBack (WaveMessage *pWaveMessage)
     // there is a n exception to this.  If the this thread serviceid is WAVE_SERVICE_INTER_LOCATION_MESSAGE_TRANSPORT, then
     // the thread will receive messages destined for other services since the thread has to transport to remote locations.
 
-    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) &&
-         (m_prismServiceId != (pWaveMessage->getServiceCode ())))
+    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) &&
+         ((HaPeerMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) &&
+         (m_waveServiceId != (pWaveMessage->getServiceCode ())))
     {
         cerr << "WaveThread::submitMessageAtBack : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
@@ -719,7 +719,7 @@ WaveMessageStatus WaveThread::submitReplyMessage (WaveMessage *pWaveMessage)
 
     // In general a thread accepts responses only for the messages that it sent out.
 
-    if (m_prismServiceId != senderServiceId)
+    if (m_waveServiceId != senderServiceId)
     {
         cerr << "WaveThread::submitReplyMessage : Submitting reply message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
@@ -782,7 +782,7 @@ WaveMessageStatus WaveThread::submitEvent (WaveEvent *pWaveEvent)
     // Events are defined by the Sender (broadcasting) Service where as messages are defined by the recipient service.  So, we need to
     // compare the event receiver service id to the current thread service id.
 
-    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) && (m_prismServiceId != (pWaveEvent->getReceiverServiceId ())))
+    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_waveServiceId) && (m_waveServiceId != (pWaveEvent->getReceiverServiceId ())))
     {
         cerr << "WaveThread::submitEvent : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
@@ -1071,7 +1071,7 @@ WaveObjectManager *WaveThread::getWaveObjectManagerForManagedClass (const string
 
 WaveServiceId WaveThread::getWaveServiceId () const
 {
-    return (m_prismServiceId);
+    return (m_waveServiceId);
 }
 
 bool WaveThread::hasWaveObjectManagers ()

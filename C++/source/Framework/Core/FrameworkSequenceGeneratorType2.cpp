@@ -47,253 +47,253 @@ FrameworkSequenceGeneratorType2::FrameworkSequenceGeneratorType2 ()
 {
     // Initialize
 
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitializeDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitializeDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToInitialize.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToInitialize.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToInitialize.push_back (RegressionTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInitialize.push_back (ShellObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInitialize.push_back (ShellObjectManager::getWaveServiceId ());
 
     // Enable
 
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnableDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnableDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToEnable.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToEnable.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToEnable.push_back (RegressionTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToEnable.push_back (ShellObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToEnable.push_back (ShellObjectManager::getWaveServiceId ());
 
     // Install
 
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstallDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstallDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToInstall.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToInstall.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToInstall.push_back (RegressionTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToInstall.push_back (ShellObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToInstall.push_back (ShellObjectManager::getWaveServiceId ());
 
     // Boot
 
-    m_prismServiceIdsToBootDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBootDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBootDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBootDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBootDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBootDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBootDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (TraceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (TimerSignalObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (InterLocationMessageReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBootDuringPrePhase.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToBoot.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (ManagementInterfaceReceiverObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToBoot.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToBoot.push_back (RegressionTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToBoot.push_back (ShellObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToBoot.push_back (ShellObjectManager::getWaveServiceId ());
 
     // Shutdown
 
-    m_prismServiceIdsToShutdown.push_back (ShellObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (ShellObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (RegressionTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToShutdown.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToShutdown.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    //m_prismServiceIdsToShutdown.push_back (PrismFrameworkObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (RegressionTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (TimerSignalObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToShutdown.push_back (TraceObjectManager::getWaveServiceId ());
+    //m_waveServiceIdsToShutdown.push_back (PrismFrameworkObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (TimerSignalObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToShutdown.push_back (TraceObjectManager::getWaveServiceId ());
 
     // Disable
 
-    m_prismServiceIdsToDisable.push_back (ShellObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (ShellObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (RegressionTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToDisable.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToDisable.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    //m_prismServiceIdsToDisable.push_back (PrismFrameworkObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (RegressionTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (TimerSignalObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToDisable.push_back (TraceObjectManager::getWaveServiceId ());
+    //m_waveServiceIdsToDisable.push_back (PrismFrameworkObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (TimerSignalObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToDisable.push_back (TraceObjectManager::getWaveServiceId ());
 
     // Failover
 
-    m_prismServiceIdsToFailover.push_back (TraceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (TimerObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (DatabaseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (PersistenceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (TraceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (TimerObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (DatabaseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (PersistenceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToFailover.push_back (LicenseObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (HeartBeatObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (LockManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (LicenseObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (SoftwareManagementObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (LocalClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (CentralClusterConfigObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (HeartBeatObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (ClusterInterfaceObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (LockManagementObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToFailover.push_back (LicenseTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (TraceTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (TimerTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (ClusterTestObjectManager::getWaveServiceId ());
-    m_prismServiceIdsToFailover.push_back (PersistenceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (LicenseTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (TraceTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkCoreTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkTestability1ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkTestability2ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkTestability3ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkTestability4ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkTestability6ObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkLocalMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkLocalMessagingTestObjectManager2::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (FrameworkRemoteMessagingTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (TimerTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (ClusterTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    m_prismServiceIdsToFailover.push_back (RegressionTestObjectManager::getWaveServiceId ());
+    m_waveServiceIdsToFailover.push_back (RegressionTestObjectManager::getWaveServiceId ());
 }
 
 FrameworkSequenceGeneratorType2::~FrameworkSequenceGeneratorType2 ()

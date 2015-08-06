@@ -15,27 +15,27 @@ namespace WaveNs
 
 CliBlockDetail::CliBlockDetail ()
 {
-    m_prismServiceId    = 0; 
+    m_waveServiceId    = 0; 
     m_originator        = 0;
     m_cliBlockContext   = CliBlockContext ();
 }
 
 CliBlockDetail::CliBlockDetail (WaveServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext)
 {
-    m_prismServiceId    = prismServiceId;
+    m_waveServiceId    = prismServiceId;
     m_originator        = originator;
     m_cliBlockContext   = cliBlockContext;
 }
 
 CliBlockDetail::CliBlockDetail (const CliBlockServiceIndependentMessage &cliBlockServiceIndependentMessage)
 {
-    m_prismServiceId          = cliBlockServiceIndependentMessage.getWaveServiceId ();
+    m_waveServiceId          = cliBlockServiceIndependentMessage.getWaveServiceId ();
     m_originator              = cliBlockServiceIndependentMessage.getOriginator ();
     m_cliBlockContext         = CliBlockContext (cliBlockServiceIndependentMessage.getReason ());
 }
 
 CliBlockDetail::CliBlockDetail (const CliBlockDetail &detail) :
-     m_prismServiceId (detail.m_prismServiceId), m_originator (detail.m_originator), m_cliBlockContext (detail.m_cliBlockContext)
+     m_waveServiceId (detail.m_waveServiceId), m_originator (detail.m_originator), m_cliBlockContext (detail.m_cliBlockContext)
 {
 }
 
@@ -51,7 +51,7 @@ CliBlockDetail& CliBlockDetail::operator= (const CliBlockDetail &rhs)
         return (*this); 
     }
     
-    m_prismServiceId    = rhs.m_prismServiceId;
+    m_waveServiceId    = rhs.m_waveServiceId;
     m_originator        = rhs.m_originator; 
     m_cliBlockContext   = rhs.m_cliBlockContext;
 
@@ -60,7 +60,7 @@ CliBlockDetail& CliBlockDetail::operator= (const CliBlockDetail &rhs)
 
 const WaveServiceId CliBlockDetail::getWaveServiceId () const
 {
-    return m_prismServiceId;
+    return m_waveServiceId;
 }
 
 const LocationId CliBlockDetail::getOriginator () const

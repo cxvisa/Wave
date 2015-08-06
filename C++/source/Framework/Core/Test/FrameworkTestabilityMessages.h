@@ -271,9 +271,9 @@ class FrameworkTestabilityMessage4 : public WaveMessage
         ResourceId               m_prismMessageType2; // WaveMessageType
         ResourceId               m_prismMessageType3; // WaveMessageType
 
-        WaveServiceId           m_prismServiceId1;
-        WaveServiceId           m_prismServiceId2;
-        WaveServiceId           m_prismServiceId3;
+        WaveServiceId           m_waveServiceId1;
+        WaveServiceId           m_waveServiceId2;
+        WaveServiceId           m_waveServiceId3;
 
         SerializableObjectType m_serializableObjectType1;
         SerializableObjectType m_serializableObjectType2;

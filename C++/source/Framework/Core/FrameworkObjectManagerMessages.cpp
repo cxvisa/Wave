@@ -1375,7 +1375,7 @@ void FrameworkObjectManagerServiceControlListMessage::setupAttributesForSerializ
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeWaveServiceIdVector (&m_prismServiceIds,   "prismServiceIds"));
+     addSerializableAttribute (new AttributeWaveServiceIdVector (&m_waveServiceIds,   "prismServiceIds"));
      addSerializableAttribute (new AttributeStringVector         (&m_serviceNames,      "serviceNames"));
      addSerializableAttribute (new AttributeBoolVector           (&m_enabled,           "enabled"));
      addSerializableAttribute (new AttributeBoolVector           (&m_local,             "local"));
@@ -1384,12 +1384,12 @@ void FrameworkObjectManagerServiceControlListMessage::setupAttributesForSerializ
 
 UI32 FrameworkObjectManagerServiceControlListMessage::getNumberOfServices () const
 {
-    return (m_prismServiceIds.size ());
+    return (m_waveServiceIds.size ());
 }
 
 void FrameworkObjectManagerServiceControlListMessage::addAService (const WaveServiceId &prismServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity)
 {
-    m_prismServiceIds.push_back (prismServiceId);
+    m_waveServiceIds.push_back (prismServiceId);
     m_serviceNames.push_back    (serviceName);
     m_enabled.push_back         (isEnabled);
     m_local.push_back           (isLocal);
@@ -1402,7 +1402,7 @@ void FrameworkObjectManagerServiceControlListMessage::getServiceAtIndex (const U
 
     prismAssert (index < numberOfServices, __FILE__, __LINE__);
 
-    prismServiceId = m_prismServiceIds[index];
+    prismServiceId = m_waveServiceIds[index];
     serviceName    = m_serviceNames[index];
     isEnabled      = m_enabled[index];
     isLocal        = m_local[index];
@@ -1411,13 +1411,13 @@ void FrameworkObjectManagerServiceControlListMessage::getServiceAtIndex (const U
 
 FrameworkObjectManagerServiceSetCpuAffinityMessage::FrameworkObjectManagerServiceSetCpuAffinityMessage ()
     : ManagementInterfaceMessage (PrismFrameworkObjectManager::getServiceName (), FRAMEWORK_OBJECT_MANAGER_SERVICE_SET_CPU_AFFINITY_MESSAGE),
-      m_prismServiceId(0)
+      m_waveServiceId(0)
 {
 }
 
 FrameworkObjectManagerServiceSetCpuAffinityMessage::FrameworkObjectManagerServiceSetCpuAffinityMessage (const WaveServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector)
     : ManagementInterfaceMessage (PrismFrameworkObjectManager::getServiceName (), FRAMEWORK_OBJECT_MANAGER_SERVICE_SET_CPU_AFFINITY_MESSAGE),
-      m_prismServiceId           (prismServiceId),
+      m_waveServiceId           (prismServiceId),
       m_cpuAffinityVector        (cpuAffinityVector)
 {
 }
@@ -1430,13 +1430,13 @@ void FrameworkObjectManagerServiceSetCpuAffinityMessage::setupAttributesForSeria
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeWaveServiceId (&m_prismServiceId,      "prismServiceId"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId,      "prismServiceId"));
      addSerializableAttribute (new AttributeUI32Vector     (&m_cpuAffinityVector,   "cpuAffinityVector"));
 }
 
 WaveServiceId FrameworkObjectManagerServiceSetCpuAffinityMessage::getWaveServiceId ()
 {
-    return (m_prismServiceId);
+    return (m_waveServiceId);
 }
 
 vector<UI32> FrameworkObjectManagerServiceSetCpuAffinityMessage::getCpuAffinityVector () const

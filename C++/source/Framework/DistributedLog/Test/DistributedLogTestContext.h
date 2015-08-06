@@ -49,7 +49,7 @@ class DistributedLogTestContext : public WaveLinearSequencerContext
                 UI64            m_currentMaxAllowedLogEntries;
                 UI64            m_firstLogId;
                 UI64            m_nextLogId;
-                WaveServiceId  m_prismServiceId;
+                WaveServiceId  m_waveServiceId;
                 ObjectId        m_managedObjectId;
                 UI32            m_numberOfFailures;
 

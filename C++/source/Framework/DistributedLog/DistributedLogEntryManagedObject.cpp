@@ -19,7 +19,7 @@ DistributedLogEntryManagedObject::DistributedLogEntryManagedObject (DistributedL
       m_logType                 (),
       m_logDescriptionType      (),
       m_dateTimeStamp           (),
-      m_prismServiceId          (),
+      m_waveServiceId          (),
       m_username                (""),
       m_description             (""),
       m_waveNodeObjectId        (),
@@ -35,7 +35,7 @@ DistributedLogEntryManagedObject::DistributedLogEntryManagedObject (DistributedL
       m_logType                 (),
       m_logDescriptionType      (),
       m_dateTimeStamp           (),
-      m_prismServiceId          (),
+      m_waveServiceId          (),
       m_username                (""),
       m_description             (""),
       m_waveNodeObjectId        (),
@@ -61,7 +61,7 @@ void DistributedLogEntryManagedObject::setupAttributesForPersistence ()
     addPersistableAttribute (new AttributeResourceId (&m_logType, "logType"));
     addPersistableAttribute (new AttributeResourceId (&m_logDescriptionType, "logDescriptionType"));
     addPersistableAttribute (new AttributeDateTime (&m_dateTimeStamp, "dateTimeStamp"));
-    addPersistableAttribute (new AttributeWaveServiceId (&m_prismServiceId, "prismServiceId"));
+    addPersistableAttribute (new AttributeWaveServiceId (&m_waveServiceId, "prismServiceId"));
     addPersistableAttribute (new AttributeString (&m_username, "username"));
     addPersistableAttribute (new AttributeString (&m_description, "description"));
     addPersistableAttribute (new AttributeObjectId (&m_waveNodeObjectId, "waveNodeObjectId"));
@@ -76,7 +76,7 @@ void DistributedLogEntryManagedObject::setupAttributesForCreate ()
     addPersistableAttributeForCreate (new AttributeResourceId (&m_logType, "logType"));
     addPersistableAttributeForCreate (new AttributeResourceId (&m_logDescriptionType, "logDescriptionType"));
     addPersistableAttributeForCreate (new AttributeDateTime (&m_dateTimeStamp, "dateTimeStamp"));
-    addPersistableAttributeForCreate (new AttributeWaveServiceId (&m_prismServiceId, "prismServiceId"));
+    addPersistableAttributeForCreate (new AttributeWaveServiceId (&m_waveServiceId, "prismServiceId"));
     addPersistableAttributeForCreate (new AttributeString (&m_username, "username"));
     addPersistableAttributeForCreate (new AttributeString (&m_description, "description"));
     addPersistableAttributeForCreate (new AttributeObjectId (&m_waveNodeObjectId, "waveNodeObjectId"));
@@ -134,12 +134,12 @@ void DistributedLogEntryManagedObject::setDateTimeStamp (const DateTime &dateTim
 
 WaveServiceId DistributedLogEntryManagedObject::getWaveServiceId () const
 {
-    return (m_prismServiceId);
+    return (m_waveServiceId);
 }
 
 void DistributedLogEntryManagedObject::setWaveServiceId (const WaveServiceId &prismServiceId)
 {
-    m_prismServiceId = prismServiceId;
+    m_waveServiceId = prismServiceId;
 }
 
 string DistributedLogEntryManagedObject::getUsername () const

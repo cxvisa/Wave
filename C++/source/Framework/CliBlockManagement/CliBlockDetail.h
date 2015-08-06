@@ -35,7 +35,7 @@ class CliBlockDetail
            // Now the data members
 
     private :
-            WaveServiceId            m_prismServiceId;
+            WaveServiceId            m_waveServiceId;
             LocationId                m_originator;
             CliBlockContext           m_cliBlockContext; 
 

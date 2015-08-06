@@ -26,8 +26,8 @@ class StartHaSyncDumpContext : public WaveLinearSequencerContext
     // Now the data members
 
     private : 
-        vector<WaveServiceId> m_prismServiceIdsVector;
-        vector<WaveServiceId> m_prismServiceIdsToCommunicate;
+        vector<WaveServiceId> m_waveServiceIdsVector;
+        vector<WaveServiceId> m_waveServiceIdsToCommunicate;
         vector<void *>         m_validationDetailsVector;
         vector<UI32>           m_validationDetailsSizesVector;
 
