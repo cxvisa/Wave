@@ -5,8 +5,8 @@
  ***************************************************************************/
 
 #include "Framework/Postboot/PrismPostPersistentBootWorkerClusterContext.h"
-#include "Framework/Utils/PrismCondition.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveCondition.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -21,7 +21,7 @@ PrismPostPersistentBootWorkerClusterContext::PrismPostPersistentBootWorkerCluste
 {
 }
 
-PrismPostPersistentBootWorkerClusterContext::PrismPostPersistentBootWorkerClusterContext( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage, PrismMutex *pPostbootMutex, PrismCondition *pPostbootSynchronizingCondition )
+PrismPostPersistentBootWorkerClusterContext::PrismPostPersistentBootWorkerClusterContext( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage, WaveMutex *pPostbootMutex, WaveCondition *pPostbootSynchronizingCondition )
  : m_eventId (eventId),
    m_parameter (parameter), 
    m_recoveryType (recoveryType), 
@@ -35,7 +35,7 @@ PrismPostPersistentBootWorkerClusterContext::~PrismPostPersistentBootWorkerClust
 {
 }
 
-void PrismPostPersistentBootWorkerClusterContext::initializeContext ( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage, PrismMutex *pPostbootMutex, PrismCondition *pPostbootSynchronizingCondition )
+void PrismPostPersistentBootWorkerClusterContext::initializeContext ( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage, WaveMutex *pPostbootMutex, WaveCondition *pPostbootSynchronizingCondition )
 {
     m_eventId = eventId ;
     m_parameter = parameter;
@@ -75,22 +75,22 @@ ResourceId  PrismPostPersistentBootWorkerClusterContext::getRecoveryType() const
     return (m_recoveryType);
 }
 
-void PrismPostPersistentBootWorkerClusterContext::setPostbootMutex (PrismMutex *pPostbootMutex)
+void PrismPostPersistentBootWorkerClusterContext::setPostbootMutex (WaveMutex *pPostbootMutex)
 {
     m_pPostbootMutex = pPostbootMutex;
 }
 
-PrismMutex *PrismPostPersistentBootWorkerClusterContext::getPostbootMutex () const
+WaveMutex *PrismPostPersistentBootWorkerClusterContext::getPostbootMutex () const
 {
     return (m_pPostbootMutex);
 }
 
-void PrismPostPersistentBootWorkerClusterContext::setPostbootSynchronizingCondition (PrismCondition *pPostbootSynchronizingCondition)
+void PrismPostPersistentBootWorkerClusterContext::setPostbootSynchronizingCondition (WaveCondition *pPostbootSynchronizingCondition)
 {
     m_pPostbootSynchronizingCondition = pPostbootSynchronizingCondition;
 }
 
-PrismCondition *PrismPostPersistentBootWorkerClusterContext::getPostbootSynchronizingCondition () const
+WaveCondition *PrismPostPersistentBootWorkerClusterContext::getPostbootSynchronizingCondition () const
 {
     return (m_pPostbootSynchronizingCondition);
 }

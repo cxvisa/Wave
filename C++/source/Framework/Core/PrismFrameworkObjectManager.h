@@ -622,13 +622,13 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                LocationId                                       m_lastUsedLocationId;
 
                map<WaveServiceId, WaveServiceId>              m_servicesToBeExcludedForClusterCommunications;
-               PrismMutex                                       m_servicesToBeExcludedForClusterCommunicationsLock;
+               WaveMutex                                       m_servicesToBeExcludedForClusterCommunicationsLock;
 
 		static vector<WaveServiceId>                           m_externalStateSynchronizationRequiredList;
-		static PrismMutex										m_externalStateSynchronizationRequiredListLock;
+		static WaveMutex										m_externalStateSynchronizationRequiredListLock;
 
         static string                                           m_ipAddressForThisLocation;
-        static PrismMutex                                       m_ipAddressForThisLocationMutex;
+        static WaveMutex                                       m_ipAddressForThisLocationMutex;
 
         static string                                           m_ethernetInterfaceForThisLocation;
 
@@ -636,45 +636,45 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                string                                           m_startupFileName;
                ResourceId                                       m_startupFileType;
                bool                                             m_secondaryNodeClusterCreationFlag;
-               PrismMutex                                       m_secondaryNodeClusterCreationFlagMutex;
+               WaveMutex                                       m_secondaryNodeClusterCreationFlagMutex;
 
                bool                                             m_primaryNodeClusterOperationFlag;
-               PrismMutex                                       m_primaryNodeClusterOperationFlagMutex;
+               WaveMutex                                       m_primaryNodeClusterOperationFlagMutex;
 
                bool                                             m_activationCompleted;
                string                                           m_activationCompletedTimeStamp;
-               PrismMutex                                       m_activationCompletedMutex;
+               WaveMutex                                       m_activationCompletedMutex;
 
                //Status related Port boot progress
                bool                                             m_postBootStarted;
                string                                           m_postBootStartedTimeStamp;
                bool                                             m_postBootCompleted;
                string                                           m_postBootCompletedTimeStamp;
-               PrismMutex                                       m_postBootProgressMutex;
+               WaveMutex                                       m_postBootProgressMutex;
                UI32                                             m_numberOfLineCardPostBootInProgress;
-               PrismMutex                                       m_lineCardPostBootMutex;
+               WaveMutex                                       m_lineCardPostBootMutex;
 
                bool                                             m_configReplayStarted;
                string                                           m_configReplayStartedTimeStamp;
                bool                                             m_configReplayCompleted;
                string                                           m_configReplayCompletedTimeStamp;
-               PrismMutex                                       m_configReplayInProgressMutex;
+               WaveMutex                                       m_configReplayInProgressMutex;
 
                bool                                             m_fileReplayStarted;
                string                                           m_fileReplayStartedTimeStamp;
                bool                                             m_fileReplayCompleted;
                string                                           m_fileReplayCompletedTimeStamp;
-               PrismMutex                                       m_fileReplayInProgressMutex;
+               WaveMutex                                       m_fileReplayInProgressMutex;
 
                bool                                             m_nodeReadyForAllCommands;
                string                                           m_nodeReadyForAllCommandsTimeStamp;
-               PrismMutex                                       m_nodeReadyForAllCommandsMutex;
+               WaveMutex                                       m_nodeReadyForAllCommandsMutex;
                TimerHandle                                      m_clusterPhaseTimerHandler;
 
                bool                                             m_isPostBootNeededDuringRejoin;
                bool                                             m_needNotifyClusterReadyState;
 
-               PrismMutex                                       m_nodeZeroizedMutex;
+               WaveMutex                                       m_nodeZeroizedMutex;
                /** FIPSZeroize
                *  FIPSZeroize Flag
                */
@@ -689,7 +689,7 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                vector<string>                                   m_relatedToTableNamesForAuxilliaryTables;
 
                bool                                             m_isWarmHaRecoveryPreparationInProgress;
-               PrismMutex                                       m_warmHaRecoveryPreparationInProgressMutex;
+               WaveMutex                                       m_warmHaRecoveryPreparationInProgressMutex;
 
 
         static GetInstancesFunction                             m_getInstancesFunction;

@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-PrismMutex                                               ApplicationServiceHelper::m_applicationServiceHelperMutex;
+WaveMutex                                               ApplicationServiceHelper::m_applicationServiceHelperMutex;
 UI32                                                     ApplicationServiceHelper::m_nextApplicationServiceId                 = 1;
 map<UI32, map<UI32, ApplicationServiceMessageHandler> *> ApplicationServiceHelper::m_allApplicationServiceMessageHandlersMap;
 

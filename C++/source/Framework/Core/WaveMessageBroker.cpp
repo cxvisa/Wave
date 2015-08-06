@@ -78,16 +78,16 @@ bool                                           WaveMessageBroker::m_enableTraceS
 bool                                           WaveMessageBroker::m_enableFileServiceSupport;
 bool                                           WaveMessageBroker::m_enableSystemManagementSupport;
 PersistencePostBootCheck                       WaveMessageBroker::m_persistencePostBootCheck;
-PrismMutex                                     WaveMessageBroker::m_clusterEnabledCheckMutex;
+WaveMutex                                     WaveMessageBroker::m_clusterEnabledCheckMutex;
 ClusterEnabledCheck                            WaveMessageBroker::m_clusterEnabledCheck  = NULL;
 string                                         WaveMessageBroker::m_waveUserClientPath;
 string                                         WaveMessageBroker::m_waveUserClientParams;
 LogOperationStatusFunction                     WaveMessageBroker::m_logOperationStatusFunction = NULL;
-PrismMutex                                     WaveMessageBroker::m_logOperationStatusMutex;
+WaveMutex                                     WaveMessageBroker::m_logOperationStatusMutex;
 IsWaveClusteringEnabled                        WaveMessageBroker::m_isWaveClusteringEnabled = NULL;
-PrismMutex                                     WaveMessageBroker::m_isWaveClusteringEnabledMutex;
+WaveMutex                                     WaveMessageBroker::m_isWaveClusteringEnabledMutex;
 GetLinecardReadySlotIdBitMapFunction           WaveMessageBroker::m_linecardReadySlotIdBitMapFunction = NULL;
-PrismMutex                                     WaveMessageBroker::m_linecardReadySlotIdBitMapFunctionMutex;
+WaveMutex                                     WaveMessageBroker::m_linecardReadySlotIdBitMapFunctionMutex;
 
 void WaveMessageBroker::enableAllFeatures ()
 {
@@ -387,7 +387,7 @@ void WaveMessageBroker::initialize (const WaveMainConfiguration &waveMainConfigu
 
 string WaveMessageBroker::getTraceFileDirectory ()
 {
-    static PrismMutex traceFileDirectoryMutex;
+    static WaveMutex traceFileDirectoryMutex;
 
     traceFileDirectoryMutex.lock ();
 
@@ -413,7 +413,7 @@ string WaveMessageBroker::getTraceFileDirectory ()
 
 string WaveMessageBroker::getConfigurationFileDirectory ()
 {
-    static PrismMutex configurationFileDirectoryMutex;
+    static WaveMutex configurationFileDirectoryMutex;
 
     configurationFileDirectoryMutex.lock ();
 
@@ -439,7 +439,7 @@ string WaveMessageBroker::getConfigurationFileDirectory ()
 
 string WaveMessageBroker::getProfileFileDirectory ()
 {
-    static PrismMutex profileFileDirectoryMutex;
+    static WaveMutex profileFileDirectoryMutex;
 
     profileFileDirectoryMutex.lock ();
 

@@ -55,7 +55,7 @@ void ShellWyser::usageShellWyserHelp (void)
 
 void ShellWyser::registerWyserFunction (ShellCmdFunction wyserFunction, const char *cliName)
 {
-    static  PrismMutex mutex;
+    static  WaveMutex mutex;
 
     mutex.lock();
     ((ShellObjectManager::getInstance ())->m_pPrismShell->getWyserShell ())->addShellCommandHandler (ShellCommandHandler (string(cliName), 1,  wyserFunction, strlen (cliName), NULL));

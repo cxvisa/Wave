@@ -18,7 +18,7 @@ namespace WaveNs
 {
 
 static map<string, InterLocationMessageReceiverThread *> s_interLocationMessageReceiverThreadCache;
-static PrismMutex                                        s_interLocationMessageReceiverThreadCacheMutex;
+static WaveMutex                                        s_interLocationMessageReceiverThreadCacheMutex;
 
 bool InterLocationMessageReceiverObjectManager::addInterLocationMessageReceiverThreadToCache (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort, InterLocationMessageReceiverThread *&pInterLocationMessageReceiverThread)
 {

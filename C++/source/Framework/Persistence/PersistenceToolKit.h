@@ -9,7 +9,7 @@
 
 #include "Framework/Types/Types.h"
 #include "Framework/Types/DateTime.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 using namespace std;
 
@@ -37,7 +37,7 @@ class PersistenceToolKit
 
     private :
         static  ConfigurationManagedObject *m_pConfigurationManagedObject;
-        static  PrismMutex                  m_configurationManagedObjectMutex;
+        static  WaveMutex                  m_configurationManagedObjectMutex;
 
     protected :
     public :

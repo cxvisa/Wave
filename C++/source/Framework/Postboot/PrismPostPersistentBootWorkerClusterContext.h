@@ -13,15 +13,15 @@ using namespace std;
 
 namespace WaveNs
 {
-class PrismMutex;
-class PrismCondition;
+class WaveMutex;
+class WaveCondition;
 class PrismPostPersistentBootWorkerClusterContext 
 {
     public :
                                         PrismPostPersistentBootWorkerClusterContext ();
-                                        PrismPostPersistentBootWorkerClusterContext ( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *PrismPostPersistenceBootMessage = NULL, PrismMutex *pPostbootMutex = NULL, PrismCondition *pPostbootSynchronizingCondition = NULL);
+                                        PrismPostPersistentBootWorkerClusterContext ( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *PrismPostPersistenceBootMessage = NULL, WaveMutex *pPostbootMutex = NULL, WaveCondition *pPostbootSynchronizingCondition = NULL);
                                         
-                void                    initializeContext                           ( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *PrismPostPersistenceBootMessage = NULL, PrismMutex *pPostbootMutex = NULL, PrismCondition *pPostbootSynchronizingCondition = NULL);
+                void                    initializeContext                           ( const UI32 &eventId, const UI32 &parameter, const ResourceId &recoveryType, PrismPostPersistenceBootMessage *PrismPostPersistenceBootMessage = NULL, WaveMutex *pPostbootMutex = NULL, WaveCondition *pPostbootSynchronizingCondition = NULL);
         virtual                        ~PrismPostPersistentBootWorkerClusterContext ();
 
                 void                    setEventId                              (const UI32 &eventId);
@@ -30,10 +30,10 @@ class PrismPostPersistentBootWorkerClusterContext
                 UI32                    getParameter                            () const;
                 void                    setRecoveryType                         (const ResourceId &recoveryType);
                 ResourceId              getRecoveryType                         () const;
-                void                    setPostbootMutex                        (PrismMutex *pPostbootMutex);
-                PrismMutex             *getPostbootMutex                        () const;
-                void                    setPostbootSynchronizingCondition       (PrismCondition *pPostbootSynchronizingCondition);            
-                PrismCondition         *getPostbootSynchronizingCondition       () const;
+                void                    setPostbootMutex                        (WaveMutex *pPostbootMutex);
+                WaveMutex             *getPostbootMutex                        () const;
+                void                    setPostbootSynchronizingCondition       (WaveCondition *pPostbootSynchronizingCondition);            
+                WaveCondition         *getPostbootSynchronizingCondition       () const;
                 void                    setPostbootMessagePointer               (PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage);
                 PrismPostPersistenceBootMessage *getPostbootMessagePointer      () const;
 
@@ -43,8 +43,8 @@ class PrismPostPersistentBootWorkerClusterContext
                 UI32                    m_eventId;
                 UI32                    m_parameter;
                 ResourceId              m_recoveryType;
-                PrismMutex             *m_pPostbootMutex;
-                PrismCondition         *m_pPostbootSynchronizingCondition;
+                WaveMutex             *m_pPostbootMutex;
+                WaveCondition         *m_pPostbootSynchronizingCondition;
                 PrismPostPersistenceBootMessage *m_pPrismPostPersistenceBootMessage;
 };
 

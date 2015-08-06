@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-class PrismCondition;
+class WaveCondition;
 
 typedef enum
 {
@@ -19,18 +19,18 @@ typedef enum
     WAVE_MUTEX_COULD_NOT_LOCK,
     WAVE_MUTEX_COULD_NOT_UNLOCK,
     WAVE_MUTEX_ALREADY_LOCKED
-} PrismMutexStatus;
+} WaveMutexStatus;
 
-class PrismMutex
+class WaveMutex
 {
     private :
     protected :
     public :
-                       PrismMutex ();
-                       ~PrismMutex ();
-        PrismMutexStatus lock     ();
-        PrismMutexStatus unlock   ();
-        PrismMutexStatus tryLock  ();
+                       WaveMutex ();
+                       ~WaveMutex ();
+        WaveMutexStatus lock     ();
+        WaveMutexStatus unlock   ();
+        WaveMutexStatus tryLock  ();
 
     // Now the data members
 
@@ -40,7 +40,7 @@ class PrismMutex
     protected :
     public :
 
-    friend class PrismCondition;
+    friend class WaveCondition;
 };
 
 }

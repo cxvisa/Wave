@@ -32,7 +32,7 @@ static string         s_traceFileName;
 static bool           s_isSysLogRequired = true;
 static TraceClientMap s_traceClientMap;
 
-PrismMutex                               TraceObjectManager::m_mutexForTracing;
+WaveMutex                               TraceObjectManager::m_mutexForTracing;
 bool                                     TraceObjectManager::m_isFirstTime                               = true;
 fstream                                  TraceObjectManager::traceFile;
 
@@ -40,7 +40,7 @@ WaveUserClientPrintFunction              TraceObjectManager::m_pWaveUserClientPr
 WaveUserClientPrintToAllSessionsFunction TraceObjectManager::m_pWaveUserClientPrintToAllSessionsFunction = NULL;
 map<UI32, UI32>                          TraceObjectManager::m_nativeClientDebugSessions;
 map<UI32, UI32>                          TraceObjectManager::m_userClientDebugSessions;
-PrismMutex                               TraceObjectManager::m_clientDebugSessionsMutex;
+WaveMutex                               TraceObjectManager::m_clientDebugSessionsMutex;
 
 UI32                                     TraceObjectManager::m_maxTraceFileSize = 2 * 1024 * 1024; // 2MB
 UI32                                     TraceObjectManager::m_maxTraceFilesToKeep = 4; // keep 4 .tgz files + 1 .trc file

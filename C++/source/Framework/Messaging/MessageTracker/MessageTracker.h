@@ -9,7 +9,7 @@
 
 #include "Framework/Types/Types.h"
 #include "Framework/MultiThreading/PrismPosixThread.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <map>
 #include <vector>
@@ -46,7 +46,7 @@ class MessageTracker
         static bool                                                                 m_trackingMessagesWithBt;
         static map<const WaveMessage *, string>                                    m_currentlyAllocatedMessagesWithBt;
 
-        static PrismMutex                                                           m_messageTrackerMutex;
+        static WaveMutex                                                           m_messageTrackerMutex;
 
     protected :
     public :

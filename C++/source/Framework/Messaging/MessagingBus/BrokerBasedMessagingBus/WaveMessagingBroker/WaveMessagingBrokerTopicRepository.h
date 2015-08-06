@@ -8,7 +8,7 @@
 #define WAVEMESSAGINGBROKERTOPICREPOSITORY_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <map>
 #include <string>
@@ -42,7 +42,7 @@ class WaveMessagingBrokerTopicRepository
 
     private :
         map<string, WaveMessagingBrokerTopic *> m_waveMesasgingBrokerTopics;
-        PrismMutex                              m_waveMesasgingBrokerTopicsMutex;
+        WaveMutex                              m_waveMesasgingBrokerTopicsMutex;
 
     protected :
     public :

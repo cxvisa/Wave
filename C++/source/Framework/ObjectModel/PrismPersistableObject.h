@@ -8,7 +8,7 @@
 #define PRISMPERSISTABLEOBJECT_H
 
 #include "Framework/Attributes/AttributesMap.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContextForSetOperation.h"
 #include "Framework/Types/Uuid.h"
 
@@ -160,7 +160,7 @@ class PrismPersistableObject
         static map<string, map<UI32, string> >        m_globalUserTagToNameMap;
         static map<string, map<string, UI32> >        m_globalNameToUserTagMap; 
         static map<string, map<UI32, AttributeType> > m_globalUserTagToTypeMap;
-        static PrismMutex                             m_globalUserTagToNameMapMutex;
+        static WaveMutex                             m_globalUserTagToNameMapMutex;
         bool                                          m_emptyNeededOnPersistentBootWithDefault;
         bool                                          m_isPrismView;
         string                                        m_viewName;

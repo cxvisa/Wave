@@ -8,7 +8,7 @@
 #define WAVEMANAGEMENTSERVERMAP_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <string>
 #include <map>
@@ -52,7 +52,7 @@ class WaveManagementServerMap
     private :
         map<string, WaveManagementServer *> m_managementServers;
         map<UI32,   WaveManagementServer *> m_managementServersById;
-        PrismMutex                          m_managementServersMutex;
+        WaveMutex                          m_managementServersMutex;
 
     protected :
     public :

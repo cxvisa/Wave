@@ -9,7 +9,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ObjectModel/PrismPersistableObject.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -131,7 +131,7 @@ bool OrmRepository::isManagedClassATable (const string &managedClass)
 
 void OrmRepository::addView (OrmView *pOrmView)
 {
-    PrismMutex s_addViewMutex;
+    WaveMutex s_addViewMutex;
 
     s_addViewMutex.lock ();
 
@@ -166,7 +166,7 @@ void OrmRepository::addView (OrmView *pOrmView)
 
 void OrmRepository::addTable (OrmTable *pOrmTable)
 {
-    PrismMutex s_addTableMutex;
+    WaveMutex s_addTableMutex;
 
     s_addTableMutex.lock ();
 
@@ -408,7 +408,7 @@ UI32 OrmRepository::getUniqueTableIdForTableName (const string &tableName)
 
 UI32 OrmRepository::getNextTableId ()
 {
-    static PrismMutex s_mutex;
+    static WaveMutex s_mutex;
     static UI32       s_nextTableId = 1;
 
            UI32       tempTableId   = 0;

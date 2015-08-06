@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 map<string, WaveBrokerPublishMessageInstantiator> WaveBrokerPublishMessageFactory::m_waveBrokerPublishMessageInstatiators;
-PrismMutex                                        WaveBrokerPublishMessageFactory::m_waveBrokerPublishMessageInstatiatorsMutex;
+WaveMutex                                        WaveBrokerPublishMessageFactory::m_waveBrokerPublishMessageInstatiatorsMutex;
 
 WaveBrokerPublishMessageFactory::WaveBrokerPublishMessageFactory ()
 {

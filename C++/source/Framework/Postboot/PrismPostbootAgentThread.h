@@ -33,7 +33,7 @@ class PrismPostbootAgentThread : protected WaveWorker, public PrismPosixThread
                 ResourceId  m_recoveryType;
 				PrismPostbootAgentThreadContext *m_pPrismPostbootAgentThreadContext;
         static  UI32        m_parallelPostBootAgentThreads;
-        static  PrismMutex  m_parallelPostBootAgentThreadsMutex;
+        static  WaveMutex  m_parallelPostBootAgentThreadsMutex;
     protected :
     public :
 };

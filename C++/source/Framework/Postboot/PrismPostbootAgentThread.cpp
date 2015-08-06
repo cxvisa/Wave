@@ -10,13 +10,13 @@
 #include "Framework/Postboot/PrismPostPersistentBootMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
 
     UI32        PrismPostbootAgentThread::m_parallelPostBootAgentThreads;
-    PrismMutex  PrismPostbootAgentThread::m_parallelPostBootAgentThreadsMutex;
+    WaveMutex  PrismPostbootAgentThread::m_parallelPostBootAgentThreadsMutex;
 
 PrismPostbootAgentThread::PrismPostbootAgentThread   (WaveObjectManager *pWaveObjectManager, const UI32 &event, const UI32 &parameter, 
                                                       const ResourceId &recoveryType, PrismPostbootAgentThreadContext *pPrismPostbootAgentThreadContext)

@@ -36,7 +36,7 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
 
             private :
                 map<UI32, WaveMessage *> m_messagesMap;
-                PrismMutex                m_accessMutex;
+                WaveMutex                m_accessMutex;
 
             protected :
             public:
@@ -73,8 +73,8 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
 
     private :
         MessageMap m_remoteMessagesMap;
-        PrismMutex m_accessMutexForReceiverThreads;
-        PrismMutex m_accessMutexForMessagesMap;
+        WaveMutex m_accessMutexForReceiverThreads;
+        WaveMutex m_accessMutexForMessagesMap;
 
     protected :
     public :

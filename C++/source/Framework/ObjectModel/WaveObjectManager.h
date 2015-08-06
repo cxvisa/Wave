@@ -907,11 +907,11 @@ class WaveObjectManager : public WaveElement
                map<UI32, WaveMessageResponseContext *>                             m_responsesMap;
                map<UI32, vector<WaveEventListenerMapContext *> *>                  m_eventListenersMap;
                map<string, vector<string> >                                         m_postbootManagedObjectNames;
-               PrismMutex                                                           m_responsesMapMutex;
-               PrismMutex                                                           m_sendReplyMutexForResponseMap;
+               WaveMutex                                                           m_responsesMapMutex;
+               WaveMutex                                                           m_sendReplyMutexForResponseMap;
                vector<WaveWorker *>                                                 m_workers;
                bool                                                                 m_isEnabled;
-               PrismMutex                                                           m_isEnabledMutex;
+               WaveMutex                                                           m_isEnabledMutex;
                TraceClientId                                                        m_traceClientId;
 
                map<string, string>                                                  m_managedClasses;
@@ -939,9 +939,9 @@ class WaveObjectManager : public WaveElement
                WaveObjectManager                                                   *m_pAssociatedVirtualWaveObjectManager; // This filed will be used only by the derived classes of type WaveLocalObjectManager to represent virtual/global service corresponding to that locla service.
 
         static map<string, WaveElement *>                                          m_ownersForCreatingManagedObjectInstances;
-        static PrismMutex                                                           m_createManagedObjectInstanceWrapperMutex;
+        static WaveMutex                                                           m_createManagedObjectInstanceWrapperMutex;
                map<UI32, WaveElement *>                                            m_ownersForCreatingMessageInstances;
-               PrismMutex                                                           m_createMessageInstanceWrapperMutex;
+               WaveMutex                                                           m_createMessageInstanceWrapperMutex;
 
                bool                                                                 m_allowAutomaticallyUnlistenForEvents;
 
@@ -957,7 +957,7 @@ class WaveObjectManager : public WaveElement
                bool                                                                 m_messageHistoryLogInsideReply;
                bool                                                                 m_messageHistoryLogInsideHandleMessage;
         static map<string, WaveServiceId>                                          m_serviceStringServiceIdMap;
-        static PrismMutex                                                           m_serviceStringServiceIdMapMutex;
+        static WaveMutex                                                           m_serviceStringServiceIdMapMutex;
                set<string>                                                          m_serviceStrings;
 
                WaveManagedObjectUpdateWorker                                       *m_pWaveManagedObjectUpdateWorker;
@@ -974,7 +974,7 @@ class WaveObjectManager : public WaveElement
                map<UI32, map<UI32, SI64> >                                          m_realNanoSecondsForMessageHandlerSequencerSteps;
                map<string, map<string, UnifiedClientBackendDetails*> >              m_backendAttributeMap; // map of boot or shutdown phase, <taskname, backendDetails>
                set<string>                                                          m_setOfPartitionNamesReferencedInCurrentTransaction;
-        static PrismMutex                                                           m_postponedMessageQueueMutex;
+        static WaveMutex                                                           m_postponedMessageQueueMutex;
                WaveMessageQueue<WaveMessage>                                      m_postponedMessageQueue;
 
         static map<string, map<string, string> >                                    m_clientsListeningForCreateByManagedObject;
@@ -983,8 +983,8 @@ class WaveObjectManager : public WaveElement
         static map<string, map<string, string> >                                    m_managedObjectsForCreateByClient;
         static map<string, map<string, string> >                                    m_managedObjectsForUpdateByClient;
         static map<string, map<string, string> >                                    m_managedObjectsForDeleteByClient;
-        static PrismMutex                                                           m_clientsListeningMutex;
-               PrismMutex                                                           m_workersMutex;
+        static WaveMutex                                                           m_clientsListeningMutex;
+               WaveMutex                                                           m_workersMutex;
         static WaveServiceMode                                                      m_waveServiceLaunchMode;
                WaveServiceMode                                                      m_waveServiceMode;
                UI32                                                                 m_serviceId;

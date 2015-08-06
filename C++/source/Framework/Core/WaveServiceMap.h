@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/MultiThreading/WaveThreadStatus.h"
 
 using namespace std;
@@ -41,7 +41,7 @@ class WaveServiceMap
         map<WaveServiceId, WaveThread *> m_servicesMap;
         map<WaveServiceId, string>        m_servicesNameMap;
         map<string, WaveServiceId>        m_servicesIdMap;
-        PrismMutex                         m_mutex;
+        WaveMutex                         m_mutex;
 
     protected :
     public:

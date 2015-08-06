@@ -38,7 +38,7 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
 
             private :
                 map<UI32, ManagementInterfaceMessage *> m_messagesMap;
-                PrismMutex                              m_accessMutex;
+                WaveMutex                              m_accessMutex;
 
             protected :
             public:
@@ -94,9 +94,9 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
 
     private :
         MessageMap              m_remoteMessagesMap;
-        PrismMutex              m_accessMutexForReceiverThreads;
-        PrismMutex              m_accessMutexForMessagesMap;
-        PrismMutex              m_accessServerIdConnectionStatus;
+        WaveMutex              m_accessMutexForReceiverThreads;
+        WaveMutex              m_accessMutexForMessagesMap;
+        WaveMutex              m_accessServerIdConnectionStatus;
 
         set<UI32>               m_serverIdSet;                     // If there is entry in this set, it means client is in middle of connecting to server.
         WaveManagementServerMap m_serversMap;

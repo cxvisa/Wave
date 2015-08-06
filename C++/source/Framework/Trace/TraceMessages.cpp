@@ -349,8 +349,8 @@ string TraceObjectManagerPrintToAllWaveClientSessionsMessage::getMessageToBePrin
     return (m_messageToBePrinted);
 }
 
-PrismMutex      TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_synchronizingMutex;
-PrismCondition  TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_synchronizingCondition (&TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_synchronizingMutex);
+WaveMutex      TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_synchronizingMutex;
+WaveCondition  TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_synchronizingCondition (&TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_synchronizingMutex);
 UI32            TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_outStandingMessages    = 0;
 const UI32      TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage::m_maxOutStandingMessages = 1024;
 

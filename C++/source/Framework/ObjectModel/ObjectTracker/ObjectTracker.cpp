@@ -21,7 +21,7 @@ map<const WaveManagedObject *,WaveThreadId>                                   Ob
 map<const WaveManagedObject *, bool>                                           ObjectTracker::m_currentlyAllocatedObjectsForQueyResults;
 bool                                                                           ObjectTracker::m_trackingObjectsWithBt = false;
 map<const WaveManagedObject *, string>                                         ObjectTracker::m_currentlyAllocatedObjectsWithBt;
-PrismMutex                                                                     ObjectTracker::m_objectTrackerMutex;
+WaveMutex                                                                     ObjectTracker::m_objectTrackerMutex;
 
 bool ObjectTracker::isAKnownMessage (const WaveManagedObject *pWaveManagedObject)
 {

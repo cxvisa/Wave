@@ -8,7 +8,7 @@
 
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Boot/PrismBootAgent.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Postboot/PrismPostbootDebug.h"
 #include "Framework/ObjectRelationalMapping/DatabaseSchema.h"
 #include "Framework/Core/PrismFrameworkConfiguration.h"
@@ -66,10 +66,10 @@ class PrismFrameworkObjectManagerInitializeWorker : public WaveWorker
     private :
                PrismBootAgent      *m_pPrismBootAgent;
         static bool                 m_initialBootcompleted;
-        static PrismMutex           m_initialBootcompletedMutex;
+        static WaveMutex           m_initialBootcompletedMutex;
                PrismPostbootDebug   m_postbootDebug; // to allow invocation of intialize function
         static bool                 m_initialSchemaInfoObjectSaved;
-        static PrismMutex           m_initialSchemaInfoObjectSavedMutex;
+        static WaveMutex           m_initialSchemaInfoObjectSavedMutex;
 
     protected :
     public :

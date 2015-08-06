@@ -8,7 +8,7 @@
 #define WAVEBROKERPUBLISHMESSAGE_H
 
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveBrokerBasedMessage.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -50,7 +50,7 @@ class WaveBrokerPublishMessage : public WaveBrokerBasedMessage
 
         string     m_brokerName;
 
-        PrismMutex m_mutex;
+        WaveMutex m_mutex;
         UI32       m_referenceCount;
 
         const char *m_pMessageBuffer;

@@ -9,7 +9,7 @@
 
 #include <deque>
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 using namespace std;
 
@@ -37,7 +37,7 @@ template<class T> class WaveMessageQueue // This is a thread safe class
 
     private :
         std::deque<T *> m_messageQueue;
-        PrismMutex      m_prismMutex;
+        WaveMutex      m_waveMutex;
     protected :
     public :
 };

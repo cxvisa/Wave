@@ -5,14 +5,14 @@
  ***************************************************************************/
 
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <map>
 
 namespace WaveNs
 {
 
 map<WaveServiceId, WaveServiceId> s_userSpecificServicesMap;
-PrismMutex s_userSpecificServicesMapMutex;
+WaveMutex s_userSpecificServicesMapMutex;
 
 WaveLocalObjectManagerForUserSpecificTasks::WaveLocalObjectManagerForUserSpecificTasks (const string &objectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : WaveLocalObjectManager (objectManagerName, stackSize, pCpuAffinityVector)

@@ -8,7 +8,7 @@
 #define WAVESYSTEMMANAGEMENTGATEWAYWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "SystemManagement/WaveConfigurationSegmentWorker.h"
 
 #include <map>

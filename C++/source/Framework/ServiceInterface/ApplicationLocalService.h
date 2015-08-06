@@ -7,7 +7,7 @@
 #ifndef APPLICATIONLOCALSERVICE_H
 #define APPLICATIONLOCALSERVICE_H
 
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ServiceInterface/ApplicationServiceRepository.h"
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 #include "Framework/ServiceInterface/ApplicationServiceHelper.h"

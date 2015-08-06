@@ -51,7 +51,7 @@ class WaveClientReceiverObjectManager : public WaveLocalObjectManagerForUserSpec
 
     private :
         static map<string, WaveClientReceiverThread *>  s_waveClientReceiverThreadCache;
-        static PrismMutex                               s_waveClientReceiverThreadCacheMutex;
+        static WaveMutex                               s_waveClientReceiverThreadCacheMutex;
 
                ServerStreamingSocket                   *m_pServerSocketForWaveManagementInterfaceServers;
 

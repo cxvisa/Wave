@@ -16,7 +16,7 @@ namespace WaveNs
 
 map <UI32, map<UI32, WaveServiceIndependentMessageHandler> *>                   ServiceIndependentMessageHandlerMap::s_waveServiceIndependentMessageHandlerMap;
 map <UI32, map<UI32, ManagementInterfaceServiceIndependentMessageHandler> *>    ServiceIndependentMessageHandlerMap::s_managementInterfaceServiceIndependentMessageHandlerMap;
-PrismMutex                                                                      ServiceIndependentMessageHandlerMap::s_serviceIndependentMessageHandlerMapMutex;
+WaveMutex                                                                      ServiceIndependentMessageHandlerMap::s_serviceIndependentMessageHandlerMapMutex;
 
 void ServiceIndependentMessageHandlerMap::addOperationMap (UI32 serviceId, UI32 operationCode, WaveServiceIndependentMessageHandler pMessageHandler)
 {

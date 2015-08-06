@@ -8,7 +8,7 @@
 #define PRISMEVENT_H
 
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -32,7 +32,7 @@ class WaveEvent : public WaveMessage
 
     private :
         UI32       m_referenceCountForEventNotifications;
-        PrismMutex m_referenceCountForEventNotificationsMutex;
+        WaveMutex m_referenceCountForEventNotificationsMutex;
 
     protected :
     public :

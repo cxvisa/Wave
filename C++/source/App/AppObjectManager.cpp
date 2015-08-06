@@ -17,7 +17,7 @@ namespace WaveNs
 {
 
 static map<WaveServiceId, WaveServiceId> s_applicationSpecificServicesMap;
-static PrismMutex                          s_applicationSpecificServicesMutex;
+static WaveMutex                          s_applicationSpecificServicesMutex;
 
 // Vector for application registered to start with Wave.
 // Application will register using registerApp which should be called before

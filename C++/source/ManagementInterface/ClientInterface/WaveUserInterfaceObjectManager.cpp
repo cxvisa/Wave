@@ -39,11 +39,11 @@ ManagementInterfaceMessageHandlerForClient                   WaveUserInterfaceOb
 ManagementClientInterfaceToLoadCStructureOutput              WaveUserInterfaceObjectManager::m_managementClientInterfaceToLoadCStructureOuput;
 ManagementInterfaceMessageInstantiatorForClient              WaveUserInterfaceObjectManager::m_managementInterfaceMessageInstantiatorForClient;
 map<UI32, ManagementInterfaceMessageHandlerForCStyleClient>  WaveUserInterfaceObjectManager::m_managementInterfaceMessageHandlerMapForCStyleClient;
-PrismMutex                                                   WaveUserInterfaceObjectManager::m_managementInterfaceMessageHandlerMapForCStyleClientMutex;
+WaveMutex                                                   WaveUserInterfaceObjectManager::m_managementInterfaceMessageHandlerMapForCStyleClientMutex;
 map<UI32, ManagementInterfaceMessageCallbackHandlerAtClient> WaveUserInterfaceObjectManager::m_managementInterfaceMessageCallbackHandlerAtCStyleClient;
-PrismMutex                                                   WaveUserInterfaceObjectManager::m_managementInterfaceMessageCallbackHandlerAtCStyleClientMutex;
+WaveMutex                                                   WaveUserInterfaceObjectManager::m_managementInterfaceMessageCallbackHandlerAtCStyleClientMutex;
 map<string, ManagementInterfaceMessageInstantiatorForClient> WaveUserInterfaceObjectManager::m_managementInterfaceMessageInstantiatorForClients;
-PrismMutex                                                   WaveUserInterfaceObjectManager::m_managementInterfaceMessageInstantiatorForClientsMutex;
+WaveMutex                                                   WaveUserInterfaceObjectManager::m_managementInterfaceMessageInstantiatorForClientsMutex;
 string                                                       WaveUserInterfaceObjectManager::m_ttyName;
 
 WaveUserInterfaceObjectManager::WaveUserInterfaceObjectManager ()

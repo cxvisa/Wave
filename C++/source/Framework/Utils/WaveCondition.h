@@ -7,7 +7,7 @@
 #define PRISMCONDITION_H
 
 #include <pthread.h>
-#include "PrismMutex.h"
+#include "WaveMutex.h"
 
 namespace WaveNs
 {
@@ -16,26 +16,26 @@ typedef enum
 {
     WAVE_CONDITION_SUCCESS = 0,
     WAVE_CONDITION_ERROR
-} PrismConditionStatus;
+} WaveConditionStatus;
 
-class PrismCondition
+class WaveCondition
 {
     private :
     protected :
     public :
-                              PrismCondition (PrismMutex *pAssociatedPrismMutex);
-                              PrismCondition (const PrismCondition &prismCondition);
-                             ~PrismCondition ();
-        PrismCondition       &operator = (const PrismCondition &prismCondition);
-        PrismConditionStatus  wait           ();
-        PrismConditionStatus  resume         ();
-        PrismConditionStatus  resumeAll      ();
+                              WaveCondition (WaveMutex *pAssociatedWaveMutex);
+                              WaveCondition (const WaveCondition &waveCondition);
+                             ~WaveCondition ();
+        WaveCondition       &operator = (const WaveCondition &waveCondition);
+        WaveConditionStatus  wait           ();
+        WaveConditionStatus  resume         ();
+        WaveConditionStatus  resumeAll      ();
 
     // Now the member variables
 
     private :
         pthread_cond_t  m_condition;
-        PrismMutex     *m_pAssociatedPrismMutex;
+        WaveMutex     *m_pAssociatedWaveMutex;
 
     protected :
     public :

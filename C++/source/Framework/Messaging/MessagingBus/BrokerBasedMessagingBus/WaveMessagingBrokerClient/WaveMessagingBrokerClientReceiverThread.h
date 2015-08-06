@@ -8,7 +8,7 @@
 #define WAVEMESSAGINGBROKERCLIENTRECEIVERTHREAD_H
 
 #include "Framework/MultiThreading/PrismPosixThread.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -46,7 +46,7 @@ class WaveMessagingBrokerClientReceiverThread : public PrismPosixThread
         ServerStreamingSocket *m_pServerStreamingSocket;
         string                 m_peerServerIpAddress;
         SI32                   m_peerServerPort;
-        PrismMutex             m_peerServerMutex;
+        WaveMutex             m_peerServerMutex;
 
         string                 m_peerClientName;
 

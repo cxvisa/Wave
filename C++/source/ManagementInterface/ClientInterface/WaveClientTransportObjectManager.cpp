@@ -337,7 +337,7 @@ WaveMessageStatus WaveClientTransportObjectManager::sendToBeUsedByReceiverThread
 
 void WaveClientTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, void *pContext)
 {
-    static PrismMutex callbackMutex;
+    static WaveMutex callbackMutex;
 
     callbackMutex.lock ();
 

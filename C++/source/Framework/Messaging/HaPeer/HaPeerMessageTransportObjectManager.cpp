@@ -9,14 +9,14 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/MultiThreading/WaveThread.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 
 namespace WaveNs
 {
 
 WaveThread *s_pWaveThreadForHaPeerMessageTransportObjectManager = NULL;
-PrismMutex   s_mutexForWaveThreadForHaPeerMessageTransportObjectManager;
+WaveMutex   s_mutexForWaveThreadForHaPeerMessageTransportObjectManager;
 
 HaPeerMessageTransportObjectManager::MessageMap::MessageMap ()
 {
@@ -345,7 +345,7 @@ WaveMessageStatus HaPeerMessageTransportObjectManager::sendToBeUsedByReceiverThr
 
 void HaPeerMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
-    static PrismMutex callbackMutex;
+    static WaveMutex callbackMutex;
 
     callbackMutex.lock ();
 

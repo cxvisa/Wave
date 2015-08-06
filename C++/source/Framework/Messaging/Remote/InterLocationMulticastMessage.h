@@ -8,7 +8,7 @@
 #define INTERLOCATION_MULTICAST_MESSAGE_H
 
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <vector>
 #include <set>
 #include <string>
@@ -61,8 +61,8 @@ class InterLocationMulticastMessage : public WaveMessage
     set<LocationId>                 m_locationsId;
     UI32                            m_numberOfMessagesSent;
     UI32                            m_originalMessageId;
-    PrismMutex                      m_accessMutex;
-    PrismMutex                      m_messageAccessMutex;
+    WaveMutex                      m_accessMutex;
+    WaveMutex                      m_messageAccessMutex;
 };
 
 }

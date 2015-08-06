@@ -8,7 +8,7 @@
 #define DATABASECONNECTION_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <string>
 
@@ -45,7 +45,7 @@ class DatabaseConnection
                 string              m_name;
                 UI32                m_port;
                 PGconn              *m_pConnection;
-                PrismMutex          m_mutex;
+                WaveMutex          m_mutex;
 
         static  DatabaseConnection *s_pDatabaseConnection; // Singleton connection object
 

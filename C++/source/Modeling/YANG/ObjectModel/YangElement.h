@@ -10,7 +10,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -462,7 +462,7 @@ class YangElement
         bool                                                m_isInLocalConfigurationSubtree;
 
         static  UI32                                        s_numberOfInstancesOfYangElement;
-        static  PrismMutex                                  s_numberOfInstancesOfYangElementMutex; // currently, all YangElements get created in one thread.
+        static  WaveMutex                                  s_numberOfInstancesOfYangElementMutex; // currently, all YangElements get created in one thread.
 
     protected :
     public :

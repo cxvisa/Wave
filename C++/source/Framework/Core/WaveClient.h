@@ -49,7 +49,7 @@ class WaveClient
         static vector<bool>                                   m_nativePrismServiceInstantiatorIsForNormalPhase;
         static vector<NativeMultiplePrismServiceInstantiator> m_nativeMultiplePrismServiceInstantiators;
         static UpdateClientStatusFunctionPtr                  m_updateClientStatusFunctionPtr;
-        static PrismMutex                                     m_updateClientStatusFunctionPtrMutex;
+        static WaveMutex                                     m_updateClientStatusFunctionPtrMutex;
 
     protected :
     public :

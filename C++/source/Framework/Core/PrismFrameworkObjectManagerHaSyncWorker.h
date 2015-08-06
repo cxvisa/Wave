@@ -11,7 +11,7 @@
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Framework/Core/HaSyncWorkerSequencerContext.h"
 #include "Framework/Utils/ServerStreamingSocket.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -115,13 +115,13 @@ class PrismFrameworkObjectManagerHaSyncWorker : public WaveWorker
         string     m_firmwareVersion;
         bool       m_syncDumpComplete;
         bool       m_firmwareVersionMatch;
-        PrismMutex m_syncDumpCompleteMutex;
+        WaveMutex m_syncDumpCompleteMutex;
         UI32       m_syncState;
-        PrismMutex m_syncStateMutex;
+        WaveMutex m_syncStateMutex;
         UI32       m_standbySyncState;
-        PrismMutex m_standbySyncStateMutex;
+        WaveMutex m_standbySyncStateMutex;
         bool       m_syncServicedAsStandby;
-        PrismMutex m_syncServicedAsStandbyMutex;
+        WaveMutex m_syncServicedAsStandbyMutex;
         bool       m_isDbDropNeeded;
         UI32       m_dbSchemaType;
         UI32       m_myHaVersion;

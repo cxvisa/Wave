@@ -8,7 +8,7 @@
 #define WAVEMESSAGINGBROKERTOPICPROCESSOROBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -39,7 +39,7 @@ class WaveMessagingBrokerTopicProcessorObjectManager : public WaveLocalObjectMan
                WaveMessagingBrokerTopicProcessorPublishWorker *m_pWaveMessagingBrokerTopicProcessorPublishWorker;
 
         static map<string, WaveServiceId>                     m_topicNameToWaveServiceIdMap;
-        static PrismMutex                                      m_topicNameToWaveServiceIdMapMutex;
+        static WaveMutex                                      m_topicNameToWaveServiceIdMapMutex;
 
     protected :
     public :

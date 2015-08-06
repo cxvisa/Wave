@@ -20,8 +20,8 @@
 #include "Framework/LocationManagement/Location.h"
 #include "Framework/LocationManagement/SubLocation.h"
 #include "Framework/Core/FrameworkSequenceGenerator.h"
-#include "Framework/Utils/PrismMutex.h"
-#include "Framework/Utils/PrismCondition.h"
+#include "Framework/Utils/WaveMutex.h"
+#include "Framework/Utils/WaveCondition.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/ConfigFileManagementToolKit.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -108,12 +108,12 @@ namespace WaveNs
 {
 
 static bool                                 s_isFrameworkReadyToBoot                                         = false;
-static PrismMutex            *              s_pFrameworkReadinessMutex                                       = NULL;
-static PrismMutex                           s_disconnectMutex;
-static PrismMutex                           s_instantiationMutex;
-static PrismMutex                           s_startupValidMutex;
-static PrismMutex                           s_startupFileMutex;
-static PrismMutex                           s_startupFileTypeMutex;
+static WaveMutex            *              s_pFrameworkReadinessMutex                                       = NULL;
+static WaveMutex                           s_disconnectMutex;
+static WaveMutex                           s_instantiationMutex;
+static WaveMutex                           s_startupValidMutex;
+static WaveMutex                           s_startupFileMutex;
+static WaveMutex                           s_startupFileTypeMutex;
 static string                               s_startupFileName                                                = "startupFile";
 static bool                                 s_isFrameworkInstantiated                                        = false;
 
@@ -137,23 +137,23 @@ static LocationId                           s_locationLocationId                
 static string                               s_locationIpAddress                                              = "";
 static SI32                                 s_locationPort                                                   = 3016;
 
-static PrismMutex                           s_bootSynchronizationMutex;
-static PrismMutex                           s_dbRestoreMutex;
-static PrismMutex                           s_dbConversionStatusMutex;
+static WaveMutex                           s_bootSynchronizationMutex;
+static WaveMutex                           s_dbRestoreMutex;
+static WaveMutex                           s_dbConversionStatusMutex;
 
 static map<WaveThreadId, WaveThreadId>    s_prismThreadIdRepository;
-static PrismMutex                           s_prismThredIdRepositoryMutex;
+static WaveMutex                           s_prismThredIdRepositoryMutex;
 
 static const UI32                           s_clusterPhase0TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
 static const UI32                           s_clusterPhase1TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
 static const UI32                           s_clusterPhase2TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
 static const UI32                           s_clusterPhase3TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
 
-PrismMutex                                  PrismFrameworkObjectManager::m_externalStateSynchronizationRequiredListLock;
+WaveMutex                                  PrismFrameworkObjectManager::m_externalStateSynchronizationRequiredListLock;
 vector<WaveServiceId>                      PrismFrameworkObjectManager::m_externalStateSynchronizationRequiredList;
 
 string                                      PrismFrameworkObjectManager::m_ipAddressForThisLocation;
-PrismMutex                                  PrismFrameworkObjectManager::m_ipAddressForThisLocationMutex;
+WaveMutex                                  PrismFrameworkObjectManager::m_ipAddressForThisLocationMutex;
 string                                      PrismFrameworkObjectManager::m_ethernetInterfaceForThisLocation;
 
 GetInstancesFunction                        PrismFrameworkObjectManager::m_getInstancesFunction                     = NULL;
@@ -423,7 +423,7 @@ PrismFrameworkObjectManager *PrismFrameworkObjectManager::getInstance ()
 
     if (NULL == s_pFrameworkReadinessMutex)
     {
-        s_pFrameworkReadinessMutex = new PrismMutex ();
+        s_pFrameworkReadinessMutex = new WaveMutex ();
         WaveNs::prismAssert (NULL != s_pFrameworkReadinessMutex, __FILE__, __LINE__);
     }
 
@@ -703,7 +703,7 @@ void PrismFrameworkObjectManager::bootPrism ()
 
 void PrismFrameworkObjectManager::waitForPrismServicesToFinish ()
 {
-    PrismMutex mutexForAllPrismServices;
+    WaveMutex mutexForAllPrismServices;
 
 	// double lock to ensure this function doesn't complete
     mutexForAllPrismServices.lock ();

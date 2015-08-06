@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 
-static PrismMutex s_databaseCursorCounterMutex;
+static WaveMutex s_databaseCursorCounterMutex;
 
 
 DatabaseQueryCursor::DatabaseQueryCursor(WaveObjectManager* callingOm, const string &className, const string& queryString, UI32 pageSize, UI32 startOffset)

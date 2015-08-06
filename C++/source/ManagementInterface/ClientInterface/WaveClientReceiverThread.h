@@ -9,7 +9,7 @@
 
 #include "Framework/MultiThreading/PrismPosixThread.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <string>
 
 namespace WaveNs
@@ -41,7 +41,7 @@ class WaveClientReceiverThread : public PrismPosixThread
         ServerStreamingSocket *m_pServerStreamingSocket;
         string                 m_peerServerIpAddress;
         SI32                   m_peerServerPort;
-        PrismMutex             m_peerServerMutex;
+        WaveMutex             m_peerServerMutex;
 
         UI32                   m_peerServerId;
         string                 m_peerServerMessageVersion;

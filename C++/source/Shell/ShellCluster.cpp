@@ -132,7 +132,7 @@ void ShellCluster::usageShellClusterQuit (void)
 
 void ShellCluster::registerClusterFunction (ShellCmdFunction clusterFunction, const char *cliName)
 {
-    static  PrismMutex mutex;
+    static  WaveMutex mutex;
 
     mutex.lock();
     ((ShellObjectManager::getInstance ())->m_pPrismShell->getClusterShell ())->addShellCommandHandler (ShellCommandHandler (string(cliName), 1,  clusterFunction, strlen (cliName), NULL));

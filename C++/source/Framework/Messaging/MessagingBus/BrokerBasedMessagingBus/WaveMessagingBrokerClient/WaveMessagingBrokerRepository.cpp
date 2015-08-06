@@ -29,7 +29,7 @@ string WaveMessagingBrokerRepository::getWaveMessagingBrokerUniqueString (const 
 
 WaveMessagingBrokerRepository *WaveMessagingBrokerRepository::getInstance ()
 {
-    static PrismMutex                           waveMessagingBrokerRepositoryMutex;
+    static WaveMutex                           waveMessagingBrokerRepositoryMutex;
     static WaveMessagingBrokerRepository *pWaveMessagingBrokerClientRepository = NULL;
 
     waveMessagingBrokerRepositoryMutex.lock ();

@@ -8,7 +8,7 @@
 #define WAVEBROKERPUBLISHMESSAGEFACTORY_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <map>
 
@@ -36,7 +36,7 @@ class WaveBrokerPublishMessageFactory
 
     private :
         static map<string, WaveBrokerPublishMessageInstantiator> m_waveBrokerPublishMessageInstatiators;
-        static PrismMutex                                        m_waveBrokerPublishMessageInstatiatorsMutex;
+        static WaveMutex                                        m_waveBrokerPublishMessageInstatiatorsMutex;
 
     protected :
     public :

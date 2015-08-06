@@ -120,7 +120,7 @@ class CentralClusterConfigObjectManager : public WaveObjectManager
 //               vector <heartBeatCallBack_t>      m_heartBeatLostCallBack;
                heartBeatCallBack_t               m_heartBeatLostCallBack;
 #endif
-         PrismMutex                        m_mutex;
+         WaveMutex                        m_mutex;
 
     protected :
     public :

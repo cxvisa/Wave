@@ -6,7 +6,7 @@
 
 #include "ManagementInterface/ClientInterface/WaveManagementServer.h"
 #include "Framework/Utils/ClientStreamingSocket.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -21,7 +21,7 @@ namespace WaveNs
 {
 
 static UI32       s_waveManagementInterfaceServerId       = 1;
-static PrismMutex s_waveManagementInterfaceServerIdMutex;
+static WaveMutex s_waveManagementInterfaceServerIdMutex;
 
 WaveManagementServer::WaveManagementServer (const string &waveClientName, const string &waveClientNameWithoutExtension, const string &ipAddress, const SI32 &port)
     : m_waveClientName                 (waveClientName),

@@ -31,16 +31,16 @@ CommandLineInterfaceReceiverWorkerThread::CommandLineInterfaceReceiverWorkerThre
       WaveWorker                                   (pCommandLineInterfaceReceiverObjectManager),
       m_pCommandLineInterfaceReceiverObjectManager (pCommandLineInterfaceReceiverObjectManager),
       m_pServerStreamingSocket                     (pServerStreamingSocket),
-      m_pPrismMutex                                (NULL),
-      m_pPrismCondition                            (NULL)
+      m_pWaveMutex                                (NULL),
+      m_pWaveCondition                            (NULL)
 {
-    m_pPrismMutex = new PrismMutex;
+    m_pWaveMutex = new WaveMutex;
 
-    prismAssert (NULL != m_pPrismMutex, __FILE__, __LINE__);
+    prismAssert (NULL != m_pWaveMutex, __FILE__, __LINE__);
 
-    m_pPrismCondition = new PrismCondition (m_pPrismMutex);
+    m_pWaveCondition = new WaveCondition (m_pWaveMutex);
 
-    prismAssert (NULL != m_pPrismCondition, __FILE__, __LINE__);
+    prismAssert (NULL != m_pWaveCondition, __FILE__, __LINE__);
 }
 
 CommandLineInterfaceReceiverWorkerThread::~CommandLineInterfaceReceiverWorkerThread ()
@@ -50,14 +50,14 @@ CommandLineInterfaceReceiverWorkerThread::~CommandLineInterfaceReceiverWorkerThr
         delete m_pServerStreamingSocket;
     }
 
-    if (NULL != m_pPrismCondition)
+    if (NULL != m_pWaveCondition)
     {
-        delete m_pPrismCondition;
+        delete m_pWaveCondition;
     }
 
-    if (NULL != m_pPrismMutex)
+    if (NULL != m_pWaveMutex)
     {
-        delete m_pPrismMutex;
+        delete m_pWaveMutex;
     }
 }
 
@@ -65,13 +65,13 @@ void CommandLineInterfaceReceiverWorkerThread::submitCommandLineInterfaceWorkerM
 {
     prismAssert (NULL != pCommandLineInterfaceWorkerMessage, __FILE__, __LINE__);
 
-    m_pPrismMutex->lock ();
+    m_pWaveMutex->lock ();
 
     m_commandLineInterfaceWorkerMessages.push_back (pCommandLineInterfaceWorkerMessage);
 
-    m_pPrismCondition->resume ();
+    m_pWaveCondition->resume ();
 
-    m_pPrismMutex->unlock ();
+    m_pWaveMutex->unlock ();
 }
 
 CommandLineInterfaceWorkerMessage *CommandLineInterfaceReceiverWorkerThread::getNextCommandLineInterfaceWorkerMessage ()
@@ -94,19 +94,19 @@ void CommandLineInterfaceReceiverWorkerThread::processMessages ()
 {
     while (true)
     {
-        m_pPrismMutex->lock ();
+        m_pWaveMutex->lock ();
 
         CommandLineInterfaceWorkerMessage *pCommandLineInterfaceWorkerMessage = getNextCommandLineInterfaceWorkerMessage ();
 
         if (NULL == pCommandLineInterfaceWorkerMessage)
         {
-            m_pPrismCondition->wait ();
+            m_pWaveCondition->wait ();
 
-            m_pPrismMutex->unlock ();
+            m_pWaveMutex->unlock ();
         }
         else
         {
-            m_pPrismMutex->unlock ();
+            m_pWaveMutex->unlock ();
 
             WaveCommandLineInterfaceWorkerOperation waveCommandLineInterfaceWorkerOperation = pCommandLineInterfaceWorkerMessage->getWaveCommandLineInterfaceWorkerOperation ();
 

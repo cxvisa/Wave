@@ -23,28 +23,28 @@ template<class T> WaveMessageQueue<T>::~WaveMessageQueue ()
 
 template<class T> void WaveMessageQueue<T>::insertAtTheBack (T *&pWaveMessage)
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
     m_messageQueue.push_back (pWaveMessage);
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 }
 
 template<class T> void WaveMessageQueue<T>::insertAtTheFront (T *&pWaveMessage)
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
     m_messageQueue.push_front (pWaveMessage);
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 }
 
 template<class T> void WaveMessageQueue<T>::removeFromFront ()
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
     m_messageQueue.pop_front ();
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 }
 
 template<class T> WaveMessageStatus WaveMessageQueue<T>::remove (T *&pWaveMessage)
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
 
     WaveMessageStatus                    status  = WAVE_MESSAGE_ERROR_UNKNOWN_MESSAGE;
     std::deque<WaveMessage *>::iterator element = m_messageQueue.begin ();
@@ -62,14 +62,14 @@ template<class T> WaveMessageStatus WaveMessageQueue<T>::remove (T *&pWaveMessag
         element++;
     }
 
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 
     return (status);
 }
 
 template<class T> UI32 WaveMessageQueue<T>::removeTimerExpirationsForTimer (const TimerHandle &timerHandle)
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
 
     std::deque<WaveMessage *>::iterator   element                                = m_messageQueue.begin ();
     std::deque<WaveMessage *>::iterator   end                                    = m_messageQueue.end ();
@@ -109,18 +109,18 @@ template<class T> UI32 WaveMessageQueue<T>::removeTimerExpirationsForTimer (cons
 
     tempMessageQueue.clear ();
 
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 
     return (numberOfExpirationsEncountered);
 }
 
 template<class T> T *WaveMessageQueue<T>::getFromFront ()
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
 
     if (true == (m_messageQueue.empty ()))
     {
-        m_prismMutex.unlock ();
+        m_waveMutex.unlock ();
 
         return (NULL);
     }
@@ -128,7 +128,7 @@ template<class T> T *WaveMessageQueue<T>::getFromFront ()
     {
         T *pTemp = m_messageQueue.front ();
 
-        m_prismMutex.unlock ();
+        m_waveMutex.unlock ();
 
         return (pTemp);
     }
@@ -136,11 +136,11 @@ template<class T> T *WaveMessageQueue<T>::getFromFront ()
 
 template<class T> T *WaveMessageQueue<T>::removeAndGetFromFront ()
 {
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
 
     if (true == (m_messageQueue.empty ()))
     {
-        m_prismMutex.unlock ();
+        m_waveMutex.unlock ();
 
         return (NULL);
     }
@@ -150,7 +150,7 @@ template<class T> T *WaveMessageQueue<T>::removeAndGetFromFront ()
 
         m_messageQueue.pop_front ();
 
-        m_prismMutex.unlock ();
+        m_waveMutex.unlock ();
 
         return (pTemp);
     }
@@ -160,9 +160,9 @@ template<class T> UI32 WaveMessageQueue<T>::getSize ()
 {
     UI32 numberOfEntriesInTheMessageQueue = 0;
 
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
     numberOfEntriesInTheMessageQueue = m_messageQueue.size ();
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 
     return (numberOfEntriesInTheMessageQueue);
 }
@@ -171,9 +171,9 @@ template<class T> bool WaveMessageQueue<T>::isEmpty ()
 {
     bool isMessageQueueEmpty = true;
 
-    m_prismMutex.lock ();
+    m_waveMutex.lock ();
     isMessageQueueEmpty = m_messageQueue.empty ();
-    m_prismMutex.unlock ();
+    m_waveMutex.unlock ();
 
     return (isMessageQueueEmpty);
 }

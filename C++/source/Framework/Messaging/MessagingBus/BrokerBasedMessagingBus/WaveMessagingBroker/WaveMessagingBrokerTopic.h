@@ -8,7 +8,7 @@
 #define WAVEMESSAGINGBROKERTOPIC_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <map>
 #include <string>

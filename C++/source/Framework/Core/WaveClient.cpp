@@ -42,7 +42,7 @@ vector<NativePrismServiceInstantiator>         WaveClient::m_nativePrismServiceI
 vector<bool>                                   WaveClient::m_nativePrismServiceInstantiatorIsForNormalPhase;
 vector<NativeMultiplePrismServiceInstantiator> WaveClient::m_nativeMultiplePrismServiceInstantiators;
 UpdateClientStatusFunctionPtr                  WaveClient::m_updateClientStatusFunctionPtr = NULL;
-PrismMutex                                     WaveClient::m_updateClientStatusFunctionPtrMutex;  
+WaveMutex                                     WaveClient::m_updateClientStatusFunctionPtrMutex;  
 
 void WaveClient::initialize (const WaveClientConfiguration &waveClientConfiguration)
 {
@@ -128,7 +128,7 @@ void WaveClient::initialize (const WaveClientConfiguration &waveClientConfigurat
 
 string WaveClient::getTraceFileDirectory ()
 {
-    static PrismMutex traceFileDirectoryMutex;
+    static WaveMutex traceFileDirectoryMutex;
 
     traceFileDirectoryMutex.lock ();
 
@@ -154,7 +154,7 @@ string WaveClient::getTraceFileDirectory ()
 
 string WaveClient::getConfigurationFileDirectory ()
 {
-    static PrismMutex configurationFileDirectoryMutex;
+    static WaveMutex configurationFileDirectoryMutex;
 
     configurationFileDirectoryMutex.lock ();
 
@@ -181,7 +181,7 @@ string WaveClient::getConfigurationFileDirectory ()
 
 string WaveClient::getProfileFileDirectory ()
 {
-    static PrismMutex profileFileDirectoryMutex;
+    static WaveMutex profileFileDirectoryMutex;
 
     profileFileDirectoryMutex.lock ();
 

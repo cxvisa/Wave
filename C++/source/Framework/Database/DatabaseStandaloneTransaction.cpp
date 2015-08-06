@@ -7,7 +7,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
 #include "Framework/Database/DatabaseObjectManager.h"
@@ -18,7 +18,7 @@
 namespace WaveNs
 {
 
-PrismMutex DatabaseStandaloneTransaction::s_standaloneTransactionMutex;
+WaveMutex DatabaseStandaloneTransaction::s_standaloneTransactionMutex;
 
 DatabaseStandaloneTransaction::DatabaseStandaloneTransaction ()
     : m_needConnectionTeardown (true),

@@ -9,7 +9,7 @@
 
 #include "Framework/MultiThreading/PrismPosixThread.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <string>
 
 namespace WaveNs
@@ -40,7 +40,7 @@ class HaPeerMessageReceiverThread : public PrismPosixThread
         SI32                   m_peerServerPort;
         string                 m_peerServerMessageVersion;
         UI8                    m_peerServerSerializationType;
-        PrismMutex             m_peerServerMutex;
+        WaveMutex             m_peerServerMutex;
 
     protected :
     public :

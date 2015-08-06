@@ -154,7 +154,7 @@ class PersistenceObjectManager : public WaveObjectManager
                 map<string, WaveConfigManagedObject *>      m_configNameToWaveConfigManagedObjectMapAsCache;
                 string                                      m_delayedCommitTransactions;
         static  UI64                                        m_anyConfiguraitonChangeTrackingNumber;
-        static  PrismMutex                                  m_anyConfiguraitonChangeTrackingNumberMutex;
+        static  WaveMutex                                  m_anyConfiguraitonChangeTrackingNumberMutex;
 
     protected :
     public :

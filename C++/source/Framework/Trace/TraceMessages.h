@@ -219,8 +219,8 @@ class TraceObjectManagerPrintToAllWaveDebugClientSessionsMessage : public Manage
 
     private :
                 string          m_messageToBePrinted;
-        static  PrismMutex      m_synchronizingMutex;   
-        static  PrismCondition  m_synchronizingCondition; 
+        static  WaveMutex      m_synchronizingMutex;   
+        static  WaveCondition  m_synchronizingCondition; 
         static  UI32            m_outStandingMessages;
         
         static const UI32       m_maxOutStandingMessages;

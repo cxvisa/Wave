@@ -160,7 +160,7 @@ namespace WaveNs
 
           private:
 
-               PrismMutex     m_FTTAccessLock;
+               WaveMutex     m_FTTAccessLock;
                std::map<string,  CTransferContext *>   m_TransferContextList;        // Map of FTHandle and Context structure.
                std::map <string, string>               m_IncomingActiveList;         // List to lookup incoming files to this node. map of IncomingFilename and FTHandle.
                std::map <string, string>               m_OutgoingActiveList;         // List to lookup the outgoing files from this node.  Map of outgoing Filename and FTHandle.

@@ -49,7 +49,7 @@ namespace WaveNs
 {
 
 UI32        YangElement::s_numberOfInstancesOfYangElement           = 0;
-PrismMutex  YangElement::s_numberOfInstancesOfYangElementMutex;
+WaveMutex  YangElement::s_numberOfInstancesOfYangElementMutex;
 
 YangElement::YangElement (const string &yangName, const string &name)
     : m_yangName                                   (yangName),

@@ -22,7 +22,7 @@
 #define WAVECONFIGURATIONINTENTREPOSITORY_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <vector>
 #include <map>
 
@@ -48,7 +48,7 @@ class WaveConfigurationIntentRepository
     private :
         static  vector <UI32>                       s_waveConfigurationIntentRepositoryVector;
         static  map <UI32, string>                  s_waveConfigurationIntentRepositoryMap;
-        static  PrismMutex                          s_waveConfigurationIntentRepositoryMutex;
+        static  WaveMutex                          s_waveConfigurationIntentRepositoryMutex;
 
     protected :
     public :

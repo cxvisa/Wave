@@ -206,7 +206,7 @@ void WaveSystemManagement::initialize (const WaveMainConfiguration &waveMainConf
 
 string WaveSystemManagement::getTraceFileDirectory ()
 {
-    static PrismMutex traceFileDirectoryMutex;
+    static WaveMutex traceFileDirectoryMutex;
 
     traceFileDirectoryMutex.lock ();
 
@@ -232,7 +232,7 @@ string WaveSystemManagement::getTraceFileDirectory ()
 
 string WaveSystemManagement::getConfigurationFileDirectory ()
 {
-    static PrismMutex configurationFileDirectoryMutex;
+    static WaveMutex configurationFileDirectoryMutex;
 
     configurationFileDirectoryMutex.lock ();
 
@@ -258,7 +258,7 @@ string WaveSystemManagement::getConfigurationFileDirectory ()
 
 string WaveSystemManagement::getProfileFileDirectory ()
 {
-    static PrismMutex profileFileDirectoryMutex;
+    static WaveMutex profileFileDirectoryMutex;
 
     profileFileDirectoryMutex.lock ();
 

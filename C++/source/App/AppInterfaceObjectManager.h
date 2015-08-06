@@ -111,7 +111,7 @@ class AppInterfaceObjectManager : public WaveLocalObjectManager
 
         memberJoinedCallBack_t              m_nodeJoinedCallBack;
         heartBeatCallBack_t                 m_heartBeatLossCallBack;
-        PrismMutex                          m_mutex;
+        WaveMutex                          m_mutex;
 
         NodeValidationResult_t             *m_clusterCreationResults;
         UI32                                m_nRepliedSecondary;

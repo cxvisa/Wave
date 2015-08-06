@@ -35,15 +35,15 @@ namespace WaveNs
 {
 
 bool            PersistenceLocalObjectManager::m_liveSyncEnabled                        = false;
-PrismMutex      PersistenceLocalObjectManager::m_liveSyncEnabledMutex;
+WaveMutex      PersistenceLocalObjectManager::m_liveSyncEnabledMutex;
 
 bool            PersistenceLocalObjectManager::m_disableLocalCommitTransactions         = false;
-PrismMutex      PersistenceLocalObjectManager::m_disableLocalCommitTransactionsMutex;
+WaveMutex      PersistenceLocalObjectManager::m_disableLocalCommitTransactionsMutex;
 
 string          PersistenceLocalObjectManager::m_unsyncedPendingPrepareTransaction      = "";
 
 UI64            PersistenceLocalObjectManager::m_anyConfiguraitonChangeTrackingNumber   = 0;
-PrismMutex      PersistenceLocalObjectManager::m_anyConfiguraitonChangeTrackingNumberMutex;
+WaveMutex      PersistenceLocalObjectManager::m_anyConfiguraitonChangeTrackingNumberMutex;
 
 UpdateGlobalConfigInKernelHandlerFunction PersistenceLocalObjectManager::m_updateGlobalConfigInKernelHandlerFunction = NULL;
 

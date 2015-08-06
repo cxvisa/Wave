@@ -8,7 +8,7 @@
 #define WAVEMANAGEMENTCLIENTMAP_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <string>
 #include <map>
@@ -51,7 +51,7 @@ class WaveManagementClientMap
         map<string, WaveManagementClient *> m_managementClients;
         map<UI32,   WaveManagementClient *> m_managementClientsById;
         map<UI32,   string>                 m_clientMessageVersionById;
-        PrismMutex                          m_managementClientsMutex;
+        WaveMutex                          m_managementClientsMutex;
 
     protected :
     public :

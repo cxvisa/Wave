@@ -3,43 +3,43 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#include "PrismCondition.h"
+#include "WaveCondition.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 
 namespace WaveNs
 {
 
-PrismCondition::PrismCondition (PrismMutex *pAssociatedPrismMutex)
+WaveCondition::WaveCondition (WaveMutex *pAssociatedWaveMutex)
 {
-    prismAssert (NULL != pAssociatedPrismMutex, __FILE__, __LINE__);
+    prismAssert (NULL != pAssociatedWaveMutex, __FILE__, __LINE__);
 
     pthread_cond_init (&m_condition, NULL);
-    m_pAssociatedPrismMutex = pAssociatedPrismMutex;
+    m_pAssociatedWaveMutex = pAssociatedWaveMutex;
 }
 
-PrismCondition::PrismCondition (const PrismCondition &prismCondition)
+WaveCondition::WaveCondition (const WaveCondition &waveCondition)
 {
-    trace (TRACE_LEVEL_FATAL, "PrismCondition::PrismCondition : Copy constructing PrismCondition does not make sense and hence not allowed.");
+    trace (TRACE_LEVEL_FATAL, "WaveCondition::WaveCondition : Copy constructing WaveCondition does not make sense and hence not allowed.");
     prismAssert (false, __FILE__, __LINE__);
 }
 
-PrismCondition::~PrismCondition ()
+WaveCondition::~WaveCondition ()
 {
     pthread_cond_destroy (&m_condition);
 }
 
-PrismCondition &PrismCondition::operator = (const PrismCondition &prismCondition)
+WaveCondition &WaveCondition::operator = (const WaveCondition &waveCondition)
 {
-    trace (TRACE_LEVEL_FATAL, "PrismCondition::operator = : Assigning to a PrismCondition does not make sense and hence not allowed.");
+    trace (TRACE_LEVEL_FATAL, "WaveCondition::operator = : Assigning to a WaveCondition does not make sense and hence not allowed.");
     prismAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
 
-PrismConditionStatus PrismCondition::wait ()
+WaveConditionStatus WaveCondition::wait ()
 {
-    int status = pthread_cond_wait (&m_condition, &(m_pAssociatedPrismMutex->m_mutex));
+    int status = pthread_cond_wait (&m_condition, &(m_pAssociatedWaveMutex->m_mutex));
 
     if (0 == status)
     {
@@ -52,7 +52,7 @@ PrismConditionStatus PrismCondition::wait ()
     }
 }
 
-PrismConditionStatus PrismCondition::resume ()
+WaveConditionStatus WaveCondition::resume ()
 {
     int status = pthread_cond_signal (&m_condition);
 
@@ -67,7 +67,7 @@ PrismConditionStatus PrismCondition::resume ()
     }
 }
 
-PrismConditionStatus PrismCondition::resumeAll ()
+WaveConditionStatus WaveCondition::resumeAll ()
 {
     int status = pthread_cond_broadcast (&m_condition);
 

@@ -16,19 +16,19 @@ namespace WaveNs
 {
 
 map<string, ConfigurationSegmentInformation *>          WaveConfigurationSegmentMap::m_configurationSegmentMap;
-PrismMutex                                              WaveConfigurationSegmentMap::m_configurationSegmentMapMutex;
+WaveMutex                                              WaveConfigurationSegmentMap::m_configurationSegmentMapMutex;
 
 ConfigurationSegmentQueryContextModificationFunction    WaveConfigurationSegmentMap::s_setNTupleSortingFunction     = NULL;
 ConfigurationSegmentQueryContextModificationFunction    WaveConfigurationSegmentMap::s_customQueryFilterFunction    = NULL;
 ConfigurationSegmentQueryContextModificationFunction2   WaveConfigurationSegmentMap::s_addCustomOrderFieldFunction  = NULL;
-PrismMutex                                              WaveConfigurationSegmentMap::s_queryContextModificationFunctionsMutex;
+WaveMutex                                              WaveConfigurationSegmentMap::s_queryContextModificationFunctionsMutex;
 
 string                                                  WaveConfigurationSegmentMap::s_configurationSegmentForNodeSpecificList      = "";
 string                                                  WaveConfigurationSegmentMap::s_configurationSegmentForMultiPartitionList    = "";
 string                                                  WaveConfigurationSegmentMap::s_managedObjectClassNameForNodeSpecificList    = "";
 string                                                  WaveConfigurationSegmentMap::s_managedObjectClassNameForMultiPartitionList  = "";
 map<string, ConfigurationSegmentImportantInfo *>        WaveConfigurationSegmentMap::m_configSegmentImportantInfoMap;
-PrismMutex                                              WaveConfigurationSegmentMap::m_configSegmentImportantInfoMapMutex;
+WaveMutex                                              WaveConfigurationSegmentMap::m_configSegmentImportantInfoMapMutex;
 // ConfigurationSegmentInformation :
 
 ConfigurationSegmentInformation::ConfigurationSegmentInformation (const string &managedObjectClassName, WaveElement *pWaveElement)

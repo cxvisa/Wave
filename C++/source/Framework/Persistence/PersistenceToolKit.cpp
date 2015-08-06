@@ -17,7 +17,7 @@ namespace WaveNs
 {
 
 ConfigurationManagedObject *PersistenceToolKit::m_pConfigurationManagedObject       = NULL;
-PrismMutex                  PersistenceToolKit::m_configurationManagedObjectMutex;
+WaveMutex                  PersistenceToolKit::m_configurationManagedObjectMutex;
 
 void PersistenceToolKit::setConfigurationManagedObject (ConfigurationManagedObject* &pConfigurationManagedObject)
 {

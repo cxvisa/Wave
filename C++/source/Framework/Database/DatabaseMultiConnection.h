@@ -8,7 +8,7 @@
 #define DATABASEMULTICONNECTION_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <string>
 #include <map>
@@ -64,7 +64,7 @@ class DatabaseMultiConnection
 
                      map<string, string>      m_managedObjectToServerNameMap;
 
-        static       PrismMutex               m_mutex;
+        static       WaveMutex               m_mutex;
         static       DatabaseMultiConnection *m_pDatabaseMultiConnection;
         static const UI32                     m_maximumNumOfRetriesWhenDBIsBusy;
 

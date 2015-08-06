@@ -30,7 +30,7 @@ namespace WaveNs
 static WaveServiceMap                         *s_pWaveServiceMap                                       = NULL;
 
        map<WaveThreadId, WaveObjectManager *>  WaveThread::m_prismThreadIdToWaveObjectManagerMap;
-       PrismMutex                               WaveThread::m_prismThreadIdToWaveObjectManagerMapMutex;
+       WaveMutex                               WaveThread::m_prismThreadIdToWaveObjectManagerMapMutex;
 
 WaveThread::WaveThread (WaveServiceId id, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : PrismPosixThread    (stackSize),
@@ -849,8 +849,8 @@ WaveMessage *WaveThread::getNextMessageToProcess ()
 {
     if (false == (m_frameworkResumeMessages.isEmpty ()))
     {
-        // This queue shall not be affected by the holdall call and hence we do not need to emply any mutex locking though these are messages (not responses).
-        // Replies for these messages will be submitted as normal framework messages and hence there io no corresponding reponses queue.
+        // This queue shall not be affected by the holdall call and hence we do not need to empty any mutex locking though these are messages (not responses).
+        // Replies for these messages will be submitted as normal framework messages and hence there is no corresponding reponses queue.
 
         return (m_frameworkResumeMessages.removeAndGetFromFront ());
     }

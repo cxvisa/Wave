@@ -62,11 +62,11 @@ class WaveUserInterfaceObjectManager : public WaveObjectManager
         static ManagementClientInterfaceToLoadCStructureOutput              m_managementClientInterfaceToLoadCStructureOuput;
         static ManagementInterfaceMessageInstantiatorForClient              m_managementInterfaceMessageInstantiatorForClient;
         static map<UI32, ManagementInterfaceMessageHandlerForCStyleClient>  m_managementInterfaceMessageHandlerMapForCStyleClient;
-        static PrismMutex                                                   m_managementInterfaceMessageHandlerMapForCStyleClientMutex;
+        static WaveMutex                                                   m_managementInterfaceMessageHandlerMapForCStyleClientMutex;
         static map<UI32, ManagementInterfaceMessageCallbackHandlerAtClient> m_managementInterfaceMessageCallbackHandlerAtCStyleClient;
-        static PrismMutex                                                   m_managementInterfaceMessageCallbackHandlerAtCStyleClientMutex;
+        static WaveMutex                                                   m_managementInterfaceMessageCallbackHandlerAtCStyleClientMutex;
         static map<string, ManagementInterfaceMessageInstantiatorForClient> m_managementInterfaceMessageInstantiatorForClients;
-        static PrismMutex                                                   m_managementInterfaceMessageInstantiatorForClientsMutex;
+        static WaveMutex                                                   m_managementInterfaceMessageInstantiatorForClientsMutex;
         static string                                                       m_ttyName;
 
     protected :

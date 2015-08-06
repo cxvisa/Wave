@@ -8,7 +8,7 @@
 #define CLUSTERLOCALOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Cluster/Local/WaveHaNodeTypes.h"
 #include "Framework/Core/WaveNewNodesAddedEvent.h"
@@ -96,10 +96,10 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
 
     private :
                ObjectId                                             m_thisWaveNodeObjectId;
-               PrismMutex                                           m_thisWaveNodeObjectIdMutex;
+               WaveMutex                                           m_thisWaveNodeObjectIdMutex;
 
                WaveHaNodeRole                                       m_thisWaveHaNodeRole;
-               PrismMutex                                           m_thisWaveHaNodeRoleMutex;
+               WaveMutex                                           m_thisWaveHaNodeRoleMutex;
                IpVxAddress                                          m_thisWaveNodeControllerIpAddress;
                SI32                                                 m_thisWaveNodeControllerPort;
         static UI32                                                 m_thisNodeClientIndentificationNumber;

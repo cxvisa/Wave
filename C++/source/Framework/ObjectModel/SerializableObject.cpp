@@ -7,7 +7,7 @@
 #include "Framework/ObjectModel/SerializableObject.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 #include "Version/PrismVersion.h"
 //#include <xercesc/dom/DOM.hpp>
@@ -69,7 +69,7 @@ void SerializableObject::serialize (string &serializedData)
     prismAssert (false, __FILE__, __LINE__);
 
 #if 0
-    static PrismMutex serializationMutex;
+    static WaveMutex serializationMutex;
 
     serializationMutex.lock ();
 
@@ -140,7 +140,7 @@ void SerializableObject::loadFromSerializedData (const string &serializedData)
     prismAssert (false, __FILE__, __LINE__);
 
 #if 0
-    static PrismMutex loadFromSerializedDataMutex;
+    static WaveMutex loadFromSerializedDataMutex;
 
     loadFromSerializedDataMutex.lock ();
 
@@ -227,7 +227,7 @@ void SerializableObject::loadFromSerializedData (const UI8 *pData, const UI32 da
     prismAssert (false, __FILE__, __LINE__);
 
 #if 0
-    static PrismMutex loadFromSerializedDataMutex;
+    static WaveMutex loadFromSerializedDataMutex;
 
     loadFromSerializedDataMutex.lock ();
 
@@ -316,7 +316,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const s
     return (NULL);
 
 #if 0
-    static PrismMutex createAndLoadFromSerializedDataMutex;
+    static WaveMutex createAndLoadFromSerializedDataMutex;
 
     createAndLoadFromSerializedDataMutex.lock ();
 
@@ -432,7 +432,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const U
     return (NULL);
 
 #if 0
-    static PrismMutex createAndLoadFromSerializedDataMutex;
+    static WaveMutex createAndLoadFromSerializedDataMutex;
 
     createAndLoadFromSerializedDataMutex.lock ();
 

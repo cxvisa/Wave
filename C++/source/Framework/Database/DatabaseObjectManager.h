@@ -8,7 +8,7 @@
 #define DATABASEOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "libpq-fe.h"
 
 namespace WaveNs
@@ -126,7 +126,7 @@ class DatabaseObjectManager : public WaveLocalObjectManager
         static const string                                                  m_databaseLogFilename;
         static const string                                                  m_databaseInstallCompletionFileName;
         static       DatabaseCommitClientSubscriptionFunction                m_pDatabaseCommitClientSubscriptionFunction;
-        static       PrismMutex                                              m_DatabaseCommitClientSubscriptionFunctionMutex;
+        static       WaveMutex                                              m_DatabaseCommitClientSubscriptionFunctionMutex;
         static const string                                                  m_databaseCorruptIdentifierFileName;
 
     protected :

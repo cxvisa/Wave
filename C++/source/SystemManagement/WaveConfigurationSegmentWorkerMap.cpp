@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 map<string, WaveConfigurationSegmentWorker *> WaveConfigurationSegmentWorkerMap::m_configurationSegmentWorkerMap;
-PrismMutex WaveConfigurationSegmentWorkerMap::m_configurationSegmentWorkerMapMutex;
+WaveMutex WaveConfigurationSegmentWorkerMap::m_configurationSegmentWorkerMapMutex;
         
 void WaveConfigurationSegmentWorkerMap::addConfigurationSegmentWorkerIntoMap  (const string &configurationSegmentName, WaveConfigurationSegmentWorker *pWaveConfigurationSegmentWorker)
 {

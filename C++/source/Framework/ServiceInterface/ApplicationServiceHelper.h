@@ -8,7 +8,7 @@
 #define APPLICATIONSERVICEHELPER_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ServiceInterface/ApplicationServiceInterface.h"
 #include <map>
 
@@ -34,7 +34,7 @@ class ApplicationServiceHelper
     // Now the data members
 
     private :
-        static PrismMutex                                               m_applicationServiceHelperMutex;
+        static WaveMutex                                               m_applicationServiceHelperMutex;
         static UI32                                                     m_nextApplicationServiceId;
         static map<UI32, map<UI32, ApplicationServiceMessageHandler> *> m_allApplicationServiceMessageHandlersMap;
 

@@ -22,7 +22,7 @@ namespace WaveNs
 {
 
 map<string, WaveClientReceiverThread *> WaveClientReceiverObjectManager::s_waveClientReceiverThreadCache;
-PrismMutex                              WaveClientReceiverObjectManager::s_waveClientReceiverThreadCacheMutex;
+WaveMutex                              WaveClientReceiverObjectManager::s_waveClientReceiverThreadCacheMutex;
 bool                                    WaveClientReceiverObjectManager::m_autoScanForAvailablePort            = false;
 UI32                                    WaveClientReceiverObjectManager::m_autoScanLimit                       = 200;
 

@@ -38,9 +38,9 @@ namespace WaveNs
 {
 
 bool PrismFrameworkObjectManagerInitializeWorker::m_initialBootcompleted = false;
-PrismMutex PrismFrameworkObjectManagerInitializeWorker::m_initialBootcompletedMutex;
+WaveMutex PrismFrameworkObjectManagerInitializeWorker::m_initialBootcompletedMutex;
 bool PrismFrameworkObjectManagerInitializeWorker::m_initialSchemaInfoObjectSaved = false;
-PrismMutex PrismFrameworkObjectManagerInitializeWorker::m_initialSchemaInfoObjectSavedMutex;
+WaveMutex PrismFrameworkObjectManagerInitializeWorker::m_initialSchemaInfoObjectSavedMutex;
 
 PrismFrameworkObjectManagerInitializeWorker::PrismFrameworkObjectManagerInitializeWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker            (pWaveObjectManager),

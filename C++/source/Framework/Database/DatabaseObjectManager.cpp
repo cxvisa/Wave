@@ -46,20 +46,20 @@ namespace WaveNs
 {
 
 static bool       s_isDatabaseEnabled;
-static PrismMutex s_isDatabaseEnabledMutex;
+static WaveMutex s_isDatabaseEnabledMutex;
 static SI32       s_databasePort;
-static PrismMutex s_databasePortMutex;
+static WaveMutex s_databasePortMutex;
 static string     s_databaseName                    = "WaveDatabase";
-static PrismMutex s_databaseNameMutex;
+static WaveMutex s_databaseNameMutex;
 static string     s_databaseLogFileName             = "pg_ctl";
-static PrismMutex s_databaseLogFileNameMutex;
+static WaveMutex s_databaseLogFileNameMutex;
 static bool       s_isDatabaseLogEnabled;
-static PrismMutex s_isDatabaseLogEnabledMutex;
+static WaveMutex s_isDatabaseLogEnabledMutex;
 static string     s_databaseSharedBuffers           = "128MB";
-static PrismMutex s_databaseSharedBuffersMutex;
+static WaveMutex s_databaseSharedBuffersMutex;
 static bool       s_isDatabaseConnected             = true;
 static bool       s_isDatabaseShuttingDownOnReboot  = false;
-static PrismMutex s_isDatabaseShuttingDownOnRebootMutex;
+static WaveMutex s_isDatabaseShuttingDownOnRebootMutex;
 
 const string DatabaseObjectManager::m_databaseDirectory                 = "WaveDatabase";
 const string DatabaseObjectManager::m_databaseInstallCompletionFileName = ".__WaveDatabaseInstallCompleted__";
@@ -70,13 +70,13 @@ static string s_databaseCorruptionIdentifiers [NUM_OF_CORRUPTION_IDENTIFIERS]  =
 const  string DatabaseObjectManager::m_databaseCorruptIdentifierFileName       = ".WaveDatabaseFoundCorrupted";
 
 static UI32         s_databaseEmptyType      = DATABASE_OBJECT_MANAGER_EMPTY_DATABASE_USING_AUTO_DETECTION;
-static PrismMutex   s_databaseEmptyTypeMutex;
+static WaveMutex   s_databaseEmptyTypeMutex;
 
 static UI32         s_databaseEmptyTypeAutoDetectionThresholdValue      = 75000;
-static PrismMutex   s_databaseEmptyTypeAutoDetectionThresholdValueMutex;
+static WaveMutex   s_databaseEmptyTypeAutoDetectionThresholdValueMutex;
 
 DatabaseCommitClientSubscriptionFunction   DatabaseObjectManager::m_pDatabaseCommitClientSubscriptionFunction   = NULL;
-PrismMutex                                 DatabaseObjectManager::m_DatabaseCommitClientSubscriptionFunctionMutex;
+WaveMutex                                 DatabaseObjectManager::m_DatabaseCommitClientSubscriptionFunctionMutex;
 
 void DatabaseObjectManager::setIsDatabaseEnabled (const bool &isDatabaseEnabled)
 {

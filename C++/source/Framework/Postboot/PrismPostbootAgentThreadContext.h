@@ -13,8 +13,8 @@ using namespace std;
 
 namespace WaveNs
 {
-class PrismMutex;
-class PrismCondition;
+class WaveMutex;
+class WaveCondition;
 class PrismPostbootAgentThreadContext 
 {
     public :
@@ -22,18 +22,18 @@ class PrismPostbootAgentThreadContext
         virtual                        ~PrismPostbootAgentThreadContext ();
     	void 							setPostbootMessagePointer (PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage);
 		PrismPostPersistenceBootMessage *getPostbootMessagePointer ();
-                void                    setPostbootMutex                        (PrismMutex *pPostbootMutex);
-                PrismMutex             *getPostbootMutex                        () const;
-                void                    setPostbootSynchronizingCondition       (PrismCondition *pPostbootSynchronizingCondition);
-                PrismCondition         *getPostbootSynchronizingCondition       () const;
+                void                    setPostbootMutex                        (WaveMutex *pPostbootMutex);
+                WaveMutex             *getPostbootMutex                        () const;
+                void                    setPostbootSynchronizingCondition       (WaveCondition *pPostbootSynchronizingCondition);
+                WaveCondition         *getPostbootSynchronizingCondition       () const;
 
 
     // Now the data members
 
     private :
 		PrismPostPersistenceBootMessage *m_pPrismPostPersistenceBootMessage;
-        PrismMutex                      *m_pPostbootMutex;
-        PrismCondition                  *m_pPostbootSynchronizingCondition;
+        WaveMutex                      *m_pPostbootMutex;
+        WaveCondition                  *m_pPostbootSynchronizingCondition;
 
 };
 

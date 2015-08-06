@@ -61,7 +61,7 @@ static bool s_schemaCreationRequiredDuringBoot              = false;
 static UI32 s_currentTransactionId                          = 0;
 
 UI64       PersistenceObjectManager::m_anyConfiguraitonChangeTrackingNumber   = 0;
-PrismMutex PersistenceObjectManager::m_anyConfiguraitonChangeTrackingNumberMutex;
+WaveMutex PersistenceObjectManager::m_anyConfiguraitonChangeTrackingNumberMutex;
 
 /*
 void PersistenceObjectManager::setSchemaDropRequiredDuringBoot (const bool &schemaDropRequriedDuringBoot)

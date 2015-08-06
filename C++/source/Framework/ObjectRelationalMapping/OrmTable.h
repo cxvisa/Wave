@@ -10,7 +10,7 @@
 #include "Framework/ObjectRelationalMapping/OrmColumn.h"
 #include "Framework/ObjectRelationalMapping/OrmRelation.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Attributes/AttributeTypes.h"
 
 #include <vector>
@@ -189,7 +189,7 @@ class OrmTable
 
         vector<OrmTable *>          m_derivations;
 
-        PrismMutex                  m_mutex;
+        WaveMutex                  m_mutex;
         UI32                        m_nextInstanceId;
         OrmTable                   *m_pMostBaseTable;
 

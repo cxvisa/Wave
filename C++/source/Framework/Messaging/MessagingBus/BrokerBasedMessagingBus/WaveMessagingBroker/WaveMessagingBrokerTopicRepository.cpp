@@ -183,7 +183,7 @@ void WaveMessagingBrokerTopicRepository::getCurrentlySubscribedClientsForTopic (
 
 WaveMessagingBrokerTopicRepository *WaveMessagingBrokerTopicRepository::getInstance ()
 {
-    static PrismMutex                          waveMessagingBrokerTopicRepositoryMutex;
+    static WaveMutex                          waveMessagingBrokerTopicRepositoryMutex;
     static WaveMessagingBrokerTopicRepository *pWaveMessagingBrokerTopicRepository      = NULL;
 
     waveMessagingBrokerTopicRepositoryMutex.lock ();

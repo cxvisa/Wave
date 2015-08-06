@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 map<string, WaveServiceId> WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToWaveServiceIdMap;
-PrismMutex                  WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToWaveServiceIdMapMutex;
+WaveMutex                  WaveMessagingBrokerTopicProcessorObjectManager::m_topicNameToWaveServiceIdMapMutex;
 
 WaveMessagingBrokerTopicProcessorObjectManager::WaveMessagingBrokerTopicProcessorObjectManager (const string &topicName)
     : WaveLocalObjectManager                            ((getServiceNamePrefix ()) + topicName),

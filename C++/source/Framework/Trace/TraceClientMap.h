@@ -8,7 +8,7 @@
 
 #include "Framework/Types/Types.h"
 #include "Framework/Trace/TraceTypes.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -41,7 +41,7 @@ class TraceClientMap
         map<TraceClientId, string>     m_traceClientsAndNames;
         TraceClientId                  m_nextAvailableTraceClientId;
 
-        PrismMutex                     m_traceClientMapMutex;
+        WaveMutex                     m_traceClientMapMutex;
 
     protected :
     public :

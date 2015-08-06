@@ -11,7 +11,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Timer/TimerMessages.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <vector>
 #include <map>
 
@@ -53,7 +53,7 @@ class TimerWorker : public WaveWorker
                 vector<TimerData *>             m_timerList;
                 multimap<WaveServiceId, UI32>  m_timerIdsByServiceId;
                 UI32                            m_nTimers;
-                PrismMutex                      m_mutex;
+                WaveMutex                      m_mutex;
                 UI32                            m_currTimerId;
                 timeval                         m_maxDelay;
 

@@ -9,8 +9,8 @@
 
 #include "Framework/MultiThreading/PrismPosixThread.h"
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Utils/PrismMutex.h"
-#include "Framework/Utils/PrismCondition.h"
+#include "Framework/Utils/WaveMutex.h"
+#include "Framework/Utils/WaveCondition.h"
 
 #include <deque>
 
@@ -60,8 +60,8 @@ class CommandLineInterfaceReceiverWorkerThread : public PrismPosixThread, WaveWo
     private :
         CommandLineInterfaceReceiverObjectManager  *m_pCommandLineInterfaceReceiverObjectManager;
         ServerStreamingSocket                      *m_pServerStreamingSocket;
-        PrismMutex                                 *m_pPrismMutex;
-        PrismCondition                             *m_pPrismCondition;
+        WaveMutex                                 *m_pWaveMutex;
+        WaveCondition                             *m_pWaveCondition;
 
         deque<CommandLineInterfaceWorkerMessage *>  m_commandLineInterfaceWorkerMessages;
 

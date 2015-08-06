@@ -49,7 +49,7 @@ class DatabaseStandaloneTransaction
     private :
             bool            m_needConnectionTeardown;
             UI8             m_bootCount;
-	static  PrismMutex      s_standaloneTransactionMutex;
+	static  WaveMutex      s_standaloneTransactionMutex;
     protected :
     public :
 };

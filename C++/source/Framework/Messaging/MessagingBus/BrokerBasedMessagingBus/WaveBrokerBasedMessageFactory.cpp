@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 map<WaveBrokerBasedMessageType, WaveBrokerBasedMessageInstantiator> WaveBrokerBasedMessageFactory::m_waveBrokerBasedMessageInstatiators;
-PrismMutex                                                          WaveBrokerBasedMessageFactory::m_waveBrokerBasedMessageInstatiatorsMutex;
+WaveMutex                                                          WaveBrokerBasedMessageFactory::m_waveBrokerBasedMessageInstatiatorsMutex;
 
 WaveBrokerBasedMessageFactory::WaveBrokerBasedMessageFactory ()
 {

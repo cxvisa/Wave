@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Profiling/WaveProfiler.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <iostream>
 #include <fstream>

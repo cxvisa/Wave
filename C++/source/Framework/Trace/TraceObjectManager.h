@@ -83,7 +83,7 @@ class TraceObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
     // Now the data members
 
     private :
-        static PrismMutex                               m_mutexForTracing;
+        static WaveMutex                               m_mutexForTracing;
         static bool                                     m_isFirstTime;
         static fstream                                  traceFile;
 
@@ -92,7 +92,7 @@ class TraceObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
 
         static map<UI32, UI32>                          m_nativeClientDebugSessions;
         static map<UI32, UI32>                          m_userClientDebugSessions;
-        static PrismMutex                               m_clientDebugSessionsMutex;
+        static WaveMutex                               m_clientDebugSessionsMutex;
 
         static UI32                                     m_maxTraceFileSize;
         static UI32                                     m_maxTraceFilesToKeep;

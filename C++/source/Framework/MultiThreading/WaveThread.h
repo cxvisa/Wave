@@ -9,8 +9,8 @@
 
 #include "Framework/MultiThreading/PrismPosixThread.h"
 #include "Framework/MultiThreading/WaveMessageQueue.cpp"
-#include "Framework/Utils/PrismMutex.h"
-#include "Framework/Utils/PrismCondition.h"
+#include "Framework/Utils/WaveMutex.h"
+#include "Framework/Utils/WaveCondition.h"
 #include "Framework/Core/WaveServiceMap.h"
 
 namespace WaveNs
@@ -107,19 +107,19 @@ class WaveThread : public PrismPosixThread
                WaveMessageQueue<WaveMessage>         m_frameworkMessageResponses;
                WaveMessageQueue<WaveMessage>         m_frameworkResumeMessages;
 
-               PrismMutex                              m_gateKeeper;
-               PrismMutex                              m_wakeupCaller;
-               PrismCondition                          m_wakeupCondition;
+               WaveMutex                              m_gateKeeper;
+               WaveMutex                              m_wakeupCaller;
+               WaveCondition                          m_wakeupCondition;
 
-               PrismMutex                              m_messagesMutex;
+               WaveMutex                              m_messagesMutex;
                UI32                                    m_messagesHoldCount;
-               PrismMutex                              m_highPriorityMessagesMutex;
+               WaveMutex                              m_highPriorityMessagesMutex;
                UI32                                    m_highPriorityMessagesHoldCount;
-               PrismMutex                              m_eventsMutex;
+               WaveMutex                              m_eventsMutex;
                UI32                                    m_eventsHoldCount;
-               PrismMutex                              m_frameworkMessagesMutex;
+               WaveMutex                              m_frameworkMessagesMutex;
                UI32                                    m_frameworkMessagesHoldCount;
-               PrismMutex                              m_frameworkResumeMessagesMutex;
+               WaveMutex                              m_frameworkResumeMessagesMutex;
                UI32                                    m_frameworkResumeMessagesHoldCount;
 
                vector<WaveObjectManager *>             m_pWaveObjectManagers;
@@ -127,7 +127,7 @@ class WaveThread : public PrismPosixThread
                vector<UI32>                            m_cpuAffinityVector;
 
         static map<WaveThreadId, WaveObjectManager *> m_prismThreadIdToWaveObjectManagerMap;
-        static PrismMutex                              m_prismThreadIdToWaveObjectManagerMapMutex;
+        static WaveMutex                              m_prismThreadIdToWaveObjectManagerMapMutex;
 
                bool                                    m_terminateThread;
 

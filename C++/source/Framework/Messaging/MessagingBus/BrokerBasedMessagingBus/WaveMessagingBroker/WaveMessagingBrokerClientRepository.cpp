@@ -257,7 +257,7 @@ void WaveMessagingBrokerClientRepository::checkinWaveMessagingBrokerClient (Wave
 
 WaveMessagingBrokerClientRepository *WaveMessagingBrokerClientRepository::getInstance ()
 {
-    static PrismMutex                           waveMessagingBrokerClientRepositoryMutex;
+    static WaveMutex                           waveMessagingBrokerClientRepositoryMutex;
     static WaveMessagingBrokerClientRepository *pWaveMessagingBrokerClientRepository      = NULL;
 
     waveMessagingBrokerClientRepositoryMutex.lock ();

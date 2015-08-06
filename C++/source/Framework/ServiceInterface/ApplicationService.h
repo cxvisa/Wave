@@ -7,7 +7,7 @@
 #ifndef APPLICATIONSERVICE_H
 #define APPLICATIONSERVICE_H
 
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ServiceInterface/ApplicationServiceRepository.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ServiceInterface/ApplicationServiceHelper.h"

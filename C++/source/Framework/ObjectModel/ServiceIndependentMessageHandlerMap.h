@@ -9,7 +9,7 @@
 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include <map>
 
 namespace WaveNs
@@ -36,7 +36,7 @@ class ServiceIndependentMessageHandlerMap
     private :
             static map <UI32, map <UI32, WaveServiceIndependentMessageHandler> *>                   s_waveServiceIndependentMessageHandlerMap;
             static map <UI32, map <UI32, ManagementInterfaceServiceIndependentMessageHandler> *>    s_managementInterfaceServiceIndependentMessageHandlerMap;
-            static PrismMutex                                                                       s_serviceIndependentMessageHandlerMapMutex;
+            static WaveMutex                                                                       s_serviceIndependentMessageHandlerMapMutex;
 
     protected :
     public :

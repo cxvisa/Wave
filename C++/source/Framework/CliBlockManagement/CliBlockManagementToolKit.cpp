@@ -13,8 +13,8 @@ namespace WaveNs
 {
 
 map <ResourceId, CliBlockDetail>                  CliBlockManagementToolKit::m_cliBlockMap;
-PrismMutex                                        CliBlockManagementToolKit::m_cliBlockMapMutex;
-PrismMutex                                        CliBlockManagementToolKit::m_cliBlockOperationMutex;
+WaveMutex                                        CliBlockManagementToolKit::m_cliBlockMapMutex;
+WaveMutex                                        CliBlockManagementToolKit::m_cliBlockOperationMutex;
 
 ResourceId CliBlockManagementToolKit::blockCli (const CliBlockDetail &detail)
 {
@@ -160,17 +160,17 @@ string CliBlockManagementToolKit::getDisplayString ()
     return description;
 }
 
-PrismMutexStatus CliBlockManagementToolKit::tryLock ()
+WaveMutexStatus CliBlockManagementToolKit::tryLock ()
 {
     return m_cliBlockOperationMutex.tryLock ();
 }
 
-PrismMutexStatus CliBlockManagementToolKit::unlock ()
+WaveMutexStatus CliBlockManagementToolKit::unlock ()
 {
     return m_cliBlockOperationMutex.unlock ();
 }
 
-PrismMutexStatus CliBlockManagementToolKit::lock ()
+WaveMutexStatus CliBlockManagementToolKit::lock ()
 {
     return m_cliBlockOperationMutex.lock ();
 }

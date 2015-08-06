@@ -26,15 +26,15 @@ namespace WaveNs
 {
 
 static UI32       s_numberOfProcessedMessage2s         = 0;
-static PrismMutex s_numberOfProcessedMessage2sMutex;
+static WaveMutex s_numberOfProcessedMessage2sMutex;
 static bool       s_canProceedToProcessMessage2s       = false;
-static PrismMutex s_canProceedToProcessMessage2sMutex;
+static WaveMutex s_canProceedToProcessMessage2sMutex;
 
 static UI32       s_numberOfProcessedMessage7s         = 0;
-static PrismMutex s_numberOfProcessedMessage7sMutex;
+static WaveMutex s_numberOfProcessedMessage7sMutex;
 
 static bool       s_areMessage6sReceived               = false;
-static PrismMutex s_areMessage6sReceivedMutex;
+static WaveMutex s_areMessage6sReceivedMutex;
 
 FrameworkTestability1ObjectManager::FrameworkTestability1ObjectManager ()
     : WaveLocalObjectManager (getPrismServiceName ())

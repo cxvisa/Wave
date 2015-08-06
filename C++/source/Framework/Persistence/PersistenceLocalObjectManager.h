@@ -84,12 +84,12 @@ class PersistenceLocalObjectManager : public WaveLocalObjectManager
 
     private :
         static  bool                            m_liveSyncEnabled;
-        static  PrismMutex                      m_liveSyncEnabledMutex;
+        static  WaveMutex                      m_liveSyncEnabledMutex;
         static  bool                            m_disableLocalCommitTransactions;
-        static  PrismMutex                      m_disableLocalCommitTransactionsMutex;
+        static  WaveMutex                      m_disableLocalCommitTransactionsMutex;
         static  string                          m_unsyncedPendingPrepareTransaction;
         static  UI64                            m_anyConfiguraitonChangeTrackingNumber;
-        static  PrismMutex                      m_anyConfiguraitonChangeTrackingNumberMutex;
+        static  WaveMutex                      m_anyConfiguraitonChangeTrackingNumberMutex;
         static  UpdateGlobalConfigInKernelHandlerFunction m_updateGlobalConfigInKernelHandlerFunction;
 
         WaveObjectModelWaveServerPage *m_pWaveObjectModelWaveServerPage;

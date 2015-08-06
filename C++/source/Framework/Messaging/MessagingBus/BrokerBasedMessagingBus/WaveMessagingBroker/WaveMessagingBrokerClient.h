@@ -8,7 +8,7 @@
 #define WAVEMESSAGINGBROKERCLIENT_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <map>
 #include <string>
@@ -68,7 +68,7 @@ class WaveMessagingBrokerClient
         SI32                   m_port;
         map<string, string>    m_subscriptionTopics;
         ClientStreamingSocket *m_pClientStreamingSocket;
-        PrismMutex             m_mutex;
+        WaveMutex             m_mutex;
         UI32                   m_numberOfOutstandingCheckouts;
 
 

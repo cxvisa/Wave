@@ -10,7 +10,7 @@
 #include "Modeling/YANG/ObjectModel/YangElement.h"
 #include "Modeling/YANG/ObjectModel/YangDataElement.h"
 #include "Modeling/YANG/ObjectModel/YangModuleCollection.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -74,7 +74,7 @@ void applyIncompleteCommandAnnotationToTargetNodes (const string &targetNodeName
            vector<YangElement *>               m_moduleChildElementsForData;
            bool                                m_hierarchyInformationForYangElementsInTreeForDataPrepared;
 
-           PrismMutex                          m_mutexToBlockVisibilityInConcurrentReadThreads;
+           WaveMutex                          m_mutexToBlockVisibilityInConcurrentReadThreads;
 
     protected :
     public :

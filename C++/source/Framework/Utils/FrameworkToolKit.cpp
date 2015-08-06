@@ -19,7 +19,7 @@
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 #include "Framework/Redundancy/RedundancyOptimizerBase.h"
 #include "ManagementInterface/ClientInterface/WaveClientTransportObjectManager.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Cluster/Local/ClusterLocalObjectManager.h"
 #include "Cluster/Local/ClusterLocalGetObjectIdMessages.h"
 #include "Framework/Attributes/Attributes.h"
@@ -71,14 +71,14 @@ static TraceLevel                  s_defaultTraceLevelForClient                 
 static WaveManagementInterfaceRole s_waveManagementInterfaceRole                         = WAVE_MGMT_INTF_ROLE_SERVER;
 
 static UI32                        s_numberOfCpus                                        = 0;
-static PrismMutex                  s_numberOfCpusMutex;
+static WaveMutex                  s_numberOfCpusMutex;
 
 static bool                        s_useFileServiceForFileTransfer                       = true;
 
 static bool                        s_detectSchemaChange                                  = true;
 
 static bool                        s_isConfigFileReplayGoingToBeDone                     = false;
-static PrismMutex                  s_isConfigFileReplayGoingToBeDoneMutex;
+static WaveMutex                  s_isConfigFileReplayGoingToBeDoneMutex;
 
 static SI32                        s_httpInterfaceReceiverPort                           = 2301;
 
@@ -91,10 +91,10 @@ static bool                        s_handleDBCorruption                         
 static string                      s_dbBackupFileOnFwdl                                  ("");
 
 static ofstream                    s_consoleStream;
-static PrismMutex                  s_consoleStreamMutex;
+static WaveMutex                  s_consoleStreamMutex;
 
 static bool                        s_rewriteStartupSchemaOnNodeReady       = false;
-static PrismMutex                  s_rewriteStartupSchemaOnNodeReadyMutex;
+static WaveMutex                  s_rewriteStartupSchemaOnNodeReadyMutex;
 
 static SI32                        s_commandLineInterfaceReceiverPort                    = 1101;
 
@@ -109,10 +109,10 @@ static bool                        s_isConfigurationCompatibilityCheckRequiredFo
 static bool                        s_isAbruptReboot                        = false;
 
 static bool                        s_syncFailureNotified                                 = false;
-static PrismMutex                  s_syncFailureNotifiedMutex;
+static WaveMutex                  s_syncFailureNotifiedMutex;
 
 static ResourceId                  s_waveStartMode;
-static PrismMutex                  s_waveStartModeMutex;
+static WaveMutex                  s_waveStartModeMutex;
 
 static SI32                        s_messageBrokerPort                                   = 19110;
 static SI32                        s_messageBrokerClientPort                             = 19710;

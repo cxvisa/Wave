@@ -22,7 +22,7 @@ namespace WaveNs
 {
 
 static map<string, ManagementInterfaceReceiverThread *> s_managementInterfaceReceiverThreadCache;
-static PrismMutex                                       s_managementInterfaceReceiverThreadCacheMutex;
+static WaveMutex                                       s_managementInterfaceReceiverThreadCacheMutex;
 
 bool ManagementInterfaceReceiverObjectManager::addManagementInterfaceReceiverThreadToCache (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort, ManagementInterfaceReceiverThread *&pManagementInterfaceReceiverThread)
 {

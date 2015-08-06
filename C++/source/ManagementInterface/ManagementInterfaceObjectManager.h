@@ -41,7 +41,7 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
 
             private :
                 map<UI32, ManagementInterfaceMessage *> m_messagesMap;
-                PrismMutex                              m_accessMutex;
+                WaveMutex                              m_accessMutex;
 
             protected :
             public:
@@ -94,8 +94,8 @@ class ManagementInterfaceObjectManager : public WaveLocalObjectManager
 
     private :
         MessageMap              m_remoteMessagesMap;
-        PrismMutex              m_accessMutexForReceiverThreads;
-        PrismMutex              m_accessMutexForMessagesMap;
+        WaveMutex              m_accessMutexForReceiverThreads;
+        WaveMutex              m_accessMutexForMessagesMap;
 
         WaveManagementClientMap m_clientsMap;
         static WaveUserGetInstanceFunction        m_pWaveUserGetInstanceFunction;

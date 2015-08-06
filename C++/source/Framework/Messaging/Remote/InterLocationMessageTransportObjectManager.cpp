@@ -10,7 +10,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/MultiThreading/WaveThread.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/Messaging/Remote/InterLocationMulticastMessage.h"
 #include "Framework/Messaging/Remote/InterLocationTypes.h"
@@ -19,7 +19,7 @@ namespace WaveNs
 {
 
 WaveThread *s_pWaveThreadForInterLocationMessageTransportObjectManager = NULL;
-PrismMutex   s_mutexForWaveThreadForInterLocationMessageTransportObjectManager;
+WaveMutex   s_mutexForWaveThreadForInterLocationMessageTransportObjectManager;
 
 InterLocationMessageTransportObjectManager::MessageMap::MessageMap ()
 {
@@ -465,7 +465,7 @@ WaveMessageStatus InterLocationMessageTransportObjectManager::sendToBeUsedByRece
 
 void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverThreads (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext)
 {
-    static PrismMutex callbackMutex;
+    static WaveMutex callbackMutex;
 
     callbackMutex.lock ();
 

@@ -11,7 +11,7 @@
 #include "Framework/Core/PrismFrameworkMessages.h"
 #include "Framework/Core/PrismFrameworkServiceIndependentMessages.h"
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/LocationBase.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -107,14 +107,14 @@
 namespace WaveNs
 {
 
-static PrismMutex                          s_prismObjectManagerMutex;
+static WaveMutex                          s_prismObjectManagerMutex;
 static WaveServiceId                      s_nextAvailableWaveServiceId = 0;
-static PrismMutex                          s_enabledServicesMutex;
+static WaveMutex                          s_enabledServicesMutex;
 static map<WaveServiceId, WaveServiceId> s_enabledServices;
-static PrismMutex                          s_mutexForAddingEventListener;
-static PrismMutex                          s_supportedEventsMutex;
+static WaveMutex                          s_mutexForAddingEventListener;
+static WaveMutex                          s_supportedEventsMutex;
 static map<string, WaveObjectManager *>    s_allManagedClassesAndOwnersMap;
-static PrismMutex                          s_allManagedClassesAndOwnersMapMutex;
+static WaveMutex                          s_allManagedClassesAndOwnersMapMutex;
 
 /*
  * Handling Backtrace
@@ -136,9 +136,9 @@ static char                                 *s_crashForOMMessage= new char [512 
 
 
 map<string, WaveElement *>       WaveObjectManager::m_ownersForCreatingManagedObjectInstances;
-PrismMutex                        WaveObjectManager::m_createManagedObjectInstanceWrapperMutex;
+WaveMutex                        WaveObjectManager::m_createManagedObjectInstanceWrapperMutex;
 map <string, WaveServiceId>      WaveObjectManager::m_serviceStringServiceIdMap;
-PrismMutex                        WaveObjectManager::m_serviceStringServiceIdMapMutex;
+WaveMutex                        WaveObjectManager::m_serviceStringServiceIdMapMutex;
 
 map<string, map<string, string> > WaveObjectManager::m_clientsListeningForCreateByManagedObject;
 map<string, map<string, string> > WaveObjectManager::m_clientsListeningForUpdateByManagedObject;
@@ -146,8 +146,8 @@ map<string, map<string, string> > WaveObjectManager::m_clientsListeningForDelete
 map<string, map<string, string> > WaveObjectManager::m_managedObjectsForCreateByClient;
 map<string, map<string, string> > WaveObjectManager::m_managedObjectsForUpdateByClient;
 map<string, map<string, string> > WaveObjectManager::m_managedObjectsForDeleteByClient;
-PrismMutex                        WaveObjectManager::m_clientsListeningMutex;
-PrismMutex                        WaveObjectManager::m_postponedMessageQueueMutex;
+WaveMutex                        WaveObjectManager::m_clientsListeningMutex;
+WaveMutex                        WaveObjectManager::m_postponedMessageQueueMutex;
 
 WaveServiceMode WaveObjectManager::m_waveServiceLaunchMode = WAVE_SERVICE_ACTIVE;
 
@@ -1881,15 +1881,15 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (WaveMessage *pWaveMessag
 
     pWaveMessage->setIsSynchronousMessage (true);
 
-    // The following (PrismMutex creation and locking it) is done by the sending thread:
-    // Now Create a PrismMutex and a corresponding PrismCondition.  Use the standard Mutex-Condition combination
+    // The following (WaveMutex creation and locking it) is done by the sending thread:
+    // Now Create a WaveMutex and a corresponding WaveCondition.  Use the standard Mutex-Condition combination
     // logic to synchronize the sender thread and the receiver thread.  The Mutex-Condition logic is very similar
     // to the POSIX equivalents.
-    // Store the created PrismMutex and PrismCondition in the WaveMessage.  The receiver thread needs to use
+    // Store the created WaveMutex and WaveCondition in the WaveMessage.  The receiver thread needs to use
     // them when it does a reply on the message after processing it.
 
-    PrismMutex synchronizingMutex;
-    PrismCondition synchronizingCondition (&synchronizingMutex);
+    WaveMutex synchronizingMutex;
+    WaveCondition synchronizingCondition (&synchronizingMutex);
 
     pWaveMessage->setPSynchronizingMutex (&synchronizingMutex);
     pWaveMessage->setPSynchronizingCondition (&synchronizingCondition);
@@ -2164,7 +2164,7 @@ WaveMessageStatus WaveObjectManager::reply (WaveMessage *pWaveMessage)
     // First check if we need to really deliver the reply.
     // If the message was sent synchronously simply resume the sender thread and return.
     // As part of resuming the sender thread we need to first lock the corresponding synchronining
-    // PrismMutex and then resume the sender thread and then unlock the PrismMutex.
+    // WaveMutex and then resume the sender thread and then unlock the WaveMutex.
     // Then the sending thread automatically resumes processing.
     // If the message was sent as a one way message, simply destroy it.
     // Do not attempt to deliver it back to the original sender.

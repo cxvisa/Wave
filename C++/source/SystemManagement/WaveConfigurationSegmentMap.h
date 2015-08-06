@@ -7,7 +7,7 @@
 #ifndef WAVECONFIGURATIONSEGMENTMAP_H
 #define WAVECONFIGURATIONSEGMENTMAP_H
 
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include "Framework/Types/Types.h"
 #include "Framework/ObjectModel/WaveElement.h"
@@ -149,12 +149,12 @@ class WaveConfigurationSegmentMap
 
     private :
         static map<string, ConfigurationSegmentInformation *>           m_configurationSegmentMap;
-        static PrismMutex                                               m_configurationSegmentMapMutex;
+        static WaveMutex                                               m_configurationSegmentMapMutex;
 
         static ConfigurationSegmentQueryContextModificationFunction     s_setNTupleSortingFunction;
         static ConfigurationSegmentQueryContextModificationFunction     s_customQueryFilterFunction;
         static ConfigurationSegmentQueryContextModificationFunction2    s_addCustomOrderFieldFunction;
-        static PrismMutex                                               s_queryContextModificationFunctionsMutex;
+        static WaveMutex                                               s_queryContextModificationFunctionsMutex;
 
         // cache.
         static string                                                   s_configurationSegmentForNodeSpecificList;
@@ -163,7 +163,7 @@ class WaveConfigurationSegmentMap
         static string                                                   s_managedObjectClassNameForMultiPartitionList;
         
         static map<string, ConfigurationSegmentImportantInfo *>         m_configSegmentImportantInfoMap; // Configuration Segment Name --> ConfigurationSegmentImportantInfo *
-        static PrismMutex                                               m_configSegmentImportantInfoMapMutex;
+        static WaveMutex                                               m_configSegmentImportantInfoMapMutex;
 
     protected :
     public :

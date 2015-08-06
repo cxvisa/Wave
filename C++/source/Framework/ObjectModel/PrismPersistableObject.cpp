@@ -28,7 +28,7 @@ static bool                            s_isObjectRelationalMappingEnabled       
 map<string, map<UI32, string> >        PrismPersistableObject::m_globalUserTagToNameMap;
 map<string, map<string, UI32> >        PrismPersistableObject::m_globalNameToUserTagMap;
 map<string, map<UI32, AttributeType> > PrismPersistableObject::m_globalUserTagToTypeMap;
-PrismMutex                             PrismPersistableObject::m_globalUserTagToNameMapMutex;
+WaveMutex                             PrismPersistableObject::m_globalUserTagToNameMapMutex;
 
 PrismPersistableObject::PrismPersistableObject (const string &objectClassName, const string &objectDerivedFromClassName)
     : m_objectClassName            (objectClassName),

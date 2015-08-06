@@ -340,8 +340,8 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootP
 
     if ( 1 <= maxLinecards  )
     {   
-        PrismMutex postbootMutex;
-        PrismCondition postbootSynchronizingCondition (&postbootMutex);
+        WaveMutex postbootMutex;
+        WaveCondition postbootSynchronizingCondition (&postbootMutex);
 
         pPostPersistentBootWorkerClusterContext->initializeContext ( POSTBOOT_LINECARD_CONFIG, 0, recoveryType, NULL, &postbootMutex, &postbootSynchronizingCondition );
         UI32 postbootTriggeredlinecards = 0;

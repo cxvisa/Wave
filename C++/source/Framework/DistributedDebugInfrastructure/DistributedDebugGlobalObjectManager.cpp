@@ -26,7 +26,7 @@
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismCondition.h"
+#include "Framework/Utils/WaveCondition.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"

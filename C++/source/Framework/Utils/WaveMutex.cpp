@@ -3,7 +3,7 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#include "PrismMutex.h"
+#include "WaveMutex.h"
 #include "errno.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -12,17 +12,17 @@
 namespace WaveNs
 {
 
-PrismMutex::PrismMutex ()
+WaveMutex::WaveMutex ()
 {
     pthread_mutex_init (&m_mutex, NULL);
 }
 
-PrismMutex::~PrismMutex ()
+WaveMutex::~WaveMutex ()
 {
     pthread_mutex_destroy (&m_mutex);
 }
 
-PrismMutexStatus PrismMutex::lock ()
+WaveMutexStatus WaveMutex::lock ()
 {
     int status = pthread_mutex_lock (&m_mutex);
 
@@ -38,7 +38,7 @@ PrismMutexStatus PrismMutex::lock ()
     }
 }
 
-PrismMutexStatus PrismMutex::unlock()
+WaveMutexStatus WaveMutex::unlock()
 {
     int status = pthread_mutex_unlock (&m_mutex);
 
@@ -53,7 +53,7 @@ PrismMutexStatus PrismMutex::unlock()
     }
 }
 
-PrismMutexStatus PrismMutex::tryLock ()
+WaveMutexStatus WaveMutex::tryLock ()
 {
     int status = pthread_mutex_trylock (&m_mutex);
 

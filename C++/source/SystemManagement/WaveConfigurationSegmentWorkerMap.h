@@ -7,7 +7,7 @@
 #ifndef WAVECONFIGURATIONSEGMENTWORKERMAP_H
 #define WAVECONFIGURATIONSEGMENTWORKERMAP_H
 
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 #include <map>
 #include <string>
@@ -31,7 +31,7 @@ class WaveConfigurationSegmentWorkerMap
     // Now the data members
 
     private :
-        static PrismMutex                                       m_configurationSegmentWorkerMapMutex; 
+        static WaveMutex                                       m_configurationSegmentWorkerMapMutex; 
 
 
     protected :

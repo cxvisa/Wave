@@ -33,7 +33,7 @@ namespace WaveNs
 
 vector <UI32>           WaveConfigurationIntentRepository::s_waveConfigurationIntentRepositoryVector;
 map <UI32, string>      WaveConfigurationIntentRepository::s_waveConfigurationIntentRepositoryMap;
-PrismMutex              WaveConfigurationIntentRepository::s_waveConfigurationIntentRepositoryMutex;
+WaveMutex              WaveConfigurationIntentRepository::s_waveConfigurationIntentRepositoryMutex;
 
 void WaveConfigurationIntentRepository::addConfigurationIntent (const UI32 &configurationIntentMessageId, const string &configurationIntentSerializedMessage)
 {

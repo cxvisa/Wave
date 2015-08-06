@@ -53,7 +53,7 @@ void ShellDebug::usageShellDebugHelp (void)
 
 void ShellDebug::registerDebugFunction (ShellCmdFunction debugFunction, const char *debugName)
 {
-    static  PrismMutex mutex;
+    static  WaveMutex mutex;
 
     mutex.lock();
     ((ShellObjectManager::getInstance ())->m_pPrismShell->getDebugShell ())->addShellCommandHandler (ShellCommandHandler (string(debugName), 1,  debugFunction, strlen (debugName), NULL));

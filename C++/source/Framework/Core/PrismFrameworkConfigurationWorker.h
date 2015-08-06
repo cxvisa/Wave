@@ -8,7 +8,7 @@
 #define PRISMFRAMEWORKCONFIGURATIONWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 
 namespace WaveNs
@@ -48,7 +48,7 @@ class PrismFrameworkConfigurationWorker : public WaveWorker
 
     private :
         bool        m_isPrismConfigurationValid ;
-        PrismMutex  m_prismConfigurationValidityMutex;
+        WaveMutex  m_prismConfigurationValidityMutex;
  
     protected :
     public :

@@ -31,16 +31,16 @@ class CliBlockManagementToolKit
         static ResourceId             cleanAllBlockedReasons                          ();
         static string                 getDisplayString                                ();
 
-        static PrismMutexStatus       lock                                            ();
-        static PrismMutexStatus       unlock                                          ();
-        static PrismMutexStatus       tryLock                                         ();
+        static WaveMutexStatus       lock                                            ();
+        static WaveMutexStatus       unlock                                          ();
+        static WaveMutexStatus       tryLock                                         ();
 
         // Now the data members
 
     private :
         static map <ResourceId, CliBlockDetail>                                         m_cliBlockMap;
-        static PrismMutex                                                               m_cliBlockMapMutex;
-        static PrismMutex                                                               m_cliBlockOperationMutex;
+        static WaveMutex                                                               m_cliBlockMapMutex;
+        static WaveMutex                                                               m_cliBlockOperationMutex;
 
     protected :
     public :

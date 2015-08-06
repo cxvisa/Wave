@@ -22,7 +22,7 @@ map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> > MessageTracker
 map<const WaveMessage *,WaveThreadId>                              MessageTracker::m_currentlyAllocatedMessages;
 bool                                                                 MessageTracker::m_trackingMessagesWithBt = false;
 map<const WaveMessage *, string>                                    MessageTracker::m_currentlyAllocatedMessagesWithBt;
-PrismMutex                                                           MessageTracker::m_messageTrackerMutex;
+WaveMutex                                                           MessageTracker::m_messageTrackerMutex;
 
 bool MessageTracker::isAKnownMessage (const WaveMessage *pWaveMessage)
 {

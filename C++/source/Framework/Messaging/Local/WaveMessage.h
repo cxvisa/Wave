@@ -21,8 +21,8 @@ namespace WaveNs
 
 template<class T> class WaveMessageQueue;
 
-class PrismMutex;
-class PrismCondition;
+class WaveMutex;
+class WaveCondition;
 class WaveSendToClusterContext;
 
 class WaveMessage : virtual public SerializableObject
@@ -57,10 +57,10 @@ class WaveMessage : virtual public SerializableObject
         void            setIsOneWayMessage           (bool isOneWayMessage);
         bool            getIsSynchronousMessage      () const;
         void            setIsSynchronousMessage      (bool isSynchronousMessage);
-        PrismMutex     *getPSynchronizingMutex       () const;
-        void            setPSynchronizingMutex       (PrismMutex *pPrismMutex);
-        PrismCondition *getPSynchronizingCondition   () const;
-        void            setPSynchronizingCondition   (PrismCondition *pPrismCondition);
+        WaveMutex     *getPSynchronizingMutex       () const;
+        void            setPSynchronizingMutex       (WaveMutex *pWaveMutex);
+        WaveCondition *getPSynchronizingCondition   () const;
+        void            setPSynchronizingCondition   (WaveCondition *pWaveCondition);
         WaveThreadId   getWaveMessageCreatorThreadId () const;
 
     protected :
@@ -223,8 +223,8 @@ class WaveMessage : virtual public SerializableObject
                LocationId                       m_receiverLocationId;
                bool                             m_isOneWayMessage;
                bool                             m_isSynchronousMessage;
-               PrismMutex                      *m_pSynchronizingMutex;
-               PrismCondition                  *m_pSynchronizingCondition;
+               WaveMutex                      *m_pSynchronizingMutex;
+               WaveCondition                  *m_pSynchronizingCondition;
                bool                             m_isLastReply;
                bool                             m_isACopy;
                UI32                             m_originalMessageId;

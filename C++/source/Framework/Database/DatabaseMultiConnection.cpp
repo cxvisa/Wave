@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-PrismMutex               DatabaseMultiConnection::m_mutex;
+WaveMutex               DatabaseMultiConnection::m_mutex;
 DatabaseMultiConnection *DatabaseMultiConnection::m_pDatabaseMultiConnection      = NULL;
 const UI32               DatabaseMultiConnection::m_maximumNumOfRetriesWhenDBIsBusy = 50;
 

@@ -79,16 +79,16 @@ bool                                           Wave::m_enableTraceSupport;
 bool                                           Wave::m_enableFileServiceSupport;
 bool                                           Wave::m_enableSystemManagementSupport;
 PersistencePostBootCheck                       Wave::m_persistencePostBootCheck;
-PrismMutex                                     Wave::m_clusterEnabledCheckMutex;
+WaveMutex                                     Wave::m_clusterEnabledCheckMutex;
 ClusterEnabledCheck                            Wave::m_clusterEnabledCheck  = NULL;
 string                                         Wave::m_waveUserClientPath;
 string                                         Wave::m_waveUserClientParams;
 LogOperationStatusFunction                     Wave::m_logOperationStatusFunction = NULL;
-PrismMutex                                     Wave::m_logOperationStatusMutex;
+WaveMutex                                     Wave::m_logOperationStatusMutex;
 IsWaveClusteringEnabled                        Wave::m_isWaveClusteringEnabled = NULL;
-PrismMutex                                     Wave::m_isWaveClusteringEnabledMutex;
+WaveMutex                                     Wave::m_isWaveClusteringEnabledMutex;
 GetLinecardReadySlotIdBitMapFunction           Wave::m_linecardReadySlotIdBitMapFunction = NULL;
-PrismMutex                                     Wave::m_linecardReadySlotIdBitMapFunctionMutex;
+WaveMutex                                     Wave::m_linecardReadySlotIdBitMapFunctionMutex;
 
 void Wave::enableAllFeatures ()
 {
@@ -505,7 +505,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
 string Wave::getTraceFileDirectory ()
 {
-    static PrismMutex traceFileDirectoryMutex;
+    static WaveMutex traceFileDirectoryMutex;
 
     traceFileDirectoryMutex.lock ();
 
@@ -531,7 +531,7 @@ string Wave::getTraceFileDirectory ()
 
 string Wave::getConfigurationFileDirectory ()
 {
-    static PrismMutex configurationFileDirectoryMutex;
+    static WaveMutex configurationFileDirectoryMutex;
 
     configurationFileDirectoryMutex.lock ();
 
@@ -557,7 +557,7 @@ string Wave::getConfigurationFileDirectory ()
 
 string Wave::getProfileFileDirectory ()
 {
-    static PrismMutex profileFileDirectoryMutex;
+    static WaveMutex profileFileDirectoryMutex;
 
     profileFileDirectoryMutex.lock ();
 

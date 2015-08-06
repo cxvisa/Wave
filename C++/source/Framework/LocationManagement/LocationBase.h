@@ -14,7 +14,7 @@
 #include "Framework/Utils/ServerStreamingSocket.h"
 #include "Framework/Utils/ClientStreamingSocket.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 
 using namespace std;
 
@@ -98,8 +98,8 @@ class LocationBase
     // Now the data members
 
     private :
-        PrismMutex m_accessMutex;
-        PrismMutex m_connectionEstablishmentMutex;
+        WaveMutex m_accessMutex;
+        WaveMutex m_connectionEstablishmentMutex;
 
     protected :
         LocationRole           m_locationRole;

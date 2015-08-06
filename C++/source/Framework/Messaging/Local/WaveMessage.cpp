@@ -4,9 +4,9 @@
  ***************************************************************************/
 
 #include "WaveMessage.h"
-#include "Framework/Utils/PrismCondition.h"
+#include "Framework/Utils/WaveCondition.h"
 #include "Framework/Utils/AssertUtils.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
@@ -21,7 +21,7 @@ namespace WaveNs
 
 static UI32      s_numberOfMessagesInTheSystemSoFar = 0;
 static UI32      s_numberOfMessagesDeletedInTheSystemSoFar = 0;
-static PrismMutex *pMessageCreationMutex              = NULL;
+static WaveMutex *pMessageCreationMutex              = NULL;
 
 WaveMessage::WaveMessageBuffer::WaveMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMessage)
     : m_size (size),
@@ -131,7 +131,7 @@ WaveMessage::WaveMessage (WaveServiceId serviceCode, UI32 operationCode)
 
     if (NULL == pMessageCreationMutex)
     {
-        pMessageCreationMutex = new PrismMutex ();
+        pMessageCreationMutex = new WaveMutex ();
 
         prismAssert (NULL != pMessageCreationMutex, __FILE__, __LINE__);
     }
@@ -256,12 +256,12 @@ ResourceId WaveMessage::getCompletionStatus () const
     return (m_completionStatus);
 }
 
-PrismMutex *WaveMessage::getPSynchronizingMutex () const
+WaveMutex *WaveMessage::getPSynchronizingMutex () const
 {
     return (m_pSynchronizingMutex);
 }
 
-void WaveMessage::setPSynchronizingMutex (PrismMutex *pSynchronizingMutex)
+void WaveMessage::setPSynchronizingMutex (WaveMutex *pSynchronizingMutex)
 {
     m_pSynchronizingMutex = pSynchronizingMutex;
 }
@@ -271,14 +271,14 @@ void WaveMessage::setCompletionStatus (const ResourceId completionStatus)
     m_completionStatus = completionStatus;
 }
 
-PrismCondition *WaveMessage::getPSynchronizingCondition () const
+WaveCondition *WaveMessage::getPSynchronizingCondition () const
 {
     return (m_pSynchronizingCondition);
 }
 
-void WaveMessage::setPSynchronizingCondition (PrismCondition *pPrismCondition)
+void WaveMessage::setPSynchronizingCondition (WaveCondition *pWaveCondition)
 {
-    m_pSynchronizingCondition = pPrismCondition;
+    m_pSynchronizingCondition = pWaveCondition;
 }
 
 LocationId WaveMessage::getSenderLocationId () const

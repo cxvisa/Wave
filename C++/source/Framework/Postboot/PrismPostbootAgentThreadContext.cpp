@@ -5,8 +5,8 @@
  ***************************************************************************/
 
 #include "Framework/Postboot/PrismPostbootAgentThreadContext.h"
-#include "Framework/Utils/PrismCondition.h"
-#include "Framework/Utils/PrismMutex.h"
+#include "Framework/Utils/WaveCondition.h"
+#include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
 {
@@ -33,22 +33,22 @@ PrismPostPersistenceBootMessage *PrismPostbootAgentThreadContext::getPostbootMes
     return m_pPrismPostPersistenceBootMessage;
 }
 
-void PrismPostbootAgentThreadContext::setPostbootMutex (PrismMutex *pPostbootMutex)
+void PrismPostbootAgentThreadContext::setPostbootMutex (WaveMutex *pPostbootMutex)
 {
     m_pPostbootMutex = pPostbootMutex;
 }
 
-PrismMutex *PrismPostbootAgentThreadContext::getPostbootMutex () const
+WaveMutex *PrismPostbootAgentThreadContext::getPostbootMutex () const
 {   
     return (m_pPostbootMutex);
 }   
     
-void PrismPostbootAgentThreadContext::setPostbootSynchronizingCondition (PrismCondition *pPostbootSynchronizingCondition)
+void PrismPostbootAgentThreadContext::setPostbootSynchronizingCondition (WaveCondition *pPostbootSynchronizingCondition)
 {   
     m_pPostbootSynchronizingCondition = pPostbootSynchronizingCondition;
 }
 
-PrismCondition *PrismPostbootAgentThreadContext::getPostbootSynchronizingCondition () const
+WaveCondition *PrismPostbootAgentThreadContext::getPostbootSynchronizingCondition () const
 {   
     return (m_pPostbootSynchronizingCondition);
 }

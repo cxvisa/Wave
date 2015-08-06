@@ -19,7 +19,7 @@
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugLocalObjectManager.h" 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
-#include "Framework/Utils/PrismCondition.h"
+#include "Framework/Utils/WaveCondition.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"

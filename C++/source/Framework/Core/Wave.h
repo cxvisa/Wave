@@ -136,13 +136,13 @@ class Wave
         static vector<ResourceId>                             m_nativePrismServiceInstantiationMode;
         static PersistencePostBootCheck                       m_persistencePostBootCheck;
         static LogOperationStatusFunction                     m_logOperationStatusFunction;
-        static PrismMutex                                     m_logOperationStatusMutex;
+        static WaveMutex                                     m_logOperationStatusMutex;
         static ClusterEnabledCheck                            m_clusterEnabledCheck;
-        static PrismMutex                                     m_clusterEnabledCheckMutex;
+        static WaveMutex                                     m_clusterEnabledCheckMutex;
         static IsWaveClusteringEnabled                        m_isWaveClusteringEnabled;
-        static PrismMutex                                     m_isWaveClusteringEnabledMutex;
+        static WaveMutex                                     m_isWaveClusteringEnabledMutex;
         static GetLinecardReadySlotIdBitMapFunction           m_linecardReadySlotIdBitMapFunction;  
-        static PrismMutex                                     m_linecardReadySlotIdBitMapFunctionMutex;
+        static WaveMutex                                     m_linecardReadySlotIdBitMapFunctionMutex;
         static bool                                           m_enableFileServiceSupport;
         static bool                                           m_enablePersistenceSupport;
         static bool                                           m_enableClusteringSupport;
