@@ -100,7 +100,7 @@ void ClusterLocalReportRemovedNodeFromClusterWorker::updateWaveNodeManagedObject
 
     ClusterLocalReportRemovedNodeFromClusterMessage* pClusterLocalReportRemovedNodeFromClusterMessage = dynamic_cast<ClusterLocalReportRemovedNodeFromClusterMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
-    prismAssert(NULL != pClusterLocalReportRemovedNodeFromClusterMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pClusterLocalReportRemovedNodeFromClusterMessage, __FILE__, __LINE__);
 
     //Obtain the wavenode and update the status and then commit
     startTransaction();
@@ -111,13 +111,13 @@ void ClusterLocalReportRemovedNodeFromClusterWorker::updateWaveNodeManagedObject
     queryContext.addAndAttribute (new AttributeUI32 (locationId, "locationId"));
             
     vector<WaveManagedObject *>              *pWaveNodeMOs = querySynchronously (&queryContext);
-    prismAssert(NULL != pWaveNodeMOs, __FILE__, __LINE__);
+    waveAssert(NULL != pWaveNodeMOs, __FILE__, __LINE__);
 
     UI32 numberOfResults = pWaveNodeMOs->size ();
-    prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+    waveAssert (1 == numberOfResults, __FILE__, __LINE__);
             
     WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pWaveNodeMOs)[0]);
-    prismAssert(NULL != pWaveNode, __FILE__, __LINE__); 
+    waveAssert(NULL != pWaveNode, __FILE__, __LINE__); 
 
     //Set LocationId and NodeStatus 
     LocationId thisNodeLocationid  =    pClusterLocalReportRemovedNodeFromClusterMessage->getThisNodeLocationId();

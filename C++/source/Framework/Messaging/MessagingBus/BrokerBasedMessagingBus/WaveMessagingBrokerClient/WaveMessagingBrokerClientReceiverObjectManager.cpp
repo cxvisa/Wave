@@ -44,7 +44,7 @@ WaveMessagingBrokerClientReceiverObjectManager *WaveMessagingBrokerClientReceive
 {
     static WaveMessagingBrokerClientReceiverObjectManager *pWaveMessagingBrokerReceiverObjectManager = new WaveMessagingBrokerClientReceiverObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerReceiverObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerReceiverObjectManager, __FILE__, __LINE__);
 
     return (pWaveMessagingBrokerReceiverObjectManager);
 }
@@ -65,7 +65,7 @@ void WaveMessagingBrokerClientReceiverObjectManager::initialize (WaveAsynchronou
 
     m_pServerSocketForWaveMessagingBrokerClients = new ServerStreamingSocket (FrameworkToolKit::getMessageBrokerClientPort(), 1);
 
-    prismAssert (NULL != m_pServerSocketForWaveMessagingBrokerClients, __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerSocketForWaveMessagingBrokerClients, __FILE__, __LINE__);
 
     status = m_pServerSocketForWaveMessagingBrokerClients->getStatus ();
 
@@ -115,7 +115,7 @@ void WaveMessagingBrokerClientReceiverObjectManager::bootCompleteForThisLocation
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "WaveMessagingBrokerClientReceiverObjectManager::bootCompleteForThisLocationEventHandler : Awaiting NEW Management Interface Client Connections...");
 
@@ -180,7 +180,7 @@ void WaveMessagingBrokerClientReceiverObjectManager::debugConnectToWaveMessageBr
     bool                           isNewBrokerAdded               = false;
     WaveMessagingBroker           *pWaveMessagingBroker           = NULL;
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
 
     isNewBrokerAdded = pWaveMessagingBrokerRepository->addBrokerIfNotAlreadyKnown (brokerName, brokerIpAddress, brokerPort);
 
@@ -188,7 +188,7 @@ void WaveMessagingBrokerClientReceiverObjectManager::debugConnectToWaveMessageBr
     {
         pWaveMessagingBroker = pWaveMessagingBrokerRepository->checkoutBroker (brokerName);
 
-        WaveNs::prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         ResourceId status = pWaveMessagingBroker->connect(1, 10);
 
@@ -228,7 +228,7 @@ void WaveMessagingBrokerClientReceiverObjectManager::debugSubscribeToWaveMessage
     WaveMessagingBrokerRepository *pWaveMessagingBrokerRepository = WaveMessagingBrokerRepository::getInstance ();
     WaveMessageBrokerStatus        status                         = WAVE_MESSAGE_BROKER_SUCCESS;
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
 
     status = pWaveMessagingBrokerRepository->subscribeToMessageBroker (brokerName, brokerTopic);
 

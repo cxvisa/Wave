@@ -148,7 +148,7 @@ WaveClientTransportObjectManager *WaveClientTransportObjectManager:: getInstance
 {
     static WaveClientTransportObjectManager *pWaveClientTransportObjectManager = new WaveClientTransportObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveClientTransportObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveClientTransportObjectManager, __FILE__, __LINE__);
 
     return (pWaveClientTransportObjectManager);
 }
@@ -180,7 +180,7 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
 
     ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__ );
+    waveAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__ );
 
     bool                        isMessageCached = false;
     ResourceId                  status;
@@ -208,7 +208,7 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep : Could not cache a message after sending out to a server.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 // FIXME : sagar : If we are not able to cache it.  What to do???
             }
@@ -233,7 +233,7 @@ void WaveClientTransportObjectManager::managementInterfaceMessagePostToServerSte
         if (true == isMessageCached)
         {
             pTempManagementInterfaceMessage = m_remoteMessagesMap.removeMessage (messageId);
-            prismAssert (pTempManagementInterfaceMessage == pManagementInterfaceMessage, __FILE__, __LINE__);
+            waveAssert (pTempManagementInterfaceMessage == pManagementInterfaceMessage, __FILE__, __LINE__);
         }
 
         pManagementInterfaceMessage->setCompletionStatus (status);
@@ -352,11 +352,11 @@ void WaveClientTransportObjectManager::callbackForSendUsedByReceiverThreads (Fra
     // but we know that we never requested a timeout period for this message while sending this message using send.  So make sure that the message
     // that we got back is a non NULL message.
 
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     // Ensure that there is no context associated with this reposnse.
 
-    prismAssert (NULL == pContext, __FILE__, __LINE__);
+    waveAssert (NULL == pContext, __FILE__, __LINE__);
 
     // The response we recieved is destined for a Management Interface Server.  So deliver it to that server.
     // We must not cache this since it is a response.  We assume that we do not have to track this any more.  We are simply
@@ -405,7 +405,7 @@ void WaveClientTransportObjectManager::replyToBeUsedByReceiverThreads (Managemen
 {
     // This method Need not be protected with locking mechanism though it can be executed from mutiple receiver threads.
 
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     if (NULL == pManagementInterfaceMessage)
     {

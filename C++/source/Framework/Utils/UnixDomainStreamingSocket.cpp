@@ -21,19 +21,19 @@ UnixDomainStreamingSocket::UnixDomainStreamingSocket (const SI32 maximumNumberOf
 
     if (true != isValid ())
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     SI32 temp = 1;
 
     if (-1 == (setsockopt (m_socket, SOL_SOCKET, SO_REUSEADDR, (const char *) &temp, sizeof (temp))))
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (-1 == (setsockopt (m_socket, SOL_SOCKET, SO_KEEPALIVE, (const char *) &temp, sizeof (temp))))
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     memset (&m_socketAddress, 0, sizeof (m_socketAddress));

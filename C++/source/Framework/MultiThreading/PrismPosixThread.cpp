@@ -39,7 +39,7 @@ PrismPosixThread::PrismPosixThread (const UI32 &stackSize)
 PrismPosixThread::PrismPosixThread (const PrismPosixThread &prismPosixThread)
 {
     WaveNs::trace (TRACE_LEVEL_FATAL, "PrismPosixThread::PrismPosixThread : Copy constructing a PrismPosixThread does not make sense and hence not allowed.");
-    WaveNs::prismAssert (false, __FILE__, __LINE__);
+    WaveNs::waveAssert (false, __FILE__, __LINE__);
 }
 
 PrismPosixThread::~PrismPosixThread ()
@@ -50,7 +50,7 @@ PrismPosixThread::~PrismPosixThread ()
 PrismPosixThread &PrismPosixThread::operator = (const PrismPosixThread &prismPosixThread)
 {
     WaveNs::trace (TRACE_LEVEL_FATAL, "PrismPosixThread::operator = : Assigning to a PrismPosixThread does not make sense and hence not allowed.");
-    WaveNs::prismAssert (false, __FILE__, __LINE__);
+    WaveNs::waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }

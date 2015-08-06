@@ -110,7 +110,7 @@ StringVectorUC AttributeStringVectorUC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeStringVectorUC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempStringVector;
     }
 }
@@ -124,7 +124,7 @@ void AttributeStringVectorUC::setValue (const StringVectorUC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeStringVectorUC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -135,7 +135,7 @@ bool AttributeStringVectorUC::getIsNoElement () const
 
 bool AttributeStringVectorUC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeStringVectorUC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeStringVectorUC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeStringVectorUC == (getAttributeType ()))
     {
@@ -187,7 +187,7 @@ void AttributeStringVectorUC::getSqlForSelect (string &sqlForSelect, AttributeCo
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeStringVectorUC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

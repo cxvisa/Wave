@@ -41,7 +41,7 @@ WaveMessage *DatabaseObjectManagerCalculateDbCksumWorker::createMessageInstance 
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DatabaseObjectManagerCalculateDbCksumWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveMessage);

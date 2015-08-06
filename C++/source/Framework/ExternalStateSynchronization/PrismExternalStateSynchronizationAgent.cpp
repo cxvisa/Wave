@@ -75,7 +75,7 @@ ResourceId PrismExternalStateSynchronizationAgent::externalStateSynchronizationS
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::ExternalStateSynchronizationServicesStep : Could not ExternalStateSynchronization a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToExternalStateSynchronization[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else

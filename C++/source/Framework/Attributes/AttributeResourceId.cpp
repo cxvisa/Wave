@@ -105,7 +105,7 @@ UI32 AttributeResourceId::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeResourceId::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (0);
     }
 }
@@ -119,13 +119,13 @@ void AttributeResourceId::setValue (const UI32 &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeResourceId::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeResourceId::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeResourceId == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeResourceId == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeResourceId == (getAttributeType ()))
     {
@@ -198,7 +198,7 @@ void AttributeResourceId::getSqlForSelect (string &sqlForSelect, AttributeCondit
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeResourceId::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -274,13 +274,13 @@ void AttributeResourceId::toEscapedString (string &valueString)
     UI32                size                  = tempString.size ();
     char               *pTemp                 = new char[2 * size + 1];
 
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
-    prismAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
 
     pPGConnection = pDatabaseconnection->getPConnection ();
 
-    prismAssert (NULL != pPGConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pPGConnection, __FILE__, __LINE__);
 
     returnSize = PQescapeStringConn (pPGConnection, pTemp, tempString.c_str (), size, &errorCode);
 
@@ -290,7 +290,7 @@ void AttributeResourceId::toEscapedString (string &valueString)
         trace (TRACE_LEVEL_ERROR, "AttributeResourceId::toEscapedString : error connecting with Database :\n" + databaseErrorMessage + string (", Return Size : ") + returnSize);
     }
 
-    prismAssert (0 == errorCode, __FILE__, __LINE__);
+    waveAssert (0 == errorCode, __FILE__, __LINE__);
 
     valueString = pTemp;
 
@@ -400,7 +400,7 @@ vector<UI32> AttributeResourceIdVector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeResourceIdVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -414,13 +414,13 @@ void AttributeResourceIdVector::setValue (const vector<UI32> &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeResourceIdVector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeResourceIdVector::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeResourceIdVector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeResourceIdVector == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeResourceIdVector == (getAttributeType ()))
     {
@@ -472,7 +472,7 @@ void AttributeResourceIdVector::getSqlForSelect (string &sqlForSelect, Attribute
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeResourceIdVector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -556,11 +556,11 @@ void AttributeResourceIdVector::toEscapedString (string &valueString)
     DatabaseConnection       *pDatabaseconnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
     PGconn                   *pPGConnection       = NULL;
 
-    prismAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
 
     pPGConnection = pDatabaseconnection->getPConnection ();
 
-    prismAssert (NULL != pPGConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pPGConnection, __FILE__, __LINE__);
 
     valueString = "";
 
@@ -572,11 +572,11 @@ void AttributeResourceIdVector::toEscapedString (string &valueString)
         returnSize = 0;
         errorCode  = 0;
 
-        prismAssert (NULL != pTemp, __FILE__, __LINE__);
+        waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
         returnSize = PQescapeStringConn (pPGConnection, pTemp, tempString.c_str (), size, &errorCode);
 
-        prismAssert (0 == errorCode, __FILE__, __LINE__);
+        waveAssert (0 == errorCode, __FILE__, __LINE__);
 
         valueString = valueString + returnSize + "#" + pTemp;
 
@@ -666,7 +666,7 @@ void AttributeResourceIdVector::deleteAttributeFromVector (Attribute *attribute)
         else
         {   
             trace (TRACE_LEVEL_FATAL, string ("AttributeResourceIdVector::deleteAttributeFromVector : Element to be deleted not found ."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

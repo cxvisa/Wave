@@ -66,7 +66,7 @@ void SerializableObject::prepareForSerialization ()
 void SerializableObject::serialize (string &serializedData)
 {
     trace (TRACE_LEVEL_FATAL, "SerializableObject::serialize : TEMPORARILY DISABLED.  MUST NOT USE THIS METHOD AT THIS TIME.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
 #if 0
     static WaveMutex serializationMutex;
@@ -101,7 +101,7 @@ void SerializableObject::serialize (string &serializedData)
         DOMElement *pRootElement = pDomDocument->getDocumentElement ();
         DOMNode    *pFirstNode   = NULL;
 
-        prismAssert (NULL != pRootElement, __FILE__, __LINE__);
+        waveAssert (NULL != pRootElement, __FILE__, __LINE__);
 
         while (NULL != (pFirstNode = (pRootElement->getFirstChild ())))
         {
@@ -112,7 +112,7 @@ void SerializableObject::serialize (string &serializedData)
     else
     {
         trace (TRACE_LEVEL_FATAL, "SerializableObject::serialize : Could not create a Dom Document.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 //    delete pDomDocumentType;
@@ -137,7 +137,7 @@ bool SerializableObject::isAttributeToBeLoadedFromSerializedData (SerializableOb
 void SerializableObject::loadFromSerializedData (const string &serializedData)
 {
     trace (TRACE_LEVEL_FATAL, "SerializableObject::loadFromSerializedData : TEMPORARILY DISABLED.  MUST NOT USE THIS METHOD AT THIS TIME.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
 #if 0
     static WaveMutex loadFromSerializedDataMutex;
@@ -203,7 +203,7 @@ void SerializableObject::loadFromSerializedData (const string &serializedData)
 
     DOMNode *pFirstNode = NULL;
 
-    prismAssert (NULL != pRootNode, __FILE__, __LINE__);
+    waveAssert (NULL != pRootNode, __FILE__, __LINE__);
 
     while (NULL != (pFirstNode = (pRootNode->getFirstChild ())))
     {
@@ -224,7 +224,7 @@ void SerializableObject::loadFromSerializedData (const string &serializedData)
 void SerializableObject::loadFromSerializedData (const UI8 *pData, const UI32 dataSize)
 {
     trace (TRACE_LEVEL_FATAL, "SerializableObject::loadFromSerializedData : TEMPORARILY DISABLED.  MUST NOT USE THIS METHOD AT THIS TIME.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
 #if 0
     static WaveMutex loadFromSerializedDataMutex;
@@ -290,7 +290,7 @@ void SerializableObject::loadFromSerializedData (const UI8 *pData, const UI32 da
 
     DOMNode *pFirstNode = NULL;
 
-    prismAssert (NULL != pRootNode, __FILE__, __LINE__);
+    waveAssert (NULL != pRootNode, __FILE__, __LINE__);
 
     while (NULL != (pFirstNode = (pRootNode->getFirstChild ())))
     {
@@ -311,7 +311,7 @@ void SerializableObject::loadFromSerializedData (const UI8 *pData, const UI32 da
 SerializableObject *SerializableObject::createAndLoadFromSerializedData (const string &serializedData)
 {
     trace (TRACE_LEVEL_FATAL, "SerializableObject::createAndLoadFromSerializedData : TEMPORARILY DISABLED.  MUST NOT USE THIS METHOD AT THIS TIME.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (NULL);
 
@@ -373,7 +373,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const s
                 SerializableObjectType sot = strtoul (pAttributeValue, NULL, 10);
 
                 pSerializableObject = WaveMessageFactory::getMessageInstance (sot);
-                prismAssert (NULL != pSerializableObject, __FILE__, __LINE__);
+                waveAssert (NULL != pSerializableObject, __FILE__, __LINE__);
 
                 if (NULL != pSerializableObject)
                 {
@@ -404,7 +404,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const s
 
     DOMNode *pFirstNode = NULL;
 
-    prismAssert (NULL != pRootNode, __FILE__, __LINE__);
+    waveAssert (NULL != pRootNode, __FILE__, __LINE__);
 
     while (NULL != (pFirstNode = (pRootNode->getFirstChild ())))
     {
@@ -427,7 +427,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const s
 SerializableObject *SerializableObject::createAndLoadFromSerializedData (const UI8 *pData, const UI32 dataSize)
 {
     trace (TRACE_LEVEL_FATAL, "SerializableObject::createAndLoadFromSerializedData : TEMPORARILY DISABLED.  MUST NOT USE THIS METHOD AT THIS TIME.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (NULL);
 
@@ -489,7 +489,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const U
                 SerializableObjectType sot = strtoul (pAttributeValue, NULL, 10);
 
                 pSerializableObject = WaveMessageFactory::getMessageInstance (sot);
-                prismAssert (NULL != pSerializableObject, __FILE__, __LINE__);
+                waveAssert (NULL != pSerializableObject, __FILE__, __LINE__);
 
                 if (NULL != pSerializableObject)
                 {
@@ -520,7 +520,7 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const U
 
     DOMNode *pFirstNode = NULL;
 
-    prismAssert (NULL != pRootNode, __FILE__, __LINE__);
+    waveAssert (NULL != pRootNode, __FILE__, __LINE__);
 
     while (NULL != (pFirstNode = (pRootNode->getFirstChild ())))
     {

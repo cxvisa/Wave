@@ -103,7 +103,7 @@ SI64 AttributeSI64::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSI64::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (0);
     }
 }
@@ -117,13 +117,13 @@ void AttributeSI64::setValue (const SI64 &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSI64::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeSI64::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeSI64 == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeSI64 == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeSI64 == (getAttributeType ()))
     {
@@ -196,7 +196,7 @@ void AttributeSI64::getSqlForSelect (string &sqlForSelect, AttributeConditionOpe
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeSI64::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

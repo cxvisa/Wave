@@ -102,7 +102,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
     if (NULL == pCentralClusterConfigUpdateHardwareSynchronizationStateMessage)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep : Failed to dynamic cast CentralClusterConfigUpdateHardwareSynchronizationStateMessage.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     ResourceId                                              hardwareSyncState                                       = pCentralClusterConfigUpdateHardwareSynchronizationStateMessage->getHardwareSynchronizationState (); 
@@ -113,7 +113,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
     if (NULL == pClusterLocalSetHardwareSynchronizationStateMessage)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep : Failed to allocate ClusterLocalUpdateHardwareSynchronizationStateMessage.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
  
     // Use sendToWaveCluster to allow ClusterLocal to update the WaveNode hardware sync state attribute.
@@ -135,7 +135,7 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWav
     if (NULL == pWaveLinearSequencerContext)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStepCallback : Failed to cast WaveLinearSequencerContext.");
-        prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
     }
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());

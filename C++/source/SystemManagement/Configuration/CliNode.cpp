@@ -53,25 +53,25 @@ void CliNode::addChild (const string &childCliNodeName)
 {
     if (true == (isAKnownChild (childCliNodeName)))
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
-    prismAssert ("" != childCliNodeName, __FILE__, __LINE__);
+    waveAssert ("" != childCliNodeName, __FILE__, __LINE__);
 
     CliNode * const pNewCliNode = new CliNode (childCliNodeName);
 
-    prismAssert (NULL != pNewCliNode, __FILE__, __LINE__);
+    waveAssert (NULL != pNewCliNode, __FILE__, __LINE__);
 
     addChild (pNewCliNode);
 }
 
 void CliNode::addChild (CliNode * const pChildCliNode)
 {
-    prismAssert (NULL != pChildCliNode, __FILE__, __LINE__);
+    waveAssert (NULL != pChildCliNode, __FILE__, __LINE__);
 
     string childCliNodeName = pChildCliNode->getCliNodeName ();
 
-    prismAssert ("" != childCliNodeName, __FILE__, __LINE__);
+    waveAssert ("" != childCliNodeName, __FILE__, __LINE__);
 
     if (false == (isAKnownChild (childCliNodeName)))
     {
@@ -80,7 +80,7 @@ void CliNode::addChild (CliNode * const pChildCliNode)
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -134,7 +134,7 @@ void CliNode::addCommandLine (const string &commandLine)
 
         pParentForNextLevel = pParentForNextLevel->getChild (commandLineToken);
 
-        prismAssert (NULL != pParentForNextLevel, __FILE__, __LINE__);
+        waveAssert (NULL != pParentForNextLevel, __FILE__, __LINE__);
     }
 }
 
@@ -147,7 +147,7 @@ void CliNode::getChildrenCliNodeNames (vector<string> &childrenCliNodeNames)
     {
         CliNode *pTempCliNode = m_children[i];
 
-        prismAssert (NULL != pTempCliNode, __FILE__, __LINE__);
+        waveAssert (NULL != pTempCliNode, __FILE__, __LINE__);
 
         childrenCliNodeNames.push_back (pTempCliNode->getCliNodeName ());
     }
@@ -176,7 +176,7 @@ void CliNode::getChildrenCliNodeNamesForCommandLine (const string &commandLine, 
 
         pParentForNextLevel = pParentForNextLevel->getChild (commandLineToken);
 
-        prismAssert (NULL != pParentForNextLevel, __FILE__, __LINE__);
+        waveAssert (NULL != pParentForNextLevel, __FILE__, __LINE__);
     }
 
     pParentForNextLevel->getChildrenCliNodeNames (childrenCliNodeNames);

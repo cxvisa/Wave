@@ -61,7 +61,7 @@ void DatabaseObjectManagerBootWorker::bootDatabaseStep (WaveLinearSequencerConte
 
     DatabaseConnection *pDatabaseConnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
     if (NULL != (pDatabaseConnection->getPConnection ()))
     {
@@ -101,12 +101,12 @@ void DatabaseObjectManagerBootWorker::bootDatabaseStep (WaveLinearSequencerConte
             bool                isConnectedToDatabase = false;
             pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-            prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+            waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
             if (NULL != (pDatabaseConnection->getPConnection ()))
             {
                 trace (TRACE_LEVEL_ERROR, "DatabaseObjectManagerBootWorker::bootDatabaseStep : Already connected to Wave Database. This should not happen as it is just started.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -137,7 +137,7 @@ void DatabaseObjectManagerBootWorker::bootDatabaseStep (WaveLinearSequencerConte
         if (0 != status)
         {
             tracePrintf (TRACE_LEVEL_WARN, true, false, string("DatabaseObjectManagerBootWorker::bootDatabaseStep : failed to start postgres server after [%s] retries also. Can't move forward. Asserting.").c_str(), retries);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -156,7 +156,7 @@ void DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep (WaveLinearSeque
     bool                isConnectedToDatabse = false;
     DatabaseConnection *pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
     if (NULL != (pDatabaseConnection->getPConnection ()))
     {
@@ -195,7 +195,7 @@ void DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequired
         {
             trace (TRACE_LEVEL_ERROR, "DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep : Could not recreate WaveDatabase");
             status = WAVE_MESSAGE_ERROR;
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {        
@@ -208,7 +208,7 @@ void DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequired
             {
                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep : Could not connect to database.");
                 status = WAVE_MESSAGE_ERROR;
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -224,7 +224,7 @@ void DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequired
         {
             trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep : Database restore was complete but connection to database could not be established.");
             status = WAVE_MESSAGE_ERROR;
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else 
         {

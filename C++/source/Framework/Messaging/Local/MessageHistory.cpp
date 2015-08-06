@@ -38,7 +38,7 @@ MessageHistory::MessageHistory (WaveMessage *pWaveMessage, WaveMessageSendType s
     else
     {
         trace (TRACE_LEVEL_ERROR, string ("MessageHistory::MessageHistory : gettimeofday returned [") + returnValue + string ("]"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

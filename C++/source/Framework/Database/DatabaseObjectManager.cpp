@@ -273,63 +273,63 @@ DatabaseObjectManager::DatabaseObjectManager ()
 
     m_pDatabaseObjectManagerInitializeWorker = new DatabaseObjectManagerInitializeWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerInitializeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerInitializeWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerInstallWorker = new DatabaseObjectManagerInstallWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerInstallWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerInstallWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerBootWorker = new DatabaseObjectManagerBootWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerBootWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerBootWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerExecuteTransactionWorker = new DatabaseObjectManagerExecuteTransactionWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerExecuteTransactionWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerExecuteTransactionWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerExecuteQueryWorker = new DatabaseObjectManagerExecuteQueryWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerExecuteQueryWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerExecuteQueryWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerExecuteCopySchemaWorker = new DatabaseObjectManagerExecuteCopySchemaWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerExecuteCopySchemaWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerExecuteCopySchemaWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerExecuteCursorCommandWorker = new DatabaseObjectManagerExecuteCursorCommandWorker(this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerExecuteCursorCommandWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerExecuteCursorCommandWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerGetLatestInstanceIdForTableWorker = new DatabaseObjectManagerGetLatestInstanceIdForTableWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerGetLatestInstanceIdForTableWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerGetLatestInstanceIdForTableWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerBackupWorker = new DatabaseObjectManagerBackupWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerBackupWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerBackupWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerEmptyWorker = new DatabaseObjectManagerEmptyWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerEmptyWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerEmptyWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerRestoreWorker = new DatabaseObjectManagerRestoreWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerRestoreWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerRestoreWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerCleanPreparedTransactionsWorker = new DatabaseObjectManagerCleanPreparedTransactionsWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerCleanPreparedTransactionsWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerCleanPreparedTransactionsWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerCalculateDbCksumWorker = new DatabaseObjectManagerCalculateDbCksumWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerCleanPreparedTransactionsWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerCleanPreparedTransactionsWorker, __FILE__, __LINE__);
     
     m_pDatabaseObjectManagerShutdownWorker = new DatabaseObjectManagerShutdownWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerShutdownWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerShutdownWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerGetDbAccessDetailsWorker = new DatabaseObjectManagerGetDbAccessDetailsWorker (this);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerGetDbAccessDetailsWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerGetDbAccessDetailsWorker, __FILE__, __LINE__);
 
     addOperationMap (DATABASE_OBJECT_MANAGER_CREATE_INMEMORY_MO, reinterpret_cast<WaveMessageHandler> (&DatabaseObjectManager::createInMemoryManagedObjectHandler));
 
@@ -348,7 +348,7 @@ WaveObjectManager *DatabaseObjectManager::getInstance ()
         if (NULL == pMultiDatabaseObjectManager)
         {
             pMultiDatabaseObjectManager = new MultiDatabaseObjectManager ();
-            WaveNs::prismAssert (NULL != pMultiDatabaseObjectManager, __FILE__, __LINE__);
+            WaveNs::waveAssert (NULL != pMultiDatabaseObjectManager, __FILE__, __LINE__);
         }
 
         pWaveObjectManager = pMultiDatabaseObjectManager;
@@ -358,7 +358,7 @@ WaveObjectManager *DatabaseObjectManager::getInstance ()
         if (NULL == pDatabaseObjectManager)
         {
             pDatabaseObjectManager = new DatabaseObjectManager ();
-            WaveNs::prismAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
+            WaveNs::waveAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
         }
 
         pWaveObjectManager = pDatabaseObjectManager;
@@ -507,7 +507,7 @@ WaveManagedObject *DatabaseObjectManager::loadWaveManagedObjectFromDatabaseWrapp
     {
         DatabaseObjectManager *pDatabaseObjectManager = dynamic_cast<DatabaseObjectManager *>(DatabaseObjectManager::getInstance ());
 
-        WaveNs::prismAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
 
         return (pDatabaseObjectManager->loadWaveManagedObjectFromDatabase (waveManagedObjectObjectId, schema, pWaveObjectManager));
     }
@@ -528,7 +528,7 @@ vector<WaveManagedObject *> DatabaseObjectManager::loadWaveManagedObjectsFromDat
     {
         DatabaseObjectManager *pDatabaseObjectManager = dynamic_cast<DatabaseObjectManager *>(DatabaseObjectManager::getInstance ());
 
-        WaveNs::prismAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
 
         return (pDatabaseObjectManager)->loadWaveManagedObjectsFromDatabase (waveManagedObjectObjectIds, schema, pWaveObjectManager);
     }
@@ -549,7 +549,7 @@ vector<WaveManagedObject *> DatabaseObjectManager::loadWaveManagedObjectsFromDat
     {
         DatabaseObjectManager *pDatabaseObjectManager = dynamic_cast<DatabaseObjectManager *>(DatabaseObjectManager::getInstance ());
 
-        WaveNs::prismAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pDatabaseObjectManager, __FILE__, __LINE__);
 
         return (pDatabaseObjectManager->loadWaveManagedObjectsFromDatabase (childClassName, parentObjectId, schema, pWaveObjectManager));
     }
@@ -679,7 +679,7 @@ ResourceId DatabaseObjectManager::createNewWaveDatabase ()
     if (0 != cmdStatus)
     {
         WaveNs::tracePrintf (TRACE_LEVEL_WARN, true, false, string("DatabaseObjectManager::createNewWaveDatabase : failed to start postgres server after [%s] retries also. Can't move forward. Asserting.").c_str(), retries);
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     prismSleep (10);
@@ -818,7 +818,7 @@ void DatabaseObjectManager::handleIfDBCorruption (string &databaseErrorMessage, 
         else
         {
             WaveNs::trace (TRACE_LEVEL_FATAL, "DatabaseObjectManager::handleIfDBCorruption: ErrorMessage is empty and PGresult is missing.");
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -921,7 +921,7 @@ void DatabaseObjectManager::goOnInfiniteLoopBeforeReboot ()
         else
         {
             WaveNs::trace (TRACE_LEVEL_FATAL, "DatabaseObjectManager::goOnInfiniteLoopBeforeReboot : 5 minutes after reload/reboot command has been given and system hasnt rebooted. So Dcmd is forcefully asserting thus causing the system to reboot");
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -938,7 +938,7 @@ void DatabaseObjectManager::createInMemoryManagedObjectHandler (DatabaseObjectMa
     prismServiceId = pWaveObjectManager->getServiceId();
                            
     pWaveManagedObject = WaveManagedObjectFactory::getWaveManagedObjectInstance (prismServiceId, className);
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     pWaveManagedObject->setPCurrentOwnerWaveObjectManager (pDatabaseObjectManagerCreateInMemoryManagedObjectMessage->getPWaveObjectManager ());
                                     

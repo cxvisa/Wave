@@ -38,7 +38,7 @@ void WaveBrokerPublishMessageFactory::registerWaveBrokerPublishMessageInstantiat
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveBrokerPublishMessageFactory::registerWaveBrokerPublishMessageInstantiator : Duplicate Instantiator Registration for " + topicName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveBrokerPublishMessageInstatiatorsMutex.unlock ();
@@ -59,7 +59,7 @@ WaveBrokerPublishMessage *WaveBrokerPublishMessageFactory::createWaveBrokerPubli
 
         pWaveBrokerPublishMessage = (*waveBrokerPublishMessageInstantiator) ();
 
-        prismAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
     }
 
     m_waveBrokerPublishMessageInstatiatorsMutex.unlock ();

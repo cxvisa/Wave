@@ -34,7 +34,7 @@ void YangStatus::updateParentAnnotations ()
     string statusValue;
 
     getAttributeValue ("value", statusValue);
-    prismAssert ("" != statusValue, __FILE__, __LINE__);
+    waveAssert ("" != statusValue, __FILE__, __LINE__);
 
     if ("deprecated" == statusValue)
     {

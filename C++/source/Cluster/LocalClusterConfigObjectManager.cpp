@@ -32,7 +32,7 @@ LocalClusterConfigObjectManager *LocalClusterConfigObjectManager::getInstance ()
     if (NULL == pLocalClusterConfigObjectManager)
     {
         pLocalClusterConfigObjectManager = new LocalClusterConfigObjectManager ();
-        WaveNs::prismAssert (NULL != pLocalClusterConfigObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pLocalClusterConfigObjectManager, __FILE__, __LINE__);
     }
 
     return (pLocalClusterConfigObjectManager);
@@ -315,7 +315,7 @@ int LocalClusterConfigObjectManager::getSwitchHaConfig (haNodeStatus_t *primaryN
     string nodeName     =  m_cluster->m_primaryNode.getNodeName ();
     UI32   nodeNameSize = nodeName.size ();
 
-    WaveNs::prismAssert (MAX_IP_STRING_LENGTH >= nodeNameSize + 1, __FILE__, __LINE__); // Make sure that the trailing '\0' can also be put into the string.
+    WaveNs::waveAssert (MAX_IP_STRING_LENGTH >= nodeNameSize + 1, __FILE__, __LINE__); // Make sure that the trailing '\0' can also be put into the string.
 
     memcpy (primaryNodes->nodeName, nodeName.c_str (), nodeNameSize);
     primaryNodes->nodeName[nodeNameSize] = '\0';
@@ -341,7 +341,7 @@ int LocalClusterConfigObjectManager::getSwitchHaConfig (haNodeStatus_t *primaryN
         nodeName     = m_cluster->m_nodeList[index].getNodeName ();
         nodeNameSize = nodeName.size ();
 
-        WaveNs::prismAssert (MAX_IP_STRING_LENGTH >= nodeNameSize + 1, __FILE__, __LINE__); // Make sure that the trailing '\0' can also be put into the string.
+        WaveNs::waveAssert (MAX_IP_STRING_LENGTH >= nodeNameSize + 1, __FILE__, __LINE__); // Make sure that the trailing '\0' can also be put into the string.
 
         memcpy (&(secondaryNodes ->nodeName), nodeName.c_str (), nodeNameSize);
         secondaryNodes ->nodeName[nodeNameSize] = '\0';
@@ -356,7 +356,7 @@ int LocalClusterConfigObjectManager::getSwitchHaConfig (haNodeStatus_t *primaryN
         nodeName     =  m_cluster->m_selfNode.getNodeName ();
         nodeNameSize = nodeName.size ();
 
-        WaveNs::prismAssert (MAX_IP_STRING_LENGTH >= nodeNameSize + 1, __FILE__, __LINE__); // Make sure that the trailing '\0' can also be put into the string.
+        WaveNs::waveAssert (MAX_IP_STRING_LENGTH >= nodeNameSize + 1, __FILE__, __LINE__); // Make sure that the trailing '\0' can also be put into the string.
 
         memcpy (&(secondaryNodes ->nodeName), nodeName.c_str (), nodeNameSize);
         secondaryNodes ->nodeName[nodeNameSize] = '\0';

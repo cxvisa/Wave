@@ -109,7 +109,7 @@ MACRange AttributeMACRange::getValue () const
     else
     {
         trace (TRACE_LEVEL_DEBUG, string ("AttributeMACRange::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempMACRange;
     }
 }
@@ -123,13 +123,13 @@ void AttributeMACRange::setValue (const MACRange &data)
     else
     {
         trace (TRACE_LEVEL_DEBUG, string ("AttributeIpV4Address::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeMACRange::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeMACRange == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeMACRange == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeMACRange == (getAttributeType ()))
     {
@@ -181,7 +181,7 @@ void AttributeMACRange::getSqlForSelect (string &sqlForSelect, AttributeConditio
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeMACRange::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

@@ -386,7 +386,7 @@ ResourceId WaveSystemManagementGatewayWorker::sendManagementInterfaceMessage (Ma
         // Get the right server to send the message to 
         WaveClientSynchronousConnection *pWaveClientSynchronousConnection = pConfigurationSegmentImportantInfo->getWaveClientSynchronousConnection ();
         
-        prismAssert (pWaveClientSynchronousConnection != NULL, __FILE__, __LINE__);
+        waveAssert (pWaveClientSynchronousConnection != NULL, __FILE__, __LINE__);
 
         if (true == (pWaveClientSynchronousConnection->isCurrentlyConnected ()))
         {

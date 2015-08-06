@@ -106,7 +106,7 @@ UI32 AttributeEnum::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeEnum::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (0);
     }
 }
@@ -120,13 +120,13 @@ void AttributeEnum::setValue (const UI32 &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeEnum::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeEnum::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeEnum == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeEnum == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeEnum == (getAttributeType ()))
     {
@@ -174,7 +174,7 @@ void  AttributeEnum::getSqlForSelect (string &sqlForSelect, AttributeConditionOp
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeEnum::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString = (Integer (0xFFFFFFFF & (getValue ()))).toString ();
@@ -302,11 +302,11 @@ void AttributeEnum::populateNameValueEnumMap (string name, UI32 value)
     // Assertion checks begin   [
     map<string, UI32>::iterator itr1    = m_NameToValueMap.find (name);
     map<string, UI32>::iterator end1    = m_NameToValueMap.end ();
-    prismAssert (end1 == itr1, __FILE__, __LINE__);
+    waveAssert (end1 == itr1, __FILE__, __LINE__);
 
     map <UI32, string>::iterator itr2   = m_ValueToNameMap.find (value);
     map <UI32, string>::iterator end2   = m_ValueToNameMap.end ();
-    prismAssert (end2 == itr2, __FILE__, __LINE__);
+    waveAssert (end2 == itr2, __FILE__, __LINE__);
     // Assertion checks end     ]
 
     m_NameToValueMap[name]  = value;

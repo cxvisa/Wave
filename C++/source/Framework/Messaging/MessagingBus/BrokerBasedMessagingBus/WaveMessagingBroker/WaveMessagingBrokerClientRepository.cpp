@@ -65,7 +65,7 @@ void WaveMessagingBrokerClientRepository::addWaveMessagingBrokerClient (const st
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveMessagingBrokerClientsMutex.unlock ();
@@ -107,13 +107,13 @@ void WaveMessagingBrokerClientRepository::removeWaveMessagingBrokerClient (const
 
     if (endElement == element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         WaveMessagingBrokerClient *pWaveMessagingBrokerClient = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
         m_waveMessagingBrokerClientsMap.erase (element);
 
@@ -134,13 +134,13 @@ void WaveMessagingBrokerClientRepository::addWaveMessagingBrokerClientSubscripti
 
     if (endElement == element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         WaveMessagingBrokerClient *pWaveMessagingBrokerClient = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
         pWaveMessagingBrokerClient->addSubscriptionTopic (subscriptionTopic);
     }
@@ -159,13 +159,13 @@ void WaveMessagingBrokerClientRepository::removeWaveMessagingBrokerClientSubscri
 
     if (endElement == element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         WaveMessagingBrokerClient *pWaveMessagingBrokerClient = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
         pWaveMessagingBrokerClient->removeSubscriptionTopic (subscriptionTopic);
     }
@@ -185,13 +185,13 @@ WaveMessagingBrokerClient *WaveMessagingBrokerClientRepository::checkoutWaveMess
 
     if (endElement == element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         pWaveMessagingBrokerClient = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
         pWaveMessagingBrokerClient->checkout ();
     }
@@ -212,13 +212,13 @@ WaveMessagingBrokerClient *WaveMessagingBrokerClientRepository::checkoutWaveMess
 
     if (endElement == element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         pWaveMessagingBrokerClient = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
         pWaveMessagingBrokerClient->checkout ();
     }
@@ -230,7 +230,7 @@ WaveMessagingBrokerClient *WaveMessagingBrokerClientRepository::checkoutWaveMess
 
 void WaveMessagingBrokerClientRepository::checkinWaveMessagingBrokerClient (WaveMessagingBrokerClient *pWaveMessagingBrokerClient)
 {
-    prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
     const string waveMessagingBrokerClientUniqueString = pWaveMessagingBrokerClient->getUniqueString ();
 
@@ -241,13 +241,13 @@ void WaveMessagingBrokerClientRepository::checkinWaveMessagingBrokerClient (Wave
 
     if (endElement == element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         WaveMessagingBrokerClient *pWaveMessagingBrokerClient1 = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient1, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient1, __FILE__, __LINE__);
 
         pWaveMessagingBrokerClient1->checkin ();
     }
@@ -290,7 +290,7 @@ void WaveMessagingBrokerClientRepository::print ()
         string                     clientUniqueString         = element->first;
         WaveMessagingBrokerClient *pWaveMessagingBrokerClient = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClient, __FILE__, __LINE__);
 
         vector<string> subscriptions;
 

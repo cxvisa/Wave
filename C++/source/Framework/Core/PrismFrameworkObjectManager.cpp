@@ -260,43 +260,43 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
         exit (-1);
     }
 
-    prismAssert (NULL != s_pFrameworkReadinessMutex, __FILE__, __LINE__);
+    waveAssert (NULL != s_pFrameworkReadinessMutex, __FILE__, __LINE__);
 
     s_isFrameworkReadyToBoot = false;
 
     m_pInitializeWorker = new PrismFrameworkObjectManagerInitializeWorker (this);
 
-    prismAssert (NULL != m_pInitializeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pInitializeWorker, __FILE__, __LINE__);
 
     m_pPrismFinalizeWorker = new PrismFinalizeWorker (this);
 
-    prismAssert (NULL != m_pPrismFinalizeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFinalizeWorker, __FILE__, __LINE__);
 
     m_pConfigurationWorker = new PrismFrameworkConfigurationWorker (this);
 
-    prismAssert (NULL != m_pConfigurationWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pConfigurationWorker, __FILE__, __LINE__);
 
     m_pPrismFrameworkFailoverWorker = new PrismFrameworkFailoverWorker (this);
 
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     m_pPrismFrameworkObjectManagerServiceControlWorker = new PrismFrameworkObjectManagerServiceControlWorker (this);
 
-    prismAssert (NULL != m_pPrismFrameworkObjectManagerServiceControlWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkObjectManagerServiceControlWorker, __FILE__, __LINE__);
 
     m_pPrismFrameworkObjectManagerPostbootWorker = new PrismFrameworkObjectManagerPostbootWorker (this);
 
-    prismAssert (NULL != m_pPrismFrameworkObjectManagerPostbootWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkObjectManagerPostbootWorker, __FILE__, __LINE__);
 
     m_pPrismFrameworkObjectManagerPostPersistentBootWorker = new PrismFrameworkObjectManagerPostPersistentBootWorker (this);
 
-    prismAssert (NULL != m_pPrismFrameworkObjectManagerPostPersistentBootWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkObjectManagerPostPersistentBootWorker, __FILE__, __LINE__);
 
     m_pPrismFrameworkObjectManagerHaSyncWorker = new PrismFrameworkObjectManagerHaSyncWorker (this);
 
-    prismAssert (NULL != m_pPrismFrameworkObjectManagerHaSyncWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkObjectManagerHaSyncWorker, __FILE__, __LINE__);
 
-    //prismAssert (NULL != m_dbStandaloneTransaction, __FILE__, __LINE__);*/
+    //waveAssert (NULL != m_dbStandaloneTransaction, __FILE__, __LINE__);*/
 //Temporarily disabled all xerces related code.
 #if 0
     try
@@ -306,7 +306,7 @@ PrismFrameworkObjectManager::PrismFrameworkObjectManager ()
     catch (const XMLException &exception)
     {
         cout << " E R R O R in Initializing the XMLPlatformUtils." << endl;
-        prismAssert (0, __FILE__, __LINE__);
+        waveAssert (0, __FILE__, __LINE__);
         exit (-1);
     }
 #endif
@@ -424,7 +424,7 @@ PrismFrameworkObjectManager *PrismFrameworkObjectManager::getInstance ()
     if (NULL == s_pFrameworkReadinessMutex)
     {
         s_pFrameworkReadinessMutex = new WaveMutex ();
-        WaveNs::prismAssert (NULL != s_pFrameworkReadinessMutex, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != s_pFrameworkReadinessMutex, __FILE__, __LINE__);
     }
 
     static PrismFrameworkObjectManager *pPrismFrameworkObjectManager = NULL;
@@ -432,7 +432,7 @@ PrismFrameworkObjectManager *PrismFrameworkObjectManager::getInstance ()
     if (NULL == pPrismFrameworkObjectManager)
     {
         pPrismFrameworkObjectManager = new PrismFrameworkObjectManager ();
-        WaveNs::prismAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
     }
 
     return (pPrismFrameworkObjectManager);
@@ -659,7 +659,7 @@ void PrismFrameworkObjectManager::boot (WaveAsynchronousContextForBootPhases *pW
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::boot Initial Boot of Services should Never Fail");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 }
@@ -679,13 +679,13 @@ void  PrismFrameworkObjectManager::validateAndZeroizeAtBoot()
         FrameworkSequenceGenerator &frameworkSequenceGenerator = getCurrentFrameworkSequenceGenerator ();
         PrismZeroizeAgent *pZAgent = new PrismZeroizeAgent(this, frameworkSequenceGenerator,noShutdownAtZeroize);
 
-        prismAssert(NULL != pZAgent, __FILE__,__LINE__);
+        waveAssert(NULL != pZAgent, __FILE__,__LINE__);
     
         ResourceId status = pZAgent->execute();
         if(status != WAVE_MESSAGE_SUCCESS)
         {
             trace(TRACE_LEVEL_FATAL,"PrismFrameworkObjectManager::validateAndZeroizeAtBoot: one or more services failed to zeroize\n");
-            prismAssert(false,__FILE__,__LINE__);
+            waveAssert(false,__FILE__,__LINE__);
         }
     }
     else
@@ -715,7 +715,7 @@ void PrismFrameworkObjectManager::configureThisLocationAsLocation (SI32 port)
     if (NULL != m_pThisLocation)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::configureThisLocationAsLocation : This location is already configured");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -733,7 +733,7 @@ void PrismFrameworkObjectManager::configureThisLocationAsLocation (SI32 port)
     if (NULL == m_pThisLocation)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::configureThisLocationAsLocation : Could not allocate a Location.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -746,7 +746,7 @@ void PrismFrameworkObjectManager::configureThisLocationAsSubLocation (LocationId
     if (NULL != m_pThisLocation)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::configureThisLocationAsSubLocation : This location is already configured");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     SubLocation *pSubLocation = new SubLocation (parentLocationId, parentIpAddress, parentPort, locationId, ipAddress, port);
@@ -754,7 +754,7 @@ void PrismFrameworkObjectManager::configureThisLocationAsSubLocation (LocationId
     if (NULL == pSubLocation)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::configureThisLocationAsSubLocation : Could not allocate a Sub Location.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     Location *pLocation = new Location (parentLocationId, parentIpAddress, parentPort);
@@ -762,7 +762,7 @@ void PrismFrameworkObjectManager::configureThisLocationAsSubLocation (LocationId
     if (NULL == pLocation)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::configureThisLocationAsSubLocation : Could not allocate a Location.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pSubLocation->setPParentLocation (pLocation);
@@ -777,7 +777,7 @@ bool PrismFrameworkObjectManager::addSubLocation (LocationId locationId, string 
     if (NULL == m_pThisLocation)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::addSubLocation : This location is not configured yet.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == (m_pThisLocation->supportsSubLocations ()))
@@ -849,7 +849,7 @@ void PrismFrameworkObjectManager::initializeServerCommunications ()
     else
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::initializeServerCommunications : This Locations is not configured yet.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -862,7 +862,7 @@ void PrismFrameworkObjectManager::initializeClientCommunications ()
     else
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::initializeClientCommunications : This Locations is not configured yet.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -877,7 +877,7 @@ bool PrismFrameworkObjectManager::acceptNewConnection (ServerStreamingSocket &ne
     else
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::acceptNewConnection : This Locations is not configured yet.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (successfullyAcceptedNewConnection);
@@ -1053,7 +1053,7 @@ ResourceId PrismFrameworkObjectManager::createBufferForFileToSync ( const string
         if ( 0 < fileSize )
         {
             pBuffer = new char [fileSize];
-            prismAssert ( NULL != pBuffer, __FILE__, __LINE__ );         
+            waveAssert ( NULL != pBuffer, __FILE__, __LINE__ );         
             file.seekg (0, ios::beg);
             file.read ( pBuffer, fileSize );
             pfileBuffer = pBuffer;
@@ -1078,7 +1078,7 @@ ResourceId PrismFrameworkObjectManager::createFileForSyncBuffer ( const string &
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     
-    prismAssert ( NULL != pfileBuffer, __FILE__, __LINE__ );
+    waveAssert ( NULL != pfileBuffer, __FILE__, __LINE__ );
 
     trace (TRACE_LEVEL_DEVEL, string("PrismFrameworkObjectManager::createFileForSyncBuffer : filename - ") + filenameToSync );
     ofstream file;
@@ -1115,13 +1115,13 @@ void PrismFrameworkObjectManager::createDatabaseBackupBuffer(char * &pDatabaseBa
     databaseBackupFile.seekg (0, ios::end);
     sizeOfBackupFile = databaseBackupFile.tellg ();
 
-    prismAssert (0 != sizeOfBackupFile, __FILE__, __LINE__);
+    waveAssert (0 != sizeOfBackupFile, __FILE__, __LINE__);
 
     if (0 < sizeOfBackupFile)
     {
         pDatabaseBackupBuffer = new char[sizeOfBackupFile];
 
-        prismAssert (NULL != pDatabaseBackupBuffer, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseBackupBuffer, __FILE__, __LINE__);
 
         databaseBackupFile.seekg (0, ios::beg);
         databaseBackupFile.read (pDatabaseBackupBuffer, sizeOfBackupFile);
@@ -1240,7 +1240,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesValidateStep (CreateClus
     if (NULL == m_pThisLocation)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::createClusterWithNodesValidateStep : Trying to create a cluster without configuring this location first.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         pCreateClusterWithNodesContext->executeNextStep (FRAMEWORK_ERROR_LOCATION_NOT_CONFIGURED);
         return;
     }
@@ -1249,7 +1249,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesValidateStep (CreateClus
         if (true != (FrameworkToolKit::isThisALocation ()))
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::createClusterWithNodesValidateStep : Trying to create a cluster using a sub location");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             pCreateClusterWithNodesContext->executeNextStep (FRAMEWORK_ERROR_SUB_LOCATION_CANNOT_CREATE_CLUSTER);
             return;
         }
@@ -1523,7 +1523,7 @@ void PrismFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message : Could not send message to backup database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -1532,7 +1532,7 @@ void PrismFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message : Message to backup database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }     
         else  
         {     
@@ -1568,7 +1568,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
 
 
-    prismAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
     ++(*pCreateClusterWithNodesContext);
 
@@ -1597,8 +1597,8 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
             UI32                    numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
             UI32                    j                              = 0;
 
-            prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-            prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+            waveAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+            waveAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
             for (j = 0; j < numberOfWaveServiceIds; j++)
             {
@@ -1609,7 +1609,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
                 else
                 {
                     trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep : We could not have added an entry with 0 size and/or NULL validation buffer.");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }
 
@@ -1693,7 +1693,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
         if (FRAMEWORK_SUCCESS == frameworkStatus)
         {
-            prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
             ResourceId completionStatus = pPrismConfigureClusterSecondaryMessage->getCompletionStatus ();
 
@@ -1781,7 +1781,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
     PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
-    prismAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
     UI32                                i                                   = 0;
     UI32                                numberOfNewIpAddresses              = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
@@ -1841,7 +1841,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
                 if ( WAVE_MESSAGE_SUCCESS != status )
                 {
                     trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : Unable to create buffer for file = \"") + filenamesToSync[i] + ("\"") );
-                    prismAssert ( false, __FILE__, __LINE__ );
+                    waveAssert ( false, __FILE__, __LINE__ );
                 }                        
 
                 pMessage->addBuffer ( 11, sizeOfFileBuffer, pfileBuffer, false );
@@ -1913,7 +1913,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
         newLocationId = pPrismConfigureClusterSecondaryPhase1Message->getReceiverLocationId ();
         ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
@@ -2013,7 +2013,7 @@ void PrismFrameworkObjectManager::resumeDatabase ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::resumeDatabase : Could not resume Database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2022,7 +2022,7 @@ void PrismFrameworkObjectManager::resumeDatabase ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::resumeDatabase : Could not resume Database.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -2044,7 +2044,7 @@ void PrismFrameworkObjectManager::pausePersistence ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::pausePersistence : Could not pause Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2053,7 +2053,7 @@ void PrismFrameworkObjectManager::pausePersistence ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::pausePersistence : Could not pause Persistence.  Completion Status : " + FrameworkToolKit::localize (status));            
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -2072,7 +2072,7 @@ void PrismFrameworkObjectManager::resumePersistence ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::resumePersistence : Could not resume Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2081,7 +2081,7 @@ void PrismFrameworkObjectManager::resumePersistence ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::resumePersistence : Could not resume Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -2113,7 +2113,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
     PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
-    prismAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
     UI32                                i                                   = 0;
     UI32                                numberOfNewIpAddresses              = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
@@ -2198,7 +2198,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismConfigureClusterSecondaryPhase2Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismConfigureClusterSecondaryPhase2Message, __FILE__, __LINE__);
 
         newLocationId = pPrismConfigureClusterSecondaryPhase2Message->getReceiverLocationId ();
         ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
@@ -2356,13 +2356,13 @@ void PrismFrameworkObjectManager::failoverforNodesFailedInPhase2Callback (PrismF
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::failoverforNodesFailedInPhase2Callback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     CreateClusterWithNodesContext  *pCreateClusterWithNodesContext = reinterpret_cast<CreateClusterWithNodesContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pCreateClusterWithNodesContext, __FILE__, __LINE__);
+    waveAssert (NULL != pCreateClusterWithNodesContext, __FILE__, __LINE__);
 
     //clear the failed location vector setup in previous phases as failover is triggered for those locations.
     pCreateClusterWithNodesContext->clearFailedLocationIdVector ();
@@ -2431,7 +2431,7 @@ void PrismFrameworkObjectManager::startHeartBeatToSecondaryNodes (CreateClusterW
         {
             trace (TRACE_LEVEL_FATAL, string ("PrismFrameworkObjectManager::startHeartBeatToSecondaryNodes: Could not start heart beating with Node : ") + ipAddress + string (", Port : ") + port + string (", Status = ") + FrameworkToolKit::localize (status));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -2440,7 +2440,7 @@ void PrismFrameworkObjectManager::startHeartBeatToSecondaryNodes (CreateClusterW
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFrameworkObjectManager::startHeartBeatToSecondaryNodes : Could not start heart beating with Node : ") + ipAddress + string (", Port : ") + port + string (", Completion Status = ") + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             trace (TRACE_LEVEL_INFO, string ("Started HeartBeat with node ") + ipAddress + string (":") + port);
@@ -2560,7 +2560,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
     PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
-    prismAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
  
     LocationId locationId = pPrismConfigureClusterSecondaryPhase3Message->getReceiverLocationId ();
     
@@ -2608,7 +2608,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocatio
         {
             vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
 
-            prismAssert (NULL != pResults, __FILE__, __LINE__);
+            waveAssert (NULL != pResults, __FILE__, __LINE__);
 
             if (0 == pResults->size ())
             {
@@ -2659,7 +2659,7 @@ void PrismFrameworkObjectManager::failoverforNodesFailedInPhase3Callback (PrismF
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::failoverforNodesFailedInPhase3Callback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     CreateClusterWithNodesContext  *pCreateClusterWithNodesContext = reinterpret_cast<CreateClusterWithNodesContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     vector<LocationId> failedLocationIds;
@@ -2679,12 +2679,12 @@ void PrismFrameworkObjectManager::failoverforNodesFailedInPhase3Callback (PrismF
 
         ResourceId status = sendOneWay (pFrameworkObjectManagerRemoveKnownLocationsMessage, connectedLocationsVector[i]);
 
-        prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+        waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
     }
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pCreateClusterWithNodesContext, __FILE__, __LINE__);
+    waveAssert (NULL != pCreateClusterWithNodesContext, __FILE__, __LINE__);
 
     pCreateClusterWithNodesContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 
@@ -2766,7 +2766,7 @@ void PrismFrameworkObjectManager::decrementLineCardPostBootCount ()
     else
     {
         //Decrementing when there are no LC postboot in progress hence assert
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
      m_lineCardPostBootMutex.unlock ();
@@ -3076,7 +3076,7 @@ void PrismFrameworkObjectManager::cleanupManageObject (LocationId locationId)
     WaveManagedObjectSynchronousQueryContext synchronousQueryContext(WaveNode::getClassName ());
     synchronousQueryContext.addAndAttribute (new AttributeLocationId (locationId, "locationId"));
     vector<WaveManagedObject *> *pResults = querySynchronously (&synchronousQueryContext);
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
     vector<ObjectId> deleteObjectIds;
     vector<string> tableNames;
     ResourceId status = FRAMEWORK_SUCCESS;
@@ -3084,7 +3084,7 @@ void PrismFrameworkObjectManager::cleanupManageObject (LocationId locationId)
 
     deleteObjectIds.clear();
     trace (TRACE_LEVEL_INFO, string("PrismFrameworkObjectManager::cleanupManageObject : cleanup MO associated with LocationId = ") + locationId);
-    prismAssert (1 >= count,__FILE__, __LINE__);
+    waveAssert (1 >= count,__FILE__, __LINE__);
 
     if (count == 1) {
         string sql;
@@ -3104,7 +3104,7 @@ void PrismFrameworkObjectManager::cleanupManageObject (LocationId locationId)
             synchronousQueryContext1.addAndAttribute (new AttributeUI32(waveNodeObjectId.getClassId(), "ownerWaveNodeObjectIdClassId"));
             synchronousQueryContext1.addAndAttribute (new AttributeUI64 (waveNodeObjectId.getInstanceId(), "ownerWaveNodeObjectIdInstanceId"));
             vector<WaveManagedObject *> *pMOResults = querySynchronously (&synchronousQueryContext1);
-            prismAssert (NULL != pMOResults, __FILE__, __LINE__);
+            waveAssert (NULL != pMOResults, __FILE__, __LINE__);
             UI32 j = 0;
             UI32 countMOResults = pMOResults->size();
             trace(TRACE_LEVEL_INFO, string("PrismFrameworkObjectManager::cleanupManageObject: Table = ") + tableNames[i] + " Number = " + countMOResults);
@@ -3229,7 +3229,7 @@ void PrismFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToA
     if(pCreateClusterWithNodesContext->getPWaveMessage()) 
     {
      pPrismCreateClusterWithNodesMessage =  dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
-    prismAssert(NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
     }
 
 
@@ -3344,7 +3344,7 @@ void PrismFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep(Creat
 
     //Extract the message
     PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
-    prismAssert(NULL != pPrismCreateClusterWithNodesMessage,__FILE__, __LINE__);
+    waveAssert(NULL != pPrismCreateClusterWithNodesMessage,__FILE__, __LINE__);
 
     //Number of nodes in the message received from the cluster service
     UI32 numberOfNewIpAddresses = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
@@ -3532,7 +3532,7 @@ void PrismFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequence
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackNodeIfRequiredStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         
     }
@@ -3545,7 +3545,7 @@ void PrismFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequence
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackNodeIfRequiredStep : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
@@ -3553,7 +3553,7 @@ void PrismFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequence
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackNodeIfRequiredStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         
     }
@@ -3619,12 +3619,12 @@ void PrismFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNode
 
 void PrismFrameworkObjectManager::prepareSecondaryNodeForAddNodeIfRequiredCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
 {
-    prismAssert (NULL != pPrismAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismAsynchronousContext, __FILE__, __LINE__);
 
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pPrismAsynchronousContext->getPCallerContext ());
     ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
 
-    prismAssert (NULL != pSecondaryNodeClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pSecondaryNodeClusterContext, __FILE__, __LINE__);
 
     delete pPrismAsynchronousContext;
 
@@ -3635,7 +3635,7 @@ void PrismFrameworkObjectManager::preparePrimaryNodeForAddNodeIfRequiredCallBack
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::prepareNodeForAddNodeIfRequiredCallBack : Entering ...");
 
-    prismAssert (NULL !=  pDestroyClusterAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL !=  pDestroyClusterAsynchronousContext, __FILE__, __LINE__);
 
     ResourceId                   status                       = pDestroyClusterAsynchronousContext->getCompletionStatus ();
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ());
@@ -3889,7 +3889,7 @@ bool PrismFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const ve
         {
             hasTableIdsChanged = true;
             tracePrintf (TRACE_LEVEL_FATAL, true, false, "PrismFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: ClassId mismatch found. classId on local node = %u, table-id on Primary (pManagedObjectSchemaInfo->getTableId) = %u ", classIds [i], pManagedObjectSchemaInfo->getTableId ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         // check if the fields in MO matches.
@@ -4037,7 +4037,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Se
     numberOfWaveServiceIds = prismServiceIds.size ();
 
     PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
     {
@@ -4123,10 +4123,10 @@ void PrismFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Seconda
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
         PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-        prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
         PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage = new PrismConfigureClusterSecondaryHaPeerMessage ();
-        prismAssert (NULL != pPrismConfigureClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismConfigureClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
 
         pPrismConfigureClusterSecondaryHaPeerMessage->copyBuffersFrom (*pPrismConfigureClusterSecondaryMessage);
 
@@ -4231,12 +4231,12 @@ void PrismFrameworkObjectManager::checkHaPeerSyncPostPhaseStep (SecondaryNodeClu
 void PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    prismAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
         PrismConfigureClusterSecondaryHaPeerPhase1Message *pPrismConfigureClusterSecondaryHaPeerPhase1Message = new PrismConfigureClusterSecondaryHaPeerPhase1Message;
-        prismAssert (NULL != pPrismConfigureClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismConfigureClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
 
         pPrismConfigureClusterSecondaryHaPeerPhase1Message->copyBuffersFrom (*pPrismConfigureClusterSecondaryPhase1Message);
 
@@ -4311,12 +4311,12 @@ void PrismFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (Fram
 void PrismFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
     PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
-    prismAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
         PrismConfigureClusterSecondaryHaPeerPhase3Message *pPrismConfigureClusterSecondaryHaPeerPhase3Message = new PrismConfigureClusterSecondaryHaPeerPhase3Message;
-        prismAssert (NULL != pPrismConfigureClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismConfigureClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
 
         pPrismConfigureClusterSecondaryHaPeerPhase3Message->copyBuffersFrom (*pPrismConfigureClusterSecondaryPhase3Message);
 
@@ -4431,7 +4431,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseSte
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep : Could not send message to backup database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4440,7 +4440,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep : Message to backup database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -4459,7 +4459,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransaction
     if (WAVE_MESSAGE_SUCCESS != cleanPreparedTransactionsStatus)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep: Could not send message to Clean the Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4472,7 +4472,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransaction
         else
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep: Failed to Clean the previously Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -4489,7 +4489,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep (Secon
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4498,7 +4498,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep (Secon
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep : Message to empty database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -4524,7 +4524,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryD
     {
         UI32   sizeOfFileBuffer;
         char *pFileBuffer = (reinterpret_cast<char *> (pPrismConfigureClusterSecondaryPhase1Message->findBuffer ( 11, sizeOfFileBuffer) ));
-        prismAssert ( NULL != pFileBuffer, __FILE__, __LINE__);
+        waveAssert ( NULL != pFileBuffer, __FILE__, __LINE__);
 
         string configMgmtScriptsPath = ConfigFileManagementToolKit::getConfigFileManagementScriptsDirectory ();
         string configMgmtFileName = configMgmtScriptsPath + "/" + ConfigFileManagementToolKit::getConfigFileManagementLocalOnlyFilename ();
@@ -4534,7 +4534,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryD
         if (WAVE_MESSAGE_SUCCESS != status)
         {   
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep : Could not create file sent from primary.  Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -4561,7 +4561,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryD
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4570,7 +4570,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryD
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep : Message to restore database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4590,7 +4590,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep (S
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep: Could not send message to update Instance Ids.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4599,7 +4599,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep (S
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep: Message to update instance Ids failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -4655,7 +4655,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseStep
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseStep : Booting Secondary immediately after configuring must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pSecondaryNodeClusterContext->executeNextStep (status);
@@ -4670,7 +4670,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForS
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep : Booting Secondary immediately after configuring must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pSecondaryNodeClusterContext->executeNextStep (status);
@@ -4826,7 +4826,7 @@ void PrismFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHa
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back complete hence resetting cluster creation flag in framework");    
         PrismFrameworkObjectManager::setSecondaryNodeClusterCreationFlag (false);
@@ -4850,7 +4850,7 @@ void PrismFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHa
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::clusterPhaseTimerCallback : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         
         status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
@@ -4858,7 +4858,7 @@ void PrismFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHa
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back from phase2 complete hence resetting cluster creation flag in framework");
         PrismFrameworkObjectManager::setSecondaryNodeClusterCreationFlag (false);
@@ -4930,7 +4930,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPh
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
@@ -4938,7 +4938,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPh
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     
@@ -4946,7 +4946,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPh
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep : Booting Secondary immediately after configuring must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
     pSecondaryNodeClusterPhase2Context->executeNextStep (status);
@@ -5223,7 +5223,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterP
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPostPhaseStep : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
@@ -5231,7 +5231,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterP
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPostPhaseStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -5239,7 +5239,7 @@ void PrismFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterP
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPostPhaseStep : Configuring Boot Phases for Phase 3 Fails");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
     pSecondaryNodeClusterPhase3Context->executeNextStep (status);
@@ -5472,7 +5472,7 @@ void PrismFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListO
 
    FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = dynamic_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPWaveMessage ());
 
-   prismAssert( NULL != pFrameworkObjectManagerUpdateListOfSecondariesMessage, __FILE__, __LINE__);
+   waveAssert( NULL != pFrameworkObjectManagerUpdateListOfSecondariesMessage, __FILE__, __LINE__);
 
    //For now broadcast is suppressed for deletion
    if(pFrameworkObjectManagerUpdateListOfSecondariesMessage->isDeletion()) 
@@ -5579,7 +5579,7 @@ bool PrismFrameworkObjectManager::isAKnownLocation (LocationId locationId)
     else
     {
         trace (TRACE_LEVEL_FATAL, "Trying to check if a location is known before this location is configured.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (false);
     }
 }
@@ -5674,7 +5674,7 @@ void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClust
     if (NULL == m_pThisLocation)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::addNodesToClusterValidateStep : Configure this location first.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         pAddNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_LOCATION_NOT_CONFIGURED);
         return;
     }
@@ -5683,7 +5683,7 @@ void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClust
         if (true != (FrameworkToolKit::isThisALocation ()))
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::addNodesToClusterValidateStep : Trying to add a node to cluster using a sub location");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             pAddNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_SUB_LOCATION_CANNOT_ADD_NODES_TO_CLUSTER);
             return;
         }
@@ -5691,7 +5691,7 @@ void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClust
         if (LOCATION_PRIMARY != (m_pThisLocation->getRole ()))
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::addNodesToClusterValidateStep : Trying to add a node to cluster using a secondary location.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             pAddNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_SECONDARY_LOCATION_CANNOT_ADD_NODES_TO_CLUSTER);
             return;
         }
@@ -5705,7 +5705,7 @@ void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClust
         if ("" == ipAddress)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::addNodesToClusterValidateStep : Trying to add a node to cluster using a NULL ipAddress (" + ipAddress + ")");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             pAddNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_NULL_IPADDRESS);
             return;
         }
@@ -5727,7 +5727,7 @@ void PrismFrameworkObjectManager::addNodesToClusterValidateStep (AddNodesToClust
             if (thisLocationPort == port)
             {
                 trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::addNodesToClusterValidateStep : Trying to add self as a node to cluster (" + ipAddress + ").  We are already the primary of teh cluster.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pAddNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_CANNOT_ADD_SELF_TO_CLUSTER);
                 return;
             }
@@ -5852,7 +5852,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsSte
     UI32                              numberOfFailures                  = 0;
     string                            prismVersionString                = PrismVersion::getVersionString ();
 
-    prismAssert (NULL != pFrameworkObjectManagerAddNodesToClusterMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerAddNodesToClusterMessage, __FILE__, __LINE__);
 
     ++(*pAddNodesToClusterContext);
 
@@ -5881,8 +5881,8 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsSte
             UI32                    numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
             UI32                    j                              = 0;
 
-            prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-            prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+            waveAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+            waveAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
             for (j = 0; j < numberOfWaveServiceIds; j++)
             {
@@ -5893,7 +5893,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsSte
                 else
                 {
                     trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep : We could not have added an entry with 0 size and/or NULL validation buffer.");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }
 
@@ -5965,7 +5965,7 @@ void PrismFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCal
 
         if (FRAMEWORK_SUCCESS == frameworkStatus)
         {
-            prismAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
             ResourceId completionStatus = pPrismConfigureClusterSecondaryMessage->getCompletionStatus ();
 
@@ -6142,7 +6142,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocation
 
         FrameworkObjectManagerUnconfigureClusterSecondaryMessage *pMessage = new FrameworkObjectManagerUnconfigureClusterSecondaryMessage (ipAddress, port);
 
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         messageStatus = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsCallback), pDeleteNodesFromClusterContext, 10000, locationId);
 
@@ -6175,7 +6175,7 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocation
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pFrameworkObjectManagerUnconfigureClusterSecondaryMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pFrameworkObjectManagerUnconfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
         ipAddress        = pFrameworkObjectManagerUnconfigureClusterSecondaryMessage->getClusterSecondaryIpAddress ();
         port             = pFrameworkObjectManagerUnconfigureClusterSecondaryMessage->getClusterSecondaryPort ();
@@ -6256,8 +6256,8 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep (DeleteN
     UI32                                 i                                    = 0;
     LocationId                           locationId                           = 0;
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     for (i = 0;i < numberOfLocationIds; i++)
     {
@@ -6278,14 +6278,14 @@ void PrismFrameworkObjectManager::deleteNodesFromClusterRunFailoverCallback (Pri
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::deleteNodesFromClusterRunFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     DeleteNodesFromClusterContext *pDeleteNodesFromClusterContext = reinterpret_cast<DeleteNodesFromClusterContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId                     status                         = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pDeleteNodesFromClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDeleteNodesFromClusterContext, __FILE__, __LINE__);
 
 
     pDeleteNodesFromClusterContext->executeNextStep (status);
@@ -6487,7 +6487,7 @@ void PrismFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep starting of service should never fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -6551,11 +6551,11 @@ void PrismFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep (De
     
     PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback), pDeleteNodeOnSecondaryContext);
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     vector<WaveManagedObject *> *pResults = querySynchronously (WaveNode::getClassName ());
-    prismAssert (NULL != pResults, __FILE__, __LINE__);    
+    waveAssert (NULL != pResults, __FILE__, __LINE__);    
 
     UI32 totalWaveNodes = pResults->size ();
     vector<LocationId> locationIdVector    = pDeleteNodeOnSecondaryContext->getKnownLocationId();
@@ -6569,7 +6569,7 @@ void PrismFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep (De
     if (1 > totalWaveNodes)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep: Wave node does not have itself in the database");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //Perform a union of locationId from known location and wave node
@@ -6612,14 +6612,14 @@ void PrismFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     DeleteNodeOnSecondaryContext *pDeleteNodeOnSecondaryContext = reinterpret_cast<DeleteNodeOnSecondaryContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId                   status                       = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pDeleteNodeOnSecondaryContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDeleteNodeOnSecondaryContext, __FILE__, __LINE__);
 
     pDeleteNodeOnSecondaryContext->executeNextStep (status);
 }
@@ -6637,11 +6637,11 @@ void PrismFrameworkObjectManager::destroyClusterMessageHandler (FrameworkObjectM
 
 void PrismFrameworkObjectManager::destroyClusterMessageHandlerCallback (DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext)
 {
-    prismAssert (NULL !=  pDestroyClusterAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL !=  pDestroyClusterAsynchronousContext, __FILE__, __LINE__);
 
     FrameworkObjectManagerDestroyClusterMessage *pFrameworkObjectManagerDestroyClusterMessage = reinterpret_cast<FrameworkObjectManagerDestroyClusterMessage *> (pDestroyClusterAsynchronousContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkObjectManagerDestroyClusterMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerDestroyClusterMessage, __FILE__, __LINE__);
 
     pFrameworkObjectManagerDestroyClusterMessage->setCompletionStatus (pDestroyClusterAsynchronousContext->getCompletionStatus ());
 
@@ -6736,7 +6736,7 @@ void PrismFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsStep (D
 
         FrameworkObjectManagerUnconfigureClusterSecondaryMessage *pMessage = new FrameworkObjectManagerUnconfigureClusterSecondaryMessage (ipAddress, port);
 
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         messageStatus = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&PrismFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsCallback), pDestroyClusterContext, 10000, locationId);
 
@@ -6925,8 +6925,8 @@ void PrismFrameworkObjectManager::destroyClusterRunFailoverStep (DestroyClusterC
 
     PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::destroyClusterRunFailoverCallback), pDestroyClusterContext);
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     UI32 numberOfLocationIds = pDestroyClusterContext->getNumberOfLocationIds ();
     UI32 i                   = 0;
@@ -6950,14 +6950,14 @@ void PrismFrameworkObjectManager::destroyClusterRunFailoverCallback (PrismFramew
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::destroyClusterRunFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     DestroyClusterContext *pDestroyClusterContext = reinterpret_cast<DestroyClusterContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId             status                 = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pDestroyClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDestroyClusterContext, __FILE__, __LINE__);
 
     pDestroyClusterContext->executeNextStep (status);
 }
@@ -7054,7 +7054,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterValidateStep (RejoinNodesT
 {
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
     UI32                                               numberOfNodes                                      = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNumberOfNodes (); 
     UI32                                               numberOfFailures                                   = 0;
@@ -7142,7 +7142,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (Rejoin
 
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
     UI32  numberOfLocationIds = pRejoinNodesToClusterContext->getNumberOfLocationIds ();    
     UI32  numberOfFailures    = 0;
@@ -7151,7 +7151,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (Rejoin
     {
         LocationId locationId = pRejoinNodesToClusterContext->getLocationIdAt (i);
 
-        prismAssert (0 != locationId, __FILE__, __LINE__);
+        waveAssert (0 != locationId, __FILE__, __LINE__);
 
         string  ipAddress   = FrameworkToolKit::getIpAddressForLocationId (locationId);
         UI32    port        = FrameworkToolKit::getPortForLocationId (locationId);
@@ -7205,7 +7205,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSt
 {
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
  
-    prismAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
     WaveMessageStatus status  = WAVE_MESSAGE_ERROR;  
     string prismVersionString = PrismVersion::getVersionString ();
@@ -7226,8 +7226,8 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSt
     UI32                    numberOfValidationDetails      = validationDetailsVector.size ();
     UI32                    numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
 
-    prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-    prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+    waveAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+    waveAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
     //Sending the request to each secondary location
     for (UI32 i = 0; i < numberOfLocationIds; i++)
@@ -7272,7 +7272,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSt
                 else
                 {
                     trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesStep : We could not have added an entry with 0 size and/or NULL validation buffer.");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }
 
@@ -7340,7 +7340,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCall
 
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
     tracePrintf(TRACE_LEVEL_DEVEL,"PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallback:FrameworkStatus received:0x%x",frameworkStatus);
   
@@ -7348,7 +7348,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCall
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__, __LINE__);
 
         LocationId newLocationId    = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getLocationId ();
         string     ipAddress        = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
@@ -7439,7 +7439,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
     SI32   sizeOfBackupFile                    = 0;
     char  *pDatabaseBackupBuffer               = NULL;
@@ -7527,13 +7527,13 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
     --(*pRejoinNodesToClusterContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
         LocationId  newLocationId = pPrismRejoinClusterSecondaryPhase1Message->getReceiverLocationId ();
         string      ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
@@ -7637,7 +7637,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
   
-    prismAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
     UI32                                numberOfFailures                    = 0;
     UI32                                numberOfNewLocationIds              = pRejoinNodesToClusterContext->getNumberOfNewLocationIds ();
 
@@ -7731,7 +7731,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
     RejoinNodesToClusterContext                       *pRejoinNodesToClusterContext                       = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
     UI32 numberOfFailures = 0;
 
@@ -7739,7 +7739,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pPrismRejoinClusterSecondaryPhase2Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismRejoinClusterSecondaryPhase2Message, __FILE__, __LINE__);
 
         LocationId  newLocationId = pPrismRejoinClusterSecondaryPhase2Message->getReceiverLocationId ();
         string      ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
@@ -7872,13 +7872,13 @@ void PrismFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2Callback (
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2Callback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     RejoinNodesToClusterContext  *pRejoinNodesToClusterContext = reinterpret_cast<RejoinNodesToClusterContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pRejoinNodesToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pRejoinNodesToClusterContext, __FILE__, __LINE__);
 
     //clear the failed location vector setup in previous phases as failover is triggered for those locations.
     pRejoinNodesToClusterContext->clearFailedLocationIdVector ();
@@ -7974,7 +7974,7 @@ void PrismFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPh
     RejoinNodesToClusterContext                       *pRejoinNodesToClusterContext                       = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    prismAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     LocationId                   locationId                   = pPrismRejoinClusterSecondaryPhase3Message->getReceiverLocationId ();
 
@@ -8044,13 +8044,13 @@ void PrismFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback (
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     RejoinNodesToClusterContext  *pRejoinNodesToClusterContext = reinterpret_cast<RejoinNodesToClusterContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pRejoinNodesToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pRejoinNodesToClusterContext, __FILE__, __LINE__);
 
     pRejoinNodesToClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -8219,7 +8219,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNode
 
     FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = reinterpret_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__,__LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__,__LINE__);
 
     ResourceId    status               = WAVE_MESSAGE_SUCCESS;
 
@@ -8350,7 +8350,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep (Second
 {
    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
-   prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
+   waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
  
     string                                 primaryPrismVersionString              = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getClusterPrimaryPrismVersion ();
     string                                 thisLocationPrismPrimaryVersionString  = PrismVersion::getVersionString ();
@@ -8420,7 +8420,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep (Secon
     UI32  numberOfWaveServiceIds = prismServiceIds.size ();
 
     FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
 
     for (UI32 i = 0; i < numberOfWaveServiceIds; i++)
     {
@@ -8505,11 +8505,11 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep (Secondary
          trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
          FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-         prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
+         waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__ , __LINE__);
 
          FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage *pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage = new FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage;
 
-         prismAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
+         waveAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
 
          pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage->copyBuffersFrom (*pFrameworkObjectManagerRejoinClusterSecondaryMessage);  
 
@@ -8630,7 +8630,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Secon
     static const UI32                                    maximumNumberOfSecondsToWaitToConnect                = 30;
     FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
-    prismAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
          
     SI32       currentPrimaryPort       = pSecondaryNodeClusterContext->getClusterPrimaryPort();
     LocationId currentPrimaryLocationId = pSecondaryNodeClusterContext->getClusterPrimaryLocationId();
@@ -8664,7 +8664,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Secon
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep: Primary location is unknown. Our location " + FrameworkToolKit::localize (m_pThisLocation->getLocationRole ()));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             pSecondaryNodeClusterContext->executeNextStep (FRAMEWORK_ERROR_CANNOT_JOIN_CLUSTER_LOCATION_CONFIGURATION_INVALID);
             return;
@@ -8693,7 +8693,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Secon
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
@@ -8721,7 +8721,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep (
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep : Entering ...");
     FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
-    prismAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage, __FILE__, __LINE__);
 
 #if 0
     LocationId                                           currentPrimaryLocationId                             = m_pThisLocation->getClusterPrimaryLocationId ();
@@ -8774,7 +8774,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep (S
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep : Booting Secondary during rejoin must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pSecondaryNodeClusterContext->executeNextStep (status);
@@ -8860,7 +8860,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhase
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
@@ -8868,7 +8868,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhase
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -8876,7 +8876,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhase
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep : Booting Secondary immediately after configuring must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
     pSecondaryNodeClusterPhase2Context->executeNextStep (status);
@@ -8966,12 +8966,12 @@ void PrismFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandl
 void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    prismAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
         PrismRejoinClusterSecondaryHaPeerPhase1Message *pPrismRejoinClusterSecondaryHaPeerPhase1Message = new PrismRejoinClusterSecondaryHaPeerPhase1Message;
-        prismAssert (NULL != pPrismRejoinClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismRejoinClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
 
         pPrismRejoinClusterSecondaryHaPeerPhase1Message->copyBuffersFrom (*pPrismRejoinClusterSecondaryPhase1Message);
 
@@ -9046,12 +9046,12 @@ void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (Framewo
 void PrismFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
     PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
-    prismAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
         PrismRejoinClusterSecondaryHaPeerPhase3Message *pPrismRejoinClusterSecondaryHaPeerPhase3Message = new PrismRejoinClusterSecondaryHaPeerPhase3Message;
-        prismAssert (NULL != pPrismRejoinClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismRejoinClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
 
         pPrismRejoinClusterSecondaryHaPeerPhase3Message->copyBuffersFrom (*pPrismRejoinClusterSecondaryPhase3Message);
 
@@ -9165,7 +9165,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPost
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
@@ -9173,7 +9173,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPost
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep : Roll Back should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -9181,7 +9181,7 @@ void PrismFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPost
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep : Booting Secondary immediately after configuring must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
     pSecondaryNodeClusterPhase3Context->executeNextStep (status);
@@ -9201,11 +9201,11 @@ void PrismFrameworkObjectManager::detachFromClusterMessageHandler (FrameworkObje
 
 void PrismFrameworkObjectManager::detachFromClusterMessageHandlerCallback (DetachFromClusterAsynchronousContext *pDetachFromClusterAsynchronousContext)
 {
-    prismAssert (NULL != pDetachFromClusterAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDetachFromClusterAsynchronousContext, __FILE__, __LINE__);
 
     FrameworkObjectManagerDetachFromClusterMessage *pFrameworkObjectManagerDetachFromClusterMessage = reinterpret_cast<FrameworkObjectManagerDetachFromClusterMessage *> (pDetachFromClusterAsynchronousContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkObjectManagerDetachFromClusterMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerDetachFromClusterMessage, __FILE__, __LINE__);
 
     pFrameworkObjectManagerDetachFromClusterMessage->setCompletionStatus (pDetachFromClusterAsynchronousContext->getCompletionStatus ());
 
@@ -9292,8 +9292,8 @@ void PrismFrameworkObjectManager::detachFromClusterRunFailoverStep (DetachFromCl
 
     PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::detachFromClusterRunFailoverCallback), pDetachFromClusterContext);
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     pPrismFrameworkFailoverWorkerContext->setThisLocationRole (pDetachFromClusterContext->getThisLocationRoleBeforeDetach ());
     pPrismFrameworkFailoverWorkerContext->setFailoverReason (pDetachFromClusterContext->getReasonForDetachingFromCluster ());
@@ -9305,14 +9305,14 @@ void PrismFrameworkObjectManager::detachFromClusterRunFailoverCallback (PrismFra
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::detachFromClusterRunFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     DetachFromClusterContext *pDetachFromClusterContext = reinterpret_cast<DetachFromClusterContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId                status                    = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pDetachFromClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDetachFromClusterContext, __FILE__, __LINE__);
 
     pDetachFromClusterContext->executeNextStep (status);
 }
@@ -9359,8 +9359,8 @@ void PrismFrameworkObjectManager::lostHeartBeatStep (HeartBeatLostContext *pHear
 
         PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatPrimaryUncontrolledFailoverCallback), pHeartBeatLostContext);
 
-        prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-        prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+        waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
         pPrismFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_PRIMARY);
         pPrismFrameworkFailoverWorkerContext->setFailoverReason (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED);
@@ -9381,14 +9381,14 @@ void PrismFrameworkObjectManager::lostHeartBeatStep (HeartBeatLostContext *pHear
     {
         // On a secondary location there can be only one failed heart beat.  That heart beat will belong to the current primary node.  It is so because the secondaries heart beat with primary only.
 
-        prismAssert (1 == numberOfFailedLocations, __FILE__, __LINE__);
+        waveAssert (1 == numberOfFailedLocations, __FILE__, __LINE__);
 
         failedIpAddress = pHeartBeatLostContext->getNodeIpAddressAtIndex (i);
         failedPort      = pHeartBeatLostContext->getNodePortAtIndex (i);
 
         failedLocationId = FrameworkToolKit::getLocationIdForIpAddressAndPort (failedIpAddress, failedPort);
 
-        prismAssert (failedLocationId == (m_pThisLocation->getClusterPrimaryLocationId ()), __FILE__, __LINE__);
+        waveAssert (failedLocationId == (m_pThisLocation->getClusterPrimaryLocationId ()), __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::lostHeartBeatCleanupClusterStep : Initiating Role Arbitration Sequence.");
 
@@ -9428,8 +9428,8 @@ void PrismFrameworkObjectManager::lostHeartBeatStep (HeartBeatLostContext *pHear
 
             PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pHeartBeatLostContext);
 
-            prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-            prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+            waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+            waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
             pPrismFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_SECONDARY);
             pPrismFrameworkFailoverWorkerContext->setFailoverReason (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED);
@@ -9466,14 +9466,14 @@ void PrismFrameworkObjectManager::lostHeartBeatPrimaryUncontrolledFailoverCallba
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::lostHeartBeatPrimaryUncontrolledFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     HeartBeatLostContext *pHeartBeatLostContext = reinterpret_cast<HeartBeatLostContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId            status                = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
+    waveAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
 
     pHeartBeatLostContext->executeNextStep (status);
 }
@@ -9482,14 +9482,14 @@ void PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCall
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     HeartBeatLostContext    *pHeartBeatLostContext = reinterpret_cast<HeartBeatLostContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId               status                = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
+    waveAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
 
     pHeartBeatLostContext->executeNextStep (status);
 }
@@ -9498,7 +9498,7 @@ void PrismFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallba
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__); 
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__); 
     HeartBeatLostContext *pHeartBeatLostContext = reinterpret_cast<HeartBeatLostContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId            status                = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
@@ -9515,7 +9515,7 @@ void PrismFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallba
     
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
+    waveAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
 
     pHeartBeatLostContext->executeNextStep (status);
 }
@@ -9524,11 +9524,11 @@ void PrismFrameworkObjectManager::lostHeartBeatCleanupClusterDestroyClusterCallb
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::lostHeartBeatCleanupClusterDestroyClusterCallback : Entering ...");
 
-    prismAssert (NULL != pDestroyClusterAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDestroyClusterAsynchronousContext, __FILE__, __LINE__);
 
     HeartBeatLostContext *pHeartBeatLostContext = reinterpret_cast<HeartBeatLostContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ());
 
-    prismAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
+    waveAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
 
     ResourceId status = pDestroyClusterAsynchronousContext->getCompletionStatus ();
 
@@ -9541,11 +9541,11 @@ void PrismFrameworkObjectManager::lostHeartBeatCleanupClusterDetachFromClusterCa
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager::lostHeartBeatCleanupClusterDetachFromClusterCallback : Entering ...");
 
-    prismAssert (NULL != pDetachFromClusterAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDetachFromClusterAsynchronousContext, __FILE__, __LINE__);
 
     HeartBeatLostContext *pHeartBeatLostContext = reinterpret_cast<HeartBeatLostContext *> (pDetachFromClusterAsynchronousContext->getPCallerContext ());
 
-    prismAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
+    waveAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
 
     ResourceId status = pDetachFromClusterAsynchronousContext->getCompletionStatus ();
 
@@ -9750,13 +9750,13 @@ void PrismFrameworkObjectManager::primaryChangedNotifyHaPeerStep ( SecondaryNode
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManager::primaryChangedNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
         FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = dynamic_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-        prismAssert(NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__ , __LINE__);
+        waveAssert(NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__ , __LINE__);
 
         FrameworkObjectManagerPrimaryChangedHaPeerMessage *pFrameworkObjectManagerPrimaryChangedHaPeerMessage = new FrameworkObjectManagerPrimaryChangedHaPeerMessage;
 
         pFrameworkObjectManagerPrimaryChangedHaPeerMessage->setDBEmptyRequired (pSecondaryNodeClusterContext->getIsDBEmptyRequired ());
 
-        prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedHaPeerMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedHaPeerMessage, __FILE__, __LINE__);
 
         pFrameworkObjectManagerPrimaryChangedHaPeerMessage->copyBuffersFrom (*pFrameworkObjectManagerPrimaryChangedMessage);
 
@@ -9835,12 +9835,12 @@ void PrismFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback (Fra
 void PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     FrameworkObjectManagerPrimaryChangedPhase1Message *pFrameworkObjectManagerPrimaryChangedPhase1Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedPhase1Message, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
         FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message = new FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message;
-        prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, __FILE__, __LINE__);
 
         pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message->setDBRestoreRequired (pSecondaryNodeClusterContext->getIsDBEmptyRequired ());
         pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message->copyBuffersFrom (*pFrameworkObjectManagerPrimaryChangedPhase1Message);
@@ -9916,12 +9916,12 @@ void PrismFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback (Framewor
 void PrismFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
     FrameworkObjectManagerPrimaryChangedPhase3Message *pFrameworkObjectManagerPrimaryChangedPhase3Message = reinterpret_cast<FrameworkObjectManagerPrimaryChangedPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
-    prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
         FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message = new FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message;
-        prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, __FILE__, __LINE__);
+        waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, __FILE__, __LINE__);
 
         pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message->copyBuffersFrom (*pFrameworkObjectManagerPrimaryChangedPhase3Message);
 
@@ -10007,7 +10007,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler : Booting Secondary immediately after configuring must NEVER fail.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     DatabaseObjectManagerCleanPreparedTransactionsMessage cleanPreparedTransactionsMessage;
@@ -10017,7 +10017,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Unable to clean prepared transactions. Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -10030,7 +10030,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
         else
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Failed to clean previously prepared transactions. Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -10053,7 +10053,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     if (WAVE_MESSAGE_SUCCESS != status)
     {         
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Could not send message to empty database. Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -10062,7 +10062,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Message to empty database failed. Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -10077,7 +10077,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Could not send message to restore database. Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -10099,7 +10099,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     
             trace (TRACE_LEVEL_FATAL, ("System is not rebooting, Manual recovery is required"));
         
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -10121,7 +10121,7 @@ void PrismFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framew
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync: Post phase failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     PrismFrameworkObjectManager::setSecondaryNodeClusterCreationFlag (false);
@@ -10136,8 +10136,8 @@ void PrismFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (Wa
 
     FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
-    prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
 
     vector<string>  managedObjectNamesForSchemaChange;
     vector<string>  fieldNamesStringsForSchemaChange;
@@ -10200,8 +10200,8 @@ void PrismFrameworkObjectManager::primaryChangedRemoveOldPrimaryLocationStep (Wa
 
     FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
-    prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
 
     if(pFrameworkObjectManagerPrimaryChangedMessage->isPrimaryChangeDueToControlledFailover()) 
     {
@@ -10218,8 +10218,8 @@ void PrismFrameworkObjectManager::primaryChangedUpdatePrimaryDetailsStep (Second
 
     FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage = reinterpret_cast<FrameworkObjectManagerPrimaryChangedMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
-    prismAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
-    prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
 
     LocationId newPrimaryLocationId = pSecondaryNodeClusterContext->getClusterPrimaryLocationId ();
     UI32       newPrimaryPort       = pSecondaryNodeClusterContext->getClusterPrimaryPort ();
@@ -10257,7 +10257,7 @@ void PrismFrameworkObjectManager::primaryChangedEmptyDatabaseStep  (SecondaryNod
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::primaryChangedEmptyDatabaseStep : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -10266,7 +10266,7 @@ void PrismFrameworkObjectManager::primaryChangedEmptyDatabaseStep  (SecondaryNod
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::primaryChangedEmptyDatabaseStep : Message to empty database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -10310,7 +10310,7 @@ void PrismFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseS
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -10319,7 +10319,7 @@ void PrismFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseS
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep : Message to restore database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -10604,7 +10604,7 @@ void PrismFrameworkObjectManager::configureAsSubLocation (LocationId parentLocat
 
 void PrismFrameworkObjectManager::resetLocationToPrimary ()
 {
-    prismAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
 
     m_pThisLocation->resetLocationToPrimary ();
 }
@@ -10894,8 +10894,8 @@ void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSe
 
         pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback), pWaveLinearSequencerContext);
 
-        prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-        prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+        waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
         pPrismFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_PRIMARY);
 
@@ -10907,8 +10907,8 @@ void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSe
 
         pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
-        prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-        prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+        waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
         pPrismFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_PRIMARY);
 
@@ -10921,7 +10921,7 @@ void PrismFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSe
     {
         pPrismFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationIds[i]);
         disconnectFromLocation (failedLocationIds[i]);
-        prismAssert (failedLocationIds[i] != thisLocationId, __FILE__, __LINE__);
+        waveAssert (failedLocationIds[i] != thisLocationId, __FILE__, __LINE__);
     }
     
     m_pPrismFrameworkFailoverWorker->executeFailover (pPrismFrameworkFailoverWorkerContext);
@@ -10982,11 +10982,11 @@ void PrismFrameworkObjectManager::validateNewPrincipalSelection (WaveLinearSeque
       return;
   }
 
-  prismAssert(m_pThisLocation->getLocationRole () == LOCATION_SECONDARY, __FILE__, __LINE__);
+  waveAssert(m_pThisLocation->getLocationRole () == LOCATION_SECONDARY, __FILE__, __LINE__);
 
   FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
-  prismAssert(NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
+  waveAssert(NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
 
   pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 
@@ -10998,7 +10998,7 @@ void PrismFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLin
 
    FrameworkObjectManagerNewPrincipalEstablishedMessage *pFrameworkObjectManagerNewPrincipalEstablishedMessage = dynamic_cast<FrameworkObjectManagerNewPrincipalEstablishedMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
-   prismAssert (NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
+   waveAssert (NULL != pFrameworkObjectManagerNewPrincipalEstablishedMessage, __FILE__, __LINE__);
 
    string     failedIpAddress  = pFrameworkObjectManagerNewPrincipalEstablishedMessage->getFailedPrincipalIpAddress();
    //UI32       failedPort       = pFrameworkObjectManagerNewPrincipalEstablishedMessage->getFailedPrincipalPort();
@@ -11006,15 +11006,15 @@ void PrismFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLin
 
    LocationId  thisLocationId = FrameworkToolKit::getThisLocationId ();
 
-   prismAssert (failedLocationId != thisLocationId, __FILE__, __LINE__);
+   waveAssert (failedLocationId != thisLocationId, __FILE__, __LINE__);
 
    // Activate the Secondary Uncontrolled Failover Agent.
   
 
     PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     pPrismFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_SECONDARY);
     if(pFrameworkObjectManagerNewPrincipalEstablishedMessage->getTriggerControlledFailover()) 
@@ -11150,8 +11150,8 @@ void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (
 
     pPrismFrameworkFailoverWorkerContext = new PrismFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCallback), pWaveLinearSequencerContext);
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
-    prismAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismFrameworkFailoverWorker, __FILE__, __LINE__);
 
     pPrismFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_PRIMARY);
 
@@ -11162,7 +11162,7 @@ void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (
     for (UI32 i = 0; i < numFailedLocationIds; ++i) 
     {    
       pPrismFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationIds[i]);
-      prismAssert (failedLocationIds[i] != thisLocationId, __FILE__, __LINE__);
+      waveAssert (failedLocationIds[i] != thisLocationId, __FILE__, __LINE__);
     }    
     
     m_pPrismFrameworkFailoverWorker->executeFailover (pPrismFrameworkFailoverWorkerContext);
@@ -11170,14 +11170,14 @@ void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (
 
 void PrismFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCallback (PrismFrameworkFailoverWorkerContext *pPrismFrameworkFailoverWorkerContext)
 {
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pPrismFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId                   status                       = pPrismFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     delete pPrismFrameworkFailoverWorkerContext;
 
-    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     pWaveLinearSequencerContext->executeNextStep (status);
 }
@@ -11200,12 +11200,12 @@ void PrismFrameworkObjectManager::configureNodeForResetAndStartServices (WaveLin
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::configureNodeForResetAndStartServices : Start of Service should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else if (LOCATION_STAND_ALONE == m_pThisLocation->getLocationRole ())
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
@@ -11346,7 +11346,7 @@ void PrismFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler
     vector<LocationId> failedLocations      = pFrameworkObjectManagerRemoveKnownLocationsMessage->getFailedLocationIds ();
     UI32               numOfFailedLocations = failedLocations.size ();
 
-    prismAssert (0 != numOfFailedLocations, __FILE__, __LINE__);
+    waveAssert (0 != numOfFailedLocations, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_INFO, string("PrismFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler : numOfFailedLocations = ") + numOfFailedLocations);
 
@@ -11383,7 +11383,7 @@ void PrismFrameworkObjectManager::getInstances (vector<SI32> &connectedInstanceV
 {
     trace (TRACE_LEVEL_DEBUG, ("PrismFrameworkObjectManager:: getInstances"));
     
-    prismAssert (NULL != m_getInstancesFunction, __FILE__, __LINE__);
+    waveAssert (NULL != m_getInstancesFunction, __FILE__, __LINE__);
 
     if (NULL != m_getInstancesFunction)
     {
@@ -11400,7 +11400,7 @@ void PrismFrameworkObjectManager::getInstancesAndSubInstances (vector<SI32> &con
 {
     trace (TRACE_LEVEL_DEBUG, ("PrismFrameworkObjectManager:: getInstancesAndSubInstances"));
 
-    prismAssert (NULL != m_getInstancesAndSubInstancesFunction, __FILE__, __LINE__);
+    waveAssert (NULL != m_getInstancesAndSubInstancesFunction, __FILE__, __LINE__);
 
     if (NULL != m_getInstancesAndSubInstancesFunction)
     {
@@ -11418,7 +11418,7 @@ SI32 PrismFrameworkObjectManager::getThisSlotInstance ()
     SI32 instnace = 0;
     trace (TRACE_LEVEL_INFO, ("PrismFrameworkObjectManager:: getSlotInstance"));
     
-    prismAssert (NULL != m_getThisSlotInstanceFunction, __FILE__, __LINE__);
+    waveAssert (NULL != m_getThisSlotInstanceFunction, __FILE__, __LINE__);
 
     if (NULL != m_getThisSlotInstanceFunction)
     {
@@ -11436,7 +11436,7 @@ void PrismFrameworkObjectManager::createDummySlot (const UI32 slotNumber)
 {
     trace (TRACE_LEVEL_INFO, ("PrismFrameworkObjectManager:: createDummySlot"));
 
-    prismAssert (NULL != m_createDummySlotFunction, __FILE__, __LINE__);
+    waveAssert (NULL != m_createDummySlotFunction, __FILE__, __LINE__);
 
     //Create a dummy slot
     (*m_createDummySlotFunction) (slotNumber);
@@ -11633,7 +11633,7 @@ void PrismFrameworkObjectManager::zeroizeSuccessStep (ZeroizeForFIPSLinearSequen
             // In Dcmd, need to wait until Ccmd zeroize is over.
             // Is this assert required ? Or, should the system be kept running ?
             WaveNs::trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::zeroizeSuccessStep : after zeroize was successful, 15 minutes are over. System has not rebooted. So Dcmd/Ccmd is forcefully asserting thus causing the system to reboot");
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -11672,15 +11672,15 @@ void PrismFrameworkObjectManager::rollbackCfgFile ()
 
     vector<WaveManagedObject *> *pResults = querySynchronously (&synchronousQueryContext);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
-//    prismAssert (1 == pResults->size (), __FILE__, __LINE__);
+//    waveAssert (1 == pResults->size (), __FILE__, __LINE__);
 
     if (1 == pResults->size ())
     {
         WaveNode *pThisNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
 
-        prismAssert (NULL != pThisNode, __FILE__, __LINE__);
+        waveAssert (NULL != pThisNode, __FILE__, __LINE__);
 
         LocationId locationId = pThisNode->getLocationId ();
 
@@ -11699,7 +11699,7 @@ void PrismFrameworkObjectManager::rollbackCfgFile ()
 
         pResults = querySynchronously (PrismCluster::getClassName ());
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         if (0 == pResults->size ())
         {
@@ -11723,12 +11723,12 @@ void PrismFrameworkObjectManager::rollbackCfgFile ()
 
         trace (TRACE_LEVEL_FATAL, ("System is not rebooting, Manual recovery is required"));
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         trace (TRACE_LEVEL_FATAL, "Very Inconsistent State, Asserting");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
@@ -11768,7 +11768,7 @@ void PrismFrameworkObjectManager::prepareNodeForHASupportHandler ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::prepareNodeForHASupportHandler : shutdown should Never Fail");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PREPARE_FOR_HA_BOOT);
@@ -11776,7 +11776,7 @@ void PrismFrameworkObjectManager::prepareNodeForHASupportHandler ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::prepareNodeForHASupportHandler Boot of Services should Never Fail In this case");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -12012,7 +12012,7 @@ void PrismFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync (Secondary
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync: Post phase failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pSecondaryNodeClusterPhase3Context->executeNextStep (WAVE_MESSAGE_SUCCESS);
@@ -12043,7 +12043,7 @@ void PrismFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler (F
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::prepareNodeForHASupportHandler : shutdown should Never Fail");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE);
@@ -12051,7 +12051,7 @@ void PrismFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler (F
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::prepareNodeForHASupportHandler Boot of Services should Never Fail In this case");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         } 
 
         setWarmHaRecoveryPreparationInProgress (false);
@@ -12141,7 +12141,7 @@ void PrismFrameworkObjectManager::resetFrameworkConfigurationToDefault ()
     if (NULL == m_pThisLocation)
     {   
         trace (TRACE_LEVEL_ERROR, "RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep: Location config cannot be null");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     LocationId locationId = (UI32) (1 << 8);

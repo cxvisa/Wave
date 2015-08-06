@@ -38,23 +38,23 @@ HttpInterfaceReceiverObjectManager::HttpInterfaceReceiverObjectManager ()
 
     HttpInterfaceGetWorker *pHttpInterfaceGetWorker = new HttpInterfaceGetWorker (this);
 
-    prismAssert (NULL != pHttpInterfaceGetWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pHttpInterfaceGetWorker, __FILE__, __LINE__);
 
     HttpInterfacePostWorker *pHttpInterfacePostWorker = new HttpInterfacePostWorker (this);
 
-    prismAssert (NULL != pHttpInterfacePostWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pHttpInterfacePostWorker, __FILE__, __LINE__);
 
     HttpInterfacePutWorker *pHttpInterfacePutWorker = new HttpInterfacePutWorker (this);
 
-    prismAssert (NULL != pHttpInterfacePutWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pHttpInterfacePutWorker, __FILE__, __LINE__);
 
     HttpInterfaceDeleteWorker *pHttpInterfaceDeleteWorker = new HttpInterfaceDeleteWorker (this);
 
-    prismAssert (NULL != pHttpInterfaceDeleteWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pHttpInterfaceDeleteWorker, __FILE__, __LINE__);
 
     WaveDebugServerPage *pWaveDebugServerPage = new WaveDebugServerPage (this, "/debug");
 
-    prismAssert (NULL != pWaveDebugServerPage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugServerPage, __FILE__, __LINE__);
 
     addDebugFunction ((ShellCmdFunction) (&WaveServerPageDirectory::print), "printwaveserverpagetree");
 }
@@ -72,7 +72,7 @@ HttpInterfaceReceiverObjectManager *HttpInterfaceReceiverObjectManager::getInsta
 {
     static HttpInterfaceReceiverObjectManager *pHttpInterfaceReceiverObjectManager = new HttpInterfaceReceiverObjectManager ();
 
-    WaveNs::prismAssert (NULL != pHttpInterfaceReceiverObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pHttpInterfaceReceiverObjectManager, __FILE__, __LINE__);
 
     return (pHttpInterfaceReceiverObjectManager);
 }
@@ -88,7 +88,7 @@ void HttpInterfaceReceiverObjectManager::initialize (WaveAsynchronousContextForB
 
     m_pServerSocketForHttpInterfaceClients = new ServerStreamingSocket (FrameworkToolKit::getHttpInterfaceReceiverPort (), 1);
 
-    prismAssert (NULL != m_pServerSocketForHttpInterfaceClients, __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerSocketForHttpInterfaceClients, __FILE__, __LINE__);
 
     status = m_pServerSocketForHttpInterfaceClients->getStatus ();
 
@@ -138,7 +138,7 @@ void HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Awaiting NEW HTTP Interface Client Connections...");
 
@@ -206,7 +206,7 @@ void HttpInterfaceReceiverObjectManager::addHttpInterfaceMethodWorker(const Wave
     }
     else
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 }
 

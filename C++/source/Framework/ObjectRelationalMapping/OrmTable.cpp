@@ -37,7 +37,7 @@ OrmTable::OrmTable (const string &name, const string &derivedFromClassName, cons
     if (m_name == m_derivedFromClassName)
     {
         trace (TRACE_LEVEL_FATAL, "OrmTable::OrmTable : A table cannot be derived from the same table : " + name);
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -153,7 +153,7 @@ void OrmTable::addColumn (OrmColumn *pOrmColumn)
     else
     {
         trace (TRACE_LEVEL_FATAL, "OrmTable::addColumn : Duplicate Column Names are not allowed.  Column Name : \"" + pOrmColumn->getName () + "\"");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -207,7 +207,7 @@ void OrmTable::addRelation (OrmRelation *pOrmRelation)
     else
     {
         trace (TRACE_LEVEL_FATAL, "OrmTable::addRelation : Duplicate Relation Names are not allowed.  Relation Name : \"" + pOrmRelation->getName () + "\"");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -272,7 +272,7 @@ string OrmTable::getSqlForCreate (const string &schema) const
 
             Attribute *pAttribute = (m_userDefinedKeyCombinationWithTypes.find (userDefinedKeyField))->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (AttributeType::AttributeTypeObjectId == pAttribute->getAttributeType ())
             {
@@ -400,7 +400,7 @@ string OrmTable::getSqlForCreate2 (const string &schema) const
 string OrmTable::getSqlForCreate2 (const string &schema, const string &relationName)
 {
     OrmRelation* pOrmRelation = m_relationsByNames[relationName];
-    prismAssert(NULL != pOrmRelation, __FILE__, __LINE__);
+    waveAssert(NULL != pOrmRelation, __FILE__, __LINE__);
     string name              = getName ();
     string sqlForCreatingAuxilliaryTable = pOrmRelation->getSqlForCreate2(name, schema);
     return sqlForCreatingAuxilliaryTable;
@@ -624,7 +624,7 @@ void OrmTable::getAuxilliaryTableNames (vector<string> &auxilliaryTableNames) co
     {
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
 
@@ -646,7 +646,7 @@ void OrmTable::getAuxilliaryTableDetailsAppended (vector<string> &auxilliaryTabl
     {   
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
 
@@ -670,7 +670,7 @@ void OrmTable::getAuxilliaryTableNamesAppended (vector<string> &auxilliaryTableN
     {
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
 
@@ -692,7 +692,7 @@ void OrmTable::getAllAuxilliaryTableNames (vector<string> &auxilliaryTableNames)
     {
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
 
@@ -720,7 +720,7 @@ void OrmTable::getAllAuxilliaryTableNames (vector<string> &auxilliaryTableNames,
     {
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
         auxilliaryTableUmlType = pOrmRelation->getRelationUmlType ();
@@ -764,7 +764,7 @@ void OrmTable::getAllAuxilliaryTableNames (vector<string> &auxilliaryTableNames,
 
                 pOrmRelation = element->second;
 
-                prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+                waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
                 auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
                 auxilliaryTableUmlType = pOrmRelation->getRelationUmlType ();
@@ -795,7 +795,7 @@ void OrmTable::getCompositionFieldNamesInHierarchy (vector<string> &compositionF
     {
         pOrmRelation = m_relations[i];
     
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         if (ORM_RELATION_UML_TYPE_COMPOSITION == pOrmRelation->getRelationUmlType ())
         {
@@ -896,7 +896,7 @@ void OrmTable::computeDerivationsInstancesTables ()
 
         pRelatedToOrmTable = OrmRepository::getTableByName (relatedTo);
 
-        prismAssert (NULL != pRelatedToOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pRelatedToOrmTable, __FILE__, __LINE__);
 
         pRelatedToOrmTable->addDerivationsInstancesTable (relatedTo);
 
@@ -1026,7 +1026,7 @@ const vector<string> OrmTable::getUserDefinedFieldTypesForUpgrade ()
         if (m_userDefinedKeyCombinationWithTypes.end () == iter)
         {
             trace (TRACE_LEVEL_ERROR, "OrmTable::getUserDefinedFieldTypesForUpgrade: failed to get an entry for " + m_userDefinedKeyCombination[keyNo] + " in m_userDefinedKeyCombinationWithTypes");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         Attribute* pAttribute = iter->second;
@@ -1080,7 +1080,7 @@ void OrmTable::validateRelations (OrmTable *pOrmTableToValidate)
            {
                trace (TRACE_LEVEL_ERROR, string ("OrmTable::validateRelations : emptyNeeded flag in ") + pOrmTableToValidate->getName () + " should be same as " + getName () + ".  Please use setEmptyNeededOnPersistentBoot to set the flag." );
 
-               prismAssert (false, __FILE__, __LINE__);
+               waveAssert (false, __FILE__, __LINE__);
            }
 
            if ((getEmptyNeededOnPersistentBootWithDefault () != pOrmTableToValidate->getEmptyNeededOnPersistentBootWithDefault ())
@@ -1088,7 +1088,7 @@ void OrmTable::validateRelations (OrmTable *pOrmTableToValidate)
            {
                trace (TRACE_LEVEL_ERROR, string ("OrmTable::validateRelations : emptyNeededWithDefault flag in ") + pOrmTableToValidate->getName () + " should be same as " + getName () + ".  Please use setEmptyNeededOnPersistentBootWithDefault to set the flag." );
 
-               prismAssert (false, __FILE__, __LINE__);
+               waveAssert (false, __FILE__, __LINE__);
            }
 
            // Next check all derivations of table to validate also have the same value
@@ -1107,7 +1107,7 @@ void OrmTable::validateRelations (OrmTable *pOrmTableToValidate)
             {
                trace (TRACE_LEVEL_ERROR, string ("OrmTable::validateRelations : emptyNeeded flag in ") + derivedTableIds[d]->getName () + " should be same as " + getName () + ". Please use setEmptyNeededOnPersistentBoot to set the flag." );
 
-               prismAssert (false, __FILE__, __LINE__);
+               waveAssert (false, __FILE__, __LINE__);
 
             }
 
@@ -1115,7 +1115,7 @@ void OrmTable::validateRelations (OrmTable *pOrmTableToValidate)
                {
                   trace (TRACE_LEVEL_ERROR, string ("OrmTable::validateRelations : emptyNeededWithDefault flag in ") + derivedTableIds[d]->getName () + " should be same as " + getName () + ". Please use setEmptyNeededOnPersistentBootWithDefault to set the flag." );
 
-                  prismAssert (false, __FILE__, __LINE__);
+                  waveAssert (false, __FILE__, __LINE__);
                }
            }
 
@@ -1135,7 +1135,7 @@ void OrmTable::getDetailsForRelationships (vector<string> &relatedToTables, vect
     {
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         relatedToTables.push_back (pOrmRelation->getRelatedTo ());
         relationTypes.push_back (pOrmRelation->getRelationType ());
@@ -1154,7 +1154,7 @@ void OrmTable::getDetailsForRelationshipsInHierarchy (vector<OrmTable *> &relate
     {
         pOrmRelation = m_relations[i];
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         relatedFromTables.push_back (this);
         relatedToTables.push_back (pOrmRelation->getRelatedTo ());
@@ -1365,7 +1365,7 @@ string OrmTable::getSqlForRemoveColumn(const std::string& schema, const std::str
 
         pOrmRelation = element->second;
 
-        prismAssert (NULL != pOrmRelation, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         auxilliaryTableName = pOrmRelation->getAuxilliaryTableName (m_name);
         string relatedToClass = pOrmRelation->getRelatedTo();
@@ -1611,7 +1611,7 @@ void OrmTable::getOrmRelationTypeAndOrmRelationUmlType (const string &entityName
             }
             else
             {
-                WaveNs::prismAssert (false, __FILE__, __LINE__);
+                WaveNs::waveAssert (false, __FILE__, __LINE__);
             }
         }
         else
@@ -1622,7 +1622,7 @@ void OrmTable::getOrmRelationTypeAndOrmRelationUmlType (const string &entityName
     }
     else
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);        
+        WaveNs::waveAssert (false, __FILE__, __LINE__);        
     }
 }
 
@@ -1633,7 +1633,7 @@ bool OrmTable::getValueForDisableValidations (const string &fieldName)
     {
         AttributeManagedObjectVectorCompositionTemplateBase *pAttributeManagedObjectVectorCompositionTemplateBase = dynamic_cast<AttributeManagedObjectVectorCompositionTemplateBase *> (pAttribute);
 
-        prismAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
+        waveAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
 
         return (pAttributeManagedObjectVectorCompositionTemplateBase->getDisableValidations ());
     }
@@ -1648,13 +1648,13 @@ bool OrmTable::getValueForCanBeEmpty (const string &fieldName)
     if (AttributeType::AttributeTypeComposition == pAttribute->getAttributeType ())
     {
         AttributeManagedObjectOneToOneRelationBase *pAttributeManagedObjectOneToOneRelationBase = dynamic_cast<AttributeManagedObjectOneToOneRelationBase *> (pAttribute);
-        prismAssert (NULL != pAttributeManagedObjectOneToOneRelationBase, __FILE__, __LINE__);
+        waveAssert (NULL != pAttributeManagedObjectOneToOneRelationBase, __FILE__, __LINE__);
         return (pAttributeManagedObjectOneToOneRelationBase->getCanBeEmpty ());
     }   
     else if (AttributeType::AttributeTypeObjectId == pAttribute->getAttributeType ())
     {
         AttributeObjectIdAssociation *pAttributeObjectIdAssociation = dynamic_cast<AttributeObjectIdAssociation *> (pAttribute);
-        prismAssert (NULL != pAttributeObjectIdAssociation, __FILE__, __LINE__);
+        waveAssert (NULL != pAttributeObjectIdAssociation, __FILE__, __LINE__);
         return (pAttributeObjectIdAssociation->getCanBeEmpty ());
     }
 
@@ -1736,7 +1736,7 @@ void OrmTable::getRelationNameToAuxilliaryTableNameMapForOneToNRelationType (con
                 if (ormRelationUmlType == ormRelationUmlTypeForCurrentRelation)
                 {
                     string auxilliaryTableName = (itr->second)->getAuxilliaryTableName (m_name);
-                    prismAssert (false == auxilliaryTableName.empty (), __FILE__, __LINE__);
+                    waveAssert (false == auxilliaryTableName.empty (), __FILE__, __LINE__);
 
                     relationNameToAuxilliaryTableNamesMap[(itr->second)->getName ()] = auxilliaryTableName;
                 }
@@ -1763,7 +1763,7 @@ void OrmTable::getRelationNameToAuxilliaryTableNameMapForOneToNRelationType (con
                 if (ormRelationUmlType == ormRelationUmlTypeForCurrentRelation)
                 {
                     string auxilliaryTableName = (itr->second)->getAuxilliaryTableName (m_name);
-                    prismAssert (false == auxilliaryTableName.empty (), __FILE__, __LINE__);
+                    waveAssert (false == auxilliaryTableName.empty (), __FILE__, __LINE__);
 
                     relationNameToAuxilliaryTableNamesMap[(itr->second)->getName ()] = auxilliaryTableName;
                 }
@@ -1852,7 +1852,7 @@ void OrmTable::computeKeyStringAndUDKCValueExpression (string& keyStringExpressi
         string      userDefinedKeyField = m_userDefinedKeyCombination [keyNumber];
         Attribute   *pAttribute         = (m_userDefinedKeyCombinationWithTypes.find (userDefinedKeyField))->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         keyStringExpression += "||'*'||";
 
@@ -1910,7 +1910,7 @@ void OrmTable::getSqlForATableToUpdateUDKCRelatedColumns (vector<string>& compos
     
         OrmTable* pChildTable = OrmRepository::getTableByName (composedChildTableName);
 
-        prismAssert (NULL != pChildTable, __FILE__, __LINE__);
+        waveAssert (NULL != pChildTable, __FILE__, __LINE__);
         
         pChildTable->computeKeyStringAndUDKCValueExpression (keyStringExpression, userDefinedKeyCombinationExpression);
 
@@ -1996,13 +1996,13 @@ void OrmTable::getSqlToAddUserDefinedKeyUniqueConstraint (string & schemaUpdateS
             string      userDefinedKeyField = udkcInOrder [keyNumber];
             //map<string, string>::const_iterator iter = m_userDefinedKeyCombinationsMap.find(userDefinedKeyField);
 
-            //prismAssert (m_userDefinedKeyCombinationsMap.end () != iter, __FILE__, __LINE__);
+            //waveAssert (m_userDefinedKeyCombinationsMap.end () != iter, __FILE__, __LINE__);
 
             //string userDefinedKeyType = iter->second;
 
             Attribute*  udkcFieldAttribute  = udkcKeyWithTypes[userDefinedKeyField];
 
-            prismAssert (NULL != udkcFieldAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != udkcFieldAttribute, __FILE__, __LINE__);
 
             //if (userDefinedKeyType == (FrameworkToolKit::localizeToSourceCodeEnum ((AttributeType::AttributeTypeObjectId).getAttributeTypeResourceId())))
             if (AttributeType::AttributeTypeObjectId == udkcFieldAttribute->getAttributeType())

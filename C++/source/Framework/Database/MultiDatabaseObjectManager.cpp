@@ -25,15 +25,15 @@ MultiDatabaseObjectManager::MultiDatabaseObjectManager ()
 
     m_pDatabaseObjectManagerExecuteQueryWorker = new DatabaseObjectManagerExecuteQueryWorker (this, true);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerExecuteQueryWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerExecuteQueryWorker, __FILE__, __LINE__);
 
     m_pMultiDatabaseObjectManagerSetupServersWorker = new MultiDatabaseObjectManagerSetupServersWorker (this);
 
-    prismAssert (NULL != m_pMultiDatabaseObjectManagerSetupServersWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pMultiDatabaseObjectManagerSetupServersWorker, __FILE__, __LINE__);
 
     m_pDatabaseObjectManagerExecuteCursorCommandWorker = new DatabaseObjectManagerExecuteCursorCommandWorker (this, true);
 
-    prismAssert (NULL != m_pDatabaseObjectManagerExecuteCursorCommandWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pDatabaseObjectManagerExecuteCursorCommandWorker, __FILE__, __LINE__);
 }
 
 MultiDatabaseObjectManager::~MultiDatabaseObjectManager ()
@@ -68,7 +68,7 @@ MultiDatabaseObjectManager *MultiDatabaseObjectManager::getInstance ()
     {
         pMultiDatacaseObjectManager = new MultiDatabaseObjectManager ();
 
-        WaveNs::prismAssert (NULL != pMultiDatacaseObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pMultiDatacaseObjectManager, __FILE__, __LINE__);
     }
 
     return (pMultiDatacaseObjectManager);

@@ -18,7 +18,7 @@ FixedSizeBuffer::FixedSizeBuffer (const UI32 maximumSize)
     if (0 == m_maximumSize)
     {
 		trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::FixedSizeBuffer : A FixedSizeBuffer of length 0 is not possible.");
-		prismAssert (false, __FILE__,__LINE__);
+		waveAssert (false, __FILE__,__LINE__);
 	}
 
     m_pRawBuffer  = new UI8[m_maximumSize + 1];
@@ -27,7 +27,7 @@ FixedSizeBuffer::FixedSizeBuffer (const UI32 maximumSize)
     if (NULL == m_pRawBuffer)
     {
         trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::FixedSizeBuffer : Could not allocate a buffer.");
-        prismAssert (false, __FILE__,__LINE__);
+        waveAssert (false, __FILE__,__LINE__);
     }
 
     m_pRawBuffer[m_maximumSize] = '\0';
@@ -40,7 +40,7 @@ FixedSizeBuffer::FixedSizeBuffer (const UI32 maximumSize, void *pBuffer, bool is
     if (0 == m_maximumSize)
     {
 		trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::FixedSizeBuffer : A FixedSizeBuffer of length 0 is not possible.");
-		prismAssert (false, __FILE__,__LINE__);
+		waveAssert (false, __FILE__,__LINE__);
 	}
 
     m_pRawBuffer  = reinterpret_cast<UI8 *> (pBuffer);
@@ -57,7 +57,7 @@ FixedSizeBuffer::FixedSizeBuffer (const UI32 maximumSize, void *pBuffer, bool is
     if (NULL == m_pRawBuffer)
     {
         trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::FixedSizeBuffer : Invalid buffer supplied");
-        prismAssert (false, __FILE__,__LINE__);
+        waveAssert (false, __FILE__,__LINE__);
     }
 }
 
@@ -105,7 +105,7 @@ const UI32 FixedSizeBuffer::getRemainingSize () const
     if (m_currentSize > m_maximumSize)
     {
         trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::getRemainingSize : Current size exceeded Maximum Size.  Something went wrong.");
-        prismAssert (false, __FILE__,__LINE__);
+        waveAssert (false, __FILE__,__LINE__);
     }
 
     if (m_currentSize <= m_maximumSize)
@@ -126,7 +126,7 @@ void FixedSizeBuffer::incrementCurrentSize (const UI32 incrementSize)
     {
         trace (TRACE_LEVEL_ERROR, "FixedSizeBuffer::getRemainingSize : Increment Size causes Current size to exceeded Maximum Size.  Something went wrong.");
         trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::getRemainingSize : Not incrementing the current size.");
-        prismAssert (false, __FILE__,__LINE__);
+        waveAssert (false, __FILE__,__LINE__);
     }
     else
     {
@@ -155,7 +155,7 @@ UI8 *FixedSizeBuffer::transferBufferToUser (UI32 &currentSize, UI32 &maximumSize
 {
     if (false == m_isBufferOwnedByMe)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_isBufferOwnedByMe = false;

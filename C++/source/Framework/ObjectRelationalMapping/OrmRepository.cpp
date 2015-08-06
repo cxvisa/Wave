@@ -92,7 +92,7 @@ OrmRepository *OrmRepository::getInstance ()
 {
     static OrmRepository *pOrmRepository = new OrmRepository ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     return (pOrmRepository);
 }
@@ -101,7 +101,7 @@ bool OrmRepository::isManagedClassAView (const string &managedClass)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     map<string, OrmView *>::iterator element1    = pOrmRepository->m_viewsMapByName.find (managedClass);
     map<string, OrmView *>::iterator element1End = pOrmRepository->m_viewsMapByName.end ();
@@ -117,7 +117,7 @@ bool OrmRepository::isManagedClassATable (const string &managedClass)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     map<string, OrmTable *>::iterator  element1      = pOrmRepository->m_tablesMapByName.find (managedClass);
     map<string, OrmTable *>::iterator  element1End   = pOrmRepository->m_tablesMapByName.end ();
@@ -144,7 +144,7 @@ void OrmRepository::addView (OrmView *pOrmView)
     if (element1End != element1)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addView : Duplicate View Entry for " + viewName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -154,7 +154,7 @@ void OrmRepository::addView (OrmView *pOrmView)
     if (element2End != element2)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addView : Table Entry found for " + viewName + ". Tables and view names should be unique");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -183,7 +183,7 @@ void OrmRepository::addTable (OrmTable *pOrmTable)
     if (element1End != element1)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addTable : Duplicate Table Entry for " + tableName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -194,7 +194,7 @@ void OrmRepository::addTable (OrmTable *pOrmTable)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addTable : Duplicate Table Id Entry for " + tableName + ", Table ID : " + nextTableId);
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addTable : Please try using different table-name even though it is not repeated: " + nextTableId);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -204,7 +204,7 @@ void OrmRepository::addTable (OrmTable *pOrmTable)
     if (element3End != element3)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addTable : View Entry found for " + tableName + ". Tables and view names should be unique");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -356,7 +356,7 @@ string OrmRepository::generateSchema (const string &waveSchema)
         if (NULL == pTable)
         {
             trace (TRACE_LEVEL_FATAL, "OrmRepository::generateSchema : Trying to get derived tables for non existant table : " + references[i]);
-            prismAssert (NULL != pTable, __FILE__, __LINE__);
+            waveAssert (NULL != pTable, __FILE__, __LINE__);
         }
         else
         {
@@ -399,7 +399,7 @@ UI32 OrmRepository::getUniqueTableIdForTableName (const string &tableName)
     if ((0 == uniqueTableId) || (0 > (SI32)uniqueTableId))
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::getUniqueTableIdForTableName : table-id returned is a greater than required range or strtoul has failed. uniqueTableId returned : " + uniqueTableId);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     trace (TRACE_LEVEL_DEBUG, "OrmRepository::getUniqueTableIdForTableName : className \'" + tableName + "\' uniqueTableId :" + uniqueTableId);
@@ -472,7 +472,7 @@ void OrmRepository::buildMoSchemaRepository ()
         if (numOfTablesFromUpgradeMO != m_managedObjectNamesForSchemaChange.size())
         {
             tracePrintf (TRACE_LEVEL_INFO, true, false, "OrmRepository::buildMoSchemaRepository: #tables in Orm does not match with that in UpgradeMO in database. db : %u, orm : %u", numOfTablesFromUpgradeMO, m_managedObjectNamesForSchemaChange.size());
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
         }
         updateTableId (tableIds);
     }
@@ -495,7 +495,7 @@ void OrmRepository::buildMoSchemaRepository ()
     for (UI32 i = 0; i < numberOfTables; i++)
     {
         OrmTable *pOrmTable = m_tables[i];
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         UI32 parentTableId = (pOrmTable->getPParentTable()) ? (pOrmTable->getPParentTable ()->getTableId ()) : 0;
         string strFieldNames, strFieldTypes, strFieldExpandedTypes, dataType;
@@ -510,8 +510,8 @@ void OrmRepository::buildMoSchemaRepository ()
         pSchemaInfoObj->setIsALocalManagedObject(pOrmTable->getIsALocalManagedObject());
         pSchemaInfoObj->setDerivedFromClassName (pOrmTable->getDerivedFromClassName());
 
-        prismAssert (fields.size () == types.size (), __FILE__, __LINE__);
-        prismAssert (fields.size () == dbtypes.size (), __FILE__, __LINE__);
+        waveAssert (fields.size () == types.size (), __FILE__, __LINE__);
+        waveAssert (fields.size () == dbtypes.size (), __FILE__, __LINE__);
 
         for (size_t idx = 0; idx < fields.size (); ++idx)
         {
@@ -533,7 +533,7 @@ void OrmRepository::buildMoSchemaRepository ()
         const vector<string> & userDefinedFields = pOrmTable->getUserDefinedFieldNamesForUpgrade (); 
         const vector<string> & userDefinedTypes  = pOrmTable->getUserDefinedFieldTypesForUpgrade (); 
         
-        prismAssert (userDefinedFields.size () == userDefinedTypes.size (), __FILE__, __LINE__);
+        waveAssert (userDefinedFields.size () == userDefinedTypes.size (), __FILE__, __LINE__);
         for (size_t uidx = 0; uidx < userDefinedFields.size (); ++uidx)
         {
             pSchemaInfoObj->addUserDefinedFieldTypeTuple (userDefinedFields[uidx], userDefinedTypes[uidx]);
@@ -575,7 +575,7 @@ void OrmRepository::computeTableSpace ()
     {
         pOrmTable = m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         pOrmTable->setUpgradeStrings ();
         derivedFrom = pOrmTable->getDerivedFromClassName ();
@@ -587,7 +587,7 @@ void OrmRepository::computeTableSpace ()
             if (NULL == pOrmParentTable)
             {
                 trace (TRACE_LEVEL_FATAL, "OrmRepository::computeTableSpace : Could not find parent table " + derivedFrom + " for table " + pOrmTable->getName ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             pOrmTable->setPParentTable (pOrmParentTable);
@@ -602,7 +602,7 @@ void OrmRepository::computeTableSpace ()
     {
         pOrmTable = m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         pOrmTable->setPMostBaseTable (getMostBaseTable (pOrmTable->getName ()));
     }
@@ -613,7 +613,7 @@ void OrmRepository::computeTableSpace ()
     {
         pOrmTable = m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         pOrmTable->computeDerivationsInstancesTables ();
     }
@@ -624,7 +624,7 @@ void OrmRepository::computeTableSpace ()
     {
         pOrmTable = m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         for (j = 0; j < numberOfTables; j++)
         {
@@ -638,7 +638,7 @@ void OrmRepository::computeTableSpace ()
     {
         pOrmTable = m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         vector<string>             relatedToTables;
         vector<OrmRelationType>    relationTypes;
@@ -661,7 +661,7 @@ void OrmRepository::computeTableSpace ()
     {
         pOrmTable = m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         vector<string> vectorOfEntityNamesInHierarhy;
         pOrmTable->getAllEntityNamesInHierarchy (vectorOfEntityNamesInHierarhy);
@@ -676,7 +676,7 @@ void OrmRepository::computeTableSpace ()
             {
                 trace (TRACE_LEVEL_INFO, "OrmRepository::computeTableSpace: columnName : " + vectorOfEntityNamesInHierarhy[entityNameIndex]);
             }
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -821,7 +821,7 @@ OrmTable *OrmRepository::getMostBaseTable (const string &tableName)
     if (element1End == element1)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::getMostBaseTable : No Table Entry for " + tableName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (NULL);
     }
     else
@@ -846,16 +846,16 @@ ObjectId OrmRepository::getNewObjectId (const string &tableName)
     if (element1End == element1)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::getNewObjectId : No Table Entry for " + tableName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (ObjectId (0, 0));
     }
     else
     {
         OrmTable *pOrmTable = element1->second;
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         OrmTable *pMostBaseOrmTable = pOrmTable->getPMostBaseTable ();
-        prismAssert (NULL != pMostBaseOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pMostBaseOrmTable, __FILE__, __LINE__);
 
         return (ObjectId (pOrmTable->getTableId (), (((UI64) (((FrameworkToolKit::getThisLocationId ()) + (FrameworkToolKit::getHaId ()))) << 32) | pMostBaseOrmTable->getNextInstanceId ())));
     }
@@ -872,7 +872,7 @@ void OrmRepository::getSqlForDelete (const ObjectId &objectId, string &sqlForDel
     string          tableIdString            = string ("") + tableId;
     string          instanceIdString         = string ("") + instanceId;
 
-    prismAssert (NULL != pTempOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pTempOrmTable, __FILE__, __LINE__);
 
     pTempOrmTable->getAllAuxilliaryTableNames (auxilliaryTableNames);
 
@@ -903,7 +903,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     // Orm print function variables
     UI32      numberOfTables                = pOrmRepository->m_tables.size ();
@@ -969,7 +969,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
     {
         pOrmTable = pOrmRepository->m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
         
         // Print ORM table information when no filtering is given or only if when a specified filtering matches
 
@@ -979,7 +979,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
 
             pMostBaseTable = pOrmTable->getPMostBaseTable ();
 
-            prismAssert (NULL != pMostBaseTable, __FILE__, __LINE__);
+            waveAssert (NULL != pMostBaseTable, __FILE__, __LINE__);
 
             if (true == pOrmTable->getIsALocalManagedObject ())
             {
@@ -1026,7 +1026,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
         {
             pOrmTable = pOrmRepository->m_tables[i];
 
-            prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+            waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
             // Print ORM table information when no filtering is given or only if when a specified filtering matches
 
@@ -1131,7 +1131,7 @@ void OrmRepository::getAllMostBaseTableNames (vector<string> &mostBaseTableNames
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     UI32      numberOfTables  = pOrmRepository->m_tables.size ();
     UI32      i               = 0;
@@ -1144,7 +1144,7 @@ void OrmRepository::getAllMostBaseTableNames (vector<string> &mostBaseTableNames
     {
         pOrmTable = pOrmRepository->m_tables[i];
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         pOrmParentTable = pOrmTable->getPParentTable ();
 
@@ -1159,11 +1159,11 @@ void OrmRepository::updateLatestInstanceIdForTable (const string &tableName, con
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->setNextInstanceId (latestInstanceId);
 }
@@ -1711,11 +1711,11 @@ UI32 OrmRepository::getTableId (const string &tableName)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     UI32 tableId = 0;
 
@@ -1731,11 +1731,11 @@ void OrmRepository::getAuxilliaryTableNames (const string &tableName, vector<str
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getAuxilliaryTableNames (auxilliaryTableNames);
 }
@@ -1744,11 +1744,11 @@ void OrmRepository::getAllAuxilliaryTableNames (const string &tableName, vector<
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getAllAuxilliaryTableNames (auxilliaryTableNames);
 }
@@ -1757,11 +1757,11 @@ void OrmRepository::getAllAuxilliaryTableNames (const string &tableName, vector<
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getAllAuxilliaryTableNames (auxilliaryTableNames, auxilliaryTableUmlTypes);
 }
@@ -1770,11 +1770,11 @@ void OrmRepository::getAllAuxilliaryTableNames (const string &tableName, vector<
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getAllAuxilliaryTableNames (auxilliaryTableNames, auxilliaryTableUmlTypes, selectedEntities);
 }
@@ -1783,11 +1783,11 @@ string OrmRepository::getTableNameById (const UI32 &tableId)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapById[tableId];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->getName ());
 }
@@ -1796,11 +1796,11 @@ void OrmRepository::getSqlForInsertForDerivationsInstances (const string &tableN
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->getSqlForInsertForDerivationsInstances (sqlForInsertForDerivationsInstnces, instanceId, waveSchema));
 }
@@ -1809,11 +1809,11 @@ void OrmRepository::getSqlForDeleteForDerivationsInstances (const string &tableN
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->getSqlForDeleteForDerivationsInstances (sqlForDeleteForDerivationsInstnces, instanceId, waveSchema));
 }
@@ -1822,11 +1822,11 @@ OrmTable *OrmRepository::getTableByName (const string &tableName)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable);
 }
@@ -1835,7 +1835,7 @@ void OrmRepository::addMostBaseClass (const string &mostBaseClass)
 {
     OrmRepository *pOrmRepository = getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     map<string, string>::iterator element    = (pOrmRepository->m_mostBaseClassesMap).find (mostBaseClass);
     map<string, string>::iterator endElement = (pOrmRepository->m_mostBaseClassesMap).end  ();
@@ -1843,7 +1843,7 @@ void OrmRepository::addMostBaseClass (const string &mostBaseClass)
     if (endElement != element)
     {
         trace (TRACE_LEVEL_FATAL, "OrmRepository::addMostBaseClass : Duplicate Addition of Most Base Class : \'" +  mostBaseClass + "\'");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -1855,7 +1855,7 @@ bool OrmRepository::isAMostBaseClass (const string &mostBaseClass)
 {
     OrmRepository *pOrmRepository = getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     map<string, string>::iterator element    = (pOrmRepository->m_mostBaseClassesMap).find (mostBaseClass);
     map<string, string>::iterator endElement = (pOrmRepository->m_mostBaseClassesMap).end  ();
@@ -1884,7 +1884,7 @@ const map<string, Attribute*> OrmRepository::getUserDefinedKeyCombinationWithTyp
 {
     OrmTable *pOrmTable = getTableByName (tableName);
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->getUserDefinedKeyCombinationWithTypes (userDefinedKeyCombination));
 }
@@ -1893,11 +1893,11 @@ bool OrmRepository::isALocalManagedObject (const string &tableName)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->getIsALocalManagedObject ());
 }
@@ -2039,7 +2039,7 @@ bool OrmRepository::isFieldOfIntegerType (const string &tableName, const string 
 {
     OrmTable  *pTableName = getTableByName (tableName);    
     
-    prismAssert (NULL != pTableName, __FILE__, __LINE__);
+    waveAssert (NULL != pTableName, __FILE__, __LINE__);
 
     return (pTableName->isAnIntegerColumn (columnName));
 }
@@ -2050,7 +2050,7 @@ void OrmRepository::getSqlToDeleteAllEntriesInTable (const string &tableName, st
     vector<string>  auxilliaryTableNames;
     UI32            numberOfauxilliaryTables = 0;
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getAllAuxilliaryTableNames (auxilliaryTableNames);
 
@@ -2075,7 +2075,7 @@ void OrmRepository::getEntityDetails (const string &tableName, const string &ent
 {
     OrmTable *pOrmTable = getTableByName (tableName);
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getEntityDetails (entityName, isAColumn, isARelation, ormRelationType);
 }
@@ -2084,7 +2084,7 @@ void OrmRepository::getOrmRelationTypeAndOrmRelationUmlType (const string &table
 {
     OrmTable *pOrmTable = getTableByName (tableName);
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getOrmRelationTypeAndOrmRelationUmlType (entityName, ormRelationType, ormRelationUmlType);    
 }
@@ -2093,7 +2093,7 @@ bool OrmRepository::isASimpleObjectIdColumn (const string &tableName, const stri
 {
     OrmTable *pOrmTable = getTableByName (tableName);
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->isASimpleObjectIdColumn (entityName));
 }
@@ -2350,7 +2350,7 @@ ResourceId OrmRepository::updateTableIdsWithTableIdsReceivedFromPrimary (const v
         else
         {
             tracePrintf (TRACE_LEVEL_FATAL, "OrmRepository::updateTableIdsWithTableIdsReceivedFromPrimary: [%s] doesnt exists in Schema.", managedObjectNamesForSchemaChange[i].c_str());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -2381,7 +2381,7 @@ void OrmRepository::getAllTableNames (set<string> &allTableNames)
 {
     OrmRepository *pOrmRepository = getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     UI32 numberOfTables = pOrmRepository->m_tables.size ();
     UI32 i              = 0;
@@ -2396,11 +2396,11 @@ void OrmRepository::getRelationNameToAuxilliaryTableNameMapForOneToNAssociations
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getRelationNameToAuxilliaryTableNameMapForOneToNAssociations (selectFieldsInManagedObject, relationNameToAuxilliaryTableNamesMap);
 }
@@ -2409,11 +2409,11 @@ void OrmRepository::getRelationNameToAuxilliaryTableNameMapForOneToNCompositions
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->m_tablesMapByName[tableName];
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getRelationNameToAuxilliaryTableNameMapForOneToNCompositions (selectFieldsInManagedObject, relationNameToAuxilliaryTableNamesMap);
 }
@@ -2421,18 +2421,18 @@ void OrmRepository::getRelationNameToAuxilliaryTableNameMapForOneToNCompositions
 UI32 OrmRepository::getNumberOfCompositionRelationsBetweenTables (const string &ownerTableName, const string &childTableName)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
 
     OrmTable *pChildOrmTable = pOrmRepository->m_tablesMapByName[childTableName];
-    prismAssert (NULL != pChildOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pChildOrmTable, __FILE__, __LINE__);
 
     set<string> tableNamesInHierarchy;
     pChildOrmTable->getAllTableNamesInHierarchy (tableNamesInHierarchy);
 
 
     OrmTable *pOwnerOrmTable = pOrmRepository->m_tablesMapByName[ownerTableName];
-    prismAssert (NULL != pOwnerOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOwnerOrmTable, __FILE__, __LINE__);
 
     vector<string> childTableNames;
     pOwnerOrmTable->getCompositionRelationTargetTableNamesFromSet (tableNamesInHierarchy, childTableNames);
@@ -2447,10 +2447,10 @@ bool OrmRepository::isATableNameInHierarchy (const string &inheritanceChildTable
     bool isInHierarchy = false;
 
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable  *pOrmTable = pOrmRepository->getTableByName (inheritanceChildTableName);
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     isInHierarchy = pOrmTable->isATableNameInHierarchy (inheritanceParentTableName);
 
@@ -2460,10 +2460,10 @@ bool OrmRepository::isATableNameInHierarchy (const string &inheritanceChildTable
 void OrmRepository::getUserDefinedKeyCombinationForTable (const string &managedObjectClassName, vector<string> &userDefinedKeyCombination)
 {
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     OrmTable *pOrmTable = pOrmRepository->getTableByName (managedObjectClassName);
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     pOrmTable->getUserDefinedKeyCombination (userDefinedKeyCombination);
 }

@@ -51,13 +51,13 @@ void WaveMessagingBrokerTopicRepository::addWaveMessagingBrokerTopic (const stri
 
     if (element != endElement)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         WaveMessagingBrokerTopic *pWaveMessagingBrokerTopic = new WaveMessagingBrokerTopic (waveMessagingBrokerTopicName);
 
-        prismAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
 
         m_waveMesasgingBrokerTopics[waveMessagingBrokerTopicName] = pWaveMessagingBrokerTopic;
 
@@ -84,12 +84,12 @@ void WaveMessagingBrokerTopicRepository::addWaveMessagingBrokerTopicIfNotKnown (
     {
         pWaveMessagingBrokerTopic = new WaveMessagingBrokerTopic (waveMessagingBrokerTopicName);
 
-        prismAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
 
         m_waveMesasgingBrokerTopics[waveMessagingBrokerTopicName] = pWaveMessagingBrokerTopic;
     }
 
-    prismAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
 
     pWaveMessagingBrokerTopic->addSubscription (clientUniqueString);
 
@@ -107,7 +107,7 @@ void WaveMessagingBrokerTopicRepository::removeWaveMessagingBrokerTopic (const s
     {
         WaveMessagingBrokerTopic *pWaveMessagingBrokerTopic = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
 
         pWaveMessagingBrokerTopic->removeSubscription (clientUniqueString);
 
@@ -120,7 +120,7 @@ void WaveMessagingBrokerTopicRepository::removeWaveMessagingBrokerTopic (const s
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveMesasgingBrokerTopicsMutex.unlock ();
@@ -137,7 +137,7 @@ void WaveMessagingBrokerTopicRepository::removeWaveMessagingBrokerTopicIfKnown (
     {
         WaveMessagingBrokerTopic *pWaveMessagingBrokerTopic = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
 
         pWaveMessagingBrokerTopic->removeSubscription (clientUniqueString);
 
@@ -169,7 +169,7 @@ void WaveMessagingBrokerTopicRepository::getCurrentlySubscribedClientsForTopic (
     {
         WaveMessagingBrokerTopic *pWaveMessagingBrokerTopic = element->second;
 
-        prismAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerTopic, __FILE__, __LINE__);
 
         pWaveMessagingBrokerTopic->getSubscribedClients (currentlySubscribedClients);
     }
@@ -192,7 +192,7 @@ WaveMessagingBrokerTopicRepository *WaveMessagingBrokerTopicRepository::getInsta
     {
         pWaveMessagingBrokerTopicRepository = new WaveMessagingBrokerTopicRepository ();
 
-        prismAssert (NULL != pWaveMessagingBrokerTopicRepository, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerTopicRepository, __FILE__, __LINE__);
     }
 
     waveMessagingBrokerTopicRepositoryMutex.unlock ();

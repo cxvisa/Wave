@@ -84,7 +84,7 @@ void YangContainer::collectHideInSubModeLeafForSelf ()
     for (UI32 i = 0; i < numberOfPChildLeafYangElements; i++)
     {
         YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (pChildLeafYangElements[i]);
-        prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+        waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
         if (true == pYangLeaf->getCliHideInSubMode ())
         {
@@ -218,7 +218,7 @@ void YangContainer::displayConfiguration3 (YangDisplayConfigurationContext *pYan
             }
 
             YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (pYangElement);
-            prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
             pYangLeaf->displayConfigurtionForLeaf (pYangDisplayConfigurationContext, NULL);
 
@@ -228,7 +228,7 @@ void YangContainer::displayConfiguration3 (YangDisplayConfigurationContext *pYan
         if (YangLeafList::getYangName () == pYangElement->getYangName ())
         {
             YangLeafList *pYangLeafList = dynamic_cast<YangLeafList *> (pYangElement);
-            prismAssert (NULL != pYangLeafList, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeafList, __FILE__, __LINE__);
 
             pYangLeafList->displayConfigurtionForLeaf (pYangDisplayConfigurationContext, NULL);
 
@@ -434,7 +434,7 @@ void YangContainer::displayConfiguration2 (YangDisplayConfigurationContext *pYan
             }
 
             YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (pYangElement);
-            prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
             pYangLeaf->displayConfigurtionForLeaf (pYangDisplayConfigurationContext, NULL);
 
@@ -444,7 +444,7 @@ void YangContainer::displayConfiguration2 (YangDisplayConfigurationContext *pYan
         if (YangLeafList::getYangName () == pYangElement->getYangName ())
         {
             YangLeafList *pYangLeafList = dynamic_cast<YangLeafList *> (pYangElement);
-            prismAssert (NULL != pYangLeafList, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeafList, __FILE__, __LINE__);
 
             pYangLeafList->displayConfigurtionForLeaf (pYangDisplayConfigurationContext, NULL);
 
@@ -564,7 +564,7 @@ bool YangContainer::getConfigurationStringForLeafWithHideInSubMode (YangDisplayC
 void YangContainer::propagateCompactSyntaxOneLevelForSelf ()
 {
     YangElement *pParentYangElement = getPParentElement ();
-    prismAssert (NULL != pParentYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pParentYangElement, __FILE__, __LINE__);
 
     if (true == (pParentYangElement->getCliCompactSyntax ()).empty ())
     {

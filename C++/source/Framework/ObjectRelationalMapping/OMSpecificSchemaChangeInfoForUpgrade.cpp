@@ -78,7 +78,7 @@ ModifiedManagedObjectSchemaDifference* OMSpecificSchemaChangeInfoForUpgrade::get
     if (m_modifiedManagedObjectSchemaInfo.end () == iter)
     {
         trace (TRACE_LEVEL_WARN, "OMSpecificSchemaChangeInfoForUpgrade::getDifferenceInfoForMo: [" + moName + "] is not a modified managedObject. Please, check the same.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
         
     return (iter->second);    

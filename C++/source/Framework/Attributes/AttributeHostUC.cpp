@@ -108,7 +108,7 @@ HostUC AttributeHostUC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeHostUC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempHost);
     }
 }
@@ -122,13 +122,13 @@ void AttributeHostUC::setValue (const HostUC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeHostUC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeHostUC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeHostUC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeHostUC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeHostUC == (getAttributeType ()))
     {
@@ -180,7 +180,7 @@ void AttributeHostUC::getSqlForSelect (string &sqlForSelect, AttributeConditionO
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeHostUC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

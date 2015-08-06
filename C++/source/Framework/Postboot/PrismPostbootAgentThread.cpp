@@ -63,7 +63,7 @@ WaveThreadStatus PrismPostbootAgentThread::start ()
     PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage = m_pPrismPostbootAgentThreadContext->getPostbootMessagePointer ();
 
     PrismPostbootAgent *pPrismPostbootAgent = new PrismPostbootAgent(m_pWaveObjectManager, m_eventId, m_parameter, m_recoveryType);
-    prismAssert (NULL != pPrismPostbootAgent, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismPostbootAgent, __FILE__, __LINE__);
     ResourceId status = pPrismPostbootAgent->execute ();
     if (WAVE_MESSAGE_SUCCESS != status)
     {

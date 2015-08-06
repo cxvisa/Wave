@@ -103,7 +103,7 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::startPrismServices (cons
     else
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerInitializeWorker::startPrismServices : Prism failed to come up.  Exiting ...");
-//        prismAssert (false, __FILE__, __LINE__);
+//        waveAssert (false, __FILE__, __LINE__);
     }
 
     //(PrismFrameworkObjectManager::getInstance ())->setTraceLevel (TRACE_LEVEL_INFO);
@@ -204,7 +204,7 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::performSchemaConversion 
     //vector<pair<string, UI32> > tableClassIdTuples;
 
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert(NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert(NULL != pOrmRepository, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManagerInitializeWorker::performSchemaConversion : Entering ...... ");
 
@@ -253,11 +253,11 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::determineNodeBootModeSte
 
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
 
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     PrismFrameworkConfigurationWorker *pPrismFrameworkConfigurationWorker = (PrismFrameworkObjectManager::getInstance ())->getPConfigurationWorker ();
 
-    prismAssert (NULL != pPrismFrameworkConfigurationWorker, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkConfigurationWorker, __FILE__, __LINE__);
 
     if (WAVE_MGMT_INTF_ROLE_SERVER == (FrameworkToolKit::getManagementInterfaceRole ()))
     {
@@ -288,7 +288,7 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::determineNodeBootModeSte
 
         status1 = prismFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
 
-        prismAssert (WAVE_MESSAGE_SUCCESS == status1, __FILE__, __LINE__);
+        waveAssert (WAVE_MESSAGE_SUCCESS == status1, __FILE__, __LINE__);
 
         ResourceId startupFileType = prismFrameworkConfiguration.getStartupFileType();
 
@@ -319,7 +319,7 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::determineNodeBootModeSte
             if (NULL == dbObject)
             {
                 trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep : failed to allocate memory for DatabaseStandaloneTransaction");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             dbObject->establishDbConnection ();
@@ -471,10 +471,10 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::chooseABootAgentStep (Pr
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Unknown Prism Boot Mode : ") + (UI32) prismBootMode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
-    prismAssert (NULL != m_pPrismBootAgent, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismBootAgent, __FILE__, __LINE__);
 
     if (NULL == m_pPrismBootAgent)
     {
@@ -616,14 +616,14 @@ ResourceId PrismFrameworkObjectManagerInitializeWorker::informServicesToInitiali
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerInitializeWorker::informServicesToInitializeBeforeBootComplete : Could not send message to Initialize Service before boot complete. Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
             if (WAVE_MESSAGE_SUCCESS != pPersistenceObjectManagerInitializeBeforeBootCompleteMessage.getCompletionStatus ())
             {
                 trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerInitializeWorker::informServicesToInitializeBeforeBootComplete FAILED");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
     }
@@ -689,7 +689,7 @@ void PrismFrameworkObjectManagerInitializeWorker::FrameworkUpdateDatabaseSchema 
 
     status = prismFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
 
-    prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+    waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 
     status = performSchemaConversion(prismFrameworkConfiguration);
 
@@ -730,7 +730,7 @@ void PrismFrameworkObjectManagerInitializeWorker::populateSchemaUpgradeTableInDb
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerInitializeWorker::populateSchemaUpgradeTableInDb: Could not send message to create schemaInfo Object to represent the Object Relational Mapping. Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -739,7 +739,7 @@ void PrismFrameworkObjectManagerInitializeWorker::populateSchemaUpgradeTableInDb
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerInitializeWorker::populateSchemaUpgradeTableInDb:: failed to updated schemaInfo object in db. Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {

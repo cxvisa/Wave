@@ -15,7 +15,7 @@ WaveDebugServerPage::WaveDebugServerPage (HttpInterfaceReceiverObjectManager* pH
 {
     m_pWaveTraceServerMultiPage = new WaveTraceServerMultiPage (pHttpInterfaceReceiverObjectManager, "/debug/trace");
 
-    prismAssert (NULL != m_pWaveTraceServerMultiPage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveTraceServerMultiPage, __FILE__, __LINE__);
 }
 
 WaveDebugServerPage::~WaveDebugServerPage ()

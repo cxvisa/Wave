@@ -118,7 +118,7 @@ bool FrameworkTestabilityManagementInterfaceMessage4::validateInputBuffer1 ()
 
     pBuffer = findBuffer (0, bufferSize);
 
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     if (0 == strcmp (pClientInputString1, reinterpret_cast<char *> (pBuffer)))
     {
@@ -137,7 +137,7 @@ bool FrameworkTestabilityManagementInterfaceMessage4::validateOutputBuffer1 ()
 
     pBuffer = findBuffer (1, bufferSize);
 
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     if (0 == strcmp (pClientOutputString1, reinterpret_cast<char *> (pBuffer)))
     {
@@ -179,8 +179,8 @@ bool FrameworkTestabilityManagementInterfaceMessage4::validateInputLargeBuffer1 
 
     //cout << "Buffer Size : " << bufferSize << endl;
 
-    prismAssert (s_largeClientInputBuffer1Size == bufferSize, __FILE__, __LINE__);
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (s_largeClientInputBuffer1Size == bufferSize, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     for (i = 0; i < s_largeClientInputBuffer1Size; i++)
     {
@@ -224,7 +224,7 @@ ResourceId FrameworkTestabilityManagementInterfaceMessage4::getRequestedCompleti
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (WAVE_MESSAGE_ERROR);

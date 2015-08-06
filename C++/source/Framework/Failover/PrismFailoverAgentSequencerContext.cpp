@@ -69,7 +69,7 @@ void PrismFailoverAgentSequencerContext::setSecondaryNodeStatus (const string &s
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgentSequencerContext::setSecondaryNodeStatus : This node (") + secondaryNodeIpAddress + ":" + secondaryNodePort + ") status is already set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -86,7 +86,7 @@ void PrismFailoverAgentSequencerContext::updateSecondaryNodeStatus (const string
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgentSequencerContext::updateSecondaryNodeStatus : This node (") + secondaryNodeIpAddress + ":" + secondaryNodePort + ") status is not previously set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -103,7 +103,7 @@ ResourceId PrismFailoverAgentSequencerContext::getSecondaryNodeStatus (const str
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgentSequencerContext::getSecondaryNodeStatus : This node (") + secondaryNodeIpAddress + ":" + secondaryNodePort + ") status is not set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR);
     }
 }

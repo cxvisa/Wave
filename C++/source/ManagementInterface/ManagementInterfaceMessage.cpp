@@ -148,7 +148,7 @@ WaveMessage *ManagementInterfaceMessage::clone ()
     UI32          originalMessageId              = 0;
     UI32          waveClientMessageId            = 0;
 
-    prismAssert (NULL != pClonedWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedWaveMessage, __FILE__, __LINE__);
 
     if (NULL == pClonedWaveMessage)
     {
@@ -157,7 +157,7 @@ WaveMessage *ManagementInterfaceMessage::clone ()
 
     ManagementInterfaceMessage *pManagementInterfaceMesage = dynamic_cast<ManagementInterfaceMessage *> (pClonedWaveMessage);
 
-    prismAssert (NULL != pManagementInterfaceMesage, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMesage, __FILE__, __LINE__);
 
     // Prepare for serialization on this message.
 

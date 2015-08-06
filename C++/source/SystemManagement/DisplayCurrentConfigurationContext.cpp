@@ -58,7 +58,7 @@ void DisplayCurrentConfigurationContext::setYangElements (vector<YangElement *> 
 {
     UI32 numberOfYangElements = m_yangElements.size ();
 
-    prismAssert (0 == numberOfYangElements, __FILE__, __LINE__);
+    waveAssert (0 == numberOfYangElements, __FILE__, __LINE__);
 
     m_yangElements = yangElements;
 
@@ -66,7 +66,7 @@ void DisplayCurrentConfigurationContext::setYangElements (vector<YangElement *> 
 
     m_pYangElement = m_yangElements[m_currentYangElementIndex];
 
-    prismAssert (NULL != m_pYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != m_pYangElement, __FILE__, __LINE__);
 }
 
 UI32 DisplayCurrentConfigurationContext::getCurrentYangElementIndex () const
@@ -80,7 +80,7 @@ void DisplayCurrentConfigurationContext::advanceToNextYangElement ()
 
     if (true == isAtLast)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -88,7 +88,7 @@ void DisplayCurrentConfigurationContext::advanceToNextYangElement ()
 
         m_pYangElement = m_yangElements[m_currentYangElementIndex];
 
-        prismAssert (NULL != m_pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != m_pYangElement, __FILE__, __LINE__);
     }
 }
 
@@ -98,7 +98,7 @@ bool DisplayCurrentConfigurationContext::isAtTheLastYangElement ()
 
     if (0 == numberOfYangElements)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if ((numberOfYangElements - 1) == m_currentYangElementIndex)

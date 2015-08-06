@@ -55,7 +55,7 @@ template<class T> AttributeSerializableObject<T> &AttributeSerializableObject<T>
 
 template<class T> bool AttributeSerializableObject<T>::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeSerializableObject == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeSerializableObject == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeSerializableObject == (getAttributeType ()))
     {
@@ -76,7 +76,7 @@ template<class T> T AttributeSerializableObject<T>::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSerializableObject::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (T ());
     }
 }
@@ -90,13 +90,13 @@ template<class T> void AttributeSerializableObject<T>::setValue (const T &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSerializableObject::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 template<class T> string AttributeSerializableObject<T>::getSqlType ()
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     string temp;
     return temp;
@@ -104,29 +104,29 @@ template<class T> string AttributeSerializableObject<T>::getSqlType ()
 
 template<class T> void AttributeSerializableObject<T>::setupOrm (OrmTable *pOrmTable)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
     
 template<class T> string AttributeSerializableObject<T>::getSqlForCreate ()
 {   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     string temp;
     return temp;
 }
     
 template<class T> void AttributeSerializableObject<T>::getSqlForInsert (string &sqlForPreValues, string &sqlForInsert, string &sqlForInsert2, bool isFirst)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template<class T> void AttributeSerializableObject<T>::getSqlForUpdate (string &sqlForUpdate, string &sqlForUpdate2, bool isFirst)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template<class T> void AttributeSerializableObject<T>::getSqlForSelect (string &sqlForSelect, AttributeConditionOperator attributeConditionOperator)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template<class T> void *AttributeSerializableObject<T>::getPData ()
@@ -150,7 +150,7 @@ template<class T> void AttributeSerializableObject<T>::toString (string &valueSt
 {
     SerializableObject *pObject = dynamic_cast<SerializableObject *> (m_pData);
 
-    prismAssert (NULL != pObject, __FILE__, __LINE__);
+    waveAssert (NULL != pObject, __FILE__, __LINE__);
 
     return (pObject->serialize2 (valueString));
 }
@@ -161,7 +161,7 @@ template<class T> void AttributeSerializableObject<T>::fromString (const string 
 
     SerializableObject *pObject = dynamic_cast<SerializableObject *> (&tempSerializableObject);
 
-    prismAssert (NULL != pObject, __FILE__, __LINE__);
+    waveAssert (NULL != pObject, __FILE__, __LINE__);
 
     tempSerializableObject.loadFromSerializedData2 (valueString);
 
@@ -170,18 +170,18 @@ template<class T> void AttributeSerializableObject<T>::fromString (const string 
 
 template<class T> void AttributeSerializableObject<T>::setDefaultValue()
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template<class T> void AttributeSerializableObject<T>::getCValue (WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template<class T> bool AttributeSerializableObject<T>::isCurrentValueSameAsDefault () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSerializableObject::isCurrentValueSameAsDefault : This method is not supported."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (false);
 }
 }

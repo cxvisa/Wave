@@ -33,7 +33,7 @@ void MultiDatabaseToolKit::addServerConnection (const string &serverConnection)
 
     numberOfTokensWithinAServerConnection = tokensWithinAServerConnection.size ();
 
-    prismAssert (3 == numberOfTokensWithinAServerConnection, __FILE__, __LINE__);
+    waveAssert (3 == numberOfTokensWithinAServerConnection, __FILE__, __LINE__);
 
     serverName      = tokensWithinAServerConnection[0];
     serverIpAddress = tokensWithinAServerConnection[1];
@@ -76,7 +76,7 @@ void  MultiDatabaseToolKit::getServerInformationAtIndex (const UI32 &index, stri
 {
     UI32 numberOfServerConnections = getNumberOfServerConnections ();
 
-    prismAssert (index <= (numberOfServerConnections - 1), __FILE__, __LINE__);
+    waveAssert (index <= (numberOfServerConnections - 1), __FILE__, __LINE__);
 
     serverName      = m_serverNames[index];
     serverIpAddress = m_serverIpAddresses[index];

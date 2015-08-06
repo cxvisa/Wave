@@ -276,7 +276,7 @@ ResourceId PersistentPrismBootAgent::resetLocationRole (PrismSynchronousLinearSe
 {
     LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
 
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     LocationRole    thisLocationRole = pThisLocation->getLocationRole ();
  
@@ -319,7 +319,7 @@ ResourceId PersistentPrismBootAgent::resetLocationRole (PrismSynchronousLinearSe
     {
         trace (TRACE_LEVEL_FATAL, "There is no other Phase Possible for timer timeout");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR);
     }
@@ -338,7 +338,7 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : How can this be.  We detected that there was a configuration file.  And now it is not available???");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         status = WAVE_MESSAGE_ERROR;
     }
@@ -346,7 +346,7 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
     {
         LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
 
-        prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+        waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
         FrameworkToolKit::setLastUsedLocationId (prismFrameworkConfiguration.m_lastUsedLocationId);
 
@@ -464,7 +464,7 @@ ResourceId PersistentPrismBootAgent::connectToKnownLocationsStep (PrismSynchrono
     string              ipAddress                    = "";
     SI32                port                         = 0;
 
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     pThisLocation->getKnownRemoteLocations (knownRemoteLocations);
     numberOfKnownRemoteLocations = knownRemoteLocations.size ();
@@ -570,7 +570,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::rollBackDataBase : Could not send message to update instance Id.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -579,7 +579,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::rollBackDataBase : Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -598,7 +598,7 @@ void PersistentPrismBootAgent::cleanPreparedTransactions ()
     if (WAVE_MESSAGE_SUCCESS != cleanPreparedTransactionsStatus)
     {
         trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::cleanPreparedTransactions: Could not send message to Clean Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -611,7 +611,7 @@ void PersistentPrismBootAgent::cleanPreparedTransactions ()
         else
         {
             trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::cleanPreparedTransactions: Failed to clean previously Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -625,7 +625,7 @@ void PersistentPrismBootAgent::emptyDatabaseToRollBack ()
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {         trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::emptyDatabaseToRollBack : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -634,7 +634,7 @@ void PersistentPrismBootAgent::emptyDatabaseToRollBack ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::emptyDatabaseToRollBack : Message to empty database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -653,7 +653,7 @@ void PersistentPrismBootAgent::reloadPreviousDataBase ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::reloadPreviousDataBase : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -675,7 +675,7 @@ void PersistentPrismBootAgent::reloadPreviousDataBase ()
     
             trace (TRACE_LEVEL_FATAL, ("System is not rebooting, Manual recovery is required"));
         
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {

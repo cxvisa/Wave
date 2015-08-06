@@ -111,7 +111,7 @@ template<class T> WaveManagedObjectPointer<T> AttributeManagedObjectComposition<
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeManagedObjectComposition::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WaveManagedObjectPointer<T> ());
     }
 }
@@ -125,13 +125,13 @@ template<class T> void AttributeManagedObjectComposition<T>::setValue (const Wav
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeManagedObjectComposition::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 template<class T> bool AttributeManagedObjectComposition<T>::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeComposition == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeComposition == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeComposition == (getAttributeType ()))
     {
@@ -240,7 +240,7 @@ template<class T> void AttributeManagedObjectComposition<T>::getSqlForSelect (st
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeManagedObjectComposition<T>::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     T *pT = (*m_pData).operator -> ();
@@ -286,7 +286,7 @@ template<class T> void AttributeManagedObjectComposition<T>::fromString (const s
 
         tempIndex = valueString.find ("*", 0);
 
-        prismAssert (string::npos != tempIndex, __FILE__, __LINE__);
+        waveAssert (string::npos != tempIndex, __FILE__, __LINE__);
 
         if (string::npos != tempIndex)
         {
@@ -339,7 +339,7 @@ template<class T> void AttributeManagedObjectComposition<T>::loadFromPostgresQue
             {
                 T *pT = dynamic_cast<T *> (pWaveManagedObject);
 
-                prismAssert (NULL != pT, __FILE__, __LINE__);
+                waveAssert (NULL != pT, __FILE__, __LINE__);
 
                 WaveManagedObjectPointer<T> tempWaveManagedObjectPointer (pT);
 
@@ -419,7 +419,7 @@ template<class T> void AttributeManagedObjectComposition<T>::updateKeyString (co
 template<class T> bool AttributeManagedObjectComposition<T>::isCurrentValueSameAsDefault () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeManagedObjectComposition::isCurrentValueSameAsDefault : This method is not supported"));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (false);
 }
 
@@ -448,7 +448,7 @@ template<class T> void AttributeManagedObjectComposition<T>::setDefaultValue()
 
 template<class T> void AttributeManagedObjectComposition<T>::getCValue (WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template<class T> void AttributeManagedObjectComposition<T>::storeComposedObjectPointer (WaveManagedObject *pWaveChildManagedObject)
@@ -459,7 +459,7 @@ template<class T> void AttributeManagedObjectComposition<T>::storeComposedObject
     {
         pT = dynamic_cast<T *> (pWaveChildManagedObject);
 
-        prismAssert (NULL != pT, __FILE__, __LINE__);
+        waveAssert (NULL != pT, __FILE__, __LINE__);
     }
 
     WaveManagedObjectPointer<T> tempWaveManagedObjectPointer (pT);

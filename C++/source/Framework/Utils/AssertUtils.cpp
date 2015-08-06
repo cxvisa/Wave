@@ -10,11 +10,11 @@
 namespace WaveNs
 {
 
-void prismAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
+void waveAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
 {
     if (false == isAssertNotRequired)
     {
-        (PrismFrameworkObjectManager::getInstance ())->prismAssert (isAssertNotRequired, pFileName, lineNumber);
+        (PrismFrameworkObjectManager::getInstance ())->waveAssert (isAssertNotRequired, pFileName, lineNumber);
     }
 }
 

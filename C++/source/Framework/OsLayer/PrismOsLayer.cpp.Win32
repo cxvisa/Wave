@@ -126,7 +126,7 @@ void prismCreateWaitableTimer ()
     if (NULL == hTimer)
     {
         trace (TRACE_LEVEL_FATAL, string ("CreateWaitableTimer failed ") + GetLastError ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -140,7 +140,7 @@ void prismWaitForAlarmSignal ()
     if (WAIT_OBJECT_0 != (WaitForSingleObject (pHandle, INFINITE)))
     {
         trace (TRACE_LEVEL_FATAL, "WaitForSingleObject failed");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -175,7 +175,7 @@ int prismSetITimer (struct itimerval *pItimerValue)
     if (!SetWaitableTimer(hTimer, &liDueTime, 0, NULL, NULL, 0))
     {
         trace (TRACE_LEVEL_FATAL, string ("SetWaitableTimer failed") + GetLastError ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         s_timerMutex.unlock ();
         return 2;

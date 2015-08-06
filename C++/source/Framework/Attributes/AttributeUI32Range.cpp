@@ -109,7 +109,7 @@ UI32Range AttributeUI32Range::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUI32Range::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempUI32Range;
     }
 }
@@ -123,13 +123,13 @@ void AttributeUI32Range::setValue (const UI32Range &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpV4Address::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeUI32Range::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeUI32Range == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeUI32Range == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeUI32Range == (getAttributeType ()))
     {
@@ -181,7 +181,7 @@ void AttributeUI32Range::getSqlForSelect (string &sqlForSelect, AttributeConditi
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeUI32Range::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -226,7 +226,7 @@ void AttributeUI32Range::getSqlForSelectUsingRange (string &sqlForSelect)
             }
             else
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
 

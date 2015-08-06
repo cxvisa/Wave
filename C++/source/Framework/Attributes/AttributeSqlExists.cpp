@@ -28,7 +28,7 @@ AttributeSqlExists::~AttributeSqlExists ()
 bool AttributeSqlExists::validate () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists::validate : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -59,7 +59,7 @@ AttributeSqlExists &AttributeSqlExists::operator = (const AttributeSqlExists &at
 string AttributeSqlExists::getSqlType ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return "";
 }
@@ -67,13 +67,13 @@ string AttributeSqlExists::getSqlType ()
 void AttributeSqlExists::setupOrm (OrmTable *pOrmTable)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 string AttributeSqlExists::getSqlForCreate ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return "";
 }
@@ -81,13 +81,13 @@ string AttributeSqlExists::getSqlForCreate ()
 void AttributeSqlExists::getSqlForInsert (string &sqlForPreValues, string &sqlForInsert, string &sqlForInsert2, bool isFirst)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::getSqlForUpdate (string &sqlForUpdate, string &sqlForUpdate2, bool isFirst)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::getSqlForSelect (string &sqlForSelect, AttributeConditionOperator attributeConditionOperator)
@@ -95,7 +95,7 @@ void AttributeSqlExists::getSqlForSelect (string &sqlForSelect, AttributeConditi
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeSqlExists::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string  innerSqlQuery   = m_pWaveManagedObjectSynchronousInnerQueryContext->getSqlForSelect (false);
@@ -107,19 +107,19 @@ void AttributeSqlExists::getSqlForSelect (string &sqlForSelect, AttributeConditi
 void AttributeSqlExists::toString (string &valueString)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::fromString (const string &valueString)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void *AttributeSqlExists::getPData ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -127,13 +127,13 @@ void *AttributeSqlExists::getPData ()
 void AttributeSqlExists::setValue (const void *pData)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 Attribute *AttributeSqlExists::clone ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -141,25 +141,25 @@ Attribute *AttributeSqlExists::clone ()
 void AttributeSqlExists::loadFromPostgresQueryResult (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult *> &auxilliaryResultsMap, const ObjectId &parentObjectId, const string &schema, WaveObjectManager *pWaveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 WaveManagedObject *AttributeSqlExists::getComposedManagedObject (const ObjectId &childObjectId)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -167,7 +167,7 @@ WaveManagedObject *AttributeSqlExists::getComposedManagedObject (const ObjectId 
 bool AttributeSqlExists::isDeletableForOperation (const WaveManagedObjectOperation &operation)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -175,13 +175,13 @@ bool AttributeSqlExists::isDeletableForOperation (const WaveManagedObjectOperati
 void AttributeSqlExists::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::getRestRowData (string &restRowData)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 map<string, string> AttributeSqlExists::getSupportedConversions ()
@@ -194,18 +194,18 @@ map<string, string> AttributeSqlExists::getSupportedConversions ()
 void AttributeSqlExists::setDefaultValue()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlExists::getCValue(WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool AttributeSqlExists::isCurrentValueSameAsDefault () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists::isCurrentValueSameAsDefault : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (false);
 }
 }

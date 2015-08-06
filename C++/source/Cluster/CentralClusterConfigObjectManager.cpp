@@ -55,35 +55,35 @@ CentralClusterConfigObjectManager::CentralClusterConfigObjectManager ()
 
     m_pCentralClusterConfigCreateClusterWorker = new CentralClusterConfigCreateClusterWorker (this);
 
-    prismAssert (NULL != m_pCentralClusterConfigCreateClusterWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigCreateClusterWorker, __FILE__, __LINE__);
 
     m_pCentralClusterConfigDeleteClusterWorker = new CentralClusterConfigDeleteClusterWorker (this);
 
-    prismAssert (NULL != m_pCentralClusterConfigDeleteClusterWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigDeleteClusterWorker, __FILE__, __LINE__);
 
     m_pCentralClusterConfigAddNodeWorker = new CentralClusterConfigAddNodeWorker (this);
 
-    prismAssert (NULL != m_pCentralClusterConfigAddNodeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigAddNodeWorker, __FILE__, __LINE__);
 
     m_pCentralClusterConfigDeleteNodeWorker = new CentralClusterConfigDeleteNodeWorker (this);
 
-    prismAssert (NULL != m_pCentralClusterConfigDeleteNodeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigDeleteNodeWorker, __FILE__, __LINE__);
 
     m_pCentralClusterConfigGetDebugInfoWorker = new CentralClusterConfigGetDebugInfoWorker(this);
 
-    prismAssert (NULL != m_pCentralClusterConfigGetDebugInfoWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigGetDebugInfoWorker, __FILE__, __LINE__);
 
     m_pCentralClusterConfigRejoinNodeWorker = new CentralClusterConfigRejoinNodeWorker(this);
 
-    prismAssert (NULL != m_pCentralClusterConfigRejoinNodeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigRejoinNodeWorker, __FILE__, __LINE__);
     
     m_pCentralClusterConfigUpdateHardwareSynchronizationStateWorker = new CentralClusterConfigUpdateHardwareSynchronizationStateWorker (this);
 
-    prismAssert (NULL != m_pCentralClusterConfigUpdateHardwareSynchronizationStateWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCentralClusterConfigUpdateHardwareSynchronizationStateWorker, __FILE__, __LINE__);
 
     m_pCliBlockWorker  = new CliBlockWorker (this);
 
-    prismAssert (NULL != m_pCliBlockWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCliBlockWorker, __FILE__, __LINE__);
 }
 
 CentralClusterConfigObjectManager *CentralClusterConfigObjectManager::getInstance ()
@@ -93,7 +93,7 @@ CentralClusterConfigObjectManager *CentralClusterConfigObjectManager::getInstanc
     if (NULL == pCentralClusterConfigObjectManager)
     {
         pCentralClusterConfigObjectManager = new CentralClusterConfigObjectManager ();
-        WaveNs::prismAssert (NULL != pCentralClusterConfigObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pCentralClusterConfigObjectManager, __FILE__, __LINE__);
     }
 
     return (pCentralClusterConfigObjectManager);
@@ -187,7 +187,7 @@ WaveManagedObject *CentralClusterConfigObjectManager::createManagedObjectInstanc
     else
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::createManagedObjectInstance : Unknown Managed Class Name : " + managedClassName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveManagedObject);
@@ -227,7 +227,7 @@ void CentralClusterConfigObjectManager::install (WaveAsynchronousContextForBootP
         if (FRAMEWORK_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::install: Could not install CentralClusterConfigObjectManager.");
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -270,7 +270,7 @@ void CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootSt
     vector<WaveManagedObject *>          *pResults                              = querySynchronously (PrismCluster::getClassName ());
 
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = dynamic_cast<WaveAsynchronousContextForBootPhases *> (pPrismAsynchronousContext);
-    prismAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
 
     WaveBootReason                        bootReason                            = pWaveAsynchronousContextForBootPhases->getBootReason ();
 
@@ -297,7 +297,7 @@ void CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootSt
                 if (FRAMEWORK_SUCCESS != status)
                 {
                     trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootStep");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
                 else
                 {
@@ -313,7 +313,7 @@ void CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootSt
         else
         {
             trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootStep : There can be only one cluster.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         pResults->clear ();
@@ -344,11 +344,11 @@ void CentralClusterConfigObjectManager::bootQueryNodesStep (ClusterBootContext *
 
     pSecondaryNodeResults = querySynchronously (WaveNode::getClassName (), secondaryNodes);
 
-    prismAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
+    waveAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
 
     numberOfResults = pSecondaryNodeResults->size ();
 
-    prismAssert (numberOfSecondaryNodes == numberOfResults, __FILE__, __LINE__);
+    waveAssert (numberOfSecondaryNodes == numberOfResults, __FILE__, __LINE__);
 
     pClusterBootContext->setPSecondaryNodes (pSecondaryNodeResults);
 
@@ -384,7 +384,7 @@ void CentralClusterConfigObjectManager::bootStartHeartBeatsStep (ClusterBootCont
     {
         pSecondaryNode = reinterpret_cast<NodeManagedObject *> ((*pSecondaryNodeResults)[i]);
 
-        prismAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
+        waveAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
 
         if ((*pSecondaryNode) != tempNode)
         {
@@ -537,7 +537,7 @@ ResourceId CentralClusterConfigObjectManager::failoverQueryPrismClusterStep (Clu
         else
         {
             trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::failoverQueryPrismClusterStep : There can be only one cluster.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
 
@@ -547,7 +547,7 @@ ResourceId CentralClusterConfigObjectManager::failoverQueryPrismClusterStep (Clu
     else
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::failoverQueryPrismClusterStep : Could not query for clusters in the system");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
 
@@ -560,7 +560,7 @@ ResourceId CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedS
     {
         PrismCluster *pPrismCluster = pClusterFailoverContext->getPPrismCluster ();
 
-        prismAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
 
         const LocationId previousClusterPrimaryLocationId = pPrismCluster->getPrimaryLocationId ();
         const LocationId thisLocationId                   = FrameworkToolKit::getThisLocationId ();
@@ -588,7 +588,7 @@ ResourceId CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsSte
 
     pNodeResults = querySynchronously (WaveNode::getClassName ());
 
-    prismAssert (NULL != pNodeResults, __FILE__, __LINE__);
+    waveAssert (NULL != pNodeResults, __FILE__, __LINE__);
 
     pClusterFailoverContext->setPNodeManagedObjects (pNodeResults);
 
@@ -601,7 +601,7 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep (Cl
     {
         PrismCluster *pPrismCluster         = pClusterFailoverContext->getPPrismCluster ();
 
-        prismAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
 
         if (LOCATION_STAND_ALONE == FrameworkToolKit::getThisLocationRole())
         {
@@ -632,7 +632,7 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep (Cl
         for (i = 0; i < (pNodes->size ()); i++)
         {
             pWaveNode = dynamic_cast<WaveNode *> ((*pNodes)[i]);
-            prismAssert( NULL != pWaveNode, __FILE__, __LINE__);
+            waveAssert( NULL != pWaveNode, __FILE__, __LINE__);
  
             if (WAVE_MANAGED_OBJECT_SPECIFIC_STATUS_SECONDARY_NOT_CONNECTED_TO_CLUSTER == pWaveNode->getSpecificStatus()) 
             {
@@ -678,8 +678,8 @@ ResourceId CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNode
     {
         PrismCluster       *pPrismCluster          = pClusterFailoverContext->getPPrismCluster ();
 
-        prismAssert (NULL != pPrismCluster, __FILE__, __LINE__);
-        prismAssert (NULL != pNodes,        __FILE__, __LINE__);
+        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pNodes,        __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_INFO, string("failoverUncontrolledUpdateWaveNodeObjectsStep : Primary ") + pPrismCluster->getPrimaryLocationId() + string(" Node ") + pPrismCluster->getPrimaryPort());
 
@@ -687,7 +687,7 @@ ResourceId CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNode
         for (i = 0; i < (pNodes->size ()); i++)
         {
             pWaveNode = dynamic_cast<WaveNode *> ((*pNodes)[i]);
-            prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
             nodeLocationId = pWaveNode->getLocationId ();
             trace (TRACE_LEVEL_INFO, string("CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNodeObjectsStep : Location: ") + nodeLocationId + string(" Port:") +  pWaveNode->getPort());
@@ -731,8 +731,8 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep 
     {
         PrismCluster       *pPrismCluster          = pClusterFailoverContext->getPPrismCluster ();
 
-        prismAssert (NULL != pPrismCluster, __FILE__, __LINE__);
-        prismAssert (NULL != pNodes,        __FILE__, __LINE__);
+        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pNodes,        __FILE__, __LINE__);
 
  
         if (LOCATION_STAND_ALONE != FrameworkToolKit::getThisLocationRole())
@@ -743,7 +743,7 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep 
         for (i = 0; i < (pNodes->size ()); i++)
         {
             pWaveNode = dynamic_cast<WaveNode *> ((*pNodes)[i]);
-            prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
             nodeLocationId = pWaveNode->getLocationId ();
 
@@ -770,7 +770,7 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep 
         for (i = 0; i < (pNodes->size ()); i++)
         {
             pWaveNode = dynamic_cast<WaveNode *> ((*pNodes)[i]);
-            prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
             nodeLocationId = pWaveNode->getLocationId ();
 
@@ -807,8 +807,8 @@ ResourceId CentralClusterConfigObjectManager::failoverStartHeartBeatsIfPrimaryCh
         PrismCluster                 *pPrismCluster         = pClusterFailoverContext->getPPrismCluster ();
         vector<WaveManagedObject *> *pSecondaryNodeResults = pClusterFailoverContext->getPNodeManagedObjects ();
 
-        prismAssert (NULL != pPrismCluster,         __FILE__, __LINE__);
-        prismAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismCluster,         __FILE__, __LINE__);
+        waveAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
 
         string                        secondaryNodeName;
         UI32                          secondaryNodePort;
@@ -825,7 +825,7 @@ ResourceId CentralClusterConfigObjectManager::failoverStartHeartBeatsIfPrimaryCh
         {
             WaveNode* pSecondaryNode = dynamic_cast<WaveNode *> ((*pSecondaryNodeResults)[i]);
 
-            prismAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
+            waveAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
 
             secondaryNodeName   = pSecondaryNode->getIpAddress ();
             secondaryNodePort   = pSecondaryNode->getPort ();
@@ -927,8 +927,8 @@ ResourceId CentralClusterConfigObjectManager::failoverStartHeartBeatsIfUncontrol
         PrismCluster                 *pPrismCluster         = pClusterFailoverContext->getPPrismCluster ();
         vector<WaveManagedObject *> *pSecondaryNodeResults = pClusterFailoverContext->getPNodeManagedObjects ();
 
-        prismAssert (NULL != pPrismCluster,         __FILE__, __LINE__);
-        prismAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismCluster,         __FILE__, __LINE__);
+        waveAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
 
         UI32                          numberOfSecondaryNodes = 0;
         UI32                          i                      = 0;
@@ -947,7 +947,7 @@ ResourceId CentralClusterConfigObjectManager::failoverStartHeartBeatsIfUncontrol
         {
             pSecondaryNode = dynamic_cast<WaveNode *> ((*pSecondaryNodeResults)[i]);            
 
-            prismAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
+            waveAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
 
             secondaryNodeName   = pSecondaryNode->getIpAddress();
             secondaryNodePort   = pSecondaryNode->getPort ();

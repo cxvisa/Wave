@@ -1195,7 +1195,7 @@ ResourceId PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep
     }
 
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert(NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert(NULL != pOrmRepository, __FILE__, __LINE__);
 
     ManagedObjectSchemaInfoRepository & moSchemaInfoRepository  = pOrmRepository->getMOSchemaInfoRepository ();
 
@@ -1226,7 +1226,7 @@ ResourceId PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep
         if (WAVE_MESSAGE_SUCCESS != status)
         {   
             trace (TRACE_LEVEL_ERROR, "PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep : Could not send message to update values for udkc. Status : " + FrameworkToolKit::localize (status));
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
         }
         else
         {   
@@ -1235,7 +1235,7 @@ ResourceId PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep
             if (WAVE_MESSAGE_SUCCESS != status)
             {   
                 trace (TRACE_LEVEL_ERROR, "PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep:: failed to update udkc values. Status : " + FrameworkToolKit::localize (status));
-                //prismAssert (false, __FILE__, __LINE__);
+                //waveAssert (false, __FILE__, __LINE__);
             }
             else
             {   
@@ -1269,7 +1269,7 @@ ResourceId PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep
         if (WAVE_MESSAGE_SUCCESS != status)
         {   
             trace (TRACE_LEVEL_ERROR, "PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep : Could not send message to add constraint for udkc. Status : " + FrameworkToolKit::localize (status));
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
         }
         else
         {   
@@ -1278,7 +1278,7 @@ ResourceId PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep
             if (WAVE_MESSAGE_SUCCESS != status)
             {   
                 trace (TRACE_LEVEL_ERROR, "PrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep:: failed to add udkc constraints. Status : " + FrameworkToolKit::localize (status));
-                //prismAssert (false, __FILE__, __LINE__);
+                //waveAssert (false, __FILE__, __LINE__);
             }
             else
             {   
@@ -1316,7 +1316,7 @@ ResourceId PrismBootAgent::updateDatabaseForeignKeyConstraintsStep (PrismSynchro
     string alterSql;
 
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert(NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert(NULL != pOrmRepository, __FILE__, __LINE__);
 
     ManagedObjectSchemaInfoRepository & moSchemaInfoRepository  = pOrmRepository->getMOSchemaInfoRepository ();
 
@@ -1399,7 +1399,7 @@ ResourceId PrismBootAgent::updateDatabaseForeignKeyConstraintsStep (PrismSynchro
         if (WAVE_MESSAGE_SUCCESS != status)
         {   
             trace (TRACE_LEVEL_ERROR, "PrismBootAgent::updateDatabaseForeignKeyConstraintsStep : Could not send message to alter 1:1 relationship constraints. Status : " + FrameworkToolKit::localize (status));
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
         }
         else
         {   
@@ -1408,7 +1408,7 @@ ResourceId PrismBootAgent::updateDatabaseForeignKeyConstraintsStep (PrismSynchro
             if (WAVE_MESSAGE_SUCCESS != status)
             {   
                 trace (TRACE_LEVEL_ERROR, "PrismBootAgent::updateDatabaseForeignKeyConstraintsStep:: failed to update 1:1 relationship constraints. Status : " + FrameworkToolKit::localize (status));
-                //prismAssert (false, __FILE__, __LINE__);
+                //waveAssert (false, __FILE__, __LINE__);
             }
             else
             {   
@@ -1640,7 +1640,7 @@ void PrismBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
     prismSleep(30);
 
     trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleUpgradeFailure: Reboot is triggered but system has not yet rebooted.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 ResourceId  PrismBootAgent::upgradeGlobalPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)

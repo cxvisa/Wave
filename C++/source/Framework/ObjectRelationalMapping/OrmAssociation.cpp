@@ -47,7 +47,7 @@ string OrmAssociation::getSqlForCreate (const string &schema) const
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -74,7 +74,7 @@ string OrmAssociation::getAlterSqlToDropNotNullForOneToOneRelationship (const st
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -102,7 +102,7 @@ string OrmAssociation::getAlterSqlToAddNotNullForOneToOneRelationship (const str
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -138,7 +138,7 @@ string OrmAssociation::getAlterSqlForOneToOneRelationship (const string &schema,
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -169,7 +169,7 @@ string OrmAssociation::getSqlForCreate2 (const string &parentName, const string 
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -213,7 +213,7 @@ string OrmAssociation::getAuxilliaryTableName (const string &parentName) const
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 

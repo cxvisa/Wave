@@ -61,13 +61,13 @@ void YangImport::processChildElement (YangElement *pYangElement)
     {
         YangPrefix *pYangPrefix = dynamic_cast<YangPrefix *> (pYangElement);
 
-        prismAssert (NULL != pYangPrefix, __FILE__, __LINE__);
+        waveAssert (NULL != pYangPrefix, __FILE__, __LINE__);
 
         string prefixValue;
 
         pYangPrefix->getAttributeValue ("value", prefixValue);
 
-        prismAssert ("" != prefixValue, __FILE__, __LINE__);
+        waveAssert ("" != prefixValue, __FILE__, __LINE__);
 
         setPrefix (prefixValue);
     }

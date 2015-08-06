@@ -56,7 +56,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
     if (0 != (gettimeofday (&startTime, NULL)))
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveManagementClient::connect : Could not obtain start time."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = FRAMEWORK_ERROR;
     }
     else
@@ -73,7 +73,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
             if (NULL == m_pClientStreamingSocket)
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveManagementClient::connect : Could not allocate a ClientSocket for Management Interface Client : ") + m_ipAddress + m_port);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 break;
             }
 
@@ -95,7 +95,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
 
                 if (true != isSuccessful)
                 {
-                    //prismAssert (false, __FILE__, __LINE__);
+                    //waveAssert (false, __FILE__, __LINE__);
                     status = FRAMEWORK_ERROR;
                     break;
                 }
@@ -121,7 +121,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
 
                 if (true != isSuccessful)
                 {
-                    //prismAssert (false, __FILE__, __LINE__);
+                    //waveAssert (false, __FILE__, __LINE__);
                     status = FRAMEWORK_ERROR;
                     break;
                 }
@@ -135,7 +135,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
             if (0 != (gettimeofday (&currentTime, NULL)))
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveManagementClient::connect : Could not obtain current time."));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 status = FRAMEWORK_ERROR;
                 break;
             }
@@ -182,8 +182,8 @@ WaveServiceId WaveManagementClient::getUserInterfaceServiceId () const
 
 bool WaveManagementClient::operator << (ManagementInterfaceMessage *pManagementInterfaceMessage)
 {
-    prismAssert (NULL != m_pClientStreamingSocket,    __FILE__, __LINE__);
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pClientStreamingSocket,    __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     pManagementInterfaceMessage->setServiceCode (getUserInterfaceServiceId ());
 

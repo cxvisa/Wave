@@ -120,7 +120,7 @@ PersistenceObjectManager *PersistenceObjectManager::getInstance ()
 {
     static PersistenceObjectManager *pPersistenceObjectManager = new PersistenceObjectManager ();
 
-    WaveNs::prismAssert (NULL != pPersistenceObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPersistenceObjectManager, __FILE__, __LINE__);
 
     return (pPersistenceObjectManager);
 }
@@ -191,7 +191,7 @@ WaveMessage *PersistenceObjectManager::createMessageInstance (const UI32 &operat
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("PersistenceObjectManager::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -221,7 +221,7 @@ WaveManagedObject *PersistenceObjectManager::createManagedObjectInstance (const 
     else
     {
         trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::createManagedObjectInstance : Unknown Managed Class Name : " + managedClassName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveManagedObject);
@@ -285,7 +285,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
     if (WAVE_MESSAGE_SUCCESS != cleanPreparedTransactionsStatus)
     {
         trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to Clean the Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -364,7 +364,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
         if (WAVE_MESSAGE_SUCCESS != vacuumTransactionsStatus)
         {
             trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to VACUUM Database. Status : " + FrameworkToolKit::localize (vacuumTransactionsStatus));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -427,7 +427,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to Drop the Previous Database Schema. Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -466,7 +466,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to Drop the Start Database Schema. Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -520,7 +520,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to create Database Schema to represent the Object Relational Mapping. Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -529,7 +529,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not create Database Schema to represent the Object Relational Mapping. Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -603,7 +603,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
                     trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to empty database. Status : " + FrameworkToolKit::localize (status));
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
                 else
                 {
@@ -612,7 +612,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
                     if (WAVE_MESSAGE_SUCCESS != status)
                     {
                         trace (TRACE_LEVEL_ERROR,   "PersistenceObjectManager::boot : Could not empty database. Status : " + FrameworkToolKit::localize (status));
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                 }
 
@@ -632,8 +632,8 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
 
 #if 0
     vector<WaveManagedObject *> *pResultsVec = querySynchronously (UpgradeInfoManagedObject::getClassName());
-    prismAssert (pResultsVec != NULL, __FILE__, __LINE__);
-    prismAssert (pResultsVec->size () != 0, __FILE__, __LINE__);
+    waveAssert (pResultsVec != NULL, __FILE__, __LINE__);
+    waveAssert (pResultsVec->size () != 0, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEVEL, string("PersistenceObjectManager::boot : Retrieved ") + pResultsVec->size () + string(" upgradeInfoMO from database"));
 
@@ -644,7 +644,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
     {
 
         UpgradeInfoManagedObject *upgradeMO = dynamic_cast<UpgradeInfoManagedObject*>(*iter);
-        prismAssert (upgradeMO != NULL, __FILE__, __LINE__);
+        waveAssert (upgradeMO != NULL, __FILE__, __LINE__);
 
         tableClassIdTuples.push_back (pair<string, UI32>(upgradeMO->getManagedObjectName (), upgradeMO->getManagedObjectClassId ()));
     }
@@ -669,11 +669,11 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
         // query Persistance Managed Object from DB and save in memory
         vector<WaveManagedObject *> *pResults = querySynchronously (ConfigurationManagedObject::getClassName ());
 
-        prismAssert (1 == (pResults->size ()), __FILE__, __LINE__);
+        waveAssert (1 == (pResults->size ()), __FILE__, __LINE__);
 
         ConfigurationManagedObject *pConfigurationManagedObject = dynamic_cast<ConfigurationManagedObject *> ((*pResults)[0]);
 
-        prismAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
 
         m_pConfigurationManagedObject = pConfigurationManagedObject;    
     
@@ -693,7 +693,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
             if (WAVE_MESSAGE_SUCCESS != statusForUpdatePersistaneManagedObject)
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not send message to update Entry for Persistance Managed Object during persistant boot with default Status : " + FrameworkToolKit::localize (statusForUpdatePersistaneManagedObject));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -702,7 +702,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
                 if (WAVE_MESSAGE_SUCCESS != statusForUpdatePersistaneManagedObject)
                 {
                     trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::boot : Could not update Entry For Persistance Mananged Object during persistant boot with default. Status : " + FrameworkToolKit::localize (statusForUpdatePersistaneManagedObject));
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }
 
@@ -760,11 +760,11 @@ void PersistenceObjectManager::initializeConfigurationManagedObjectBeforeBootCom
 
     vector<WaveManagedObject *> *pResults = querySynchronously (ConfigurationManagedObject::getClassName ());
 
-    prismAssert (1 == (pResults->size ()), __FILE__, __LINE__);
+    waveAssert (1 == (pResults->size ()), __FILE__, __LINE__);
 
     ConfigurationManagedObject *pConfigurationManagedObject = dynamic_cast<ConfigurationManagedObject *> ((*pResults)[0]);
 
-    prismAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
 
     m_pConfigurationManagedObject = pConfigurationManagedObject;
 
@@ -816,13 +816,13 @@ void PersistenceObjectManager::updateInstanceId ()
             else
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::updateInstanceId : Could not updated the Next Instance Id for table " + mostBaseTableNames[i] + string (" Completion Status : ") + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
         else
         {
             trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::updateInstanceId : Could not updated the Next Instance Id for table " + mostBaseTableNames[i] + string ("Status : ") + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         trace (TRACE_LEVEL_DEVEL, "PersistenceObjectManager::updateInstanceId : Updated " + mostBaseTableNames[i] + string (" : Latest Instance Id : ") + latestInstanceId);
@@ -990,7 +990,7 @@ void PersistenceObjectManager::pushConfigToKernelMessageCallback (WaveSendToClus
 
     trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::pushConfigToKernelMessageCallback : status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
 
-    prismAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1012,7 +1012,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPre
     ConfigurationManagedObject                        *pConfigurationManagedObject                        = NULL;
 
     PersistenceObjectManagerExecuteTransactionMessage *pPersistenceObjectManagerExecuteTransactionMessage = dynamic_cast<PersistenceObjectManagerExecuteTransactionMessage *> (pPersistenceExecuteTransactionContext->getPWaveMessage ());
-    prismAssert (NULL != pPersistenceObjectManagerExecuteTransactionMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceObjectManagerExecuteTransactionMessage, __FILE__, __LINE__);
 
     FrameworkToolKit::getFullyConnectedLocations (currentLocations);
     currentLocations.push_back (thisLocationId);
@@ -1052,7 +1052,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPre
         if (NULL == pWaveConfigManagedObject)
         {
             trace (TRACE_LEVEL_ERROR, string ("PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPreparePhaseStep : Trying to update a config which doesn't exist. ConfigName = ") + configNamesForUpdate[i]);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         pWaveConfigManagedObject->setConfigName (configNamesForUpdate[i]);
         pWaveConfigManagedObject->setConfigValue (configValuesForUpdate[i]);
@@ -1080,11 +1080,11 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPre
             }
             else
             {
-                prismAssert (NULL != m_pConfigurationManagedObject, __FILE__, __LINE__);
+                waveAssert (NULL != m_pConfigurationManagedObject, __FILE__, __LINE__);
             }
         }
 		
-		prismAssert (NULL != m_pConfigurationManagedObject, __FILE__, __LINE__);
+		waveAssert (NULL != m_pConfigurationManagedObject, __FILE__, __LINE__);
 		
 		tempConfigurationNumber                = m_pConfigurationManagedObject->getConfigurationNumber ();
         tempDateTimeForConfiguration           = m_pConfigurationManagedObject->getConfigurationTime (); 
@@ -1524,7 +1524,7 @@ void PersistenceObjectManager::savePrismConfigurationAtAllLocationsCallback (Wav
 
     trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::savePrismConfigurationAtAllLocationsCallback : status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
 
-    prismAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1642,7 +1642,7 @@ void PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseC
     ResourceId                              sendToClusterCompletionStatus           = pWaveSendToClusterContext->getCompletionStatus ();
     PersistenceExecuteTransactionContext   *pPersistenceExecuteTransactionContext   = reinterpret_cast<PersistenceExecuteTransactionContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseCallback2 : status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
 
@@ -1734,7 +1734,7 @@ void PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStepCallb
     tracePrintf (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStepCallback : Primary LocationId = %d", locationIdForPrimary);
 
     DatabaseObjectManagerCalculateDbCksumMessage *pCalculateDbCksumMessage = reinterpret_cast<DatabaseObjectManagerCalculateDbCksumMessage *> (pWaveSendToClusterContext->getResultingMessageForPhase1 (locationIdForPrimary));
-    prismAssert (NULL != pCalculateDbCksumMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pCalculateDbCksumMessage, __FILE__, __LINE__);
 
     string checksumForPrimary = pCalculateDbCksumMessage->getDbCksumForNode ();
     trace (TRACE_LEVEL_DEBUG, string("PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStepCallback : Primary CRC = ") + checksumForPrimary);
@@ -1754,7 +1754,7 @@ void PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStepCallb
         {
             ResourceId                                   completionStatus = pWaveSendToClusterContext->getCompletionStatusForPhase1 (locationId);
             DatabaseObjectManagerCalculateDbCksumMessage *dbCksumMessage  = reinterpret_cast<DatabaseObjectManagerCalculateDbCksumMessage *> (pWaveSendToClusterContext->getResultingMessageForPhase1 (locationId));
-            prismAssert (NULL != dbCksumMessage, __FILE__, __LINE__);
+            waveAssert (NULL != dbCksumMessage, __FILE__, __LINE__);
 
             if (WAVE_MESSAGE_SUCCESS != completionStatus)
             {
@@ -1845,7 +1845,7 @@ void PersistenceObjectManager::restoreDataBase ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {   
         trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::restoreDataBase : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {   
@@ -1980,7 +1980,7 @@ void PersistenceObjectManager::addXPathStringsMessageHandler (PersistenceObjectM
 void PersistenceObjectManager::createXPathStringManagedObjectsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     PersistenceObjectManagerAddXPathStringsMessage *pPersistenceObjectManagerAddXPathStringsMessage = dynamic_cast<PersistenceObjectManagerAddXPathStringsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
-    prismAssert (NULL != pPersistenceObjectManagerAddXPathStringsMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceObjectManagerAddXPathStringsMessage, __FILE__, __LINE__);
 
     vector<string>  xPathStrings                = pPersistenceObjectManagerAddXPathStringsMessage->getXPathStrings ();
     UI32            numberOfInputXPathStrings   = xPathStrings.size ();
@@ -2017,7 +2017,7 @@ void PersistenceObjectManager::createXPathStringManagedObjectsStep (WaveLinearSe
     for (UI32 i = 0; i < numberOfExistingMatchingXPathManagedObjects; i++)
     {
         XPathStringManagedObject *pXPathStringManagedObject = dynamic_cast<XPathStringManagedObject *> ((*pWaveManagedObjectQueryResultVector)[i]);
-        prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
 
         setOfExistingXPathStrings.insert (pXPathStringManagedObject->getXPathString ());
     }
@@ -2073,7 +2073,7 @@ void PersistenceObjectManager::xPathStringManagedObjectsCommitCallback (Framewor
     if (NULL != pWaveMessage)
     {
         PersistenceObjectManagerExecuteTransactionMessage *pPersistenceObjectManagerExecuteTransactionMessage = dynamic_cast<PersistenceObjectManagerExecuteTransactionMessage *> (pWaveMessage);
-        prismAssert (NULL != pPersistenceObjectManagerExecuteTransactionMessage, __FILE__,__LINE__);
+        waveAssert (NULL != pPersistenceObjectManagerExecuteTransactionMessage, __FILE__,__LINE__);
 
         if (FRAMEWORK_SUCCESS == frameworkStatus)
         {
@@ -2097,7 +2097,7 @@ void PersistenceObjectManager::xPathStringManagedObjectsCommitCallback (Framewor
     }
 
     WaveLinearSequencerContext* pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pContext);
-    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     pWaveLinearSequencerContext->executeNextStep (nextStepStatus);
 }
@@ -2120,7 +2120,7 @@ void PersistenceObjectManager::deleteXPathStringsMessageHandler (PersistenceObje
 void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage = dynamic_cast<PersistenceObjectManagerDeleteXPathStringsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
-    prismAssert (NULL != pPersistenceObjectManagerDeleteXPathStringsMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceObjectManagerDeleteXPathStringsMessage, __FILE__, __LINE__);
 
     vector<string>  xPathStrings                = pPersistenceObjectManagerDeleteXPathStringsMessage->getXPathStrings ();
     UI32            numberOfInputXPathStrings   = xPathStrings.size ();
@@ -2155,7 +2155,7 @@ void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (WaveLinearSe
     for (UI32 i = 0; i < numberOfExistingMatchingXPathManagedObjects; i++)
     {
         XPathStringManagedObject *pXPathStringManagedObject = dynamic_cast<XPathStringManagedObject *> ((*pWaveManagedObjectQueryResultVector)[i]);
-        prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
 
         (OrmRepository::getInstance ())->getSqlForDelete (pXPathStringManagedObject->getObjectId (), sqlString, OrmRepository::getWaveCurrentSchema ());
     }
@@ -2198,7 +2198,7 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsMessageHand
 void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage = dynamic_cast<PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
-    prismAssert (NULL != pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, __FILE__, __LINE__);
 
     vector<string>  xPathStrings                = pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage->getXPathStrings ();
     UI32            numberOfInputXPathStrings   = xPathStrings.size ();
@@ -2218,7 +2218,7 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (WaveL
         for (; itr != end; itr++)
         {
             XPathStringManagedObject *pXPathStringManagedObject = itr->second;
-            prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
 
             xPathStrings.push_back (pXPathStringManagedObject->getXPathString ());
             lastUpdatedTimestamps.push_back ((pXPathStringManagedObject->getLastModifiedTimeStamp ()).getUI64Representation ());
@@ -2287,7 +2287,7 @@ void PersistenceObjectManager::resetXPathStringsTimestampsStep (WaveLinearSequen
     for (UI32 i = 0; i < numberOfXPathManagedObjects; i++)
     {
         XPathStringManagedObject *pXPathStringManagedObject = dynamic_cast<XPathStringManagedObject *> ((*pWaveManagedObjectQueryResultVector)[i]);
-        prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
 
         WaveManagedObject *pWaveManagedObject = (*pWaveManagedObjectQueryResultVector)[i];
         pWaveManagedObject->setLastModifiedTimeStamp (currentDateTime);
@@ -2333,7 +2333,7 @@ void PersistenceObjectManager::flushAndRePopulateXPathStringToXPathStringManaged
         for (UI32 i = 0; i < numberOfXPathManagedObjects; i++)
         {
             XPathStringManagedObject *pXPathStringManagedObject = dynamic_cast<XPathStringManagedObject *> ((*pWaveManagedObjectQueryResultVector)[i]);
-            prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
 
             addXPathStringManagedObjectToCache (pXPathStringManagedObject);
         }
@@ -2356,7 +2356,7 @@ void PersistenceObjectManager::flushXPathStringToXPathStringManagedObjectMap ()
     for (; itr != end; itr++)
     {
         XPathStringManagedObject *pXPathStringManagedObject = itr->second;
-        prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
 
         xPathStringManagedObjectVector.push_back (pXPathStringManagedObject);
         // objects may be deleted here directly too. Though tis map is not mutex protected, only this thread accesses it.
@@ -2385,7 +2385,7 @@ void PersistenceObjectManager::addXPathStringManagedObjectToCache (XPathStringMa
 
     if (end != element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2406,7 +2406,7 @@ void PersistenceObjectManager::flushAndRePopulateWaveConfigManagedObjectCache ()
         for (UI32 i = 0; i < numberOfConfigs ; i++)
         {
             WaveConfigManagedObject *pWaveConfigManagedObject = dynamic_cast<WaveConfigManagedObject *> ((*pWaveManagedObjectQueryResultVector)[i]);
-            prismAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
 
             addWaveConfigManagedObjectToCache (pWaveConfigManagedObject);
         }
@@ -2424,7 +2424,7 @@ void PersistenceObjectManager::flushWaveConfigManagedObjectMap ()
     for (; itr != end; itr++)
     {
         WaveConfigManagedObject *pWaveConfigManagedObject = itr->second;
-        prismAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
 
         delete pWaveConfigManagedObject;
     }
@@ -2441,7 +2441,7 @@ string PersistenceObjectManager::getWaveConfigSerializedData ()
     for (; itr != end; itr++)
     {
         WaveConfigManagedObject *pWaveConfigManagedObject = itr->second;
-        prismAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
 
         string serializedConfig;
         pWaveConfigManagedObject->serialize2 (serializedConfig);
@@ -2465,7 +2465,7 @@ XPathStringManagedObject *PersistenceObjectManager::getXPathStringManagedObjectF
     if (end != element)
     {
         pXPathStringManagedObject = element->second;
-        prismAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pXPathStringManagedObject, __FILE__, __LINE__);
     }
 
     return pXPathStringManagedObject;
@@ -2533,7 +2533,7 @@ void PersistenceObjectManager::addDelayedTransactionMessageHandler (PersistenceO
 void PersistenceObjectManager::addDelayedTransactionStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     PersistenceObjectManagerAddDelayedTransactionMessage *pPersistenceObjectManagerAddDelayedTransactionMessage = dynamic_cast<PersistenceObjectManagerAddDelayedTransactionMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
-    prismAssert (NULL != pPersistenceObjectManagerAddDelayedTransactionMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPersistenceObjectManagerAddDelayedTransactionMessage, __FILE__, __LINE__);
 
     string      sql                     = pPersistenceObjectManagerAddDelayedTransactionMessage->getSql ();
     bool        isConfigurationChange   = pPersistenceObjectManagerAddDelayedTransactionMessage->getIsConfigurationChange ();
@@ -2543,7 +2543,7 @@ void PersistenceObjectManager::addDelayedTransactionStep (WaveLinearSequencerCon
     {
         trace (TRACE_LEVEL_FATAL, "PersistenceObjectManager::addDelayedTransactionStep : Currently we do not support delayed commit transactions for configuration changes.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (false == sql.empty ())
@@ -2616,7 +2616,7 @@ void PersistenceObjectManager::addWaveConfigManagedObjectToCache (WaveConfigMana
     if (end != element)
     {
         trace (TRACE_LEVEL_FATAL, string ("PersistenceObjectManager::addWaveConfigManagedObjectToCache: config already exist in cache, configName = : ") + configName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2636,7 +2636,7 @@ WaveConfigManagedObject *PersistenceObjectManager::getWaveConfigManagedObjectFro
     if (end != element)
     {
         pWaveConfigManagedObject = element->second;
-        prismAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveConfigManagedObject, __FILE__, __LINE__);
     }
 
     return pWaveConfigManagedObject;

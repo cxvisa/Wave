@@ -35,7 +35,7 @@ FrameworkLocalMessagingTestObjectManager2 *FrameworkLocalMessagingTestObjectMana
     if (NULL == pFrameworkLocalMessagingTestObjectManager2)
     {
         pFrameworkLocalMessagingTestObjectManager2 = new FrameworkLocalMessagingTestObjectManager2 ();
-        WaveNs::prismAssert (NULL != pFrameworkLocalMessagingTestObjectManager2, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkLocalMessagingTestObjectManager2, __FILE__, __LINE__);
     }
 
     return (pFrameworkLocalMessagingTestObjectManager2);
@@ -106,7 +106,7 @@ void FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage1Call
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -227,7 +227,7 @@ void FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage2Call
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -332,7 +332,7 @@ void FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Call
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -447,7 +447,7 @@ void FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Call
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {

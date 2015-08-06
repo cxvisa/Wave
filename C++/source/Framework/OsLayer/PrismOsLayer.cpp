@@ -303,7 +303,7 @@ void sigSegvHandler (int signal)
     cerr << endl;
     cerr << "Program received signal SIGSEGV, Exiting." << endl;
 
-    prismAssert (0, __FILE__, __LINE__);
+    waveAssert (0, __FILE__, __LINE__);
 
     Wave::waveExit ();
 }

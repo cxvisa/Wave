@@ -17,7 +17,7 @@ WaveManagedObjectSynchronousQueryContextForUpdate::WaveManagedObjectSynchronousQ
     : WaveManagedObjectSynchronousQueryContext (classToQueryFor)
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     m_WaveManagedObjectToAddUpdateAttributes = pWaveObjectManagerForCurrentThread->createInMemoryManagedObject (classToQueryFor);
 }
@@ -45,44 +45,44 @@ WaveManagedObject * WaveManagedObjectSynchronousQueryContextForUpdate::getWaveMa
 void WaveManagedObjectSynchronousQueryContextForUpdate::setAttributeObjectIdVectorAssociation (AttributeObjectIdVectorAssociation *pAttributeObjectIdVectorAssociation)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::setAttributeObjectIdVectorAssociation: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::addOrderField (const string &orderField, const bool &ascending)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::addOrderField: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::addNTupleFormatForOrderField (const string &keyName, const char &tupleSeparator, const UI32 &numberOfTuples)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::addNTupleFormatForOrderField: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::addSelectField (const string &selectField)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::addSelectField: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::addSelectFieldForObjectId (const string &selectField)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::addSelectFieldForObjectId: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::addSelectFields (const vector<string> &selectFields)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::addSelectFields: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 vector<string> WaveManagedObjectSynchronousQueryContextForUpdate::getSelectFields () const
 {
     vector<string> selectFields;
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getSelectFields: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return selectFields;
 }
@@ -91,7 +91,7 @@ vector<string> WaveManagedObjectSynchronousQueryContextForUpdate::getSelectField
 {
     vector<string> selectFields;
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getSelectFieldsInManagedObject: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return selectFields;
 }
@@ -99,7 +99,7 @@ vector<string> WaveManagedObjectSynchronousQueryContextForUpdate::getSelectField
 bool WaveManagedObjectSynchronousQueryContextForUpdate::getLoadOneToManyRelationships () const
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getLoadOneToManyRelationships: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return false;
 }
@@ -107,13 +107,13 @@ bool WaveManagedObjectSynchronousQueryContextForUpdate::getLoadOneToManyRelation
 void WaveManagedObjectSynchronousQueryContextForUpdate::setLoadOneToManyRelationships (const bool &loadOneToManyRelationships)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::setLoadOneToManyRelationships: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool WaveManagedObjectSynchronousQueryContextForUpdate::getLoadCompositions () const
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getLoadCompositions: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return false;
 }
@@ -121,19 +121,19 @@ bool WaveManagedObjectSynchronousQueryContextForUpdate::getLoadCompositions () c
 void WaveManagedObjectSynchronousQueryContextForUpdate::setLoadCompositions (const bool loadCompositions)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::setLoadCompositions: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::addLimitForQueryResults (UI32 limitForQueryResults)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::addLimitForQueryResults: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 UI32 WaveManagedObjectSynchronousQueryContextForUpdate::getPageSizeForQueryResults ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getPageSizeForQueryResults : This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (0);
 }
@@ -141,19 +141,19 @@ UI32 WaveManagedObjectSynchronousQueryContextForUpdate::getPageSizeForQueryResul
 void WaveManagedObjectSynchronousQueryContextForUpdate::setPageSizeForQueryResults (UI32 limitForQueryResults)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::setPageSizeForQueryResults : This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForUpdate::setPageQueryContext (WaveObjectManager* callingOm)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::setPageQueryContext : This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool WaveManagedObjectSynchronousQueryContextForUpdate::isPageQueryContextSet ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::isPageQueryContextSet : This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -161,7 +161,7 @@ bool WaveManagedObjectSynchronousQueryContextForUpdate::isPageQueryContextSet ()
 string WaveManagedObjectSynchronousQueryContextForUpdate::getPageQuerySql ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getPageQuerySql : This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return ("");
 }
@@ -174,7 +174,7 @@ void WaveManagedObjectSynchronousQueryContextForUpdate::moveOffsetOnSuccessfulQu
 string WaveManagedObjectSynchronousQueryContextForUpdate::getSqlWithPagingEnabled (WaveObjectManager* callingOm)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForUpdate::getSqlWithPagingEnabled: This method should never be invoked for this update context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return ("");
 }

@@ -96,7 +96,7 @@ void IpV4AddressUC::fromString (const string &pIpV4AddressUCInStringFormat)
     {
         string tempStringForIsConfigured = tempString.substr((stringLength + 1));
 
-        prismAssert (1 == tempStringForIsConfigured.size(), __FILE__, __LINE__);
+        waveAssert (1 == tempStringForIsConfigured.size(), __FILE__, __LINE__);
 
         tempIsUserConfigured = strtoul(tempStringForIsConfigured.c_str (), NULL, 10);
         m_pIsUserConfigured  = tempIsUserConfigured ? true : false;

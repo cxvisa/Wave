@@ -124,7 +124,7 @@ bool ConfigurationSegmentInformation::getParentIsSingletonAtIndex (const UI32 &i
 {
     UI32 numberOfManagedObjectClassNamesInOrmHieararchy = m_parentManagedObjectClassNames.size ();
 
-    prismAssert (index < numberOfManagedObjectClassNamesInOrmHieararchy, __FILE__, __LINE__);
+    waveAssert (index < numberOfManagedObjectClassNamesInOrmHieararchy, __FILE__, __LINE__);
 
     return m_parentIsSingletonFlags[index];
 }
@@ -133,7 +133,7 @@ string ConfigurationSegmentInformation::getParentManagedObjectClassNameAtIndex (
 {
     UI32 numberOfManagedObjectClassNamesInOrmHieararchy = m_parentManagedObjectClassNames.size ();
 
-    prismAssert (index < numberOfManagedObjectClassNamesInOrmHieararchy, __FILE__, __LINE__);
+    waveAssert (index < numberOfManagedObjectClassNamesInOrmHieararchy, __FILE__, __LINE__);
 
     return m_parentManagedObjectClassNames[index];
 }
@@ -176,10 +176,10 @@ AttributeType ConfigurationSegmentInformation::getAttributeTypeForAttributeInKey
     map<string, Attribute *>::const_iterator itr = m_userDefinedKeyCombinationToPAttributeMap.find (keyString);
     map<string, Attribute *>::const_iterator end = m_userDefinedKeyCombinationToPAttributeMap.end  ();
 
-    prismAssert (end != itr, __FILE__, __LINE__);
+    waveAssert (end != itr, __FILE__, __LINE__);
 
     Attribute *pAttribute = itr->second;
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     AttributeType keyAttributeType = pAttribute->getAttributeType ();
 
@@ -191,13 +191,13 @@ Attribute *ConfigurationSegmentInformation::getClonedAttributeForKey (const stri
     map<string, Attribute *>::const_iterator itr = m_userDefinedKeyCombinationToPAttributeMap.find (keyString);
     map<string, Attribute *>::const_iterator end = m_userDefinedKeyCombinationToPAttributeMap.end  ();
 
-    prismAssert (end != itr, __FILE__, __LINE__);
+    waveAssert (end != itr, __FILE__, __LINE__);
 
     Attribute *pAttribute = itr->second;
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     Attribute *pClonedAttribute = pAttribute->clone ();
-    prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
     return pClonedAttribute;
 }
@@ -225,13 +225,13 @@ void WaveConfigurationSegmentMap::addConfigurationSegmentInformation (const stri
 
     bool isAlreadyKnown = isAKnownConfigurationSegmentName (configurationSegmentName);
 
-    prismAssert (false == isAlreadyKnown, __FILE__, __LINE__);
+    waveAssert (false == isAlreadyKnown, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEVEL, "Adding configuration Segment Map " + configurationSegmentName + " : " + managedObjectClassName);
 
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = new ConfigurationSegmentInformation (managedObjectClassName, pWaveElement);
 
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     m_configurationSegmentMap[configurationSegmentName] = pConfigurationSegmentInformation;
 
@@ -249,13 +249,13 @@ string WaveConfigurationSegmentMap::getManagedObjectClassNameByConfigurationSegm
     if (endElement != element)
     {
         ConfigurationSegmentInformation *pConfigurationSegmentInformation = element->second;
-        prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
         managedObjectClassName = pConfigurationSegmentInformation->getManagedObjectClassName ();
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_configurationSegmentMapMutex.unlock ();
@@ -280,7 +280,7 @@ void WaveConfigurationSegmentMap::print ()
         configurationSegmentName = element->first;
 
         ConfigurationSegmentInformation *pConfigurationSegmentInformation = element->second;
-        prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
         managedObjectClassName   = pConfigurationSegmentInformation->getManagedObjectClassName ();
 
         trace (TRACE_LEVEL_INFO, string ("    ") +  i + string (". ") + configurationSegmentName + " : " + managedObjectClassName);
@@ -307,7 +307,7 @@ void WaveConfigurationSegmentMap::getAllConfigurationSegmentNamesAndManagedObjec
         configurationSegmentName = element->first;
 
         ConfigurationSegmentInformation *pConfigurationSegmentInformation = element->second;
-        prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
         managedObjectClassName   = pConfigurationSegmentInformation->getManagedObjectClassName ();
 
         configurationSegmentNames.push_back (configurationSegmentName);
@@ -387,10 +387,10 @@ void WaveConfigurationSegmentMap::updateConfigurationSegmentHierarchyInformation
     map<string, ConfigurationSegmentInformation *>::iterator  element       = m_configurationSegmentMap.find (configurationSegmentName);
     map<string, ConfigurationSegmentInformation *>::iterator  endElement    = m_configurationSegmentMap.end  ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = element->second;
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     pConfigurationSegmentInformation->setParentInformation (parentClassNames, parentIsSingletonFlags, parentIsSkippedForDisplay);
 
@@ -404,10 +404,10 @@ void WaveConfigurationSegmentMap::updateConfigurationSegmentParameterInformation
     map<string, ConfigurationSegmentInformation *>::iterator  element       = m_configurationSegmentMap.find (configurationSegmentName);
     map<string, ConfigurationSegmentInformation *>::iterator  endElement    = m_configurationSegmentMap.end  ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = element->second;
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     pConfigurationSegmentInformation->setParameters (isSingleton, nodeSpecificSupported, partitionSupported);
 
@@ -425,12 +425,12 @@ ConfigurationSegmentInformation *WaveConfigurationSegmentMap::getPConfigurationS
 
     // TODO :   Should not be called during initialization. Verify this.
     //          Will work only in combined data provider (Wsmd). Otherwise, it will crash.
-    // prismAssert (endElement != element, __FILE__, __LINE__);
+    // waveAssert (endElement != element, __FILE__, __LINE__);
 
     if (endElement != element)
     {
         pConfigurationSegmentInformation = element->second;
-        prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
     }
 
     m_configurationSegmentMapMutex.unlock ();
@@ -511,7 +511,7 @@ void WaveConfigurationSegmentMap::addToConfigSegmentImportantInfoMap  (const str
     if (endElement != element)
     {
         // We should not add an already existing Config Segment Name
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_configSegmentImportantInfoMapMutex.unlock ();
@@ -549,10 +549,10 @@ ConfigurationSegmentImportantInfo::ConfigurationSegmentImportantInfo (const stri
         m_serverName (serverName),
         m_pWaveClientSynchronousConnection (pWaveClientSynchronousConnection)
 {
-    prismAssert ("" != m_configurationSegmentName, __FILE__, __LINE__);
-    prismAssert ("" != m_managedObjectName, __FILE__, __LINE__);
-    prismAssert ("" != m_serverName, __FILE__, __LINE__);
-    prismAssert (NULL != m_pWaveClientSynchronousConnection, __FILE__, __LINE__);
+    waveAssert ("" != m_configurationSegmentName, __FILE__, __LINE__);
+    waveAssert ("" != m_managedObjectName, __FILE__, __LINE__);
+    waveAssert ("" != m_serverName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveClientSynchronousConnection, __FILE__, __LINE__);
 }
 
 ConfigurationSegmentImportantInfo::~ConfigurationSegmentImportantInfo ()
@@ -609,7 +609,7 @@ void WaveConfigurationSegmentMap::cacheIsLocalManagedObjectInformation ()
     for (; endElement != element; element++)
     {
         ConfigurationSegmentInformation    *pConfigurationSegmentInformation    = element->second;
-        prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
         string  managedObjectClassName = pConfigurationSegmentInformation->getManagedObjectClassName ();
         bool    isLocalManagedObject   = OrmRepository::isALocalManagedObject (managedObjectClassName);

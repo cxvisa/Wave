@@ -86,11 +86,11 @@ WaveCommandLineInterface::WaveCommandLineInterface (const string &serverIpAddres
         vector<string>  output       = cliMessgae.getOutput              ();
         YangElement    *pYangElement = YinParser::parseYangUserInterface (output[0]);
 
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         m_pYangUserInterface = dynamic_cast<YangUserInterface *> (pYangElement);
 
-        prismAssert (NULL != m_pYangUserInterface, __FILE__, __LINE__);
+        waveAssert (NULL != m_pYangUserInterface, __FILE__, __LINE__);
 
         m_pYangUserInterface->computeFirstDataElementInHierarchy    ();
         m_pYangUserInterface->computeIsConfiguration                ();
@@ -131,7 +131,7 @@ void WaveCommandLineInterface::connectToServer ()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -147,7 +147,7 @@ void WaveCommandLineInterface::reconnectToServer ()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -273,7 +273,7 @@ void WaveCommandLineInterface::sigSegvHandler (int signal)
     cout << endl;
     //cout << "Program received signal SIGSEGV, Exiting." << endl;
 
-    prismAssert (0, __FILE__, __LINE__);
+    waveAssert (0, __FILE__, __LINE__);
 
     exit (0);
 }
@@ -502,7 +502,7 @@ CommandLineInterfaceEntry *WaveCommandLineInterface::getPCurrentModeCommandLineI
 {
     WaveCommandLineInterface *pWaveCommandLineInterface = getInstance ();
 
-    prismAssert (NULL != pWaveCommandLineInterface, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveCommandLineInterface, __FILE__, __LINE__);
 
     return (pWaveCommandLineInterface->m_pCurrentModeCommandLineInterfacEntry);
 }

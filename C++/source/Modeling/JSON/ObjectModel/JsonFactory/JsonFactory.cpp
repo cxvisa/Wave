@@ -34,7 +34,7 @@ JsonValue  *JsonFactory::createJsonValueFromString (string &input)
     {
         JsonArray *pJsonArray = new JsonArray ();
 
-        prismAssert (NULL != pJsonArray, __FILE__, __LINE__);
+        waveAssert (NULL != pJsonArray, __FILE__, __LINE__);
 
         pJsonArray->fromString (input);
 
@@ -44,7 +44,7 @@ JsonValue  *JsonFactory::createJsonValueFromString (string &input)
     {
         JsonObject *pJsonObject = new JsonObject ();
 
-        prismAssert (NULL != pJsonObject, __FILE__, __LINE__);
+        waveAssert (NULL != pJsonObject, __FILE__, __LINE__);
 
         pJsonObject->fromString (input);
 
@@ -54,7 +54,7 @@ JsonValue  *JsonFactory::createJsonValueFromString (string &input)
     {
         JsonString *pJsonString = new JsonString ();
 
-        prismAssert (NULL != pJsonString, __FILE__, __LINE__);
+        waveAssert (NULL != pJsonString, __FILE__, __LINE__);
 
         pJsonString->fromString (input);
 
@@ -82,7 +82,7 @@ JsonValue  *JsonFactory::createJsonValueFromString (string &input)
         {
             JsonNumber *pJsonNumber = new JsonNumber ();
 
-            prismAssert (NULL != pJsonNumber, __FILE__, __LINE__);
+            waveAssert (NULL != pJsonNumber, __FILE__, __LINE__);
 
             pJsonNumber->fromString (input);
 

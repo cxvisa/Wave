@@ -35,7 +35,7 @@ WaveMessage *DatabaseObjectManagerGetDbAccessDetailsWorker::createMessageInstanc
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DatabaseObjectManagerGetDbAccessDetailsWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 

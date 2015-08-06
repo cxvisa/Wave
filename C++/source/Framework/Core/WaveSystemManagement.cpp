@@ -72,7 +72,7 @@ void WaveSystemManagement::initialize (const WaveMainConfiguration &waveMainConf
             trace (TRACE_LEVEL_ERROR, "WaveSystemManagement::initialize : Could not Change Directory to " + waveMainConfiguration.getChangeDirectoryTo ());
             trace (TRACE_LEVEL_ERROR, "WaveSystemManagement::initialize : Reason listed below :");
             perror ("WAVE System Management");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 

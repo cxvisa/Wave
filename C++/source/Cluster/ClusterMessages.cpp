@@ -28,7 +28,7 @@ ClusterObjectManagerCreateClusterMessage::ClusterObjectManagerCreateClusterMessa
     UI32 numberOfSecondaryNodeNames = secondaryNodeNames.size ();
     UI32 numberOfSecondaryNodePorts = secondaryNodePorts.size ();
 
-    prismAssert (numberOfSecondaryNodeNames == numberOfSecondaryNodePorts, __FILE__, __LINE__);
+    waveAssert (numberOfSecondaryNodeNames == numberOfSecondaryNodePorts, __FILE__, __LINE__);
 
     setNSecondaryNodes (numberOfSecondaryNodeNames);
 
@@ -51,7 +51,7 @@ ClusterObjectManagerCreateClusterMessage::ClusterObjectManagerCreateClusterMessa
     UI32 numberOfSecondaryNodeNames = secondaryNodeNames.size ();
     UI32 numberOfSecondaryNodePorts = secondaryNodePorts.size ();
 
-    prismAssert (numberOfSecondaryNodeNames == numberOfSecondaryNodePorts, __FILE__, __LINE__);
+    waveAssert (numberOfSecondaryNodeNames == numberOfSecondaryNodePorts, __FILE__, __LINE__);
 
     setNSecondaryNodes (numberOfSecondaryNodeNames);
 
@@ -219,7 +219,7 @@ UI32 ClusterObjectManagerCreateClusterMessage::getNodeStatus (const string &node
     }
 
     WaveNs::trace (TRACE_LEVEL_FATAL, string ("ClusterObjectManagerCreateClusterMessage::getNodeStatus : This node (") + nodeName + ":" + nodePort + ") status is not set.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (WAVE_MESSAGE_ERROR);
 }
 void ClusterObjectManagerCreateClusterMessage::setIsAddNodeForSpecialCaseFlag (const bool &isAddNodeForSpecialCase)
@@ -451,7 +451,7 @@ void ClusterObjectManagerRejoinNodeMessage::setNodeStatus (const string &nodeIP,
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("ClusterObjectManagerRejoinNodeMessage::setNodeStatus : This node (") + nodeIP + ":" + nodePort + ") status is already set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -468,7 +468,7 @@ ResourceId ClusterObjectManagerRejoinNodeMessage::getNodeStatus (const string &n
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("ClusterObjectManagerRejoinNodeMessage::getNodeStatus : This node (") + nodeIP + ":" + nodePort + ") status is not set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR);
     }
 }
@@ -1197,7 +1197,7 @@ void ClusterConfigObjectManagerGetClusterInfoMessage::getSecondaryNodeDebugInfo(
 										ResourceId & secondaryNodeGenericStatus,
 										ResourceId & secondaryNodeSpecificStatus) const
 {
-   prismAssert(index<m_secondaryNodeIPAddresses.size(),__FILE__,__LINE__);
+   waveAssert(index<m_secondaryNodeIPAddresses.size(),__FILE__,__LINE__);
 
    secondaryNodeIpAddress = m_secondaryNodeIPAddresses[index];
    secondaryNodePort = m_secondaryNodePorts[index];

@@ -39,7 +39,7 @@ void WaveConditionSetBuilder::WaveConditionSet::addAttributeToConditionSet (Attr
     if (NULL == pAttribute)
     {
         trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::WaveConditionSet::addAttributeToConditionSet : Null attribute detected.  Please instantiate a new Attribute before adding it to the condition set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_attributes.push_back (pAttribute);
@@ -55,7 +55,7 @@ string WaveConditionSetBuilder::WaveConditionSet::getSql ()
     if (0 == numberOfAttributes)
     {
         trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::WaveConditionSet::getSql : No attributes have been added to condition set: " + m_conditionSetName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     sqlString += "(";
@@ -78,7 +78,7 @@ string WaveConditionSetBuilder::WaveConditionSet::getSql ()
             {
                 // No other concatenation operators supported
                 trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::WaveConditionSet::getSql : Unsupported concatenation operator defined.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }   
         }
     }
@@ -160,7 +160,7 @@ string WaveConditionSetBuilder::getSql () const
     if ("" == m_conditionSetCombinationSql)
     {
         trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::getSql : A condition set combination has not been defined.  Please define a condition set combination.");       
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     trace (TRACE_LEVEL_DEBUG, string ("WaveConditionSetBuilder::getSql : Combined SQL WHERE Clause: \"") + m_conditionSetCombinationSql + "\"");
@@ -175,7 +175,7 @@ void WaveConditionSetBuilder::createConditionSet (const string &conditionSetName
     if (true == conditionSetFound)
     {
         trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::createConditionSet : Condition set \"" + conditionSetName + "\" is already created!  Condition set names need to be unique.");       
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveConditionSet *pWaveConditionSet = new WaveConditionSet (conditionSetName);
@@ -190,7 +190,7 @@ void WaveConditionSetBuilder::addAttributeToConditionSet (const string &conditio
     if (false == conditionSetFound)
     {
         trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::addAttributeToConditionSet : Condition set \"" + conditionSetName + "\" is not found!  Please create the condition set before adding any attributes to the condition set.");     
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_conditionSets[conditionSetName]->addAttributeToConditionSet (pAttribute, concatenationOperation, conditionOperation);
@@ -206,7 +206,7 @@ void WaveConditionSetBuilder::combineConditionSets (const string &conditionSetCo
     if (false == isConditionSetCombinationSyntaxCorrect (conditionSetCombination))
     {
         trace (TRACE_LEVEL_FATAL, "WaveConditionSetBuilder::combineConditionSets : Condition set combination \"" + conditionSetCombination + "\" has syntax errors!  Please verify the condition set combination syntax.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     // Substitute combination set names for SQL equivalent

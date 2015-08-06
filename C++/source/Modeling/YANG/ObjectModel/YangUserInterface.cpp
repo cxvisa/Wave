@@ -83,7 +83,7 @@ void YangUserInterface::prepareYangElementTreeForData ()
     for (UI32 i = 0; i < numberOfChildElements; i++)
     {
         YangElement *pChildYangElement = pChildYangElements[i];
-        prismAssert (NULL != pChildYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pChildYangElement, __FILE__, __LINE__);
 
         YangModule *pYangModule = dynamic_cast<YangModule *> (pChildYangElement);
 
@@ -93,7 +93,7 @@ void YangUserInterface::prepareYangElementTreeForData ()
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);    // Rolling reboot case.
+            waveAssert (false, __FILE__, __LINE__);    // Rolling reboot case.
         }
     }
 
@@ -104,7 +104,7 @@ void YangUserInterface::prepareYangElementTreeForData ()
     for (UI32 i = 0; i < numberOfChildYangModules; i++)
     {
         YangModule *pYangModule = pChildYangModules[i];
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         vector<YangElement *>  &pChildElementsOfYangModule          = pYangModule->getChildElements ();
         UI32                    numberOfchildElementsOfYangModule   = pChildElementsOfYangModule.size ();
@@ -112,7 +112,7 @@ void YangUserInterface::prepareYangElementTreeForData ()
         for (UI32 j = 0; j < numberOfchildElementsOfYangModule; j++)
         {
             YangElement *pYangElement = pChildElementsOfYangModule[j];
-            prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+            waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
             if (true == pYangElement->isYangElementForData ())
             {
@@ -128,7 +128,7 @@ void YangUserInterface::prepareYangElementTreeForData ()
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->setupYangElementTreeForData  ();
     }
@@ -161,7 +161,7 @@ void YangUserInterface::debugPrintYangElementTreeForData (const string &outputFi
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->debugPrintChildElementInforamtionForData (pOutputFile, depth);
     }
@@ -176,7 +176,7 @@ void YangUserInterface::propagateNodeSpecificAndMultiPartitionInformationInDataE
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->propagateNodeSpecificInformation ();
     }
@@ -184,7 +184,7 @@ void YangUserInterface::propagateNodeSpecificAndMultiPartitionInformationInDataE
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->propagateMultiPartitionInformation ();
     }
@@ -204,7 +204,7 @@ void YangUserInterface::prepareHierarchyInformationForYangElementsInTreeForData 
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->prepareHierarchyInformation ();
     }
@@ -214,7 +214,7 @@ void YangUserInterface::prepareHierarchyInformationForYangElementsInTreeForData 
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->prepareSetOfKnownDisplayNames ();
     }
@@ -222,7 +222,7 @@ void YangUserInterface::prepareHierarchyInformationForYangElementsInTreeForData 
     for (UI32 i = 0; i < numberOfModuleChildElementsForData; i++)
     {
         YangElement *pYangElement = m_moduleChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         const set<string> &knownDisplayNamesForChildElement = pYangElement->getKnownDisplayNames ();
 
@@ -242,7 +242,7 @@ void YangUserInterface::prepareHierarchyInformationForYangElementsInTreeForData 
     {
         YangElement *pChildElement = pChildElements[i];
 
-        prismAssert (NULL != pChildElement, __FILE__, __LINE__);
+        waveAssert (NULL != pChildElement, __FILE__, __LINE__);
 
         pChildElement->computeIsInLocalConfigSubtree ();
     }
@@ -277,7 +277,7 @@ void YangUserInterface::printConfiguration (YangDisplayConfigurationContext *pYa
     for (UI32 i = 0; i < numberOfSelectedChildElementsForData; i++)
     {
         YangElement *pYangElement = selectedChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         pYangElement->displayConfiguration1 (pYangDisplayConfigurationContext);
     }
@@ -295,7 +295,7 @@ YangElement *YangUserInterface::getParentYangModuleForGrandChildYangElementByNam
     for (UI32 i = 0; i < numberOfChildElements; i++)
     {
         YangElement *pChildYangElement = pChildYangElements[i];
-        prismAssert (NULL != pChildYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pChildYangElement, __FILE__, __LINE__);
 
         YangModule *pYangModule = dynamic_cast<YangModule *> (pChildYangElement);
 

@@ -119,7 +119,7 @@ void ManagedObjectSchemaInfo::addFieldTypeTuple (const string &fieldName, const 
     if (iter != fieldmap->end ())
     {
         trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfo::addFieldTypeTuple : Field '" + fieldName + "' already exists in fieldTypeMap for " + getName ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     (*fieldmap)[fieldName] = fieldType;
@@ -132,7 +132,7 @@ void ManagedObjectSchemaInfo::addUserDefinedFieldTypeTuple (const string &userDe
     if (iter != m_userDefinedKeyCombinationsMap.end ())
     {
         trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfo::addUserDefinedFieldTypeTuple : User Defined Field '" + userDefinedFieldName + "' already exists in userDefinedKeyCombinationsMap for " + getName ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_userDefinedKeyCombinationsMap[userDefinedFieldName] = userDefinedFieldType;
@@ -271,7 +271,7 @@ auto_ptr<RelationFieldSchemaDifferences> ManagedObjectSchemaInfo::getRelationFie
     {
         map<string, string>::const_iterator lhs_iter = m_relationFieldTypeMap.find (temp_iter->first);
         map<string, string>::const_iterator rhs_iter = rhs.m_relationFieldTypeMap.find (temp_iter->first);
-        prismAssert (lhs_iter != m_relationFieldTypeMap.end () && rhs_iter != rhs.m_relationFieldTypeMap.end (), __FILE__, __LINE__);
+        waveAssert (lhs_iter != m_relationFieldTypeMap.end () && rhs_iter != rhs.m_relationFieldTypeMap.end (), __FILE__, __LINE__);
         if (lhs_iter->second != rhs_iter->second)
         {
             /*
@@ -399,7 +399,7 @@ auto_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getUserDefinedKeyDiffe
     {
         map<string, string>::const_iterator lhs_iter = m_userDefinedKeyCombinationsMap.find (temp_iter->first);
         map<string, string>::const_iterator rhs_iter = rhs.m_userDefinedKeyCombinationsMap.find (temp_iter->first);
-        prismAssert (lhs_iter != m_userDefinedKeyCombinationsMap.end () && rhs_iter != rhs.m_userDefinedKeyCombinationsMap.end (), __FILE__, __LINE__);
+        waveAssert (lhs_iter != m_userDefinedKeyCombinationsMap.end () && rhs_iter != rhs.m_userDefinedKeyCombinationsMap.end (), __FILE__, __LINE__);
         
         if (lhs_iter->second != rhs_iter->second)
         {
@@ -492,7 +492,7 @@ auto_ptr<FieldSchemaDifferences> ManagedObjectSchemaInfo::getFieldObjectDifferen
     {
         map<string, string>::const_iterator lhs_iter = m_simpleFieldTypeMap.find (temp_iter->first);
         map<string, string>::const_iterator rhs_iter = rhs.m_simpleFieldTypeMap.find (temp_iter->first);
-        prismAssert (lhs_iter != m_simpleFieldTypeMap.end () && rhs_iter != rhs.m_simpleFieldTypeMap.end (), __FILE__, __LINE__);
+        waveAssert (lhs_iter != m_simpleFieldTypeMap.end () && rhs_iter != rhs.m_simpleFieldTypeMap.end (), __FILE__, __LINE__);
         if (lhs_iter->second != rhs_iter->second)
         {
             string rhsWaveAttributeType, lhsWaveAttributeType;
@@ -575,7 +575,7 @@ string ManagedObjectSchemaInfo::getSQLForTableUpdate (const string &schema, cons
             else
             {
                 tracePrintf (TRACE_LEVEL_INFO, false, false, "ManagedObjectSchemaInfo::getSQLForTableUpdate : Sql String returned from OrmRepository should never be a NULL string when Adding a Column. Type : '%s' Attribute String : '%s'\n", (iter->first).c_str (), (iter->second).c_str ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
 
@@ -597,7 +597,7 @@ string ManagedObjectSchemaInfo::getSQLForTableUpdate (const string &schema, cons
             else 
             {
                 tracePrintf (TRACE_LEVEL_INFO, false, false, "ManagedObjectSchemaInfo::getSQLForTableUpdate : Sql String returned from OrmRepository should never be a NULL string. Type : '%s' Attribute String : '%s'\n", (iter->first).c_str (), (iter->second).c_str ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
 
@@ -663,7 +663,7 @@ void ManagedObjectSchemaInfo::populateRelationReferencePointers (ManagedObjectSc
     	ManagedObjectSchemaInfo* toObject = pManagedObjectSchemaInfoRepository->findSchemaInfoObject(toObjectName);
 	    tracePrintf (TRACE_LEVEL_DEBUG, true,false,"ManagedObjectSchemaInfo::populateRelationReferencePointers: toObjectName %s,", toObjectName.c_str());
 
-    	prismAssert(NULL!=toObject,__FILE__,__LINE__);
+    	waveAssert(NULL!=toObject,__FILE__,__LINE__);
 	    tracePrintf (TRACE_LEVEL_DEBUG, true,false,"ManagedObjectSchemaInfo::populateRelationReferencePointers: toObjectReferenceCount Before %d,", toObject->getReferenceCount());
 
 
@@ -717,7 +717,7 @@ void ManagedObjectSchemaInfo::processRelationsAddedInNewSchema(const vector<Rela
 
       ManagedObjectSchemaInfo* toObject = dbManagedObjectSchemaInfoRepository.findSchemaInfoObject(relatedToTableName);
 
-	  prismAssert (NULL != toObject, __FILE__, __LINE__);
+	  waveAssert (NULL != toObject, __FILE__, __LINE__);
 	  
       RelationReferenceCountPointer<ManagedObjectSchemaInfo>*   pRelationReferenceCountPointer = new RelationReferenceCountPointer<ManagedObjectSchemaInfo>(toObject);
 
@@ -761,7 +761,7 @@ void ManagedObjectSchemaInfo::processRelationsAddedInNewSchema(const vector<Rela
 
             //-- generate SQL for auxiliary table corresponding to each relationship
 	        OrmTable* pOrmTable = OrmRepository::getTableByName(m_name);
-	        prismAssert (NULL!=pOrmTable, __FILE__,__LINE__);
+	        waveAssert (NULL!=pOrmTable, __FILE__,__LINE__);
 	        sqlForAuxilliaryTablesForCurrentSchema+=  pOrmTable->getSqlForCreate2 (OrmRepository::getWaveCurrentSchema(), relationName);
 	        sqlForAuxilliaryTablesForStartSchema+=  pOrmTable->getSqlForCreate2 (OrmRepository::getWaveStartSchema(), relationName);
 
@@ -991,13 +991,13 @@ LeafManagedObjectSchemaInfo::~LeafManagedObjectSchemaInfo ()
 void LeafManagedObjectSchemaInfo::addSchemaInfoObject (ManagedObjectSchemaInfo *child)
 {
     trace (TRACE_LEVEL_FATAL, "LeafManagedObjectSchemaInfo :: addSchemaInfoObject : Adding child node " + child->getName () + " to a leaf object " + getName () + " is not allowed");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void LeafManagedObjectSchemaInfo::removeInfoObject (ManagedObjectSchemaInfo *child)
 {
     trace (TRACE_LEVEL_FATAL, "LeafManagedObjectSchemaInfo :: removeInfoObject : Can not remove child node " + child->getName () + " from a leaf object " + getName ());
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 vector<ManagedObjectSchemaInfo *> *LeafManagedObjectSchemaInfo::getChildSchemaInfoObjects () 
@@ -1035,7 +1035,7 @@ void  CompositeManagedObjectSchemaInfo::getClassIdsOfTheEntireSubTree (vector<UI
    {
        ManagedObjectSchemaInfo* pManagedObjectSchemaInfo = *schemaInfoIterator;
        CompositeManagedObjectSchemaInfo* pCompositeManagedObjectSchemaInfo = dynamic_cast<CompositeManagedObjectSchemaInfo* > (pManagedObjectSchemaInfo);
-       prismAssert (NULL!= pCompositeManagedObjectSchemaInfo,__FILE__, __LINE__);
+       waveAssert (NULL!= pCompositeManagedObjectSchemaInfo,__FILE__, __LINE__);
        pCompositeManagedObjectSchemaInfo->getClassIdsOfTheEntireSubTree (classIdsOfAllNodesInTheSubTree); 
    }
 
@@ -1157,7 +1157,7 @@ void ManagedObjectSchemaInfo::getSqlToAddUserDefinedKeyUniqueConstraint (string 
             string userDefinedKeyField = udkcInOrder [keyNumber];
             map<string, string>::const_iterator iter = m_userDefinedKeyCombinationsMap.find(userDefinedKeyField);
 
-            prismAssert (m_userDefinedKeyCombinationsMap.end () != iter, __FILE__, __LINE__);
+            waveAssert (m_userDefinedKeyCombinationsMap.end () != iter, __FILE__, __LINE__);
 
             string userDefinedKeyType = iter->second;
 
@@ -1300,7 +1300,7 @@ void ManagedObjectSchemaInfo::getCompositionChildrenForATable (ManagedObjectSche
             // push all its derived classes also as the composition children.
             ManagedObjectSchemaInfo* pComposedChildSchemaInfoObject = pManagedObjectSchemaInfoRepository->findSchemaInfoObject (toObjectName);
     
-            prismAssert (NULL != pComposedChildSchemaInfoObject, __FILE__, __LINE__);
+            waveAssert (NULL != pComposedChildSchemaInfoObject, __FILE__, __LINE__);
 
             vector<ManagedObjectSchemaInfo *> *pInheritedChildren = pComposedChildSchemaInfoObject->getChildSchemaInfoObjects ();
 

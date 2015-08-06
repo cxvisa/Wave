@@ -219,7 +219,7 @@ WaveClientReceiverObjectManager *WaveClientReceiverObjectManager:: getInstance (
 {
     static WaveClientReceiverObjectManager *pWaveClientReceiverObjectManager = new WaveClientReceiverObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveClientReceiverObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveClientReceiverObjectManager, __FILE__, __LINE__);
 
     return (pWaveClientReceiverObjectManager);
 }
@@ -239,7 +239,7 @@ void WaveClientReceiverObjectManager::initialize (WaveAsynchronousContextForBoot
 
     m_pServerSocketForWaveManagementInterfaceServers = new ServerStreamingSocket (managementInterfaceClientReceiverPort, 1);
 
-    prismAssert (NULL != m_pServerSocketForWaveManagementInterfaceServers, __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerSocketForWaveManagementInterfaceServers, __FILE__, __LINE__);
 
     status = m_pServerSocketForWaveManagementInterfaceServers->getStatus ();
 
@@ -255,7 +255,7 @@ void WaveClientReceiverObjectManager::initialize (WaveAsynchronousContextForBoot
 
                 m_pServerSocketForWaveManagementInterfaceServers = new ServerStreamingSocket (managementInterfaceClientReceiverPort, 1);
 
-                prismAssert (NULL != m_pServerSocketForWaveManagementInterfaceServers, __FILE__, __LINE__);
+                waveAssert (NULL != m_pServerSocketForWaveManagementInterfaceServers, __FILE__, __LINE__);
 
                 status = m_pServerSocketForWaveManagementInterfaceServers->getStatus ();
 
@@ -303,7 +303,7 @@ void WaveClientReceiverObjectManager::boot (WaveAsynchronousContextForBootPhases
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "WaveClientReceiverObjectManager::boot : Awaiting NEW Management Interface Client Connections...");
 

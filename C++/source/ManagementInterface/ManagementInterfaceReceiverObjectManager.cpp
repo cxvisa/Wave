@@ -220,7 +220,7 @@ ManagementInterfaceReceiverObjectManager *ManagementInterfaceReceiverObjectManag
     if (NULL == pManagementInterfaceReceiverObjectManager)
     {
         pManagementInterfaceReceiverObjectManager = new ManagementInterfaceReceiverObjectManager ();
-        WaveNs::prismAssert (NULL != pManagementInterfaceReceiverObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pManagementInterfaceReceiverObjectManager, __FILE__, __LINE__);
     }
 
     return (pManagementInterfaceReceiverObjectManager);
@@ -237,7 +237,7 @@ void ManagementInterfaceReceiverObjectManager::initialize (WaveAsynchronousConte
 
     m_pServerSocketForManagementInterfaceClients = new ServerStreamingSocket (FrameworkToolKit::getManagementInterfaceReceiverPort (), 1);
 
-    prismAssert (NULL != m_pServerSocketForManagementInterfaceClients, __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerSocketForManagementInterfaceClients, __FILE__, __LINE__);
 
     status = m_pServerSocketForManagementInterfaceClients->getStatus ();
 
@@ -287,7 +287,7 @@ void ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventH
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Awaiting NEW Management Interface Client Connections...");
 

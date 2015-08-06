@@ -239,7 +239,7 @@ ResourceId ManagedObjectSchemaInfoRepository::removeSchemaInfoObjectAndGetSql (M
                 if (!isInternalCall)
                 {
                     tracePrintf (TRACE_LEVEL_FATAL, true, false, "ManagedObjectSchemaInfoRepository::removeSchemaInfoObject: called more than once for \"%s\"", myMOName.c_str());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
                 existsAlready = true;
                 break;
@@ -296,7 +296,7 @@ bool ManagedObjectSchemaInfoRepository::operator== (const ManagedObjectSchemaInf
     {
         UI32 tableId = (*iter1).first;
         const ManagedObjectSchemaInfo *mo1 = (*iter1).second;
-        prismAssert (mo1 != NULL, __FILE__, __LINE__);
+        waveAssert (mo1 != NULL, __FILE__, __LINE__);
 
         map<UI32, ManagedObjectSchemaInfo *>::const_iterator iter2 = rhs.m_schemaInfoByIdMap.find (tableId);
         if (iter2 == rhs.m_schemaInfoByIdMap.end ())
@@ -382,7 +382,7 @@ auto_ptr<ManagedObjectSchemaDifferences> ManagedObjectSchemaInfoRepository::getM
         // on the LHS and RHS before adding to the changed set
         map<string, ManagedObjectSchemaInfo *>::const_iterator lhs_iter = m_schemaInfoByNameMap.find (temp_iter->first);
         map<string, ManagedObjectSchemaInfo *>::const_iterator rhs_iter = rhs.m_schemaInfoByNameMap.find (temp_iter->first);
-        prismAssert (lhs_iter != m_schemaInfoByNameMap.end () && rhs_iter != rhs.m_schemaInfoByNameMap.end (), __FILE__, __LINE__);
+        waveAssert (lhs_iter != m_schemaInfoByNameMap.end () && rhs_iter != rhs.m_schemaInfoByNameMap.end (), __FILE__, __LINE__);
 
         if (*(lhs_iter->second) != *(rhs_iter->second))
         {
@@ -458,7 +458,7 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
 	    if (pRhsObject == NULL)
     	{
 	        trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Cannot find MO " + pLhsObject->getName ());
-	        prismAssert (false, __FILE__, __LINE__);
+	        waveAssert (false, __FILE__, __LINE__);
     	}
 
         tracePrintf (TRACE_LEVEL_INFO, false, false, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Finding changes for MO : %s \n",pLhsObject->getName ().c_str() );
@@ -484,7 +484,7 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
                 || (inheritanceDiffStatus == FRAMEWORK_STATUS_INCONSISTENT_MANAGED_OBJECTS))
         {
             trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Inconsistency detected while comparing managed object '" + pLhsObject->getName () + "'. ");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if ((fieldDiffStatus == FRAMEWORK_STATUS_NO_CHANGES)
                     && (relationFieldDiffStatus == FRAMEWORK_STATUS_NO_CHANGES)
@@ -492,7 +492,7 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
                     && (inheritanceDiffStatus == FRAMEWORK_STATUS_NO_CHANGES))
         {
             trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : No differences found in '" + pLhsObject->getName () + "' even though changes were detected. ");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (fieldDiffStatus == FRAMEWORK_STATUS_LOCAL_GLOBAL_CHANGE_NOT_SUPPORTED)
         {   
@@ -577,7 +577,7 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
     if (FRAMEWORK_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Framework cannot convert DB during upgrade/downgrade for the above schema changes.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
         FrameworkToolKit::consolePrint ("--------------------------------------------------------------------------------------------------------");
         FrameworkToolKit::consolePrint ("Schema changes detected are not supported by schema conversion logic. Please, check.");
         FrameworkToolKit::consolePrint ("--------------------------------------------------------------------------------------------------------");
@@ -590,7 +590,7 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
     if (removalsVec.size () > 0)
     {
         trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Deleteion of MOs are not supported.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
         FrameworkToolKit::consolePrint ("--------------------------------------------------------------------------------------------------------------------");
         FrameworkToolKit::consolePrint ("Schema changes detected 'Deletion of following MOs' which will break Capricorn to Leo downgrade. Please, take care.");
 
@@ -610,14 +610,14 @@ ResourceId ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences (
         if (0 != (mIterator->second).getRemovedFieldsInfo ().size())    // || 0 != (mIterator->second).getChangedFieldsInfo ().size())
         {
             trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Deletion of simple fields are not supported.");
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
             FrameworkToolKit::consolePrint ("--------------------Unsupported schema change detected : 'Deletion of simple field/s' for :---------------------");
             FrameworkToolKit::consolePrint (mIterator->first.c_str());
         }
         if (0 != (mIterator->second).getRemovedRelations ().size() || 0 != (mIterator->second).getChangedRelations ().size())
         {
             trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::computeDatabaseSchemaDifferences : Deletion or Modification of relation fields are not supported.");
-            //prismAssert (false, __FILE__, __LINE__);
+            //waveAssert (false, __FILE__, __LINE__);
             FrameworkToolKit::consolePrint ("--------------------Unsupported schema change detected : 'Deletion or Modification of relation field/s' for :---------------");
             FrameworkToolKit::consolePrint (mIterator->first.c_str());
         }
@@ -830,7 +830,7 @@ ResourceId ManagedObjectSchemaInfoRepository::getSqlToRemoveManagedObject (strin
     if ((0 < pRemovedManagedObject->getCountOfRelationshipReferecePointers ()) || (0 < pRemovedManagedObject->getReferenceCount ()))
     {
         tracePrintf (TRACE_LEVEL_FATAL, true, false, "ManagedObjectSchemaInfo::getSqlToRemoveManagedObject : few relationships still pointed by or are pointing to \"%s\"", pRemovedManagedObject->getName().c_str());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     // 1 
@@ -886,7 +886,7 @@ ResourceId ManagedObjectSchemaInfoRepository::getSqlToRemoveEntriesFromAuxillary
 
     // 1.
     ManagedObjectSchemaInfo *schemaInfoObject = dbRepository.findSchemaInfoObject (tableName);
-    prismAssert (NULL != schemaInfoObject, __FILE__, __LINE__);
+    waveAssert (NULL != schemaInfoObject, __FILE__, __LINE__);
 
     UI32 parent = schemaInfoObject->getParentTableId ();                                                                                                     
     if (0 != parent)
@@ -1332,7 +1332,7 @@ ModifiedManagedObjectSchemaDifference* ManagedObjectSchemaInfoRepository::getMod
     if (m_modifiedTablesSchemaDifference.end() == iter)
     {
         trace (TRACE_LEVEL_FATAL, "ManagedObjectSchemaInfoRepository::getModifiedManagedObjectSchemaDifference: could not find schemaDifference object for mo [" + moName + "]");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return &(iter->second);  
@@ -1483,7 +1483,7 @@ ResourceId ManagedObjectSchemaInfoRepository::getSqlForInsertDrvInstancesEntries
         if (tableHasEntries)
         {
             tracePrintf (TRACE_LEVEL_FATAL, true, false, "ManagedObjectSchemaInfoRepository::getSqlForInsertDrvInstancesEntriesForTable: table [%s] has non zero entries already.", drvtInstancesTable.c_str()); 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1507,7 +1507,7 @@ ResourceId ManagedObjectSchemaInfoRepository::getSqlForInsertDrvInstancesEntries
     else
     {
         trace (TRACE_LEVEL_FATAL, string("ManagedObjectSchemaInfoRepository::getSqlToPopulateAllDrvtionInstancesTables : failed to check if derivationInstancesTable exists in db") + tableName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return WAVE_MESSAGE_SUCCESS;
@@ -1581,7 +1581,7 @@ ResourceId ManagedObjectSchemaInfoRepository::removeSchemaObjectDebugShellWrappe
     trace (TRACE_LEVEL_INFO, "ManagedObjectSchemaInfoRepository::removeSchemaObjectDebugShellWrapper: called for " + schemaMOName);
 
     OrmRepository *pOrmRepository = OrmRepository::getInstance ();
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
                                                                         
     ManagedObjectSchemaInfoRepository &moRepository  = pOrmRepository->getMOSchemaInfoRepository ();
     ManagedObjectSchemaInfo *pSchemaMO               = moRepository.findSchemaInfoObject (schemaMOName);
@@ -1611,7 +1611,7 @@ ResourceId  ManagedObjectSchemaInfoRepository::getSqlToRemoveInstanceIdsFromDeri
     tracePrintf (TRACE_LEVEL_DEBUG, true, false, "getSqlToRemoveInstanceIdsFromDerivationInstancesTables: called for MO %s", tableName.c_str());
 
     ManagedObjectSchemaInfo *schemaInfoObject = dbRepository.findSchemaInfoObject (tableName);
-    prismAssert (NULL != schemaInfoObject, __FILE__, __LINE__);
+    waveAssert (NULL != schemaInfoObject, __FILE__, __LINE__);
 
     UI32 parent = schemaInfoObject->getParentTableId ();
 
@@ -1704,7 +1704,7 @@ void ManagedObjectSchemaInfoRepository::addSchemaInfoObjectFromComputedDifferenc
 
 	  ManagedObjectSchemaInfo *pSchemaInfoObj = new CompositeManagedObjectSchemaInfo (pOrmTable->getName (), pOrmTable->getTableId (), parentTableId);
 
-	  prismAssert (fields.size () == types.size (), __FILE__, __LINE__);
+	  waveAssert (fields.size () == types.size (), __FILE__, __LINE__);
 	  for (size_t idx = 0; idx < fields.size (); ++idx)
 	  {
 	      pSchemaInfoObj->addFieldTypeTuple (fields[idx], types[idx]);
@@ -1800,7 +1800,7 @@ void ManagedObjectSchemaInfoRepository::generateSqlsForAddedRelationShipsInModif
         
 
        //populate the referenceCount pointer corresponding to each relationship over all modified object
-        prismAssert (NULL!= pFromManagedObjectSchemaInfo,__FILE__, __LINE__);
+        waveAssert (NULL!= pFromManagedObjectSchemaInfo,__FILE__, __LINE__);
         pFromManagedObjectSchemaInfo->processRelationsAddedInNewSchema (addedRelationsVector,dbSchemaInfoRepository,sqlForDerivationTablesForCurrentSchema,sqlForDerivationTablesForStartSchema,sqlForAuxilliaryTablesForCurrentSchema, sqlForAuxilliaryTablesForStartSchema);
     }
 
@@ -1818,7 +1818,7 @@ void ManagedObjectSchemaInfoRepository::generateSqlsForRelationShipsInAddedObjec
 
         ManagedObjectSchemaInfo* pFromManagedObjectSchemaInfo = dbSchemaInfoRepository.findSchemaInfoObject (addedManagedObjectName);
 
-        prismAssert (NULL!= pFromManagedObjectSchemaInfo,__FILE__, __LINE__);
+        waveAssert (NULL!= pFromManagedObjectSchemaInfo,__FILE__, __LINE__);
 
         vector<RelationshipInfoFromSchemaDifference> newRelationsInAddedMOs = (addRemoveIterator->second).getRelations ();
         if(newRelationsInAddedMOs.size ()>0)
@@ -1874,10 +1874,10 @@ void ManagedObjectSchemaInfoRepository::generateSqlForRepopulatingEntiresOfDeriv
 
         ManagedObjectSchemaInfo* pManagedObjectSchemaInfo = schemaInfoIterator->second;
 
-        prismAssert (NULL!= pManagedObjectSchemaInfo,__FILE__, __LINE__);
+        waveAssert (NULL!= pManagedObjectSchemaInfo,__FILE__, __LINE__);
 
         CompositeManagedObjectSchemaInfo* pCompositeManagedObjectSchemaInfo = dynamic_cast<CompositeManagedObjectSchemaInfo *> (pManagedObjectSchemaInfo);
-        prismAssert (NULL != pManagedObjectSchemaInfo, __FILE__, __LINE__);
+        waveAssert (NULL != pManagedObjectSchemaInfo, __FILE__, __LINE__);
 
         string sqlInCurrentSchema;
         string sqlInStartSchema;
@@ -1954,7 +1954,7 @@ ResourceId ManagedObjectSchemaInfoRepository::getSqlToDropUserDefinedKeyUniqueCo
 
         OrmTable *pOrmTable = OrmRepository::getTableByName (tableName);
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         pOrmTable->getSqlToDropUserDefinedKeyUniqueConstraint (sqlToDropUserDefinedKeyCombinationConstraintForCurrentSchema, sqlToDropUserDefinedKeyCombinationConstraintForStartSchema);
     }
@@ -1977,7 +1977,7 @@ void ManagedObjectSchemaInfoRepository::getSqlToAddUserDefinedKeyUniqueConstrain
     {    
         /*ManagedObjectSchemaInfo* schemaInfoObject = iter->second;
 
-        prismAssert (NULL != schemaInfoObject, __FILE__, __LINE__);
+        waveAssert (NULL != schemaInfoObject, __FILE__, __LINE__);
 
         schemaInfoObject->getSqlToAddUserDefinedKeyUniqueConstraint (sqlToAddUserDefinedKeyCombinationConstraintForCurrentSchema, sqlToAddUserDefinedKeyCombinationConstraintForStartupSchema);*/
 
@@ -1985,7 +1985,7 @@ void ManagedObjectSchemaInfoRepository::getSqlToAddUserDefinedKeyUniqueConstrain
 
         OrmTable *pOrmTable = OrmRepository::getTableByName (tableName);
 
-        prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+        waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
         pOrmTable->getSqlToAddUserDefinedKeyUniqueConstraint (sqlToAddUserDefinedKeyCombinationConstraintForCurrentSchema, sqlToAddUserDefinedKeyCombinationConstraintForStartupSchema);
     }
@@ -2215,7 +2215,7 @@ void ManagedObjectSchemaInfoRepository::getSqlToUpdateUDKCRelatedColumns (vector
 
         OrmTable* pTable = OrmRepository::getTableByName (tableName);
 
-        prismAssert (NULL != pTable, __FILE__, __LINE__);
+        waveAssert (NULL != pTable, __FILE__, __LINE__);
 
         pTable->getSqlForATableToUpdateUDKCRelatedColumns (compositionChildrenForATable, sqlForCurrentSchemaForUDKC, sqlForStartupSchemaForUDKC);
     }
@@ -2240,7 +2240,7 @@ void ManagedObjectSchemaInfoRepository::dropAllDatabaseViewsForUpgrade ()
             if (status1 != FRAMEWORK_SUCCESS)
             {
                 trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::dropAllDatabaseViewsForUpgrade : Error in dropping ManagedViews uisng StandaloneTransaction.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -2255,7 +2255,7 @@ void ManagedObjectSchemaInfoRepository::dropAllDatabaseViewsForUpgrade ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_ERROR, "ManagedObjectSchemaInfoRepository::dropAllDatabaseViewsForUpgrade :: failed to delete views from the database. Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {

@@ -77,12 +77,12 @@ void AttributesMap::copyFrom (const AttributesMap &attributesMap)
             }
             else
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         element++;
@@ -96,7 +96,7 @@ void AttributesMap::addAttributeForOrderToNameMapping (const string& attributeNa
     if (NULL == pAttributeInMap)
     {
         trace (TRACE_LEVEL_FATAL, string("AttributesMap::addAttributeForOrderToNameMapping: attribute with name [") + attributeName + string ("] does not exists in the attributes map. Please check!"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_nextAvailableAttributeTagForMapping++;
@@ -106,7 +106,7 @@ void AttributesMap::addAttributeForOrderToNameMapping (const string& attributeNa
 
 void AttributesMap::addAttribute (Attribute *pAttribute)
 {
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     // Currently we do not see a need to lock this since the same object should not be modified on multiple threads at the same time.
 
@@ -134,7 +134,7 @@ void AttributesMap::addAttribute (Attribute *pAttribute)
             else
             {
                 trace (TRACE_LEVEL_FATAL, string ("AttributesMap::addAttribute : Trying to add an Attribute with a User Tag that already exists (") + attributeUserTag + ").");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
 
@@ -151,9 +151,9 @@ void AttributesMap::addAttribute (Attribute *pAttribute)
                 trace (TRACE_LEVEL_FATAL, string ("----------------------------------------------------------IMPORTANT-----------------------------------------------"));
                 trace (TRACE_LEVEL_FATAL, string ("AttributesMap::addAttribute : Trying to add an attribute with a name that already exists (") + attributeName + ").");
                 trace (TRACE_LEVEL_FATAL, string ("---------------Please, take care of it by changing the attribute name to be unique..------------------------------"));
-                // prismAssert (false, __FILE__, __LINE__);
+                // waveAssert (false, __FILE__, __LINE__);
 
-                // Pritee: This must be removed once above prismAssert are uncommented.
+                // Pritee: This must be removed once above waveAssert are uncommented.
                 if (true == attributeName.empty())
                 {
                     // use the attributeTag as a name as push it to this map
@@ -171,9 +171,9 @@ void AttributesMap::addAttribute (Attribute *pAttribute)
             trace (TRACE_LEVEL_FATAL, string ("----------------------------------------------------------IMPORTANT-----------------------------------------------"));
             trace (TRACE_LEVEL_FATAL, string ("AttributesMap::addAttribute :  An attribute does not have a name. All attributes in a message being added must have unique name."));
             trace (TRACE_LEVEL_FATAL, string ("---------------Please, take care of it by giving name to an attribute which will be unique...---------------------"));
-            // prismAssert (false, __FILE__, __LINE__);
+            // waveAssert (false, __FILE__, __LINE__);
 
-            // Pritee: This must be removed once above prismAssert are uncommented.
+            // Pritee: This must be removed once above waveAssert are uncommented.
             if (true == attributeName.empty())
             {
                 // use the attributeTag as a name as push it to this map
@@ -189,7 +189,7 @@ void AttributesMap::addAttribute (Attribute *pAttribute)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributesMap::addAttribute : Trying to add an Attribute with a Tag that already exists (") + attributeTag + ").");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -210,7 +210,7 @@ Attribute *AttributesMap::getAttribute (UI32 attributeTag)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributesMap::getAttribute : Attribute with tag (") + attributeTag + ") does not exist.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (NULL);
     }
 }
@@ -239,7 +239,7 @@ Attribute *AttributesMap::getAttributeAt (const UI32 index)
         }
     }
 
-	prismAssert (element != limitingElement, __FILE__, __LINE__);
+	waveAssert (element != limitingElement, __FILE__, __LINE__);
     return (element->second);
 }
 
@@ -255,7 +255,7 @@ void AttributesMap::serializeTo (DOMDocument *pDomDocument)
     {
         pAttribute = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->serializeTo (pDomDocument);
 
@@ -283,7 +283,7 @@ void AttributesMap::loadFromSerializedData (const string &serializedData)
         attributeTag = element->first;
         pAttribute   = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         attributeTagString1 = (string ("<A")) + attributeTag + ">";
         index1             = serializedData.find (attributeTagString1);
@@ -327,7 +327,7 @@ void AttributesMap::loadFromSerializedDataInAttributeOrderFormat (const string &
         attributeName   = element->second;
         pAttribute      = getAttribute (attributeName);
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         attributeTag    = attributeOrder;
 
@@ -363,7 +363,7 @@ void AttributesMap::serializeTo (string &serializedData)
         attributeTag = element->first;
         pAttribute   = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         serializedData += (string ("<A")) + attributeTag + ">";
 
@@ -396,7 +396,7 @@ void AttributesMap::serializeToInAttributeOrderFormat (string &serializedData)
         attributeName   = element->second;
         pAttribute      = getAttribute (attributeName);
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 /*
         if (AttributeType::AttributeTypeSerializableObject == pAttribute->getAttributeType ())
         {
@@ -432,7 +432,7 @@ string AttributesMap::getSqlForCreate ()
         attributeTag = element->first;
         pAttribute   = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         // If it is not the first attribute add a comma and a new line.
 
@@ -461,7 +461,7 @@ void AttributesMap::getSqlForInsert (string &sqlForPreValues, string &sqlForInse
     {
         pAttribute = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->getSqlForInsert (sqlForPreValues, sqlForInsert, sqlForInsert2, isFirst);
 
@@ -486,7 +486,7 @@ void AttributesMap::getSqlForUpdate (string &sqlForUpdate, string &sqlForUpdate2
     {
         pAttribute = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->getSqlForUpdate (sqlForUpdate, sqlForUpdate2, isFirst);
 
@@ -513,7 +513,7 @@ void AttributesMap::getSqlForUpdate (string &sqlForUpdate, string &sqlForUpdate2
 
         pAttribute = m_attributesByName[attributeName];
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->getSqlForUpdate (sqlForUpdate, sqlForUpdate2, isFirst);
 
@@ -534,7 +534,7 @@ void AttributesMap::setupOrm (OrmTable *pOrmTable)
     {
         pAttribute = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->setupOrm (pOrmTable);
 
@@ -558,7 +558,7 @@ void AttributesMap::loadFromPostgresQueryResult (PGresult *pResult, const UI32 &
 
             pAttribute = m_attributesByName[selectField];
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if ((AttributeType::AttributeTypeObjectIdVector != pAttribute->getAttributeType ()) && (AttributeType::AttributeTypeCompositionVector != pAttribute->getAttributeType ()))
             {
@@ -575,7 +575,7 @@ void AttributesMap::loadFromPostgresQueryResult (PGresult *pResult, const UI32 &
         {
             pAttribute   = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (AttributeType::AttributeTypeObjectIdVector == pAttribute->getAttributeType ())
             {
@@ -653,7 +653,7 @@ void AttributesMap::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult 
         {
             pAttribute   = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType ())
             {
@@ -687,7 +687,7 @@ void AttributesMap::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult 
         {
             pAttribute = m_attributesByName[selectFields[i]];
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType ())
             {
@@ -749,7 +749,7 @@ void AttributesMap::computeAttributesByName ()
             else
             {
                 trace (TRACE_LEVEL_FATAL, "AttributesMap::computeAttributesByName : There CANNOT be multiple attributes with the same name in a inheritance hierarchy.  Duplicate Name encountered : \"" + attributeName + "\"");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
 
@@ -811,7 +811,7 @@ void AttributesMap::setUserTagForAttribute (const string &attributeName, const U
     if (NULL == pAttribute)
     {
         trace (TRACE_LEVEL_FATAL, "AttributesMap::setUserTagForAttribute : There is no Attribute Registered with name : \"" + attributeName + "\"");
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
         return;
     }
 
@@ -823,7 +823,7 @@ void AttributesMap::setUserTagForAttribute (const string &attributeName, const U
         trace (TRACE_LEVEL_FATAL, string ("AttributesMap::setUserTagForAttribute : Old Value : ") + attributeUserTagFromAttribute);
         trace (TRACE_LEVEL_FATAL, string ("AttributesMap::setUserTagForAttribute : New Value : ") + attributeUserTag);
 
-        prismAssert (0 == attributeUserTagFromAttribute, __FILE__, __LINE__);
+        waveAssert (0 == attributeUserTagFromAttribute, __FILE__, __LINE__);
         return;
     }
 
@@ -832,7 +832,7 @@ void AttributesMap::setUserTagForAttribute (const string &attributeName, const U
         trace (TRACE_LEVEL_FATAL, string ("AttributesMap::setUserTagForAttribute : Attribute with User \"") + attributeUserTag + "\" already exists in Attributes Map by User Tag.  Unexpected inconsistency detected." );
         trace (TRACE_LEVEL_FATAL, string ("AttributesMap::setUserTagForAttribute : Inconsistency detected for Attribute with name \"") + attributeName + "\"." );
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -851,7 +851,7 @@ void AttributesMap::updateOrmRelations (const PrismPersistableObject *pPrismPers
     {
         pAttribute = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->updateOrmRelations (pPrismPersistableObject);
 
@@ -900,7 +900,7 @@ void AttributesMap::getShowDump (string &showDump, const WaveManagedObjectShowTy
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             showDump += "\n " + pAttribute->getAttributeName () + " : ";
 
@@ -917,7 +917,7 @@ void AttributesMap::getShowDump (string &showDump, const WaveManagedObjectShowTy
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (false == (pAttribute->getIsOperational ()))
             {
@@ -941,7 +941,7 @@ void AttributesMap::getShowDump (string &showDump, const WaveManagedObjectShowTy
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (false == (pAttribute->getIsOperational ()))
             {
@@ -973,7 +973,7 @@ void AttributesMap::getShowDump (string &showDump, const WaveManagedObjectShowTy
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (true == (pAttribute->getIsOperational ()))
             {
@@ -1029,7 +1029,7 @@ void AttributesMap::getRawShowDump (string &showDump, const WaveManagedObjectSho
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             pAttribute->toString (tempDump);
 
@@ -1044,7 +1044,7 @@ void AttributesMap::getRawShowDump (string &showDump, const WaveManagedObjectSho
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (false == (pAttribute->getIsOperational ()))
             {
@@ -1065,7 +1065,7 @@ void AttributesMap::getRawShowDump (string &showDump, const WaveManagedObjectSho
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (true == (pAttribute->getIsOperational ()))
             {
@@ -1094,7 +1094,7 @@ void AttributesMap::getAttributeNamesForHtmlTable (vector<string> &attributeName
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             attributeNamesForHtmlTable.push_back (pAttribute->getAttributeName ());
 
@@ -1107,7 +1107,7 @@ void AttributesMap::getAttributeNamesForHtmlTable (vector<string> &attributeName
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (false == (pAttribute->getIsOperational ()))
             {
@@ -1126,7 +1126,7 @@ void AttributesMap::getAttributeNamesForHtmlTable (vector<string> &attributeName
         {
             pAttribute = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (true == (pAttribute->getIsOperational ()))
             {
@@ -1150,7 +1150,7 @@ void AttributesMap::getHtmlTableHeaderNames (const vector<string> &attributeName
         string     attributeNameForHtmlTable = attributeNamesForHtmlTable[i];
         Attribute *pAttribute                = m_attributesByName[attributeNameForHtmlTable];
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         htmlTableHeaderNames.push_back (pAttribute->getAttributeName ());
     }
@@ -1182,7 +1182,7 @@ void AttributesMap::getHtmlTableRowData (const vector<string> &attributeNamesFor
         Attribute *pAttribute                = m_attributesByName[attributeNameForHtmlTable];
         string     tempString;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->toString (tempString);
 
@@ -1200,7 +1200,7 @@ void AttributesMap::getHtmlTableRowDataString (const vector<string> &attributeNa
 
     numberOfAttributeNamesForHtmlTable = htmlTableRowData.size ();
 
-    prismAssert ((attributeNamesForHtmlTable.size ()) == numberOfAttributeNamesForHtmlTable, __FILE__, __LINE__);
+    waveAssert ((attributeNamesForHtmlTable.size ()) == numberOfAttributeNamesForHtmlTable, __FILE__, __LINE__);
 
     htmlTableRowDataString = "";
 
@@ -1218,7 +1218,7 @@ void AttributesMap::getRestRowData (const vector<string> &attributeNamesForRest,
           string         nestedRestRowData;
 
 
-    prismAssert (numberOfAttributeNamesForRest == numberOfRestHeaderNames, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesForRest == numberOfRestHeaderNames, __FILE__, __LINE__);
 
     restRowData = "";
 
@@ -1236,7 +1236,7 @@ void AttributesMap::getRestRowData (const vector<string> &attributeNamesForRest,
         AttributeType  attributeType;
         string         tempRestRowData;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         attributeType = pAttribute->getAttributeType ();
 
@@ -1320,7 +1320,7 @@ void AttributesMap::getJsonNames (const vector<string> &attributeNamesForJson, v
         string     attributeNameForJson = attributeNamesForJson[i];
         Attribute *pAttribute           = m_attributesByName[attributeNameForJson];
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         jsonNames.push_back (pAttribute->getAttributeName ());
     }
@@ -1333,7 +1333,7 @@ void AttributesMap::getJsonObjectData (const vector<string> &attributeNamesForJs
           UI32 i                                      = 0;
           bool isManagedObjectClassNameForJsonPresent = false;
 
-    prismAssert (numberOfAttributeNamesForJson == numberOfJsonHeaderNames, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesForJson == numberOfJsonHeaderNames, __FILE__, __LINE__);
 
 #if 0
     jsonObjectData += "{\r\n";
@@ -1359,7 +1359,7 @@ void AttributesMap::getJsonObjectData (const vector<string> &attributeNamesForJs
         if (NULL == pAttribute)
         {
             trace (TRACE_LEVEL_FATAL, "AttributesMap::getJsonObjectData : Attribute with given name not found : " + attributeNameForJson);
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
         }
 
         pAttribute->toJsonString (tempString);
@@ -1401,7 +1401,7 @@ void AttributesMap::updateKeyString (const PrismPersistableObject *pPrismPersist
     {
         pAttribute = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->updateKeyString (pPrismPersistableObject);
 
@@ -1436,7 +1436,7 @@ void AttributesMap::loadFromPostgresQueryResult2 (PGresult *pResult, const UI32 
         {
             pAttribute   = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             loadAnAttributeFromPostgresQueryResult2 (pAttribute, pResult, row, schema, pWaveObjectManager);
 
@@ -1454,7 +1454,7 @@ void AttributesMap::loadFromPostgresQueryResult2 (PGresult *pResult, const UI32 
 
             pAttribute = m_attributesByName[selectField];
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             loadAnAttributeFromPostgresQueryResult2 (pAttribute, pResult, row, schema, pWaveObjectManager);
         }
@@ -1492,7 +1492,7 @@ void AttributesMap::getOidsOfOneToOneCompositions (vector<ObjectId> &vectorOfCom
     {
         Attribute *pAttribute   = element->second;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         if (AttributeType::AttributeTypeComposition == pAttribute->getAttributeType ())
         {
@@ -1522,7 +1522,7 @@ void AttributesMap::popOneToOneCompositionsFromResults (map<ObjectId, WaveManage
         {
             Attribute *pAttribute   = element->second;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (AttributeType::AttributeTypeComposition == pAttribute->getAttributeType ())
             {
@@ -1539,7 +1539,7 @@ void AttributesMap::popOneToOneCompositionsFromResults (map<ObjectId, WaveManage
         for (UI32 i = 0; i < numberOfSelectFields; i++)
         {
             Attribute* pAttribute = getAttribute (selectFieldsInManagedObject[i]);
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if (AttributeType::AttributeTypeComposition == pAttribute->getAttributeType ())
             {
@@ -1554,11 +1554,11 @@ void AttributesMap::popOneToOneCompositionsFromResults (map<ObjectId, WaveManage
 void AttributesMap::storeRelatedObjectIdVectorForAOneToNAssociation (const string &relationName, const ObjectId &parentObjectId, const vector<ObjectId> &vectorOfRelatedObjectIds)
 {
     Attribute *pAttribute = getAttribute (relationName);
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
-    prismAssert (AttributeType::AttributeTypeObjectIdVector == pAttribute->getAttributeType (), __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeObjectIdVector == pAttribute->getAttributeType (), __FILE__, __LINE__);
 
     AttributeObjectIdVectorAssociation *pAttributeObjectIdVectorAssociation = dynamic_cast<AttributeObjectIdVectorAssociation *> (pAttribute);
-    prismAssert (NULL != pAttributeObjectIdVectorAssociation, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeObjectIdVectorAssociation, __FILE__, __LINE__);
 
     pAttributeObjectIdVectorAssociation->storeRelatedObjectIdVector (parentObjectId, vectorOfRelatedObjectIds);
 }
@@ -1566,11 +1566,11 @@ void AttributesMap::storeRelatedObjectIdVectorForAOneToNAssociation (const strin
 void AttributesMap::storeRelatedObjectVectorForAOneToNComposition (const string &relationName, const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects)
 {
     Attribute *pAttribute = getAttribute (relationName);
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
-    prismAssert (AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType (), __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType (), __FILE__, __LINE__);
 
     AttributeManagedObjectVectorCompositionTemplateBase *pAttributeManagedObjectVectorCompositionTemplateBase = dynamic_cast<AttributeManagedObjectVectorCompositionTemplateBase *> (pAttribute);
-    prismAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
 
     pAttributeManagedObjectVectorCompositionTemplateBase->storeRelatedObjectVector (parentObjectId, vectorOfRelatedObjects);
 }

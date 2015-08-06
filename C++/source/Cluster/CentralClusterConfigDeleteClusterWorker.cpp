@@ -73,7 +73,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep (Cluster
 
     vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     if (NULL == pResults)
     {
@@ -93,7 +93,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep (Cluster
     else if (1 < numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep : Multiple cluster objects found.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -123,7 +123,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
     ClusterObjectManagerDeleteClusterMessage    *pMessage               = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPWaveMessage ());
     WaveNode                                     tempNode               (getPWaveObjectManager (), FrameworkToolKit::getThisLocationId (), FrameworkToolKit::getThisLocationIpAddress (), FrameworkToolKit::getThisLocationPort ());
 
-    prismAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
 
     secondaryNodes         = pPrismCluster->getSecondaryNodes ();
     numberOfSecondaryNodes = secondaryNodes.size ();
@@ -131,10 +131,10 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
     if (numberOfSecondaryNodes)
     {
         pSecondaryNodeResults = querySynchronously (WaveNode::getClassName (), secondaryNodes);
-        prismAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
+        waveAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
 
         numberOfResults = pSecondaryNodeResults->size ();
-        prismAssert (numberOfSecondaryNodes == numberOfResults, __FILE__, __LINE__);
+        waveAssert (numberOfSecondaryNodes == numberOfResults, __FILE__, __LINE__);
     }
     else     
     {
@@ -149,7 +149,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
     {
         pSecondaryNode = dynamic_cast<WaveNode *> ((*pSecondaryNodeResults)[i]);
 
-        prismAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
+        waveAssert (NULL != pSecondaryNode, __FILE__, __LINE__);
 
         if ((*pSecondaryNode) != tempNode)
         {
@@ -214,11 +214,11 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterCommitStep (ClusterDe
     queryContextForPrimarywaveNode.addAndAttribute (new AttributeUI32   (primaryPort, "port"));
 
     vector<WaveManagedObject *>* pResultsForPrimaryWavenode = querySynchronously (&queryContextForPrimarywaveNode);
-    prismAssert (NULL != pResultsForPrimaryWavenode, __FILE__, __LINE__);
-    prismAssert (1 == pResultsForPrimaryWavenode->size(), __FILE__, __LINE__);
+    waveAssert (NULL != pResultsForPrimaryWavenode, __FILE__, __LINE__);
+    waveAssert (1 == pResultsForPrimaryWavenode->size(), __FILE__, __LINE__);
 
     WaveNode *pPrimaryWaveNode = dynamic_cast<WaveNode *> ((*pResultsForPrimaryWavenode)[0]);
-    prismAssert( NULL != pPrimaryWaveNode, __FILE__, __LINE__);
+    waveAssert( NULL != pPrimaryWaveNode, __FILE__, __LINE__);
 
     pPrimaryWaveNode->setGenericStatus(WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
     pPrimaryWaveNode->setSpecificStatus(WAVE_MANAGED_OBJECT_SPECIFIC_STATUS_STAND_ALONE);

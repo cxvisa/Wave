@@ -98,7 +98,7 @@ vector<vector<UI32> > AttributeUI32VectorVector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUI32VectorVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -118,13 +118,13 @@ void AttributeUI32VectorVector::setValue (const vector<vector<UI32> > &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUI32VectorVector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeUI32VectorVector::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeUI32Vector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeUI32Vector == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeUI32Vector == (getAttributeType ()))
     {
@@ -197,7 +197,7 @@ void AttributeUI32VectorVector::getSqlForSelect (string &sqlForSelect, Attribute
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeUI32VectorVector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -333,7 +333,7 @@ map<string, string> AttributeUI32VectorVector::getSupportedConversions ()
 
 void AttributeUI32VectorVector::getCValue (WaveCValue *pCValue)
 {  
-    prismAssert (false, __FILE__, __LINE__); 
+    waveAssert (false, __FILE__, __LINE__); 
 }
 
 }

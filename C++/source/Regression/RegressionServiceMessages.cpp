@@ -51,15 +51,15 @@ RegressionTestEntry RegressionTestObjectManagerGetTestServiceEntriesMessage::get
 {
     if (index < m_numberOfTestServiceEntries)
     {
-        prismAssert ((m_testServiceIds.size ()) > index, __FILE__, __LINE__);
-        prismAssert ((m_testServiceStates.size ()) > index, __FILE__, __LINE__);
+        waveAssert ((m_testServiceIds.size ()) > index, __FILE__, __LINE__);
+        waveAssert ((m_testServiceStates.size ()) > index, __FILE__, __LINE__);
 
         RegressionTestEntry tempEntry (m_testServiceIds[index], m_testServiceStates[index]);
         return (tempEntry);
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         RegressionTestEntry tempEntry (0, false);
         return (tempEntry);
     }

@@ -64,7 +64,7 @@ void WaveShell::addCommandfunction (const string &command, WaveShellCommandFunct
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -80,7 +80,7 @@ void WaveShell::addSubShell (WaveShell *pSubshell)
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

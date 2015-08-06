@@ -89,7 +89,7 @@ void UI32UC::fromString (const string &ui32UCInStringFormat)
 
     numberOfToken = token.size ();
 
-    prismAssert (2 >= numberOfToken, __FILE__, __LINE__);
+    waveAssert (2 >= numberOfToken, __FILE__, __LINE__);
 
     if (numberOfToken > 1)
     {

@@ -88,7 +88,7 @@ void AttributeManagedObjectOneToOneRelationBase::popOneToOneCompositionsFromResu
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
@@ -99,7 +99,7 @@ void AttributeManagedObjectOneToOneRelationBase::popOneToOneCompositionsFromResu
 
 void AttributeManagedObjectOneToOneRelationBase::storeComposedObjectPointer (WaveManagedObject *pWaveChildManagedObject)
 {
-    WaveNs::prismAssert (false, __FILE__, __LINE__);
+    WaveNs::waveAssert (false, __FILE__, __LINE__);
 }
 
 }

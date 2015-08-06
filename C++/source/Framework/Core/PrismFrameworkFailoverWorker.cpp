@@ -90,7 +90,7 @@ void PrismFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (Prism
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             status = FRAMEWORK_INVALID_FAILOVER_REASON_ON_PRIMARY;
         }
@@ -124,14 +124,14 @@ void PrismFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (Prism
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             status = FRAMEWORK_INVALID_FAILOVER_REASON_ON_SECONDARY;
         }
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         status = FRAMEWORK_INVALID_LOCATION_ROLE_FOR_FAILOVER;
     }
@@ -153,12 +153,12 @@ void PrismFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep (PrismFra
     vector<LocationId>                   failedLocationIds;
     WaveServiceId                       serviceToBeIgnored                   = 0;
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerContext, __FILE__, __LINE__);
 
     pPrismFrameworkFailoverWorkerContext->getFailedLocationIds (failedLocationIds);
     serviceToBeIgnored = pPrismFrameworkFailoverWorkerSequencerContext->getServiceToBeIgnored ();
 
-    prismAssert (NULL != pPrismFailoverAgent, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFailoverAgent, __FILE__, __LINE__);
 
     PrismFailoverAgentContext *pPrismFailoverAgentContext = new PrismFailoverAgentContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PrismFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback), pPrismFrameworkFailoverWorkerSequencerContext);
 
@@ -173,11 +173,11 @@ void PrismFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback (
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback : Entering ...");
 
-    prismAssert (NULL != pPrismFailoverAgentContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFailoverAgentContext, __FILE__, __LINE__);
 
     PrismFrameworkFailoverWorkerSequencerContext *pPrismFrameworkFailoverWorkerSequencerContext = reinterpret_cast<PrismFrameworkFailoverWorkerSequencerContext *> (pPrismFailoverAgentContext->getPCallerContext ());
 
-    prismAssert (NULL != pPrismFrameworkFailoverWorkerSequencerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkFailoverWorkerSequencerContext, __FILE__, __LINE__);
 
     ResourceId            status                = pPrismFrameworkFailoverWorkerSequencerContext->getCompletionStatus ();
 
@@ -192,7 +192,7 @@ void PrismFrameworkFailoverWorker::executeFailoverDestroyFailoverAgentStep (Pris
 
     PrismFailoverAgent *pPrismFailoverAgent = pPrismFrameworkFailoverWorkerSequencerContext->getPPrismFailoverAgent ();
 
-    prismAssert (NULL != pPrismFailoverAgent, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFailoverAgent, __FILE__, __LINE__);
 
     delete (pPrismFailoverAgent);
     pPrismFrameworkFailoverWorkerSequencerContext->setPPrismFailoverAgent (NULL);

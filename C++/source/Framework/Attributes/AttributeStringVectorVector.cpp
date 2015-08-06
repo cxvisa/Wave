@@ -98,7 +98,7 @@ vector<vector<string> > AttributeStringVectorVector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeStringVectorVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -118,13 +118,13 @@ void AttributeStringVectorVector::setValue (const vector<vector<string> > &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeStringVectorVector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeStringVectorVector::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeStringVector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeStringVector == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeStringVector == (getAttributeType ()))
     {
@@ -197,7 +197,7 @@ void AttributeStringVectorVector::getSqlForSelect (string &sqlForSelect, Attribu
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeStringVectorVector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -280,11 +280,11 @@ void AttributeStringVectorVector::toEscapedString (string &valueString)
     DatabaseConnection       *pDatabaseconnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
     PGconn                   *pPGConnection       = NULL;
 
-    prismAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
 
     pPGConnection = pDatabaseconnection->getPConnection ();
 
-    prismAssert (NULL != pPGConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pPGConnection, __FILE__, __LINE__);
 
     valueString = "";
 
@@ -300,11 +300,11 @@ void AttributeStringVectorVector::toEscapedString (string &valueString)
         UI32  returnSize = 0;
         SI32  errorCode  = 0;
 
-        prismAssert (NULL != pTemp, __FILE__, __LINE__);
+        waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
         returnSize = PQescapeStringConn (pPGConnection, pTemp, tempString.c_str (), size, &errorCode);
 
-        prismAssert (0 == errorCode, __FILE__, __LINE__);
+        waveAssert (0 == errorCode, __FILE__, __LINE__);
 
         valueString = valueString + returnSize + "#" + pTemp;
 
@@ -378,7 +378,7 @@ map<string, string> AttributeStringVectorVector::getSupportedConversions ()
 
 void AttributeStringVectorVector::getCValue (WaveCValue *pCValue)
 {  
-    prismAssert (false, __FILE__, __LINE__); 
+    waveAssert (false, __FILE__, __LINE__); 
 }
 
 }

@@ -25,7 +25,7 @@ FrameworkRemoteMessagingTestObjectManager2 *FrameworkRemoteMessagingTestObjectMa
     if (NULL == pFrameworkRemoteMessagingTestObjectManager2)
     {
         pFrameworkRemoteMessagingTestObjectManager2 = new FrameworkRemoteMessagingTestObjectManager2 ();
-        WaveNs::prismAssert (NULL != pFrameworkRemoteMessagingTestObjectManager2, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkRemoteMessagingTestObjectManager2, __FILE__, __LINE__);
     }
 
     return (pFrameworkRemoteMessagingTestObjectManager2);
@@ -150,7 +150,7 @@ void FrameworkRemoteMessagingTestObjectManager2::frameworkTestabilityMessage1Cal
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -366,7 +366,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersC
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -691,7 +691,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTes
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -863,7 +863,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep (Framewo
         WaveMessage                 *pTempWaveMessage = message.clone ();
         FrameworkTestabilityMessage4 *pMessage          = dynamic_cast<FrameworkTestabilityMessage4 *> (pTempWaveMessage);
 
-        prismAssert( NULL != pMessage , __FILE__ , __LINE__ );
+        waveAssert( NULL != pMessage , __FILE__ , __LINE__ );
 
         pMessage->setupInput ();
 
@@ -917,7 +917,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestSt
         WaveMessage                 *pTempWaveMessage = message.clone ();
         FrameworkTestabilityMessage3 *pMessage          = dynamic_cast<FrameworkTestabilityMessage3 *> (pTempWaveMessage);
 
-        prismAssert( NULL != pMessage , __FILE__ , __LINE__ );
+        waveAssert( NULL != pMessage , __FILE__ , __LINE__ );
 
         status = send (pMessage,
                        reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersCallback),

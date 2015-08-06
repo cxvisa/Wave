@@ -89,7 +89,7 @@ void ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveN
     if (NULL == pWaveManagedObject)
     {
         trace (TRACE_LEVEL_FATAL, "ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveNodeStep : Cannot find the Local Wave Node.  Something went terribly wrong.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         status = CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS_STATUS_CANNOT_FIND_LOCAL_NODE;
     }
@@ -100,7 +100,7 @@ void ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveN
         if (NULL == pWaveNode)
         {
             trace (TRACE_LEVEL_FATAL, "ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveNodeStep : Cannot cast the Local Wave Node.  Something went terribly wrong.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             status = CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS_STATUS_CANNOT_CAST_LOCAL_NODE;
         }

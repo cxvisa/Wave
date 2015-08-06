@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-    void prismAssert (bool isAssertRequired, const char *pFileName, UI32 lineNumber);
+    void waveAssert (bool isAssertRequired, const char *pFileName, UI32 lineNumber);
 
 }
 

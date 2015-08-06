@@ -17,7 +17,7 @@ MacAddress2::MacAddress2 ()
 {
     m_pName = new UI16[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 }
 
 MacAddress2::MacAddress2 (const UI16 name[3])
@@ -25,7 +25,7 @@ MacAddress2::MacAddress2 (const UI16 name[3])
 {
     m_pName = new UI16[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -40,7 +40,7 @@ MacAddress2::MacAddress2 (const string &macAddressInStringFormat)
 {
     m_pName = new UI16[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     fromString (macAddressInStringFormat);
 }
@@ -49,7 +49,7 @@ MacAddress2::MacAddress2 (const MacAddress2 &macAddress)
 {
     m_pName = new UI16[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -100,12 +100,12 @@ void MacAddress2::fromString (const string &macAddressInStringFormat)
           char tempChar;
           UI16 tempValue             = 0;
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
     
     if (expectedStringLength != givenStringLength)
     {
         trace (TRACE_LEVEL_FATAL, "MacAddress2::fromString : Invalid MacAddress2 String : " + macAddressInStringFormat);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     for (i = 0; i < m_nameLength; i++)
@@ -119,7 +119,7 @@ void MacAddress2::fromString (const string &macAddressInStringFormat)
             if (false == (isAValidHexaDecimalCharacter (tempChar)))
             {
                 trace (TRACE_LEVEL_FATAL, "MacAddress2::fromString : Invalid MacAddress2 in String Format : " + macAddressInStringFormat);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             tempValue = getValueFromChar (tempChar); 
 
@@ -141,7 +141,7 @@ ResourceId MacAddress2::loadFromPlainString (const string &macAddressInStringFor
           UI16       tempValue            = 0;
           ResourceId status               = WAVE_MESSAGE_ERROR;
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
     
     if (expectedStringLength != givenStringLength)
     {
@@ -254,7 +254,7 @@ UI16 &MacAddress2::operator [] (const UI32 &index) const
     if (index >= m_nameLength)
     {
         trace (TRACE_LEVEL_FATAL, string ("MacAddress2::operator []: Invalid Index : ") + index + string (", Maximum allowed is : ") + (m_nameLength -1));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (m_pName[index]);

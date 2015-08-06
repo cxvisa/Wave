@@ -261,7 +261,7 @@ void PrismFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootServ
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
     PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new PrismPostPersistentBootWorkerClusterContext (0, 0, WAVE_HA_COLD_RECOVERY);
-    prismAssert (NULL != pPostPersistentBootWorkerClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pPostPersistentBootWorkerClusterContext, __FILE__, __LINE__);
 
     status = triggerPostBootPassTableForAll (pPostPersistentBootWorkerClusterContext);
 
@@ -398,7 +398,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootP
         trace (TRACE_LEVEL_INFO, string("PrismFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : starting Postboot thread for POSTBOOT_LINECARD_CONFIG"));
 
         PrismPostbootAgentThreadContext *pPrismPostbootAgentThreadContext = new PrismPostbootAgentThreadContext ();
-        prismAssert (NULL != pPrismPostbootAgentThreadContext, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismPostbootAgentThreadContext, __FILE__, __LINE__);
 
         PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage = NULL;
         pPrismPostPersistenceBootMessage = pPostPersistentBootWorkerClusterContext->getPostbootMessagePointer();
@@ -431,7 +431,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootP
     else
     {   
         PrismPostbootAgent  *pPrismPostbootAgent = new PrismPostbootAgent(m_pWaveObjectManager, eventId, parameter, recoveryType);
-        prismAssert (NULL != pPrismPostbootAgent, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismPostbootAgent, __FILE__, __LINE__);
         status = pPrismPostbootAgent->execute();
 
         if ( status != WAVE_MESSAGE_SUCCESS )
@@ -482,7 +482,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFi
     if (-1 == ret)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFileReplay : Could not execute " + replayString);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return WAVE_MESSAGE_ERROR;
     }
 
@@ -513,7 +513,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFi
         else
         {
             trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFileReplay : Could not execute " + replayString + string(" errno = ") + errnovalue);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return WAVE_MESSAGE_ERROR;
         }
     }
@@ -528,7 +528,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFi
     if (-1 == ret)
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFileReplay : Could not execute " + replayString);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return WAVE_MESSAGE_ERROR;
     }
 
@@ -566,7 +566,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::setupStartupAfte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_ERROR,   "PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFileReplay : Could not copy running to start");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return WAVE_MESSAGE_ERROR;
         }
     }
@@ -583,7 +583,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::setupStartupAfte
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR,   "PrismFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFileReplay : Could not save configuration");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return WAVE_MESSAGE_ERROR;
     }
 
@@ -613,7 +613,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerLastConfi
 
         // The size of the configuration intent repository should remain the same
 
-        prismAssert (numberOfConfigurationIntents == configurationIntentVector.size (), __FILE__, __LINE__);
+        waveAssert (numberOfConfigurationIntents == configurationIntentVector.size (), __FILE__, __LINE__);
 
         // We have the capability to replay multiple configuration intents, but purposefully we will only replay the last config intent.
         // The index of the last configuration intent will be used here.  It's okay to subtract one from the index here since we are guaranteed at least one intent at this point.
@@ -623,7 +623,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerLastConfi
         serializedConfigurationIntentMessage = configurationIntentMap[configurationIntentVector[lastConfigurationIntentIndex]];
 
         pConfigurationIntentMessage = WaveMessage::createAndLoadFromSerializedData2 (serializedConfigurationIntentMessage);
-        prismAssert (NULL != pConfigurationIntentMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigurationIntentMessage, __FILE__, __LINE__);
 
         pConfigurationIntentMessage->setIsALastConfigReplay (true);
 
@@ -645,7 +645,7 @@ ResourceId PrismFrameworkObjectManagerPostPersistentBootWorker::triggerLastConfi
         // Generate a single RASLOG for the last configuration replay using event.
 
         LastConfigReplayCompletedEvent *plastConfigReplayCompletedEvent = new LastConfigReplayCompletedEvent (overallStatus);
-        prismAssert (NULL != plastConfigReplayCompletedEvent, __FILE__, __LINE__);
+        waveAssert (NULL != plastConfigReplayCompletedEvent, __FILE__, __LINE__);
 
         broadcast (plastConfigReplayCompletedEvent);
     }

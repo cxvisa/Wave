@@ -568,7 +568,7 @@ const string FrameworkToolKit::getProcessCurrentWorkingDirectory ()
 
     char *pTempBuffer = new char[4096];
 
-    prismAssert (NULL != pTempBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pTempBuffer, __FILE__, __LINE__);
 
     if (NULL != pTempBuffer)
     {
@@ -624,7 +624,7 @@ const string FrameworkToolKit::localize (const ResourceId &resourceId, const vec
         position = resourceString.find(findString, position);
         if (string::npos == position)
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         arguments[i]->toString (attributeString);
         resourceString.replace (position, findString.length (), attributeString.c_str ());
@@ -901,7 +901,7 @@ ResourceId FrameworkToolKit::printRemoteLocations (UI32 argc, vector<string> arg
 
 ResourceId FrameworkToolKit::assertTest (UI32 argc, vector<string> argv)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (0);
 }
@@ -1375,7 +1375,7 @@ ResourceId FrameworkToolKit::checkForExistenceOfOneMO (WaveManagedObjectSynchron
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     trace (TRACE_LEVEL_DEVEL, string ("FrameworkToolKit::checkForExistenceOfOneMO : Entering ..."));
-    prismAssert (NULL != pWaveManagedObjectSynchronousQueryContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectSynchronousQueryContext, __FILE__, __LINE__);
 
     vector<WaveManagedObject *> *pResults = WaveObjectManagerToolKit::querySynchronously (pWaveManagedObjectSynchronousQueryContext);
     UI32 i = 0;
@@ -1397,14 +1397,14 @@ ResourceId FrameworkToolKit::checkForExistenceOfOneMO (WaveManagedObjectSynchron
         else
         {
             trace (TRACE_LEVEL_ERROR, string ("FrameworkToolKit::checkForExistenceOfOneMO : Two entries found in ") + classToQuery);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
     }
     else if (2 < pResults->size ())
     {
         trace (TRACE_LEVEL_ERROR, string ("FrameworkToolKit::checkForExistenceOfOneMO : Multiple entries found in ") + classToQuery);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     for (i = 0; i < pResults->size (); i++)
     {
@@ -1700,14 +1700,14 @@ string FrameworkToolKit::getNodeReadyForAllCommandsTimeStamp ()
 void FrameworkToolKit::rollbackCfgFile ()
 {
     PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     pTemp->rollbackCfgFile ();
 }
 bool FrameworkToolKit::getIsDbRestoreIncomplete ()
 {
     PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     return (pTemp->getIsDBRestoreIncomplete ());
 }
@@ -1715,26 +1715,26 @@ bool FrameworkToolKit::getIsDbRestoreIncomplete ()
 void FrameworkToolKit::setIsDbRestoreIncomplete (bool isValid)
 {
     PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     pTemp->setIsDBRestoreIncomplete (isValid);
 }
 
-// Following method is not called from prismAssert.
+// Following method is not called from waveAssert.
 void FrameworkToolKit::obtainBtString (const int &startFrame, const int &numberOfFrames, string &backTraceString)
 {
-    prismAssert ((startFrame >= 0) && (numberOfFrames > 0), __FILE__, __LINE__);
+    waveAssert ((startFrame >= 0) && (numberOfFrames > 0), __FILE__, __LINE__);
 
     const UI32    BTMAXDEPTH       = 40;
 
     void   **pBackTraceBuffer      = new void *[BTMAXDEPTH];    // Need to free before returning. (1)
-    prismAssert (NULL != pBackTraceBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pBackTraceBuffer, __FILE__, __LINE__);
 
     int      numberOfSymbols       = backtrace (pBackTraceBuffer, BTMAXDEPTH);
-    prismAssert ((0 <= numberOfSymbols) && (40 >= numberOfSymbols), __FILE__, __LINE__);
+    waveAssert ((0 <= numberOfSymbols) && (40 >= numberOfSymbols), __FILE__, __LINE__);
 
     char   **pBackTraceSymbols     = backtrace_symbols (pBackTraceBuffer, numberOfSymbols); // pBackTraceSymbols - need to free before returning. (2)
-    prismAssert (NULL != pBackTraceSymbols, __FILE__, __LINE__);
+    waveAssert (NULL != pBackTraceSymbols, __FILE__, __LINE__);
 
     string   tempBackTraceString   = "";
     char    *pDemangleOutPutBuffer = NULL;
@@ -1800,7 +1800,7 @@ string FrameworkToolKit::getSymbolicLinkToStartupFile ()
 
         tokenize (tempString, firstLevelToken, '/');
 
-        prismAssert (0 < firstLevelToken.size (), __FILE__, __LINE__);
+        waveAssert (0 < firstLevelToken.size (), __FILE__, __LINE__);
 
         returnString  = firstLevelToken [firstLevelToken.size () - 1];
     }
@@ -1989,7 +1989,7 @@ bool FrameworkToolKit::getIsConfigFileReplayGoingToBeDone ()
 void FrameworkToolKit::broadcastStartupSchemaChangeEvent (SchemaType fromSchema, string fromSchemaPath, SchemaType toSchema, string toSchemaPath , bool operationStatus)
 {
     PersistenceLocalObjectManager *pTemp = PersistenceLocalObjectManager::getInstance ();
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     pTemp->broadcastSchemaChangeEvent (fromSchema, fromSchemaPath, toSchema, toSchemaPath, operationStatus);
 }
@@ -2093,7 +2093,7 @@ void FrameworkToolKit::uninitializeConsolePrintFunction ()
 bool FrameworkToolKit::getIsSyncDumpCompleted ()
 {
     PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     return (pTemp->getIsSyncDumpCompleted ());
 }
@@ -2107,7 +2107,7 @@ void FrameworkToolKit::setRewriteStartupSchemaOnNodeReady ()
     // Following lines are for printing caller details.
 
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     // service name is protected, So, at least print service Id.
     WaveServiceId callerThreadServiceId = pWaveObjectManagerForCurrentThread->getServiceId ();
@@ -2152,7 +2152,7 @@ ResourceId FrameworkToolKit::deleteFilesOnAllNodes ( const vector<string> &filen
         for ( size_t i = 0; i < numberOfFiles; i++ )
         {
             FileDeleteFileToHaPeerMessage *pMessage = new FileDeleteFileToHaPeerMessage ();
-            prismAssert (NULL != pMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
             pMessage->setDestinationFileName (filenames[i]);
 
@@ -2201,7 +2201,7 @@ ResourceId FrameworkToolKit::deleteFilesOnAllNodes ( const vector<string> &filen
     for ( size_t i = 0; i < numberOfFiles; i++ )
     {
         FileDeleteRequestMessage *pMessage = new FileDeleteRequestMessage(filenames[i], connectedLocationsVector );
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         pMessage->setFileTransferFlag( transferFlag );
         status = WaveObjectManagerToolKit::sendSynchronously (pMessage);
@@ -2313,7 +2313,7 @@ ResourceId FrameworkToolKit::deleteFilesOnAllNodes ( const vector<string> &filen
 
 ResourceId FrameworkToolKit::pushFilesToAllNodes ( const vector<string> &sourceFilenames, const vector<string> &destFilenames, const UI32 &transferFlag, const bool &disconnectFromFailedNode , const vector<LocationId> &locationIds)
 {
-    prismAssert ( sourceFilenames.size() == destFilenames.size(), __FILE__, __LINE__);
+    waveAssert ( sourceFilenames.size() == destFilenames.size(), __FILE__, __LINE__);
 
     size_t numberOfFiles = sourceFilenames.size();
 
@@ -2331,7 +2331,7 @@ ResourceId FrameworkToolKit::pushFilesToAllNodes ( const vector<string> &sourceF
         for ( size_t i = 0; i < numberOfFiles; i++ )
         {
             FilePushFileToHaPeerMessage *pMessage = new FilePushFileToHaPeerMessage();
-            prismAssert (NULL != pMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
             pMessage->setSourceFileName(sourceFilenames[i]);
             pMessage->setDestinationFileName(destFilenames[i]);
@@ -2525,7 +2525,7 @@ void FrameworkToolKit::getAllFilesInTheDirectory (const string &directoryPath, v
         struct dirent *pDirectoryEntry = (struct dirent *) malloc (sizeof (struct dirent));
         struct dirent *pResult         = NULL;
 
-        prismAssert (NULL != pDirectoryEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pDirectoryEntry, __FILE__, __LINE__);
 
         while (0 == (readdir_r (pDirectory, pDirectoryEntry, &pResult)))
         {
@@ -2621,7 +2621,7 @@ ResourceId FrameworkToolKit::isConnectedToHaPeerLocation ()
     ResourceId returnStatus = WAVE_MESSAGE_ERROR;
 
     LocationBase *pThisLocation = FrameworkToolKit::getPThisLocation ();
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     ClientStreamingSocket *pClientStreamingSocket = pThisLocation->getClientStreamingSocketForHaPeer ();
 
@@ -2643,7 +2643,7 @@ LocationId FrameworkToolKit::getHaPeerLocationId ()
 bool FrameworkToolKit::getIsLiveSyncEnabled ()
 {
     PersistenceLocalObjectManager *pTemp = PersistenceLocalObjectManager::getInstance ();
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     return (pTemp->getLiveSyncEnabled ());
 }
@@ -2725,7 +2725,7 @@ void FrameworkToolKit::setFirmwareDownloadCase (const SI32 &fwdlcase)
 
 ObjectId FrameworkToolKit::getObjectIdForPartition (const string &partitionName)
 {
-    prismAssert (false == partitionName.empty (), __FILE__, __LINE__);
+    waveAssert (false == partitionName.empty (), __FILE__, __LINE__);
 
     ObjectId partitionObjectId;
 
@@ -2777,7 +2777,7 @@ ResourceId FrameworkToolKit::getHaPeerIpAddressAndPort (string& ip, SI32& port)
     ResourceId returnStatus = WAVE_MESSAGE_ERROR;
 
     LocationBase *pThisLocation = FrameworkToolKit::getPThisLocation ();
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     ClientStreamingSocket *pClientStreamingSocket = pThisLocation->getClientStreamingSocketForHaPeer ();
 
@@ -2855,11 +2855,11 @@ AttributeType FrameworkToolKit::getFieldTypeInATable (const string& tableName, c
 {
     OrmTable* table = (OrmRepository::getInstance ())->getTableByName (tableName);
 
-    prismAssert (NULL != table, __FILE__, __LINE__);
+    waveAssert (NULL != table, __FILE__, __LINE__);
 
     Attribute* pAttribute = table->getAttributeForFieldNameInManagedObject (fieldName);
 
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     return (pAttribute->getAttributeType ());
 }
@@ -2868,7 +2868,7 @@ string FrameworkToolKit::getSqlTypeForAFieldInATable (const string& tableName, c
 {
     OrmTable* pOrmTable = (OrmRepository::getInstance ())->getTableByName (tableName);
 
-    prismAssert (NULL != pOrmTable, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
     return (pOrmTable->getSqlTypeForAField (fieldName));
 

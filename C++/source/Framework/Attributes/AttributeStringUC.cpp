@@ -114,7 +114,7 @@ StringUC AttributeStringUC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeStringUC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempStringUC;
     }
 }
@@ -128,7 +128,7 @@ void AttributeStringUC::setValue (const StringUC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeStringUC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -139,7 +139,7 @@ bool AttributeStringUC::getIsNoElement () const
 
 bool AttributeStringUC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeStringUC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeStringUC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeStringUC == (getAttributeType ()))
     {
@@ -193,7 +193,7 @@ void AttributeStringUC::getSqlForSelect (string &sqlForSelect, AttributeConditio
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeStringUC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString, tempString1;
@@ -276,13 +276,13 @@ void AttributeStringUC::toEscapedString (string *inputString, string &valueStrin
     PGconn             *pPGConnection         = NULL;
     string              databaseErrorMessage;
 
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
-    prismAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
 
     pPGConnection = pDatabaseconnection->getPConnection ();
 
-    prismAssert (NULL != pPGConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pPGConnection, __FILE__, __LINE__);
 
     returnSize = PQescapeStringConn (pPGConnection, pTemp, inputString->c_str (), size, &errorCode);
 
@@ -292,7 +292,7 @@ void AttributeStringUC::toEscapedString (string *inputString, string &valueStrin
         trace (TRACE_LEVEL_ERROR, "AttributeStringUC::toEscapedString : error connecting with Database :\n" + databaseErrorMessage + string (", Return Size : ") + returnSize);
     }
 
-    prismAssert (0 == errorCode, __FILE__, __LINE__);
+    waveAssert (0 == errorCode, __FILE__, __LINE__);
 
     valueString = pTemp;
 

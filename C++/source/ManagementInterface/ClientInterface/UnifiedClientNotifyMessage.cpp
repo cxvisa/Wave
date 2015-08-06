@@ -45,7 +45,7 @@ const void *UnifiedClientNotifyMessage::getCStructureForInputs ()
 {
     UnifiedClientNotifyMessage_t *pInput                  = new UnifiedClientNotifyMessage_t ();
 
-    prismAssert (NULL != pInput, __FILE__, __LINE__);
+    waveAssert (NULL != pInput, __FILE__, __LINE__);
 
     pInput->backendNotifyValue = m_backendNotifyValue;
 

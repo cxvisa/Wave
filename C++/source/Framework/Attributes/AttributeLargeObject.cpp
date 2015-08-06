@@ -103,7 +103,7 @@ LargeObject AttributeLargeObject::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeLargeObject::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempLargeObject);
     }
 }
@@ -117,13 +117,13 @@ void AttributeLargeObject::setValue (const LargeObject &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeLargeObject::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeLargeObject::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeLargeObject == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeLargeObject == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeLargeObject == (getAttributeType ()))
     {
@@ -175,7 +175,7 @@ void AttributeLargeObject::getSqlForSelect (string &sqlForSelect, AttributeCondi
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeLargeObject::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

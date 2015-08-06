@@ -88,7 +88,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::getCountFromDatabaseTableFor
         pConnection = getDatabaseServerConnection (className);
     }
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     //trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandlerForCount : Query to execute : \n\r" + pDatabaseObjectManagerExecuteQueryMessageForCount->getSql ());
 
@@ -108,7 +108,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::getCountFromDatabaseTableFor
             UI32    numberOfRows     = PQntuples (pResult);
             SI32    column           = PQfnumber (pResult, "count");
 
-            prismAssert (1 == numberOfRows, __FILE__, __LINE__);
+            waveAssert (1 == numberOfRows, __FILE__, __LINE__);
 
             if (-1 != column)
             {
@@ -177,7 +177,7 @@ void DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler (Databa
     
     vector<WaveManagedObject *> *pResults = new vector<WaveManagedObject *>;
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     pDatabaseObjectManagerExecuteQueryMessage->setPResults (pResults);
 
@@ -195,7 +195,7 @@ void DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler (Databa
     PGconn             *pConnection         = getDatabaseServerConnection (pDatabaseObjectManagerExecuteQueryMessage->getClassName ());
     string              schema              = pDatabaseObjectManagerExecuteQueryMessage->getSchema ();
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     //trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler : Query to execute : \n\r" + pDatabaseObjectManagerExecuteQueryMessage->getSql ());
 
@@ -267,7 +267,7 @@ void DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler (Databa
             if (NULL == pWaveObjectManager)
             {
                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler : There is no known Owner for Managed Class : " + className);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 pDatabaseObjectManagerExecuteQueryMessage->setCompletionStatus (WAVE_MESSAGE_ERROR);
                 reply (pDatabaseObjectManagerExecuteQueryMessage);
@@ -287,7 +287,7 @@ void DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler (Databa
             {
                 pWaveManagedObject = pWaveObjectManager->createManagedObjectInstanceWrapper (className);
 
-                prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+                waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
                 //trace (TRACE_LEVEL_INFO, string (" OBJECT ID : ") + ((pWaveManagedObject->getObjectId ()).getClassId ()) + string (", ") + (pWaveManagedObject->getObjectId ()).getInstanceId ());
 
@@ -347,7 +347,7 @@ void DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler (Databa
                             if (NULL == pAuxilliaryResult)
                             {
                                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler : Could not obtain results for auxilliary table " + auxilliaryTableNames[j] + " On table " + className + ".");
-                                prismAssert (false, __FILE__, __LINE__);
+                                waveAssert (false, __FILE__, __LINE__);
                             }
                             else
                             {
@@ -362,7 +362,7 @@ void DatabaseObjectManagerExecuteQueryWorker::executeQueryMessageHandler (Databa
 
                                     DatabaseObjectManager::handleIfDBCorruption (errorMessage, pAuxilliaryResult);
 
-                                    prismAssert (false, __FILE__, __LINE__);
+                                    waveAssert (false, __FILE__, __LINE__);
                                 }
                                 else
                                 {
@@ -428,7 +428,7 @@ WaveManagedObject *DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjec
     string              sql                 = string ("SELECT * from ") + schema + "." + tableName + string (" WHERE ObjectIdClassId = ") + waveManagedObjectObjectId.getClassId () + string (" AND ObjectIdInstanceId = ") + waveManagedObjectObjectId.getInstanceId ();
     vector<string>      selectFields;
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     //trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectFromDatabase : Query to execute : \n" + sql);
 
@@ -469,12 +469,12 @@ WaveManagedObject *DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjec
             if (NULL == pWaveObjectManager)
             {
                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectFromDatabase : There is no known Owner for Managed Class : " + className);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 return (pWaveManagedObject);
             }
 
-            prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+            waveAssert (1 == numberOfResults, __FILE__, __LINE__);
 
             // Obtain if there are any auxilliary table Names.
 
@@ -483,7 +483,7 @@ WaveManagedObject *DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjec
 
             pWaveManagedObject = pWaveObjectManager->createManagedObjectInstanceWrapper (className);
 
-            prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
             //trace (TRACE_LEVEL_INFO, string (" OBJECT ID : ") + ((pWaveManagedObject->getObjectId ()).getClassId ()) + string (", ") + (pWaveManagedObject->getObjectId ()).getInstanceId ());
 
@@ -528,7 +528,7 @@ WaveManagedObject *DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjec
                     if (NULL == pAuxilliaryResult)
                     {
                         trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectFromDatabase : Could not obtain results for auxilliary table " + auxilliaryTableNames[j] + " On table " + className + ".");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                     else
                     {
@@ -543,7 +543,7 @@ WaveManagedObject *DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjec
 
                             DatabaseObjectManager::handleIfDBCorruption (errorMessage, pAuxilliaryResult);
 
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
                         else
                         {
@@ -621,7 +621,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
 
     sql = synchronousQueryContext.getSql ();
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     //trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectFromDatabase : Query to execute : \n" + sql);
 
@@ -662,12 +662,12 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
             if (NULL == pWaveObjectManager)
             {
                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectsFromDatabase : There is no known Owner for Managed Class : " + className);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 return (waveManagedObjects);
             }
 
-            prismAssert (numberOfObjectIds == numberOfResults, __FILE__, __LINE__);
+            waveAssert (numberOfObjectIds == numberOfResults, __FILE__, __LINE__);
 
             // Obtain if there are any auxilliary table Names.
 
@@ -680,7 +680,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
             {
                 pWaveManagedObject = pWaveObjectManager->createManagedObjectInstanceWrapper (className);
 
-                prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+                waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
                 waveManagedObjects.push_back (pWaveManagedObject);
 
@@ -725,7 +725,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
                         if (NULL == pAuxilliaryResult)
                         {
                             trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectsFromDatabase : Could not obtain results for auxilliary table " + auxilliaryTableNames[j] + " On table " + className + ".");
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
                         else
                         {
@@ -736,7 +736,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
                                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectsFromDatabase : Could not obtain results for auxilliary table " + auxilliaryTableNames[j] + " On table " + className + ".");
                                 trace (TRACE_LEVEL_ERROR, string (PQresultErrorMessage (pAuxilliaryResult)));
                                 trace (TRACE_LEVEL_ERROR, "The Errored out SQL was :\n" + auxilliarySql);
-                                prismAssert (false, __FILE__, __LINE__);
+                                waveAssert (false, __FILE__, __LINE__);
                             }
                             else
                             {
@@ -803,7 +803,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
 
     sql = string ("SELECT * from ") + schema +  string (".") + childClassName + string (" WHERE ownerManagedObjectIdClassId = ") + parentObjectId.getClassId () + string (" AND ownerManagedObjectIdInstanceId = ") + parentObjectId.getInstanceId ();
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     //trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectFromDatabase : Query to execute : \n" + sql);
 
@@ -844,7 +844,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
             if (NULL == pWaveObjectManager)
             {
                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectsFromDatabase : There is no known Owner for Managed Class : " + className);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 return (waveManagedObjects);
             }
@@ -860,7 +860,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
             {
                 pWaveManagedObject = pWaveObjectManager->createManagedObjectInstanceWrapper (className);
 
-                prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+                waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
                 waveManagedObjects.push_back (pWaveManagedObject);
 
@@ -905,7 +905,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
                         if (NULL == pAuxilliaryResult)
                         {
                             trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectsFromDatabase : Could not obtain results for auxilliary table " + auxilliaryTableNames[j] + " On table " + className + ".");
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
                         else
                         {
@@ -916,7 +916,7 @@ vector<WaveManagedObject *> DatabaseObjectManagerExecuteQueryWorker::loadWaveMan
                                 trace (TRACE_LEVEL_FATAL, "DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjectsFromDatabase : Could not obtain results for auxilliary table " + auxilliaryTableNames[j] + " On table " + className + ".");
                                 trace (TRACE_LEVEL_ERROR, string (PQresultErrorMessage (pAuxilliaryResult)));
                                 trace (TRACE_LEVEL_ERROR, "The Errored out SQL was :\n" + auxilliarySql);
-                                prismAssert (false, __FILE__, __LINE__);
+                                waveAssert (false, __FILE__, __LINE__);
                             }
                             else
                             {
@@ -1003,7 +1003,7 @@ PGconn *DatabaseObjectManagerExecuteQueryWorker::getDatabaseServerConnection (co
     {
         DatabaseConnection *pDatabaseConnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-        prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
         pDatabaseServerConnection = pDatabaseConnection->getPConnection ();
     }
@@ -1011,7 +1011,7 @@ PGconn *DatabaseObjectManagerExecuteQueryWorker::getDatabaseServerConnection (co
     {
         DatabaseMultiConnection *pDatabaseMultiConnection = DatabaseMultiConnection::getInstance ();
 
-        prismAssert (NULL != pDatabaseMultiConnection, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseMultiConnection, __FILE__, __LINE__);
 
         pDatabaseServerConnection = pDatabaseMultiConnection->getServerConnectionForManagedObject (className);
     }
@@ -1028,9 +1028,9 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::pqExecWrapper (const string 
     ResourceId returnStatus = WAVE_MESSAGE_SUCCESS;
 
     DatabaseConnection *pDatabaseConnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
     PGconn             *pConnection         = pDatabaseConnection->getPConnection ();
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     pPGresult = PQexec (pConnection, sqlString.c_str ());
 
@@ -1139,7 +1139,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjects (cons
         // A. Create Managed Object.
 
         WaveManagedObject *pWaveManagedObject = pWaveObjectManager->createManagedObjectInstanceWrapper (className);
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         waveManagedObjectPointerResultVector.push_back (pWaveManagedObject);
 
@@ -1189,7 +1189,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjects (cons
         {
             vector<WaveManagedObject *> compositionChildObjects;
             returnStatus = loadObjectsForOidsFromATable (recursiveQueryContext, itr5->first, itr5->second, compositionChildObjects);
-            prismAssert (WAVE_MESSAGE_SUCCESS == returnStatus, __FILE__, __LINE__);
+            waveAssert (WAVE_MESSAGE_SUCCESS == returnStatus, __FILE__, __LINE__);
             UI32 numberOfCompositionChildObjects = compositionChildObjects.size ();
 
             for (UI32 j = 0; j < numberOfCompositionChildObjects; j++)
@@ -1238,7 +1238,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjects (cons
         for (; itr7 != end7; itr7++)
         {
             returnStatus = queryAuxiliaryTableRowsForVectorOfOwnerOids (recursiveQueryContext, itr6->second, itr7->first, itr7->second, ownerToRelatedOidsMap);
-            prismAssert (WAVE_MESSAGE_SUCCESS == returnStatus, __FILE__, __LINE__);
+            waveAssert (WAVE_MESSAGE_SUCCESS == returnStatus, __FILE__, __LINE__);
         }
         map3[itr6->first].swap (ownerToRelatedOidsMap);
     }
@@ -1285,7 +1285,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::loadWaveManagedObjects (cons
             for (; itr11 != end11; itr11++)
             {
                 returnStatus = getChildObjectsForACompositionRelation (recursiveQueryContext, itr10->second, itr11->first, itr11->second, ownerToRelatedObjectsMap);
-                prismAssert (WAVE_MESSAGE_SUCCESS == returnStatus, __FILE__, __LINE__);
+                waveAssert (WAVE_MESSAGE_SUCCESS == returnStatus, __FILE__, __LINE__);
             }
             map4[itr10->first].swap (ownerToRelatedObjectsMap);
         }
@@ -1548,7 +1548,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::getChildObjectsForACompositi
                 vector<WaveManagedObject *> childObjects;
 
                 ResourceId status2 = loadWaveManagedObjects (recursiveQueryContext, childTableName, sqlString, selectFieldsInManagedObject, childObjects);
-                prismAssert (WAVE_MESSAGE_SUCCESS == status2, __FILE__, __LINE__);
+                waveAssert (WAVE_MESSAGE_SUCCESS == status2, __FILE__, __LINE__);
 
                 for (UI32 k = 0; k < childObjects.size (); k++)
                 {
@@ -1577,7 +1577,7 @@ ResourceId DatabaseObjectManagerExecuteQueryWorker::getChildObjectsForACompositi
         vector<WaveManagedObject *> childObjects;
 
         ResourceId status3 = loadObjectsForOidsFromATable (recursiveQueryContext, childTableId, childInstanceIds, childObjects);
-        prismAssert (WAVE_MESSAGE_SUCCESS == status3, __FILE__, __LINE__);
+        waveAssert (WAVE_MESSAGE_SUCCESS == status3, __FILE__, __LINE__);
 
         for (UI32 i = 0; i < childObjects.size (); i++)
         {

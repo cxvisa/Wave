@@ -40,7 +40,7 @@ void WaveBrokerBasedMessageFactory::registerWaveBrokerBasedMessageInstantiator (
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveBrokerBasedMessageFactory::registerWaveBrokerBasedMessageInstantiator : Duplicate Instantiator Registration for " + FrameworkToolKit::localize (waveBrokerBasedMessageType));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveBrokerBasedMessageInstatiatorsMutex.unlock ();
@@ -63,7 +63,7 @@ WaveBrokerBasedMessage *WaveBrokerBasedMessageFactory::createWaveBrokerBasedMess
 
             pWaveBrokerBasedMessage = (*waveBrokerBasedMessageInstantiator) ();
 
-            prismAssert (NULL != pWaveBrokerBasedMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerBasedMessage, __FILE__, __LINE__);
         }
     }
     else

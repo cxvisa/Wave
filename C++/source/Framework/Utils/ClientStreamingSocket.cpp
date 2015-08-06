@@ -183,7 +183,7 @@ bool ClientStreamingSocket::operator << (WaveMessage *pWaveMessage)
 
     if (0 != clockReturnValue)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
 
@@ -197,7 +197,7 @@ bool ClientStreamingSocket::operator << (WaveMessage *pWaveMessage)
 
     if (0 != clockReturnValue)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //printf ("sec = %20ld, nsec = %20ld\n", timespec1.tv_sec, timespec1.tv_nsec);
@@ -278,7 +278,7 @@ bool ClientStreamingSocket::operator << (WaveMessage *pWaveMessage)
 
         FixedSizeBuffer tempBuffer (bufferSize, pBuffer);
 
-        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
         isSuccessful = (*this) << bufferTag;
 
@@ -367,7 +367,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessage *pWaveBrokerBase
 
     if (0 != clockReturnValue)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
 
@@ -381,7 +381,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessage *pWaveBrokerBase
 
     if (0 != clockReturnValue)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //printf ("sec = %20ld, nsec = %20ld\n", timespec1.tv_sec, timespec1.tv_nsec);
@@ -462,7 +462,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessage *pWaveBrokerBase
 
         FixedSizeBuffer tempBuffer (bufferSize, pBuffer);
 
-        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
         isSuccessful = (*this) << bufferTag;
 
@@ -494,7 +494,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessage *pWaveBrokerBase
 bool ClientStreamingSocket::operator << (WaveBrokerBasedMessagePayload *pWaveBrokerBasedMessagePayload)
 {
 #if 0
-    prismAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
 
     pWaveBrokerBasedMessagePayload->prepareForPostingOnWire ();
 
@@ -533,7 +533,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessagePayload *pWaveBro
 
     if (0 != clockReturnValue)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 #endif
 
@@ -560,7 +560,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessagePayload *pWaveBro
 
     if (0 != clockReturnValue)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //printf ("sec = %20ld, nsec = %20ld\n", timespec1.tv_sec, timespec1.tv_nsec);
@@ -636,7 +636,7 @@ bool ClientStreamingSocket::operator << (WaveBrokerBasedMessagePayload *pWaveBro
         void *pBuffer    = buffers[i];
         UI32  bufferSize = bufferSizesVector[i];
 
-        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
         FixedSizeBuffer tempBuffer (bufferSize, pBuffer);
 
@@ -797,7 +797,7 @@ bool ClientStreamingSocket::setCustomKeepAliveTimeouts (UI32 keepAliveIdleTimeou
 
     // if (false == setSocketOptionStatus)
     // {
-    //     prismAssert (false, __FILE__, __LINE__);
+    //     waveAssert (false, __FILE__, __LINE__);
     // }
 
     if (true == setSocketOptionStatus)
@@ -806,7 +806,7 @@ bool ClientStreamingSocket::setCustomKeepAliveTimeouts (UI32 keepAliveIdleTimeou
 
         // if (false == setSocketOptionStatus)
         // {
-        //     prismAssert (false, __FILE__, __LINE__);
+        //     waveAssert (false, __FILE__, __LINE__);
         // }
     }
 
@@ -816,7 +816,7 @@ bool ClientStreamingSocket::setCustomKeepAliveTimeouts (UI32 keepAliveIdleTimeou
 
         // if (false == setSocketOptionStatus)
         // {
-        //     prismAssert (false, __FILE__, __LINE__);
+        //     waveAssert (false, __FILE__, __LINE__);
         // }
     }
 

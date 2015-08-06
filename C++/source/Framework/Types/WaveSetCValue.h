@@ -196,7 +196,7 @@ static inline void wave_cvalue_set_string (WaveCValue *cvalue, const string valu
     cvalue->type = WaveNs::WAVE_CVALUE_STRING;
     
     cvalue->value.String = strdup (value.c_str());
-    WaveNs::prismAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
 }
 
 static inline void wave_cvalue_set_string_vector (WaveCValue *cvalue, const vector<string> value)
@@ -207,12 +207,12 @@ static inline void wave_cvalue_set_string_vector (WaveCValue *cvalue, const vect
     uint32_t len = value.size ();
     
     char **strvalues = new char*[len];
-    WaveNs::prismAssert (NULL != strvalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != strvalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
         strvalues[i]= strdup (value[i].c_str());
-        WaveNs::prismAssert (NULL != strvalues[i], __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != strvalues[i], __FILE__, __LINE__);
     }
 
     str_vect.size = len;
@@ -231,7 +231,7 @@ static inline void wave_cvalue_set_si32_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
     
     int32_t *sivalues = new int32_t[len];
-    WaveNs::prismAssert (NULL != sivalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != sivalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
@@ -254,7 +254,7 @@ static inline void wave_cvalue_set_bool_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
     
     uint32_t *uivalues = new uint32_t[len];
-    WaveNs::prismAssert (NULL != uivalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != uivalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
@@ -277,7 +277,7 @@ static inline void wave_cvalue_set_ui32_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
 
     uint32_t *uivalues = new uint32_t[len];
-    WaveNs::prismAssert (NULL != uivalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != uivalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
@@ -299,7 +299,7 @@ static inline void wave_cvalue_set_si64_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
 
     int64_t *sivalues = new int64_t[len];
-    WaveNs::prismAssert (NULL != sivalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != sivalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
@@ -322,7 +322,7 @@ static inline void wave_cvalue_set_ui64_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
 
     uint64_t *uivalues = new uint64_t[len];
-    WaveNs::prismAssert (NULL != uivalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != uivalues, __FILE__, __LINE__);
 
     for(i = 0; i < len; i++)
     {
@@ -345,7 +345,7 @@ static inline void wave_cvalue_set_bitmap (WaveCValue *cvalue, const WaveNs::Bit
     bit_map.number_of_bitblocks = ((bit_map.number_of_bits + 63)/ 64) ;
 
     bit_map.bit_blocks = new uint64_t[bit_map.number_of_bitblocks];
-    WaveNs::prismAssert (NULL != bit_map.bit_blocks, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != bit_map.bit_blocks, __FILE__, __LINE__);
     
     cvalue->type = WaveNs::WAVE_CVALUE_BITMAP;
     cvalue->value.bitmap_value = bit_map;
@@ -375,7 +375,7 @@ static inline void wave_cvalue_set_date_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
     
     wave_date* date_ptr = new wave_date[len];
-    WaveNs::prismAssert (NULL != date_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != date_ptr, __FILE__, __LINE__);
 
     for(i = 0; i < len; i++)
     {
@@ -421,7 +421,7 @@ static inline void wave_cvalue_set_date_time_vector (WaveCValue *cvalue, const v
     uint32_t len = value.size ();
     
     wave_date_time* date_time_ptr = new wave_date_time[len];
-    WaveNs::prismAssert (NULL != date_time_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != date_time_ptr, __FILE__, __LINE__);
 	
     for(i = 0; i < len; i++)
     {
@@ -464,7 +464,7 @@ static inline void wave_cvalue_set_decimal_64_vector (WaveCValue *cvalue, const 
     uint32_t len = value.size ();
     
     wave_decimal_64* decimal_64_ptr = new wave_decimal_64[len];
-    WaveNs::prismAssert (NULL != decimal_64_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != decimal_64_ptr, __FILE__, __LINE__);
 	
     for(i = 0; i < len; i++)
     {
@@ -486,7 +486,7 @@ static inline void wave_cvalue_set_host (WaveCValue *cvalue, const WaveNs::HostU
     host_value.host_type = value.getHostType ();
 
     host_value.address = strdup ((value.getHostValue()).c_str());
-    WaveNs::prismAssert (NULL != host_value.address, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != host_value.address, __FILE__, __LINE__);
     
     cvalue->type = WaveNs::WAVE_CVALUE_HOST;
     cvalue->value.host_value = host_value;
@@ -500,14 +500,14 @@ static inline void wave_cvalue_set_ipv4address_vector (WaveCValue *cvalue, const
     uint32_t len = value.size ();
   	
     wave_ipaddress* ip_ptr = new wave_ipaddress[len];
-    WaveNs::prismAssert (NULL != ip_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != ip_ptr, __FILE__, __LINE__);
     
     for(i=0;i<len;i++)
     {
     	ip_ptr[i].ip_type = AF_INET ;  
     	
         ip_ptr[i].ip_address = strdup ((value[i].toString()).c_str()) ;
-        WaveNs::prismAssert (NULL != ip_ptr[i].ip_address, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != ip_ptr[i].ip_address, __FILE__, __LINE__);
     }
     
     ip_vect.size=len;
@@ -525,14 +525,14 @@ static inline void wave_cvalue_set_ipv6address_vector (WaveCValue *cvalue, const
     uint32_t len = value.size ();
   	
     wave_ipaddress* ip_ptr = new wave_ipaddress[len];
-    WaveNs::prismAssert (NULL != ip_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != ip_ptr, __FILE__, __LINE__);
     
     for(i=0;i<len;i++)
     {
     	ip_ptr[i].ip_type = AF_INET6 ;  
     	
         ip_ptr[i].ip_address = strdup ((value[i].toString()).c_str()) ;
-        WaveNs::prismAssert (NULL != ip_ptr[i].ip_address, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != ip_ptr[i].ip_address, __FILE__, __LINE__);
     }
 
     ip_vect.size=len;
@@ -550,14 +550,14 @@ static inline void wave_cvalue_set_ipvxaddress_vector (WaveCValue *cvalue, const
     uint32_t len = value.size ();
     
     wave_ipaddress* ip_ptr = new wave_ipaddress[len];
-    WaveNs::prismAssert (NULL != ip_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != ip_ptr, __FILE__, __LINE__);
 
     for(i=0;i<len;i++)
     {
         ip_ptr[i].ip_type = value[i].getIpType () ;
         
         ip_ptr[i].ip_address = strdup ((value[i].toString()).c_str()) ;
-        WaveNs::prismAssert (NULL != ip_ptr[i].ip_address, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != ip_ptr[i].ip_address, __FILE__, __LINE__);
     }
 
     ip_vect.size=len;
@@ -575,7 +575,7 @@ static inline void wave_cvalue_set_large_object (WaveCValue *cvalue, const WaveN
     large_obj.number_of_bytes = value.getNumberOfBytes();
     
     large_obj.byte_blocks = strdup ((value.toString()).c_str()) ; 
-    WaveNs::prismAssert (NULL != large_obj.byte_blocks, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != large_obj.byte_blocks, __FILE__, __LINE__);
     
     cvalue->type = WaveNs::WAVE_CVALUE_LARGEOBJECT;
     cvalue->value.large_object_value = large_obj;
@@ -619,7 +619,7 @@ static inline void wave_cvalue_set_time_vector (WaveCValue *cvalue, const vector
     uint32_t len = value.size ();
 
     wave_time* time_ptr = new wave_time[len];
-    WaveNs::prismAssert (NULL != time_ptr, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != time_ptr, __FILE__, __LINE__);
 	
     for(i = 0; i < len; i++)
     {
@@ -644,7 +644,7 @@ static inline void wave_cvalue_set_world_wide_name (WaveCValue *cvalue, const st
     cvalue->type = WaveNs::WAVE_CVALUE_WORLD_WIDE_NAME;
 
     cvalue->value.String = strdup (value.c_str());
-    WaveNs::prismAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
 }
 
 static inline void wave_cvalue_set_world_wide_name_vector (WaveCValue *cvalue, const vector<string> value)
@@ -655,12 +655,12 @@ static inline void wave_cvalue_set_world_wide_name_vector (WaveCValue *cvalue, c
     uint32_t len = value.size ();
     
     char **strvalues = new char*[len];
-    WaveNs::prismAssert (NULL != strvalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != strvalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
         strvalues[i]= strdup (value[i].c_str());
-        WaveNs::prismAssert (NULL != strvalues[i], __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != strvalues[i], __FILE__, __LINE__);
     }
 
     str_vect.size = len;
@@ -676,7 +676,7 @@ static inline void wave_cvalue_set_macaddress (WaveCValue *cvalue, const string 
     cvalue->type = WaveNs::WAVE_CVALUE_MAC_ADDRESS;
     
     cvalue->value.String = strdup (value.c_str());
-    WaveNs::prismAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
 }
 
 static inline void wave_cvalue_set_macaddress_vector (WaveCValue *cvalue, const vector<string> value)
@@ -687,12 +687,12 @@ static inline void wave_cvalue_set_macaddress_vector (WaveCValue *cvalue, const 
     uint32_t len = value.size ();
     
     char **strvalues = new char*[len];
-    WaveNs::prismAssert (NULL != strvalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != strvalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
         strvalues[i]= strdup (value[i].c_str());
-        WaveNs::prismAssert (NULL != strvalues[i], __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != strvalues[i], __FILE__, __LINE__);
     }
 
     str_vect.size = len;
@@ -708,7 +708,7 @@ static inline void wave_cvalue_set_macaddress2 (WaveCValue *cvalue, const string
     cvalue->type = WaveNs::WAVE_CVALUE_MAC_ADDRESS2;
     
     cvalue->value.String = strdup (value.c_str());
-    WaveNs::prismAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != cvalue->value.String, __FILE__, __LINE__);
 }
 
 
@@ -720,7 +720,7 @@ static inline void wave_cvalue_set_macaddress2_vector (WaveCValue *cvalue, const
     uint32_t len = value.size ();
     
     char **strvalues = new char*[len];
-    WaveNs::prismAssert (NULL != strvalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != strvalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
@@ -743,12 +743,12 @@ static inline void wave_cvalue_set_mac_range (WaveCValue *cvalue, const vector<s
     uint32_t len = value.size ();
     
     char **strvalues = new char*[len];
-    WaveNs::prismAssert (NULL != strvalues, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != strvalues, __FILE__, __LINE__);
     
     for(i = 0; i < len; i++)
     {
         strvalues[i]= strdup (value[i].c_str());
-        WaveNs::prismAssert (NULL != strvalues[i], __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != strvalues[i], __FILE__, __LINE__);
     }
 
     str_vect.size = len;
@@ -891,7 +891,7 @@ static inline void wave_cvalue_set_ipaddress (WaveCValue *cvalue, const WaveNs::
     if (0 == status)
     {
         printf ("wave_cvalue_set_ipvaddress : Invalid IPaddress passed to wave_cvalue_set_ipvaddress ");
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
   
     cvalue->type = WaveNs::WAVE_CVALUE_IPADDRESS;
@@ -907,7 +907,7 @@ static inline void wave_cvalue_set_ipaddress_networkmask (WaveCValue *cvalue, co
     if (0 == status)
     {   
         printf (" wave_cvalue_set_ipaddress_networkmask : Invalid IPaddress passed to wave_cvalue_set_ipaddress_networkmask ");
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     cvalue->type = WaveNs::WAVE_CVALUE_IPADDRESS_MASK;

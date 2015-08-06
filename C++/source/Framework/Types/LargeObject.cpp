@@ -37,7 +37,7 @@ void LargeObject::resizewithoutcopy (const UI32 &numberOfBytes)
 
 void LargeObject::copy (const LargeObject &largeObject)
 {
-    prismAssert (m_numberOfBytes == largeObject.m_numberOfBytes, __FILE__, __LINE__);
+    waveAssert (m_numberOfBytes == largeObject.m_numberOfBytes, __FILE__, __LINE__);
 
     memcpy(m_pByteBlocks, largeObject.m_pByteBlocks, m_numberOfBytes); 
 }
@@ -150,7 +150,7 @@ UI32 LargeObject::getNumberOfBytes () const
 
 UI8 LargeObject::operator [] (const UI32 &index)
 {
-    prismAssert (index < m_numberOfBytes, __FILE__, __LINE__);
+    waveAssert (index < m_numberOfBytes, __FILE__, __LINE__);
 
     return (m_pByteBlocks[index]);
 }

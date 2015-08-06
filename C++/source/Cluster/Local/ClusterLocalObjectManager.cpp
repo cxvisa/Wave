@@ -62,33 +62,33 @@ ClusterLocalObjectManager::ClusterLocalObjectManager ()
 
     m_pClusterLocalSetThisNodeIpAddressWorker = new ClusterLocalSetThisNodeIpAddressWorker (this);
 
-    prismAssert (NULL != m_pClusterLocalSetThisNodeIpAddressWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pClusterLocalSetThisNodeIpAddressWorker, __FILE__, __LINE__);
 
     m_pClusterLocalPrimaryNodeChangedWorker = new ClusterLocalReportPrimaryNodeChangedWorker(this);
 
-    prismAssert( NULL != m_pClusterLocalPrimaryNodeChangedWorker, __FILE__, __LINE__);
+    waveAssert( NULL != m_pClusterLocalPrimaryNodeChangedWorker, __FILE__, __LINE__);
 
     m_pClusterLocalReportRemovedNodeFromClusterWorker = new ClusterLocalReportRemovedNodeFromClusterWorker(this);
 
-    prismAssert( NULL!= m_pClusterLocalReportRemovedNodeFromClusterWorker, __FILE__, __LINE__);
+    waveAssert( NULL!= m_pClusterLocalReportRemovedNodeFromClusterWorker, __FILE__, __LINE__);
 
     m_pClusterLocalReportReplaceWorker = new ClusterLocalReportReplaceWorker(this);
 
-    prismAssert( NULL != m_pClusterLocalPrimaryNodeChangedWorker, __FILE__, __LINE__);
+    waveAssert( NULL != m_pClusterLocalPrimaryNodeChangedWorker, __FILE__, __LINE__);
 
     m_pClusterLocalSetHardwareSynchronizationStateWorker = new ClusterLocalSetHardwareSynchronizationStateWorker (this);
 
-    prismAssert (NULL != m_pClusterLocalSetHardwareSynchronizationStateWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pClusterLocalSetHardwareSynchronizationStateWorker, __FILE__, __LINE__);
 
 
 	m_pClusterLocalSetHaRoleWorker = new ClusterLocalSetHaRoleWorker(this);
-	prismAssert( NULL!= m_pClusterLocalSetHaRoleWorker, __FILE__, __LINE__);
+	waveAssert( NULL!= m_pClusterLocalSetHaRoleWorker, __FILE__, __LINE__);
 
     m_pClusterLocalWaveSlotManagementWorker = new ClusterLocalWaveSlotManagementWorker (this);
-    prismAssert (NULL != m_pClusterLocalWaveSlotManagementWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pClusterLocalWaveSlotManagementWorker, __FILE__, __LINE__);
 
     m_pClusterLocalGetObjectIdWorker = new ClusterLocalGetObjectIdWorker (this);
-    prismAssert (NULL != m_pClusterLocalGetObjectIdWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pClusterLocalGetObjectIdWorker, __FILE__, __LINE__);
 
     m_isInstantiated = true;
 
@@ -193,7 +193,7 @@ ClusterLocalObjectManager *ClusterLocalObjectManager:: getInstance ()
 {
     static ClusterLocalObjectManager *pClusterLocalObjectManager = new ClusterLocalObjectManager ();
 
-    WaveNs::prismAssert (NULL != pClusterLocalObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pClusterLocalObjectManager, __FILE__, __LINE__);
 
     return (pClusterLocalObjectManager);
 }
@@ -233,7 +233,7 @@ WaveManagedObject *ClusterLocalObjectManager::createManagedObjectInstance (const
     else
     {
         trace (TRACE_LEVEL_FATAL, "ClusterLocalObjectManager::createManagedObjectInstance : Unknown Managed Class Name : " + managedClassName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveManagedObject);
@@ -286,7 +286,7 @@ void ClusterLocalObjectManager::install (WaveAsynchronousContextForBootPhases *p
 
         WaveNode *pWaveNode = new WaveNode (this, FrameworkToolKit::getThisLocationId (), FrameworkToolKit::getThisLocationIpAddress (), FrameworkToolKit::getThisLocationPort ());
 
-        prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
         setThisWaveNodeObjectId (pWaveNode->getObjectId ());
 
@@ -299,7 +299,7 @@ void ClusterLocalObjectManager::install (WaveAsynchronousContextForBootPhases *p
         if (FRAMEWORK_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "ClusterLocalObjectManager::initialize : Could not install ClusterLocalObjectManager.");
-//            prismAssert (false, __FILE__, __LINE__);
+//            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -326,8 +326,8 @@ void ClusterLocalObjectManager::install (WaveAsynchronousContextForBootPhases *p
         vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
 
         // Ensure we have exactly one WaveNode result
-        prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
-        prismAssert (1 == (pWaveManagedObjects->size ()), __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+        waveAssert (1 == (pWaveManagedObjects->size ()), __FILE__, __LINE__);
 
         pThisWaveNode = dynamic_cast<WaveNode *> ((*pWaveManagedObjects)[0]);
 
@@ -336,7 +336,7 @@ void ClusterLocalObjectManager::install (WaveAsynchronousContextForBootPhases *p
         delete pWaveManagedObjects;
 
         // Ensure our cast succeeded
-        prismAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
+        waveAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, string ("ClusterLocalObjectManager::install : Wave Local Node Details :"));
         trace (TRACE_LEVEL_DEBUG, string ("ClusterLocalObjectManager::install :     Object ID   : ") + (pThisWaveNode->getObjectId ()).toString ());
@@ -367,9 +367,9 @@ void ClusterLocalObjectManager::boot (WaveAsynchronousContextForBootPhases *pWav
 
     vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
 
-    prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
 
-    prismAssert (1 == (pWaveManagedObjects->size ()), __FILE__, __LINE__);
+    waveAssert (1 == (pWaveManagedObjects->size ()), __FILE__, __LINE__);
 
     pThisWaveNode = dynamic_cast<WaveNode *> ((*pWaveManagedObjects)[0]);
 
@@ -377,7 +377,7 @@ void ClusterLocalObjectManager::boot (WaveAsynchronousContextForBootPhases *pWav
 
     delete pWaveManagedObjects;
 
-    prismAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
+    waveAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalObjectManager::boot : Wave Local Node Details :"));
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalObjectManager::boot :     Location Id : ") + pThisWaveNode->getLocationId ());
@@ -430,7 +430,7 @@ void ClusterLocalObjectManager::backendSyncUp (PrismAsynchronousContext *pPrismA
 
     if (NULL == pThisWaveNode)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     ResourceId currentLocalHwSyncState = pThisWaveNode->getHardwareSynchronizationState ();
@@ -493,7 +493,7 @@ WaveNode *ClusterLocalObjectManager::getThisWaveNodeManagedObject()
 
     vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
 
-    prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
 
     if (1 != pWaveManagedObjects->size ())
     {
@@ -507,7 +507,7 @@ WaveNode *ClusterLocalObjectManager::getThisWaveNodeManagedObject()
 
     delete pWaveManagedObjects;
 
-    prismAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
+    waveAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
 
     return pThisWaveNode;
 }
@@ -520,7 +520,7 @@ void ClusterLocalObjectManager::nodeAddedEventHandler (const WaveNewNodesAddedEv
 
     if (NULL == pThisWaveNode)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 
@@ -555,7 +555,7 @@ void ClusterLocalObjectManager::nodeAddedEventHandler (const WaveNewNodesAddedEv
         else
         {
             trace (TRACE_LEVEL_FATAL, "ClusterLocalObjectManager::nodeAddedEventHandler: WaveNode specific status commit to DB Failed");
-//            prismAssert (false, __FILE__, __LINE__);
+//            waveAssert (false, __FILE__, __LINE__);
         }
     }
     delete pThisWaveNode;
@@ -570,7 +570,7 @@ void ClusterLocalObjectManager::phase3StartEventHandler( const ClusterPhase3Star
 
     if (NULL == pThisWaveNode)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     ResourceId specificStatus = pThisWaveNode->getSpecificStatus();
@@ -606,7 +606,7 @@ void ClusterLocalObjectManager::phase3StartEventHandler( const ClusterPhase3Star
         else
         {
             trace (TRACE_LEVEL_FATAL, "ClusterLocalObjectManager::phase3StartEventHandler: WaveNode specific status commit to DB Failed");
-//            prismAssert (false, __FILE__, __LINE__);
+//            waveAssert (false, __FILE__, __LINE__);
         }
     }
     delete pThisWaveNode;
@@ -620,7 +620,7 @@ void ClusterLocalObjectManager::phase3CompleteEventHandler( const ClusterPhase3C
 
     if (NULL == pThisWaveNode)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     ResourceId specificStatus = pThisWaveNode->getSpecificStatus();
@@ -692,7 +692,7 @@ void ClusterLocalObjectManager::dbInconsistencyCheck (WaveAsynchronousContextFor
 
     vector<WaveManagedObject *> *pResults = querySynchronously (&synchronousQueryContext);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     if (0 == pResults->size ())
     {
@@ -704,7 +704,7 @@ void ClusterLocalObjectManager::dbInconsistencyCheck (WaveAsynchronousContextFor
         WaveNode *pThisWaveNode = NULL;
         pThisWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
 
-        prismAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
+        waveAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
 
         setThisWaveNodeObjectId (pThisWaveNode->getObjectId ());
 
@@ -722,14 +722,14 @@ void ClusterLocalObjectManager::dbInconsistencyCheck (WaveAsynchronousContextFor
         else
         {
             trace (TRACE_LEVEL_ERROR, string ("ClusterLocalObjectManager::dbInconsistencyCheck : Two entries found in WaveNode."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
     }
     else if (2 < pResults->size ())
     {
         trace (TRACE_LEVEL_ERROR, string ("ClusterLocalObjectManager::dbInconsistencyCheck : Multiple entries found in WaveNode"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     for (i = 0; i < pResults->size (); i++)
     {
@@ -748,8 +748,8 @@ void ClusterLocalObjectManager::dbInconsistencyCheck (WaveAsynchronousContextFor
         pWaveNode1 = dynamic_cast<WaveNode *> ((*pWaveManagedObjects)[0]);
         pWaveNode2 = dynamic_cast<WaveNode *> ((*pWaveManagedObjects)[1]);
 
-        prismAssert (NULL != pWaveNode1, __FILE__, __LINE__);
-        prismAssert (NULL != pWaveNode2, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveNode1, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveNode2, __FILE__, __LINE__);
 
         ObjectId object1 = pWaveNode1->getObjectId ();
         ObjectId object2 = pWaveNode2->getObjectId ();
@@ -781,9 +781,9 @@ void ClusterLocalObjectManager::haboot (WaveAsynchronousContextForBootPhases *pW
 
     vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
 
-    prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
 
-    prismAssert (1 == (pWaveManagedObjects->size ()), __FILE__, __LINE__);
+    waveAssert (1 == (pWaveManagedObjects->size ()), __FILE__, __LINE__);
 
     pThisWaveNode = dynamic_cast<WaveNode *> ((*pWaveManagedObjects)[0]);
 
@@ -791,7 +791,7 @@ void ClusterLocalObjectManager::haboot (WaveAsynchronousContextForBootPhases *pW
 
     delete pWaveManagedObjects;
 
-    prismAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
+    waveAssert (NULL != pThisWaveNode, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalObjectManager::haboot : Wave Local Node Details :"));
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalObjectManager::haboot :     Location Id : ") + pThisWaveNode->getLocationId ());
@@ -815,14 +815,14 @@ void ClusterLocalObjectManager::haboot (WaveAsynchronousContextForBootPhases *pW
 ResourceId ClusterLocalObjectManager::blockCli (const ResourceId &reason, const bool &clusterWide)
 {
     trace (TRACE_LEVEL_FATAL, string ("ClusterLocalObjectManager::blockCli : this service cannot block cli "));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return WAVE_MESSAGE_ERROR;
 }
 
 ResourceId ClusterLocalObjectManager::unblockCli (const ResourceId &reason, const bool &clusterWide)
 {
     trace (TRACE_LEVEL_FATAL, string ("ClusterLocalObjectManager::blockCli : this service cannot block cli "));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return WAVE_MESSAGE_ERROR;
 }
 
@@ -880,8 +880,8 @@ void ClusterLocalObjectManager::clusterLocalReportToControllerAsClientCallback (
 
     WaveClientSynchronousConnection *pWaveClientSynchronousConnection = reinterpret_cast<WaveClientSynchronousConnection *> (pContext);
 
-    prismAssert (NULL != pClusterLocalReportToControllerAsClientMessage, __FILE__, __LINE__);
-    prismAssert (NULL != pWaveClientSynchronousConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pClusterLocalReportToControllerAsClientMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveClientSynchronousConnection, __FILE__, __LINE__);
 
     pWaveClientSynchronousConnection->close ();
 
@@ -960,7 +960,7 @@ void ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback
 
             ResourceId status = querySynchronouslyForCount ("PrismCluster", numberOfPrismCluster, "wavecurrent");
 
-            prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+            waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 
             if (0 == numberOfPrismCluster)
             {
@@ -968,7 +968,7 @@ void ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback
 
                 status = sendOneWay (pClusterObjectManagerCreateClusterMessage);
 
-                prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+                waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
             }
             else if (1 == numberOfPrismCluster)
             {
@@ -976,11 +976,11 @@ void ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback
 
                 status = sendOneWay (pClusterObjectManagerAddNodeMessage);
 
-                prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+                waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
             }
             else
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
         else
@@ -992,7 +992,7 @@ void ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback
     {
         trace (TRACE_LEVEL_FATAL, "ClusterLocalObjectManager::clientReportingToControllerMessageHandler : Dampening Timer received when we are not in controller mode.  How did we even get here?");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

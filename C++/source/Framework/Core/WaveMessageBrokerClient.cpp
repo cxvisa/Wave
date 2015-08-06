@@ -265,7 +265,7 @@ void WaveMessageBrokerClient::initialize (const WaveMainConfiguration &waveMainC
             trace (TRACE_LEVEL_ERROR, "WaveMessageBrokerClient::initialize : Could not Change Directory to " + waveMainConfiguration.getChangeDirectoryTo ());
             trace (TRACE_LEVEL_ERROR, "WaveMessageBrokerClient::initialize : Reason listed below :");
             perror ("WAVE");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -628,7 +628,7 @@ void WaveMessageBrokerClient::instantiateNativePrismServices ()
 
         pWaveObjectManager = (*(m_nativePrismServiceInstantiators[i])) ();
 
-        prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
         if (WAVE_SERVICE_ACTIVE == m_nativePrismServiceInstantiationMode[i])
         {
@@ -646,7 +646,7 @@ void WaveMessageBrokerClient::instantiateNativePrismServices ()
         {
             pWaveObjectManager = objectManagers[j];
 
-            prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
             frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId ());
         }

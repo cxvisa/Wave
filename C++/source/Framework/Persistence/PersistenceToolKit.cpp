@@ -83,18 +83,18 @@ ResourceId PersistenceToolKit::getConfigurationManagedObjectInformation (UI64 &c
     // Query for the Global MO "ConfigurationManagedObject" 
 
     pResults = WaveObjectManagerToolKit::querySynchronously (ConfigurationManagedObject::getClassName ());
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     if (NULL != pResults)
     {
-        prismAssert (0 == (pResults->size ()) || 1 == (pResults->size ()), __FILE__, __LINE__);
+        waveAssert (0 == (pResults->size ()) || 1 == (pResults->size ()), __FILE__, __LINE__);
 
         if (1 == pResults->size ())
         {
             // Get the configuration number from queried result
 
             pConfigurationManagedObject = dynamic_cast<ConfigurationManagedObject *> ((*pResults)[0]);
-            prismAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
 
             configurationTransactionId  = pConfigurationManagedObject->getConfigurationNumber ();
             configurationTime           = pConfigurationManagedObject->getConfigurationTime ();
@@ -115,7 +115,7 @@ ResourceId PersistenceToolKit::getConfigurationManagedObjectInformation (UI64 &c
             else
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceToolKit::getConfigurationManagedObjectInformation : Query for the global configuration managed object returned an empty result.  Also, the cached configuration managed object information returned with status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
         else

@@ -17,7 +17,7 @@ WorldWideName::WorldWideName ()
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 }
 
 WorldWideName::WorldWideName (const UI8 name[8])
@@ -25,7 +25,7 @@ WorldWideName::WorldWideName (const UI8 name[8])
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -40,7 +40,7 @@ WorldWideName::WorldWideName (const string &worldWideNameInStringFormat)
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     fromString (worldWideNameInStringFormat);
 }
@@ -49,7 +49,7 @@ WorldWideName::WorldWideName (const WorldWideName &worldWideName)
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -99,12 +99,12 @@ void WorldWideName::fromString (const string &worldWideNameInStringFormat)
           char tempChar;
           UI32 tempValue             = 0;
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     if (expectedStringLength != givenStringLength)
     {
         trace (TRACE_LEVEL_FATAL, string("WorldWideName::fromString : Invalid World Wide Name String : ") + worldWideNameInStringFormat + string(" expectedStringLength=") + expectedStringLength + string(" givenStringLength=") + givenStringLength);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     for (i = 0; i < m_nameLength; i++)
@@ -114,7 +114,7 @@ void WorldWideName::fromString (const string &worldWideNameInStringFormat)
         if (false == (isAValidHexaDecimalCharacter (tempChar)))
         {
             trace (TRACE_LEVEL_FATAL, "WorldWideName::fromString : Invalid World Wide Name in String Format : " + worldWideNameInStringFormat);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         tempChar  = toupper (tempChar);
@@ -135,7 +135,7 @@ void WorldWideName::fromString (const string &worldWideNameInStringFormat)
         if (false == (isAValidHexaDecimalCharacter (tempChar)))
         {
             trace (TRACE_LEVEL_FATAL, "WorldWideName::fromString : Invalid World Wide Name in String Format : " + worldWideNameInStringFormat);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         tempChar  = toupper (tempChar);
@@ -163,7 +163,7 @@ ResourceId WorldWideName::loadFromPlainString (const string &worldWideNameInPlai
           UI32 tempValue             = 0;
           ResourceId status          = WAVE_MESSAGE_ERROR;  
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     if (expectedStringLength != givenStringLength)
     {
@@ -283,7 +283,7 @@ UI8 &WorldWideName::operator [] (const UI32 &index) const
     if (index >= m_nameLength)
     {
         trace (TRACE_LEVEL_FATAL, string ("WorldWideName::operator []: Invalid Index : ") + index + string (", Maximum allowed is : ") + (m_nameLength -1));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (m_pName[index]);

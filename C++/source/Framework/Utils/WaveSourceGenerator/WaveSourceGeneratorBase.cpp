@@ -388,7 +388,7 @@ ResourceId WaveSourceGeneratorBase::generateSource (UI32 argc, vector<string> ar
         return (0);
     }
 
-    prismAssert (NULL != pWaveSourceGeneratorBase, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSourceGeneratorBase, __FILE__, __LINE__);
 
     if (argv[2] == "-h")
     {

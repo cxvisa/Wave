@@ -122,11 +122,11 @@ void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadStep (Lo
 
     WaveManagedObject *pWaveManagedObject = pLoadOperationalDataContext->getPWaveManagedObject ();
 
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
         
     WaveManagedObjectLoadOperationalDataContext *pWaveManagedObjectLoadOperationalDataContext = new WaveManagedObjectLoadOperationalDataContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadCallback), pLoadOperationalDataContext);
 
-    prismAssert (NULL != pWaveManagedObjectLoadOperationalDataContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectLoadOperationalDataContext, __FILE__, __LINE__);
 
     pWaveManagedObjectLoadOperationalDataContext->setOperationalDataFields (pLoadOperationalDataContext->getOperationalDataFields ());
 
@@ -146,7 +146,7 @@ void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadCallback
     LoadOperationalDataContext *pLoadOperationalDataContext = reinterpret_cast<LoadOperationalDataContext *> (pWaveManagedObjectLoadOperationalDataContext->getPCallerContext ());
     ResourceId                  status                      = pWaveManagedObjectLoadOperationalDataContext->getCompletionStatus ();
 
-    prismAssert (NULL != pLoadOperationalDataContext, __FILE__, __LINE__);
+    waveAssert (NULL != pLoadOperationalDataContext, __FILE__, __LINE__);
 
     delete pWaveManagedObjectLoadOperationalDataContext;
     
@@ -159,7 +159,7 @@ void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataUpdateWaveMa
 
     WaveManagedObject *pWaveManagedObject = pLoadOperationalDataContext->getPWaveManagedObject ();
 
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEVEL, "WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataUpdateWaveManagedObjectStep: The class name of the composed managed object is : " + pWaveManagedObject->getObjectClassName ());
 

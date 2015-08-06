@@ -93,7 +93,7 @@ bool WaveManagementClientMap::isAKnownClient (const UI32 &id)
 
 void WaveManagementClientMap::addClient (WaveManagementClient *pWaveManagementClient)
 {
-    prismAssert (NULL != pWaveManagementClient, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagementClient, __FILE__, __LINE__);
 
     string name                      = pWaveManagementClient->getName      ();
     string ipAddress                 = pWaveManagementClient->getIpAddress ();
@@ -104,8 +104,8 @@ void WaveManagementClientMap::addClient (WaveManagementClient *pWaveManagementCl
 
     m_managementClientsMutex.lock ();
 
-    prismAssert (false == clientAlreadyExists,       __FILE__, __LINE__);
-    prismAssert (false == clientAlreadyExistsByName, __FILE__, __LINE__);
+    waveAssert (false == clientAlreadyExists,       __FILE__, __LINE__);
+    waveAssert (false == clientAlreadyExistsByName, __FILE__, __LINE__);
 
     m_managementClientsByName[name]                          = pWaveManagementClient;
     m_managementClients[uniqueString]                        = pWaveManagementClient;
@@ -136,7 +136,7 @@ WaveManagementClient *WaveManagementClientMap::removeClient (const string &ipAdd
     }
     else
     {
-        //prismAssert (false , __FILE__, __LINE__);
+        //waveAssert (false , __FILE__, __LINE__);
     }
 
     m_managementClientsMutex.unlock ();
@@ -193,7 +193,7 @@ WaveManagementClient *WaveManagementClientMap::removeClient (const UI32 &id)
     }
     else
     {
-        //prismAssert (false , __FILE__, __LINE__);
+        //waveAssert (false , __FILE__, __LINE__);
     }
 
     m_managementClientsMutex.unlock ();
@@ -209,7 +209,7 @@ WaveManagementClient *WaveManagementClientMap::getClient (const string &ipAddres
 
     m_managementClientsMutex.lock ();
 
-    prismAssert (true == clientAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == clientAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementClient = m_managementClients[uniqueString];
 
@@ -227,11 +227,11 @@ UI32 WaveManagementClientMap::getClientId (const string &ipAddress, const UI32 &
 
     m_managementClientsMutex.lock ();
 
-    prismAssert (true == clientAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == clientAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementClient = m_managementClients[uniqueString];
 
-    prismAssert (NULL != pTempWaveManagementClient, __FILE__, __LINE__);
+    waveAssert (NULL != pTempWaveManagementClient, __FILE__, __LINE__);
 
     clientId = pTempWaveManagementClient->getId ();
 
@@ -248,9 +248,9 @@ UI32 WaveManagementClientMap::getClientId (const string &name)
 
     m_managementClientsMutex.lock ();
 
-    prismAssert (true == clientAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == clientAlreadyExists, __FILE__, __LINE__);
 
-    prismAssert (NULL != pTempWaveManagementClient, __FILE__, __LINE__);
+    waveAssert (NULL != pTempWaveManagementClient, __FILE__, __LINE__);
 
     clientId = pTempWaveManagementClient->getId ();
 
@@ -266,7 +266,7 @@ WaveManagementClient *WaveManagementClientMap::getClient (const UI32 &id)
 
     m_managementClientsMutex.lock ();
 
-    prismAssert (true == clientAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == clientAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementClient = m_managementClientsById[id];
 
@@ -282,7 +282,7 @@ WaveManagementClient *WaveManagementClientMap::getClient (const string &name)
 
     m_managementClientsMutex.lock ();
 
-    prismAssert (true == clientAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == clientAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementClient = m_managementClientsByName[name];
 
@@ -340,7 +340,7 @@ ResourceId WaveManagementClientMap::post (ManagementInterfaceMessage *pManagemen
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagementClientMap::post : Client must be identified when posting a message to a client.  Either the client id or client name must be set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (NULL != pTempWaveManagementClient)

@@ -32,7 +32,7 @@ void IpAddressNetworkMask::parseNetworkMask (string &ipAddressNetworkMask)
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_ipAddress = tokenNetworkMask[0];

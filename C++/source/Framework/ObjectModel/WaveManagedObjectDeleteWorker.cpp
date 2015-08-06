@@ -132,7 +132,7 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
 {
     trace (TRACE_LEVEL_DEVEL,"WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback entering ..");
 
-    prismAssert (NULL != pCallerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pCallerContext, __FILE__, __LINE__);
 
     ResourceId status           = WAVE_MESSAGE_SUCCESS;
     ResourceId completionStatus = WAVE_MESSAGE_SUCCESS;
@@ -140,11 +140,11 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDeleteCallback (Fram
     WaveObjectManagerDeleteWaveManagedObjectMessage *pWaveObjectManagerDeleteWaveManagedObjectMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectMessage *> (pWaveMessage);
 
     WaveManagedObjectDeleteContext *pWaveLinearSequencerContext = reinterpret_cast<WaveManagedObjectDeleteContext *> (pCallerContext);
-    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     WaveObjectManagerDeleteWaveManagedObjectsMessage *pWaveObjectManagerDeleteWaveManagedObjectsMessage = reinterpret_cast<WaveObjectManagerDeleteWaveManagedObjectsMessage *> (pWaveLinearSequencerContext->getPWaveMessage ()); 
 
-    prismAssert (NULL != pWaveObjectManagerDeleteWaveManagedObjectsMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerDeleteWaveManagedObjectsMessage, __FILE__, __LINE__);
 
     //set the partial success flag
     pWaveObjectManagerDeleteWaveManagedObjectsMessage->setIsPropagateErrorCodeNeeded (pWaveObjectManagerDeleteWaveManagedObjectMessage->getIsPropagateErrorCodeNeeded ());
@@ -310,7 +310,7 @@ void WaveManagedObjectDeleteWorker::deleteQueryManagedObjectStep (WaveManagedObj
 
         trace (TRACE_LEVEL_DEVEL, "WaveManagedObjectDeleteWorker::deleteQueryManagedObjectStep : Global Service Local MO ");
                          
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }    
 
     WaveManagedObject *pOperateOnWaveManagedObject = NULL;
@@ -368,10 +368,10 @@ void WaveManagedObjectDeleteWorker::deleteValidateManagedObjectStep (WaveManaged
         {
             if ((0 != numberOfAttributeUserTags) && (0 != numberOfAttributeNames))
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
-            prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
             if (0 != numberOfAttributeNames)
             {
@@ -379,18 +379,18 @@ void WaveManagedObjectDeleteWorker::deleteValidateManagedObjectStep (WaveManaged
                 {
                     string attributeName  = attributeNames[i];
 
-                    prismAssert ("" != attributeName, __FILE__, __LINE__);
+                    waveAssert ("" != attributeName, __FILE__, __LINE__);
 
                     Attribute *pAttribute = pWaveManagedObject->getAttributeByName (attributeName);
 
-                    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+                    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
                     if ((pAttribute->getAttributeType() != AttributeType::AttributeTypeObjectId) && (pAttribute->getAttributeType () != AttributeType::AttributeTypeObjectIdVector))
                     {
 
                         Attribute *pClonedAttribute = pAttribute->clone ();
     
-                        prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+                        waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
                         //pClonedAttribute->setDefaultValue ();
 
@@ -428,17 +428,17 @@ void WaveManagedObjectDeleteWorker::deleteValidateManagedObjectStep (WaveManaged
                     UI32   attributeUserTag = attributeUserTags[j];
 
 
-                    prismAssert (0 != attributeUserTag, __FILE__, __LINE__);
+                    waveAssert (0 != attributeUserTag, __FILE__, __LINE__);
 
                     Attribute *pAttribute = pWaveManagedObject->getAttributeByUserTag (attributeUserTag);
 
-                    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+                    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
                     if ((pAttribute->getAttributeType() != AttributeType::AttributeTypeObjectId) && (pAttribute->getAttributeType () != AttributeType::AttributeTypeObjectIdVector))
                     {
                         Attribute *pClonedAttribute = pAttribute->clone ();
 
-                        prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+                        waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
                         //pClonedAttribute->setDefaultValue ();
 
@@ -547,7 +547,7 @@ void WaveManagedObjectDeleteWorker::deletePreDeleteManagedObjectStep (WaveManage
         {
             Attribute *pAttribute = pWaveManagedObject->getAttributeByName (attributeNames[i]);
  
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
  
             if ((pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectId) || (pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectIdVector))
             {
@@ -561,7 +561,7 @@ void WaveManagedObjectDeleteWorker::deletePreDeleteManagedObjectStep (WaveManage
  
                 /* We are only supporting MOs with a single primary key */
     
-                prismAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
+                waveAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
 
                 WaveManagedObject *associatedManagedObject = queryManagedObject (pAttributeObjectIdAssociation->getValue());
  
@@ -571,7 +571,7 @@ void WaveManagedObjectDeleteWorker::deletePreDeleteManagedObjectStep (WaveManage
  
                 Attribute *pClonedAttribute = pAssociatedAttribute->clone ();
  
-                prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+                waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
  
                 pClonedAttribute->setAttributeName (pAttribute->getAttributeName ());
 
@@ -622,12 +622,12 @@ void WaveManagedObjectDeleteWorker::deleteDeleteManagedObjectStep (WaveManagedOb
             {
                 Attribute *pClonedAttribute = (attributes[i])->clone ();
 
-                prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+                waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
                 Attribute *pAttribute       = pWaveManagedObject->getAttributeByName (pClonedAttribute->getAttributeName ());
                 string     tempString;
 
-                prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+                waveAssert (NULL != pAttribute, __FILE__, __LINE__);
                
                 if ((pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectId) || (pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectIdVector))
                 {
@@ -744,7 +744,7 @@ void WaveManagedObjectDeleteWorker::deletePostDeleteManagedObjectStep (WaveManag
         string              parentClassName             = OrmRepository::getTableNameById (parentObjectId.getClassId ());
         string              childClassName              = OrmRepository::getTableNameById (childObjectId.getClassId ());
 
-        prismAssert (NULL != pParentWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pParentWaveManagedObject, __FILE__, __LINE__);
 
         Attribute *pAttribute       = pParentWaveManagedObject->getAttributeByUserTag (childUserTag);
         string     compositionName  = pAttribute->getAttributeName ();
@@ -889,7 +889,7 @@ void WaveManagedObjectDeleteWorker::deleteUpdateHardwareStepCallBack (GetHardwar
             //Populate the realated attributes if they are not modified
             //This is required by the backend to use common layer.
             clientNameToSend = getClientNameToSendAndPopulateRelatedAttributes (pGetHardwareConfigurationDetailsForDeleteContext);
-            prismAssert ("" != clientNameToSend, __FILE__, __LINE__);
+            waveAssert ("" != clientNameToSend, __FILE__, __LINE__);
 
             pGetHardwareConfigurationDetailsForDeleteContext->setAttributeVector (pWaveManagedObjectDeleteContext->getAttributes ());
             pGetHardwareConfigurationDetailsForDeleteContext->setParentManagedObjectNames (pWaveManagedObjectDeleteContext->getParentManagedObjectNames());
@@ -1052,7 +1052,7 @@ void WaveManagedObjectDeleteWorker::populateManagedObjectKeyAttributes (WaveMana
         Attribute* pAttribute       = pOperateOnWaveManagedObject->getAttributeByName (*keyElement);
         Attribute *pClonedAttribute = NULL;
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         if ((pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectId) || (pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectIdVector))
         {
@@ -1068,7 +1068,7 @@ void WaveManagedObjectDeleteWorker::populateManagedObjectKeyAttributes (WaveMana
 
             /* We are only supporting MOs with a single primary key */
 
-            prismAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
+            waveAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
 
             WaveManagedObject *associatedManagedObject = queryManagedObject (pAttributeObjectIdAssociation->getValue());
 
@@ -1078,7 +1078,7 @@ void WaveManagedObjectDeleteWorker::populateManagedObjectKeyAttributes (WaveMana
 
             pClonedAttribute = pAssociatedAttribute->clone ();
 
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
             pClonedAttribute->setAttributeName (pAttribute->getAttributeName ());
 
@@ -1088,7 +1088,7 @@ void WaveManagedObjectDeleteWorker::populateManagedObjectKeyAttributes (WaveMana
         {
             pClonedAttribute = pAttribute->clone ();
 
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
         }
 
         pWaveManagedObjectDeleteContext->addToAttributeVector (pClonedAttribute);
@@ -1119,11 +1119,11 @@ void WaveManagedObjectDeleteWorker::populateParentKeyAttributes (WaveManagedObje
         {
             Attribute *attr =  pOperateOnWaveManagedObject->getAttributeByName(*keyElement);
          
-            prismAssert (NULL != attr, __FILE__, __LINE__);
+            waveAssert (NULL != attr, __FILE__, __LINE__);
  
             Attribute *pClonedAttribute = attr->clone ();
  
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
  
             //add attrivute value to the vector.
             pWaveManagedObjectDeleteContext->addToAttributeVector (pClonedAttribute);
@@ -1143,7 +1143,7 @@ string WaveManagedObjectDeleteWorker::getClientNameToSendAndPopulateRelatedAttri
     string                          clientName;
 
     //Get the first attribute in the vector
-    prismAssert (0 != attributeVector.size (), __FILE__, __LINE__);
+    waveAssert (0 != attributeVector.size (), __FILE__, __LINE__);
     string attributeName = ((attributeVector) [0])->getAttributeName ();
 
     trace (TRACE_LEVEL_DEVEL, string ("WaveManagedObjectDeleteWorker::getClientNameToSendAndPopulateRelatedAttributes: attributeName =") + attributeName);
@@ -1176,7 +1176,7 @@ string WaveManagedObjectDeleteWorker::getClientNameToSendAndPopulateRelatedAttri
     else
     {
         trace (TRACE_LEVEL_DEVEL, string ("WaveManagedObjectDeleteWorker::getClientNameToSendAndPopulateRelatedAttributes: Could not find the groupCode corresponding to the attributeName =") + attributeName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //Return the client name to send based on the opcode.
@@ -1187,7 +1187,7 @@ string WaveManagedObjectDeleteWorker::getClientNameToSendAndPopulateRelatedAttri
     else
     {
         trace (TRACE_LEVEL_DEVEL, string("WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttributes: Could not find the backendName corresponding to the groupCode = ") + groupCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (clientName);
@@ -1209,7 +1209,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
 
     trace (TRACE_LEVEL_DEVEL, string (" 2: ") + myClassName + " schemename = " + moSchemaInfo->getName()); 
 
-    prismAssert (NULL != moSchemaInfo, __FILE__, __LINE__);
+    waveAssert (NULL != moSchemaInfo, __FILE__, __LINE__);
 
     relationFromMap = moSchemaInfo->getRelationFromTables(); 
 
@@ -1277,7 +1277,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
 
                 vector<WaveManagedObject *> *pResults = querySynchronously (&synchronousQueryContext);
 
-                prismAssert (NULL != pResults, __FILE__, __LINE__);
+                waveAssert (NULL != pResults, __FILE__, __LINE__);
 
                 if (0 != pResults->size())
                 {
@@ -1304,7 +1304,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
                             {
                                 pWaveLocalManagedObjectBase = dynamic_cast<WaveLocalManagedObjectBase *> ((*pResults)[index]);
  
-                                prismAssert (NULL != pWaveLocalManagedObjectBase, __FILE__, __LINE__);
+                                waveAssert (NULL != pWaveLocalManagedObjectBase, __FILE__, __LINE__);
  
                                 handlingLocation = pWaveLocalManagedObjectBase->getOwnerLocationId ();
                             }
@@ -1358,7 +1358,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
                             {
                                 pWaveLocalManagedObjectBase = dynamic_cast<WaveLocalManagedObjectBase *> ((*pResults)[index]);
  
-                                prismAssert (NULL != pWaveLocalManagedObjectBase, __FILE__, __LINE__);
+                                waveAssert (NULL != pWaveLocalManagedObjectBase, __FILE__, __LINE__);
  
                                 handlingLocation = pWaveLocalManagedObjectBase->getOwnerLocationId ();
                             }
@@ -1409,7 +1409,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
  
                            pWaveSendToClusterContext->setPWaveMessageForPhase1 (pDeleteMessage);
                         
-                           prismAssert (1 == locationIds.size(), __FILE__, __LINE__); 
+                           waveAssert (1 == locationIds.size(), __FILE__, __LINE__); 
  
                            if (0 != locationIds.size())
                            {
@@ -1445,7 +1445,7 @@ ResourceId WaveManagedObjectDeleteWorker::deleteAssociations (WaveManagedObjectD
 
                     WaveManagedObject  *pParentManagedObject = (*pResults)[0]; 
 
-                    prismAssert (NULL != pParentManagedObject, __FILE__, __LINE__); 
+                    waveAssert (NULL != pParentManagedObject, __FILE__, __LINE__); 
 
                     /* Ensure that the Object Manager is the same as the current one */
                     if (getPWaveObjectManager() == WaveObjectManager::getOwnerForManagedClass(associatedFromClassName)) 

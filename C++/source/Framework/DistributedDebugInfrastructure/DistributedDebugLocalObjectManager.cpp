@@ -61,7 +61,7 @@ DistributedDebugLocalObjectManager* DistributedDebugLocalObjectManager::getInsta
 {
     static DistributedDebugLocalObjectManager *pDistributedDebugLocalObjectManager = new DistributedDebugLocalObjectManager ();
 
-    WaveNs::prismAssert (NULL != pDistributedDebugLocalObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pDistributedDebugLocalObjectManager, __FILE__, __LINE__);
 
     return (pDistributedDebugLocalObjectManager);
 
@@ -106,7 +106,7 @@ WaveMessage *DistributedDebugLocalObjectManager::createMessageInstance (const UI
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DistributedDebugLocalObjectManager::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 

@@ -28,7 +28,7 @@ WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const
     {
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Could not create Managed Object instance for  Service : " + FrameworkToolKit::getServiceNameById (prismServiceId) + ", Class Name = " + className + ".");
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Have you implemented the createManagedObjectInstance on the object manager yet???.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveManagedObject);

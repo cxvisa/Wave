@@ -141,7 +141,7 @@ HttpRequest::HttpRequest (string& httpRequest, ServerStreamingSocket* pServerStr
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -359,7 +359,7 @@ HttpRequest::HttpRequest (string& httpRequest, ServerStreamingSocket* pServerStr
 
         if (WAVE_HTTP_CONTENT_TYPE_MULTIPART_FORM_DATA == m_contentType)
         {
-            prismAssert (0 != (m_contentBoundary.length ()), __FILE__, __LINE__);
+            waveAssert (0 != (m_contentBoundary.length ()), __FILE__, __LINE__);
 
             string entityName;
             string fileName;
@@ -596,8 +596,8 @@ UI32 HttpRequest::getNumberOfEntities () const
     const UI32 numberOfEntityFileNames = m_entityFileNames.size ();
     const UI32 numberOfEntityValues    = m_entityValues.size ();
 
-    prismAssert (numberOfEntityNames == numberOfEntityValues,    __FILE__, __LINE__);
-    prismAssert (numberOfEntityNames == numberOfEntityFileNames, __FILE__, __LINE__);
+    waveAssert (numberOfEntityNames == numberOfEntityValues,    __FILE__, __LINE__);
+    waveAssert (numberOfEntityNames == numberOfEntityFileNames, __FILE__, __LINE__);
 
     return (m_entityNames.size ());
 }

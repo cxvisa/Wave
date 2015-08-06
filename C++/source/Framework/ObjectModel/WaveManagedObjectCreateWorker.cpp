@@ -171,7 +171,7 @@ void WaveManagedObjectCreateWorker::createQueryManagedObjectStep (WaveManagedObj
 
         trace (TRACE_LEVEL_DEVEL, "WaveManagedObjectCreateWorker::createQueryManagedObjectStep : Global Service Local MO");
         
-        prismAssert (false, __FILE__, __LINE__);        
+        waveAssert (false, __FILE__, __LINE__);        
     }
 
     WaveManagedObject *pOperateOnWaveManagedObject = NULL;
@@ -280,20 +280,20 @@ void WaveManagedObjectCreateWorker::createValidateManagedObjectStep (WaveManaged
 
         if ((0 != numberOfAttributeUserTags) && (0 != numberOfAttributeNames))
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         if (0 != numberOfAttributeNames)
         {
-            prismAssert (numberOfAttributeNames == numberOfAttributeValues, __FILE__, __LINE__);
+            waveAssert (numberOfAttributeNames == numberOfAttributeValues, __FILE__, __LINE__);
 
             for (i = 0; i < numberOfAttributeNames; i++)
             {
                 string attributeName  = attributeNames[i];
                 string attributeValue = attributeValues[i];
-                prismAssert ("" != attributeName, __FILE__, __LINE__);
+                waveAssert ("" != attributeName, __FILE__, __LINE__);
 
                 Attribute *pAttribute = pWaveManagedObject->getAttributeByName (attributeName);
 
@@ -301,7 +301,7 @@ void WaveManagedObjectCreateWorker::createValidateManagedObjectStep (WaveManaged
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Attribute Name: ") + attributeName + string (" does not exist in this Managed Object. Please check your Managed Object Implementation to make sure this Attribtue exists."));
             
-                    prismAssert (false,  __FILE__, __LINE__);
+                    waveAssert (false,  __FILE__, __LINE__);
                 }
 
                 /* Add to the Attribute vector if it is not an "Association" type attribute */
@@ -309,7 +309,7 @@ void WaveManagedObjectCreateWorker::createValidateManagedObjectStep (WaveManaged
                 { 
                     Attribute *pClonedAttribute = pAttribute->clone ();
 
-                    prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+                    waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
         
                     trace (TRACE_LEVEL_DEVEL, "WaveManagedObjectCreateWorker::createValidateManagedObjectStep : Setting by attribute name \'" + attributeName + "\' to \'" + attributeValue + "\'");
 
@@ -320,14 +320,14 @@ void WaveManagedObjectCreateWorker::createValidateManagedObjectStep (WaveManaged
        }   
         else
         {
-            prismAssert (numberOfAttributeUserTags == numberOfAttributeValues, __FILE__, __LINE__);
+            waveAssert (numberOfAttributeUserTags == numberOfAttributeValues, __FILE__, __LINE__);
 
             for (i = 0; i < numberOfAttributeUserTags; i++)
             {
                 UI32   attributeUserTag = attributeUserTags[i];
                 string attributeValue   = attributeValues[i];
 
-                prismAssert (0 != attributeUserTag, __FILE__, __LINE__);
+                waveAssert (0 != attributeUserTag, __FILE__, __LINE__);
 
                 Attribute *pAttribute = pWaveManagedObject->getAttributeByUserTag (attributeUserTag);
 
@@ -335,7 +335,7 @@ void WaveManagedObjectCreateWorker::createValidateManagedObjectStep (WaveManaged
                 {
                     trace (TRACE_LEVEL_ERROR, string ("This is no attribute corresponding to user tag: ") + attributeUserTag + string (" Please check your yang and Managed Object file to make sure this user tag exists in Managed Object"));
 
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 trace (TRACE_LEVEL_DEVEL, string ("WaveManagedObjectCreateWorker::createValidateManagedObjectStep : Setting by attribute user tag \'") + attributeUserTag + string ("\' to \'") + attributeValue + string ("\'"));
@@ -345,7 +345,7 @@ void WaveManagedObjectCreateWorker::createValidateManagedObjectStep (WaveManaged
                 { 
                     Attribute *pClonedAttribute = pAttribute->clone ();
 
-                    prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+                    waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
                     pClonedAttribute->fromString (attributeValue);
                     pWaveManagedObjectCreateContext->addToAttributeVector (pClonedAttribute);
@@ -445,7 +445,7 @@ void WaveManagedObjectCreateWorker::createPreUpdateManagedObjectStep (WaveManage
 
         attributeValue = attributeValues[i];
 
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         if ((pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectId) || (pAttribute->getAttributeType () == AttributeType::AttributeTypeObjectIdVector)) 
         {
@@ -468,13 +468,13 @@ void WaveManagedObjectCreateWorker::createPreUpdateManagedObjectStep (WaveManage
             /* We are only supporting MOs with a single primary key */
             pAssociatedAttribute->setAttributeName(pResultAttribute->getAttributeName());
 
-            prismAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
+            waveAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
 
             pAssociatedAttribute->fromString(attributeValue);
 
             /* Create a clone of the associated key and set the attribute name as parent attribute name and append it to the attribute vector */
             Attribute *pClonedAttribute = pAssociatedAttribute->clone ();
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
             pClonedAttribute->setAttributeName(pAttribute->getAttributeName ());
             pWaveManagedObjectCreateContext->addToAttributeVector (pClonedAttribute);
 
@@ -564,7 +564,7 @@ ObjectId WaveManagedObjectCreateWorker::createAssociatedManagedObject (WaveManag
 #if 0
                         /* Check to see if the associated class/object is of type composition or is not locally managed*/
                         if (!isALocalManagedObject) {
-                            prismAssert (0, __FILE__, __LINE__);
+                            waveAssert (0, __FILE__, __LINE__);
                         }
 #endif
     } 
@@ -699,7 +699,7 @@ void WaveManagedObjectCreateWorker::createUpdateManagedObjectStep (WaveManagedOb
             Attribute *pAttribute       = pWaveManagedObject->getAttributeByName (pClonedAttribute->getAttributeName ());
             string     tempString;
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             if ((pAttribute->getAttributeType() != AttributeType::AttributeTypeObjectId) && (pAttribute->getAttributeType () != AttributeType::AttributeTypeObjectIdVector))
             {
@@ -731,7 +731,7 @@ void WaveManagedObjectCreateWorker::createUpdateManagedObjectStep (WaveManagedOb
             }
             else
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
 
@@ -826,11 +826,11 @@ void WaveManagedObjectCreateWorker::createPostUpdateManagedObjectStep (WaveManag
             string              parentClassName             = OrmRepository::getTableNameById (parentObjectId.getClassId ());
             string              childClassName              = OrmRepository::getTableNameById (childObjectId.getClassId ());
 
-            prismAssert (NULL != pParentWaveManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pParentWaveManagedObject, __FILE__, __LINE__);
 
             Attribute *pAttribute       = pParentWaveManagedObject->getAttributeByUserTag (childUserTag);
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             string     compositionName  = pAttribute->getAttributeName ();
 
@@ -986,7 +986,7 @@ void WaveManagedObjectCreateWorker::createUpdateHardwareStepCallBack (GetHardwar
             //Populate the realated attributes if they are not modified
             //This is required by the backend to use common layer.
             clientNameToSend = getClientNameToSendAndPopulateRelatedAttributes (pGetHardwareConfigurationDetailsForCreateContext);
-            prismAssert ("" != clientNameToSend, __FILE__, __LINE__);
+            waveAssert ("" != clientNameToSend, __FILE__, __LINE__);
 
             pMessage = new UnifiedClientCreateMessage (pGetHardwareConfigurationDetailsForCreateContext);
 
@@ -1129,7 +1129,7 @@ void WaveManagedObjectCreateWorker::createUpdateHardwareStepForChildCallBack (Ge
             //Populate the realated attributes if they are not modified
             //This is required by the backend to use common layer.
             clientNameToSend = getClientNameToSendAndPopulateRelatedAttributes (pGetHardwareConfigurationDetailsForCreateContext);
-            prismAssert ("" != clientNameToSend, __FILE__, __LINE__);
+            waveAssert ("" != clientNameToSend, __FILE__, __LINE__);
 
             pMessage = new UnifiedClientCreateMessage (pGetHardwareConfigurationDetailsForCreateContext);
 
@@ -1192,14 +1192,14 @@ void WaveManagedObjectCreateWorker::createAttributesPostUpdateHardwareStep (Wave
         vector<string>     attributeValuesFromBackend = pWaveManagedObjectCreateContext->getAttributeValuesFromBackend ();
         WaveManagedObject *pWaveManagedObject         = pWaveManagedObjectCreateContext->getPOperateOnWaveManagedObject ();
  
-        prismAssert (attributeNamesFromBackend.size() == attributeValuesFromBackend.size(), __FILE__, __LINE__);
-        prismAssert (pWaveManagedObject != NULL, __FILE__, __LINE__);
+        waveAssert (attributeNamesFromBackend.size() == attributeValuesFromBackend.size(), __FILE__, __LINE__);
+        waveAssert (pWaveManagedObject != NULL, __FILE__, __LINE__);
  
         for (UI32 i = 0; i < attributeNamesFromBackend.size(); i++)
         {
             Attribute *pAttribute = pWaveManagedObject->getAttributeByName (attributeNamesFromBackend[i]);
  
-            prismAssert (pAttribute != NULL, __FILE__, __LINE__);
+            waveAssert (pAttribute != NULL, __FILE__, __LINE__);
  
             pAttribute->fromString (attributeValuesFromBackend[i]);
         }
@@ -1217,13 +1217,13 @@ WaveManagedObject *WaveManagedObjectCreateWorker::createManagedObject (const str
     if (pCurrentWorkerWaveObjectManager != pWaveObjectManagerFromClassName)
     {
         trace (TRACE_LEVEL_ERROR, "WaveManagedObjectCreateWorker::createManagedObject Trying to create Managed Object Owned by different ObjectManager");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (NULL);
     }
 
     WaveManagedObject *pWaveManagedObject = pCurrentWorkerWaveObjectManager->createManagedObjectInstanceWrapper (className);
 
-	prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+	waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     pWaveManagedObject->prepareForSerialization ();
 
@@ -1346,11 +1346,11 @@ void WaveManagedObjectCreateWorker::populateParentKeyAttributes (GetHardwareConf
         {   
             Attribute *attr =  pOperateOnWaveManagedObject->getAttributeByName(*keyElement);
             
-            prismAssert (NULL != attr, __FILE__, __LINE__);
+            waveAssert (NULL != attr, __FILE__, __LINE__);
  
             Attribute *pClonedAttribute = attr->clone ();
  
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
  
             //add attrivute value to the vector.
             pGetHardwareConfigurationDetailsForCreateContext->addToAttributeVector (pClonedAttribute);
@@ -1406,7 +1406,7 @@ void WaveManagedObjectCreateWorker::populateKeyAttributesIfNotPresent (GetHardwa
             if(pKeyAttribute == NULL)
             {
                 trace (TRACE_LEVEL_FATAL, string("WaveManagedObjectCreateWorker::populateKeyAttributesIfNotPresent pKeyAttribute is null ")+ *keyElement);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }    
 
 
@@ -1432,7 +1432,7 @@ void WaveManagedObjectCreateWorker::populateKeyAttributesIfNotPresent (GetHardwa
                     /* We are only supporting MOs with a single primary key */
                     pAssociatedAttribute->setAttributeName(pResultAttribute->getAttributeName());
          
-                    prismAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
+                    waveAssert (associatedKeyNames.size () == 1, __FILE__, __LINE__);
  
                     pClonedAttribute = pAssociatedAttribute->clone ();
              }
@@ -1441,7 +1441,7 @@ void WaveManagedObjectCreateWorker::populateKeyAttributesIfNotPresent (GetHardwa
                 pClonedAttribute = pKeyAttribute->clone ();
              }
                 
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
             pGetHardwareConfigurationDetailsForCreateContext->addToAttributeVector (pClonedAttribute);
         }
@@ -1483,12 +1483,12 @@ string WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttri
         else
         {
             trace (TRACE_LEVEL_FATAL, string("WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttributes: Could not find any element in the attributeNames vector"));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
     {
-        prismAssert (0 != attributeVector.size (), __FILE__, __LINE__);
+        waveAssert (0 != attributeVector.size (), __FILE__, __LINE__);
         attributeName = ((attributeVector) [0])->getAttributeName ();
     }
 
@@ -1522,7 +1522,7 @@ string WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttri
     else
     {
         trace (TRACE_LEVEL_FATAL, string("WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttributes: Could not find the groupCode corresponding to the attributeName = ") + attributeName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //Check if the attribute names in the group are already present in the vector of Attributes, which indicates those attributes are modified
@@ -1543,11 +1543,11 @@ string WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttri
         {
             Attribute* pAttribute = pOperateOnWaveManagedObject->getAttributeByName (attributeNamesGroup [attributeNamesGroupIterator]);
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             Attribute *pClonedAttribute = pAttribute->clone ();
 
-            prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
             pGetHardwareConfigurationDetailsForCreateContext->addToAttributeVector (pClonedAttribute);
 
@@ -1566,7 +1566,7 @@ string WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttri
     else
     {
         trace (TRACE_LEVEL_FATAL, string("WaveManagedObjectCreateWorker::getClientNameToSendAndPopulateRelatedAttributes: Could not find the backendName corresponding to the groupCode = ") + groupCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (clientName);

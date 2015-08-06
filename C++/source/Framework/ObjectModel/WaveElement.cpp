@@ -21,7 +21,7 @@ WaveElement::WaveElement (WaveObjectManager *pWaveObjectManager)
     if (NULL == m_pWaveObjectManager)
     {
         // THIS MUST NEVER HAPPEN
-        // We cannot use trace or prismAssert here since they are abstract virtual here
+        // We cannot use trace or waveAssert here since they are abstract virtual here
         cerr << "Prismelement::Prismelement : You cannot create a WaveElement with NULL WaveObjectManager." << endl;
         assert (0);
     }
@@ -33,7 +33,7 @@ WaveElement::WaveElement (const WaveElement &prismElement)
 
 #if 0
     WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::WaveElement : Copy Constructing a Prism Element does not make sense and hence not allowed.");
-    WaveNs::prismAssert (false, __FILE__, __LINE__);
+    WaveNs::waveAssert (false, __FILE__, __LINE__);
 #else
     m_pWaveObjectManager = prismElement.m_pWaveObjectManager;
 #endif
@@ -46,7 +46,7 @@ WaveElement::~WaveElement ()
 WaveElement &WaveElement::operator = (const WaveElement &prismElement)
 {
     WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::operator = : Assigning to a Prism Element does not make sense and hence not allowed.");
-    WaveNs::prismAssert (false, __FILE__, __LINE__);
+    WaveNs::waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }

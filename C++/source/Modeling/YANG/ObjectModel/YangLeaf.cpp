@@ -76,13 +76,13 @@ void YangLeaf::processChildElement (YangElement *pYangElement)
     {
         YangType *pYangType = dynamic_cast<YangType *> (pYangElement);
 
-        prismAssert (NULL != pYangType, __FILE__, __LINE__);
+        waveAssert (NULL != pYangType, __FILE__, __LINE__);
 
         string nameValue;
 
         pYangType->getAttributeValue ("name", nameValue);
 
-        prismAssert ("" != nameValue, __FILE__, __LINE__);
+        waveAssert ("" != nameValue, __FILE__, __LINE__);
 
         if ("empty" == nameValue)
         {
@@ -214,7 +214,7 @@ bool YangLeaf::isValueSameAsDefault (const string &valueString, ResourceId &valu
     if (1 == yangDefaultElements.size ())
     {
         YangDefault *pYangDefault = dynamic_cast<YangDefault *> (yangDefaultElements[0]);
-        prismAssert (NULL != pYangDefault, __FILE__, __LINE__);
+        waveAssert (NULL != pYangDefault, __FILE__, __LINE__);
 
         string defaultValueString;
 
@@ -236,7 +236,7 @@ bool YangLeaf::isValueSameAsDefault (const string &valueString, ResourceId &valu
         if (false == yangTypeChildElements.empty ())
         {
             YangType *pYangType = dynamic_cast<YangType *> (yangTypeChildElements[0]);
-            prismAssert (NULL != pYangType, __FILE__, __LINE__);
+            waveAssert (NULL != pYangType, __FILE__, __LINE__);
 
             if ("enumeration" == pYangType->getName ())
             {
@@ -303,7 +303,7 @@ WaveYangMemberElementFilterInformation *YangLeaf::collectMemberElementFilterInfo
     string matchValue = pYangDisplayConfigurationContext->advanceToNextToken ();
 
     WaveYangMemberElementFilterInformation *pWaveYangMemberElementFilterInformation = new WaveYangMemberElementFilterInformation (this, matchValue, NULL);
-    prismAssert (NULL != pWaveYangMemberElementFilterInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveYangMemberElementFilterInformation, __FILE__, __LINE__);
 
     pWaveYangMemberElementFilterInformation->setNumberOfTokensAbsorbed (2);
 

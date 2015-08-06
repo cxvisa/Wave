@@ -56,7 +56,7 @@ extern "C" int waveMessageBrokerClientMain (int argc, char *argv[], bool wait)
     SI32                   messageBrokerClientPort                      = 19710;
     string                 applicationName;
 
-    prismAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
+    waveAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
 
     if (argc >= 1)
     {

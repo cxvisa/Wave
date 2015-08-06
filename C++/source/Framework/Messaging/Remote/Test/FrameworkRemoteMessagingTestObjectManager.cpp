@@ -27,7 +27,7 @@ FrameworkRemoteMessagingTestObjectManager *FrameworkRemoteMessagingTestObjectMan
     if (NULL == pFrameworkRemoteMessagingTestObjectManager)
     {
         pFrameworkRemoteMessagingTestObjectManager = new FrameworkRemoteMessagingTestObjectManager ();
-        WaveNs::prismAssert (NULL != pFrameworkRemoteMessagingTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkRemoteMessagingTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pFrameworkRemoteMessagingTestObjectManager);
@@ -171,7 +171,7 @@ void FrameworkRemoteMessagingTestObjectManager::frameworkTestabilityMessage1Call
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -342,7 +342,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCa
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -626,7 +626,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -776,7 +776,7 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningTestStep (Framewor
         WaveMessage                 *pTempWaveMessage = message.clone ();
         FrameworkTestabilityMessage4 *pMessage          = dynamic_cast<FrameworkTestabilityMessage4 *> (pTempWaveMessage);
 
-        prismAssert( NULL != pMessage , __FILE__, __LINE__);
+        waveAssert( NULL != pMessage , __FILE__, __LINE__);
 
         pMessage->setupInput ();
 
@@ -829,7 +829,7 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestSte
         WaveMessage                 *pTempWaveMessage = message.clone ();
         FrameworkTestabilityMessage3 *pMessage          = dynamic_cast<FrameworkTestabilityMessage3 *> (pTempWaveMessage);
 
-        prismAssert( NULL != pMessage , __FILE__, __LINE__);
+        waveAssert( NULL != pMessage , __FILE__, __LINE__);
 
         status = send (pMessage,
                        reinterpret_cast<WaveMessageResponseHandler> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersCallback),
@@ -872,7 +872,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -906,7 +906,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
@@ -935,7 +935,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -974,7 +974,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
@@ -1011,7 +1011,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1066,7 +1066,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
@@ -1114,7 +1114,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1154,7 +1154,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
@@ -1189,7 +1189,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1233,7 +1233,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
@@ -1279,7 +1279,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnec
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase2 ());
@@ -1315,7 +1315,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessF
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
 
     if ((WAVE_MESSAGE_SUCCESS != sendToClusterCompletionStatus) || false == pWaveSendToClusterContext->getIsPartialSuccessCaseFlag ())
@@ -1353,7 +1353,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessA
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
 
     if (3 > numberOfLocationsToSendToForPhase1)
@@ -1396,7 +1396,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSucc
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1430,7 +1430,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPar
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
 
     if (3 > numberOfLocationsToSendToForPhase1)
@@ -1509,7 +1509,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLoc
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1537,7 +1537,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStepC
     // When using SendOneWayToWaveCluster we don't care about the completion status.  We just need to clean up here in the callback.
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;
@@ -1576,7 +1576,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
     ResourceId                          sendWaveToClusterCompletionStatus   = pWaveSendToClusterContext->getCompletionStatus ();
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = reinterpret_cast<FrameworkLocalMessagingTestContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFrameworkLocalMessagingTestContext, __FILE__, __LINE__);
 
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete pWaveSendToClusterContext;

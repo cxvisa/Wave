@@ -67,7 +67,7 @@ string OrmComposition::getSqlForCreate2 (const string &parentName, const string 
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -95,7 +95,7 @@ string OrmComposition::getSqlForDisableValidation (const string &parentName, con
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -128,7 +128,7 @@ string OrmComposition::getSqlForEnableValidation (const string &parentName, cons
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 

@@ -71,7 +71,7 @@ void YangAugment::getTargetNodeDetails (string &targetNodeModuleName, string &ta
 
     numberOfTargetNodeLevel1Tokens = targetNodeLevel1Tokens.size ();
 
-    prismAssert (1 <= numberOfTargetNodeLevel1Tokens, __FILE__, __LINE__);
+    waveAssert (1 <= numberOfTargetNodeLevel1Tokens, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfTargetNodeLevel1Tokens; i++)
     {
@@ -82,8 +82,8 @@ void YangAugment::getTargetNodeDetails (string &targetNodeModuleName, string &ta
 
         numberOfTargetNodeLevel2Tokens = targetNodeLevel2Tokens.size ();
 
-        prismAssert (1 <= numberOfTargetNodeLevel2Tokens, __FILE__, __LINE__);
-        prismAssert (2 >= numberOfTargetNodeLevel2Tokens, __FILE__, __LINE__);
+        waveAssert (1 <= numberOfTargetNodeLevel2Tokens, __FILE__, __LINE__);
+        waveAssert (2 >= numberOfTargetNodeLevel2Tokens, __FILE__, __LINE__);
 
         numberOfTargetNodeLevel2Tokens = targetNodeLevel2Tokens.size ();
 
@@ -97,7 +97,7 @@ void YangAugment::getTargetNodeDetails (string &targetNodeModuleName, string &ta
 
                 YangModule *pOwnerYangModule = getPOwnerYangModule ();
 
-                prismAssert (NULL != pOwnerYangModule, __FILE__, __LINE__);
+                waveAssert (NULL != pOwnerYangModule, __FILE__, __LINE__);
 
                 targetNodeModuleName = pOwnerYangModule->getImportedModuleName (targetNodeModuleName);
             }
@@ -134,7 +134,7 @@ void YangAugment::transferWhenConditionsToChildren ()
     if (allWhenChildElementsSize > 1)
     {
         trace (TRACE_LEVEL_FATAL, "YangAugment::transferWhenConditionsToChildren : Cannot have more than 1 'When' or 'Display-When' condition in a Augment");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else if (allWhenChildElementsSize == 0)
     {
@@ -148,7 +148,7 @@ void YangAugment::transferWhenConditionsToChildren ()
         pYangElement = allWhenChildElements[0];    
     }
 
-    prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
     vector<YangElement *> &childElements = getChildElements ();
 
@@ -158,7 +158,7 @@ void YangAugment::transferWhenConditionsToChildren ()
     {
         YangElement *pChildElement = childElements[i];
 
-        prismAssert (NULL != pChildElement, __FILE__, __LINE__);
+        waveAssert (NULL != pChildElement, __FILE__, __LINE__);
 
         string childYangName = pChildElement->getYangName ();
 
@@ -166,7 +166,7 @@ void YangAugment::transferWhenConditionsToChildren ()
         {
             YangElement *pClonedChildElement = pYangElement->clone ();
 
-            prismAssert (pClonedChildElement, __FILE__, __LINE__);
+            waveAssert (pClonedChildElement, __FILE__, __LINE__);
 
             pChildElement->addChildElement (pClonedChildElement);
         }

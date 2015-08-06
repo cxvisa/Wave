@@ -90,7 +90,7 @@ void YangType::populateEnumAttribute (string name, UI32 value)
 ResourceId YangType::getValueFromEnumName (const string name, UI32 &value)
 {
     AttributeEnum *pAttributeEnum = dynamic_cast<AttributeEnum *> (m_pAttribute);
-    prismAssert (NULL != pAttributeEnum, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeEnum, __FILE__, __LINE__);
 
     return (pAttributeEnum->getValueFromEnumName (name, value));
 }
@@ -98,7 +98,7 @@ ResourceId YangType::getValueFromEnumName (const string name, UI32 &value)
 ResourceId YangType::getEnumNameFromValue (string &name, const UI32 &value)
 {
     AttributeEnum *pAttributeEnum = dynamic_cast<AttributeEnum *> (m_pAttribute);
-    prismAssert (NULL != pAttributeEnum, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeEnum, __FILE__, __LINE__);
 
     return pAttributeEnum->getEnumNameFromValue (name, value);
 }
@@ -118,7 +118,7 @@ void YangType::populateBitMapAttribute (string name, UI32 bitPosition)
 void YangType::getBitPositionFromBitName (string name, UI32 &bitPosition)
 {
     AttributeBitMap *pAttributeBitMap = dynamic_cast<AttributeBitMap *> (m_pAttribute);
-    prismAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
 
     pAttributeBitMap->getBitPositionFromBitName (name, bitPosition);
 }
@@ -126,7 +126,7 @@ void YangType::getBitPositionFromBitName (string name, UI32 &bitPosition)
 void YangType::getBitNameFromBitPosition (string &name, UI32 bitPosition)
 {
     AttributeBitMap *pAttributeBitMap = dynamic_cast<AttributeBitMap *> (m_pAttribute);
-    prismAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
 
     pAttributeBitMap->getBitNameFromBitPosition (name, bitPosition);
 }
@@ -134,7 +134,7 @@ void YangType::getBitNameFromBitPosition (string &name, UI32 bitPosition)
 void YangType::getStringValueFrom32BitBitMap (string &bitMapString, UI32 bitPattern)
 {
     AttributeBitMap *pAttributeBitMap = dynamic_cast<AttributeBitMap *> (m_pAttribute);
-    prismAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
 
     bool isSeparatorRequired = false;
 
@@ -165,7 +165,7 @@ void YangType::getStringValueFrom32BitBitMap (string &bitMapString, UI32 bitPatt
 void YangType::getStringValueFrom64BitBitMap (string &bitMapString, UI64 bitPattern)
 {
     AttributeBitMap *pAttributeBitMap = dynamic_cast<AttributeBitMap *> (m_pAttribute);
-    prismAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
 
     bool isSeparatorRequired = false;
 
@@ -208,7 +208,7 @@ void YangType::getDisplayStringForYangTypeInsideUnion (Attribute *pAttribute, st
         string usedTypeName;
 
         YangType  *pYangTypeChild = dynamic_cast<YangType *> (allTypeChildElements[i]);
-        prismAssert (NULL != pYangTypeChild, __FILE__, __LINE__);
+        waveAssert (NULL != pYangTypeChild, __FILE__, __LINE__);
 
         usedTypeName = pYangTypeChild->getName ();
 
@@ -282,7 +282,7 @@ void YangType::processChildElement (YangElement *pYangElement)
     {
         YangEnum *pYangEnum = dynamic_cast<YangEnum *> (pYangElement);
 
-        prismAssert (NULL != pYangEnum, __FILE__, __LINE__);
+        waveAssert (NULL != pYangEnum, __FILE__, __LINE__);
 
         UI32 value                = pYangEnum->getValue ();
         bool valueIsExplicitlySet = pYangEnum->getValueIsExplicitlySet ();

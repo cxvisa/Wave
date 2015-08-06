@@ -45,7 +45,7 @@ WaveThreadStatus CommandLineInterfaceReceiverControlThread::start()
 {
     trace (TRACE_LEVEL_DEVEL, "CommandLineInterfaceReceiverControlThread::start : Starting ...");
 
-    prismAssert (NULL != m_pServerStreamingSocket, __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerStreamingSocket, __FILE__, __LINE__);
 
     bool isAuthorizationSuccessful = authorize ();
 
@@ -85,11 +85,11 @@ WaveThreadStatus CommandLineInterfaceReceiverControlThread::start()
                         string                       messageString;
                         CommandLineInterfaceMessage *pCommandLineInterfaceMessage = new CommandLineInterfaceMessage;
 
-                        prismAssert (NULL != pCommandLineInterfaceMessage, __FILE__, __LINE__);
+                        waveAssert (NULL != pCommandLineInterfaceMessage, __FILE__, __LINE__);
 
                         CommandLineInterfaceWorkerMessage *pCommandLineInterfaceWorkerMessage = new CommandLineInterfaceWorkerMessage (pCommandLineInterfaceMessage);
 
-                        prismAssert (NULL != pCommandLineInterfaceWorkerMessage, __FILE__, __LINE__);
+                        waveAssert (NULL != pCommandLineInterfaceWorkerMessage, __FILE__, __LINE__);
 
                         messageBuffer.toString (messageString);
                         pCommandLineInterfaceMessage->loadFromSerializedData2 (messageString);

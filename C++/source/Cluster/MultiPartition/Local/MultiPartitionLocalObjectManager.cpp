@@ -32,7 +32,7 @@ namespace WaveNs
     {
         static MultiPartitionLocalObjectManager *pLocalObjectManager = new MultiPartitionLocalObjectManager ();
 
-        WaveNs::prismAssert (NULL != pLocalObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pLocalObjectManager, __FILE__, __LINE__);
 
         return (pLocalObjectManager);
     }
@@ -55,7 +55,7 @@ namespace WaveNs
         {
             case MULTI_PARTITION_DELETE_LOCAL_PARTITION_INSTANCE :
                  pWaveMessage = new MultiPartitionDeleteLocalPartitionMessage ();
-                 prismAssert (NULL != pWaveMessage , __FILE__, __LINE__);
+                 waveAssert (NULL != pWaveMessage , __FILE__, __LINE__);
                  break;
 
             default :
@@ -85,7 +85,7 @@ namespace WaveNs
                                                                                                        sequencerSteps, 
                                                                                                        sizeof (sequencerSteps) /sizeof (sequencerSteps[0]));
 
-          WaveNs::prismAssert (NULL != pPrismSynchronousLinearSequencerContext, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != pPrismSynchronousLinearSequencerContext, __FILE__, __LINE__);
         
           pPrismSynchronousLinearSequencerContext->execute ();
      }
@@ -97,7 +97,7 @@ namespace WaveNs
          tracePrintf(TRACE_LEVEL_INFO,  "MultiPartitionLocalObjectManager::validateInputs called " );
 
          MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
-         WaveNs::prismAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
+         WaveNs::waveAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
          
          do {
                 // TODO: Add any checks here. 
@@ -124,7 +124,7 @@ namespace WaveNs
          tracePrintf(TRACE_LEVEL_INFO,  "MultiPartitionLocalObjectManager::processPartitionObjectCleanup  called. " );
 
          MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
-         WaveNs::prismAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
+         WaveNs::waveAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
 
          UI32 senderServiceId   = pDeleteMTMessage->getSenderServiceId ();
          string partitionName      = pDeleteMTMessage->getPartitionName();
@@ -132,7 +132,7 @@ namespace WaveNs
          ObjectId ownerPartitionObjectId   = pDeleteMTMessage->getOwnerPartitionManagedObjectId (); 
 
          MultiPartitionCleanupAgent  *pMultiPartitionCleanupAgent  = new MultiPartitionCleanupAgent(this, partitionName, senderServiceId , ownerPartitionObjectId);
-         prismAssert(NULL != pMultiPartitionCleanupAgent, __FILE__ , __LINE__);
+         waveAssert(NULL != pMultiPartitionCleanupAgent, __FILE__ , __LINE__);
 
          if (true == pDeleteMTMessage->getIsPartialCleanup ())
          {

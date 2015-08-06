@@ -78,7 +78,7 @@ ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFrom
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : How can this be.  We detected that there was a configuration file.  And now it is not available???");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         status = WAVE_MESSAGE_ERROR;
     }
@@ -86,7 +86,7 @@ ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFrom
     {
         LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
 
-        prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+        waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
         FrameworkToolKit::setLastUsedLocationId (prismFrameworkConfiguration.m_lastUsedLocationId);
 
@@ -129,7 +129,7 @@ ResourceId PersistentWithDefaultForHABootAgent::connectToKnownLocationsStep (Pri
     string              ipAddress                    = "";
     SI32                port                         = 0;
 
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     pThisLocation->getKnownRemoteLocations (knownRemoteLocations);
     numberOfKnownRemoteLocations = knownRemoteLocations.size ();

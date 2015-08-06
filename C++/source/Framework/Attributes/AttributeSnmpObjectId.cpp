@@ -103,7 +103,7 @@ SnmpObjectId AttributeSnmpObjectId::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSnmpObjectId::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempSnmpObjectId;
     }
 }
@@ -122,13 +122,13 @@ void AttributeSnmpObjectId::setValue (const SnmpObjectId &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpV4Address::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeSnmpObjectId::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeSnmpObjectId == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeSnmpObjectId == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeSnmpObjectId == (getAttributeType ()))
     {
@@ -201,7 +201,7 @@ void AttributeSnmpObjectId::getSqlForSelect (string &sqlForSelect, AttributeCond
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeSnmpObjectId::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

@@ -94,7 +94,7 @@ void WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForGet (const stri
     else
     {
        trace (TRACE_LEVEL_FATAL, " WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForGet : An option already exists with the path \"" + path + "\"");
-       prismAssert (false, __FILE__, __LINE__);
+       waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -110,7 +110,7 @@ void WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForPost (const str
     else
     {
         trace (TRACE_LEVEL_FATAL, " WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForPost : An option already exists with the path \"" + path + "\"");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -126,7 +126,7 @@ void WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForPut (const stri
     else
     {
         trace (TRACE_LEVEL_FATAL, " WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForPut : An option already exists with the path \"" + path + "\"");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -142,7 +142,7 @@ void WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForDelete (const s
     else
     {
         trace (TRACE_LEVEL_FATAL, " WaveServerMultiPage::addWaveServerMultiPageRequestHandlerForDelete : An option already exists with the path \"" + path + "\"");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

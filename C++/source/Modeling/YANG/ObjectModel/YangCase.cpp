@@ -62,7 +62,7 @@ void YangCase::displayConfiguration2 (YangDisplayConfigurationContext *pYangDisp
     for (UI32 i = 0; i < numberOfChildElementsForData; i++)
     {
         YangElement *pYangElement = selectedChildElementsForData[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (pYangElement);
 

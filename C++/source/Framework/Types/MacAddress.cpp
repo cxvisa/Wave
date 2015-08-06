@@ -17,7 +17,7 @@ MacAddress::MacAddress ()
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 }
 
 MacAddress::MacAddress (const UI8 name[6])
@@ -25,7 +25,7 @@ MacAddress::MacAddress (const UI8 name[6])
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -40,7 +40,7 @@ MacAddress::MacAddress (const string &macAddressInStringFormat)
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     fromString (macAddressInStringFormat);
 }
@@ -49,7 +49,7 @@ MacAddress::MacAddress (const MacAddress &macAddress)
 {
     m_pName = new UI8[m_nameLength];
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -111,12 +111,12 @@ void MacAddress::fromString (const string &macAddressInStringFormat)
           char tempChar;
           UI32 tempValue             = 0;
 
-    prismAssert (NULL != m_pName, __FILE__, __LINE__);
+    waveAssert (NULL != m_pName, __FILE__, __LINE__);
 
     if (expectedStringLength != givenStringLength)
     {
         trace (TRACE_LEVEL_FATAL, "MacAddress::fromString : Invalid MacAddress String : " + macAddressInStringFormat);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     for (i = 0; i < m_nameLength; i++)
@@ -126,7 +126,7 @@ void MacAddress::fromString (const string &macAddressInStringFormat)
         if (false == (isAValidHexaDecimalCharacter (tempChar)))
         {
             trace (TRACE_LEVEL_FATAL, "MacAddress::fromString : Invalid MacAddress in String Format : " + macAddressInStringFormat);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         tempChar  = toupper (tempChar);
@@ -147,7 +147,7 @@ void MacAddress::fromString (const string &macAddressInStringFormat)
         if (false == (isAValidHexaDecimalCharacter (tempChar)))
         {
             trace (TRACE_LEVEL_FATAL, "MacAddress::fromString : Invalid MacAddress in String Format : " + macAddressInStringFormat);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         tempChar  = toupper (tempChar);
@@ -299,7 +299,7 @@ UI8 &MacAddress::operator [] (const UI32 &index) const
     if (index >= m_nameLength)
     {
         trace (TRACE_LEVEL_FATAL, string ("MacAddress::operator []: Invalid Index : ") + index + string (", Maximum allowed is : ") + (m_nameLength -1));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (m_pName[index]);

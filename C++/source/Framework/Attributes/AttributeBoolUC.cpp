@@ -129,7 +129,7 @@ BoolUC AttributeBoolUC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeBoolUC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempBoolUC;
     }
 }
@@ -143,7 +143,7 @@ void AttributeBoolUC::setValue (const BoolUC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeBoolUC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -154,7 +154,7 @@ bool AttributeBoolUC::getIsNoElement () const
 
 bool AttributeBoolUC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeBoolUC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeBoolUC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeBoolUC == (getAttributeType ()))
     {
@@ -206,7 +206,7 @@ void AttributeBoolUC::getSqlForSelect (string &sqlForSelect, AttributeConditionO
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeBoolUC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator)); 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

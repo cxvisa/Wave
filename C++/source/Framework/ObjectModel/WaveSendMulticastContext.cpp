@@ -62,7 +62,7 @@ void WaveSendMulticastContext::setStatusForALocation (LocationId &locationId, Re
         }
     }
     
-    prismAssert (false != validLocation, __FILE__, __LINE__);
+    waveAssert (false != validLocation, __FILE__, __LINE__);
 
     m_locationStatus [locationId] = locationStatus;
 }
@@ -74,7 +74,7 @@ ResourceId WaveSendMulticastContext::getStatusForALocation (LocationId &location
 
     if (element == endElement)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (m_locationStatus [locationId]);

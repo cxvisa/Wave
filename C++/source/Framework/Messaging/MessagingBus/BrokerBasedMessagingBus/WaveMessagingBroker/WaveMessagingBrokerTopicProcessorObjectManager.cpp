@@ -30,7 +30,7 @@ WaveMessagingBrokerTopicProcessorObjectManager::WaveMessagingBrokerTopicProcesso
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_topicNameToWaveServiceIdMapMutex.unlock ();
@@ -53,7 +53,7 @@ WaveMessagingBrokerTopicProcessorObjectManager::~WaveMessagingBrokerTopicProcess
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_topicNameToWaveServiceIdMapMutex.unlock ();
@@ -63,7 +63,7 @@ WaveMessagingBrokerTopicProcessorObjectManager *WaveMessagingBrokerTopicProcesso
 {
     WaveMessagingBrokerTopicProcessorObjectManager *pWaveMessagingBrokerTopicProcessorObjectManager = new WaveMessagingBrokerTopicProcessorObjectManager (topicName);
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
 
     return (pWaveMessagingBrokerTopicProcessorObjectManager);
 }

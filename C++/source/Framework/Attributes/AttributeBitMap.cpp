@@ -106,7 +106,7 @@ BitMap AttributeBitMap::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeBitMap::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempBitMap);
     }
 }
@@ -120,13 +120,13 @@ void AttributeBitMap::setValue (const BitMap &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeBitMap::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeBitMap::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeBitMap == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeBitMap == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeBitMap == (getAttributeType ()))
     {
@@ -178,7 +178,7 @@ void AttributeBitMap::getSqlForSelect (string &sqlForSelect, AttributeConditionO
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeBitMap::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

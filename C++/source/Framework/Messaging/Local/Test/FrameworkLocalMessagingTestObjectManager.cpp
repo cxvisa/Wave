@@ -28,7 +28,7 @@ FrameworkLocalMessagingTestObjectManager *FrameworkLocalMessagingTestObjectManag
     if (NULL == pFrameworkLocalMessagingTestObjectManager)
     {
         pFrameworkLocalMessagingTestObjectManager = new FrameworkLocalMessagingTestObjectManager ();
-        WaveNs::prismAssert (NULL != pFrameworkLocalMessagingTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkLocalMessagingTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pFrameworkLocalMessagingTestObjectManager);
@@ -110,7 +110,7 @@ void FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage1Callb
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -271,7 +271,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
     if (0 == numberOfMessagesToCancel)
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep : Cannot continue the test.  We could not send any messages.  So we cannot cancel any.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     numberOfFailuresToRecall = 0;
@@ -317,7 +317,7 @@ void FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage5Callb
 {
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
 
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
@@ -343,7 +343,7 @@ void FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage6Callb
 {
 
     trace (TRACE_LEVEL_FATAL, "FrameworkLocalMessagingTestObjectManager::frameworkTestabilityMessage6Callback : We should never reach this place.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep (FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext)
@@ -529,7 +529,7 @@ WaveEvent *FrameworkLocalMessagingTestObjectManager::createEventInstance (const 
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("FrameworkLocalMessagingTestObjectManager::createEventInstance : Unkown Event Operation Code : ") + eventOperationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveEvent);

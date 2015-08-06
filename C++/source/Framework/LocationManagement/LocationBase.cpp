@@ -42,7 +42,7 @@ ServerStreamingSocketStatus LocationBase::initializeServerCommunications ()
     {
         m_pServerSocketForLocation = new ServerStreamingSocket (m_port, 1);
 
-        prismAssert (NULL != m_pServerSocketForLocation, __FILE__, __LINE__);
+        waveAssert (NULL != m_pServerSocketForLocation, __FILE__, __LINE__);
 
         status = m_pServerSocketForLocation->getStatus ();
 
@@ -71,7 +71,7 @@ bool LocationBase::acceptNewConnection (ServerStreamingSocket &newSocket)
     else
     {
         trace (TRACE_LEVEL_ERROR, "LocationBase::acceptNewConnection : Server Communications are not initialized yet.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (successfullyAcceptedNewConnection);
@@ -342,7 +342,7 @@ const LocationRole LocationBase::getLocationRole ()
 void LocationBase::getFullyConnectedLocations   (vector<LocationId> &connectedLocationsVector)
 {
     /* We want derived class to implement this method */
-    prismAssert(false,__FILE__,__LINE__);
+    waveAssert(false,__FILE__,__LINE__);
 }
 
 ResourceId LocationBase::connectToHaPeer (const string &ipAddress, const SI32 port, UI32 numberOfRetries, UI32 maximumNumberOfSecondsToTryFor)
@@ -363,7 +363,7 @@ ServerStreamingSocketStatus LocationBase::initializeHaPeerServerCommunications (
     {
         m_pServerSocketForHaPeer = new ServerStreamingSocket (m_portForHaPeer, 1);
 
-        prismAssert (NULL != m_pServerSocketForHaPeer, __FILE__, __LINE__);
+        waveAssert (NULL != m_pServerSocketForHaPeer, __FILE__, __LINE__);
 
         status = m_pServerSocketForHaPeer->getStatus ();
 
@@ -393,7 +393,7 @@ bool LocationBase::acceptHaPeerConnection (ServerStreamingSocket &newSocket)
     else
     {
         trace (TRACE_LEVEL_ERROR, "LocationBase::acceptHaPeerConnection : Server Communications are not initialized yet.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (successfullyAcceptedNewConnection);

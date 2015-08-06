@@ -129,7 +129,7 @@ template <class T> vector <WaveManagedObjectPointer<T> > AttributeManagedObjectV
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeManagedObjectVectorComposition::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -143,13 +143,13 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::setValue (co
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeManagedObjectVectorComposition::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 template <class T> bool AttributeManagedObjectVectorComposition<T>::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeCompositionVector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeCompositionVector == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeCompositionVector == (getAttributeType ()))
     {
@@ -232,7 +232,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::getSqlForUpd
 template <class T> void AttributeManagedObjectVectorComposition<T>::getSqlForSelect (string &sqlForSelect, AttributeConditionOperator attributeConditionOperator)
 {
     trace (TRACE_LEVEL_FATAL, "AttributeManagedObjectVectorComposition<T>::getSqlForSelect : AttributeObjectIdVectorAssociation must not be added via addAndAttribute/addOrAttribute member functions.  It msut be added via addAttributeManagedObjectVectorComposition.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template <class T> void AttributeManagedObjectVectorComposition<T>::getSqlForSelect2 (string &associationTableName, string &whereClause)
@@ -325,7 +325,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::loadFromPost
 
     PGresult *pResult = auxilliaryResultsMap[m_compositionTableName];
 
-    prismAssert (NULL != pResult, __FILE__, __LINE__);
+    waveAssert (NULL != pResult, __FILE__, __LINE__);
 
     UI32                         numberOfResults     = PQntuples (pResult);
     UI32                         i                   = 0;
@@ -375,7 +375,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::loadFromPost
                 tempObjectIds.push_back (tempObjectId);
             }
 
-            prismAssert (0 < (tempObjectIds.size ()), __FILE__, __LINE__);
+            waveAssert (0 < (tempObjectIds.size ()), __FILE__, __LINE__);
 
             string childTableName = OrmRepository::getTableNameById ((tempObjectIds[0]).getClassId ());
 
@@ -390,7 +390,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::loadFromPost
                 {
                     pT = dynamic_cast<T *> (pWaveManagedObject);
 
-                    prismAssert (NULL != pT, __FILE__, __LINE__);
+                    waveAssert (NULL != pT, __FILE__, __LINE__);
 
                     WaveManagedObjectPointer<T> tempWaveManagedObjectPointer (pT);
 
@@ -416,7 +416,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::loadFromPost
             {
                 pT = dynamic_cast<T *> (pWaveManagedObject);
 
-                prismAssert (NULL != pT, __FILE__, __LINE__);
+                waveAssert (NULL != pT, __FILE__, __LINE__);
 
                 WaveManagedObjectPointer<T> tempWaveManagedObjectPointer (pT);
 
@@ -466,7 +466,7 @@ template<class T> vector<WaveManagedObject *>  *AttributeManagedObjectVectorComp
     if ( NULL == m_pData )
     {
         trace (TRACE_LEVEL_FATAL, string("AttributeManagedObjectVectorComposition::getComposedManagedObject: NULL pointer"));    
-        prismAssert (false, __FILE__, __LINE__);        
+        waveAssert (false, __FILE__, __LINE__);        
     }
 
     vector<WaveManagedObject *> *pResults = new vector<WaveManagedObject *> ;
@@ -523,7 +523,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::getRestRowDa
 template<class T> bool AttributeManagedObjectVectorComposition<T>::isCurrentValueSameAsDefault () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeManagedObjectVectorComposition::isCurrentValueSameAsDefault : This method is not supported"));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (false);
 }
 
@@ -551,7 +551,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::setDefaultVa
 
 template <class T> void AttributeManagedObjectVectorComposition<T>::getCValue (WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__); 
+    waveAssert (false, __FILE__, __LINE__); 
 }
 
 template <class T> void AttributeManagedObjectVectorComposition<T>::storeRelatedObjectVector (const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects)
@@ -564,7 +564,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::storeRelated
     {
         T *pT = dynamic_cast<T *> (vectorOfRelatedObjects[i]);
 
-        prismAssert (NULL != pT, __FILE__, __LINE__);
+        waveAssert (NULL != pT, __FILE__, __LINE__);
 
         WaveManagedObjectPointer<T> tempWaveManagedObjectPointer (pT);
 

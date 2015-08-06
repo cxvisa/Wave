@@ -76,7 +76,7 @@ class WaveElement
         virtual void                          trace                                                (TraceLevel traceLevel, const string &stringToTrace) = 0;
         virtual void                          tracePrintf                                          (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...) = 0;
         virtual void                          tracePrintf                                          (TraceLevel traceLevel, const char * const pFormat, ...) = 0;
-        virtual void                          prismAssert                                          (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber) = 0;
+        virtual void                          waveAssert                                          (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber) = 0;
         virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL) = 0;
         virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL) = 0;
         virtual ResourceId                    deleteTimer                                          (TimerHandle timerHandle) = 0;

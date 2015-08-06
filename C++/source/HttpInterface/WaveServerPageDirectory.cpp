@@ -42,7 +42,7 @@ bool WaveServerPageDirectory::isAKnownServerPage (const string& path)
 
 void WaveServerPageDirectory::registerServerPage (WaveServerPage *pWaveServerPage)
 {
-    prismAssert (NULL != pWaveServerPage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveServerPage, __FILE__, __LINE__);
 
     string path             = pWaveServerPage->getPath ();
     bool   isAnExistingPage = isAKnownServerPage (path);
@@ -53,7 +53,7 @@ void WaveServerPageDirectory::registerServerPage (WaveServerPage *pWaveServerPag
     {
         trace (TRACE_LEVEL_FATAL, "WaveServerPageDirectory::registerServerPage : A Page with the path \"" + path + "\" has already been registered.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -76,7 +76,7 @@ void WaveServerPageDirectory::registerServerPage (const string &path, WaveServer
     {
         trace (TRACE_LEVEL_FATAL, "WaveServerPageDirectory::registerServerPage : A Page with the path \"" + path + "\" has already been registered.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {

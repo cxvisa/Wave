@@ -26,13 +26,13 @@ void WaveDeliverBrokerPublishMessageWorker::deliverBrokerPublishMessageHandler (
 {
     //trace (TRACE_LEVEL_DEVEL, "WaveDeliverBrokerPublishMessageWorker::deliverBrokerPublishMessageHandler: Entering ...");
 
-    prismAssert (NULL != pWaveDeliverBrokerPublishMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDeliverBrokerPublishMessage, __FILE__, __LINE__);
 
     WaveBrokerPublishMessage *pWaveBrokerPublishMessage = pWaveDeliverBrokerPublishMessage->getPWaveBrokerPublishMessage ();
 
     reply (pWaveDeliverBrokerPublishMessage);
 
-    prismAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
 
     pWaveBrokerPublishMessage->loadFromSerializedData2 ();
 

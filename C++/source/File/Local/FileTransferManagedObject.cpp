@@ -190,7 +190,7 @@ namespace WaveNs
           sCmd      += stmpfilename;
           system(sCmd.c_str());
           fileObj = new CFile(stmpfilename , true);
-          WaveNs::prismAssert (NULL != fileObj, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != fileObj, __FILE__, __LINE__);
           fileObj->Init();
 
           status = fileObj->ResizeMemoryMappedFile(nFileSize , sCmd.length());
@@ -212,28 +212,28 @@ namespace WaveNs
      void  CFileTransferManagedObject::setResponseStatus(const string &fthandle, const ResourceId &resStatus, const UI32 &nLocationId)
      {
           CTransferContext*  pContextObj = GetContextObject(fthandle);
-          WaveNs::prismAssert (NULL != pContextObj, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != pContextObj, __FILE__, __LINE__);
           pContextObj->setResponseStatusCode(nLocationId, resStatus);
      }
      
      void  CFileTransferManagedObject::setFrameworkStatus(const string &fthandle, const FrameworkStatus &fwStatus, const UI32 &nLocationId)
      {
           CTransferContext*  pContextObj = GetContextObject(fthandle);
-          WaveNs::prismAssert (NULL != pContextObj, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != pContextObj, __FILE__, __LINE__);
           pContextObj->setFrameworkStatusCode(nLocationId, fwStatus);     
      }
      
      FrameworkStatus  CFileTransferManagedObject::getFrameworkStatus(const string &fthandle, const UI32 &nLocationId)
      {
           CTransferContext*  pContextObj = GetContextObject(fthandle);
-          WaveNs::prismAssert (NULL != pContextObj, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != pContextObj, __FILE__, __LINE__);
           return (pContextObj->getFrameworkStatusCode(nLocationId));
      }
      
      ResourceId          CFileTransferManagedObject::getResponseStatus(const string &fthandle, const UI32 &nLocationId)
      {
           CTransferContext*  pContextObj = GetContextObject(fthandle);
-          WaveNs::prismAssert (NULL != pContextObj, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != pContextObj, __FILE__, __LINE__);
           return (pContextObj->getResponseStatusCode(nLocationId));     
      }
 
@@ -313,7 +313,7 @@ namespace WaveNs
                     // First time entry addition at File Transfer Origin.
                     pFileObj = new CFile(sSourceFilename, false);
 
-                    WaveNs::prismAssert (NULL != pFileObj, __FILE__, __LINE__);
+                    WaveNs::waveAssert (NULL != pFileObj, __FILE__, __LINE__);
 
                     // Create a tempfilename first.
                     // This filename is not used here at sender location.
@@ -325,7 +325,7 @@ namespace WaveNs
                                                        pFTHandShakeMessage->getSourceLocationId(), nDestinationLocationId,
                                                        stmpFilename, pFTHandShakeMessage->getFileSize(), pFileObj);
                                              
-                    WaveNs::prismAssert (NULL != pContextObj, __FILE__, __LINE__);
+                    WaveNs::waveAssert (NULL != pContextObj, __FILE__, __LINE__);
                                              
                     // Following currently returns success always.
                     status = AddToContextList(fthandle, pContextObj);
@@ -425,7 +425,7 @@ namespace WaveNs
                pContextObj = new CTransferContext(pFTHandShakeMessage->getSourceFileName(), pFTHandShakeMessage->getDestinationFileName(), pFTHandShakeMessage->getSourceLocationId(), 
                                                   FrameworkToolKit::getThisLocationId(), stmpFilename, pFTHandShakeMessage->getFileSize(), pFileObj);
                                                  
-               WaveNs::prismAssert (NULL != pContextObj, __FILE__, __LINE__);
+               WaveNs::waveAssert (NULL != pContextObj, __FILE__, __LINE__);
 
                UI32 fileTransferFlag = pFTHandShakeMessage->getFileTransferFlag ();
                pContextObj->setFileTransferFlag (fileTransferFlag);
@@ -473,7 +473,7 @@ namespace WaveNs
         map<string, string>::const_iterator itr_incomingList = m_IncomingActiveList.find (fthandle);
         map<string, string>::const_iterator end_incomingList = m_IncomingActiveList.end ();
 
-        prismAssert (end_incomingList != itr_incomingList, __FILE__, __LINE__);
+        waveAssert (end_incomingList != itr_incomingList, __FILE__, __LINE__);
 
 
         // 2. Get context object corresponding to the fthandle.
@@ -481,10 +481,10 @@ namespace WaveNs
         map<string, CTransferContext *>::const_iterator itr_contextList = m_TransferContextList.find (fthandle);
         map<string, CTransferContext *>::const_iterator end_contextList = m_TransferContextList.end ();
 
-        prismAssert (end_contextList != itr_contextList, __FILE__, __LINE__);
+        waveAssert (end_contextList != itr_contextList, __FILE__, __LINE__);
 
         CTransferContext *pCTransferContext = itr_contextList->second;
-        prismAssert (NULL != pCTransferContext, __FILE__, __LINE__);
+        waveAssert (NULL != pCTransferContext, __FILE__, __LINE__);
 
 
         // 3. Get the value of the 'fileTransferFlag' from context object.
@@ -508,10 +508,10 @@ namespace WaveNs
         map<string, CTransferContext *>::const_iterator itr_contextList = m_TransferContextList.find (fthandle);
         map<string, CTransferContext *>::const_iterator end_contextList = m_TransferContextList.end ();
 
-        prismAssert (end_contextList != itr_contextList, __FILE__, __LINE__);
+        waveAssert (end_contextList != itr_contextList, __FILE__, __LINE__);
 
         CTransferContext *pCTransferContext = itr_contextList->second;
-        prismAssert (NULL != pCTransferContext, __FILE__, __LINE__);
+        waveAssert (NULL != pCTransferContext, __FILE__, __LINE__);
 
         fileName            = pCTransferContext->getDestFilename ();
         fileSize            = pCTransferContext->getFileSize ();
@@ -962,7 +962,7 @@ namespace WaveNs
                }
                CFileFragment *pFileFragmentObj = new CFileFragment(m_fragmentsize, pChunk, nIndex, bLastFragment);
 
-               WaveNs::prismAssert (NULL != pFileFragmentObj, __FILE__, __LINE__);
+               WaveNs::waveAssert (NULL != pFileFragmentObj, __FILE__, __LINE__);
                
                m_fragmentlist.push_back(pFileFragmentObj);
           }
@@ -972,7 +972,7 @@ namespace WaveNs
                pChunk  +=  m_fragmentsize;
                CFileFragment *pFileFragmentObj = new CFileFragment(nLastChunkSize, pChunk, nIndex, true);
                
-               WaveNs::prismAssert (NULL != pFileFragmentObj, __FILE__, __LINE__);
+               WaveNs::waveAssert (NULL != pFileFragmentObj, __FILE__, __LINE__);
                               
                tracePrintf (TRACE_LEVEL_DEBUG, "CFile::FragmentFile Creating FileFragment Object for index [%d] of size [%d]", nIndex, nLastChunkSize);
                m_fragmentlist.push_back(pFileFragmentObj);
@@ -1020,7 +1020,7 @@ namespace WaveNs
 		  {
 		  	
               tracePrintf(TRACE_LEVEL_FATAL, "File seek error error retval = %d \n", __FUNCTION__ , __LINE__ , retval);
-              prismAssert (false, __FILE__, __LINE__);
+              waveAssert (false, __FILE__, __LINE__);
 		  }
 		  
           write(m_fd_handle, pBuf, fragmentsize);

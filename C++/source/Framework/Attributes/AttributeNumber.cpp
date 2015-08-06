@@ -103,7 +103,7 @@ Number AttributeNumber::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeNumber::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (0);
     }
 }
@@ -117,13 +117,13 @@ void AttributeNumber::setValue (const Number &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeNumber::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeNumber::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeNumber == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeNumber == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeNumber == (getAttributeType ()))
     {
@@ -196,7 +196,7 @@ void AttributeNumber::getSqlForSelect (string &sqlForSelect, AttributeConditionO
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeNumber::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -319,7 +319,7 @@ void AttributeNumber::setDefaultValue()
 void AttributeNumber::getCValue(WaveCValue *pCValue)
 {
     trace (TRACE_LEVEL_FATAL, "AttributeNumber::getCValue : NOT YET IMPLEMENTED.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     //wave_cvalue_set_number (pCValue, getValue ());
 }
 

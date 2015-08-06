@@ -39,7 +39,7 @@ RegressionTestObjectManager *RegressionTestObjectManager::getInstance ()
 {
     static RegressionTestObjectManager *pRegressionTestObjectManager = new RegressionTestObjectManager ();
 
-    WaveNs::prismAssert (NULL != pRegressionTestObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pRegressionTestObjectManager, __FILE__, __LINE__);
 
     return (pRegressionTestObjectManager);
 }

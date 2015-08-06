@@ -49,7 +49,7 @@ extern "C" int waveSystemManagementMain (int argc, char *argv[])
     string                 configFileManagementScriptsDirectory = "";
     string                 serverConnectionsString;
 
-    prismAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
+    waveAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
 
     if (argc >= 2)
     {

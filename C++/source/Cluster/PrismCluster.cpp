@@ -108,7 +108,7 @@ void PrismCluster::addSecondaryNode (const ObjectId &secondaryNodeObjectId)
     if (true == (isAKnownSecondaryNode(secondaryNodeObjectId)))
     {
         trace (TRACE_LEVEL_FATAL, "PrismCluster::addSecondaryNode : Secondary Node (" + secondaryNodeObjectId.toString () + ") Already exists.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {

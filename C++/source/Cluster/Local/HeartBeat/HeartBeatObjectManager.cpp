@@ -45,7 +45,7 @@ HeartBeatObjectManager *HeartBeatObjectManager::getInstance ()
     if (NULL == pHeartBeatObjectManager)
     {
         pHeartBeatObjectManager = new HeartBeatObjectManager ();
-        WaveNs::prismAssert (NULL != pHeartBeatObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pHeartBeatObjectManager, __FILE__, __LINE__);
     }
 
     return (pHeartBeatObjectManager);
@@ -137,7 +137,7 @@ void HeartBeatObjectManager::install (WaveAsynchronousContextForBootPhases *pWav
     else
     {
         trace (TRACE_LEVEL_FATAL, "HeartBeatObjectManager::install: Failed to install HeartBeat Default Config Managed Object");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     delete pHeartBeatConfigLocalManagedObject;
@@ -159,7 +159,7 @@ HeartBeatConfigLocalManagedObject *HeartBeatObjectManager::getConfigManagedObjec
         if (0 == numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, "HeartBeatObjectManager::getConfigManagedObjectInstance : No Managed Objects returned from querySynchronously");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -171,7 +171,7 @@ HeartBeatConfigLocalManagedObject *HeartBeatObjectManager::getConfigManagedObjec
     else
     {
         trace (TRACE_LEVEL_FATAL, "HeartBeatObjectManager::getConfigManagedObjectInstance : System failure");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return pHeartBeatConfigLocalManagedObject;
@@ -185,7 +185,7 @@ void HeartBeatObjectManager::startHeartBeat (StartHeartBeatMessage *pMessage)
     if (NULL == pMessage)
     {
         trace (TRACE_LEVEL_ERROR, "HeartBeatObjectManager::startHeartBeat : StartHeartBeatMessage passed in is NULL.");
-		prismAssert (false, __FILE__, __LINE__);
+		waveAssert (false, __FILE__, __LINE__);
     }
     
     if (0 == pMessage->getDstPortNumber()) 
@@ -209,7 +209,7 @@ void HeartBeatObjectManager::startHeartBeat (StartHeartBeatMessage *pMessage)
                                         " Port "+pMessage->getDstPortNumber ());
                 /**FIXME: We shouldn't be getting duplicate HeratBeat. This assert is for RCA if any.
                   */
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
         }
     }
 			
@@ -643,7 +643,7 @@ void HeartBeatObjectManager::processHeartBeatReply (FrameworkStatus frameworkSta
         else
         {
             trace (TRACE_LEVEL_ERROR, "HeartBeatObjectManager::processHeartBeatReply: getting a reply for message we did not send");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -752,7 +752,7 @@ void HeartBeatObjectManager::validateDisconnectFromNodeRequest (WaveLinearSequen
     trace(TRACE_LEVEL_DEVEL, "HeartBeatObjectManager::validateDisconnectFromNodeRequest..Entering");
     /* Nothing fro now */
     DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
-    prismAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
 
     LocationId locationId = pDisconnectFromNodeMessage->getLocationId ();
     LocationId  thisLocationId = FrameworkToolKit::getThisLocationId ();
@@ -771,7 +771,7 @@ void HeartBeatObjectManager::processDisconnectFromNodeMessage (WaveLinearSequenc
     trace(TRACE_LEVEL_DEVEL, "HeartBeatObjectManager::processDisconnectFromNodeMessage..Entering");
 
     DisconnectFromNodeMessage *pDisconnectFromNodeMessage = dynamic_cast<DisconnectFromNodeMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
-    prismAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pDisconnectFromNodeMessage, __FILE__, __LINE__);
 
     LocationId locationId = pDisconnectFromNodeMessage->getLocationId ();
 

@@ -89,7 +89,7 @@ FrameworkTestability6ObjectManager *FrameworkTestability6ObjectManager::getInsta
 {
     static FrameworkTestability6ObjectManager *pFrameworkTestability6ObjectManager = new FrameworkTestability6ObjectManager ();
 
-    WaveNs::prismAssert (NULL != pFrameworkTestability6ObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pFrameworkTestability6ObjectManager, __FILE__, __LINE__);
 
     return (pFrameworkTestability6ObjectManager);
 }
@@ -744,7 +744,7 @@ void FrameworkTestability6ObjectManager::simpleQueryTestCallback (WaveManagedObj
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -753,7 +753,7 @@ void FrameworkTestability6ObjectManager::simpleQueryTestCallback (WaveManagedObj
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleQueryCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -780,7 +780,7 @@ void FrameworkTestability6ObjectManager::simpleQueryTestCallback (WaveManagedObj
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -836,7 +836,7 @@ void FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep (Upgrade
     else
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep : There must be at least one Object created for this test step to run.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults (1);
@@ -945,7 +945,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep (Upgrade
     map<ObjectId, UpgradeTestManagedObject1 *> &allCreatedObjectsMap = pUpgradePersistenceTestContext->getCreatedObjectsMap ();
     vector<WaveManagedObject *>          *pResults           = querySynchronously (UpgradeTestManagedObject1::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = (pUpgradePersistenceTestContext->getCreatedObjects ()).size ();
     UI32       numberOfResults       = pResults->size ();
@@ -957,7 +957,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep (Upgrade
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -965,7 +965,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep (Upgrade
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject1 *pUpgradeTestManagedObject1        = dynamic_cast<UpgradeTestManagedObject1 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject1, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject1, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject1->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject1->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject1->getMessage1  ();
@@ -983,7 +983,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep (Upgrade
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -1026,7 +1026,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestSt
 
     vector<WaveManagedObject *> *pResults = querySynchronously (UpgradeTestManagedObject1::getClassName (), objectIds);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = numberOfObjectsToQueryFor;
     UI32       numberOfResults       = pResults->size ();
@@ -1037,7 +1037,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestSt
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -1045,7 +1045,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestSt
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject1 *pUpgradeTestManagedObject1        = dynamic_cast<UpgradeTestManagedObject1 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject1, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject1, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject1->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject1->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject1->getMessage1  ();
@@ -1063,7 +1063,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestSt
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -1102,7 +1102,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestSte
     {
         UpgradeTestManagedObject1 *pUpgradeTestManagedObject1        = dynamic_cast<UpgradeTestManagedObject1 *> (queryManagedObject ((allCreatedObjects[i])->getObjectId ()));
 
-        prismAssert (NULL != pUpgradeTestManagedObject1, __FILE__, __LINE__);
+        waveAssert (NULL != pUpgradeTestManagedObject1, __FILE__, __LINE__);
 
         ObjectId                 oid                              = pUpgradeTestManagedObject1->getObjectId  ();
         UI32                     integer1                        = pUpgradeTestManagedObject1->getInteger1  ();
@@ -1111,7 +1111,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestSte
 
         UpgradeTestManagedObject1 *pUpgradeTestManagedObject1Expected = allCreatedObjectsMap[oid];
 
-        prismAssert (NULL != pUpgradeTestManagedObject1Expected, __FILE__, __LINE__);
+        waveAssert (NULL != pUpgradeTestManagedObject1Expected, __FILE__, __LINE__);
 
         ObjectId                 oidExpected                      = pUpgradeTestManagedObject1Expected->getObjectId  ();
         UI32                     integer1Expected                = pUpgradeTestManagedObject1Expected->getInteger1  ();
@@ -1122,7 +1122,7 @@ void FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestSte
         {
             trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId ());
             trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             status = WAVE_MESSAGE_ERROR;
             break;
@@ -1385,7 +1385,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallb
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -1394,7 +1394,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallb
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -1404,7 +1404,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallb
             for (i = 0; i < numberOfResults; i++)
             {
                 UpgradeTestManagedObject2 *pUpgradeTestManagedObject2        = dynamic_cast<UpgradeTestManagedObject2 *> ((*pResults)[i]);
-                prismAssert (NULL != pUpgradeTestManagedObject2, __FILE__, __LINE__);
+                waveAssert (NULL != pUpgradeTestManagedObject2, __FILE__, __LINE__);
                 ObjectId                 oid                              = pUpgradeTestManagedObject2->getObjectId  ();
                 UI32                     integer2                        = pUpgradeTestManagedObject2->getInteger2  ();
                 string                 message2                      = pUpgradeTestManagedObject2->getMessage2  ();
@@ -1422,7 +1422,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallb
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer2 + string (", ") + message2 + string (", ") + objectId2.getClassId () + string (", ") + objectId2.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer2Expected + string (", ") + message2Expected + string (", ") + objectId2Expected.getClassId () + string (", ") + objectId2Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -1471,7 +1471,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
     map<ObjectId, UpgradeTestManagedObject2 *> &allCreatedObjects2Map = pUpgradePersistenceTestContext->getCreatedObjects2Map ();
     vector<WaveManagedObject *>          *pResults            = querySynchronously (UpgradeTestManagedObject2::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = (pUpgradePersistenceTestContext->getCreatedObjects2 ()).size ();
     UI32       numberOfResults       = pResults->size ();
@@ -1483,7 +1483,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -1491,7 +1491,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject2 *pUpgradeTestManagedObject2        = dynamic_cast<UpgradeTestManagedObject2 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject2, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject2, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject2->getObjectId  ();
             UI32                     integer2                        = pUpgradeTestManagedObject2->getInteger2  ();
             string                 message2                      = pUpgradeTestManagedObject2->getMessage2  ();
@@ -1509,7 +1509,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer2 + string (", ") + message2 + string (", ") + objectId2.getClassId () + string (", ") + objectId2.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer2Expected + string (", ") + message2Expected + string (", ") + objectId2Expected.getClassId () + string (", ") + objectId2Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -1552,7 +1552,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
 
     vector<WaveManagedObject *> *pResults = querySynchronously (UpgradeTestManagedObject2::getClassName (), objectIds);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = numberOfObjectsToQueryFor;
     UI32       numberOfResults       = pResults->size ();
@@ -1563,7 +1563,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -1571,7 +1571,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject2 *pUpgradeTestManagedObject2        = dynamic_cast<UpgradeTestManagedObject2 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject2, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject2, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject2->getObjectId  ();
             UI32                     integer2                        = pUpgradeTestManagedObject2->getInteger2  ();
             string                 message2                      = pUpgradeTestManagedObject2->getMessage2  ();
@@ -1589,7 +1589,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQue
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer2 + string (", ") + message2 + string (", ") + objectId2.getClassId () + string (", ") + objectId2.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer2Expected + string (", ") + message2Expected + string (", ") + objectId2Expected.getClassId () + string (", ") + objectId2Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -1863,7 +1863,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback (Wave
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -1872,7 +1872,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback (Wave
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -1882,7 +1882,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback (Wave
             for (i = 0; i < numberOfResults; i++)
             {
                 UpgradeTestManagedObject3 *pUpgradeTestManagedObject3        = dynamic_cast<UpgradeTestManagedObject3 *> ((*pResults)[i]);
-                prismAssert (NULL != pUpgradeTestManagedObject3, __FILE__, __LINE__);
+                waveAssert (NULL != pUpgradeTestManagedObject3, __FILE__, __LINE__);
                 ObjectId                 oid                              = pUpgradeTestManagedObject3->getObjectId  ();
                 UI32                     integer1                        = pUpgradeTestManagedObject3->getInteger1  ();
                 string                 message1                      = pUpgradeTestManagedObject3->getMessage1  ();
@@ -1906,7 +1906,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback (Wave
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer3 + string (", ") + message3 + string (", ") + objectId3.getClassId () + string (", ") + objectId3.getInstanceId () + string (", ") + association3.getClassId () + string (", ") + association3.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer3Expected + string (", ") + message3Expected + string (", ") + objectId3Expected.getClassId () + string (", ") + objectId3Expected.getInstanceId () + string (", ") + association3Expected.getClassId () + string (", ") + association3Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -1955,7 +1955,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestSte
     map<ObjectId, UpgradeTestManagedObject3 *> &allCreatedObjects3Map = pUpgradePersistenceTestContext->getCreatedObjects3Map ();
     vector<WaveManagedObject *>          *pResults            = querySynchronously (UpgradeTestManagedObject3::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = (pUpgradePersistenceTestContext->getCreatedObjects3 ()).size ();
     UI32       numberOfResults       = pResults->size ();
@@ -1967,7 +1967,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestSte
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -1975,7 +1975,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestSte
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject3 *pUpgradeTestManagedObject3        = dynamic_cast<UpgradeTestManagedObject3 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject3, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject3, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject3->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject3->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject3->getMessage1  ();
@@ -1999,7 +1999,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestSte
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer3 + string (", ") + message3 + string (", ") + objectId3.getClassId () + string (", ") + objectId3.getInstanceId () + string (", ") + association3.getClassId () + string (", ") + association3.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer3Expected + string (", ") + message3Expected + string (", ") + objectId3Expected.getClassId () + string (", ") + objectId3Expected.getInstanceId () + string (", ") + association3Expected.getClassId () + string (", ") + association3Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -2042,7 +2042,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjec
 
     vector<WaveManagedObject *> *pResults = querySynchronously (UpgradeTestManagedObject3::getClassName (), objectIds);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = numberOfObjectsToQueryFor;
     UI32       numberOfResults       = pResults->size ();
@@ -2053,7 +2053,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjec
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -2061,7 +2061,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjec
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject3 *pUpgradeTestManagedObject3        = dynamic_cast<UpgradeTestManagedObject3 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject3, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject3, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject3->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject3->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject3->getMessage1  ();
@@ -2085,7 +2085,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjec
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer3 + string (", ") + message3 + string (", ") + objectId3.getClassId () + string (", ") + objectId3.getInstanceId () + string (", ") + association3.getClassId () + string (", ") + association3.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer3Expected + string (", ") + message3Expected + string (", ") + objectId3Expected.getClassId () + string (", ") + objectId3Expected.getInstanceId () + string (", ") + association3Expected.getClassId () + string (", ") + association3Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -2291,7 +2291,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCall
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -2300,7 +2300,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCall
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -2310,7 +2310,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCall
             for (i = 0; i < numberOfResults; i++)
             {
                 UpgradeTestManagedObject4 *pUpgradeTestManagedObject4        = dynamic_cast<UpgradeTestManagedObject4 *> ((*pResults)[i]);
-                prismAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
+                waveAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
                 ObjectId                 oid                              = pUpgradeTestManagedObject4->getObjectId  ();
                 UI32                     integer1                        = pUpgradeTestManagedObject4->getInteger1  ();
                 string                 message1                      = pUpgradeTestManagedObject4->getMessage1  ();
@@ -2334,7 +2334,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCall
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer4 + string (", ") + message4 + string (", ") + objectId4.getClassId () + string (", ") + objectId4.getInstanceId () + string (", ") + association4.getClassId () + string (", ") + association4.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer4Expected + string (", ") + message4Expected + string (", ") + objectId4Expected.getClassId () + string (", ") + objectId4Expected.getInstanceId () + string (", ") + association4Expected.getClassId () + string (", ") + association4Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -2383,7 +2383,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
     map<ObjectId, UpgradeTestManagedObject4 *> &allCreatedObjects4Map = pUpgradePersistenceTestContext->getCreatedObjects4Map ();
     vector<WaveManagedObject *>          *pResults            = querySynchronously (UpgradeTestManagedObject4::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = (pUpgradePersistenceTestContext->getCreatedObjects4 ()).size ();
     UI32       numberOfResults       = pResults->size ();
@@ -2395,7 +2395,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -2403,7 +2403,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject4 *pUpgradeTestManagedObject4        = dynamic_cast<UpgradeTestManagedObject4 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject4->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject4->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject4->getMessage1  ();
@@ -2427,7 +2427,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer4 + string (", ") + message4 + string (", ") + objectId4.getClassId () + string (", ") + objectId4.getInstanceId () + string (", ") + association4.getClassId () + string (", ") + association4.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer4Expected + string (", ") + message4Expected + string (", ") + objectId4Expected.getClassId () + string (", ") + objectId4Expected.getInstanceId () + string (", ") + association4Expected.getClassId () + string (", ") + association4Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -2470,7 +2470,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
 
     vector<WaveManagedObject *> *pResults = querySynchronously (UpgradeTestManagedObject4::getClassName (), objectIds);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = numberOfObjectsToQueryFor;
     UI32       numberOfResults       = pResults->size ();
@@ -2481,7 +2481,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryByObjectIdsTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -2489,7 +2489,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject4 *pUpgradeTestManagedObject4        = dynamic_cast<UpgradeTestManagedObject4 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject4->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject4->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject4->getMessage1  ();
@@ -2513,7 +2513,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQu
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer4 + string (", ") + message4 + string (", ") + objectId4.getClassId () + string (", ") + objectId4.getInstanceId () + string (", ") + association4.getClassId () + string (", ") + association4.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer4Expected + string (", ") + message4Expected + string (", ") + objectId4Expected.getClassId () + string (", ") + objectId4Expected.getInstanceId () + string (", ") + association4Expected.getClassId () + string (", ") + association4Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -2554,7 +2554,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationUpdateTestSte
         UpgradeTestManagedObject1 *pUpgradeTestManagedObject1 = allCreatedObjects[i];
         UpgradeTestManagedObject4 *pUpgradeTestManagedObject4 = allCreatedObjects4[i];
 
-        prismAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
+        waveAssert (NULL != pUpgradeTestManagedObject4, __FILE__, __LINE__);
 
         updateWaveManagedObject (pUpgradeTestManagedObject4);
 
@@ -2797,7 +2797,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -2806,7 +2806,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -2816,7 +2816,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
             for (i = 0; i < numberOfResults; i++)
             {
                 UpgradeTestManagedObject5 *pUpgradeTestManagedObject5        = dynamic_cast<UpgradeTestManagedObject5 *> ((*pResults)[i]);
-                prismAssert (NULL != pUpgradeTestManagedObject5, __FILE__, __LINE__);
+                waveAssert (NULL != pUpgradeTestManagedObject5, __FILE__, __LINE__);
                 ObjectId                 oid                              = pUpgradeTestManagedObject5->getObjectId  ();
                 UI32                     integer1                        = pUpgradeTestManagedObject5->getInteger1  ();
                 string                 message1                      = pUpgradeTestManagedObject5->getMessage1  ();
@@ -2840,7 +2840,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer4 + string (", ") + message4 + string (", ") + objectId4.getClassId () + string (", ") + objectId4.getInstanceId () + string (", ") + association4.getClassId () + string (", ") + association4.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer4Expected + string (", ") + message4Expected + string (", ") + objectId4Expected.getClassId () + string (", ") + objectId4Expected.getInstanceId () + string (", ") + association4Expected.getClassId () + string (", ") + association4Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -2889,7 +2889,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
     map<ObjectId, UpgradeTestManagedObject5 *> &allCreatedObjects5Map = pUpgradePersistenceTestContext->getCreatedObjects5Map ();
     vector<WaveManagedObject *>          *pResults            = querySynchronously (UpgradeTestManagedObject5::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = (pUpgradePersistenceTestContext->getCreatedObjects5 ()).size ();
     UI32       numberOfResults       = pResults->size ();
@@ -2901,7 +2901,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -2909,7 +2909,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject5 *pUpgradeTestManagedObject5        = dynamic_cast<UpgradeTestManagedObject5 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject5, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject5, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject5->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject5->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject5->getMessage1  ();
@@ -2933,7 +2933,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer4 + string (", ") + message4 + string (", ") + objectId4.getClassId () + string (", ") + objectId4.getInstanceId () + string (", ") + association4.getClassId () + string (", ") + association4.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer4Expected + string (", ") + message4Expected + string (", ") + objectId4Expected.getClassId () + string (", ") + objectId4Expected.getInstanceId () + string (", ") + association4Expected.getClassId () + string (", ") + association4Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -2976,7 +2976,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
 
     vector<WaveManagedObject *> *pResults = querySynchronously (UpgradeTestManagedObject5::getClassName (), objectIds);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32       numberOfExpectedResults = numberOfObjectsToQueryFor;
     UI32       numberOfResults       = pResults->size ();
@@ -2987,7 +2987,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
     if (numberOfExpectedResults != numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
     else
@@ -2995,7 +2995,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
         for (i = 0; i < numberOfResults; i++)
         {
             UpgradeTestManagedObject5 *pUpgradeTestManagedObject5        = dynamic_cast<UpgradeTestManagedObject5 *> ((*pResults)[i]);
-            prismAssert (NULL != pUpgradeTestManagedObject5, __FILE__, __LINE__);
+            waveAssert (NULL != pUpgradeTestManagedObject5, __FILE__, __LINE__);
             ObjectId                 oid                              = pUpgradeTestManagedObject5->getObjectId  ();
             UI32                     integer1                        = pUpgradeTestManagedObject5->getInteger1  ();
             string                 message1                      = pUpgradeTestManagedObject5->getMessage1  ();
@@ -3019,7 +3019,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
             {
                 trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer1 + string (", ") + message1 + string (", ") + objectId1.getClassId () + string (", ") + objectId1.getInstanceId () + string (", ") + integer4 + string (", ") + message4 + string (", ") + objectId4.getClassId () + string (", ") + objectId4.getInstanceId () + string (", ") + association4.getClassId () + string (", ") + association4.getInstanceId ());
                 trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer1Expected + string (", ") + message1Expected + string (", ") + objectId1Expected.getClassId () + string (", ") + objectId1Expected.getInstanceId () + string (", ") + integer4Expected + string (", ") + message4Expected + string (", ") + objectId4Expected.getClassId () + string (", ") + objectId4Expected.getInstanceId () + string (", ") + association4Expected.getClassId () + string (", ") + association4Expected.getInstanceId ());
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 status = WAVE_MESSAGE_ERROR;
                 break;
@@ -3219,7 +3219,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallb
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -3228,7 +3228,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallb
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -3238,7 +3238,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallb
             for (i = 0; i < numberOfResults; i++)
             {
                 UpgradeTestManagedObject6 *pUpgradeTestManagedObject6        = dynamic_cast<UpgradeTestManagedObject6 *> ((*pResults)[i]);
-                prismAssert (NULL != pUpgradeTestManagedObject6, __FILE__, __LINE__);
+                waveAssert (NULL != pUpgradeTestManagedObject6, __FILE__, __LINE__);
                 ObjectId                oid                          = pUpgradeTestManagedObject6->getObjectId  ();
                 UI32                    integer6                        = pUpgradeTestManagedObject6->getInteger6  ();
                 string                message6                      = pUpgradeTestManagedObject6->getMessage6  ();
@@ -3256,7 +3256,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallb
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer6 + string (", ") + message6 + string (", ") + objectId6.getClassId () + string (", ") + objectId6.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer6Expected + string (", ") + message6Expected + string (", ") + objectId6Expected.getClassId () + string (", ") + objectId6Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -3500,7 +3500,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCall
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfExpectedResults = pUpgradePersistenceTestContext->getNumberOfExpectedResults ();
         UI32 numberOfResults = pResults->size ();
@@ -3509,7 +3509,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCall
         if (numberOfExpectedResults != numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCallback : We did not get expected number of results.  Expected = ") + numberOfExpectedResults + string (", Obtained =  ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
         else
@@ -3519,7 +3519,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCall
             for (i = 0; i < numberOfResults; i++)
             {
                 UpgradeTestManagedObject7 *pUpgradeTestManagedObject7        = dynamic_cast<UpgradeTestManagedObject7 *> ((*pResults)[i]);
-                prismAssert (NULL != pUpgradeTestManagedObject7, __FILE__, __LINE__);
+                waveAssert (NULL != pUpgradeTestManagedObject7, __FILE__, __LINE__);
                 ObjectId                oid                          = pUpgradeTestManagedObject7->getObjectId  ();
                 UI32                    integer7                        = pUpgradeTestManagedObject7->getInteger7  ();
                 string                message7                      = pUpgradeTestManagedObject7->getMessage7  ();
@@ -3537,7 +3537,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCall
                 {
                     trace (TRACE_LEVEL_ERROR, string ("Got    : ") + oid.getClassId () + string (", ") + oid.getInstanceId () + string (", ") + integer7+ string (", ") + message7 + string (", ") + objectId7.getClassId () + string (", ") + objectId7.getInstanceId ());
                     trace (TRACE_LEVEL_ERROR, string ("Expected : ") + oidExpected.getClassId () + string (", ") + oidExpected.getInstanceId () + string (", ") + integer7Expected + string (", ") + message7Expected + string (", ") + objectId7Expected.getClassId () + string (", ") + objectId7Expected.getInstanceId ());
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     status = WAVE_MESSAGE_ERROR;
                     break;
@@ -4005,7 +4005,7 @@ void FrameworkTestability6ObjectManager::getManagedObjectsMessageHandler (Framew
 
     vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&queryContext);
 
-    prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
 
     UI32               numberOfWaveManagedObjects = pWaveManagedObjects->size ();
     UI32               i                          = 0;
@@ -4018,7 +4018,7 @@ void FrameworkTestability6ObjectManager::getManagedObjectsMessageHandler (Framew
     {
         pWaveManagedObject = (*pWaveManagedObjects)[i];
 
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         showDump = managedObjectClassName + " " + pWaveManagedObject->getName ();
 
@@ -4058,7 +4058,7 @@ void  FrameworkTestability6ObjectManager::pausePersistence()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::pausePersistence : Could not pause Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4067,7 +4067,7 @@ void  FrameworkTestability6ObjectManager::pausePersistence()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::pausePersistence : Could not pause Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4092,7 +4092,7 @@ void  FrameworkTestability6ObjectManager::backupDatabaseStep(UpgradePersistenceT
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::backupDatabaseStep : Could not send message to backup database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4101,7 +4101,7 @@ void  FrameworkTestability6ObjectManager::backupDatabaseStep(UpgradePersistenceT
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::backupDatabaseStep : Message to backup database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4127,7 +4127,7 @@ void  FrameworkTestability6ObjectManager::resumePersistence()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::resumePersistence : Could not resume Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4136,7 +4136,7 @@ void  FrameworkTestability6ObjectManager::resumePersistence()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::resumePersistence : Could not resume Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4155,7 +4155,7 @@ void  FrameworkTestability6ObjectManager::cleanPreparedTransactions()
     if (WAVE_MESSAGE_SUCCESS != cleanPreparedTransactionsStatus)
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::cleanPreparedTransactions: Could not send message to Clean the Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4168,7 +4168,7 @@ void  FrameworkTestability6ObjectManager::cleanPreparedTransactions()
         else
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::cleanPreparedTransactions: Failed to Clean the previously Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -4183,7 +4183,7 @@ void FrameworkTestability6ObjectManager::resumeDatabase ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::resumeDatabase : Could not resume Database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -4192,7 +4192,7 @@ void FrameworkTestability6ObjectManager::resumeDatabase ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::resumeDatabase : Could not resume Database.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4262,7 +4262,7 @@ void  FrameworkTestability6ObjectManager::restoreDatabaseStep(UpgradePersistence
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::configureSecondaryNodeEmptyDatabaseStep : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4271,7 +4271,7 @@ void  FrameworkTestability6ObjectManager::restoreDatabaseStep(UpgradePersistence
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::configureSecondaryNodeEmptyDatabaseStep : Message to empty database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
         string backupFileName = string (FrameworkToolKit::getProcessInitialWorkingDirectory () + "/BIST" + FrameworkToolKit::getDatabaseBackupFileName ());
@@ -4283,7 +4283,7 @@ void  FrameworkTestability6ObjectManager::restoreDatabaseStep(UpgradePersistence
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::restoreDatabaseStep : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -4292,7 +4292,7 @@ void  FrameworkTestability6ObjectManager::restoreDatabaseStep(UpgradePersistence
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "FrameworkTestability6ObjectManager::restoreDatabaseStep : Message to restore database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {

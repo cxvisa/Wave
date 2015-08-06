@@ -31,7 +31,7 @@ UI32 TraceTestContext::getNumberOfTraceClients ()
     UI32 numberOfClientIds = m_traceClientIdsVector.size ();
     UI32 numberOfLevels    = m_traceLevelsVector.size ();
 
-    prismAssert (numberOfClientIds == numberOfLevels, __FILE__, __LINE__);
+    waveAssert (numberOfClientIds == numberOfLevels, __FILE__, __LINE__);
 
     return (numberOfClientIds);
 }
@@ -40,7 +40,7 @@ TraceClientId TraceTestContext::getTraceClientIdAt (const UI32 &i)
 {
     UI32 numberOfTraceClients = getNumberOfTraceClients ();
 
-    prismAssert (i < numberOfTraceClients, __FILE__, __LINE__);
+    waveAssert (i < numberOfTraceClients, __FILE__, __LINE__);
 
     return (m_traceClientIdsVector[i]);
 }
@@ -49,7 +49,7 @@ TraceLevel TraceTestContext::getTraceLevelAt (const UI32 &i)
 {
     UI32 numberOfTraceClients = getNumberOfTraceClients ();
 
-    prismAssert (i < numberOfTraceClients, __FILE__, __LINE__);
+    waveAssert (i < numberOfTraceClients, __FILE__, __LINE__);
 
     return (m_traceLevelsVector[i]);
 }

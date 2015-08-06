@@ -92,7 +92,7 @@ void BoolUC::fromString (const string &pBoolUCInStringFormat)
 
     numberOfToken = token.size ();
 
-    prismAssert (2 >= numberOfToken, __FILE__, __LINE__);
+    waveAssert (2 >= numberOfToken, __FILE__, __LINE__);
 
     if (numberOfToken > 1)
     {

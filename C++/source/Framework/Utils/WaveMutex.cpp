@@ -33,7 +33,7 @@ WaveMutexStatus WaveMutex::lock ()
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("Could not acquire lock : ") + status);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MUTEX_COULD_NOT_LOCK);
     }
 }
@@ -48,7 +48,7 @@ WaveMutexStatus WaveMutex::unlock()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MUTEX_COULD_NOT_UNLOCK);
     }
 }
@@ -67,7 +67,7 @@ WaveMutexStatus WaveMutex::tryLock ()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MUTEX_COULD_NOT_LOCK);
     }
 }

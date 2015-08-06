@@ -32,7 +32,7 @@ ClusterTestObjectManager *ClusterTestObjectManager::getInstance ()
     if (NULL == pClusterTestObjectManager)
     {
         pClusterTestObjectManager = new ClusterTestObjectManager ();
-        WaveNs::prismAssert (NULL != pClusterTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pClusterTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pClusterTestObjectManager);

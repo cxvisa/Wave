@@ -63,7 +63,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
     if (0 != (gettimeofday (&startTime, NULL)))
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveManagementServer::connect : Could not obtain start time."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = FRAMEWORK_ERROR;
     }
     else
@@ -80,7 +80,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
             if (NULL == m_pClientStreamingSocket)
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveManagementServer::connect : Could not allocate a ClientSocket for Management Interface Client : ") + m_ipAddress + m_port);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 break;
             }
 
@@ -115,7 +115,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
 
                 if (true != isSuccessful)
                 {
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 string messageVersion = PrismVersion::getVersionString ();
@@ -177,7 +177,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
             if (0 != (gettimeofday (&currentTime, NULL)))
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveManagementServer::connect : Could not obtain current time."));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 status = FRAMEWORK_ERROR;
                 break;
             }
@@ -216,7 +216,7 @@ SI32 WaveManagementServer::getPort () const
 
 bool WaveManagementServer::operator << (ManagementInterfaceMessage *pManagementInterfaceMessage)
 {
-    prismAssert (NULL != m_pClientStreamingSocket, __FILE__, __LINE__);
+    waveAssert (NULL != m_pClientStreamingSocket, __FILE__, __LINE__);
 
     return ((*m_pClientStreamingSocket) << pManagementInterfaceMessage);
 }
@@ -231,7 +231,7 @@ void WaveManagementServer::addServiceCache (const vector<string> &serviceNames, 
 
     UI32                        i                    = 0;
 
-    prismAssert (numberOfServiceNames == numberOfServiceIds, __FILE__, __LINE__);
+    waveAssert (numberOfServiceNames == numberOfServiceIds, __FILE__, __LINE__);
 
     m_serviceNames = serviceNames;
     m_serviceIds   = serviceIds;
@@ -240,7 +240,7 @@ void WaveManagementServer::addServiceCache (const vector<string> &serviceNames, 
 
     for (i = 0; i < numberOfServiceNames; i++)
     {
-        prismAssert (endForMapByname == (m_serviceMapByName.find (serviceNames[i])), __FILE__, __LINE__);
+        waveAssert (endForMapByname == (m_serviceMapByName.find (serviceNames[i])), __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, string ("WaveManagementServer::addServiceCache : ") + serviceNames[i] + string (":") + serviceIds[i]);
 
@@ -251,7 +251,7 @@ void WaveManagementServer::addServiceCache (const vector<string> &serviceNames, 
 
     for (i = 0; i < numberOfServiceIds; i++)
     {
-        prismAssert (endForMapById == (m_serviceMapById.find (serviceIds[i])), __FILE__, __LINE__);
+        waveAssert (endForMapById == (m_serviceMapById.find (serviceIds[i])), __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, string ("WaveManagementServer::addServiceCache : ") + serviceIds[i] + string (":") + serviceNames[i]);
 

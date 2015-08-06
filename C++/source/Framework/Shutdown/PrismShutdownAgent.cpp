@@ -84,7 +84,7 @@ ResourceId PrismShutdownAgent::shutdownServicesStep (PrismShutdownAgentContext *
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::shutdownServicesStep : Could not Shutdown a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToShutdown[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else
@@ -121,7 +121,7 @@ ResourceId PrismShutdownAgent::uninstallServicesStep (PrismShutdownAgentContext 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::uninstallServicesStep : Could not Shutdown a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToUninstall[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else
@@ -159,7 +159,7 @@ ResourceId PrismShutdownAgent::disableServicesStep (PrismShutdownAgentContext *p
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::disableServicesStep : Could not disable a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToDisable[i]));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
 
         }
@@ -197,7 +197,7 @@ ResourceId PrismShutdownAgent::uninitializeServicesStep (PrismShutdownAgentConte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::uninitializeServicesStep : Could not Uninitialize a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToUninitialize[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else
@@ -234,7 +234,7 @@ ResourceId PrismShutdownAgent::shutdownPostPhaseServicesStep (PrismShutdownAgent
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::shutdownPostPhaseServicesStep : Could not Shutdown a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToShutdown[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else
@@ -271,7 +271,7 @@ ResourceId PrismShutdownAgent::uninstallPostPhaseServicesStep (PrismShutdownAgen
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::uninstallPostPhaseServicesStep : Could not Uninstall a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToUninstall[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else
@@ -308,7 +308,7 @@ ResourceId PrismShutdownAgent::disablePostPhaseServicesStep (PrismShutdownAgentC
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::disablePostPhaseServicesStep : Could not disable a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToDisable[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else
@@ -345,7 +345,7 @@ ResourceId PrismShutdownAgent::uninitializePostPhaseServicesStep (PrismShutdownA
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismBootAgent::uninitializePostPhaseServicesStep : Could not Uninitialize a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToUninitialize[i]));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return (status);
         }
         else

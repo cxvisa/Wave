@@ -115,8 +115,8 @@ void RedundancyOptimizer64WithVariableChunking::optimizeFile (const string &file
              char     *pTempBuffer              = NULL;
     unsigned char      oldestData               = '\0';
 
-    prismAssert (slidingWindowSize <= m_minimumChunkSize, __FILE__, __LINE__);
-    prismAssert (slidingWindowSize <= m_fileIoSize, __FILE__, __LINE__);
+    waveAssert (slidingWindowSize <= m_minimumChunkSize, __FILE__, __LINE__);
+    waveAssert (slidingWindowSize <= m_fileIoSize, __FILE__, __LINE__);
 
     inputFileStream.open (fileName.c_str (), ios::binary);
 
@@ -129,7 +129,7 @@ void RedundancyOptimizer64WithVariableChunking::optimizeFile (const string &file
     
     // Allocate a buffer here, just before use.
     pBuffer                  = new char[m_fileIoSize];
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     while (! (inputFileStream.eof ()))
     {

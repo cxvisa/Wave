@@ -120,7 +120,7 @@ void WaveServerPageDirectoryEntry::addImmediateSibling (const string &immediateS
     {
         WaveServerPageDirectoryEntry *pNewWaveServerPageDirectoryEntry = new WaveServerPageDirectoryEntry (immediateSiblingName, pWaveServerPage);
 
-        prismAssert (NULL != pNewWaveServerPageDirectoryEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pNewWaveServerPageDirectoryEntry, __FILE__, __LINE__);
 
         m_siblingsMap[immediateSiblingName] = pNewWaveServerPageDirectoryEntry;
     }
@@ -138,7 +138,7 @@ void WaveServerPageDirectoryEntry::addImmediateSibling (const string &immediateS
             else
             {
                 trace (TRACE_LEVEL_FATAL, "WaveServerPageDirectoryEntry::addImmediateSibling : Adding a duplicate immediate Sibling : \'" + immediateSiblingName + "\'");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
     }
@@ -168,7 +168,7 @@ void WaveServerPageDirectoryEntry::addSibling (const string &siblingName, WaveSe
 
         pTempWaveServerPageDirectoryEntry = pTempWaveServerPageDirectoryEntry->getImmediateSibling (siblingNameTokens[i]);
 
-        prismAssert (NULL != pTempWaveServerPageDirectoryEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pTempWaveServerPageDirectoryEntry, __FILE__, __LINE__);
     }
 }
 
@@ -192,7 +192,7 @@ void WaveServerPageDirectoryEntry::print (const string &prefix) const
     {
         pWaveServerPageDirectoryEntry = element->second;
 
-        prismAssert (NULL != pWaveServerPageDirectoryEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveServerPageDirectoryEntry, __FILE__, __LINE__);
 
         pWaveServerPageDirectoryEntry->print (prefix + "|-");
 

@@ -86,7 +86,7 @@ class WaveWorker : public WaveElement
         virtual void                          trace                                     (TraceLevel traceLevel, const string &stringToTrace);
         virtual void                          tracePrintf                               (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...);
         virtual void                          tracePrintf                               (TraceLevel traceLevel, const char * const pFormat, ...);
-        virtual void                          prismAssert                               (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
+        virtual void                          waveAssert                               (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
                 void                          addOperationMap                           (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, WaveElement *pWaveElement = NULL);
                 void                          removeOperationMap                        (const UI32 &operationCode);
                 void                          addServiceIndependentOperationMap         (UI32 operationCode, WaveServiceIndependentMessageHandler pWaveServiceIndependentMessageHandler);

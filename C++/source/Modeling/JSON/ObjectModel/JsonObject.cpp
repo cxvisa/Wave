@@ -71,7 +71,7 @@ void JsonObject::fromString (const string &input)
             {
                 JsonPair *pJsonPair = new JsonPair ();
 
-                prismAssert (NULL != pJsonPair, __FILE__, __LINE__);
+                waveAssert (NULL != pJsonPair, __FILE__, __LINE__);
 
                 pJsonPair->fromString (level1Tokens[i]);
 

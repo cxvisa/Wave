@@ -39,7 +39,7 @@ WaveMessagingBrokerReceiverThread::~WaveMessagingBrokerReceiverThread ()
 
     WaveMessagingBrokerClientRepository *pWaveMessagingBrokerClientRepository = WaveMessagingBrokerClientRepository::getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
 
     pWaveMessagingBrokerClientRepository->removeWaveMessagingBrokerClient (m_peerServerIpAddress, m_peerServerPort);
 
@@ -87,7 +87,7 @@ WaveThreadStatus WaveMessagingBrokerReceiverThread::start ()
             if (0 == sizeOfConnectionInformation)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveThreadStatus WaveMessagingBrokerReceiverThread::start : If we have read the size successfully, it cannot be zero.");
-                prismAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
+                waveAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
             }
         }
 
@@ -150,7 +150,7 @@ WaveThreadStatus WaveMessagingBrokerReceiverThread::start ()
 
     WaveMessagingBrokerClientRepository *pWaveMessagingBrokerClientRepository = WaveMessagingBrokerClientRepository::getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
 
     // At this point make sure that the client is coming with a unique name.  We cannot allow two clients to connect to us with the same name.
 
@@ -193,7 +193,7 @@ WaveThreadStatus WaveMessagingBrokerReceiverThread::start ()
         {
             WaveBrokerBasedMessagePayload *pWaveBrokerBasedMessagePayload = new WaveBrokerBasedMessagePayload ();
 
-            prismAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
 
             UI32 &messageSize = pWaveBrokerBasedMessagePayload->getMessageBodySize ();
 
@@ -214,7 +214,7 @@ WaveThreadStatus WaveMessagingBrokerReceiverThread::start ()
             if (NULL == pNewFixedSizeBuffer)
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveMessagingBrokerReceiverThread::start : Could not allocate a new FixedSizeBuffer of size ") + messageSize + ".");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             isSuccessful = (*m_pServerStreamingSocket) >> (*pNewFixedSizeBuffer);
@@ -249,7 +249,7 @@ WaveThreadStatus WaveMessagingBrokerReceiverThread::start ()
 
                 //trace (TRACE_LEVEL_DEVEL, messageString);
 
-                //prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+                //waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
                 // Now read the buffer data
 
@@ -285,11 +285,11 @@ WaveThreadStatus WaveMessagingBrokerReceiverThread::start ()
                             break;
                         }
 
-                        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+                        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
                         pBuffer = new UI8[bufferSize];
 
-                        prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+                        waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
                         FixedSizeBuffer tempBuffer (bufferSize, pBuffer, false);
 
@@ -409,11 +409,11 @@ void WaveMessagingBrokerReceiverThread::processWaveBrokerBasedMessage (WaveBroke
         case WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_SUBSCRIBE :
             pWaveBrokerBasedMessage = WaveBrokerBasedMessageFactory::createWaveBrokerBasedMessageInstance (waveBrokerBasedMessageType, tempString);
 
-            prismAssert (NULL != pWaveBrokerBasedMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerBasedMessage, __FILE__, __LINE__);
 
             pWaveBrokerSubscribeMessage = dynamic_cast<WaveBrokerSubscribeMessage *> (pWaveBrokerBasedMessage);
 
-            prismAssert (NULL != pWaveBrokerSubscribeMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerSubscribeMessage, __FILE__, __LINE__);
 
             pWaveBrokerSubscribeMessage->loadFromSerializedData2 (pWaveBrokerBasedMessagePayload->getMessageBody ());
 
@@ -424,11 +424,11 @@ void WaveMessagingBrokerReceiverThread::processWaveBrokerBasedMessage (WaveBroke
         case WAVE_BROKER_BASED_MESSAGING_BUS_MESSAGE_TYPE_UNSUBSCRIBE :
             pWaveBrokerBasedMessage = WaveBrokerBasedMessageFactory::createWaveBrokerBasedMessageInstance (waveBrokerBasedMessageType, tempString);
 
-            prismAssert (NULL != pWaveBrokerBasedMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerBasedMessage, __FILE__, __LINE__);
 
             pWaveBrokerUnsubscribeMessage = dynamic_cast<WaveBrokerUnsubscribeMessage *> (pWaveBrokerBasedMessage);
 
-            prismAssert (NULL != pWaveBrokerUnsubscribeMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerUnsubscribeMessage, __FILE__, __LINE__);
 
             processWaveBrokerBasedMessage (pWaveBrokerUnsubscribeMessage);
 
@@ -449,7 +449,7 @@ void WaveMessagingBrokerReceiverThread::processWaveBrokerBasedMessage (WaveBroke
 
     WaveMessagingBrokerClientRepository *pWaveMessagingBrokerClientRepository = WaveMessagingBrokerClientRepository::getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
 
     vector<string> topicNames         = pWaveBrokerSubscribeMessage->getTopicNames ();
     UI32           numberOfTopicNames = topicNames.size ();
@@ -471,13 +471,13 @@ void WaveMessagingBrokerReceiverThread::processWaveBrokerBasedMessage (WaveBroke
 
 void WaveMessagingBrokerReceiverThread::processWaveBrokerPublishMessage   (WaveBrokerBasedMessagePayload *pWaveBrokerBasedMessagePayload)
 {
-    prismAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
 
     string topicName = WaveBrokerBasedMessage::getTopicName (pWaveBrokerBasedMessagePayload->getMessageBody ());
 
     WaveMessagingBrokerTopicProcessorPublishMessage *pWaveMessagingBrokerTopicProcessorPublishMessage = new WaveMessagingBrokerTopicProcessorPublishMessage (WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (topicName));
 
-    prismAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
 
     pWaveMessagingBrokerTopicProcessorPublishMessage->setPWaveBrokerBasedMessagePayload (pWaveBrokerBasedMessagePayload);
 

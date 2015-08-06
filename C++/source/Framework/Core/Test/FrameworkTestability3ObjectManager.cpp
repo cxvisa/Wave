@@ -28,7 +28,7 @@ FrameworkTestability3ObjectManager *FrameworkTestability3ObjectManager::getInsta
     if (NULL == pFrameworkTestability3ObjectManager)
     {
         pFrameworkTestability3ObjectManager = new FrameworkTestability3ObjectManager ();
-        WaveNs::prismAssert (NULL != pFrameworkTestability3ObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkTestability3ObjectManager, __FILE__, __LINE__);
     }
 
     return (pFrameworkTestability3ObjectManager);

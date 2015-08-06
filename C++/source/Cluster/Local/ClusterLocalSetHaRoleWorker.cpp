@@ -104,7 +104,7 @@ void ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep(WaveLinearSe
     //Message from the context
     ClusterLocalSetHaRoleMessage* pClusterLocalSetHaRoleMessage = dynamic_cast<ClusterLocalSetHaRoleMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
-    prismAssert(NULL != pClusterLocalSetHaRoleMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pClusterLocalSetHaRoleMessage, __FILE__, __LINE__);
 
     //Obtain the wavenode and update the status and then committ
     WaveManagedObjectSynchronousQueryContext queryContext (WaveHaNode::getClassName ());
@@ -112,10 +112,10 @@ void ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep(WaveLinearSe
 	WaveHaNodeRole  haRole    =    (WaveHaNodeRole)(pClusterLocalSetHaRoleMessage->getHaRole());
 
     vector<WaveManagedObject *>              *pWaveHaNodeMOs = querySynchronously (&queryContext);
-    prismAssert(NULL != pWaveHaNodeMOs, __FILE__, __LINE__);
+    waveAssert(NULL != pWaveHaNodeMOs, __FILE__, __LINE__);
 
     UI32 numberOfResults = pWaveHaNodeMOs->size ();
-    prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+    waveAssert (1 == numberOfResults, __FILE__, __LINE__);
 
 	startTransaction();
     WaveHaNode *pWaveHaNode = dynamic_cast<WaveHaNode *> ((*pWaveHaNodeMOs)[0]);

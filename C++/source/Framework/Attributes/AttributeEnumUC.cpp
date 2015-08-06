@@ -114,7 +114,7 @@ EnumUC AttributeEnumUC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeEnumUC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempEnumUC;
     }
 }
@@ -128,7 +128,7 @@ void AttributeEnumUC::setValue (const EnumUC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeEnumUC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -139,7 +139,7 @@ bool AttributeEnumUC::getIsNoElement () const
 
 bool AttributeEnumUC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeEnumUC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeEnumUC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeEnumUC == (getAttributeType ()))
     {
@@ -191,7 +191,7 @@ void AttributeEnumUC::getSqlForSelect (string &sqlForSelect, AttributeConditionO
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeEnumUC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

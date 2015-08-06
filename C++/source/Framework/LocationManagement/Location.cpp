@@ -56,7 +56,7 @@ void Location::addSubLocation (LocationId locationId, string &ipAddress, SI32 po
     if (NULL == pSubLocation)
     {
         trace (TRACE_LEVEL_ERROR, "Location::addSubLocation : Could not create a SubLocation.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     map<UI32, SubLocation *>::iterator limitingElement = m_subLocations.end ();
@@ -69,7 +69,7 @@ void Location::addSubLocation (LocationId locationId, string &ipAddress, SI32 po
     else
     {
         trace (TRACE_LEVEL_ERROR, string ("Location::addSubLocation : This Sub Location (") + locationId + " )already exists.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         delete pSubLocation;
     }
 
@@ -108,7 +108,7 @@ void Location::addKnownLocation (LocationId knownLocationId, string &ipAddress, 
     if (NULL == pLocation)
     {
         trace (TRACE_LEVEL_ERROR, "Location::addKnownLocation : Could not create a Location.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     map<UI32, Location *>::iterator limitingElement = m_knownLocations.end ();
@@ -121,7 +121,7 @@ void Location::addKnownLocation (LocationId knownLocationId, string &ipAddress, 
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("Location::addKnownLocation : The Location (") + knownLocationId + " ) already exists.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         delete pLocation;
     }
 
@@ -162,7 +162,7 @@ void Location::removeKnownLocation (LocationId knownLocationId)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("Location::removeKnownLocation : The Location (") + knownLocationId + " ) is not known to us.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
     }
 
     unlockAccess ();
@@ -193,7 +193,7 @@ void Location::initializeClientCommunications ()
                 if (NULL == pClientSocket)
                 {
                     trace (TRACE_LEVEL_FATAL, "Location::initializeClientCommunications : Could not allocate a Client Socket");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 if (false == (pClientSocket->getIsConnected ()))
@@ -367,7 +367,7 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
             if (0 != (gettimeofday (&startTime, NULL)))
             {
                 trace (TRACE_LEVEL_FATAL, string ("Location::connectToRemoteLocation : Could not obtain start time."));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 status = FRAMEWORK_ERROR;
             }
             else
@@ -440,7 +440,7 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
                     if (NULL == pClientSocket)
                     {
                         trace (TRACE_LEVEL_FATAL, string ("Location::connectToRemoteLocation : Could not allocate a Client Socket for Location/SubLocation : ") + locationId);
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                         break;
                     }
 
@@ -462,7 +462,7 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
 
                         if (true != isSuccessful)
                         {
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
 
                         // now create the Prism Node Connection Information object and post it to the remote location.
@@ -483,7 +483,7 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
 
                         if (true != isSuccessful)
                         {
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
 
                         status = FRAMEWORK_SUCCESS;
@@ -495,7 +495,7 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
                     if (0 != (gettimeofday (&currentTime, NULL)))
                     {
                         trace (TRACE_LEVEL_FATAL, string ("Location::connectToRemoteLocation : Could not obtain current time."));
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                         status = FRAMEWORK_ERROR;
                         break;
                     }
@@ -983,7 +983,7 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
             if (0 != (gettimeofday (&startTime, NULL)))
             {
                 trace (TRACE_LEVEL_FATAL, string ("Location::connectToRemoteLocation : Could not obtain start time."));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 status = FRAMEWORK_ERROR;
             }
             else
@@ -1010,7 +1010,7 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
                     if (NULL == pClientSocket)
                     {
                         trace (TRACE_LEVEL_FATAL, string ("Location::connectToHaPeer : Could not allocate a Client Socket "));
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                         break;
                     }
 
@@ -1032,7 +1032,7 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
 
                         if (true != isSuccessful)
                         {
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
 
                         // now create the Prism Node Connection Information object and post it to the remote location.
@@ -1057,7 +1057,7 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
                         }
                         if (true != isSuccessful)
                         {
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
 
                         status = FRAMEWORK_SUCCESS;
@@ -1069,7 +1069,7 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
                     if (0 != (gettimeofday (&currentTime, NULL)))
                     {
                         trace (TRACE_LEVEL_FATAL, string ("Location::connectToHaPeer : Could not obtain current time."));
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                         status = FRAMEWORK_ERROR;
                         break;
                     }

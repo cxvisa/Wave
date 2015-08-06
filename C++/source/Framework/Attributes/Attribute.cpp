@@ -167,11 +167,11 @@ void Attribute::serializeTo (DOMDocument *pDomDocument)
 
     toString (tempString);
 
-    prismAssert (NULL != pDomDocument, __FILE__, __LINE__);
+    waveAssert (NULL != pDomDocument, __FILE__, __LINE__);
 
     DOMElement *pRootElement = pDomDocument->getDocumentElement ();
 
-    prismAssert (NULL != pRootElement, __FILE__, __LINE__);
+    waveAssert (NULL != pRootElement, __FILE__, __LINE__);
 
     char buffer[64];
 
@@ -181,7 +181,7 @@ void Attribute::serializeTo (DOMDocument *pDomDocument)
 
     DOMElement *pCurrentElement = pDomDocument->createElement (pCurrentElementName);
 
-    prismAssert (NULL != pCurrentElement, __FILE__,__LINE__);
+    waveAssert (NULL != pCurrentElement, __FILE__,__LINE__);
 
     pRootElement->appendChild (pCurrentElement);
 
@@ -189,7 +189,7 @@ void Attribute::serializeTo (DOMDocument *pDomDocument)
 
     DOMText *pCurrentTextNode = pDomDocument->createTextNode (pCurrentTextNodeName);
 
-    prismAssert (NULL != pCurrentTextNode, __FILE__, __LINE__);
+    waveAssert (NULL != pCurrentTextNode, __FILE__, __LINE__);
 
     pCurrentElement->appendChild (pCurrentTextNode);
 
@@ -232,7 +232,7 @@ WaveManagedObject *Attribute::getComposedManagedObject (const ObjectId &childObj
 {
     trace (TRACE_LEVEL_FATAL, "This function should not be called for this Attribute Object");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
 	return NULL;
 }
@@ -241,7 +241,7 @@ vector<WaveManagedObject *>  *Attribute::getComposedManagedObject ()
 {
     trace (TRACE_LEVEL_FATAL, "This function should not be called for this Attribute Object");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -632,7 +632,7 @@ Attribute* Attribute::getAttributeFromAttributeType (const ResourceId attributeT
         default:
             {
                 trace (TRACE_LEVEL_FATAL, string ("Attribute::getAttributeFromAttributeType: Unsupported attributeType = ") + attributeType);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
     }
 

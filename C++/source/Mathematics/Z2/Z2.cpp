@@ -15,8 +15,8 @@ Z2::Z2 (const UI32 &polynomialDegree, const UI32 slidingWindowSize)
     : m_polynomialDegree  (polynomialDegree),
       m_slidingWindowSize (slidingWindowSize)
 {
-    prismAssert (0 == (slidingWindowSize % 8),         __FILE__, __LINE__);
-    prismAssert ((slidingWindowSize << 3) >= polynomialDegree, __FILE__, __LINE__);
+    waveAssert (0 == (slidingWindowSize % 8),         __FILE__, __LINE__);
+    waveAssert ((slidingWindowSize << 3) >= polynomialDegree, __FILE__, __LINE__);
 
     setRandomIrreduciblePolynomial ();
 }
@@ -196,7 +196,7 @@ void Z2::preComputeTables ()
                     break;
 
                 default:
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
             }
         }
         else

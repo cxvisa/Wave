@@ -129,7 +129,7 @@ const void *UnifiedClientGetDataFromClientMessage::getCStructureForInputs ()
     {
         //Allocate memory for all commandString
         pInput->commandString = new const char *[m_numberOfCommandStrings];
-        prismAssert (NULL != pInput->commandString, __FILE__, __LINE__);
+        waveAssert (NULL != pInput->commandString, __FILE__, __LINE__);
 
         for (SI32 j = 0; j < m_numberOfCommandStrings; j++)
         {
@@ -148,7 +148,7 @@ const void *UnifiedClientGetDataFromClientMessage::getCStructureForInputs ()
     if ( 1 < bufferTags.size() )
     {
         trace (TRACE_LEVEL_FATAL, string ("UnifiedClientGetDataFromClientMessage::getCStructureForInputs :: Input cannot have more than one buffer. Assert here"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else if ( 0 != bufferTags.size()) 
     {
@@ -172,7 +172,7 @@ void UnifiedClientGetDataFromClientMessage::loadOutputsFromCStructure (const voi
     }
 
     UnifiedClientMessageOutput_t *pResult = (UnifiedClientMessageOutput_t *)pOutputCStructure;
-    prismAssert ( NULL != pResult, __FILE__, __LINE__);
+    waveAssert ( NULL != pResult, __FILE__, __LINE__);
     
     m_enablePaginate = ((pResult->moreRecords == 1)? true : false);
 
@@ -185,7 +185,7 @@ void UnifiedClientGetDataFromClientMessage::loadOutputsFromCStructure (const voi
         if ( WAVE_MESSAGE_SUCCESS != status) 
         {
             trace (TRACE_LEVEL_FATAL, string ("UnifiedClientGetDataFromClientMessage::loadOutputsFromCStructure :: addBuffer failed with error " + FrameworkToolKit::localize(status)));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
@@ -200,7 +200,7 @@ void UnifiedClientGetDataFromClientMessage::deleteCStructureForInputs (const voi
     if ( NULL != pInputStruct )
     {
         UnifiedClientMessageInput_t *pUnifiedClientMessageInput_t = (UnifiedClientMessageInput_t *)pInputStruct;
-        prismAssert ( NULL != pUnifiedClientMessageInput_t, __FILE__, __LINE__);
+        waveAssert ( NULL != pUnifiedClientMessageInput_t, __FILE__, __LINE__);
 
         if ( 0 < pUnifiedClientMessageInput_t->commandStringSize )
         {

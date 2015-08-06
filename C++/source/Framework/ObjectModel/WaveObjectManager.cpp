@@ -181,14 +181,14 @@ void WaveObjectManager::WaveMessageResponseContext::executeResponseCallback (Fra
             // must not be deleted unpon receiving intermediate replies.  It must be deleted  only after receiving the last
             // reply.  Though we have the infra structure to support multiple replies with message copies, currently we do
             // not copy the message for the purpose of mulitple replies.  So when the response comes back it must always be
-            // the original message.  The following prismAssert encforces that.
+            // the original message.  The following waveAssert encforces that.
 
             // Update to the above comment (at the time of implementing support for multiple replies feature):
             // The below enforcement is only done in case of last reply.
 
             if (true == (pWaveMessage->getIsLastReply ()))
             {
-                WaveNs::prismAssert (pWaveMessage == m_pWaveMessage, __FILE__, __LINE__);
+                WaveNs::waveAssert (pWaveMessage == m_pWaveMessage, __FILE__, __LINE__);
 
                 if (pWaveMessage != m_pWaveMessage)
                 {
@@ -196,7 +196,7 @@ void WaveObjectManager::WaveMessageResponseContext::executeResponseCallback (Fra
                 }
             }
 
-            // If we decide to support the mutiple replies using message copies then the above prismAssert and if block must be removed.
+            // If we decide to support the mutiple replies using message copies then the above waveAssert and if block must be removed.
 
             // If the context was previously marked with timed out status, then we must not executethe user context.
             // We must simply delete the message.
@@ -500,32 +500,32 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     }
 
     m_pWaveObjectManagerStatisticsTracker = new WaveObjectManagerStatisticsTracker ();
-    prismAssert (NULL != m_pWaveObjectManagerStatisticsTracker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveObjectManagerStatisticsTracker, __FILE__, __LINE__);
 
     m_pWaveManagedObjectLoadOperationalDataWorker = new WaveManagedObjectLoadOperationalDataWorker (this);
-    prismAssert (NULL != m_pWaveManagedObjectLoadOperationalDataWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveManagedObjectLoadOperationalDataWorker, __FILE__, __LINE__);
 
     m_pPrismPostbootWorker = new PrismPostbootWorker (this);
-    prismAssert (NULL != m_pPrismPostbootWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismPostbootWorker, __FILE__, __LINE__);
 
     m_pWaveManagedObjectUpdateWorker = new WaveManagedObjectUpdateWorker (this);
-    prismAssert (NULL != m_pWaveManagedObjectUpdateWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveManagedObjectUpdateWorker, __FILE__, __LINE__);
 
     m_pWaveManagedObjectCreateWorker = new WaveManagedObjectCreateWorker (this);
-    prismAssert (NULL != m_pWaveManagedObjectCreateWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveManagedObjectCreateWorker, __FILE__, __LINE__);
 
     m_pWaveDebugInformationWorker = new WaveDebugInformationWorker (this);
-    prismAssert (NULL != m_pWaveDebugInformationWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveDebugInformationWorker, __FILE__, __LINE__);
 
 
     m_pWaveManagedObjectDeleteWorker = new WaveManagedObjectDeleteWorker (this);
-    prismAssert (NULL != m_pWaveManagedObjectDeleteWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveManagedObjectDeleteWorker, __FILE__, __LINE__);
 
     m_pWaveClientDataObjectGetWorker = new WaveClientDataObjectGetWorker (this);
-    prismAssert (NULL != m_pWaveClientDataObjectGetWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveClientDataObjectGetWorker, __FILE__, __LINE__);
 
     m_pWaveDeliverBrokerPublishMessageWorker = new WaveDeliverBrokerPublishMessageWorker(this);
-    prismAssert (NULL != m_pWaveDeliverBrokerPublishMessageWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveDeliverBrokerPublishMessageWorker, __FILE__, __LINE__);
 
     addOperationMap (WAVE_OBJECT_MANAGER_INITIALIZE,                             reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::initializeHandler));
     addOperationMap (WAVE_OBJECT_MANAGER_LISTEN_FOR_EVENTS,                      reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::listenForEventsHandler));
@@ -579,7 +579,7 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
         if (WAVE_THREAD_SUCCESS != status)
         {
             trace (TRACE_LEVEL_ERROR, "Could not start the thread corresponding to this object manager.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -589,7 +589,7 @@ WaveObjectManager::WaveObjectManager (const WaveObjectManager &prismObjectManage
       m_isTransactionOn (false)
 {
     trace (TRACE_LEVEL_FATAL, "WaveObjectManager::WaveObjectManager : Copy constructing WaveObjectManager does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 WaveObjectManager::~WaveObjectManager ()
@@ -673,7 +673,7 @@ string WaveObjectManager::getName () const
 WaveObjectManager &WaveObjectManager::operator = (const WaveObjectManager &prismObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, "WaveObjectManager::operator = : Assigning to a WaveObjectManager does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
@@ -691,7 +691,7 @@ void WaveObjectManager::addOperationMap (UI32 operationCode, WaveMessageHandler 
     if (end != element)
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::addOperationMap : OperationMap already found for this operation code : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -705,7 +705,7 @@ void WaveObjectManager::addOperationMap (UI32 operationCode, WaveMessageHandler 
     if (endElement1 != element1)
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::addOperationMap : Trying to set duplicate Owner.  Owner for \"") + operationCode + string ("\" was already set."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -738,7 +738,7 @@ void WaveObjectManager::removeOperationMap (const UI32 &operationCode)
     if (end == element)
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::removeOperationMap : OperationMap is NOT found for this operation code : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -753,7 +753,7 @@ void WaveObjectManager::removeOperationMap (const UI32 &operationCode)
     if (endElement1 == element1)
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::removeOperationMap : Trying to remove non-existant Owner.  Owner for \"") + operationCode + string ("\" was NOT set."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -931,7 +931,7 @@ void WaveObjectManager::listenForEvent (WaveServiceId prismServiceCode, UI32 sou
         if (((0 != prismServiceId) || (WAVE_OBJECT_MANAGER_ANY_EVENT != sourceOperationCode)) && (NULL == pWaveObjectManager))
         {
             trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::listenForEvent : There is no Object Manager to generate the specified event. ServiceId = ") + prismServiceId + ", Source OperationCode = " + sourceOperationCode + ".");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             return;
         }
 
@@ -951,7 +951,7 @@ void WaveObjectManager::listenForEvent (WaveServiceId prismServiceCode, UI32 sou
         if ((WAVE_OBJECT_MANAGER_ANY_EVENT == sourceOperationCode) && (thisLocationId != effectiveLocationId))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::listenForEvent : We can never listen for WAVE_OBJECT_MANAGER_ANY_EVENT from remote locations.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         if (WAVE_OBJECT_MANAGER_ANY_EVENT != sourceOperationCode)
@@ -960,7 +960,7 @@ void WaveObjectManager::listenForEvent (WaveServiceId prismServiceCode, UI32 sou
 
             WaveMessageStatus status = sendOneWay (pMessage);
 
-            prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+            waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
         }
     }
 }
@@ -1007,7 +1007,7 @@ void WaveObjectManager::unlistenEvents ()
                     if (((0 != eventSourceServiceId) || (WAVE_OBJECT_MANAGER_ANY_EVENT != eventOperationCode)) && (NULL == pWaveObjectManager))
                     {
                         trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::unlistenEvents : There is no Object Manager to generate the specified event. ServiceId = ") + eventSourceServiceId + ", Source OperationCode = " + eventOperationCode + ".");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                         return;
                     }
 
@@ -1079,7 +1079,7 @@ void WaveObjectManager::addManagedClass (const string &managedClassName, WaveEle
         if (endElement != element)
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addManagedClass : Trying to set duplicate Owner.  Owner for \"" + managedClassName + "\" was already set.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1097,7 +1097,7 @@ void WaveObjectManager::addManagedClass (const string &managedClassName, WaveEle
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addManagedClass : Entry for Managed Class " + managedClassName + " already exists.  Duplicate entries are not allowed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -1119,7 +1119,7 @@ void WaveObjectManager::addManagedClassWithoutOwnership (const string &managedCl
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addManagedClassWithoutOwnership : Entry for Managed Class " + managedClassName + " already exists.  Duplicate entries are not allowed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -1139,7 +1139,7 @@ void WaveObjectManager::addOwnerForManagedClass (const string &managedClassName,
         WaveObjectManager *pExistingOwner = element->second;
 
         WaveNs::trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addOwnerForManagedClass : Trying add a Duplicate Owner for Managed Class : " + managedClassName + ", New Owner : " + pWaveObjectManager->getName () + ", Existing Owner : " + pExistingOwner->getName ());
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     s_allManagedClassesAndOwnersMapMutex.unlock ();
@@ -1225,7 +1225,7 @@ void WaveObjectManager::setAssociatedWaveThread (WaveThread *pAssociatedWaveThre
     if (NULL != m_pAssociatedWaveThread)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::setAssociatedWaveThread : This Object Manager has already been associated with another Prism Thread.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_pAssociatedWaveThread = pAssociatedWaveThread;
@@ -1355,7 +1355,7 @@ void WaveObjectManager::handleWaveMessage (WaveMessage *pWaveMessage)
 
     if (NULL != pPrismOperationMapContext)
     {
-        prismAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
+        waveAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
         m_pInputMessage = pWaveMessage;
 
         addMessageToMessageHistoryCalledFromHandle (pWaveMessage);
@@ -1366,7 +1366,7 @@ void WaveObjectManager::handleWaveMessage (WaveMessage *pWaveMessage)
     else
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::handleWaveMessage : This type of message is not handled by this Object Manager.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
         reply (pWaveMessage);
     }
@@ -1378,7 +1378,7 @@ void WaveObjectManager::handleWaveEvent (const WaveEvent *&pWaveEvent)
 
     if (NULL != pWaveEventMapContext)
     {
-        prismAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
+        waveAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
 
         m_pInputMessage = NULL;   // currently we don't support from event because it is const.
 
@@ -1389,7 +1389,7 @@ void WaveObjectManager::handleWaveEvent (const WaveEvent *&pWaveEvent)
     else
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::handleWaveEvent : This type of event is not handled by this Object Manager.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         //pWaveEvent->setCompletionStatus (WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED); // Noone examines the completionStatus for events.
 
         // We must reply to the event so that it decrements the reference count for listeners.
@@ -1435,7 +1435,7 @@ WaveMessageStatus WaveObjectManager::postToRemoteLocation (WaveMessage *pWaveMes
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::postToRemoteLocation : Currently, we can only post Request Messages and their Response Messages across locations.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR_UNKNOWN_TYPE);
     }
 
@@ -1633,7 +1633,7 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
             pWaveMessageResponseContext->setPInputMessageInResponseContext (m_pInputMessage);
         }
 
-        prismAssert (NULL != pWaveMessageResponseContext, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessageResponseContext, __FILE__, __LINE__);
 
         if (NULL == pWaveMessageResponseContext)
         {
@@ -1654,7 +1654,7 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
 
             if (FRAMEWORK_SUCCESS != timeStatus)
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -2088,7 +2088,7 @@ WaveMessageStatus WaveObjectManager::recall (WaveMessage *pWaveMessage)
 
         pWaveMessageResponseContext = removeResponseMap (pWaveMessage->getMessageId ());
 
-        prismAssert (NULL != pWaveMessageResponseContext, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessageResponseContext, __FILE__, __LINE__);
 
         if (NULL != pWaveMessageResponseContext)
         {
@@ -2171,7 +2171,7 @@ WaveMessageStatus WaveObjectManager::reply (WaveMessage *pWaveMessage)
 
     if (true == (pWaveMessage->getIsSynchronousMessage ()))
     {
-        prismAssert (true == (pWaveMessage->getIsLastReply ()), __FILE__, __LINE__);
+        waveAssert (true == (pWaveMessage->getIsLastReply ()), __FILE__, __LINE__);
 
         addMessageToMessageHistoryCalledFromReply (pWaveMessage);
 
@@ -2185,7 +2185,7 @@ WaveMessageStatus WaveObjectManager::reply (WaveMessage *pWaveMessage)
     }
     else if (true == (pWaveMessage->getIsOneWayMessage ()))
     {
-        prismAssert (true == (pWaveMessage->getIsLastReply ()), __FILE__, __LINE__);
+        waveAssert (true == (pWaveMessage->getIsLastReply ()), __FILE__, __LINE__);
 
         addMessageToMessageHistoryCalledFromReply (pWaveMessage);
 
@@ -2265,7 +2265,7 @@ void WaveObjectManager::handleWaveMessageResponse (FrameworkStatus frameworkStat
             deleteTimer (pWaveMessageResponseContext->getTimerHandle ());
         }
 
-        prismAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
+        waveAssert (NULL == m_pInputMessage, __FILE__, __LINE__);
 
         if (false == (pWaveMessageResponseContext->getIsMessageTimedOut ()))
         {
@@ -2301,7 +2301,7 @@ void WaveObjectManager::handleWaveMessageResponse (FrameworkStatus frameworkStat
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -2385,7 +2385,7 @@ WaveMessageStatus WaveObjectManager::broadcast (WaveEvent *pWaveEvent)
     {
         WaveEventListenerMapContext *pWaveEventListenerContext = (*pEventListeners)[i];
 
-        prismAssert (NULL != pWaveEventListenerContext, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveEventListenerContext, __FILE__, __LINE__);
 
         WaveThread    *pWaveThread               = NULL;
         LocationId      thisLocationId             = FrameworkToolKit::getThisLocationId ();
@@ -2478,7 +2478,7 @@ void WaveObjectManager::initializeInitializeWorkersStep (WaveLinearSequencerCont
 
     PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
     UI32 numberOfWorkers = m_workers.size ();
     UI32 i               = 0;
@@ -2489,7 +2489,7 @@ void WaveObjectManager::initializeInitializeWorkersStep (WaveLinearSequencerCont
     {
         WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::initializeInitializeWorkersStepCallback), pWaveLinearSequencerContext);
 
-        prismAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
 
         pWaveAsynchronousContextForBootPhases->setBootReason (pPrismInitializeObjectManagerMessage->getReason ());
 
@@ -2517,7 +2517,7 @@ void WaveObjectManager::initializeInitializeWorkersStepCallback (WaveAsynchronou
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::initializeInitializeWorkersStepCallback : Initializing one worker failed.");
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
@@ -2534,11 +2534,11 @@ void WaveObjectManager::initializeInitializeSelfStep (WaveLinearSequencerContext
 
     PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = dynamic_cast<PrismInitializeObjectManagerMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
     WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveObjectManager::initializeInitializeSelfStepCallback), pWaveLinearSequencerContext);
 
-    prismAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
 
     pWaveAsynchronousContextForBootPhases->setBootReason (pPrismInitializeObjectManagerMessage->getReason ());
 
@@ -2614,7 +2614,7 @@ void WaveObjectManager::listenForEventsWorkersStepCallback (WaveAsynchronousCont
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::listenForEventsWorkersStepCallback : Initializing one worker failed.");
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
@@ -2707,7 +2707,7 @@ void WaveObjectManager::installInstallWorkersStepCallback (WaveAsynchronousConte
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::installInstallWorkersStepCallback : Installing one worker failed.");
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
@@ -2799,7 +2799,7 @@ void WaveObjectManager::enableEnableWorkersStepCallback (WaveAsynchronousContext
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::enableEnableWorkersStepCallback : Enabling one worker failed.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
 
@@ -2992,7 +2992,7 @@ void WaveObjectManager::upgradeDefaultValueStep (WaveLinearSequencerContextForUp
         if (NULL == pSchemaChangeInfo)
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::upgradeDefaultValueStep: failed to allocate memory for OMSpecificSchemaChangeInfoForUpgrade.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         pSchemaChangeInfo->setObjectManagerName         (m_name);
         pSchemaChangeInfo->setAddedManagedObjectNames   (newManagedObjects);
@@ -3228,7 +3228,7 @@ void WaveObjectManager::bootBootWorkersStepCallback (WaveAsynchronousContextForB
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::bootBootWorkersStepCallback : Booting one worker failed.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -3344,7 +3344,7 @@ void WaveObjectManager::hainstallInstallWorkersStepCallback (WaveAsynchronousCon
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::hainstallInstallWorkersStepCallback : Installing one worker failed.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
         // FIXME : sagar : handle Worker installation failures here.
         //                 Typically there is nothing we can do except simply proceeding.
         //                 May be, we can tun off the services provided by the worker.
@@ -3440,7 +3440,7 @@ void WaveObjectManager::habootBootWorkersStepCallback (WaveAsynchronousContextFo
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::habootBootWorkersStepCallback : Booting one worker failed.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
         // FIXME : sagar : handle Worker boot failures here.
         //                 Typically there is nothing we can do except simply proceeding.
         //                 May be, we can tun off the services provided by the worker.
@@ -3512,7 +3512,7 @@ ResourceId WaveObjectManager::ValidateAllOwnedManagedClassNames( const vector<st
     {
         WaveObjectManager * pWaveObjectManager = NULL ;
         pWaveObjectManager = getOwnerForManagedClass( managedObjectNames[i] );
-        prismAssert(NULL != pWaveObjectManager,__FILE__, __LINE__);
+        waveAssert(NULL != pWaveObjectManager,__FILE__, __LINE__);
 
         if ( ( this != pWaveObjectManager ) && ( m_pAssociatedVirtualWaveObjectManager != pWaveObjectManager ) )
         {
@@ -3620,7 +3620,7 @@ void WaveObjectManager::postboot (WaveAsynchronousContextForPostbootPhase *pWave
 
                 vector<WaveManagedObject *> *pWaveManagedObjectsInPass = querySynchronously ( &synchronousQueryContext );
 
-                prismAssert (NULL != pWaveManagedObjectsInPass, __FILE__, __LINE__);
+                waveAssert (NULL != pWaveManagedObjectsInPass, __FILE__, __LINE__);
 
                 if ( 0 == pWaveManagedObjectsInPass->size())
                 {
@@ -3750,7 +3750,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForBackEndAttributesMap( GetHardw
     if ( true == checkForDuplicationInBackEndAttributesMap( pGetHardwareConfigurationDetailsForPostbootContext ) )
     {
         trace(TRACE_LEVEL_FATAL, string("WaveObjectManager::sendSynchronouslyForBackEndAttributesMap : Duplicate attribute is present for MO ") + managedObjectName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if ( false == groupCodeChoiceFlag.empty() )
@@ -3758,7 +3758,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForBackEndAttributesMap( GetHardw
         vector<WaveManagedObject *>* pWaveManagedObjectsInPass = NULL;
 
         pWaveManagedObjectsInPass = pGetHardwareConfigurationDetailsForPostbootContext->getWaveManagedObjects( );
-        prismAssert (NULL != pWaveManagedObjectsInPass, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObjectsInPass, __FILE__, __LINE__);
 
         if ( 0 == pWaveManagedObjectsInPass->size())
         {
@@ -3802,14 +3802,14 @@ ResourceId WaveObjectManager::sendSynchronouslyForBackEndAttributesMap( GetHardw
                 if ( NULL == pAttr  )
                 {
                     trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::sendSynchronouslyForBackEndAttributesMap : MO " + managedObjectName + " does not have attribute " + (*elementKeyAttributeNames).c_str()));
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 AttributeType attrType = pAttr->getAttributeType ();
 
                 //Clone to get new Attribute with same values
                 Attribute* pClone = pAttr->clone();
-                prismAssert (pClone != NULL, __FILE__, __LINE__);
+                waveAssert (pClone != NULL, __FILE__, __LINE__);
 
                 if ( (AttributeType::AttributeTypeObjectId == attrType ) || ( AttributeType::AttributeTypeObjectIdVector == attrType ) )
                 {
@@ -3834,7 +3834,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForBackEndAttributesMap( GetHardw
                     delete pClone;
                     pClone = NULL;
 
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
                 else
                 {
@@ -3909,7 +3909,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForBackEndAttributesMap( GetHardw
                 else
                 {
                     string clientName = pGetHardwareConfigurationDetailsForPostbootContext->getClientNameForGroup ( elementGroupCodeChoiceFlag->first ) ;
-                    prismAssert (false == clientName.empty(), __FILE__, __LINE__);
+                    waveAssert (false == clientName.empty(), __FILE__, __LINE__);
 
                     pGetHardwareConfigurationDetailsForPostbootContext->setClientName( clientName);
                     trace (TRACE_LEVEL_DEVEL, string("WaveObjectManager::sendSynchronouslyForBackEndAttributesMap : MO " + managedObjectName + ", groupcode is ") + pGetHardwareConfigurationDetailsForPostbootContext->getGroupCode());
@@ -3954,12 +3954,12 @@ void WaveObjectManager::postbootForChoiceGroup ( GetHardwareConfigurationDetails
 
     WaveManagedObject* pWaveManagedObject = NULL;
     pWaveManagedObject = pGetHardwareConfigurationDetailsForPostbootContext->getPOperateOnWaveManagedObject();
-    prismAssert ( NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert ( NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     vector<string> choiceGroupAttribute = pGetHardwareConfigurationDetailsForPostbootContext->getAttributeNamesForGroup( groupCode );
     //Removing the below assert for now since the group currently has more than 1 attribute
     // We expect only the attribute which has the choice-usertag value
-    //prismAssert ( 1 == choiceGroupAttribute.size(), __FILE__, __LINE__);
+    //waveAssert ( 1 == choiceGroupAttribute.size(), __FILE__, __LINE__);
 
     vector<UI32> caseGroups;
 
@@ -3970,7 +3970,7 @@ void WaveObjectManager::postbootForChoiceGroup ( GetHardwareConfigurationDetails
         if ( NULL == pAttr  )
         {
             trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::postbootForChoiceGroup : MO " + managedObjectName + " does not have attribute " + choiceGroupAttribute[j].c_str()));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         AttributeUI32 *pAttrUI32 = dynamic_cast<AttributeUI32 *>(pAttr);
@@ -4002,7 +4002,7 @@ void WaveObjectManager::postbootForChoiceGroup ( GetHardwareConfigurationDetails
             if ( false == pGetHardwareConfigurationDetailsForPostbootContext->isAChoiceGroup( caseGroups[i] ) )
             {
                 string clientName = pGetHardwareConfigurationDetailsForPostbootContext->getClientNameForGroup ( caseGroups[i] ) ;
-                prismAssert (false == clientName.empty(), __FILE__, __LINE__);
+                waveAssert (false == clientName.empty(), __FILE__, __LINE__);
 
                 pGetHardwareConfigurationDetailsForPostbootContext->setClientName( clientName);
                 trace (TRACE_LEVEL_DEVEL, string("WaveObjectManager::postbootForChoiceGroup : MO " + managedObjectName + ", groupcode is ") + pGetHardwareConfigurationDetailsForPostbootContext->getGroupCode());
@@ -4048,7 +4048,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForAGroup( GetHardwareConfigurati
     WaveManagedObject* pWaveManagedObject = NULL;
     pWaveManagedObject = pGetHardwareConfigurationDetailsForPostbootContext->getPOperateOnWaveManagedObject();
 
-    prismAssert ( NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert ( NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     // This captures values for all the non-key attributes in a group
     vector<Attribute *> attributeList;
@@ -4063,7 +4063,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForAGroup( GetHardwareConfigurati
         if ( true == compositeChild )
         {
             trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::sendSynchronouslyForAGroup : MO " + managedObjectName + ", Within a group You cannot include attributes following composite attribute. AttributeName is ") + groupAttributeNames[i].c_str() + (", Asserting ...") );
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         if ( true == pGetHardwareConfigurationDetailsForPostbootContext->isKeyAttribute( groupAttributeNames[i] ) )
@@ -4079,14 +4079,14 @@ ResourceId WaveObjectManager::sendSynchronouslyForAGroup( GetHardwareConfigurati
         if ( NULL == pAttr  )
         {
             trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::sendSynchronouslyForAGroup : MO " + managedObjectName + " does not have attribute " + groupAttributeNames[i].c_str()));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         AttributeType attrType = pAttr->getAttributeType ();
 
         //Clone to get new Attribute with same values
         Attribute* pClone = pAttr->clone();
-        prismAssert (pClone != NULL, __FILE__, __LINE__);
+        waveAssert (pClone != NULL, __FILE__, __LINE__);
 
         if (  (AttributeType::AttributeTypeObjectId != attrType ) && ( AttributeType::AttributeTypeObjectIdVector != attrType )
                && ( AttributeType::AttributeTypeComposition != attrType ) && ( AttributeType::AttributeTypeCompositionVector != attrType ) )
@@ -4213,7 +4213,7 @@ ResourceId WaveObjectManager::sendSynchronouslyForAGroup( GetHardwareConfigurati
             merged.clear();
 
             UnifiedClientPostbootMessage *pMessage = new UnifiedClientPostbootMessage ( pGetHardwareConfigurationDetailsForPostbootContext );
-            prismAssert(NULL != pMessage ,__FILE__, __LINE__);
+            waveAssert(NULL != pMessage ,__FILE__, __LINE__);
 
             status = sendSynchronouslyToWaveClient( clientName, pMessage );
 
@@ -4264,12 +4264,12 @@ void WaveObjectManager::postbootForCompositeChild( Attribute *pAttribute, GetHar
     if (( AttributeType::AttributeTypeComposition != attrType ) && ( AttributeType::AttributeTypeCompositionVector != attrType ))
     {
         trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::postbootForCompositeChild : Wrong attribute type"));
-        prismAssert( false, __FILE__, __LINE__);
+        waveAssert( false, __FILE__, __LINE__);
     }
 
     // get all pointers to composed MO
     pResults = pAttribute->getComposedManagedObject();
-    prismAssert( NULL != pResults, __FILE__, __LINE__);
+    waveAssert( NULL != pResults, __FILE__, __LINE__);
 
     if ( 0 == (*pResults).size() )
     {
@@ -4342,7 +4342,7 @@ void WaveObjectManager::getAssociatedAttributeClone( string parentClassName, Att
         if ( NULL == pAttributeObjectIdAssociation  )
         {
             trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::getAssociatedAttributeClone : Dynamic cast for Association returned null"));
-            prismAssert( false, __FILE__, __LINE__);
+            waveAssert( false, __FILE__, __LINE__);
         }
         associatedObjectIds.push_back(pAttributeObjectIdAssociation->getValue());
         associatedClassName = pAttributeObjectIdAssociation->getAssociatedTo ();
@@ -4353,7 +4353,7 @@ void WaveObjectManager::getAssociatedAttributeClone( string parentClassName, Att
         if ( NULL == pAttributeObjectIdVectorAssociation )
         {
             trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::getAssociatedAttributeClone : Dynamic cast for Vector Association returned null"));
-            prismAssert( false, __FILE__, __LINE__);
+            waveAssert( false, __FILE__, __LINE__);
         }
         associatedObjectIds = pAttributeObjectIdVectorAssociation->getValue();
         associatedClassName = pAttributeObjectIdVectorAssociation->getAssociatedTo ();
@@ -4362,12 +4362,12 @@ void WaveObjectManager::getAssociatedAttributeClone( string parentClassName, Att
     if ( parentClassName == associatedClassName )
     {
         trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::getAssociatedAttributeClone : ParentMO Name and associatedChildMO Name for ManagedObject ") + parentClassName + (" are same. Assert here"));
-        prismAssert( false, __FILE__, __LINE__);
+        waveAssert( false, __FILE__, __LINE__);
     }
 
     // We support only simple key in associated ManagedObject
     // Assert for other types
-    prismAssert( 1 == associatedObjectIds.size(), __FILE__, __LINE__);
+    waveAssert( 1 == associatedObjectIds.size(), __FILE__, __LINE__);
 
     if ( ObjectId::NullObjectId  == associatedObjectIds[0] )
     {
@@ -4379,19 +4379,19 @@ void WaveObjectManager::getAssociatedAttributeClone( string parentClassName, Att
     vector<string> keyAttributeName;
 
     OrmRepository::getUserDefinedKeyCombinationWithTypesForTable (associatedClassName, keyAttributeName);
-    prismAssert( 1 == keyAttributeName.size() ,__FILE__, __LINE__);
+    waveAssert( 1 == keyAttributeName.size() ,__FILE__, __LINE__);
 
     pResults = querySynchronously (associatedClassName, associatedObjectIds);
-    prismAssert( NULL != pResults, __FILE__, __LINE__);
+    waveAssert( NULL != pResults, __FILE__, __LINE__);
 
     // Additional check. We support only simple key in associated ManagedObject
     // Assert for other types
-    prismAssert(1 == (*pResults).size() ,__FILE__, __LINE__);
+    waveAssert(1 == (*pResults).size() ,__FILE__, __LINE__);
 
     WaveManagedObject* pWaveManagedObject = (*pResults)[0];
 
     Attribute *pRelatedAttribute = pWaveManagedObject->getAttributeByName ( keyAttributeName[0]);
-    prismAssert( NULL != pRelatedAttribute, __FILE__, __LINE__);
+    waveAssert( NULL != pRelatedAttribute, __FILE__, __LINE__);
 
     attrType = pRelatedAttribute->getAttributeType ();
 
@@ -4403,13 +4403,13 @@ void WaveObjectManager::getAssociatedAttributeClone( string parentClassName, Att
     else if ( ( AttributeType::AttributeTypeComposition == attrType ) || ( AttributeType::AttributeTypeCompositionVector == attrType ) )
     {
         trace (TRACE_LEVEL_FATAL, string("WaveObjectManager::getAssociatedAttributeClone : MO " + associatedClassName + " has composite key " + pRelatedAttribute->getAttributeName()));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         // Do we have to filter duplicate value and UC here
         pAssociatedAttribute = pRelatedAttribute->clone();
-        prismAssert( NULL != pAssociatedAttribute, __FILE__, __LINE__);
+        waveAssert( NULL != pAssociatedAttribute, __FILE__, __LINE__);
 
     }
 
@@ -4468,7 +4468,7 @@ void WaveObjectManager::shutdownShutdownWorkersStepCallback (WaveAsynchronousCon
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::shutdownShutdownWorkersStepCallback : Shutdowning one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -4554,7 +4554,7 @@ void WaveObjectManager::notifyStep (WaveLinearSequencerContextForShutdownPhase *
 
             //Create Notify Message
             UnifiedClientNotifyMessage *pMessage = new UnifiedClientNotifyMessage ();
-            prismAssert(NULL != pMessage ,__FILE__, __LINE__);
+            waveAssert(NULL != pMessage ,__FILE__, __LINE__);
 
             //Set the BackendNotifyValue in message
             pMessage->setbackendNotifyValue (BackendValue);
@@ -4647,7 +4647,7 @@ void WaveObjectManager::uninstallUninstallWorkersStepCallback (WaveAsynchronousC
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::uninstallUninstallWorkersStepCallback : Shutdowning one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -4748,7 +4748,7 @@ void WaveObjectManager::disableDisableWorkersStepCallback (WaveAsynchronousConte
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::disableDisableWorkersStepCallback : Disabling one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -4809,7 +4809,7 @@ void WaveObjectManager::disableDisableSelfStepCallback (WaveAsynchronousContextF
         {
             WaveMessage *pWaveMessage = incomingMessages[i];
 
-            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
             pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_SERVICE_DISABLING);
             reply (pWaveMessage);
@@ -4878,7 +4878,7 @@ void WaveObjectManager::uninitializeUninitializeWorkersStepCallback (WaveAsynchr
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::uninitializeUninitializeWorkersStepCallback : Shutdowning one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -4969,7 +4969,7 @@ void WaveObjectManager::destructDestructWorkersStepCallback (WaveAsynchronousCon
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::destructDestructWorkersStepCallback : Destructing one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -5068,7 +5068,7 @@ void WaveObjectManager::heartbeatFailureWorkersStepCallback (PrismAsynchronousCo
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::heartbeatFailureWorkersStepCallback : Sending heartbeatFailure for one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -5180,7 +5180,7 @@ void WaveObjectManager::configReplayEndWorkersStepCallback (WaveAsynchronousCont
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::configReplayEndWorkersStepCallback : Sending configReplayEnd for one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -5282,7 +5282,7 @@ void WaveObjectManager::slotFailoverWorkersStepCallback (WaveAsynchronousContext
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::slotFailoverWorkersStepCallback : Sending slotFailover for one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pWaveLinearSequencerContext->executeNextStep (status);
@@ -5385,7 +5385,7 @@ void WaveObjectManager::multiPartitionCleanupWorkersStepCallback (WaveAsynchrono
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::multiPartitionCleanupWorkersStepCallback : Sending multiPartitionCleanup for one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pWaveLinearSequencerContext->executeNextStep (status);
@@ -5488,7 +5488,7 @@ void WaveObjectManager::multiPartitionPartialCleanup (WaveAsynchronousContextFor
 {
     tracePrintf (TRACE_LEVEL_DEVEL, false, false,  "WaveObjectManager::multiPartitionPartialCleanup : Entering ... ");
 
-    prismAssert (true == pWaveAsynchronousContextForMultiPartitionCleanup->getIsPartialCleanup (), __FILE__, __LINE__);
+    waveAssert (true == pWaveAsynchronousContextForMultiPartitionCleanup->getIsPartialCleanup (), __FILE__, __LINE__);
 
     pWaveAsynchronousContextForMultiPartitionCleanup->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForMultiPartitionCleanup->callback ();
@@ -5551,7 +5551,7 @@ void WaveObjectManager::fileReplayEndWorkersStepCallback (WaveAsynchronousContex
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::fileReplayEndWorkersStepCallback : Sending fileReplayEnd for one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -5653,7 +5653,7 @@ void WaveObjectManager::externalStateSynchronizationWorkersStepCallback (WaveAsy
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::externalStateSynchronizationWorkersStepCallback : Sending externalStateSynchronization for one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -5724,7 +5724,7 @@ void WaveObjectManager::addWorker (WaveWorker *pWaveWorker)
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addWorker : Trying to add a NULL worker to this manager.  Will not add.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         m_workersMutex.unlock ();
         return;
     }
@@ -5757,7 +5757,7 @@ void WaveObjectManager::removeWorker (WaveWorker *pWaveWorker)
         if (false == found)
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::removeWorker : Trying to remove an invalid Worker.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             m_workersMutex.unlock ();
             return;
         }
@@ -5765,7 +5765,7 @@ void WaveObjectManager::removeWorker (WaveWorker *pWaveWorker)
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addWorker : Trying to remove a NULL worker from this manager.  Will not remove.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         m_workersMutex.unlock ();
         return;
     }
@@ -5884,7 +5884,7 @@ bool WaveObjectManager::canInstantiateServiceAtThisTime (const string &prismServ
     }
 }
 
-void WaveObjectManager::prismAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
+void WaveObjectManager::waveAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
 {
     // Here also like in the trace method, We cannot use any tracing statement here for obvious reasons (recursion!!!)
     if (false == isAssertNotRequired)
@@ -5908,7 +5908,7 @@ void WaveObjectManager::prismAssert (bool isAssertNotRequired, const char *pFile
 
         for (i = 0; i < numberOfSymbols; i++)
         {
-            if ( NULL != strstr(pBackTraceSymbols[i], "prismAssert") )
+            if ( NULL != strstr(pBackTraceSymbols[i], "waveAssert") )
             {
                 continue;
             }
@@ -5940,7 +5940,7 @@ void WaveObjectManager::prismAssert (bool isAssertNotRequired, const char *pFile
         for (i = 0; i < numberOfSymbols; i++)
         {
             s_tempBackTraceBuffer = pBackTraceSymbols[i];
-            if ( NULL != strstr(pBackTraceSymbols[i], "prismAssert") )
+            if ( NULL != strstr(pBackTraceSymbols[i], "waveAssert") )
             {
                 continue;
             }
@@ -6099,9 +6099,9 @@ ResourceId WaveObjectManager::startTimer (TimerHandle &timerHandle, UI32 timeInM
 
 void WaveObjectManager::timerExpiredHandler (PrismTimerExpiredObjectManagerMessage *pTimerExpiredMessage)
 {
-    prismAssert (NULL != pTimerExpiredMessage, __FILE__, __LINE__);
-    prismAssert (NULL != pTimerExpiredMessage->getTimerSender (), __FILE__, __LINE__);
-    prismAssert (((PrismTimerExpirationHandler) NULL) != (pTimerExpiredMessage->getTimerExpirationCallback ()), __FILE__, __LINE__);
+    waveAssert (NULL != pTimerExpiredMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pTimerExpiredMessage->getTimerSender (), __FILE__, __LINE__);
+    waveAssert (((PrismTimerExpirationHandler) NULL) != (pTimerExpiredMessage->getTimerExpirationCallback ()), __FILE__, __LINE__);
 
     TimerHandle                     timerHandle             = pTimerExpiredMessage->getTimerId ();
     WaveElement                   *pSender                 = pTimerExpiredMessage->getTimerSender ();
@@ -6651,7 +6651,7 @@ void WaveObjectManager::failoverWorkersStepCallback (FailoverAsynchronousContext
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::failoverWorkersStepCallback : Failover one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -6830,7 +6830,7 @@ void WaveObjectManager::startTransaction ()
     if (true == m_isTransactionOn)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::startTransaction : Transaction is already in progress.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_isTransactionOn = true;
@@ -6854,7 +6854,7 @@ void WaveObjectManager::trackObjectCreatedDuringCurrentTransaction (WaveManagedO
         if (false == (isManagedClassSupported ((pWaveManagedObject->getObjectClassName ()))))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::trackObjectCreatedDuringCurrentTransaction : This Object Manager " + m_name + " does not support Managed Object of type " + pWaveManagedObject->getObjectClassName ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -6870,7 +6870,7 @@ void WaveObjectManager::trackObjectDeletedDuringCurrentTransaction (WaveManagedO
         if (false == (isManagedClassSupported ((pWaveManagedObject->getObjectClassName ()))))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::trackObjectDeletedDuringCurrentTransaction : This Object Manager " + m_name + " does not support Managed Object of type " + pWaveManagedObject->getObjectClassName ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -6929,7 +6929,7 @@ void WaveObjectManager::setupPartitionForMOsBeingCommitted (vector<WaveManagedOb
             for (UI32 i = 0; i < numberOfResults; i++)
             {
                 pWavePartitionManagedObject = dynamic_cast<WavePartitionManagedObject *> ((*pPartitionResults)[i]);
-                prismAssert (NULL != pWavePartitionManagedObject, __FILE__, __LINE__);
+                waveAssert (NULL != pWavePartitionManagedObject, __FILE__, __LINE__);
 
                 mapOfPartitionNameToWavePartitionManagedObjectId[pWavePartitionManagedObject->getPartitionName ()] = pWavePartitionManagedObject->getObjectId ();
             }
@@ -6990,7 +6990,7 @@ ResourceId WaveObjectManager::commitTransaction (WaveObjectManagerCommitTransact
     if (false == m_isTransactionOn)
     {
         trace (TRACE_LEVEL_FATAL , "WaveObjectManager::commitTransaction : There is no transaction in progress.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (FRAMEWORK_ERROR);
     }
 
@@ -7210,7 +7210,7 @@ ResourceId WaveObjectManager::commitTransaction (WaveObjectManagerCommitTransact
         if (true == isADelayedCommitTransaction)
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::commitTransaction : A delayed commit transaction should only be done at the start of a simple transaction or nested transaction, never in the middle of a nested transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         status = FRAMEWORK_SUCCESS;
@@ -7227,7 +7227,7 @@ ResourceId WaveObjectManager::commitTransaction (WaveObjectManagerCommitTransact
 
             if (NULL != m_pInputMessage)
             {
-                prismAssert (1 <= transactionCounter, __FILE__, __LINE__);
+                waveAssert (1 <= transactionCounter, __FILE__, __LINE__);
                 transactionCounter--;
                 m_pInputMessage->m_transactionCounter = transactionCounter;
                 m_pInputMessage->m_nestedSql = nestedSql;
@@ -7334,7 +7334,7 @@ ResourceId WaveObjectManager::commitTransaction (WaveObjectManagerCommitTransact
 
     if (NULL != m_pInputMessage)
     {
-        prismAssert (1 <= transactionCounter, __FILE__, __LINE__);
+        waveAssert (1 <= transactionCounter, __FILE__, __LINE__);
         transactionCounter--;
         m_pInputMessage->m_transactionCounter = transactionCounter;
         m_pInputMessage->m_nestedSql = nestedSql;
@@ -7352,7 +7352,7 @@ void WaveObjectManager::rollbackTransaction ()
     if (false == m_isTransactionOn)
     {
         trace (TRACE_LEVEL_FATAL , "WaveObjectManager::rollbackTransaction : There is no transaction in progress.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -7385,13 +7385,13 @@ void WaveObjectManager::addWaveConfigEntry (Attribute *attribute)
     if (NULL == attribute)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addWaveConfigEntry : attribute cannot be null");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == isALocalPrismService ())
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addWaveConfigEntry : Only Global OM can call this API to update global WaveConfigManagedObject");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == m_isTransactionOn)
@@ -7410,13 +7410,13 @@ void WaveObjectManager::updateWaveConfigEntry (Attribute *attribute)
     if (NULL == attribute)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateWaveConfigEntry : attribute cannot be null");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == isALocalPrismService ())
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateWaveConfigEntry : Only Global OM can call this API to update global WaveConfigManagedObject");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == m_isTransactionOn)
@@ -7437,7 +7437,7 @@ void WaveObjectManager::getWaveConfigEntry (string &configName, Attribute *attri
     if (NULL == attribute)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::getWaveConfigEntry : attribute cannot be null");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveManagedObjectSynchronousQueryContext synchronousQueryContext (WaveConfigManagedObject::getClassName ());
@@ -7453,7 +7453,7 @@ void WaveObjectManager::getWaveConfigEntry (string &configName, Attribute *attri
         if (1 < numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::getWaveConfigEntry: Querying " + WaveConfigManagedObject::getClassName () + " resulted in more than one managed object.  This should never happen.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (1 == numberOfResults)
         {
@@ -7466,7 +7466,7 @@ void WaveObjectManager::getWaveConfigEntry (string &configName, Attribute *attri
             if (configAttributeType != configAttributeTypeDB)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveObjectManager::getWaveConfigEntry : Mismatch o Config Attribute type in DB and the argument.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             string configValue = pWaveConfigManagedObject->getConfigValue ();
@@ -7483,7 +7483,7 @@ void WaveObjectManager::getWaveConfigEntry (string &configName, Attribute *attri
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::getWaveConfigEntry: Null obtatined while Querying " + WaveConfigManagedObject::getClassName () + ".  This should never happen.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -7494,12 +7494,12 @@ void WaveObjectManager::updateWaveManagedObject (WaveManagedObject *pWaveManaged
         if (false == (isManagedClassSupported ((pWaveManagedObject->getObjectClassName ()))))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateWaveManagedObject : This Object Manager " + m_name + " does not support Managed Object of type " + pWaveManagedObject->getObjectClassName ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (true == OrmRepository::isManagedClassAView ((pWaveManagedObject->getObjectClassName ())))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateWaveManagedObject : Managed View " + pWaveManagedObject->getObjectClassName () + "is not allowed in a transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7515,7 +7515,7 @@ void WaveObjectManager::updateMultipleWaveManagedObjects (WaveManagedObjectSynch
     if (NULL == pWaveManagedObjectSynchronousQueryContextForUpdate)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateMultipleWaveManagedObjects : The update context is NULL.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveManagedObject* pWaveManagedObject = pWaveManagedObjectSynchronousQueryContextForUpdate->getWaveManagedObjectToAddUpdateAttributes();
@@ -7525,12 +7525,12 @@ void WaveObjectManager::updateMultipleWaveManagedObjects (WaveManagedObjectSynch
         if (false == (isManagedClassSupported ((pWaveManagedObject->getObjectClassName ()))))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateMultipleWaveManagedObjects : This Object Manager " + m_name + " does not support Managed Object of type " + pWaveManagedObject->getObjectClassName ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (true == OrmRepository::isManagedClassAView ((pWaveManagedObject->getObjectClassName ())))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateMultipleWaveManagedObjects : Managed View " + pWaveManagedObject->getObjectClassName () + "is not allowed in a transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7556,12 +7556,12 @@ void WaveObjectManager::deleteWaveManagedObject (const ObjectId &objectId)
         if (false == (isManagedClassSupported (managedObjectClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : This Object Manager " + m_name + " does not support Managed Object of type " + managedObjectClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (true == OrmRepository::isManagedClassAView (managedObjectClassName))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : Managed View " + managedObjectClassName + "is not allowed in a transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7571,7 +7571,7 @@ void WaveObjectManager::deleteWaveManagedObject (const ObjectId &objectId)
             // Get all composition field names for this class
 
             OrmTable *pTable = OrmRepository::getTableByName (managedObjectClassName);
-            prismAssert (NULL != pTable, __FILE__, __LINE__);
+            waveAssert (NULL != pTable, __FILE__, __LINE__);
 
             pTable->getCompositionFieldNamesInHierarchy (compositionFieldNames);
 
@@ -7595,7 +7595,7 @@ void WaveObjectManager::deleteWaveManagedObject (const ObjectId &objectId)
                     if (1 < numberOfResults)
                     {
                         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : Querying for an objectId of " + managedObjectClassName + " resulted in more than one managed object.  This should never happen.");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                     else if (1 == numberOfResults)
                     {
@@ -7627,7 +7627,7 @@ void WaveObjectManager::deleteWaveManagedObject (WaveManagedObjectSynchronousQue
     if (NULL == pWaveManagedObjectSynchronousQueryContextForDeletion)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : The deletion context is NULL.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string managedObjectClassName = pWaveManagedObjectSynchronousQueryContextForDeletion->getClassToQueryFor ();
@@ -7637,12 +7637,12 @@ void WaveObjectManager::deleteWaveManagedObject (WaveManagedObjectSynchronousQue
         if (false == (isManagedClassSupported (managedObjectClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : This Object Manager " + m_name + " does not support Managed Object of type " + managedObjectClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (true == OrmRepository::isManagedClassAView (managedObjectClassName))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : Managed View " + managedObjectClassName + "is not allowed in a transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7651,7 +7651,7 @@ void WaveObjectManager::deleteWaveManagedObject (WaveManagedObjectSynchronousQue
             // Get all composition field names for this class
 
             OrmTable *pTable = OrmRepository::getTableByName (managedObjectClassName);
-            prismAssert (NULL != pTable, __FILE__, __LINE__);
+            waveAssert (NULL != pTable, __FILE__, __LINE__);
 
             pTable->getCompositionFieldNamesInHierarchy (compositionFieldNames);
 
@@ -7691,7 +7691,7 @@ void WaveObjectManager::deleteMultipleWaveManagedObjects (WaveManagedObjectSynch
     if (NULL == pWaveManagedObjectSynchronousQueryContextForDeletion)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteMultipleWaveManagedObjects: The deletion context is NULL.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string managedObjectClassName = pWaveManagedObjectSynchronousQueryContextForDeletion->getClassToQueryFor ();
@@ -7701,12 +7701,12 @@ void WaveObjectManager::deleteMultipleWaveManagedObjects (WaveManagedObjectSynch
         if (false == (isManagedClassSupported (managedObjectClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : This Object Manager " + m_name + " does not support Managed Object of type " + managedObjectClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (true == OrmRepository::isManagedClassAView (managedObjectClassName))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteWaveManagedObject : Managed View " + managedObjectClassName + "is not allowed in a transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7724,7 +7724,7 @@ void WaveObjectManager::deleteManagedObjectCompositions (
     if (NULL == pWaveManagedObjectSynchronousQueryContextForDeletion)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteManagedObjectCompositions: The deletion context is NULL.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string managedObjectClassName = pWaveManagedObjectSynchronousQueryContextForDeletion->getClassToQueryFor ();
@@ -7734,7 +7734,7 @@ void WaveObjectManager::deleteManagedObjectCompositions (
         if (false == (isManagedClassSupported (managedObjectClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteManagedObjectCompositions : This Object Manager " + m_name + " does not support Managed Object of type " + managedObjectClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7770,7 +7770,7 @@ void WaveObjectManager::deletePartialManagedObjectCompositions (const string &pa
     if (NULL == pQueryContextForDeletionOnChildMO)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteManagedObjectCompositions: The deletion context is NULL.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == m_isTransactionOn)
@@ -7778,7 +7778,7 @@ void WaveObjectManager::deletePartialManagedObjectCompositions (const string &pa
         if (false == (isManagedClassSupported (parentClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteManagedObjectCompositions : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7795,7 +7795,7 @@ void WaveObjectManager::addRelationship (const string &parentClassName, const st
         if (false == (isManagedClassSupported (parentClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addRelationship : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7813,7 +7813,7 @@ void WaveObjectManager::deleteRelationship (const string &parentClassName, const
         if (false == (isManagedClassSupported (parentClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteRelationship : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7830,7 +7830,7 @@ void WaveObjectManager::addToComposition (const string &parentClassName, const s
         if (false == (isManagedClassSupported (OrmRepository::getTableNameById (parentObjectId.getClassId ()))))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addToComposition : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7848,7 +7848,7 @@ void WaveObjectManager::deleteFromComposition (const string &parentClassName, co
         if (false == (isManagedClassSupported (OrmRepository::getTableNameById (parentObjectId.getClassId ()))))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteFromComposition : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7868,7 +7868,7 @@ void WaveObjectManager::addToAssociation (const string &parentClassName, const s
         if (false == (isManagedClassSupported (parentClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addToAssociation : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -7886,7 +7886,7 @@ void WaveObjectManager::deleteFromAssociation (const string &parentClassName, co
         if (false == (isManagedClassSupported (parentClassName)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteFromAssociation : This Object Manager " + m_name + " does not support Managed Object of type " + parentClassName);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -8024,7 +8024,7 @@ ResourceId WaveObjectManager::querySynchronouslyForCount (WaveManagedObjectSynch
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::querySynchronouslyForCount : WaveManagedObjectSynchronousInnerQueryContext can't be used for querySynchronouslyForCount");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveManagedObjectSynchronousQueryContextForSetOperation *pSetContext = dynamic_cast<WaveManagedObjectSynchronousQueryContextForSetOperation *> (pWaveManagedObjectSynchronousQueryContext);
@@ -8033,7 +8033,7 @@ ResourceId WaveObjectManager::querySynchronouslyForCount (WaveManagedObjectSynch
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::querySynchronouslyForCount : WaveManagedObjectSynchronousQueryContextForSetOperation can't be used for querySynchronouslyForCount");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string sqlStringForCount = pWaveManagedObjectSynchronousQueryContext->getSql (true);
@@ -8095,7 +8095,7 @@ vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (WaveManagedO
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::querySynchronously : WaveManagedObjectSynchronousInnerQueryContext can't be used for querySynchronouslyForCount");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveManagedObjectSynchronousQueryContextForSetOperation *pSetContext = dynamic_cast<WaveManagedObjectSynchronousQueryContextForSetOperation *> (pWaveManagedObjectSynchronousQueryContext);
@@ -8104,7 +8104,7 @@ vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (WaveManagedO
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::querySynchronously : WaveManagedObjectSynchronousInnerQueryContext can't be used for querySynchronouslyForCount");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     bool isManagedView = OrmRepository::isManagedClassAView (pWaveManagedObjectSynchronousQueryContext->getClassToQueryFor ());
@@ -8366,7 +8366,7 @@ WaveManagedObject *WaveObjectManager::queryManagedObject (const ObjectId &manage
     objectIdsToQueryFor.push_back (managedObjectId);
     pResults = querySynchronously (managedClassName, objectIdsToQueryFor, schema);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     if (NULL != pResults)
     {
@@ -8375,7 +8375,7 @@ WaveManagedObject *WaveObjectManager::queryManagedObject (const ObjectId &manage
         if (1 < numberOfResults)
         {
             trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::queryManagedObject : More than exepected (1) number of results : ") + numberOfResults);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -8455,7 +8455,7 @@ void WaveObjectManager::associateWithVirtualWaveObjectManager (WaveObjectManager
     if (NULL == pAssociatedVirtualWaveObjectManager)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::associateWithVirtualWaveObjectManager :  By default Associated Virtual Prism Object Manager is set to NULL.  If you are making this call, then you must supply a NON-NULL Prism Object Manager.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -8465,7 +8465,7 @@ void WaveObjectManager::associateWithVirtualWaveObjectManager (WaveObjectManager
 
         // Just use it in an expression so that the compiler does not complain about unsed variable.
 
-        prismAssert (NULL != pWaveLocalObjectManager, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveLocalObjectManager, __FILE__, __LINE__);
 
         // Then store it.
 
@@ -8591,7 +8591,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
     // Now store the details related to callback so that we can call the appropriate callback when the reply to this message arrives.
     WaveMessageResponseContext *pManagementInterfaceMessageResponseContext = new WaveMessageResponseContext (pManagementInterfaceMessage, this, pWaveMessageCallback, pManagementInterfaceMessageContext);
 
-    prismAssert (NULL != pManagementInterfaceMessageResponseContext, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessageResponseContext, __FILE__, __LINE__);
 
     if (m_pAssociatedWaveThread->getId () == pManagementInterfaceMessage->getWaveMessageCreatorThreadId ())
     {
@@ -8610,7 +8610,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
     if (NULL == pWaveThread || (pWaveThread->getId () != WaveThread::getSelf ()))
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::executeMessageReplyDuringSurrogacy : WaveThread must be same.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pManagementInterfaceMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
@@ -8624,7 +8624,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
 
 void WaveObjectManager::sendToWaveClients (WaveSendToClientsContext *pWaveSendToClientsContext)
 {
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
     PrismLinearSequencerStep sequencerSteps[] =
     {
@@ -8647,7 +8647,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (WaveLinearSequencer
 
     WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
     vector<SI32>              instancesToSendTo         = pWaveSendToClientsContext->getInstancesToSendToForPhase1 ();
     vector<SI32>              subInstancesToSendTo      = pWaveSendToClientsContext->getSubInstancesToSendToForPhase1 ();
@@ -8655,7 +8655,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (WaveLinearSequencer
     UI32                      i                         = 0;
     ManagementInterfaceMessage             *pManagementInterfaceMessageForPhase1 = pWaveSendToClientsContext->getPManagementInterfaceMessageForPhase1 ();
 
-    prismAssert (NULL != pManagementInterfaceMessageForPhase1, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessageForPhase1, __FILE__, __LINE__);
     UI32                      timeoutForPhase1          = pWaveSendToClientsContext->getTimeoutForPhase1 ();
 
     ++(*pWaveLinearSequencerContext);
@@ -8721,7 +8721,7 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesStep (WaveLinearSequencer
     for (i = 0; i < numberOfInstancesToSendTo; i++)
     {
         ManagementInterfaceMessage *pClonedManagementInterfaceMessageForPhase1 = reinterpret_cast<ManagementInterfaceMessage *> (pManagementInterfaceMessageForPhase1->clone ());
-        prismAssert (NULL != pClonedManagementInterfaceMessageForPhase1, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedManagementInterfaceMessageForPhase1, __FILE__, __LINE__);
 
         string clientName;
 
@@ -8766,8 +8766,8 @@ void WaveObjectManager::sendPhase1MessageToAllInstancesCallback (FrameworkStatus
 
     WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     SI32              instance = pManagementInterfaceMessage->getSlotInstance ();
 
@@ -8804,7 +8804,7 @@ void WaveObjectManager::computeFailedInstancesForPhase1Step (WaveLinearSequencer
 
     WaveSendToClientsContext *pWaveSendToClientsContext           = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
     vector<SI32>        instancesToSendToForPhase1          = pWaveSendToClientsContext->getInstancesToSendToForPhase1 ();
     vector<SI32>        subInstancesToSendToForPhase1       = pWaveSendToClientsContext->getSubInstancesToSendToForPhase1 ();
@@ -8858,8 +8858,8 @@ void WaveObjectManager::computeFailedInstancesForPhase1Step (WaveLinearSequencer
     numberOfFailedInstancesForPhase1    = failedInstancesForPhase1.size ();
     numberOfSucceededInstancesForPhase1 = succeededInstancesForPhase1.size ();
 
-    prismAssert (failureCountFromContext == numberOfFailedInstancesForPhase1, __FILE__, __LINE__);
-    prismAssert (numberOfInstancesToSendToForPhase1 == (numberOfFailedInstancesForPhase1 + numberOfSucceededInstancesForPhase1), __FILE__, __LINE__);
+    waveAssert (failureCountFromContext == numberOfFailedInstancesForPhase1, __FILE__, __LINE__);
+    waveAssert (numberOfInstancesToSendToForPhase1 == (numberOfFailedInstancesForPhase1 + numberOfSucceededInstancesForPhase1), __FILE__, __LINE__);
 
     pWaveSendToClientsContext->setNumberOfFailuresForPhase1 (numberOfFailedInstancesForPhase1);
 
@@ -8884,7 +8884,7 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (WaveLin
 
     WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
     vector<SI32>              instancesToSendToForPhase1          = pWaveSendToClientsContext->getInstancesToSendToForPhase1 ();
     UI32                      numberOfInstancesToSendToForPhase1  = instancesToSendToForPhase1.size ();
     UI32                      numberOfFailedInstancesForPhase1    = pWaveSendToClientsContext->getNumberOfFailuresForPhase1 ();
@@ -8923,7 +8923,7 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep (WaveLin
     {
         ManagementInterfaceMessage *pClonedManagementInterfaceMessageForPhase2 = reinterpret_cast<ManagementInterfaceMessage *> (pManagementInterfaceMessageForPhase2->clone ());
 
-        prismAssert (NULL != pClonedManagementInterfaceMessageForPhase2, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedManagementInterfaceMessageForPhase2, __FILE__, __LINE__);
 
         string clientName;
 
@@ -8972,9 +8972,9 @@ void WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableCallback (Fra
 
     WaveSendToClientsContext *pWaveSendToClientsContext = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     SI32              instance = pManagementInterfaceMessage->getSlotInstance ();
 
@@ -9016,7 +9016,7 @@ void WaveObjectManager::computeOverallInstancesStatusStep (WaveLinearSequencerCo
 
     WaveSendToClientsContext *pWaveSendToClientsContext           = reinterpret_cast<WaveSendToClientsContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClientsContext, __FILE__, __LINE__);
 
     vector<SI32>        instancesToSendToForPhase1          = pWaveSendToClientsContext->getInstancesToSendToForPhase1 ();
     UI32                numberOfInstancesToSendToForPhase1  = instancesToSendToForPhase1.size ();
@@ -9070,8 +9070,8 @@ void WaveObjectManager::computeOverallInstancesStatusStep (WaveLinearSequencerCo
         numberOfFailedInstancesForPhase2    = failedInstancesForPhase2.size ();
         numberOfSucceededInstancesForPhase2 = succeededInstancesForPhase2.size ();
 
-        prismAssert (failureCountFromContext == numberOfFailedInstancesForPhase2, __FILE__, __LINE__);
-        prismAssert (numberOfInstancesToSendToForPhase2 == (numberOfFailedInstancesForPhase2 + numberOfSucceededInstancesForPhase2), __FILE__, __LINE__);
+        waveAssert (failureCountFromContext == numberOfFailedInstancesForPhase2, __FILE__, __LINE__);
+        waveAssert (numberOfInstancesToSendToForPhase2 == (numberOfFailedInstancesForPhase2 + numberOfSucceededInstancesForPhase2), __FILE__, __LINE__);
 
         pWaveSendToClientsContext->setNumberOfFailuresForPhase2 (numberOfFailedInstancesForPhase2);
     }
@@ -9283,7 +9283,7 @@ bool WaveObjectManager::isBeingSurrogated ()
 
 void WaveObjectManager::sendOneWayToWaveCluster (WaveSendToClusterContext *pWaveSendToClusterContext)
 {
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     pWaveSendToClusterContext->setIsSendOneWayToWaveCluster (true);
 
@@ -9304,7 +9304,7 @@ void WaveObjectManager::sendOneWayToWaveCluster (WaveSendToClusterContext *pWave
 
 void WaveObjectManager::sendToWaveCluster (WaveSendToClusterContext *pWaveSendToClusterContext)
 {
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     pWaveSendToClusterContext->setIsSendOneWayToWaveCluster (false);
 
@@ -9329,10 +9329,10 @@ void WaveObjectManager::computeDisconnectedNodesIfSurrogateStep (WaveLinearSeque
     trace (TRACE_LEVEL_DEVEL, "WaveObjectManager::computeDisconnectedNodesIfSurrogateStep : Entering ...");
 
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     WaveMessage *pWaveMessageForPhase1 = pWaveSendToClusterContext->getPWaveMessageForPhase1 ();
-    prismAssert (NULL != pWaveMessageForPhase1, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessageForPhase1, __FILE__, __LINE__);
 
     if (false == pWaveMessageForPhase1->getNeedSurrogateSupportFlag ())
     {
@@ -9450,7 +9450,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (WaveLinearSequencerCont
 
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     WaveMessageStatus         status                    = WAVE_MESSAGE_ERROR;
     vector<LocationId>        locationsToSendTo         = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();
@@ -9458,7 +9458,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (WaveLinearSequencerCont
     UI32                      i                         = 0;
     WaveMessage             *pWaveMessageForPhase1    = pWaveSendToClusterContext->getPWaveMessageForPhase1 ();
 
-    prismAssert (NULL != pWaveMessageForPhase1, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessageForPhase1, __FILE__, __LINE__);
 
     UI32                      timeoutForPhase1          = pWaveSendToClusterContext->getTimeoutForPhase1 ();
     bool                      isSendOneWayToWaveCluster = pWaveSendToClusterContext->getIsSendOneWayToWaveCluster ();
@@ -9469,7 +9469,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (WaveLinearSequencerCont
     {
         WaveMessage *pClonedWaveMessageForPhase1 = pWaveMessageForPhase1->clone ();
 
-        prismAssert (NULL != pClonedWaveMessageForPhase1, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedWaveMessageForPhase1, __FILE__, __LINE__);
 
         if (0 >= locationsToSendTo[i])
         {
@@ -9549,8 +9549,8 @@ void WaveObjectManager::sendPhase1MessageToAllNodesCallback (FrameworkStatus fra
 
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     LocationId receiverLocationId = 0;
     if (true == pWaveMessage->getIsMessageBeingSurrogatedFlag ())
@@ -9599,7 +9599,7 @@ void WaveObjectManager::computeFailedNodesForPhase1Step (WaveLinearSequencerCont
 
     WaveSendToClusterContext *pWaveSendToClusterContext           = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     vector<LocationId>        locationsToSendToForPhase1          = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();
     UI32                      numberOfLocationsToSendToForPhase1  = locationsToSendToForPhase1.size ();
@@ -9655,8 +9655,8 @@ void WaveObjectManager::computeFailedNodesForPhase1Step (WaveLinearSequencerCont
     numberOfDisconnectedLocationsForPhase1 = disconnectedLocationsForPhase1.size ();
     numberOfSucceededLocationsForPhase1 = succeededLocationsForPhase1.size ();
 
-    prismAssert (failureCountFromContext == (numberOfFailedLocationsForPhase1 + numberOfDisconnectedLocationsForPhase1), __FILE__, __LINE__);
-    prismAssert (numberOfLocationsToSendToForPhase1 == (numberOfFailedLocationsForPhase1 + numberOfDisconnectedLocationsForPhase1 + numberOfSucceededLocationsForPhase1), __FILE__, __LINE__);
+    waveAssert (failureCountFromContext == (numberOfFailedLocationsForPhase1 + numberOfDisconnectedLocationsForPhase1), __FILE__, __LINE__);
+    waveAssert (numberOfLocationsToSendToForPhase1 == (numberOfFailedLocationsForPhase1 + numberOfDisconnectedLocationsForPhase1 + numberOfSucceededLocationsForPhase1), __FILE__, __LINE__);
 
     pWaveSendToClusterContext->setNumberOfFailuresForPhase1 (numberOfFailedLocationsForPhase1);
     pWaveSendToClusterContext->setNumberOfDisconnectedNodesForPhase1 (numberOfDisconnectedLocationsForPhase1);
@@ -9701,7 +9701,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (WaveLinearS
 
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
     vector<LocationId>        locationsToSendToForPhase1          = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();
     UI32                      numberOfLocationsToSendToForPhase1  = locationsToSendToForPhase1.size ();
     UI32                      numberOfFailedLocationsForPhase1    = pWaveSendToClusterContext->getNumberOfFailuresForPhase1 ();
@@ -9743,7 +9743,7 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep (WaveLinearS
 
         WaveMessage *pClonedWaveMessageForPhase2 = pWaveMessageForPhase2->clone ();
 
-        prismAssert (NULL != pClonedWaveMessageForPhase2, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedWaveMessageForPhase2, __FILE__, __LINE__);
 
         WaveMessageStatus status = send (pClonedWaveMessageForPhase2, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback), pWaveLinearSequencerContext, timeoutForPhase2, locationsToSendTo[i]);
 
@@ -9773,9 +9773,9 @@ void WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableCallback (Framewo
 
     WaveSendToClusterContext *pWaveSendToClusterContext = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     LocationId                receiverLocationId        = pWaveMessage->getReceiverLocationId ();
 
@@ -9815,7 +9815,7 @@ void WaveObjectManager::computeOverallStatusStep (WaveLinearSequencerContext *pW
 
     WaveSendToClusterContext *pWaveSendToClusterContext           = reinterpret_cast<WaveSendToClusterContext *> (pWaveLinearSequencerContext->getPPrismAsynchronousContext ());
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
     vector<LocationId>        locationsToSendToForPhase1          = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();
     UI32                      numberOfLocationsToSendToForPhase1  = locationsToSendToForPhase1.size ();
@@ -9871,8 +9871,8 @@ void WaveObjectManager::computeOverallStatusStep (WaveLinearSequencerContext *pW
         numberOfFailedLocationsForPhase2    = failedLocationsForPhase2.size ();
         numberOfSucceededLocationsForPhase2 = succeededLocationsForPhase2.size ();
 
-        prismAssert (failureCountFromContext == numberOfFailedLocationsForPhase2, __FILE__, __LINE__);
-        prismAssert (numberOfLocationsToSendToForPhase2 == (numberOfFailedLocationsForPhase2 + numberOfSucceededLocationsForPhase2), __FILE__, __LINE__);
+        waveAssert (failureCountFromContext == numberOfFailedLocationsForPhase2, __FILE__, __LINE__);
+        waveAssert (numberOfLocationsToSendToForPhase2 == (numberOfFailedLocationsForPhase2 + numberOfSucceededLocationsForPhase2), __FILE__, __LINE__);
 
         pWaveSendToClusterContext->setNumberOfFailuresForPhase2 (numberOfFailedLocationsForPhase2);
     }
@@ -10029,7 +10029,7 @@ ResourceId WaveObjectManager::addLog (ResourceId logType, ResourceId logDescript
                 vector<Attribute *> logDescriptionArgumentsCopy = logDescriptionArguments;
 
                 AttributeObjectId *pAttributeObjectId = dynamic_cast<AttributeObjectId *> (logDescriptionArgumentsCopy[0]);
-                prismAssert (NULL != pAttributeObjectId, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeObjectId, __FILE__, __LINE__);
 
                 ObjectId managedObjectId = pAttributeObjectId->getValue ();
 
@@ -10066,7 +10066,7 @@ ResourceId WaveObjectManager::addLog (ResourceId logType, ResourceId logDescript
                 vector<Attribute *> logDescriptionArgumentsCopy = logDescriptionArguments;
 
                 AttributeString *pAttributeString = dynamic_cast<AttributeString *> (logDescriptionArgumentsCopy[0]);
-                prismAssert (NULL != pAttributeString, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeString, __FILE__, __LINE__);
                 string user = pAttributeString->getValue ();
 
                 logDescriptionArgumentsCopy.erase (logDescriptionArgumentsCopy.begin ());
@@ -10163,7 +10163,7 @@ void WaveObjectManager::backendSyncUpWorkersStepCallback (PrismAsynchronousConte
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::: Sync up with back end for one of the service failed.");
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
     }
@@ -10416,7 +10416,7 @@ void WaveObjectManager::registerLock (const string &serviceString)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::registerLock: Lock already registered for serviceId =") + serviceString);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_serviceStringServiceIdMapMutex.unlock ();
@@ -10515,7 +10515,7 @@ ResourceId WaveObjectManager::updateHardwareSynchronizationState (ResourceId har
     if (0 == numberOfLocations)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManager::updateHardwareSynchronizationState : No locations detected.  Please make sure to populate the locationIds vector with some locations before calling this API.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 
@@ -10642,7 +10642,7 @@ void WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback (WaveAsynchr
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::checkBasicDatabaseSanityWorkersStepCallback: DBSanityCheck one worker failed.");
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
@@ -10726,7 +10726,7 @@ void WaveObjectManager::checkIncorrectEntriesWorkersStepCallback (WaveAsynchrono
         trace (TRACE_LEVEL_ERROR, "WaveObjectManager::checkIncorrectEntriesWorkersStepCallback : DBInconsistencyCheck one worker failed.");
 
         pWaveLinearSequencerContext->incrementNumberOfFailures ();
-        //prismAssert (false, __FILE__, __LINE__);
+        //waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 != pWaveLinearSequencerContext->getNumberOfFailures ())
@@ -10863,12 +10863,12 @@ void WaveObjectManager::deleteAllManagedObjectInstances (const string &className
         if (false == (isManagedClassSupported (className)))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteAllManagedObjectInstances : This Object Manager " + m_name + " does not support Managed Object of type " + className);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else if (true == OrmRepository::isManagedClassAView (className))
         {
             trace (TRACE_LEVEL_FATAL, "WaveObjectManager::deleteAllManagedObjectInstances : Managed View " + className + "is not allowed in a transaction.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -10989,7 +10989,7 @@ WaveWorker *WaveObjectManager::getPWaveManagedObjectCreateWorker ()
 
 void WaveObjectManager::addPartitionNameToSetOfPartitionNamesReferencedInCurrentTransaction(const string &partitionName)
 {
-    // prismAssert (false == partitionName.empty (), __FILE__, __LINE__);
+    // waveAssert (false == partitionName.empty (), __FILE__, __LINE__);
 
     if (false == partitionName.empty ())
     {
@@ -11024,7 +11024,7 @@ ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (WaveMessa
     }
 
     FrameworkObjectManagerStoreConfigurationIntentMessage *pStoreConfigurationIntentMessage = new FrameworkObjectManagerStoreConfigurationIntentMessage ();
-    prismAssert (NULL != pStoreConfigurationIntentMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pStoreConfigurationIntentMessage, __FILE__, __LINE__);
 
     pStoreConfigurationIntentMessage->setConfigurationIntentMessageId (prismMessageId);
 
@@ -11062,7 +11062,7 @@ ResourceId WaveObjectManager::sendOneWayForRemovingConfigurationIntent (const UI
     }
 
     FrameworkObjectManagerRemoveConfigurationIntentMessage *pRemoveConfigurationIntentMessage = new FrameworkObjectManagerRemoveConfigurationIntentMessage ();
-    prismAssert (NULL != pRemoveConfigurationIntentMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pRemoveConfigurationIntentMessage, __FILE__, __LINE__);
 
     pRemoveConfigurationIntentMessage->setConfigurationIntentMessageId (configurationIntentMessageId);
 
@@ -11150,7 +11150,7 @@ void WaveObjectManager::performSendMulticast (WaveLinearSequencerContext *pWaveL
             }
             else
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             ResourceId overallStatus = WAVE_MESSAGE_ERROR_SEND_MULTICAST_FAILED;
@@ -11166,7 +11166,7 @@ void WaveObjectManager::performSendMulticast (WaveLinearSequencerContext *pWaveL
     {
         status = send (pWaveMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastLocalCallback), pWaveLinearSequencerContext);
 
-        prismAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+        waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 
         ++(*pWaveLinearSequencerContext);
     }
@@ -11183,7 +11183,7 @@ void WaveObjectManager::performSendMulticastLocalCallback (FrameworkStatus frame
 
     --(*pWaveLinearSequencerContext);
 
-    prismAssert (FRAMEWORK_SUCCESS == frameworkStatus, __FILE__, __LINE__);
+    waveAssert (FRAMEWORK_SUCCESS == frameworkStatus, __FILE__, __LINE__);
 
     ResourceId  completionstatus = pWaveMessage->getCompletionStatus ();
     LocationId  thisLocationId   = FrameworkToolKit::getThisLocationId ();
@@ -11211,8 +11211,8 @@ void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus fram
     InterLocationMulticastMessage  *pInterLocationMulticastMessage  = dynamic_cast<InterLocationMulticastMessage *> (pWaveMessage);
     set<LocationId>::iterator       locationIterator;
 
-    prismAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
-    prismAssert (FRAMEWORK_SUCCESS == frameworkStatus, __FILE__, __LINE__);
+    waveAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
+    waveAssert (FRAMEWORK_SUCCESS == frameworkStatus, __FILE__, __LINE__);
 
     set<LocationId>                 remoteLocationsId;
 
@@ -11447,7 +11447,7 @@ WaveMessageBrokerStatus WaveObjectManager::connectToMessageBroker (const string 
     WaveMessagingBroker           *pWaveMessagingBroker           = NULL;
     WaveMessageBrokerStatus        status                         = WAVE_MESSAGE_BROKER_SUCCESS;
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
 
     isNewBrokerAdded = pWaveMessagingBrokerRepository->addBrokerIfNotAlreadyKnown (brokerName, brokerIpAddress, brokerPort);
 
@@ -11455,7 +11455,7 @@ WaveMessageBrokerStatus WaveObjectManager::connectToMessageBroker (const string 
     {
         pWaveMessagingBroker = pWaveMessagingBrokerRepository->checkoutBroker (brokerName);
 
-        WaveNs::prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         ResourceId status1 = pWaveMessagingBroker->connect(1, 10);
 
@@ -11500,7 +11500,7 @@ WaveMessageBrokerStatus WaveObjectManager::subscribeToMessageBroker (const strin
         string topicName            = topicNames[i];
         bool   isAKnownSubscription = isAKnownWaveBrokerBasedMessageSubscription (brokerName, topicName);
 
-        prismAssert (false == isAKnownSubscription, __FILE__, __LINE__);
+        waveAssert (false == isAKnownSubscription, __FILE__, __LINE__);
 
         m_waveBrokerBasedMessageSubscriberInformationMap[brokerName][topicName] = new WaveBrokerPublishMessageHandlerContext (publishMessageHandlers[i], pSubscriber);
     }
@@ -11523,7 +11523,7 @@ WaveMessageBrokerStatus WaveObjectManager::subscribeToMessageBroker (const strin
         string topicName            = topicNames[i];
         bool   isAKnownSubscription = isAKnownWaveBrokerBasedMessageSubscription (brokerName, topicName);
 
-        prismAssert (false == isAKnownSubscription, __FILE__, __LINE__);
+        waveAssert (false == isAKnownSubscription, __FILE__, __LINE__);
 
         m_waveBrokerBasedMessageSubscriberInformationMap[brokerName][topicName] = new WaveBrokerPublishMessageHandlerContext (publishMessageHandler, pSubscriber);
     }
@@ -11601,12 +11601,12 @@ void WaveObjectManager::deliverWaveBrokerPublishedEvent (const string &brokerNam
         {
             WaveBrokerPublishMessageHandlerContext *pWaveBrokerPublishMessageHandlerContext = element1->second;
 
-            prismAssert (NULL != pWaveBrokerPublishMessageHandlerContext, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveBrokerPublishMessageHandlerContext, __FILE__, __LINE__);
 
             WaveBrokerPublishMessageHandler  waveBrokerPublishMessageHandler = pWaveBrokerPublishMessageHandlerContext->getWaveBrokerPublishMessageHandler ();
             WaveElement                    *pSubscriber                     = pWaveBrokerPublishMessageHandlerContext->getPSubscriber                     ();
 
-            prismAssert (NULL != pSubscriber, __FILE__, __LINE__);
+            waveAssert (NULL != pSubscriber, __FILE__, __LINE__);
 
             (pSubscriber->*waveBrokerPublishMessageHandler) (pWaveBrokerPublishMessage);
         }
@@ -11619,13 +11619,13 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
     PrismShutdownObjectManagerMessage *pPrismShutdownObjectManagerMessage = new PrismShutdownObjectManagerMessage (prismServiceId);
 
-    WaveNs::prismAssert (NULL != pPrismShutdownObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismShutdownObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismShutdownObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11633,7 +11633,7 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11641,13 +11641,13 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
     PrismUninstallObjectManagerMessage *pPrismUninstallObjectManagerMessage = new PrismUninstallObjectManagerMessage (prismServiceId);
 
-    WaveNs::prismAssert (NULL != pPrismUninstallObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismUninstallObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismUninstallObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11655,7 +11655,7 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11663,13 +11663,13 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
     PrismDisableObjectManagerMessage *pPrismDisableObjectManagerMessage = new PrismDisableObjectManagerMessage (prismServiceId);
 
-    WaveNs::prismAssert (NULL != pPrismDisableObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismDisableObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismDisableObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11677,7 +11677,7 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11685,13 +11685,13 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
     PrismUninitializeObjectManagerMessage *pPrismUninitializeObjectManagerMessage = new PrismUninitializeObjectManagerMessage (prismServiceId);
 
-    WaveNs::prismAssert (NULL != pPrismUninitializeObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismUninitializeObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismUninitializeObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11699,7 +11699,7 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11707,13 +11707,13 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
     PrismDestructObjectManagerMessage *pPrismDestructObjectManagerMessage = new PrismDestructObjectManagerMessage (prismServiceId);
 
-    WaveNs::prismAssert (NULL != pPrismDestructObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismDestructObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismDestructObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11721,7 +11721,7 @@ void WaveObjectManager::endOfLifeService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11734,13 +11734,13 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
     PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = new PrismInitializeObjectManagerMessage (prismServiceId, WAVE_BOOT_FIRST_TIME_BOOT);
 
-    WaveNs::prismAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismInitializeObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismInitializeObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11748,7 +11748,7 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11756,13 +11756,13 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
     PrismEnableObjectManagerMessage *pPrismEnableObjectManagerMessage = new PrismEnableObjectManagerMessage (prismServiceId, WAVE_BOOT_FIRST_TIME_BOOT);
 
-    WaveNs::prismAssert (NULL != pPrismEnableObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismEnableObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismEnableObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11770,7 +11770,7 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11778,13 +11778,13 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
     PrismListenForEventsObjectManagerMessage *pPrismListenForEventsObjectManagerMessage = new PrismListenForEventsObjectManagerMessage (prismServiceId);
 
-    WaveNs::prismAssert (NULL != pPrismListenForEventsObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismListenForEventsObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismListenForEventsObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11792,7 +11792,7 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11800,13 +11800,13 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
     PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = new PrismInstallObjectManagerMessage (prismServiceId, WAVE_BOOT_FIRST_TIME_BOOT);
 
-    WaveNs::prismAssert (NULL != pPrismInstallObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismInstallObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismInstallObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11814,7 +11814,7 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -11822,13 +11822,13 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
     PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = new PrismBootObjectManagerMessage (prismServiceId, WAVE_BOOT_FIRST_TIME_BOOT);
 
-    WaveNs::prismAssert (NULL != pPrismBootObjectManagerMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismBootObjectManagerMessage, __FILE__, __LINE__);
 
     status = WaveObjectManagerToolKit::sendSynchronously (pPrismBootObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -11836,7 +11836,7 @@ void WaveObjectManager::bootStrapService (WaveServiceId prismServiceId)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            WaveNs::prismAssert (false, __FILE__, __LINE__);
+            WaveNs::waveAssert (false, __FILE__, __LINE__);
         }
     }
 

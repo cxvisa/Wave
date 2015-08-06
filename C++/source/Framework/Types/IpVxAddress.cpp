@@ -124,7 +124,7 @@ void IpVxAddress::setIpType (const IpType ipType)
     if (WAVE_INVALID == ipType)
     {
         trace (TRACE_LEVEL_DEBUG, string ("IpVxAddress::setIpType Invalid IpType, If IpAddress string is empty this is possible"));
-//        prismAssert (false, __FILE__, __LINE__);
+//        waveAssert (false, __FILE__, __LINE__);
     } 
 
     m_addressType = ipType;
@@ -151,7 +151,7 @@ IpType IpVxAddress::determineIpType (const string &ipVxAddress)
         else
         {
             trace (TRACE_LEVEL_FATAL, string ("IpVxAddress::IpVxAddress: Invalid IpVxAddress : ") + ipVxAddress);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 

@@ -19,7 +19,7 @@ SoftwareManagementObjectManager::SoftwareManagementObjectManager ()
 {
     m_pSoftwareManagementVersionWorker = new SoftwareManagementVersionWorker (this);
 
-    prismAssert (NULL != m_pSoftwareManagementVersionWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pSoftwareManagementVersionWorker, __FILE__, __LINE__);
 }
 
 SoftwareManagementObjectManager::~SoftwareManagementObjectManager ()
@@ -37,7 +37,7 @@ SoftwareManagementObjectManager *SoftwareManagementObjectManager::getInstance ()
     if (NULL == pSoftwareManagementObjectManager)
     {
         pSoftwareManagementObjectManager = new SoftwareManagementObjectManager ();
-        WaveNs::prismAssert (NULL != pSoftwareManagementObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pSoftwareManagementObjectManager, __FILE__, __LINE__);
     }
 
     return (pSoftwareManagementObjectManager);

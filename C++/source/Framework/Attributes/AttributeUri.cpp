@@ -94,7 +94,7 @@ Uri AttributeUri::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUri::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (Uri ());
     }
 }
@@ -108,13 +108,13 @@ void AttributeUri::setValue (const Uri &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUri::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeUri::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeUri == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeUri == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeUri == (getAttributeType ()))
     {
@@ -187,7 +187,7 @@ void AttributeUri::getSqlForSelect (string &sqlForSelect, AttributeConditionOper
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeUri::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -238,13 +238,13 @@ void AttributeUri::toEscapedString (string &valueString)
     PGconn             *pPGConnection         = NULL;
     string              databaseErrorMessage;
 
-    prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
-    prismAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseconnection, __FILE__, __LINE__);
 
     pPGConnection = pDatabaseconnection->getPConnection ();
 
-    prismAssert (NULL != pPGConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pPGConnection, __FILE__, __LINE__);
 
     returnSize = PQescapeStringConn (pPGConnection, pTemp, uriString.c_str (), size, &errorCode);
 
@@ -254,7 +254,7 @@ void AttributeUri::toEscapedString (string &valueString)
         trace (TRACE_LEVEL_ERROR, "AttributeUri::toEscapedString : error connecting with Database :\n" + databaseErrorMessage + string (", Return Size : ") + returnSize);
     }
 
-    prismAssert (0 == errorCode, __FILE__, __LINE__);
+    waveAssert (0 == errorCode, __FILE__, __LINE__);
 
     valueString = pTemp;
 
@@ -311,7 +311,7 @@ void AttributeUri::getCValue (WaveCValue *pCValue)
 {
     trace (TRACE_LEVEL_FATAL, "AttributeUri::getCValue : Currently not supported");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 }

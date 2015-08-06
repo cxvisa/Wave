@@ -38,7 +38,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessag
     if (3 > m_numberOfSteps)
     {
         cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -47,7 +47,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessag
     if (NULL == m_pSteps)
     {
         cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -84,7 +84,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (PrismAsynchronousContext
     if (3 > m_numberOfSteps)
     {
         cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -93,7 +93,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (PrismAsynchronousContext
     if (NULL == m_pSteps)
     {
         cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -131,7 +131,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequence
     if (3 > m_numberOfSteps)
     {
         cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -140,7 +140,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequence
     if (NULL == m_pSteps)
     {
         cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -201,7 +201,7 @@ WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLi
     if (3 > m_numberOfSteps)
     {
         cerr << "WaveLinearSequencerContext::operator = : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (*this);
     }
 
@@ -210,7 +210,7 @@ WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLi
     if (NULL == m_pSteps)
     {
         cerr << "WaveLinearSequencerContext::operator = : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (*this);
     }
 
@@ -333,7 +333,7 @@ void WaveLinearSequencerContext::executeNextStep (const ResourceId &currentStepS
     if ((m_numberOfSteps - 2) < m_currentStep)
     {
         cerr << "WaveLinearSequencerContext::executeNextStep : Trying to execute beyond the end of the sequencer. (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -388,7 +388,7 @@ UI32 WaveLinearSequencerContext::getNumberOfCallbacksBeforeAdvancingToNextStep (
 
 void WaveLinearSequencerContext::holdAll ()
 {
-    prismAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
 
     m_pWaveElement->holdAll ();
     m_isHoldAllRequested = true;
@@ -396,7 +396,7 @@ void WaveLinearSequencerContext::holdAll ()
 
 void WaveLinearSequencerContext::unholdAll ()
 {
-    prismAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
 
     m_pWaveElement->unholdAll ();
     m_isHoldAllRequested = false;
@@ -454,7 +454,7 @@ void WaveLinearSequencerContext::addManagedObjectsForGarbageCollection (const ve
 
 void WaveLinearSequencerContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)
 {
-    prismAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
 
     m_managedObjectsForGarbageCollection.push_back (pWaveManagedObjectForGarbageCollection);
 }
@@ -466,7 +466,7 @@ void WaveLinearSequencerContext::garbageCollect ()
 
     for (i = 0; i < numberOfManagedObjectsForGarbageCollection; i++)
     {
-        prismAssert (NULL != m_managedObjectsForGarbageCollection[i], __FILE__, __LINE__);
+        waveAssert (NULL != m_managedObjectsForGarbageCollection[i], __FILE__, __LINE__);
 
         delete (m_managedObjectsForGarbageCollection[i]);
     }

@@ -75,7 +75,7 @@ bool CommandLineInterfaceEntry::isAKnownChildEntry (const string &name) const
 
 void CommandLineInterfaceEntry::addChildEntryIfDoesNotExist (CommandLineInterfaceEntry *pChildCommandLineinterfaceEntry)
 {
-    prismAssert (NULL != pChildCommandLineinterfaceEntry, __FILE__, __LINE__);
+    waveAssert (NULL != pChildCommandLineinterfaceEntry, __FILE__, __LINE__);
 
     const string childEntryName = pChildCommandLineinterfaceEntry->getName ();
     const bool   isKnown        = isAKnownChildEntry (childEntryName);
@@ -100,7 +100,7 @@ void CommandLineInterfaceEntry::addChildEntryIfDoesNotExist (const string &child
     {
         CommandLineInterfaceEntry *pChildCommandLineinterfaceEntry = new CommandLineInterfaceEntry (childCommandLineInterfaceEntryName);
 
-        prismAssert (NULL != pChildCommandLineinterfaceEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pChildCommandLineinterfaceEntry, __FILE__, __LINE__);
 
         
 
@@ -160,7 +160,7 @@ void CommandLineInterfaceEntry::addCommandLine (const string &commandLine)
 
         pCommandLineInterfaceEntry = pCommandLineInterfaceEntry->m_childEntriesMap[commandLineToken];
 
-        prismAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
     }
 }
 
@@ -201,7 +201,7 @@ CommandLineInterfaceEntry *CommandLineInterfaceEntry::getCommandLineInterfaceEnt
         {
             pCommandLineInterfaceEntry = pCommandLineInterfaceEntry->m_childEntriesMap[commandLineToken];
 
-            prismAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
+            waveAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
 
             isKeyProcessingRequired = pCommandLineInterfaceEntry->getIsKeyProcessingRequired ();
 
@@ -263,7 +263,7 @@ void CommandLineInterfaceEntry::getInputDetailsForCommandLine (const string &com
         {
             pCommandLineInterfaceEntry = pCommandLineInterfaceEntry->m_childEntriesMap[commandLineToken];
 
-            prismAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
+            waveAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
 
             isKeyProcessingRequired = pCommandLineInterfaceEntry->getIsKeyProcessingRequired ();
 
@@ -316,7 +316,7 @@ void CommandLineInterfaceEntry::removeKeysFromCommandLine (string &commandLine)
         {
             pCommandLineInterfaceEntry = pCommandLineInterfaceEntry->m_childEntriesMap[commandLineToken];
 
-            prismAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
+            waveAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
 
             isKeyProcessingRequired = pCommandLineInterfaceEntry->getIsKeyProcessingRequired ();
 
@@ -410,7 +410,7 @@ void CommandLineInterfaceEntry::acceptcommand (const string &prompt, string &com
     vector<string>            matchingCommands;
     string                    currentMatchAtThisLevel;
 
-    prismAssert (NULL != pWaveCommandLineInterface, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveCommandLineInterface, __FILE__, __LINE__);
 
     vector<string> &commandHistory         = pWaveCommandLineInterface->getCommandHistory ();
     UI32           &globalIndex            = pWaveCommandLineInterface->getCommandHistoryCurrentIndex ();
@@ -928,7 +928,7 @@ void CommandLineInterfaceEntry::sortValidCommands ()
         string                     validCommand               = m_validCommands[i];
         CommandLineInterfaceEntry *pCommandLineInterfaceEntry = m_childEntriesMap[validCommand];
 
-        prismAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
+        waveAssert (NULL != pCommandLineInterfaceEntry, __FILE__, __LINE__);
 
         pCommandLineInterfaceEntry->sortValidCommands ();
     }
@@ -970,7 +970,7 @@ void CommandLineInterfaceEntry::displayPossibleCompletions (const string &comman
         auxiliaryCompletions.push_back ("<cr>");
         auxiliaryCompletionsInfo.push_back ("");
 
-        prismAssert ((auxiliaryCompletions.size ()) == (auxiliaryCompletionsInfo.size ()), __FILE__, __LINE__);
+        waveAssert ((auxiliaryCompletions.size ()) == (auxiliaryCompletionsInfo.size ()), __FILE__, __LINE__);
 
         numberOfAuxiliaryCompletions = auxiliaryCompletions.size ();
     }
@@ -1014,7 +1014,7 @@ void CommandLineInterfaceEntry::displayPossibleCompletions (const string &comman
         {
             pTempYangElement = yangElements[0];
 
-            prismAssert (NULL != pTempYangElement, __FILE__, __LINE__);
+            waveAssert (NULL != pTempYangElement, __FILE__, __LINE__);
 
             infoString = pTempYangElement->getInfo ();
 
@@ -1057,7 +1057,7 @@ void CommandLineInterfaceEntry::displayPossibleCompletions (const string &comman
         {
             pTempYangElement = yangElements[0];
 
-            prismAssert (NULL != pTempYangElement, __FILE__, __LINE__);
+            waveAssert (NULL != pTempYangElement, __FILE__, __LINE__);
 
             infoString = pTempYangElement->getInfo ();
 
@@ -1150,7 +1150,7 @@ CommandLineInterfaceEntry *CommandLineInterfaceEntry::getPParentCommandLineInter
 
 void CommandLineInterfaceEntry::setPParentCommandLineInterfaceEntry (CommandLineInterfaceEntry *pParentCommandLineInterfaceEntry)
 {
-    prismAssert (NULL == m_pParentCommandLinteInterfaceEntry, __FILE__, __LINE__);
+    waveAssert (NULL == m_pParentCommandLinteInterfaceEntry, __FILE__, __LINE__);
 
     m_pParentCommandLinteInterfaceEntry = pParentCommandLineInterfaceEntry;
 
@@ -1176,7 +1176,7 @@ void CommandLineInterfaceEntry::setPParentCommandLineInterfaceEntry (CommandLine
     {
         YangElement *pYangElement = m_yangElements[0];
 
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         yangName = pYangElement->getYangName ();
     }
@@ -1190,7 +1190,7 @@ void CommandLineInterfaceEntry::setPParentCommandLineInterfaceEntry (CommandLine
     {
         YangElement *pYangElement = m_yangElements[i];
 
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         if (yangName != (pYangElement->getYangName ()))
         {
@@ -1216,14 +1216,14 @@ void CommandLineInterfaceEntry::setPParentCommandLineInterfaceEntry (CommandLine
         {
             YangElement *pYangElement = m_yangElements[i];
 
-            prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+            waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
             cout << "    " << pYangElement->getYangName () << ":" << pYangElement->getName () << "\r\n";
         }
 
         trace (TRACE_LEVEL_INFO, "CommandLineInterfaceEntry::setPParentCommandLineInterfaceEntry : Multiple YANG Elements YANG Names do not match for : " + m_cliTargetNodeName);
 
-//        prismAssert (false, __FILE__, __LINE__);
+//        waveAssert (false, __FILE__, __LINE__);
     }
 //    else
 //    {
@@ -1231,7 +1231,7 @@ void CommandLineInterfaceEntry::setPParentCommandLineInterfaceEntry (CommandLine
         {
             YangElement *pYangElement = m_yangElements[0];
 
-            prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+            waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
             YangList *pYangList = dynamic_cast<YangList *> (pYangElement);
 
@@ -1283,7 +1283,7 @@ void CommandLineInterfaceEntry::getValidCommands (vector<string> &allPossibleCom
     for (UI32 i = 0; i < numberOfYangElements; i++)
     {
         YangElement *pYangElement = m_yangElements[i];
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         suppressShowConfPath = pYangElement->getCliSuppressShowConfPath (); 
 

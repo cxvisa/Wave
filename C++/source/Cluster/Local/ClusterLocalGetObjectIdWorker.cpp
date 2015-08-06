@@ -147,7 +147,7 @@ void ClusterLocalGetObjectIdWorker::getSlotNumberMessageHandler (ClusterLocalGet
     {
         pWaveSlotLocalManagedObject = dynamic_cast<WaveSlotLocalManagedObject *> (pWaveManagedObject);
 
-        prismAssert (NULL != pWaveSlotLocalManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveSlotLocalManagedObject, __FILE__, __LINE__);
 
         slotNumber = pWaveSlotLocalManagedObject->getSlotNumber ();
 
@@ -175,7 +175,7 @@ void ClusterLocalGetObjectIdWorker::getLocationIdMessageHandler (ClusterLocalGet
     {
         pWaveNode = dynamic_cast<WaveNode *> (pWaveManagedObject);
 
-        prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
         locationId = pWaveNode->getLocationId ();
 

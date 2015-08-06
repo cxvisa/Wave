@@ -65,7 +65,7 @@ string WaveManagedObjectSynchronousQueryContextForSetOperation::getSql ()
             else
             {
                 tracePrintf (TRACE_LEVEL_FATAL, true, false, "WaveManagedObjectSynchronousQueryContextForSetOperation::getSql: set operator not set for context : %d", i+1);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             // for duplicates
@@ -95,7 +95,7 @@ WaveManagedObjectSynchronousInnerQueryContext* WaveManagedObjectSynchronousQuery
     if (true == classToQueryFor.empty ())
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForSetOperation::addInnerQueryContext : classToQueryFor for an InnerContext can't be empty.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 != m_waveManagedObjectInnerQueryContexts.size ())
@@ -103,14 +103,14 @@ WaveManagedObjectSynchronousInnerQueryContext* WaveManagedObjectSynchronousQuery
         if ((OPERATOR_UNION != setOperator) && (OPERATOR_INTERSECT != setOperator) && (OPERATOR_EXCEPT != setOperator))
         {
             trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForSetOperation::addInnerQueryContext : setOperator must be one of OPERATOR_UNION/OPERATOR_INTERSECT/OPERATOR_EXCEPT");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
     }
 
     WaveManagedObjectSynchronousInnerQueryContext* pInnerQueryContext = new WaveManagedObjectSynchronousInnerQueryContext (classToQueryFor);
 
-    prismAssert (NULL != pInnerQueryContext, __FILE__, __LINE__);
+    waveAssert (NULL != pInnerQueryContext, __FILE__, __LINE__);
 
     pInnerQueryContext->addSelectFields (selectFields);
 
@@ -132,7 +132,7 @@ void WaveManagedObjectSynchronousQueryContextForSetOperation::addQueryContext (W
         if (0 == (pInnerQueryContext->getSelectFields ()).size())
         {
             trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForSetOperation::addQueryContext : Select Fields should be added in the Query context.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         m_waveManagedObjectInnerQueryContexts.push_back (pInnerQueryContext);
         m_contextSetOperators.push_back (OPERATOR_NONE);
@@ -157,7 +157,7 @@ void WaveManagedObjectSynchronousQueryContextForSetOperation::addQueryContext (W
                 if (FrameworkToolKit::getSqlTypeForAFieldInATable (moNameForFirstContext, selectFieldsInFirstContext[i]) != FrameworkToolKit::getSqlTypeForAFieldInATable (moNameForCurrentContext, selectFieldsInCurrentContext[i]))
                 {
                     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForSetOperation::addQueryContext : select fields in all context must be of same type.");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }           
 
@@ -168,7 +168,7 @@ void WaveManagedObjectSynchronousQueryContextForSetOperation::addQueryContext (W
         else
         {
             trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForSetOperation::addQueryContext : Number of Select Fields should be same in all the Query contexts.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

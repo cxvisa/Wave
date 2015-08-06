@@ -98,7 +98,7 @@ TraceObjectManager *TraceObjectManager::getInstance ()
     if (NULL == pTraceObjectManager)
     {
         pTraceObjectManager = new TraceObjectManager ();
-        WaveNs::prismAssert (NULL != pTraceObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pTraceObjectManager, __FILE__, __LINE__);
     }
 
     return (pTraceObjectManager);
@@ -778,7 +778,7 @@ void TraceObjectManager::getClientsInformationMessageHandler (TraceObjectManager
 
     s_traceClientMap.getClientsAndLevels (traceClientIdsVector, traceLevelsVector);
 
-    prismAssert ((traceClientIdsVector.size ()) == (traceLevelsVector.size ()), __FILE__, __LINE__);
+    waveAssert ((traceClientIdsVector.size ()) == (traceLevelsVector.size ()), __FILE__, __LINE__);
 
     numberOfTraceClients = traceClientIdsVector.size ();
 
@@ -816,7 +816,7 @@ void TraceObjectManager::printToWaveClientSessionMessageHandler (TraceObjectMana
     const string     messageToBePrinted              = pTraceObjectManagerPrintToWaveClientSessionMessage->getMessageToBePrinted          ();
     const LocationId thisLocationId                  = FrameworkToolKit::getThisLocationId                                                ();
 
-    prismAssert (waveClientOriginatingLocationId == thisLocationId, __FILE__, __LINE__);
+    waveAssert (waveClientOriginatingLocationId == thisLocationId, __FILE__, __LINE__);
 
     if (0 != waveNativeClientId)
     {
@@ -841,7 +841,7 @@ void TraceObjectManager::printToAllWaveClientSessionsMessageHandler (TraceObject
     const string     messageToBePrinted              = pTraceObjectManagerPrintToAllWaveClientSessionsMessage->getMessageToBePrinted          ();
     const LocationId thisLocationId                  = FrameworkToolKit::getThisLocationId                                                    ();
 
-    prismAssert (waveClientOriginatingLocationId == thisLocationId, __FILE__, __LINE__);
+    waveAssert (waveClientOriginatingLocationId == thisLocationId, __FILE__, __LINE__);
 
     // Run through a loop for native clinets.
     // TODO : Sagar
@@ -935,7 +935,7 @@ void TraceObjectManager::addUserClientDebugSession (const UI32 &userClientId)
     // if (1 == m_userClientDebugSessions.size ())  // Always send this message, so that newly connected clients get it.
     {
         WaveUpdateClientStatusMessage *pWaveUpdateClientStatusMessage = new WaveUpdateClientStatusMessage (true);
-        WaveNs::prismAssert (NULL != pWaveUpdateClientStatusMessage, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pWaveUpdateClientStatusMessage, __FILE__, __LINE__);
 
         clientNotificationStatus = WaveObjectManagerToolKit::sendOneWayToAllWaveClients (pWaveUpdateClientStatusMessage);
     }
@@ -968,7 +968,7 @@ void TraceObjectManager::removeUserClientDebugSession (const UI32 &userClientId)
         if (true == m_userClientDebugSessions.empty ())
         {
             WaveUpdateClientStatusMessage *pWaveUpdateClientStatusMessage = new WaveUpdateClientStatusMessage (false);
-            WaveNs::prismAssert (NULL != pWaveUpdateClientStatusMessage, __FILE__, __LINE__);
+            WaveNs::waveAssert (NULL != pWaveUpdateClientStatusMessage, __FILE__, __LINE__);
 
             clientNotificationStatus = WaveObjectManagerToolKit::sendOneWayToAllWaveClients (pWaveUpdateClientStatusMessage);
 

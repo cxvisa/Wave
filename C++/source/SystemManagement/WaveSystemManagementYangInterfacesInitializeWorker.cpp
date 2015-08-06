@@ -43,7 +43,7 @@ WaveMessage *WaveSystemManagementYangInterfacesInitializeWorker::createMessageIn
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("WaveSystemManagementYangInterfacesInitializeWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -198,7 +198,7 @@ void WaveSystemManagementYangInterfacesInitializeWorker::buildSystemManagementIn
 
     YangModuleCollection *pClonedYangModuleCollection = yangModuleCollection->clone ();
 
-    prismAssert (NULL != pClonedYangModuleCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedYangModuleCollection, __FILE__, __LINE__);
 #endif   
     trace (TRACE_LEVEL_INFO, "    Process Type information like Enum Bitmap etc ... ");
 
@@ -287,11 +287,11 @@ YangUserInterface *WaveSystemManagementYangInterfacesInitializeWorker::getCloned
 {
     YangElement *pYangElement = m_pYangUserInterface->clone ();
 
-    WaveNs::prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
     YangUserInterface *pYangUserInterface = dynamic_cast<YangUserInterface *> (pYangElement);
 
-    WaveNs::prismAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
 
     return (pYangUserInterface);
 }
@@ -308,7 +308,7 @@ void WaveSystemManagementYangInterfacesInitializeWorker::boot (WaveAsynchronousC
     WaveConfigurationSegmentMap::cacheIsLocalManagedObjectInformation ();
 
     YangUserInterface *pYangUserInterface = getYangUserInterface ();
-    prismAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
+    waveAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
 
     pYangUserInterface->prepareHierarchyInformationForYangElementsInTreeForData ();
 
@@ -323,7 +323,7 @@ void WaveSystemManagementYangInterfacesInitializeWorker::boot (WaveAsynchronousC
 
 #if 0
     YangModuleCollection *pYangModuleCollection = getYangModuleCollection ();
-    prismAssert (NULL != pYangModuleCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pYangModuleCollection, __FILE__, __LINE__);
     UI32 numberOfYangElementsInYangModuleCollection = pYangModuleCollection->getNumberOfAllChildYangElementsInAllModules ();
     trace (TRACE_LEVEL_INFO, string ("WaveSystemManagementYangInterfacesInitializeWorker::boot : Number of YangElements in YangModuleCollection [") + numberOfYangElementsInYangModuleCollection + string ("]"));
 #endif
@@ -340,7 +340,7 @@ void WaveSystemManagementYangInterfacesInitializeWorker::boot (WaveAsynchronousC
     trace (TRACE_LEVEL_INFO, string ("WaveSystemManagementYangInterfacesInitializeWorker::boot : Max Nesting Depth For YangLists                [") + pYangUserInterface->getMaxNestingDepthForYangLists () + string ("]"));                            // [1]
     trace (TRACE_LEVEL_INFO, string ("WaveSystemManagementYangInterfacesInitializeWorker::boot : Default Batch size for querying list instances [") + YangDisplayConfigurationContext::getDefaultBatchSizeForQueryingListInstances () + string ("]"));  // [2]
 
-    prismAssert (numberOfYangElements == numberOfYangElementsInSystem, __FILE__, __LINE__);
+    waveAssert (numberOfYangElements == numberOfYangElementsInSystem, __FILE__, __LINE__);
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

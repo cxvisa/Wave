@@ -23,7 +23,7 @@ WaveMulticastReceiverObjectManager *WaveMulticastReceiverObjectManager::getInsta
 {
     static WaveMulticastReceiverObjectManager *pWaveMessagingBrokerReceiverObjectManager = new WaveMulticastReceiverObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerReceiverObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerReceiverObjectManager, __FILE__, __LINE__);
 
     return (pWaveMessagingBrokerReceiverObjectManager);
 }

@@ -69,7 +69,7 @@ PersistenceLocalObjectManager::PersistenceLocalObjectManager ()
 
     m_pWaveObjectModelWaveServerPage = new WaveObjectModelWaveServerPage ();
 
-    prismAssert (NULL != m_pWaveObjectModelWaveServerPage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveObjectModelWaveServerPage, __FILE__, __LINE__);
 }
 
 PersistenceLocalObjectManager::~PersistenceLocalObjectManager ()
@@ -84,7 +84,7 @@ PersistenceLocalObjectManager *PersistenceLocalObjectManager::getInstance ()
 {
     static PersistenceLocalObjectManager *pPersistenceLocalObjectManager = new PersistenceLocalObjectManager ();
 
-    WaveNs::prismAssert (NULL != pPersistenceLocalObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPersistenceLocalObjectManager, __FILE__, __LINE__);
 
     return (pPersistenceLocalObjectManager);
 }
@@ -172,7 +172,7 @@ WaveEvent *PersistenceLocalObjectManager::createEventInstance (const UI32 &event
 
         default:
             trace (TRACE_LEVEL_FATAL, string ("PersistenceLocalObjectManager::createEventInstance : Unkown Event Operation Code : ") + eventOperationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveEvent);
@@ -374,7 +374,7 @@ void PersistenceLocalObjectManager::broadcastSchemaChangeEvent (SchemaType fromS
 {
     // broadcast startup schema change event from Dcmd in case of MC mode and before nodes get rebooted.
     StartupSchemaChangeEvent *pEvent = new StartupSchemaChangeEvent ();
-    prismAssert (NULL != pEvent, __FILE__, __LINE__);
+    waveAssert (NULL != pEvent, __FILE__, __LINE__);
 
     pEvent->setOperationStatus (operationStatus);
     pEvent->setFromSchema (fromSchema);
@@ -454,14 +454,14 @@ void PersistenceLocalObjectManager::updateInstanceId ()
             {
                 trace (TRACE_LEVEL_FATAL, "PersistenceLocalObjectManager::updateInstanceId : Could not updated the Next Instance Id for table " + mostBaseTableNames[i] + string (" Completion Status : ") + FrameworkToolKit::localize (status));
 
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
         else
         {
             trace (TRACE_LEVEL_FATAL, "PersistenceLocalObjectManager::updateInstanceId : Could not updated the Next Instance Id for table " + mostBaseTableNames[i] + string ("Status : ") + FrameworkToolKit::localize (status));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         trace (TRACE_LEVEL_INFO, "PersistenceLocalObjectManager::updateInstanceId : Updated " + mostBaseTableNames[i] + string (" : Latest Instance Id : ") + latestInstanceId);
@@ -474,7 +474,7 @@ void PersistenceLocalObjectManager::executeTransactionMessageHandler (Persistenc
 {
     trace (TRACE_LEVEL_DEBUG, "PersistenceLocalObjectManager::executeTransactionMessageHandler Entering");
 
-    prismAssert (pPersistenceLocalObjectManagerExecuteTransactionMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pPersistenceLocalObjectManagerExecuteTransactionMessage != NULL, __FILE__, __LINE__);
 
     const string &sqlString = pPersistenceLocalObjectManagerExecuteTransactionMessage->getSql ();
 
@@ -629,7 +629,7 @@ void PersistenceLocalObjectManager::executeTransactionSendRequestCallback (Frame
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pDatabaseObjectManagerExecuteTransactionMessage != NULL, __FILE__, __LINE__);
+        waveAssert (pDatabaseObjectManagerExecuteTransactionMessage != NULL, __FILE__, __LINE__);
 
         ResourceId completionStatus = pDatabaseObjectManagerExecuteTransactionMessage->getCompletionStatus ();
 
@@ -646,7 +646,7 @@ void PersistenceLocalObjectManager::executeTransactionSendRequestCallback (Frame
 
         status = WAVE_MESSAGE_ERROR;
         pPersistenceLocalExecuteTransactionContext->setActiveResult(status);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (NULL != pDatabaseObjectManagerExecuteTransactionMessage)
@@ -666,7 +666,7 @@ void PersistenceLocalObjectManager::executeTransactionSendRequestStandbyCallback
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pDatabaseObjectManagerExecuteTransactionMessage != NULL, __FILE__, __LINE__);
+        waveAssert (pDatabaseObjectManagerExecuteTransactionMessage != NULL, __FILE__, __LINE__);
 
         ResourceId completionStatus = pDatabaseObjectManagerExecuteTransactionMessage->getCompletionStatus ();
 
@@ -847,14 +847,14 @@ void PersistenceLocalObjectManager::shutdown (WaveAsynchronousContextForShutDown
 
     if (NULL != pResults)
     {
-        prismAssert ((0 == pResults->size ()) || (1 == pResults->size ()), __FILE__, __LINE__);
+        waveAssert ((0 == pResults->size ()) || (1 == pResults->size ()), __FILE__, __LINE__);
 
         if (1 == pResults->size ())
         {
             // Get the configuration number for queried result
 
             ConfigurationManagedObject *pConfigurationManagedObject = dynamic_cast<ConfigurationManagedObject *> ((*pResults)[0]);
-            prismAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pConfigurationManagedObject, __FILE__, __LINE__);
 
             PersistenceToolKit::setConfigurationManagedObject (pConfigurationManagedObject);
         }
@@ -876,7 +876,7 @@ void PersistenceLocalObjectManager::enableTransactionMessageHandler (Persistence
 {
     trace (TRACE_LEVEL_INFO, "PersistenceLocalObjectManager::enableTransactionMessageHandler Entering");
 
-    prismAssert (pPersistenceLocalObjectManagerEnableTransactionMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pPersistenceLocalObjectManagerEnableTransactionMessage != NULL, __FILE__, __LINE__);
 
     if (getDisableLocalCommitTransactions () == true)
     {
@@ -897,7 +897,7 @@ void PersistenceLocalObjectManager::setLiveSyncEnableMessageHandler (Persistence
 
     trace (TRACE_LEVEL_DEBUG, "PersistenceLocalObjectManager::setLiveSyncEnableMessageHandler Entering");
 
-    prismAssert (pPersistenceLocalObjectManagerSetLiveSyncEnableMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pPersistenceLocalObjectManagerSetLiveSyncEnableMessage != NULL, __FILE__, __LINE__);
 
     livesyncEnabled = pPersistenceLocalObjectManagerSetLiveSyncEnableMessage->getIsLiveSyncEnabled ();
 
@@ -937,7 +937,7 @@ void PersistenceLocalObjectManager::getLiveSyncEnableMessageHandler (Persistence
 {
     trace (TRACE_LEVEL_DEBUG, "PersistenceLocalObjectManager::getLiveSyncEnableMessageHandler Entering");
 
-    prismAssert (pPersistenceLocalObjectManagerGetLiveSyncEnableMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pPersistenceLocalObjectManagerGetLiveSyncEnableMessage != NULL, __FILE__, __LINE__);
 
     pPersistenceLocalObjectManagerGetLiveSyncEnableMessage->setIsLiveSyncEnabled (PersistenceLocalObjectManager::getLiveSyncEnabled ());
 
@@ -986,7 +986,7 @@ void PersistenceLocalObjectManager::pushConfigToKernelMessageHandler (Persistenc
 {
     trace (TRACE_LEVEL_DEBUG, "PersistenceLocalObjectManager::pushConfigToKernelMessageHandler Entering");
 
-    prismAssert (pPersistenceLocalObjectManagerPushConfigToKernelMessaage != NULL, __FILE__, __LINE__);
+    waveAssert (pPersistenceLocalObjectManagerPushConfigToKernelMessaage != NULL, __FILE__, __LINE__);
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     string     globalConfigs = pPersistenceLocalObjectManagerPushConfigToKernelMessaage->getGlobalConfigs ();

@@ -136,7 +136,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( WaveLinearSequen
     trace (TRACE_LEVEL_DEVEL, "WaveClientDataObjectGetWorker::sendMessageToAllNodesStep : entered-");
     
     WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage = reinterpret_cast<WaveObjectManagerGetDataFromClientMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
-    prismAssert ( NULL != pWaveObjectManagerGetDataFromClientMessage, __FILE__, __LINE__);            
+    waveAssert ( NULL != pWaveObjectManagerGetDataFromClientMessage, __FILE__, __LINE__);            
 
     string clientName;
     pWaveObjectManagerGetDataFromClientMessage->getClientName (clientName);
@@ -154,7 +154,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( WaveLinearSequen
  
     //Input buffer size is expected to <= 1 as per requirement
     // To support more size we need to change the client input structure
-    prismAssert ( 1 >= bufferTags.size(), __FILE__, __LINE__);
+    waveAssert ( 1 >= bufferTags.size(), __FILE__, __LINE__);
 
     pMessageToAllNodes->setClientName (clientName);
     pMessageToAllNodes->setNumberOfRecordsRequested( pWaveObjectManagerGetDataFromClientMessage->getNumberOfRecordsRequested() );
@@ -170,7 +170,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( WaveLinearSequen
             void * pBuffer = NULL;
             pBuffer = pWaveObjectManagerGetDataFromClientMessage->findBuffer(bufferTags[j],size);
             emp_t *pEmp_t = (emp_t *) pBuffer;
-            prismAssert ( NULL != pBuffer, __FILE__, __LINE__);
+            waveAssert ( NULL != pBuffer, __FILE__, __LINE__);
             //Dont free the buffer since it is owned by message 
             pMessageToAllNodes->addBuffer(bufferTags[j], size, pBuffer, false);
             trace (TRACE_LEVEL_INFO, string("WaveClientDataObjectGetWorker::sendMessageToAllNodesStep :input size is ") + size + (" ,x is -> ") + pEmp_t->x + (" flag is -> ") + pEmp_t->flag);
@@ -217,7 +217,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback ( WaveSend
                 if (NULL == pResponseMessage)
                 {
                     trace (TRACE_LEVEL_FATAL, string("WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : dynamic cast from ResultingMessageForPhase1 failed for Location - ") + locations[i] ) ;
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             
                 if (WAVE_MESSAGE_SUCCESS == pResponseMessage->getCompletionStatus())
@@ -242,13 +242,13 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback ( WaveSend
         else
         {
             trace (TRACE_LEVEL_FATAL, "WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : dynamic cast to WaveObjectManagerGetDataFromClientMessage in WaveLinearSequencerContext failed.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
     {
         trace (TRACE_LEVEL_FATAL, " WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback : WaveLinearSequencerContext pointer is NULL.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

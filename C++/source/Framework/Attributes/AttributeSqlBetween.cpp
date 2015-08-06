@@ -32,7 +32,7 @@ AttributeSqlBetween::~AttributeSqlBetween ()
 bool AttributeSqlBetween::validate () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween::validate : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -63,7 +63,7 @@ AttributeSqlBetween &AttributeSqlBetween::operator = (const AttributeSqlBetween 
 string AttributeSqlBetween::getSqlType ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return "";
 }
@@ -71,13 +71,13 @@ string AttributeSqlBetween::getSqlType ()
 void AttributeSqlBetween::setupOrm (OrmTable *pOrmTable)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 string AttributeSqlBetween::getSqlForCreate ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return "";
 }
@@ -85,13 +85,13 @@ string AttributeSqlBetween::getSqlForCreate ()
 void AttributeSqlBetween::getSqlForInsert (string &sqlForPreValues, string &sqlForInsert, string &sqlForInsert2, bool isFirst)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::getSqlForUpdate (string &sqlForUpdate, string &sqlForUpdate2, bool isFirst)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::getSqlForSelect (string &sqlForSelect, AttributeConditionOperator attributeConditionOperator)
@@ -99,20 +99,20 @@ void AttributeSqlBetween::getSqlForSelect (string &sqlForSelect, AttributeCondit
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeSqlBetween::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 
     if (NULL == m_pAttribute1)
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween::getSqlForSelect : Attributes do not exist!"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (NULL == m_pAttribute2)
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween::getSqlForSelect : Attributes do not exist!"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 
@@ -122,7 +122,7 @@ void AttributeSqlBetween::getSqlForSelect (string &sqlForSelect, AttributeCondit
     if (attribute1Name != attribute2Name)
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween::getSqlForSelect : The attributes specified are not for the same coloumn!"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 
@@ -138,19 +138,19 @@ void AttributeSqlBetween::getSqlForSelect (string &sqlForSelect, AttributeCondit
 void AttributeSqlBetween::toString (string &valueString)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::fromString (const string &valueString)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void *AttributeSqlBetween::getPData ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -158,13 +158,13 @@ void *AttributeSqlBetween::getPData ()
 void AttributeSqlBetween::setValue (const void *pData)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 Attribute *AttributeSqlBetween::clone ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -172,25 +172,25 @@ Attribute *AttributeSqlBetween::clone ()
 void AttributeSqlBetween::loadFromPostgresQueryResult (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult *> &auxilliaryResultsMap, const ObjectId &parentObjectId, const string &schema, WaveObjectManager *pWaveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 WaveManagedObject *AttributeSqlBetween::getComposedManagedObject (const ObjectId &childObjectId)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -198,7 +198,7 @@ WaveManagedObject *AttributeSqlBetween::getComposedManagedObject (const ObjectId
 bool AttributeSqlBetween::isDeletableForOperation (const WaveManagedObjectOperation &operation)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -206,13 +206,13 @@ bool AttributeSqlBetween::isDeletableForOperation (const WaveManagedObjectOperat
 void AttributeSqlBetween::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::getRestRowData (string &restRowData)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 map<string, string> AttributeSqlBetween::getSupportedConversions ()
@@ -225,18 +225,18 @@ map<string, string> AttributeSqlBetween::getSupportedConversions ()
 void AttributeSqlBetween::setDefaultValue()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlBetween::getCValue (WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool AttributeSqlBetween::isCurrentValueSameAsDefault () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween::isCurrentValueSameAsDefault : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (false);
 }
 

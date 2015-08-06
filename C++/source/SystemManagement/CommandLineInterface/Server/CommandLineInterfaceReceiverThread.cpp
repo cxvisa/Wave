@@ -22,8 +22,8 @@ CommandLineInterfaceReceiverThread::CommandLineInterfaceReceiverThread (CommandL
       m_pCommandLineInterfaceReceiverObjectManager  (pCommandLineInterfaceReceiverObjectManager),
       m_pServerSocketForCommandLineInterfaceClients (pServerStreamingSocket)
 {
-    prismAssert (NULL != m_pCommandLineInterfaceReceiverObjectManager,  __FILE__, __LINE__);
-    prismAssert (NULL != m_pServerSocketForCommandLineInterfaceClients, __FILE__, __LINE__);
+    waveAssert (NULL != m_pCommandLineInterfaceReceiverObjectManager,  __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerSocketForCommandLineInterfaceClients, __FILE__, __LINE__);
 }
 
 CommandLineInterfaceReceiverThread::~CommandLineInterfaceReceiverThread ()
@@ -39,7 +39,7 @@ WaveThreadStatus CommandLineInterfaceReceiverThread::start ()
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "CommandLineInterfaceReceiverThread::start : Awaiting NEW Command Line Client Connections...");
 

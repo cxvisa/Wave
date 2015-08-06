@@ -122,13 +122,13 @@ ResourceId YangDataElement::getValueString (YangDisplayConfigurationContext *pYa
         {
             trace (TRACE_LEVEL_FATAL, string ("YangDataElement::getValueString : [") + getYangName () + string (":") + getName () + string (" : ") + getCliTargetNodeName () + string ("] : Could not get attribute for user tag [") + userTagValue + string ("] in Managed Object [") + pWaveManagedObject->getObjectClassName () + string (" : ") + pWaveManagedObject->getKeyString () + string ("]"));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         // Verify that 'getAttributeByUserTagUserDefined' is being used only for AttributeBool !
 
         AttributeBool *pAttributeBool = dynamic_cast<AttributeBool *> (pAttribute);
-        prismAssert (NULL != pAttributeBool, __FILE__, __LINE__);
+        waveAssert (NULL != pAttributeBool, __FILE__, __LINE__);
 
         isAttributeUserDefined = true;
     }
@@ -190,7 +190,7 @@ ResourceId YangDataElement::formatValueString (string &valueString, const Resour
 
 ResourceId YangDataElement::getValueStringForAttribute (YangDisplayConfigurationContext *pYangDisplayConfigurationContext, WaveManagedObject *pWaveManagedObject, Attribute *pAttribute, string &valueString, ResourceId &valueType, const bool &checkForAttributeDefaultValue)
 {
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     ResourceId  returnStatus    = WAVE_MESSAGE_SUCCESS;
 
@@ -199,7 +199,7 @@ ResourceId YangDataElement::getValueStringForAttribute (YangDisplayConfiguration
     if (AttributeType::AttributeTypeObjectId == pAttribute->getAttributeType ())
     {
         AttributeObjectId *pAttributeObjectId = dynamic_cast<AttributeObjectId*> (pAttribute); // AttributeObjectIdAssociation ?
-        prismAssert (NULL != pAttributeObjectId, __FILE__, __LINE__);
+        waveAssert (NULL != pAttributeObjectId, __FILE__, __LINE__);
 
         ObjectId objectId = pAttributeObjectId->getValue ();
 
@@ -224,7 +224,7 @@ ResourceId YangDataElement::getValueStringForAttribute (YangDisplayConfiguration
             getAllChildrenByYangName (YangType::getYangName (), allTypeChildElements);
 
             typeChildElementsVectorSize = allTypeChildElements.size();
-            prismAssert ( 2 > typeChildElementsVectorSize , __FILE__, __LINE__);
+            waveAssert ( 2 > typeChildElementsVectorSize , __FILE__, __LINE__);
 
             if(typeChildElementsVectorSize > 0)
             {
@@ -244,7 +244,7 @@ ResourceId YangDataElement::getValueStringForAttribute (YangDisplayConfiguration
                     else
                     {
                         AttributeBitMap *pAttributeBitMap = dynamic_cast<AttributeBitMap *> (pFinalAttribute);
-                        prismAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
+                        waveAssert (NULL != pAttributeBitMap, __FILE__, __LINE__);
 
                         bool isOnlyThirtyTwoBit = pAttributeBitMap->getForce32BitRepresentationFlag ();
 
@@ -276,7 +276,7 @@ ResourceId YangDataElement::getValueStringForAttribute (YangDisplayConfiguration
                     else
                     {
                         AttributeEnum *pAttributeEnum = dynamic_cast<AttributeEnum *> (pFinalAttribute);
-                        prismAssert (NULL != pAttributeEnum, __FILE__, __LINE__);
+                        waveAssert (NULL != pAttributeEnum, __FILE__, __LINE__);
 
                         UI32 enumValue = pAttributeEnum->getValue ();
 
@@ -302,7 +302,7 @@ ResourceId YangDataElement::getValueStringForAttribute (YangDisplayConfiguration
                     else
                     {
                         AttributeEnumUC *pAttributeEnumUC = dynamic_cast<AttributeEnumUC *> (pFinalAttribute);
-                        prismAssert (NULL != pAttributeEnumUC, __FILE__, __LINE__);
+                        waveAssert (NULL != pAttributeEnumUC, __FILE__, __LINE__);
 
                         UI32 enumValue = (pAttributeEnumUC->getValue ()).getUI32Value ();
 
@@ -351,7 +351,7 @@ void YangDataElement::getKeyStringForAssociatedManagedObject (YangDisplayConfigu
     if (1 == numberOfKeysInUserDefinedKeyCombination)
     {
         Attribute *pAttribute = pWaveManagedObjectForObjectId->getAttributeByName (userDefinedKeyCombination[0]);
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         pAttribute->getPlainString (valueString); // XXX Is recursion required ?
     }
@@ -427,7 +427,7 @@ ResourceId YangDataElement::getAttributeValueStringForDisplayConfiguration (Yang
         case WAVE_ATTRIBUTE_TYPE_STRING_UC:
             {
                 AttributeUC *pAttributeUC = dynamic_cast<AttributeUC *> (pAttribute);
-                prismAssert (NULL != pAttributeUC, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeUC, __FILE__, __LINE__);
 
                 if (true == pAttributeUC->getIsUserConfigured ())
                 {
@@ -451,7 +451,7 @@ ResourceId YangDataElement::getAttributeValueStringForDisplayConfiguration (Yang
         case WAVE_ATTRIBUTE_TYPE_UNION:
             {
                 AttributeUnion *pAttributeUnion =  dynamic_cast<AttributeUnion *> (pAttribute);
-                prismAssert (NULL != pAttributeUnion, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeUnion, __FILE__, __LINE__);
                 WaveUnion targetAttributeName = pAttributeUnion->getValue ();
                 Attribute *pTargetAttribute = pWaveManagedObject->getAttributeByName (targetAttributeName);
                 // Recursive function call.
@@ -461,7 +461,7 @@ ResourceId YangDataElement::getAttributeValueStringForDisplayConfiguration (Yang
         case WAVE_ATTRIBUTE_TYPE_UI32_VECTOR:
             {
                 AttributeUI32Vector *pAttributeUI32Vector = dynamic_cast<AttributeUI32Vector *> (pAttribute);
-                prismAssert (NULL != pAttributeUI32Vector, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeUI32Vector, __FILE__, __LINE__);
 
                 vector<UI32> ui32VectorValue = pAttributeUI32Vector->getValue ();
 
@@ -480,7 +480,7 @@ ResourceId YangDataElement::getAttributeValueStringForDisplayConfiguration (Yang
         case WAVE_ATTRIBUTE_TYPE_UI32_VECTOR_UC:
             {
                 AttributeUI32VectorUC *pAttributeUI32VectorUC = dynamic_cast<AttributeUI32VectorUC *> (pAttribute);
-                prismAssert (NULL != pAttributeUI32VectorUC, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeUI32VectorUC, __FILE__, __LINE__);
 
                 vector<UI32> ui32VectorValue = (pAttributeUI32VectorUC->getValue ()).getUI32Vector ();
 
@@ -499,7 +499,7 @@ ResourceId YangDataElement::getAttributeValueStringForDisplayConfiguration (Yang
         case WAVE_ATTRIBUTE_TYPE_OBJECTID_VECTOR:
             {
                 AttributeObjectIdVectorAssociation *pAttributeObjectIdVectorAssociation = dynamic_cast<AttributeObjectIdVectorAssociation *> (pAttribute);
-                prismAssert (NULL != pAttributeObjectIdVectorAssociation, __FILE__, __LINE__);
+                waveAssert (NULL != pAttributeObjectIdVectorAssociation, __FILE__, __LINE__);
 
                 vector<ObjectId>    objectIdVector              = pAttributeObjectIdVectorAssociation->getValue ();
                 UI32                numberOfObjectIds           = objectIdVector.size ();
@@ -625,7 +625,7 @@ void YangDataElement::getConfigurtionForSingleElement (YangDisplayConfigurationC
         return;
     }
 
-    prismAssert (((YangLeaf::getYangName () == getYangName ()) || (YangContainer::getYangName () == getYangName ()) || (YangLeafList::getYangName () == getYangName ())), __FILE__, __LINE__);
+    waveAssert (((YangLeaf::getYangName () == getYangName ()) || (YangContainer::getYangName () == getYangName ()) || (YangLeafList::getYangName () == getYangName ())), __FILE__, __LINE__);
 
     WaveManagedObject *pWaveManagedObjectProper = NULL;
 
@@ -683,7 +683,7 @@ void YangDataElement::getConfigurtionForSingleElement (YangDisplayConfigurationC
             if (YangLeaf::getYangName () == getYangName ())
             {
                 YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (this);
-                prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+                waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
                 if (false == pYangLeaf->getIsEmpty ())
                 {
@@ -812,7 +812,7 @@ bool YangDataElement::evaluateWhenConditions (YangDisplayConfigurationContext *p
     for (UI32 i = 0; i < numberOfWhenYangElements; i++)
     {
         YangWhen *pYangWhen = dynamic_cast<YangWhen *> (pWhenYangElements[i]);
-        prismAssert (NULL != pYangWhen, __FILE__, __LINE__);
+        waveAssert (NULL != pYangWhen, __FILE__, __LINE__);
 
         bool resultValue = pYangWhen->evaluateCondition (pYangDisplayConfigurationContext);
 

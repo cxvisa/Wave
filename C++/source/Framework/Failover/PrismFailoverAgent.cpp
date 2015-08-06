@@ -98,7 +98,7 @@ void PrismFailoverAgent::failoverPrismServicesStep (PrismFailoverAgentSequencerC
             {
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::failoverPrismServicesStep : Could not Failover a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToFailover[index]));
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::failoverPrismServicesStep : Status                       : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
                 return;
             }
@@ -139,7 +139,7 @@ void PrismFailoverAgent::initializePrismGlobalServicesDuringPrePhaseStep (PrismF
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::initializePrismGlobalServicesDuringPrePhaseStep : Could not send a message to Initialize a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInitialize[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
             }
 
@@ -148,7 +148,7 @@ void PrismFailoverAgent::initializePrismGlobalServicesDuringPrePhaseStep (PrismF
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::initializePrismGlobalServicesDuringPrePhaseStep : Could not Initialize a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInitialize[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
             }
             else
@@ -184,7 +184,7 @@ void PrismFailoverAgent::enablePrismGlobalServicesDuringPrePhaseStep (PrismFailo
             {
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::enablePrismGlobalServicesStep : Could not Enable a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToEnableDuringPrePhase[i]));
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::enablePrismGlobalServicesStep : Status                     : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
                 return;
             }
@@ -196,7 +196,7 @@ void PrismFailoverAgent::enablePrismGlobalServicesDuringPrePhaseStep (PrismFailo
                 {
                     trace (TRACE_LEVEL_FATAL, "PrismBootAgent::enablePrismGlobalServicesStep : Could not Enable a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToEnableDuringPrePhase[i]));
                     trace (TRACE_LEVEL_FATAL, "PrismBootAgent::enablePrismGlobalServicesStep : Status                     : " + FrameworkToolKit::localize (status));
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                     pPrismFailoverAgentSequencerContext->executeNextStep(status);
                     return;
                 }
@@ -237,7 +237,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep (P
                 trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep : Could not send Listen for Event message a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToEnableDuringPrePhase[i]));
                 trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep : Status                     : " + FrameworkToolKit::localize (status));
 
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
 
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
                 return;
@@ -251,7 +251,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep (P
                     trace (TRACE_LEVEL_FATAL, "PrismBootAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep : Could not send Listen for Event message a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToEnableDuringPrePhase[i]));
                     trace (TRACE_LEVEL_FATAL, "PrismBootAgent::listenForEventsPrismGlobalServicesDuringPrePhaseStep : Status                     : " + FrameworkToolKit::localize (status));
 
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     pPrismFailoverAgentSequencerContext->executeNextStep(status);
                     return;
@@ -289,7 +289,7 @@ void PrismFailoverAgent::bootPrismGlobalServicesDuringPrePhaseStep (PrismFailove
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::bootPrismGlobalServicesDuringPrePhaseStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(WAVE_MESSAGE_ERROR);
             }
 
@@ -298,7 +298,7 @@ void PrismFailoverAgent::bootPrismGlobalServicesDuringPrePhaseStep (PrismFailove
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::bootPrismGlobalServicesDuringPrePhaseStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(WAVE_MESSAGE_ERROR);
             }
             else
@@ -331,7 +331,7 @@ void PrismFailoverAgent::initializePrismGlobalServicesStep (PrismFailoverAgentSe
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("mFailoverAgent::initializePrismGlobalServicesStep : Could not send a message to Initialize a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInitialize[i]) + ",  Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
             }
 
@@ -340,7 +340,7 @@ void PrismFailoverAgent::initializePrismGlobalServicesStep (PrismFailoverAgentSe
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::initializePrismGlobalServicesStep : Could not Initialize a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInitialize[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
             }
             else
@@ -375,7 +375,7 @@ void PrismFailoverAgent::enablePrismGlobalServicesStep (PrismFailoverAgentSequen
             {
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::enablePrismGlobalServicesStep : Could not Enable a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]));
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::enablePrismGlobalServicesStep : Status                     : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
                 return;
             }
@@ -387,7 +387,7 @@ void PrismFailoverAgent::enablePrismGlobalServicesStep (PrismFailoverAgentSequen
                 {
                     trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::enablePrismGlobalServicesStep : Could not Enable a service ") + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     pPrismFailoverAgentSequencerContext->executeNextStep(status);
                     return;
@@ -428,7 +428,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesStep (PrismFailoverAg
             {
                 trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::listenForEventsPrismGlobalServicesStep : Could not send a Message for Listen For Event to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]));
                 trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::listenForEventsPrismGlobalServicesStep : Status                     : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
                 return;
             }
@@ -440,7 +440,7 @@ void PrismFailoverAgent::listenForEventsPrismGlobalServicesStep (PrismFailoverAg
                 {
                     trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::listenForEventsPrismGlobalServicesStep : Listen for Event failed to Completion for service :") + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
 
                     pPrismFailoverAgentSequencerContext->executeNextStep(status);
                     return;
@@ -478,7 +478,7 @@ void PrismFailoverAgent::bootPrismGlobalServicesStep (PrismFailoverAgentSequence
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::bootPrismGlobalServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
             }
 
@@ -487,7 +487,7 @@ void PrismFailoverAgent::bootPrismGlobalServicesStep (PrismFailoverAgentSequence
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::bootPrismGlobalServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
             }
             else
@@ -508,7 +508,7 @@ void PrismFailoverAgent::removeOldPrimaryLocationStep (PrismFailoverAgentSequenc
          if(FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED == getFailoverReason ()) 
          {
              PrismFrameworkObjectManager *pPrismFrameworkObjectManager = PrismFrameworkObjectManager::getInstance ();
-             prismAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
+             waveAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
 
              LocationId oldPrimaryLocationId = pPrismFailoverAgentSequencerContext->getOlderPrimaryLocationId ();
              pPrismFrameworkObjectManager->removeKnownLocation (oldPrimaryLocationId);
@@ -523,7 +523,7 @@ void PrismFailoverAgent::resetThisLocationToPrimaryStep (PrismFailoverAgentSeque
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::resetThisLocationToPrimaryStep");
     PrismFrameworkObjectManager *pPrismFrameworkObjectManager = PrismFrameworkObjectManager::getInstance ();
 
-    prismAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
 
     
 
@@ -559,7 +559,7 @@ void PrismFailoverAgent::createDatabaseDump ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {    
         trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::createDatabaseDump : Could not send message to backup database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -568,7 +568,7 @@ void PrismFailoverAgent::createDatabaseDump ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::createDatabaseDump : Message to backup database failed.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }    
         else 
         {    
@@ -681,7 +681,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
         ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
         locationId                  = pWaveMessage->getReceiverLocationId ();
@@ -766,13 +766,13 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Step (Pris
     databaseBackupFile.seekg (0, ios::end);
     sizeOfBackupFile = databaseBackupFile.tellg ();
 
-    prismAssert (0 != sizeOfBackupFile, __FILE__, __LINE__);
+    waveAssert (0 != sizeOfBackupFile, __FILE__, __LINE__);
 
     if (0 < sizeOfBackupFile)
     {
         pDatabaseBackupBuffer = new char[sizeOfBackupFile];
 
-        prismAssert (NULL != pDatabaseBackupBuffer, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseBackupBuffer, __FILE__, __LINE__);
 
         databaseBackupFile.seekg (0, ios::beg);
         databaseBackupFile.read (pDatabaseBackupBuffer, sizeOfBackupFile);
@@ -875,7 +875,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
         ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
         locationId                  = pWaveMessage->getReceiverLocationId ();
@@ -949,7 +949,7 @@ void PrismFailoverAgent::resumeDatabaseDumpStep (PrismFailoverAgentSequencerCont
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::resumeDatabaseDumpStep : Could not resume Database.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -957,7 +957,7 @@ void PrismFailoverAgent::resumeDatabaseDumpStep (PrismFailoverAgentSequencerCont
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::resumeDatabaseDumpStep : Could not resume Database.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1055,7 +1055,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
         ResourceId completionStatus = pWaveMessage->getCompletionStatus ();
         locationId                  = pWaveMessage->getReceiverLocationId ();
@@ -1200,7 +1200,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback (
 
     --(*pPrismFailoverAgentSequencerContext);
 
-	prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+	waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
@@ -1271,7 +1271,7 @@ void PrismFailoverAgent::startHeartBeatToSecondariesStep(PrismFailoverAgentSeque
     
     vector<WaveManagedObject *> *pResults = querySynchronously (WaveNode::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32 totalWaveNodes = pResults->size ();
 
@@ -1283,7 +1283,7 @@ void PrismFailoverAgent::startHeartBeatToSecondariesStep(PrismFailoverAgentSeque
     if (1 > totalWaveNodes)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::startHeartBeatToSecondariesStep: Wave node does not have itself in the database");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     //Perform a union of locationId from known location and wave node 
@@ -1360,7 +1360,7 @@ void PrismFailoverAgent::startHeartBeatToSecondariesStep(PrismFailoverAgentSeque
         }
         else
         {
-            prismAssert (false , __FILE__, __LINE__);
+            waveAssert (false , __FILE__, __LINE__);
         }
         
 
@@ -1376,7 +1376,7 @@ void PrismFailoverAgent::startHeartBeatToSecondariesStep(PrismFailoverAgentSeque
         {
                   trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::startHeartBeatToSecondaryNodes: Could not start heart beating with Node : ") + ipAddress + string (", Port : ") + port + string (", Status = ") + FrameworkToolKit::localize (status));
 
-                  prismAssert (false, __FILE__, __LINE__);
+                  waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1385,7 +1385,7 @@ void PrismFailoverAgent::startHeartBeatToSecondariesStep(PrismFailoverAgentSeque
            if (WAVE_MESSAGE_SUCCESS != status)
            {
                       trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::startHeartBeatToSecondaryNodes : Could not start heart beating with Node : ") + ipAddress + string (", Port : ") + port + string (", Completion Status = ") + FrameworkToolKit::localize (status));
-                      prismAssert (false, __FILE__, __LINE__);
+                      waveAssert (false, __FILE__, __LINE__);
            }
 
            trace (TRACE_LEVEL_INFO, string ("PrismFailoverAgent::startHeartBeatToSecondaryNodes :Started HeartBeat with node ") + ipAddress + string (":") + port);
@@ -1524,7 +1524,7 @@ void PrismFailoverAgent::pausePersistence ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::pausePersistence : Could not pause Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -1533,7 +1533,7 @@ void PrismFailoverAgent::pausePersistence ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::pausePersistence : Could not pause Persistence.  Completion Status : " + FrameworkToolKit::localize (status));            
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1552,7 +1552,7 @@ void PrismFailoverAgent::resumePersistence ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::resumePersistence : Could not resume Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -1561,7 +1561,7 @@ void PrismFailoverAgent::resumePersistence ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFailoverAgent::resumePersistence : Could not resume Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1611,7 +1611,7 @@ void PrismFailoverAgent::failoverForUnknownWaveNodePrismServicesStep (PrismFailo
             {
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::failoverPrismServicesStep : Could not Failover a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToFailover[index]));
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::failoverPrismServicesStep : Status                       : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 pPrismFailoverAgentSequencerContext->executeNextStep(status);
                 return;
             }
@@ -1644,7 +1644,7 @@ void PrismFailoverAgent::backendSyncUpStep (PrismFailoverAgentSequencerContext *
     if (WAVE_MESSAGE_SUCCESS != status)
     {
        trace (TRACE_LEVEL_FATAL, string ("PrismFailoverAgent::backendSyncUpStep Failed : Status : ") + FrameworkToolKit::localize (status));
-       prismAssert (false, __FILE__, __LINE__);
+       waveAssert (false, __FILE__, __LINE__);
        pPrismFailoverAgentSequencerContext->executeNextStep(status);
     }
 

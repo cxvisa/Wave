@@ -35,7 +35,7 @@ FrameworkTestability2ObjectManager *FrameworkTestability2ObjectManager::getInsta
     if (NULL == pFrameworkTestability2ObjectManager)
     {
         pFrameworkTestability2ObjectManager = new FrameworkTestability2ObjectManager ();
-        WaveNs::prismAssert (NULL != pFrameworkTestability2ObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkTestability2ObjectManager, __FILE__, __LINE__);
     }
 
     return (pFrameworkTestability2ObjectManager);

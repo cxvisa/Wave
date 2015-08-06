@@ -63,7 +63,7 @@ void PrismCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort (const strin
         // Adding duplicate ip addresses.
 
         trace (TRACE_LEVEL_FATAL, "PrismCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort : Adding duplicate IP Address and Port.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -83,7 +83,7 @@ string PrismCreateClusterWithNodesMessage::getNodeAt (UI32 i)
         // index out of range.
 
         trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::getNodeAt : Index out of range, i = ") + i + string (" , Max Allowed = ") + m_newNodesIpAddresses.size ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (string (""));
     }
@@ -100,7 +100,7 @@ SI32 PrismCreateClusterWithNodesMessage::getNodePortAt (UI32 i)
         // index out of range.
 
         trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::getNodePortAt : Index out of range, i = ") + i + string (" , Max Allowed = ") + m_newNodesPorts.size ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (0);
     }
@@ -119,7 +119,7 @@ void PrismCreateClusterWithNodesMessage::setNewNodeStatus (const string &newNode
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::setNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is already set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -136,7 +136,7 @@ void PrismCreateClusterWithNodesMessage::updateNewNodeStatus (const string &newN
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::updateNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is not previously set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -153,7 +153,7 @@ ResourceId PrismCreateClusterWithNodesMessage::getNewNodeStatus (const string &n
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::getNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is not set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR);
     }
 }
@@ -725,9 +725,9 @@ UI32 FrameworkObjectManagerUpdateListOfSecondariesMessage::getNumberOfSecondaryL
     UI32 numberOfSecondaryLocations3 = m_portsForSecondaryNodes.size ();
     UI32 numberOfSecondaryLocations4 = m_isNodeNewVector.size();
 
-    prismAssert (numberOfSecondaryLocations1 == numberOfSecondaryLocations2, __FILE__, __LINE__);
-    prismAssert (numberOfSecondaryLocations2 == numberOfSecondaryLocations3, __FILE__, __LINE__);
-    prismAssert (numberOfSecondaryLocations3 == numberOfSecondaryLocations4, __FILE__, __LINE__);
+    waveAssert (numberOfSecondaryLocations1 == numberOfSecondaryLocations2, __FILE__, __LINE__);
+    waveAssert (numberOfSecondaryLocations2 == numberOfSecondaryLocations3, __FILE__, __LINE__);
+    waveAssert (numberOfSecondaryLocations3 == numberOfSecondaryLocations4, __FILE__, __LINE__);
     return (numberOfSecondaryLocations1);
 }
 
@@ -735,7 +735,7 @@ LocationId FrameworkObjectManagerUpdateListOfSecondariesMessage::getLocationIdAt
 {
     UI32 numberOfSecondaryLocations = getNumberOfSecondaryLocations ();
 
-    prismAssert (index < numberOfSecondaryLocations, __FILE__, __LINE__);
+    waveAssert (index < numberOfSecondaryLocations, __FILE__, __LINE__);
 
     return (m_locationIdsForSecondaryNodes[index]);
 }
@@ -744,7 +744,7 @@ string FrameworkObjectManagerUpdateListOfSecondariesMessage::getIpAddressAtIndex
 {
     UI32 numberOfSecondaryLocations = getNumberOfSecondaryLocations ();
 
-    prismAssert (index < numberOfSecondaryLocations, __FILE__, __LINE__);
+    waveAssert (index < numberOfSecondaryLocations, __FILE__, __LINE__);
 
     return (m_IpAddressesForSecondaryNodes[index]);
 }
@@ -753,7 +753,7 @@ UI32 FrameworkObjectManagerUpdateListOfSecondariesMessage::getPortAtIndex (const
 {
     UI32 numberOfSecondaryLocations = getNumberOfSecondaryLocations ();
 
-    prismAssert (index < numberOfSecondaryLocations, __FILE__, __LINE__);
+    waveAssert (index < numberOfSecondaryLocations, __FILE__, __LINE__);
 
     return (m_portsForSecondaryNodes[index]);
 }
@@ -761,7 +761,7 @@ UI32 FrameworkObjectManagerUpdateListOfSecondariesMessage::getPortAtIndex (const
 bool FrameworkObjectManagerUpdateListOfSecondariesMessage::isNodeNewAtIndex(const UI32 &index) const
 {
     UI32 numberOfSecondaryLocations = getNumberOfSecondaryLocations ();
-    prismAssert(index < numberOfSecondaryLocations, __FILE__, __LINE__);
+    waveAssert(index < numberOfSecondaryLocations, __FILE__, __LINE__);
     return (m_isNodeNewVector[index]);
 }
 
@@ -1400,7 +1400,7 @@ void FrameworkObjectManagerServiceControlListMessage::getServiceAtIndex (const U
 {
     UI32 numberOfServices = getNumberOfServices ();
 
-    prismAssert (index < numberOfServices, __FILE__, __LINE__);
+    waveAssert (index < numberOfServices, __FILE__, __LINE__);
 
     prismServiceId = m_waveServiceIds[index];
     serviceName    = m_serviceNames[index];

@@ -81,7 +81,7 @@ DistributedDebugGlobalObjectManager *DistributedDebugGlobalObjectManager::getIns
 {
     static DistributedDebugGlobalObjectManager *pDistributedDebugGlobalObjectManager = new DistributedDebugGlobalObjectManager ();
 
-    WaveNs::prismAssert (NULL != pDistributedDebugGlobalObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pDistributedDebugGlobalObjectManager, __FILE__, __LINE__);
 
     return (pDistributedDebugGlobalObjectManager);
 }
@@ -129,7 +129,7 @@ WaveMessage *DistributedDebugGlobalObjectManager::createMessageInstance (const U
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DistributedDebugGlobalObjectManager::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -150,13 +150,13 @@ void    DistributedDebugGlobalObjectManager::createBufferForScriptFileStep ()
     scriptFile.seekg (0, ios::end);
     UI32 sizeOfScriptFile = scriptFile.tellg ();
 
-    prismAssert (0 != sizeOfScriptFile, __FILE__, __LINE__);
+    waveAssert (0 != sizeOfScriptFile, __FILE__, __LINE__);
 
     if (0 < sizeOfScriptFile)
     {
         char* pBufferForScriptFile = new char[sizeOfScriptFile];
 
-        prismAssert (NULL != pBufferForScriptFile, __FILE__, __LINE__);
+        waveAssert (NULL != pBufferForScriptFile, __FILE__, __LINE__);
 
         scriptFile.seekg (0, ios::beg);
         scriptFile.read (pBufferForScriptFile, sizeOfScriptFile);
@@ -180,7 +180,7 @@ void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep (WaveLin
 {
     RunDebugScriptMessage *pRunDebugScriptMessage = dynamic_cast<RunDebugScriptMessage *> (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
 
-    prismAssert(NULL!=pRunDebugScriptMessage, __FILE__, __LINE__);
+    waveAssert(NULL!=pRunDebugScriptMessage, __FILE__, __LINE__);
 
     //Send the Message to Cluster    
     trace (TRACE_LEVEL_DEBUG, "DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep :Starting Send To Cluster.");
@@ -235,7 +235,7 @@ void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback (Wav
       tracePrintf(TRACE_LEVEL_INFO, true, false, "DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback: locationId: %d",locationIdOfNode );
 
       RunDebugScriptOnClusterMemberMessage* pRunDebugScriptOnClusterMemberMessage = static_cast<RunDebugScriptOnClusterMemberMessage *> (pWaveSendToClusterContext->getResultingMessageForPhase1 (locationIdOfNode));
-      prismAssert(NULL!=pRunDebugScriptOnClusterMemberMessage,__FILE__,__LINE__);
+      waveAssert(NULL!=pRunDebugScriptOnClusterMemberMessage,__FILE__,__LINE__);
 
       string tempString = pRunDebugScriptOnClusterMemberMessage->getOutputString ();   
       outputStringVector.push_back (tempString);

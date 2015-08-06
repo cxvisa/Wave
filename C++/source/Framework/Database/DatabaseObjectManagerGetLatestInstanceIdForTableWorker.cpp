@@ -49,7 +49,7 @@ void DatabaseObjectManagerGetLatestInstanceIdForTableWorker::getLatestInstanceId
     ResourceId          status              = WAVE_MESSAGE_SUCCESS;
     UI64                latestInstanceId    = 0;
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEBUG, string ("This Location ID : ") + FrameworkToolKit::getThisLocationId ());
     trace (TRACE_LEVEL_DEBUG, sql);

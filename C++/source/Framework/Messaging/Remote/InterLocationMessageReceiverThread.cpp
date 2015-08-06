@@ -33,7 +33,7 @@ InterLocationMessageReceiverThread::InterLocationMessageReceiverThread (ServerSt
 {
     if (NULL == m_pServerStreamingSocket)
     {
-        prismAssert (NULL != m_pServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != m_pServerStreamingSocket, __FILE__, __LINE__);
         trace (TRACE_LEVEL_FATAL, "InterLocationMessageReceiverThread::InterLocationMessageReceiverThread : Cannot create a InterLocationMessageReceiverThread with a NULL socket");
     }
 }
@@ -130,7 +130,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
             if (0 == sizeOfConnectionInformation)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveThreadStatus InterLocationMessageReceiverThread::start : If we have read the size successfully, it cannot be zero.");
-                prismAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
+                waveAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
             }
         }
 
@@ -261,7 +261,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
             if (NULL == pNewFixedSizeBuffer)
             {
                 trace (TRACE_LEVEL_FATAL, string ("InterLocationMessageReceiverThread::start : Could not allocate a new FixedSizeBuffer of size ") + messageSize + ".");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             isSuccessful = (*m_pServerStreamingSocket) >> (*pNewFixedSizeBuffer);
@@ -326,11 +326,11 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                             break;
                         }
 
-                        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+                        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
                         pBuffer = new UI8[bufferSize];
 
-                        prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+                        waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
                         FixedSizeBuffer tempBuffer (bufferSize, pBuffer, false);
 
@@ -371,7 +371,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                             LocationId                     receiverLocationId             = FrameworkToolKit::getLocationIdForIpAddressAndPort (peerServerIpAddress, peerServerPort);
                             InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
         
-                            prismAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
+                            waveAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
 
                             pInterLocationMulticastMessage->messageOperationAccess ();
 
@@ -404,7 +404,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                 }
                 else
                 {
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 // If we have a message at hand then attach the buffer to the message.
@@ -486,7 +486,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                         {
                             InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
     
-                            prismAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
+                            waveAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
 
                             if (false == isSuccessful)
                             {
@@ -500,7 +500,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                             {
                                 WaveMessage *pTempWaveMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
 
-                                prismAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
+                                waveAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
 
                                 (InterLocationMessageTransportObjectManager::getInstance ())->unlockGlobalAccessMutexForMulticastMessaging ();
 
@@ -528,7 +528,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                     else
                     {
                         trace (TRACE_LEVEL_FATAL, "InterLocationMessageReceiverThread::start : Currently, Only Messages and their Responses can be transported across Locations.");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                 }
 

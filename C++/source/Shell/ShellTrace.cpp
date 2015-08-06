@@ -218,7 +218,7 @@ UI32 ShellTrace::legend (UI32 argc, vector<string> argv)
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     trace (TRACE_LEVEL_UNKNOWN, (Integer (TRACE_LEVEL_UNKNOWN)).toString () + " : This is a message traced at TRACE_LEVEL_UNKNOWN");
@@ -235,7 +235,7 @@ UI32 ShellTrace::legend (UI32 argc, vector<string> argv)
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (SHELL_OK);

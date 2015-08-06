@@ -28,7 +28,7 @@ SubLocation::SubLocation (UI32 parentLocationId, string &parentIpAddress, SI32 p
 
         cout << "The parent LocationId is not in sync with this LocationId" << endl;
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_pParentLocation = new Location (parentLocationId, parentIpAddress, parentPort);
@@ -60,7 +60,7 @@ bool SubLocation::supportsSubLocations ()
 void SubLocation::addSubLocation (LocationId locationId, string &ipAddress, SI32 port)
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::addSubLocation : Sub locations do not support adding Sub Locations to them.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void SubLocation::initializeClientCommunications ()
@@ -70,13 +70,13 @@ void SubLocation::initializeClientCommunications ()
     if (NULL == m_pParentLocation)
     {
         trace (TRACE_LEVEL_FATAL, "SubLocation::initializeClientCommunications : The Parent Location for this Location is not setup.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (NULL != m_pClientSocketForParentLocation)
     {
         trace (TRACE_LEVEL_FATAL, "SubLocation::initializeClientCommunications : This location is already connected to the Parent Location");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     // Now connect to the Parent Location.  We cannot proceed without connecting.
@@ -92,7 +92,7 @@ void SubLocation::initializeClientCommunications ()
         if (NULL == pClientSocket)
         {
             trace (TRACE_LEVEL_FATAL, string ("SubLocation::initializeClientCommunications : Could not allocate a Client Socket for Location : ") + m_pParentLocation->getLocationId ());
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         if (false == (pClientSocket->getIsConnected ()))
@@ -130,7 +130,7 @@ ClientStreamingSocket *SubLocation::getClientStreamingSocketForRemoteLocation (L
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("SubLocation::getClientStreamingSocketForRemoteLocation : We can only communicate to the Parent Location.  LocationId (") + locationId + ")other than parent location detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (NULL);
     }
 }
@@ -157,7 +157,7 @@ void SubLocation::invalidateClientStreamingSocketForRemoteLocation (LocationId l
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("SubLocation::invalidateClientStreamingSocketForRemoteLocation : We can only communicate to the Parent Location.  LocationId (") + locationId + ")other than parent location detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     unlockAccess ();
@@ -186,7 +186,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
             if (0 != (gettimeofday (&startTime, NULL)))
             {
                 trace (TRACE_LEVEL_FATAL, string ("SubLocation::connectToRemoteLocation : Could not obtain start time."));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 status = FRAMEWORK_ERROR;
             }
             else
@@ -205,7 +205,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
                     if (NULL == pClientSocket)
                     {
                         trace (TRACE_LEVEL_FATAL, "SubLocation::connectToRemoteLocation : Could not allocate a Client Socket.");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
 
                     if (false == (pClientSocket->getIsConnected ()))
@@ -226,7 +226,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
 
                         if (true != isSuccessful)
                         {
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
 
                         // now create the Prism Node Connection Information object and post it to the remote location.
@@ -237,7 +237,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
 
                         if (true != isSuccessful)
                         {
-                            prismAssert (false, __FILE__, __LINE__);
+                            waveAssert (false, __FILE__, __LINE__);
                         }
 
                         status = FRAMEWORK_SUCCESS;
@@ -250,7 +250,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
                     if (0 != (gettimeofday (&currentTime, NULL)))
                     {
                         trace (TRACE_LEVEL_FATAL, string ("SubLocation::connectToRemoteLocation : Could not obtain current time."));
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                         status = FRAMEWORK_ERROR;
                         break;
                     }
@@ -277,7 +277,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
         status = FRAMEWORK_UNKNOWN_LOCATION;
 
         trace (TRACE_LEVEL_FATAL, "SubLocation::connectToRemoteLocation : We can only communicate to the Parent Location.  LocationId other than parent location detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     unlockAccess ();
@@ -357,13 +357,13 @@ SI32 SubLocation::getPortForLocationId (const LocationId &locationId)
 void SubLocation::addKnownLocation (LocationId knownLocationId, string &ipAddress, SI32 port)
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::addKnownLocation : Sub locations do not support adding Locations to them.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void SubLocation::removeKnownLocation (LocationId knownLocationId)
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::removeKnownLocation : Sub locations do not support removing locations since it does not support adding them in the first place.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void SubLocation::getKnownRemoteLocations (vector<LocationId> &remoteLocationsVector)
@@ -486,27 +486,27 @@ bool SubLocation::isAConnectedLocation (const LocationId &locationId)
 void SubLocation::resetLocationToStandAlone (const LocationId &locationId)
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::resetLocationToStandAlone : Sub locations cannot be reset to stand alone at this time.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void SubLocation::resetLocationToPrimary ()
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::resetLocationToPrimary : Sub locations cannot be reset to Primary at this time.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void SubLocation::removeAllKnownLocations ()
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::removeAllKnownLocations : Sub locations do not support removing locations since it does not support adding them in the first place.");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void SubLocation::removeAllSubLocations ()
 {
     trace (TRACE_LEVEL_FATAL, "SubLocation::removeAllSubLocations : Sub locations do not support removing sub locations.");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 ClientStreamingSocket* SubLocation::getClientStreamingSocketForHaPeer ()

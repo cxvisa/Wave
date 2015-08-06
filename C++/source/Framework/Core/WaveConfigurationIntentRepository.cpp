@@ -181,7 +181,7 @@ UI32 WaveConfigurationIntentRepository::getConfigurationIntentRepositorySize ()
     if (configurationIntentRepositoryVectorSize != configurationIntentRepositoryMapSize)
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveConfigurationIntentRepository::getConfigurationIntentRepositorySize : Configuration intent size for vector and map mismatch. vector size : ") + configurationIntentRepositoryVectorSize + ", map size : " + configurationIntentRepositoryMapSize + ". This should never happen!");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {

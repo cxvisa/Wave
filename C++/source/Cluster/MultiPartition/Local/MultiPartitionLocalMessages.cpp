@@ -96,7 +96,7 @@ void MultiPartitionDeleteLocalPartitionMessage::setPartialCleanupTag (const Reso
 
 ResourceId MultiPartitionDeleteLocalPartitionMessage::getPartialCleanupTag ()
 {
-    prismAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
+    waveAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
 
     return m_partialCleanupTag;
 }

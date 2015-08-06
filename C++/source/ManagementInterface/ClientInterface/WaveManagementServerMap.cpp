@@ -93,7 +93,7 @@ void WaveManagementServerMap::addServer (WaveManagementServer *pWaveManagementSe
    bool   serverAlreadyExists = isAKnownServerNoLock (ipAddress, port);
    string uniqueString        = FrameworkToolKit::getUniqueString (ipAddress, port);
 
-   prismAssert (false == serverAlreadyExists, __FILE__, __LINE__);
+   waveAssert (false == serverAlreadyExists, __FILE__, __LINE__);
 
    m_managementServers[uniqueString] = pWaveManagementServer;
    m_managementServersById[pWaveManagementServer->getId ()] = pWaveManagementServer;
@@ -119,7 +119,7 @@ WaveManagementServer *WaveManagementServerMap::removeServer (const string &ipAdd
     }
     else
     {
-        //prismAssert (false , __FILE__, __LINE__);
+        //waveAssert (false , __FILE__, __LINE__);
     }
 
     m_managementServersMutex.unlock ();
@@ -146,7 +146,7 @@ WaveManagementServer *WaveManagementServerMap::removeServer (const UI32 &id)
     }
     else
     {
-        //prismAssert (false , __FILE__, __LINE__);
+        //waveAssert (false , __FILE__, __LINE__);
     }
 
     m_managementServersMutex.unlock ();
@@ -162,7 +162,7 @@ WaveManagementServer *WaveManagementServerMap::getServer (const string &ipAddres
     string                uniqueString              = FrameworkToolKit::getUniqueString (ipAddress, port);
     WaveManagementServer *pTempWaveManagementServer = NULL;
 
-    prismAssert (true == serverAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == serverAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementServer = m_managementServers[uniqueString];
 
@@ -180,11 +180,11 @@ UI32 WaveManagementServerMap::getServerId (const string &ipAddress, const UI32 &
     WaveManagementServer *pTempWaveManagementServer = NULL;
     UI32                  serverId                  = 0;
 
-    prismAssert (true == serverAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == serverAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementServer = m_managementServers[uniqueString];
 
-    prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
+    waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
     serverId = pTempWaveManagementServer->getId ();
 
@@ -200,7 +200,7 @@ WaveManagementServer *WaveManagementServerMap::getServer (const UI32 &id)
     bool                  serverAlreadyExists       = isAKnownServerNoLock (id);
     WaveManagementServer *pTempWaveManagementServer = NULL;
 
-    prismAssert (true == serverAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == serverAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementServer = m_managementServersById[id];
 
@@ -221,7 +221,7 @@ WaveServiceId WaveManagementServerMap::getWaveServiceIdForServiceName (const UI3
     {
         pTempWaveManagementServer = m_managementServersById[serverId];
 
-        prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
+        waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
         serviceId = pTempWaveManagementServer->getWaveServiceIdForServiceName (serviceName);
     }
@@ -243,7 +243,7 @@ string WaveManagementServerMap::getPrismServiceNameForServiceId (const UI32 &ser
     {
         pTempWaveManagementServer = m_managementServersById[serverId];
 
-        prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
+        waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
         serviceName = pTempWaveManagementServer->getPrismServiceNameForServiceId (serviceId);
     }
@@ -260,11 +260,11 @@ void WaveManagementServerMap::addServiceCache (const UI32 &serverId, const vecto
     bool                  serverAlreadyExists       = isAKnownServerNoLock (serverId);
     WaveManagementServer *pTempWaveManagementServer = NULL;
 
-    prismAssert (true == serverAlreadyExists, __FILE__, __LINE__);
+    waveAssert (true == serverAlreadyExists, __FILE__, __LINE__);
 
     pTempWaveManagementServer = m_managementServersById[serverId];
 
-    prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
+    waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
     pTempWaveManagementServer->addServiceCache (serviceNames, serviceIds);
 
@@ -293,7 +293,7 @@ ResourceId WaveManagementServerMap::post (ManagementInterfaceMessage *pManagemen
         known = false;
     }
 
-    prismAssert (true == known, __FILE__, __LINE__);
+    waveAssert (true == known, __FILE__, __LINE__);
 
     pTempWaveManagementServer = m_managementServersById[id];
 
@@ -333,7 +333,7 @@ UI32 WaveManagementServerMap::getServerIdIfKnown (const string &ipAddress, const
     {
         pTempWaveManagementServer = m_managementServers[uniqueString];
 
-        prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
+        waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
         serverId = pTempWaveManagementServer->getId ();
     }
@@ -357,7 +357,7 @@ UI32 WaveManagementServerMap::getServerIdIfKnownForUniqueServerIdentifier (const
     {
         pTempWaveManagementServer = m_managementServers[uniqueString];
 
-        prismAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
+        waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
         uniqueServerIdentifierFromClientPerspective = pTempWaveManagementServer->getServerUniqueIdentifier ();
 

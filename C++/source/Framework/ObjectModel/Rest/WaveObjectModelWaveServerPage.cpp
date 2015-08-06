@@ -51,7 +51,7 @@ void WaveObjectModelWaveServerPage::requestHandlerForGet (const HttpRequest &htt
 
     vector<WaveManagedObject *> *pQueryResults = querySynchronously (adjustedUri);
 
-    prismAssert (NULL != pQueryResults, __FILE__, __LINE__);
+    waveAssert (NULL != pQueryResults, __FILE__, __LINE__);
 
     string                 httpResponse;
     ServerStreamingSocket *pServerStreamingSocket = httpRequest.getPServerStreamingSocket ();
@@ -74,7 +74,7 @@ void WaveObjectModelWaveServerPage::requestHandlerForGet (const HttpRequest &htt
 
         WaveManagedObject *pWaveManagedObject = (*pQueryResults)[i];
 
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         pWaveManagedObject->getJsonObjectData (jsonObjectData);
 

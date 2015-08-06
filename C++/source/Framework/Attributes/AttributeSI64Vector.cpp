@@ -104,7 +104,7 @@ vector<SI64> AttributeSI64Vector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSI64Vector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -118,13 +118,13 @@ void AttributeSI64Vector::setValue (const vector<SI64> &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeSI64Vector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeSI64Vector::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeSI64Vector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeSI64Vector == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeSI64Vector == (getAttributeType ()))
     {
@@ -176,7 +176,7 @@ void AttributeSI64Vector::getSqlForSelect (string &sqlForSelect, AttributeCondit
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeSI64Vector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -319,7 +319,7 @@ void AttributeSI64Vector::deleteAttributeFromVector (Attribute *attribute)
         else
         {   
             trace (TRACE_LEVEL_FATAL, string ("AttributeSI64Vector::deleteAttributeFromVector : Element to be deleted not found ."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

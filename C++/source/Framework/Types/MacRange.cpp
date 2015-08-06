@@ -42,7 +42,7 @@ vector<string> MACRange::parsingMacRange (const string &rangeMacString) const
 
         countSecondLevel = secondLevelToken.size ();
 
-        prismAssert (2 >= countSecondLevel, __FILE__, __LINE__);
+        waveAssert (2 >= countSecondLevel, __FILE__, __LINE__);
 
        
 	    if ( 1 == countSecondLevel )
@@ -226,7 +226,7 @@ MACRange::MACRange ()
 
 MACRange::MACRange (const string &rangeMacString)
 {
-    prismAssert (true == isAValidString (rangeMacString), __FILE__, __LINE__);
+    waveAssert (true == isAValidString (rangeMacString), __FILE__, __LINE__);
 
     copy (rangeMacString);
 }
@@ -250,7 +250,7 @@ string MACRange::toString () const
 
 void MACRange::fromString (const string &rangeMacString)
 {
-    prismAssert (true == isAValidString (rangeMacString), __FILE__, __LINE__);
+    waveAssert (true == isAValidString (rangeMacString), __FILE__, __LINE__);
     
     copy (rangeMacString);
 }

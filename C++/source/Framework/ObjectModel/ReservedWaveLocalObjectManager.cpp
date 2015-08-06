@@ -23,7 +23,7 @@ ReservedWaveLocalObjectManager *ReservedWaveLocalObjectManager::getInstance ()
 {
     static ReservedWaveLocalObjectManager *pReservedWaveLocalObjectManager = new ReservedWaveLocalObjectManager ();
 
-    WaveNs::prismAssert (NULL != pReservedWaveLocalObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pReservedWaveLocalObjectManager, __FILE__, __LINE__);
 
     return (pReservedWaveLocalObjectManager);
 }

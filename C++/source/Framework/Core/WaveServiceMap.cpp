@@ -27,14 +27,14 @@ void WaveServiceMap::addServiceMap  (WaveServiceId id, WaveThread *pWaveThread, 
 
     if (NULL != pTempWaveThread)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         cerr << "Cannot proceed.  Trying to add a duplicate service id." << endl;
         exit (0);
     }
 
     if (0 != tempWaveServiceId)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         cerr << "Cannot proceed.  Trying to add a duplicate service name." << endl;
         exit (0);
     }
@@ -57,7 +57,7 @@ void WaveServiceMap::removeServiceMap (WaveServiceId id)
     {
         pWaveThread = element->second;
 
-        prismAssert (NULL != pWaveThread, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveThread, __FILE__, __LINE__);
 
         m_servicesMap.erase (element);
     }
@@ -71,7 +71,7 @@ void WaveServiceMap::removeServiceMap (WaveServiceId id)
     {
         serviceName = element1->second;
 
-        prismAssert (NULL != pWaveThread, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveThread, __FILE__, __LINE__);
 
         m_servicesNameMap.erase (element1);
     }
@@ -81,7 +81,7 @@ void WaveServiceMap::removeServiceMap (WaveServiceId id)
 
     if (endElement2 != element2)
     {
-        prismAssert (id == element2->second, __FILE__, __LINE__);
+        waveAssert (id == element2->second, __FILE__, __LINE__);
 
         m_servicesIdMap.erase (element2);
     }

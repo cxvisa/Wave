@@ -64,7 +64,7 @@ void CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback (Wav
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = reinterpret_cast<WaveLinearSequencerContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    prismAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveLinearSequencerContext, __FILE__, __LINE__);
 
     ResourceId  sendToClusterCompletionStatus   = pWaveSendToClusterContext->getCompletionStatus ();
 
@@ -88,7 +88,7 @@ void CliBlockWorker::processCliBlockMessageForConnectedLocationStep (WaveLinearS
  
     WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&CliBlockWorker::processCliBlockMessageForConnectedLocationStepCallback), pWaveLinearSequencerContext);
 
-    prismAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSendToClusterContext, __FILE__, __LINE__);
 
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pCliBlockServiceIndependentMessage1);

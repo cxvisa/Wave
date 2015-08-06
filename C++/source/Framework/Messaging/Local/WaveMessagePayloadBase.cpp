@@ -13,7 +13,7 @@ namespace WaveNs
 WaveMessagePayloadBase::WaveMessagePayloadBase (WaveMessage *pWaveMessage)
     : m_pWaveMessage (pWaveMessage)
 {
-    prismAssert (NULL != m_pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveMessage, __FILE__, __LINE__);
 }
 
 WaveMessagePayloadBase::~WaveMessagePayloadBase ()

@@ -80,7 +80,7 @@ AppObjectManager *AppObjectManager::createInstance (AppDetail *appDetail, UI32 a
 
     AppObjectManager *pAppObjectManager = new AppObjectManager (appDetail, applicationId, s_applicationStackSize);
 
-    WaveNs::prismAssert (NULL != pAppObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pAppObjectManager, __FILE__, __LINE__);
     return (pAppObjectManager);
 
 }

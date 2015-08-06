@@ -87,7 +87,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (WaveLinearSequencer
 
     vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
     
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     if (NULL == pResults)
     {
@@ -101,7 +101,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (WaveLinearSequencer
     if (1 < numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigAddNodeWorker::AddNodeValidateStep : There can only be one cluster in the system.  Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
@@ -120,7 +120,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (WaveLinearSequencer
         // Validate the node name and port number, it should be same as any of current node;
         pResults = querySynchronously (WaveNode::getClassName ());
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         NewNodes = pClusterObjectManagerAddNodeMessage->getNSecondaryNodes ();
 
@@ -141,7 +141,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (WaveLinearSequencer
                 if (NULL == pNode)
                 {
                     trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::AddNodeValidateStep: WaveNode result entry found NULL");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
                     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
                     return;
@@ -295,7 +295,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
     if (NULL == pPrismClusterResults)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeCommitStep : PrismCluster Query Returns NULL");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
@@ -306,7 +306,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
     if (1 < numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigAddNodeWorker::AddNodeValidateStep : There can only be one cluster in the system.          Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
@@ -340,14 +340,14 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
             
             vector<WaveManagedObject *>   *pResults = querySynchronously (&queryContext);
 
-            prismAssert (NULL != pResults, __FILE__, __LINE__);
+            waveAssert (NULL != pResults, __FILE__, __LINE__);
 
             numberOfResults = pResults->size ();
             
-            prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+            waveAssert (1 == numberOfResults, __FILE__, __LINE__);
             
             WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
-	    prismAssert( NULL != pWaveNode, __FILE__, __LINE__);
+	    waveAssert( NULL != pWaveNode, __FILE__, __LINE__);
    
             updateWaveManagedObject (pPrismCluster); 
             pPrismCluster->addSecondaryNode (pWaveNode->getObjectId ());
@@ -360,7 +360,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
     if (FRAMEWORK_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeCommitStep : Failed to Persist the configuration.  Cannot Continue.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -411,7 +411,7 @@ void CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep (WaveLinearSe
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeClusterStartHeartBeatsStep : Could not start heart beating with Node : " + newNode + string (", Port : ") + newNodePort + string (", Status = ") + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -419,7 +419,7 @@ void CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep (WaveLinearSe
 
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
-                    trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep : Could not start heart beating with Node : " + newNode + string (", Port : ") + newNodePort + string (", Completion Status = ") + FrameworkToolKit::localize (status));                     prismAssert (false, __FILE__, __LINE__);
+                    trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep : Could not start heart beating with Node : " + newNode + string (", Port : ") + newNodePort + string (", Completion Status = ") + FrameworkToolKit::localize (status));                     waveAssert (false, __FILE__, __LINE__);
                 }
             }
 

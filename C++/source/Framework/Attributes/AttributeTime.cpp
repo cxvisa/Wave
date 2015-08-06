@@ -105,7 +105,7 @@ Time AttributeTime::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeTime::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempTime);
     }
 }
@@ -126,7 +126,7 @@ void AttributeTime::getAllValues (UI8 *hour, UI8 *min, UI8 *sec, UI32 *micro, SI
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeTime::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -139,13 +139,13 @@ void AttributeTime::setValue (const Time &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeTime::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeTime::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeTime == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeTime == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeTime == (getAttributeType ()))
     {
@@ -223,7 +223,7 @@ void AttributeTime::getSqlForSelect (string &sqlForSelect, AttributeConditionOpe
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeTime::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -397,7 +397,7 @@ vector<Time> AttributeTimeVector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeTimeVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -411,13 +411,13 @@ void AttributeTimeVector::setValue (const vector<Time> &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeTimeVector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeTimeVector::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeTimeVector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeTimeVector == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeTimeVector == (getAttributeType ()))
     {
@@ -469,7 +469,7 @@ void AttributeTimeVector::getSqlForSelect (string &sqlForSelect, AttributeCondit
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeTimeVector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -611,7 +611,7 @@ void AttributeTimeVector::deleteAttributeFromVector (Attribute *attribute)
         else
         {   
             trace (TRACE_LEVEL_FATAL, string ("AttributeTimeVector::deleteAttributeFromVector : Element to be deleted not found ."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

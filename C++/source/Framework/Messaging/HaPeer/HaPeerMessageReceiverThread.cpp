@@ -30,7 +30,7 @@ HaPeerMessageReceiverThread::HaPeerMessageReceiverThread (ServerStreamingSocket 
 {
     if (NULL == m_pServerStreamingSocket)
     {
-        prismAssert (NULL != m_pServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != m_pServerStreamingSocket, __FILE__, __LINE__);
         trace (TRACE_LEVEL_FATAL, "HaPeerMessageReceiverThread::HaPeerMessageReceiverThread : Cannot create a HaPeerMessageReceiverThread with a NULL socket");
     }
 }
@@ -90,7 +90,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
             if (0 == sizeOfConnectionInformation)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveThreadStatus HaPeerMessageReceiverThread::start : If we have read the size successfully, it cannot be zero.");
-                prismAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
+                waveAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
             }
         }
 
@@ -202,7 +202,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
             if (NULL == pNewFixedSizeBuffer)
             {
                 trace (TRACE_LEVEL_FATAL, string ("HaPeerMessageReceiverThread::start : Could not allocate a new FixedSizeBuffer of size ") + messageSize + ".");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             isSuccessful = (*m_pServerStreamingSocket) >> (*pNewFixedSizeBuffer);
@@ -256,10 +256,10 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                 }
                 else
                 {
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
-                //prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+                //waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
                 // Now read the buffer data
 
@@ -290,11 +290,11 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                             break;
                         }
 
-                        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+                        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
                         pBuffer = new UI8[bufferSize];
 
-                        prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+                        waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
                         FixedSizeBuffer tempBuffer (bufferSize, pBuffer, false);
 
@@ -322,7 +322,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                             else
                             {
                                 trace (TRACE_LEVEL_FATAL, "HaPeerMessageReceiverThread::start : Currently, Only Messages and their Responses can be transported across Locations.");
-                                prismAssert (false, __FILE__, __LINE__);
+                                waveAssert (false, __FILE__, __LINE__);
                             }
                         }
                         else
@@ -394,7 +394,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                     else
                     {
                         trace (TRACE_LEVEL_FATAL, "HaPeerMessageReceiverThread::start : Currently, Only Messages and their Responses can be transported across Locations.");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                 }
 

@@ -42,7 +42,7 @@ void YangBit::processChildElement (YangElement *pYangElement)
     {
         YangPosition *pYangPosition = dynamic_cast<YangPosition *> (pYangElement);
 
-        prismAssert (NULL != pYangPosition, __FILE__, __LINE__);
+        waveAssert (NULL != pYangPosition, __FILE__, __LINE__);
 
         m_position = pYangPosition->getValue ();
     }
@@ -56,15 +56,15 @@ void YangBit::getNameForHFileForCLanguage (string &actualName, string &processed
     YangModule  *pOwnerYangModule   = getPOwnerYangModule ();
     YangElement *pParentYangElement = getPParentElement   ();
 
-    prismAssert (NULL != pOwnerYangModule,   __FILE__, __LINE__);
-    prismAssert (NULL != pParentYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pOwnerYangModule,   __FILE__, __LINE__);
+    waveAssert (NULL != pParentYangElement, __FILE__, __LINE__);
 
     if (NULL != pOwnerYangModule)
     {
         string       modulePrefix              = pOwnerYangModule->getPrefix           ();
         YangElement *pParentsParentYangElement = pParentYangElement->getPParentElement ();
 
-        prismAssert (NULL != pParentsParentYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pParentsParentYangElement, __FILE__, __LINE__);
 
         string nameForOwnersOwner = pParentsParentYangElement->getName ();
 

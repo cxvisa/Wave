@@ -198,12 +198,12 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
         bool                isConnectedToDatabse = false;
         DatabaseConnection *pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-        prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
         if (NULL != (pDatabaseConnection->getPConnection ()))
         {
             trace (TRACE_LEVEL_ERROR, "DatabaseObjectManagerInstallWorker::installBootDatabaseStep : Already connected to Wave Database. This should not happen as it is just started.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -234,7 +234,7 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
     if (0 != status)
     {
         tracePrintf (TRACE_LEVEL_WARN, true, false, string("DatabaseObjectManagerInstallWorker::installBootDatabaseStep : failed to start postgres server after [%s] retries also. Can't move forward. Asserting.").c_str(), retries);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     // Log the return status

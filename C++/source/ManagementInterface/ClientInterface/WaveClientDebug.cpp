@@ -51,7 +51,7 @@ UI32 WaveClientDebug::debugConnect (UI32 argc, vector<string> argv)
     {
         pWcsc = new WaveClientSynchronousConnection (uniqueString, serverIpAddress, serverPort);
 
-        prismAssert (NULL != pWcsc, __FILE__, __LINE__);
+        waveAssert (NULL != pWcsc, __FILE__, __LINE__);
 
         connectionstatus = pWcsc->connect ();
         if (WAVE_MGMT_CLIENT_INTF_CONNECTION_ESTABLISHED_TO_SERVER == connectionstatus)
@@ -86,7 +86,7 @@ UI32 WaveClientDebug::debugClose (UI32 argc, vector<string> argv)
     }
     else
     {
-        prismAssert (NULL != pWcsc, __FILE__, __LINE__);
+        waveAssert (NULL != pWcsc, __FILE__, __LINE__);
 
         pWcsc->close ();
 

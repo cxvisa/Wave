@@ -90,7 +90,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterValidateStep (WaveLin
 
     vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     if (NULL == pResults)
     {
@@ -113,7 +113,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterValidateStep (WaveLin
     if (1 < numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigCreateClusterWorker::createClusterValidateStep : There can only be one cluster in the system.  Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
@@ -133,14 +133,14 @@ void CentralClusterConfigCreateClusterWorker::createClusterValidateStep (WaveLin
 
     pResults = querySynchronously (WaveNode::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32 numberOfNodes = pResults->size ();
 
     if (1 != numberOfNodes)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigCreateClusterWorker::createClusterValidateStep : When there is no cluster created, there shall be only the self node in the system configuration.  We obtained ") + numberOfNodes + string (" nodes in the system."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         // Delete all of the nodes before erroring out.
 
@@ -160,11 +160,11 @@ void CentralClusterConfigCreateClusterWorker::createClusterValidateStep (WaveLin
 
     WaveNode *pThisNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
 
-    prismAssert (NULL != pThisNode, __FILE__, __LINE__);
+    waveAssert (NULL != pThisNode, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_INFO, "CentralClusterConfigCreateClusterWorker::createClusterValidateStep : Current Node Name : " + pThisNode->getIpAddress () + string (" Current Node Port : ") + pThisNode->getPort ());
 
-    prismAssert (NULL != pThisNode, __FILE__, __LINE__);
+    waveAssert (NULL != pThisNode, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfNewSecondaryNodes; i++)
     {
@@ -259,14 +259,14 @@ void CentralClusterConfigCreateClusterWorker::createClusterResetThisNodeIpAddres
     {
         vector<WaveManagedObject *> *pResults = querySynchronously (NodeManagedObject::getClassName ());
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         UI32 numberOfNodes = pResults->size ();
 
-        prismAssert (1 == numberOfNodes, __FILE__, __LINE__);
+        waveAssert (1 == numberOfNodes, __FILE__, __LINE__);
 
         NodeManagedObject *pNodeManagedObject = dynamic_cast<NodeManagedObject *> ((*pResults)[0]);
-        prismAssert (NULL != pNodeManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pNodeManagedObject, __FILE__, __LINE__);
 
         startTransaction ();
 
@@ -415,14 +415,14 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (WaveLinea
 
             pResults = querySynchronously (&queryContext);
 
-            prismAssert (NULL != pResults, __FILE__, __LINE__);
+            waveAssert (NULL != pResults, __FILE__, __LINE__);
 
             numberOfResults = pResults->size ();
 
-            prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+            waveAssert (1 == numberOfResults, __FILE__, __LINE__);
 
             WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
-	    prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+	    waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
             waveNodeVectors.push_back(pResults);
             pPrismCluster->addSecondaryNode (pWaveNode->getObjectId ());
         }
@@ -435,11 +435,11 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (WaveLinea
     queryContextForPrimarywaveNode.addAndAttribute (new AttributeUI32   (primaryPort, "port"));
 
     vector<WaveManagedObject *>* pResultsForPrimaryWavenode = querySynchronously (&queryContextForPrimarywaveNode);
-    prismAssert (NULL != pResultsForPrimaryWavenode, __FILE__, __LINE__);
-    prismAssert (1 == pResultsForPrimaryWavenode->size(), __FILE__, __LINE__);
+    waveAssert (NULL != pResultsForPrimaryWavenode, __FILE__, __LINE__);
+    waveAssert (1 == pResultsForPrimaryWavenode->size(), __FILE__, __LINE__);
 
     WaveNode *pPrimaryWaveNode = dynamic_cast<WaveNode *> ((*pResultsForPrimaryWavenode)[0]);
-    prismAssert( NULL != pPrimaryWaveNode, __FILE__, __LINE__);
+    waveAssert( NULL != pPrimaryWaveNode, __FILE__, __LINE__);
 
     pPrimaryWaveNode->setGenericStatus(WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
     pPrimaryWaveNode->setSpecificStatus(WAVE_MANAGED_OBJECT_SPECIFIC_STATUS_PRIMARY);
@@ -451,7 +451,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (WaveLinea
     if (FRAMEWORK_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigCreateClusterWorker::createClusterCommitStep : Failed to Persist the configuration.  Cannot Continue.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -502,7 +502,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep (
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep : Could not start heart beating with Node : " + secondaryNode + string (", Port : ") + secondaryNodePort + string (", Status = ") + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -511,7 +511,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep (
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
                     trace (TRACE_LEVEL_FATAL, "CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep : Could not start heart beating with Node : " + secondaryNode + string (", Port : ") + secondaryNodePort + string (", Completion Status = ") + FrameworkToolKit::localize (status));
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }
 

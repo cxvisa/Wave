@@ -103,7 +103,7 @@ void StartHaSyncDumpContext::getValidationResultsForService (const WaveServiceId
     else
     {
         // We found the validation results but could not find the size of the validation results.  This must not happen.
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

@@ -22,7 +22,7 @@ LicenseObjectManager *LicenseObjectManager::getInstance ()
     if (NULL == pLicenseObjectManager)
     {
         pLicenseObjectManager = new LicenseObjectManager ();
-        WaveNs::prismAssert (NULL != pLicenseObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pLicenseObjectManager, __FILE__, __LINE__);
     }
 
     return (pLicenseObjectManager);

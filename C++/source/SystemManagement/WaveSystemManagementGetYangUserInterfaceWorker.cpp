@@ -44,12 +44,12 @@ void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateY
 {
     WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage = dynamic_cast<WaveSystemManagementGetYangUserInterfaceMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
 
 #if 0
     YangUserInterface *pClonedYangUserInterface = WaveSystemManagementObjectManager::getClonedYangUserInterface ();
 
-    prismAssert (NULL != pClonedYangUserInterface, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedYangUserInterface, __FILE__, __LINE__);
 
     pClonedYangUserInterface->printYinToString (pWaveSystemManagementGetYangUserInterfaceMessage->getYangUserInterface ());
 #else

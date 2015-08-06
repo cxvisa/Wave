@@ -94,7 +94,7 @@ void YangElementFactory::addYangElementInstantiator (const string &yangName, Yan
     else
     {
         trace (TRACE_LEVEL_FATAL, "YangElementFactory::addYangElementInstantiator : YANG Element Instantiator for \"" + yangName + "\" has already been added.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

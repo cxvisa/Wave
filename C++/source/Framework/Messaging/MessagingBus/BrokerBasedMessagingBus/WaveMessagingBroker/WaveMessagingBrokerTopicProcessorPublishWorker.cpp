@@ -19,7 +19,7 @@ WaveMessagingBrokerTopicProcessorPublishWorker::WaveMessagingBrokerTopicProcesso
     : WaveWorker                                        (pWaveMessagingBrokerTopicProcessorObjectManager),
       m_pWaveMessagingBrokerTopicProcessorObjectManager (pWaveMessagingBrokerTopicProcessorObjectManager)
 {
-    prismAssert (NULL != m_pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
 
     addOperationMap (WAVE_MESSAGING_BROKER_TOPIC_PROCESSOR_PUBLISH, reinterpret_cast<WaveMessageHandler> (&WaveMessagingBrokerTopicProcessorPublishWorker::publishMessageHandler));
 }
@@ -32,18 +32,18 @@ void WaveMessagingBrokerTopicProcessorPublishWorker::publishMessageHandler (Wave
 {
     //trace (TRACE_LEVEL_DEVEL, " WaveMessagingBrokerTopicProcessorPublishWorker::publishMessageHandler : Entering ...");
 
-    prismAssert (NULL != pWaveMessagingBrokerTopicProcessorPublishMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerTopicProcessorPublishMessage, __FILE__, __LINE__);
 
     WaveBrokerBasedMessagePayload *pWaveBrokerBasedMessagePayload = pWaveMessagingBrokerTopicProcessorPublishMessage->getPWaveBrokerBasedMessagePayload ();
 
-    prismAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerBasedMessagePayload, __FILE__, __LINE__);
 
     string         topicName                   = m_pWaveMessagingBrokerTopicProcessorObjectManager->getTopicName ();
     vector<string> currentlySubscribedClients;
 
     WaveMessagingBrokerTopicRepository *pWaveMessagingBrokerTopicRepository = WaveMessagingBrokerTopicRepository::getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerTopicRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerTopicRepository, __FILE__, __LINE__);
 
     pWaveMessagingBrokerTopicRepository->getCurrentlySubscribedClientsForTopic (topicName, currentlySubscribedClients);
 
@@ -52,7 +52,7 @@ void WaveMessagingBrokerTopicProcessorPublishWorker::publishMessageHandler (Wave
 
     WaveMessagingBrokerClientRepository *pWaveMessagingBrokerClientRepository = WaveMessagingBrokerClientRepository::getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
 
     string &publisher = pWaveMessagingBrokerTopicProcessorPublishMessage->getUniqueStringForPublisher ();
 

@@ -203,7 +203,7 @@ InterLocationMessageTransportObjectManager *InterLocationMessageTransportObjectM
     if (NULL == pInterLocationMessageTransportObjectManager)
     {
         pInterLocationMessageTransportObjectManager = new InterLocationMessageTransportObjectManager ();
-        WaveNs::prismAssert (NULL != pInterLocationMessageTransportObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pInterLocationMessageTransportObjectManager, __FILE__, __LINE__);
     }
 
     return (pInterLocationMessageTransportObjectManager);
@@ -283,7 +283,7 @@ void InterLocationMessageTransportObjectManager::interLocationMulticastMessageTr
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "InterLocationMessageTransportObjectManager::interLocationMulticastMessageTransportHandler : Could not cache a message after sending out to a remote location.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     status = postToRemoteLocation (pInterLocationMulticastMessage, remoteLocations);
@@ -298,7 +298,7 @@ void InterLocationMessageTransportObjectManager::interLocationMulticastMessageTr
 
         pTempWaveMessage = m_remoteMessagesMap.removeMessage (originalMessageId);
 
-        prismAssert (pTempWaveMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
+        waveAssert (pTempWaveMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
 
         pInterLocationMulticastMessage->setCompletionStatus (status);
         reply (pInterLocationMulticastMessage);
@@ -331,7 +331,7 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "InterLocationMessageTransportObjectManager::interLocationMessageTransportHandler : Could not cache a message after sending out to a remote location.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             // FIXME : sagar : If we are not able to cache it.  What to do???
         }
@@ -364,7 +364,7 @@ void InterLocationMessageTransportObjectManager::interLocationMessageTransportHa
         if (true == isMessageCached)
         {
             pTempWaveMessage = m_remoteMessagesMap.removeMessage (messageId);
-            prismAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
+            waveAssert (pTempWaveMessage == pWaveMessage, __FILE__, __LINE__);
         }
 
         pWaveMessage->setCompletionStatus (status);
@@ -480,13 +480,13 @@ void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverTh
     // but we know that we never requested a timeout period for this message while sending this message using send.  So make sure that the message
     // that we got back is a non NULL message.
 
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     pWaveMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
 
     // Ensure that there is no context associated with this reposnse.
 
-    prismAssert (NULL == pContext, __FILE__, __LINE__);
+    waveAssert (NULL == pContext, __FILE__, __LINE__);
 
     // The response we recieved is destined for a remote location.  So deliver it to that remote location.
     // We must not cache this since it is a response.  We assume that we do not have to track this any more.  We are simply
@@ -567,7 +567,7 @@ void InterLocationMessageTransportObjectManager::replyToBeUsedByReceiverThreads 
 {
     // This method Need not be protected with locking mechanism though it can be executed from mutiple receiver threads.
 
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     if (NULL == pWaveMessage)
     {
@@ -641,7 +641,7 @@ void InterLocationMessageTransportObjectManager::replyToRemoteMessagesPendingOnL
             {
                 WaveMessage *pTempWaveMessage = getPendingMessage (pInterLocationMulticastMessage->getMessageIdForMessageToMulticast ());
 
-                prismAssert (pTempWaveMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
+                waveAssert (pTempWaveMessage == pInterLocationMulticastMessage, __FILE__, __LINE__);
 
                 pInterLocationMulticastMessage->messageOperationReleaseAccess ();
 

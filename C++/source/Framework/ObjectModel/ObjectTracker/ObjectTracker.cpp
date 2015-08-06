@@ -25,7 +25,7 @@ WaveMutex                                                                     Ob
 
 bool ObjectTracker::isAKnownMessage (const WaveManagedObject *pWaveManagedObject)
 {
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     map<const WaveManagedObject *, WaveThreadId>::iterator element    = m_currentlyAllocatedObjects.find (pWaveManagedObject);
     map<const WaveManagedObject *, WaveThreadId>::iterator endElement = m_currentlyAllocatedObjects.end ();
@@ -41,14 +41,14 @@ bool ObjectTracker::isAKnownMessage (const WaveManagedObject *pWaveManagedObject
 
 void ObjectTracker::addToObjectTracker(const WaveManagedObject *pWaveManagedObject, const bool &queryResults, WaveObjectManager *pWaveObjectManager)
 {
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     m_objectTrackerMutex.lock ();
 
     if (true == (isAKnownMessage (pWaveManagedObject)))
     {
         trace (TRACE_LEVEL_FATAL, "ObjectTracker::addToObjectTracker : Duplicate Tracking of a ManagedObject detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         m_objectTrackerMutex.unlock ();
 
@@ -61,7 +61,7 @@ void ObjectTracker::addToObjectTracker(const WaveManagedObject *pWaveManagedObje
         {
             // When bt tracker is turned off, we clear "MO pointer" --> "bt string" map too.
             trace (TRACE_LEVEL_FATAL, "ObjectTracker::addToObjectTracker : Duplicate Tracking of a ManagedObject with Bt detected.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             m_objectTrackerMutex.unlock ();
 
@@ -99,14 +99,14 @@ void ObjectTracker::addToObjectTracker(const WaveManagedObject *pWaveManagedObje
 
 void ObjectTracker::deleteFromObjectTracker(const WaveManagedObject* pWaveManagedObject)
 {
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     m_objectTrackerMutex.lock ();
 
     if (false == (isAKnownMessage (pWaveManagedObject)))
     {
         trace (TRACE_LEVEL_FATAL, "ObjectTracker::deleteFromObjectTracker :Deleting of an unknown ManagedObject. Possible DOUBLE DELETION / MEMORY CORRUPTION Detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         m_objectTrackerMutex.unlock ();
 
@@ -156,7 +156,7 @@ void ObjectTracker::getObjects (const WaveServiceId &prismServiceId, vector<stri
         {
             const WaveManagedObject *pWaveManagedObject = messageElement->second;
 
-            prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
             objectClassNames.push_back (pWaveManagedObject->getObjectClassName ());
             objectNames.push_back (pWaveManagedObject->getName ());
@@ -188,7 +188,7 @@ void ObjectTracker::getObjects (const WaveServiceId &prismServiceId, vector<stri
 
 bool ObjectTracker::isAKnownManagedObjectWithBt (const WaveManagedObject *pWaveManagedObject)
 {
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     map<const WaveManagedObject *, string>::iterator element    = m_currentlyAllocatedObjectsWithBt.find (pWaveManagedObject);
     map<const WaveManagedObject *, string>::iterator endElement = m_currentlyAllocatedObjectsWithBt.end ();
@@ -228,7 +228,7 @@ void ObjectTracker::addQueriedObjectsToBtTracker (vector<WaveManagedObject *> *p
         if (true == (isAKnownManagedObjectWithBt (pWaveManagedObject)))
         {
             trace (TRACE_LEVEL_FATAL, "ObjectTracker::addToObjectTracker : Duplicate Tracking of a ManagedObject with Bt detected.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             m_objectTrackerMutex.unlock ();
 

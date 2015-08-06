@@ -40,7 +40,7 @@ DistributedLogTestObjectManager *DistributedLogTestObjectManager::getInstance ()
 {
     static DistributedLogTestObjectManager *pDistributedLogTestObjectManager = new DistributedLogTestObjectManager ();
 
-    WaveNs::prismAssert (NULL != pDistributedLogTestObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pDistributedLogTestObjectManager, __FILE__, __LINE__);
 
     return (pDistributedLogTestObjectManager);
 }

@@ -31,7 +31,7 @@ WaveMessage *WaveMessageFactory::getMessageInstance (const WaveServiceId &servic
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Could not create message instance for  Service : " + FrameworkToolKit::getServiceNameById (serviceId) + ", Opcode = " + opcode + ".");
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Have you implemented the createMessageInstance on the object manager yet???.");
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Also, Please make sure that the opcode has been registered using addOperationMap on the corresponoding Object Manager.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveMessage);
@@ -99,7 +99,7 @@ WaveMessage *WaveMessageFactory::getManagementInterfaceMessageInstance (const st
         if (NULL == pWaveMessage)
         {
             trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getManagementInterfaceMessageInstance : Management Interface Message Instantiator for client \'" + waveClientName + "\' Returned NULL.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -108,14 +108,14 @@ WaveMessage *WaveMessageFactory::getManagementInterfaceMessageInstance (const st
             if (NULL == pManagementInterfaceMessage)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getManagementInterfaceMessageInstance : Only Management Interface Derivations can be used in messaging with Wave Clients.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
     }
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getManagementInterfaceMessageInstance : Management Interface Message Instantiator has not bee set for client \'" + waveClientName + "\'.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveMessage);

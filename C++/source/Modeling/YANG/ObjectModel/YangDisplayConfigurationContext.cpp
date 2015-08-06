@@ -110,10 +110,10 @@ bool YangDisplayConfigurationContext::YangElementDisplayState::getAndResetPendin
 
     if (true == m_newLinePendingInParent)
     {
-        prismAssert (NULL != m_pPreviousYangElementDisplayState, __FILE__, __LINE__);
+        waveAssert (NULL != m_pPreviousYangElementDisplayState, __FILE__, __LINE__);
 
         bool resetStatus = m_pPreviousYangElementDisplayState->getAndResetPendingNewLine ();
-        prismAssert (true == resetStatus, __FILE__, __LINE__);
+        waveAssert (true == resetStatus, __FILE__, __LINE__);
 
         m_newLinePendingInParent = false;
     }
@@ -280,9 +280,9 @@ YangDisplayConfigurationContext::ConfigLevel::ConfigLevel (vector<WaveManagedObj
       m_pYangList               (pYangList),
       m_currentIndex            (0)
 {
-    prismAssert (false == m_pWaveManagedObjects.empty (), __FILE__, __LINE__);
+    waveAssert (false == m_pWaveManagedObjects.empty (), __FILE__, __LINE__);
 
-    prismAssert (NULL != m_pYangList, __FILE__, __LINE__);
+    waveAssert (NULL != m_pYangList, __FILE__, __LINE__);
 }
 
 YangDisplayConfigurationContext::ConfigLevel::~ConfigLevel ()
@@ -335,12 +335,12 @@ WaveManagedObject *YangDisplayConfigurationContext::ConfigLevel::getPWaveManaged
 
 void YangDisplayConfigurationContext::ConfigLevel::addPWaveManagedObjectForConfigurationSegment (const string &configurationSegmentName, WaveManagedObject *pWaveManagedObject)
 {
-    prismAssert (m_pYangList->getConfigurationSegmentName () != configurationSegmentName, __FILE__, __LINE__);
+    waveAssert (m_pYangList->getConfigurationSegmentName () != configurationSegmentName, __FILE__, __LINE__);
 
     map<string, WaveManagedObject *>::const_iterator itr = m_configurationSegmentToPWaveManagedObjectMap.find (configurationSegmentName);
     map<string, WaveManagedObject *>::const_iterator end = m_configurationSegmentToPWaveManagedObjectMap.end  ();
 
-    prismAssert (end == itr, __FILE__, __LINE__);
+    waveAssert (end == itr, __FILE__, __LINE__);
 
     m_configurationSegmentToPWaveManagedObjectMap[configurationSegmentName] = pWaveManagedObject;
 }
@@ -348,7 +348,7 @@ void YangDisplayConfigurationContext::ConfigLevel::addPWaveManagedObjectForConfi
 void YangDisplayConfigurationContext::ConfigLevel::incrementCurrentIndex ()
 {
     UI32 numberOfWaveManagedObjects = m_pWaveManagedObjects.size ();
-    prismAssert (m_currentIndex < numberOfWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (m_currentIndex < numberOfWaveManagedObjects, __FILE__, __LINE__);
 
     map<string, WaveManagedObject *>::iterator itr = m_configurationSegmentToPWaveManagedObjectMap.begin ();
     map<string, WaveManagedObject *>::iterator end = m_configurationSegmentToPWaveManagedObjectMap.end   ();
@@ -366,22 +366,22 @@ void YangDisplayConfigurationContext::ConfigLevel::incrementCurrentIndex ()
 void YangDisplayConfigurationContext::ConfigLevel::getKeyAttributesAtCurrentIndex (vector<Attribute *> &pKeyAttributes) const
 {
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = m_pYangList->getPConfigurationSegmentInformation ();
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     const vector<string> &userDefinedKeyCombination = pConfigurationSegmentInformation->getUserDefinedKeyCombination ();
     UI32 numberOfAttributeNamesInUserDefinedKeyCombination = userDefinedKeyCombination.size ();
 
     WaveManagedObject *pWaveManagedObject = m_pWaveManagedObjects[m_currentIndex];
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     for (UI32 i = 0; i < numberOfAttributeNamesInUserDefinedKeyCombination; i++)
     {
         Attribute *pAttribute = pWaveManagedObject->getAttributeByName (userDefinedKeyCombination[i]);
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
 #if 0
         Attribute *pClonedAttribute = pAttribute->clone ();
-        prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
         pKeyAttributes.push_back (pClonedAttribute);
 #endif
@@ -393,7 +393,7 @@ void YangDisplayConfigurationContext::ConfigLevel::getKeyAttributesAtCurrentInde
 void YangDisplayConfigurationContext::ConfigLevel::getObjectIdForManagedObject (const string &managedObjectClassName, bool &found, ObjectId &objectId) const
 {
     WaveManagedObject *pWaveManagedObject = m_pWaveManagedObjects[m_currentIndex];
-    prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     string availableManagedObjectClassName = pWaveManagedObject->getObjectClassName ();
 
@@ -425,13 +425,13 @@ void YangDisplayConfigurationContext::ConfigLevel::setNextBatchOfWaveManagedObje
 
     // pYangList should match with the YangList for which this (i.e. last) ConfigLevel was created.
 
-    prismAssert (m_pYangList->getConfigurationSegmentName () == pYangList->getConfigurationSegmentName (), __FILE__, __LINE__);
-    prismAssert (true == m_configurationSegmentToPWaveManagedObjectMap.empty (), __FILE__, __LINE__);
-    prismAssert (false == pWaveManagedObjects.empty (), __FILE__, __LINE__);
+    waveAssert (m_pYangList->getConfigurationSegmentName () == pYangList->getConfigurationSegmentName (), __FILE__, __LINE__);
+    waveAssert (true == m_configurationSegmentToPWaveManagedObjectMap.empty (), __FILE__, __LINE__);
+    waveAssert (false == pWaveManagedObjects.empty (), __FILE__, __LINE__);
 
     UI32 numberOfWaveManagedObjects = m_pWaveManagedObjects.size ();
 
-    prismAssert (m_currentIndex == numberOfWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (m_currentIndex == numberOfWaveManagedObjects, __FILE__, __LINE__);
 
     // Assert checks end   ]
 
@@ -481,8 +481,8 @@ YangDisplayConfigurationContext::~YangDisplayConfigurationContext ()
         m_pFile = NULL;
     }
 
-    prismAssert (true == m_keyValueVector.empty (), __FILE__, __LINE__);
-    prismAssert (0 == m_currentIndexForCliTokens, __FILE__, __LINE__);
+    waveAssert (true == m_keyValueVector.empty (), __FILE__, __LINE__);
+    waveAssert (0 == m_currentIndexForCliTokens, __FILE__, __LINE__);
 
     map<string, WaveManagedObject *>::iterator itr = m_topLevelConfigurationSegmentToPWaveManagedObjectMap.begin ();
     map<string, WaveManagedObject *>::iterator end = m_topLevelConfigurationSegmentToPWaveManagedObjectMap.end ();
@@ -534,12 +534,12 @@ void YangDisplayConfigurationContext::incrementDepth ()
 {
     m_depth++;
 
-    prismAssert (0 != m_depth, __FILE__, __LINE__);
+    waveAssert (0 != m_depth, __FILE__, __LINE__);
 }
 
 void YangDisplayConfigurationContext::decrementDepth ()
 {
-    prismAssert (0 != m_depth, __FILE__, __LINE__);
+    waveAssert (0 != m_depth, __FILE__, __LINE__);
 
     m_depth--;
 }
@@ -560,7 +560,7 @@ void YangDisplayConfigurationContext::printOutput (const string &outputStringFor
             m_firstOutputIndex = currentIndex;
         }
 
-        prismAssert (0 < m_partialOutputBuffer.size (), __FILE__, __LINE__);
+        waveAssert (0 < m_partialOutputBuffer.size (), __FILE__, __LINE__);
 
         (m_partialOutputBuffer.back ()).append (outputStringForDisplay);
     }
@@ -599,7 +599,7 @@ void YangDisplayConfigurationContext::printOutput (const string &outputStringFor
 void YangDisplayConfigurationContext::printCustomTemplateConfigOutput (const string &outputStringForDisplay)
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     printPendingOutput ();
 
@@ -659,7 +659,7 @@ void YangDisplayConfigurationContext::printOutputToCliSession (const string &out
 
 void YangDisplayConfigurationContext::discardContentsOfPartialOutputBuffer ()
 {
-    prismAssert (0 < m_partialOutputBuffer.size (), __FILE__, __LINE__);
+    waveAssert (0 < m_partialOutputBuffer.size (), __FILE__, __LINE__);
 
     if (m_firstOutputIndex == (m_partialOutputBuffer.size () - 1))
     {
@@ -726,7 +726,7 @@ void YangDisplayConfigurationContext::printString (const string &outputStringFor
 void YangDisplayConfigurationContext::printNewLineIfRequired ()
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     bool newLinePending = pYangElementDisplayState->getAndResetPendingNewLine ();
 
@@ -758,7 +758,7 @@ string YangDisplayConfigurationContext::advanceToNextToken ()
 {
     UI32 numberOfCliTokens = m_cliTokens.size ();
 
-    prismAssert (m_currentIndexForCliTokens < numberOfCliTokens, __FILE__, __LINE__);
+    waveAssert (m_currentIndexForCliTokens < numberOfCliTokens, __FILE__, __LINE__);
 
     string tokenString = m_cliTokens[m_currentIndexForCliTokens];
 
@@ -771,7 +771,7 @@ string YangDisplayConfigurationContext::advanceToNextToken ()
 
 void YangDisplayConfigurationContext::decrementTokenPosition ()
 {
-    prismAssert (0 != m_currentIndexForCliTokens, __FILE__, __LINE__);
+    waveAssert (0 != m_currentIndexForCliTokens, __FILE__, __LINE__);
     m_currentIndexForCliTokens--;
 }
 
@@ -779,7 +779,7 @@ UI32 YangDisplayConfigurationContext::getNumberOfRemainingTokens () const
 {
     UI32 numberOfTokens = m_cliTokens.size ();
 
-    prismAssert (m_currentIndexForCliTokens <= numberOfTokens, __FILE__, __LINE__);
+    waveAssert (m_currentIndexForCliTokens <= numberOfTokens, __FILE__, __LINE__);
 
     return (numberOfTokens - m_currentIndexForCliTokens);
 }
@@ -803,7 +803,7 @@ void YangDisplayConfigurationContext::querySynchronously (WaveManagedObjectSynch
 
     lockYangUserInterface ();       // [ get the lock. (Now, this thread will again start traversing YangUserInterface tree.)
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     pResults->swap (pWaveManagedObjects);
     delete pResults;
@@ -812,7 +812,7 @@ void YangDisplayConfigurationContext::querySynchronously (WaveManagedObjectSynch
 YangDisplayConfigurationContext::ConfigLevel *YangDisplayConfigurationContext::getLastConfigLevel ()
 {
     UI32 numberOfConfigLevels = m_pConfigLevels.size ();
-    prismAssert (0 < numberOfConfigLevels, __FILE__, __LINE__);
+    waveAssert (0 < numberOfConfigLevels, __FILE__, __LINE__);
 
     return m_pConfigLevels[numberOfConfigLevels - 1];
 }
@@ -820,20 +820,20 @@ YangDisplayConfigurationContext::ConfigLevel *YangDisplayConfigurationContext::g
 void YangDisplayConfigurationContext::getKeyAttributesAtConfigLevel (const UI32 &indexInConfigLevels, vector<Attribute *> &pKeyAttributes) const
 {
     UI32 numberOfConfigLevels = m_pConfigLevels.size ();
-    prismAssert (indexInConfigLevels < numberOfConfigLevels, __FILE__, __LINE__);
+    waveAssert (indexInConfigLevels < numberOfConfigLevels, __FILE__, __LINE__);
 
     ConfigLevel *pConfigLevel = m_pConfigLevels[indexInConfigLevels];
-    prismAssert (NULL != pConfigLevel, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigLevel, __FILE__, __LINE__);
 
     pConfigLevel->getKeyAttributesAtCurrentIndex (pKeyAttributes);
 }
 
 void YangDisplayConfigurationContext::getManagedObjectIdForLastLevelInHierarchy (YangElement *pYangElement, ObjectId &ownerObjectId) const
 {
-    prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = pYangElement->getPConfigurationSegmentInformation ();
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     UI32 numberOfManagedObjectClassNamesInOrmHierarchy = pConfigurationSegmentInformation->getNumberOfManagedObjectClassNamesInOrmHierarchy ();
 
@@ -998,7 +998,7 @@ void YangDisplayConfigurationContext::getManagedObjectIdForLastLevelInHierarchy 
         else if (1 == numberOfPParentWaveManagedObjects)
         {
             WaveManagedObject *pParentWaveManagedObject = pParentWaveManagedObjects[0];
-            prismAssert (NULL != pParentWaveManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pParentWaveManagedObject, __FILE__, __LINE__);
 
             ownerObjectId = pParentWaveManagedObject->getObjectId ();
 
@@ -1008,7 +1008,7 @@ void YangDisplayConfigurationContext::getManagedObjectIdForLastLevelInHierarchy 
         {
             trace (TRACE_LEVEL_FATAL, string ("YangDisplayConfigurationContext::getManagedObjectIdForLastLevelInHierarchy : multiple managed objects found. (") + pYangElement->getYangName () + string (":") + pYangElement->getName () + string (" : ") + pYangElement->getCliTargetNodeName () + string ("). Details -"));
             debugPrintErrorInformation (waveManagedObjectSynchronousQueryContext, pParentWaveManagedObjects);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -1016,10 +1016,10 @@ void YangDisplayConfigurationContext::getManagedObjectIdForLastLevelInHierarchy 
 void YangDisplayConfigurationContext::getObjectIdForManagedObjectAtLevel (const UI32 &indexInConfigLevels, const string &managedObjectClassName, bool &found, ObjectId &objectId) const
 {
     UI32 numberOfConfigLevels = m_pConfigLevels.size ();
-    prismAssert (indexInConfigLevels < numberOfConfigLevels, __FILE__, __LINE__);
+    waveAssert (indexInConfigLevels < numberOfConfigLevels, __FILE__, __LINE__);
 
     ConfigLevel *pConfigLevel = m_pConfigLevels[indexInConfigLevels];
-    prismAssert (NULL != pConfigLevel, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigLevel, __FILE__, __LINE__);
 
     pConfigLevel->getObjectIdForManagedObject (managedObjectClassName, found, objectId);
 }
@@ -1027,7 +1027,7 @@ void YangDisplayConfigurationContext::getObjectIdForManagedObjectAtLevel (const 
 void YangDisplayConfigurationContext::getPWaveManagedObjects (YangList *pYangList, vector<WaveManagedObject *> &pWaveManagedObjects, const UI32 &pageNumber)
 {
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = pYangList->getPConfigurationSegmentInformation ();
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     string managedObjectClassName = pConfigurationSegmentInformation->getManagedObjectClassName ();
 
@@ -1114,7 +1114,7 @@ void YangDisplayConfigurationContext::getPWaveManagedObjects (YangList *pYangLis
                 }
 
                 Attribute *pAttribute = pConfigurationSegmentInformation->getClonedAttributeForKey (keyAttributeName);
-                prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+                waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
                 AttributeObjectIdAssociation *pAttributeObjectIdAssociation = dynamic_cast<AttributeObjectIdAssociation *> (pAttribute);
 
@@ -1177,10 +1177,10 @@ void YangDisplayConfigurationContext::getPWaveManagedObjects (YangList *pYangLis
 
 void YangDisplayConfigurationContext::getPWaveManagedObject (YangElement *pYangElement, WaveManagedObject *&pWaveManagedObject, const bool &disableFilters)
 {
-    prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = pYangElement->getPConfigurationSegmentInformation ();
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     string managedObjectClassName = pConfigurationSegmentInformation->getManagedObjectClassName ();
 
@@ -1203,7 +1203,7 @@ void YangDisplayConfigurationContext::getPWaveManagedObject (YangElement *pYangE
     if (0 < numberOfConfigLevels)
     {
         pConfigLevel = getLastConfigLevel ();
-        prismAssert (NULL != pConfigLevel, __FILE__, __LINE__);
+        waveAssert (NULL != pConfigLevel, __FILE__, __LINE__);
 
         bool    isKnown                     = false;
 
@@ -1275,7 +1275,7 @@ void YangDisplayConfigurationContext::getPWaveManagedObject (YangElement *pYangE
             UI32 numberOfKeyAttributes = pKeyAttributes.size ();
 
             // Few elements under a list dont have keys !, the top level lists are like singlton... Do not assert for now.
-            // prismAssert (numberOfAttributeNamesInUserDefinedKeyCombination == numberOfKeyAttributes, __FILE__, __LINE__);
+            // waveAssert (numberOfAttributeNamesInUserDefinedKeyCombination == numberOfKeyAttributes, __FILE__, __LINE__);
 
             if (numberOfAttributeNamesInUserDefinedKeyCombination == numberOfKeyAttributes)
             {
@@ -1308,7 +1308,7 @@ void YangDisplayConfigurationContext::getPWaveManagedObject (YangElement *pYangE
     {
         trace (TRACE_LEVEL_FATAL, string ("YangDisplayConfigurationContext::getPWaveManagedObject : multiple managed objects found. (") + pYangElement->getYangName () + string (":") + pYangElement->getName () + string (" : ") + pYangElement->getCliTargetNodeName () + string ("). Details -"));
         debugPrintErrorInformation (waveManagedObjectSynchronousQueryContext, pWaveManagedObjects);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 < numberOfConfigLevels)
@@ -1326,7 +1326,7 @@ void YangDisplayConfigurationContext::addPWaveManagedObjectForTopLevelConfigurat
     map<string, WaveManagedObject *>::iterator itr = m_topLevelConfigurationSegmentToPWaveManagedObjectMap.find (configurationSegmentName);
     map<string, WaveManagedObject *>::iterator end = m_topLevelConfigurationSegmentToPWaveManagedObjectMap.end ();
 
-    prismAssert (end == itr, __FILE__, __LINE__);
+    waveAssert (end == itr, __FILE__, __LINE__);
 
     m_topLevelConfigurationSegmentToPWaveManagedObjectMap[configurationSegmentName] = pWaveManagedObject;
 }
@@ -1364,7 +1364,7 @@ ObjectId YangDisplayConfigurationContext::getOwnerPartitionObjectId () const
 void YangDisplayConfigurationContext::addConfigurationLevel (vector<WaveManagedObject *> &pWaveManagedObjects, YangList *pYangList)
 {
     ConfigLevel *pConfigLevel = new ConfigLevel (pWaveManagedObjects, pYangList);
-    prismAssert (NULL != pConfigLevel, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigLevel, __FILE__, __LINE__);
 
     m_pConfigLevels.push_back (pConfigLevel);
 }
@@ -1372,7 +1372,7 @@ void YangDisplayConfigurationContext::addConfigurationLevel (vector<WaveManagedO
 void YangDisplayConfigurationContext::addNextBatchOfWaveManagedObjects (vector<WaveManagedObject *> &pWaveManagedObjects, YangList *pYangList)
 {
     ConfigLevel *pConfigLevel = getLastConfigLevel ();
-    prismAssert (NULL != pConfigLevel, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigLevel, __FILE__, __LINE__);
 
     pConfigLevel->setNextBatchOfWaveManagedObjects (pWaveManagedObjects, pYangList);
 }
@@ -1380,7 +1380,7 @@ void YangDisplayConfigurationContext::addNextBatchOfWaveManagedObjects (vector<W
 void YangDisplayConfigurationContext::deleteLastConfigLevel ()
 {
     UI32 numberOfConfigLevels = m_pConfigLevels.size ();
-    prismAssert (0 < numberOfConfigLevels, __FILE__, __LINE__); // default config level should always be present.
+    waveAssert (0 < numberOfConfigLevels, __FILE__, __LINE__); // default config level should always be present.
 
     ConfigLevel *pConfigLevel = m_pConfigLevels.back ();
     m_pConfigLevels.pop_back ();
@@ -1391,7 +1391,7 @@ void YangDisplayConfigurationContext::deleteLastConfigLevel ()
 void YangDisplayConfigurationContext::incrementIndexForLastConfigLevel ()
 {
     ConfigLevel *pConfigLevel = getLastConfigLevel ();
-    prismAssert (NULL != pConfigLevel, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigLevel, __FILE__, __LINE__);
 
     pConfigLevel->incrementCurrentIndex ();
 }
@@ -1399,7 +1399,7 @@ void YangDisplayConfigurationContext::incrementIndexForLastConfigLevel ()
 void YangDisplayConfigurationContext::addYangElementDisplayState (const bool &isSuppressedMode, const bool &isCompactSyntax)
 {
     YangElementDisplayState *pYangElementDisplayState = new YangElementDisplayState (m_pLastYangElementDisplayState, isSuppressedMode, isCompactSyntax);
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     m_pLastYangElementDisplayState = pYangElementDisplayState;
 }
@@ -1411,7 +1411,7 @@ YangDisplayConfigurationContext::YangElementDisplayState *YangDisplayConfigurati
 
 void YangDisplayConfigurationContext::removeLastYangElementDisplayState ()
 {
-    prismAssert (NULL != m_pLastYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != m_pLastYangElementDisplayState, __FILE__, __LINE__);
 
     YangElementDisplayState *pPreviousYangElementDisplayState = m_pLastYangElementDisplayState->getPreviousYangElementDisplayState ();
 
@@ -1435,7 +1435,7 @@ void YangDisplayConfigurationContext::removeLastYangElementDisplayState ()
         }
         else
         {
-            prismAssert (false == m_pLastYangElementDisplayState->getIsOutputPending (), __FILE__, __LINE__);
+            waveAssert (false == m_pLastYangElementDisplayState->getIsOutputPending (), __FILE__, __LINE__);
 
             // printPendingOutput ();
         }
@@ -1449,7 +1449,7 @@ void YangDisplayConfigurationContext::removeLastYangElementDisplayState ()
 void YangDisplayConfigurationContext::printNoConfigString (const string &outputString)
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     printPendingOutput ();
 
@@ -1473,7 +1473,7 @@ void YangDisplayConfigurationContext::printNoConfigString (const string &outputS
 void YangDisplayConfigurationContext::printConfigString (const string &outputString, const bool &isCliIncompleteCommand)
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     printPendingOutput ();
 
@@ -1517,7 +1517,7 @@ void YangDisplayConfigurationContext::printConfigString (const string &outputStr
 
 #if 0
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     printPendingOutput ();
 
@@ -1562,7 +1562,7 @@ void YangDisplayConfigurationContext::printConfigString (const string &outputStr
 void YangDisplayConfigurationContext::setPrefixString (const string &prefixString)
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     pYangElementDisplayState->setPrefixString (prefixString);
 }
@@ -1571,7 +1571,7 @@ void YangDisplayConfigurationContext::printPendingOutput ()
 {
 #if 1
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     bool newLinePendingInPendingOutputString = pYangElementDisplayState->getNewLinePendingInPendingOutputString ();
 
@@ -1613,7 +1613,7 @@ void YangDisplayConfigurationContext::printHeaderString (const string &outputStr
     printPendingOutput ();
 
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     string prefixString;
 
@@ -1635,7 +1635,7 @@ void YangDisplayConfigurationContext::printHeaderString (const string &outputStr
 void YangDisplayConfigurationContext::setPendingOutputString (const string &pendingOutputString)
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     pYangElementDisplayState->setPendingOutputString (pendingOutputString, m_depth, getNewLineString());
 }
@@ -1643,7 +1643,7 @@ void YangDisplayConfigurationContext::setPendingOutputString (const string &pend
 bool YangDisplayConfigurationContext::getOutputWasPrinted () const
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     return (pYangElementDisplayState->getOutputWasPrinted ());
 }
@@ -1651,7 +1651,7 @@ bool YangDisplayConfigurationContext::getOutputWasPrinted () const
 void YangDisplayConfigurationContext::resetPendingOutputString ()
 {
     YangElementDisplayState *pYangElementDisplayState = getLastYangElementDisplayState ();
-    prismAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementDisplayState, __FILE__, __LINE__);
 
     pYangElementDisplayState->resetPendingOutputString ();
 }
@@ -1668,7 +1668,7 @@ void YangDisplayConfigurationContext::incrementCommandKeyIndex ()
 
 void YangDisplayConfigurationContext::setCommandKeyIndex (UI32 index)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     m_currentCommandKeyIndex = index; 
 }
 
@@ -1679,7 +1679,7 @@ void YangDisplayConfigurationContext::decrementCommandKeyIndex ()
 
 void YangDisplayConfigurationContext::removeLastCommandKey ()
 {
-    prismAssert (false == m_keyValueVector.empty (), __FILE__, __LINE__);
+    waveAssert (false == m_keyValueVector.empty (), __FILE__, __LINE__);
     m_keyValueVector.pop_back ();
 }
 
@@ -1722,7 +1722,7 @@ bool YangDisplayConfigurationContext::getIsOwnerWaveNodeObjectIdFilterSet () con
 
 void YangDisplayConfigurationContext::setOwnerWaveNodeObjectIdFilter (const ObjectId &ownerWaveNodeObjectIdFilter)
 {
-    prismAssert (ObjectId::NullObjectId != ownerWaveNodeObjectIdFilter, __FILE__, __LINE__);
+    waveAssert (ObjectId::NullObjectId != ownerWaveNodeObjectIdFilter, __FILE__, __LINE__);
 
     m_ownerWaveNodeObjectIdFilter       = ownerWaveNodeObjectIdFilter;
     m_ownerWaveNodeObjectIdFilterIsSet  = true;
@@ -1730,7 +1730,7 @@ void YangDisplayConfigurationContext::setOwnerWaveNodeObjectIdFilter (const Obje
 
 ObjectId YangDisplayConfigurationContext::getOwnerWaveNodeObjectIdFilter () const
 {
-    prismAssert (true == m_ownerWaveNodeObjectIdFilterIsSet, __FILE__, __LINE__);
+    waveAssert (true == m_ownerWaveNodeObjectIdFilterIsSet, __FILE__, __LINE__);
 
     return m_ownerWaveNodeObjectIdFilter;
 }
@@ -1796,9 +1796,9 @@ WaveXPathExpressionValue YangDisplayConfigurationContext::evaluateValueOfLocatio
         }
 
         const YangUserInterface *pYangUserInterface = dynamic_cast<const YangUserInterface *> (pRelativeRootYangElement);
-        prismAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
+        waveAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
 
-        prismAssert (0 < numberOfForwardSteps, __FILE__, __LINE__);
+        waveAssert (0 < numberOfForwardSteps, __FILE__, __LINE__);
 
         string firstForwardStep;
         string firstForwardStepNamespaceString;
@@ -1816,11 +1816,11 @@ WaveXPathExpressionValue YangDisplayConfigurationContext::evaluateValueOfLocatio
         for (UI32 i = 0; i < numberOfStepsToReachRelativeRoot; i++)
         {
             pRelativeRootYangElement = pRelativeRootYangElement->getPParentElement ();
-            prismAssert (NULL != pRelativeRootYangElement, __FILE__, __LINE__);
+            waveAssert (NULL != pRelativeRootYangElement, __FILE__, __LINE__);
         }
     }
 
-    prismAssert (NULL != pRelativeRootYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pRelativeRootYangElement, __FILE__, __LINE__);
 
     const YangElement *pYangElementForStep = pRelativeRootYangElement;
 
@@ -1831,18 +1831,18 @@ WaveXPathExpressionValue YangDisplayConfigurationContext::evaluateValueOfLocatio
 
         locationPath.getForwardStepNameAtIndex (i, forwardStepName, forwardStepNamespaceString);
 
-        prismAssert (false == forwardStepName.empty (), __FILE__, __LINE__);
+        waveAssert (false == forwardStepName.empty (), __FILE__, __LINE__);
 
         pYangElementForStep = pYangElementForStep->getUniqueYangElementByName (forwardStepName); // TODO : add namespace based search.
-        prismAssert (NULL != pYangElementForStep, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElementForStep, __FILE__, __LINE__);
     }
 
-    prismAssert (NULL != pYangElementForStep, __FILE__, __LINE__);
+    waveAssert (NULL != pYangElementForStep, __FILE__, __LINE__);
 
     // cout << "Found [" << pYangElementForStep->getYangName () << ":" << pYangElementForStep->getName () << "]" << "\r\n";
 
     const YangDataElement *pYangDataElement = dynamic_cast<const YangDataElement *> (pYangElementForStep);
-    prismAssert (NULL != pYangDataElement, __FILE__, __LINE__);
+    waveAssert (NULL != pYangDataElement, __FILE__, __LINE__);
 
     WaveManagedObject *pWaveManagedObject = NULL;
 
@@ -1900,7 +1900,7 @@ bool YangDisplayConfigurationContext::getPrintDefaultValuesFlag () const
 // map<string, WaveXPathExpressionValue>   m_cachedValuesForAbsoluteXPathLocationPaths;
 void YangDisplayConfigurationContext::getCachedValuesForAbsoluteXPathLocationPath  (const string &locationPathString, WaveXPathExpressionValue &resultValue, bool &valueFound) const
 {
-    prismAssert (false == locationPathString.empty (), __FILE__, __LINE__);
+    waveAssert (false == locationPathString.empty (), __FILE__, __LINE__);
 
     valueFound = false;
 
@@ -1918,12 +1918,12 @@ void YangDisplayConfigurationContext::addValueForAbsoluteXPathLocationPath (cons
 {
     // Assertion checks begin   [
 
-    prismAssert (false == locationPathString.empty (), __FILE__, __LINE__);
+    waveAssert (false == locationPathString.empty (), __FILE__, __LINE__);
 
     map<string, WaveXPathExpressionValue>::const_iterator itr = m_cachedValuesForAbsoluteXPathLocationPaths.find (locationPathString);
     map<string, WaveXPathExpressionValue>::const_iterator end = m_cachedValuesForAbsoluteXPathLocationPaths.end ();
 
-    prismAssert (end == itr, __FILE__, __LINE__);
+    waveAssert (end == itr, __FILE__, __LINE__);
 
     // Assertion checks end     ]
 
@@ -1938,12 +1938,12 @@ ResourceId YangDisplayConfigurationContext::addAndAttributesForKeyValues (WaveMa
     UI32 numberOfAttributeNamesInUserDefinedKeyCombination  = userDefinedKeyCombination.size ();
     UI32 numberOfKeyAttributesReceived                      = pKeyAttributes.size ();
 
-    prismAssert (numberOfAttributeNamesInUserDefinedKeyCombination == numberOfKeyAttributesReceived, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesInUserDefinedKeyCombination == numberOfKeyAttributesReceived, __FILE__, __LINE__);
 
     for (UI32 i = 0; i < numberOfAttributeNamesInUserDefinedKeyCombination; i++)
     {
         Attribute *pKeyAttributeReceived = pKeyAttributes[i];
-        prismAssert (NULL != pKeyAttributeReceived, __FILE__, __LINE__);
+        waveAssert (NULL != pKeyAttributeReceived, __FILE__, __LINE__);
 
         string plainString;
         pKeyAttributeReceived->getPlainString (plainString);
@@ -1953,13 +1953,13 @@ ResourceId YangDisplayConfigurationContext::addAndAttributesForKeyValues (WaveMa
         map<string, Attribute*>::const_iterator itr = userDefinedKeyCombinationWithTypes.find (keyAttributeNameInTargetManagedObject);
         map<string, Attribute*>::const_iterator end = userDefinedKeyCombinationWithTypes.end ();
 
-        prismAssert (end != itr, __FILE__, __LINE__);
+        waveAssert (end != itr, __FILE__, __LINE__);
 
         Attribute *pKeyAttributeInTargetManagedObject = itr->second;
-        prismAssert (NULL != pKeyAttributeInTargetManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pKeyAttributeInTargetManagedObject, __FILE__, __LINE__);
 
         Attribute *pClonedAttribute = pKeyAttributeInTargetManagedObject->clone ();
-        prismAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedAttribute, __FILE__, __LINE__);
 
         AttributeObjectIdAssociation *pAttributeObjectIdAssociation = dynamic_cast<AttributeObjectIdAssociation *> (pClonedAttribute);
 
@@ -1992,8 +1992,8 @@ ResourceId YangDisplayConfigurationContext::addAndAttributesForKeyValues (WaveMa
 
 ResourceId YangDisplayConfigurationContext::getObjectIdOfAssocociatedManagedObjectWithKey (const string &keyValue, AttributeObjectIdAssociation *pAssociationAttribute, const bool &applyNodeSpecificFilter) const
 {
-    prismAssert (false == keyValue.empty (), __FILE__, __LINE__);
-    prismAssert (NULL != pAssociationAttribute, __FILE__, __LINE__);
+    waveAssert (false == keyValue.empty (), __FILE__, __LINE__);
+    waveAssert (NULL != pAssociationAttribute, __FILE__, __LINE__);
 
     string associatedManagedObjectClassName = pAssociationAttribute->getAssociatedTo ();
 
@@ -2005,18 +2005,18 @@ ResourceId YangDisplayConfigurationContext::getObjectIdOfAssocociatedManagedObje
     vector<string> userDefinedKeyCombination;
     map<string, Attribute*> userDefinedKeyCombinationWithTypes = OrmRepository::getUserDefinedKeyCombinationWithTypesForTable (associatedManagedObjectClassName, userDefinedKeyCombination);
 
-    prismAssert (1 == userDefinedKeyCombination.size (), __FILE__, __LINE__);
+    waveAssert (1 == userDefinedKeyCombination.size (), __FILE__, __LINE__);
 
     map<string, Attribute*>::const_iterator itrElement  = userDefinedKeyCombinationWithTypes.find (userDefinedKeyCombination[0]);
     map<string, Attribute*>::const_iterator endElement  = userDefinedKeyCombinationWithTypes.end ();
 
-    prismAssert (endElement != itrElement, __FILE__, __LINE__);
+    waveAssert (endElement != itrElement, __FILE__, __LINE__);
 
     Attribute *pKeyAttribute = itrElement->second;
-    prismAssert (NULL != pKeyAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pKeyAttribute, __FILE__, __LINE__);
 
     Attribute *pClonedKeyAttribute = pKeyAttribute->clone ();
-    prismAssert (NULL != pClonedKeyAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedKeyAttribute, __FILE__, __LINE__);
 
     ResourceId loadFromPlainStringStatus = pClonedKeyAttribute->loadFromPlainString (keyValue);
 
@@ -2033,7 +2033,7 @@ ResourceId YangDisplayConfigurationContext::getObjectIdOfAssocociatedManagedObje
         if (true == OrmRepository::isALocalManagedObject (associatedManagedObjectClassName))
         {
             ObjectId ownerWaveNodeObjectId = getOwnerWaveNodeObjectId ();
-            prismAssert (ObjectId::NullObjectId != ownerWaveNodeObjectId, __FILE__, __LINE__);
+            waveAssert (ObjectId::NullObjectId != ownerWaveNodeObjectId, __FILE__, __LINE__);
 
             waveManagedObjectSynchronousQueryContext.addAndAttribute (new AttributeObjectId (ownerWaveNodeObjectId, "ownerWaveNodeObjectId"));
         }
@@ -2051,7 +2051,7 @@ ResourceId YangDisplayConfigurationContext::getObjectIdOfAssocociatedManagedObje
     else if (1 == numberOfResults)
     {
         WaveManagedObject *pAssociatedWaveManagedObject = pAssociatedManagedObjects[0];
-        prismAssert (NULL != pAssociatedWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pAssociatedWaveManagedObject, __FILE__, __LINE__);
 
         pAssociationAttribute->setValue (pAssociatedWaveManagedObject->getObjectId ());
 
@@ -2063,7 +2063,7 @@ ResourceId YangDisplayConfigurationContext::getObjectIdOfAssocociatedManagedObje
     {
         trace (TRACE_LEVEL_FATAL, string ("YangDisplayConfigurationContext::getObjectIdOfAssocociatedManagedObjectWithKey : multiple managed objects found. Details -"));
         debugPrintErrorInformation (waveManagedObjectSynchronousQueryContext, pAssociatedManagedObjects);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return WAVE_MESSAGE_ERROR;
     }
 }
@@ -2115,7 +2115,7 @@ void YangDisplayConfigurationContext::debugPrintErrorInformation (WaveManagedObj
     for (UI32 i = 0; i < numberOfManagedObjectsToPrint; i++)
     {
         WaveManagedObject *pWaveManagedObject = pWaveManagedObjects[i];
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_ERROR, string ("Managed Object ") + (i + 1) + string ("."));
 
@@ -2147,8 +2147,8 @@ bool YangDisplayConfigurationContext::isCommandAbortedByUser () const
 
 void YangDisplayConfigurationContext::setPYangUserInterfaceAndLock (YangUserInterface *pYangUserInterface)
 {
-    prismAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
-    prismAssert (NULL == m_pYangUserInterface, __FILE__, __LINE__); // It should be set once.
+    waveAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
+    waveAssert (NULL == m_pYangUserInterface, __FILE__, __LINE__); // It should be set once.
 
     m_pYangUserInterface = pYangUserInterface;
 
@@ -2162,14 +2162,14 @@ void YangDisplayConfigurationContext::releasePYangUserInterfaceLock ()
 
 void YangDisplayConfigurationContext::lockYangUserInterface () const
 {
-    prismAssert (NULL != m_pYangUserInterface, __FILE__, __LINE__);
+    waveAssert (NULL != m_pYangUserInterface, __FILE__, __LINE__);
 
     m_pYangUserInterface->lock ();
 }
 
 void YangDisplayConfigurationContext::unlockYangUserInterface () const
 {
-    prismAssert (NULL != m_pYangUserInterface, __FILE__, __LINE__);
+    waveAssert (NULL != m_pYangUserInterface, __FILE__, __LINE__);
 
     m_pYangUserInterface->unlock ();
 }
@@ -2256,7 +2256,7 @@ WaveYangMemberElementFilterInformation::WaveYangMemberElementFilterInformation (
 
 WaveYangMemberElementFilterInformation::~WaveYangMemberElementFilterInformation ()
 {
-    prismAssert (0 == m_numberOfTokensAbsorbed, __FILE__, __LINE__);
+    waveAssert (0 == m_numberOfTokensAbsorbed, __FILE__, __LINE__);
 
     if (NULL != m_pNextWaveYangMemberElementFilterInformation)
     {
@@ -2268,7 +2268,7 @@ ResourceId WaveYangMemberElementFilterInformation::doesFilterInformationMatch (Y
 {
     ResourceId returnStatus;
 
-    prismAssert (NULL != m_pYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != m_pYangElement, __FILE__, __LINE__);
 
     YangElement *pNonConstYangElement = const_cast<YangElement *> (m_pYangElement);
 

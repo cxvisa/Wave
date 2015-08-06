@@ -37,7 +37,7 @@ YangElement *YangWhen::createInstance ()
 
 void YangWhen::setConditionString (const string &conditionString)
 {
-    prismAssert (false == conditionString.empty (), __FILE__, __LINE__);
+    waveAssert (false == conditionString.empty (), __FILE__, __LINE__);
 
     m_conditionString = conditionString;
 }
@@ -56,7 +56,7 @@ void YangWhen::processAttribute (const string &attributeName, const string &attr
         // trace (TRACE_LEVEL_INFO, string ("YangWhen::processAttribute : conditionString [") + getConditionString () + string ("]"));
 
         m_pWaveXPathExpressionElement = WaveXPathExpressionElement::buildWaveXPathExpressionElementTree (getConditionString ());
-        prismAssert (NULL != m_pWaveXPathExpressionElement, __FILE__, __LINE__);
+        waveAssert (NULL != m_pWaveXPathExpressionElement, __FILE__, __LINE__);
 
         // m_pWaveXPathExpressionElement->debugPrint (0);
     }
@@ -64,10 +64,10 @@ void YangWhen::processAttribute (const string &attributeName, const string &attr
 
 bool YangWhen::evaluateCondition (YangDisplayConfigurationContext *pYangDisplayConfigurationContext)
 {
-    prismAssert (NULL != m_pWaveXPathExpressionElement, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveXPathExpressionElement, __FILE__, __LINE__);
 
     YangElement *pParentYangElement = getPParentElement ();
-    prismAssert (NULL != pParentYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pParentYangElement, __FILE__, __LINE__);
 
     // trace (TRACE_LEVEL_INFO, string ("YangWhen::evaluateCondition : conditionString [") + getConditionString () + string ("]"));
 

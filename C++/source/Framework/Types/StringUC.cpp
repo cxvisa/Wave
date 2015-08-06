@@ -92,7 +92,7 @@ void StringUC::fromString (const string &pStringUCInStringFormat)
     if (position == string::npos)
     {
         trace (TRACE_LEVEL_FATAL, "StringUC::fromString : pStringUCInStringFormat must have #");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     tempString = pStringUCInStringFormat.substr (position + 1);
@@ -101,7 +101,7 @@ void StringUC::fromString (const string &pStringUCInStringFormat)
     {
         string tempStringForIsConfigured = tempString.substr ((stringLength + 1));
 
-        prismAssert (1 == tempStringForIsConfigured.size (), __FILE__, __LINE__);
+        waveAssert (1 == tempStringForIsConfigured.size (), __FILE__, __LINE__);
 
         tempIsUserConfigured = strtoul(tempStringForIsConfigured.c_str (), NULL, 10);
         m_pIsUserConfigured  = tempIsUserConfigured ? true : false;

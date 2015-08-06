@@ -107,7 +107,7 @@ DateTime AttributeDateTime::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDateTime::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempDateTime);
     }
 }
@@ -121,7 +121,7 @@ void AttributeDateTime::setValue (const DateTime &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDateTime::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -144,13 +144,13 @@ void AttributeDateTime::getAllValues (SI16 *year, UI8 *month, UI8 *day, UI8 *hou
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDateTimeVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeDateTime::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeDateTime == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeDateTime == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeDateTime == (getAttributeType ()))
     {
@@ -235,7 +235,7 @@ void AttributeDateTime::getSqlForSelect (string &sqlForSelect, AttributeConditio
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeDateTime::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -418,7 +418,7 @@ vector<DateTime> AttributeDateTimeVector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDateTimeVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -432,13 +432,13 @@ void AttributeDateTimeVector::setValue (const vector<DateTime> &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDateTimeVector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeDateTimeVector::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeDateTimeVector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeDateTimeVector == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeDateTimeVector == (getAttributeType ()))
     {
@@ -490,7 +490,7 @@ void AttributeDateTimeVector::getSqlForSelect (string &sqlForSelect, AttributeCo
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeDateTimeVector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -636,7 +636,7 @@ void AttributeDateTimeVector::deleteAttributeFromVector (Attribute *attribute)
         else
         {   
             trace (TRACE_LEVEL_FATAL, string ("AttributeDateTimeVector::deleteAttributeFromVector : Element to be deleted not found ."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

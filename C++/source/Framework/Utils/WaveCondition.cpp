@@ -12,7 +12,7 @@ namespace WaveNs
 
 WaveCondition::WaveCondition (WaveMutex *pAssociatedWaveMutex)
 {
-    prismAssert (NULL != pAssociatedWaveMutex, __FILE__, __LINE__);
+    waveAssert (NULL != pAssociatedWaveMutex, __FILE__, __LINE__);
 
     pthread_cond_init (&m_condition, NULL);
     m_pAssociatedWaveMutex = pAssociatedWaveMutex;
@@ -21,7 +21,7 @@ WaveCondition::WaveCondition (WaveMutex *pAssociatedWaveMutex)
 WaveCondition::WaveCondition (const WaveCondition &waveCondition)
 {
     trace (TRACE_LEVEL_FATAL, "WaveCondition::WaveCondition : Copy constructing WaveCondition does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 WaveCondition::~WaveCondition ()
@@ -32,7 +32,7 @@ WaveCondition::~WaveCondition ()
 WaveCondition &WaveCondition::operator = (const WaveCondition &waveCondition)
 {
     trace (TRACE_LEVEL_FATAL, "WaveCondition::operator = : Assigning to a WaveCondition does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
@@ -47,7 +47,7 @@ WaveConditionStatus WaveCondition::wait ()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_CONDITION_ERROR);
     }
 }
@@ -62,7 +62,7 @@ WaveConditionStatus WaveCondition::resume ()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_CONDITION_ERROR);
     }
 }
@@ -77,7 +77,7 @@ WaveConditionStatus WaveCondition::resumeAll ()
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (WAVE_CONDITION_ERROR);
     }
 }

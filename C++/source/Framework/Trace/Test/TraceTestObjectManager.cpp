@@ -28,7 +28,7 @@ TraceTestObjectManager *TraceTestObjectManager::getInstance ()
     if (NULL == pTraceTestObjectManager)
     {
         pTraceTestObjectManager = new TraceTestObjectManager ();
-        WaveNs::prismAssert (NULL != pTraceTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pTraceTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pTraceTestObjectManager);

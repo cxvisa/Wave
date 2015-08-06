@@ -32,7 +32,7 @@ void MultiDatabaseObjectManagerSetupServersWorker::boot (WaveAsynchronousContext
     DatabaseMultiConnection *pDatabaseMultiConnection  = DatabaseMultiConnection::getInstance ();
     ResourceId               status                    = WAVE_MESSAGE_SUCCESS;
 
-    prismAssert (NULL != pDatabaseMultiConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseMultiConnection, __FILE__, __LINE__);
 
     tracePrintf (TRACE_LEVEL_DEBUG, false, false, "MultiDatabaseObjectManagerSetupServersWorker::boot : The number of server connections is %d \n", numberOfServerConnections);
 
@@ -97,7 +97,7 @@ void MultiDatabaseObjectManagerSetupServersWorker::boot (WaveAsynchronousContext
                 UI32 numberOfConfigurationSegmentnames              = configurationSegmentNames.size ();
                 UI32 numberOfClassNamesForConfigurationSegmentNames = classNamesForConfigurationSegmentNames.size ();
 
-                prismAssert (numberOfConfigurationSegmentnames == numberOfClassNamesForConfigurationSegmentNames, __FILE__, __LINE__);
+                waveAssert (numberOfConfigurationSegmentnames == numberOfClassNamesForConfigurationSegmentNames, __FILE__, __LINE__);
 
                 trace (TRACE_LEVEL_INFO, "MultiDatabaseObjectManagerSetupServersWorker::boot : " + serverName + ": Successfully obtained Managed Object Details.");
                 trace (TRACE_LEVEL_INFO, "MultiDatabaseObjectManagerSetupServersWorker::boot :     Number Of Managed Object Names                    : " + (Integer (numberOfManagedObjectNames)).toString ());

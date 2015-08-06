@@ -44,7 +44,7 @@ bool Uuid::fromString(const string &uuidInStringFormat)
     int                    success = -1;
 
     in = new char [uuidInStringFormat.size() + 1];
-    WaveNs::prismAssert (NULL != in, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != in, __FILE__, __LINE__);
 	strcpy(in, uuidInStringFormat.c_str());
 	success = uuid_parse(in, m_uuidInBinary);
 	delete [] in;
@@ -112,7 +112,7 @@ UI64   Uuid::getUuidHash () const
     else if (errno == ERANGE)
     {
         tracePrintf (TRACE_LEVEL_FATAL, "Uuid::getUuidHash : hash value returned is greater than required range or strtoull has failed : %016llX", uniqueHash);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return uniqueHash;

@@ -55,7 +55,7 @@ void UnifiedClientUpdateMessage::initializeFromContext( const WaveManagedObjectA
     if (0 == attributesVector.size ())
     {   
         trace (TRACE_LEVEL_FATAL, string ("UnifiedClientUpdateMessage::UnifiedClientUpdateMessage:: No attributes to send to the backend"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     for (UI32 i = 0; i < attributesVector.size (); i++)
@@ -167,27 +167,27 @@ const void *UnifiedClientUpdateMessage::getCStructureForInputs ()
 
     UI32                    parentManagedObjectNamesSize = m_parentManagedObjectNames.size();
 
-    prismAssert (NULL != pInput, __FILE__, __LINE__);
+    waveAssert (NULL != pInput, __FILE__, __LINE__);
     
     if (0 != attributeNamesSize)
     {
-        prismAssert (attributeNamesSize == attributeValuesSize, __FILE__, __LINE__);
-        prismAssert (attributeNamesSize == attributeTypeSize, __FILE__, __LINE__);
+        waveAssert (attributeNamesSize == attributeValuesSize, __FILE__, __LINE__);
+        waveAssert (attributeNamesSize == attributeTypeSize, __FILE__, __LINE__);
 
 
         // Allocate memory for attributeNames
         pInput->attributeNames = new const char *[attributeNamesSize];
-        prismAssert (NULL != pInput->attributeNames, __FILE__, __LINE__);
+        waveAssert (NULL != pInput->attributeNames, __FILE__, __LINE__);
 
         //Allocate memory for all the attributeValues 
         pInput->attributeValues = new WaveCValue [attributeValuesSize];
-        prismAssert (NULL != pInput->attributeValues, __FILE__, __LINE__);
+        waveAssert (NULL != pInput->attributeValues, __FILE__, __LINE__);
 
         if ( 0 < parentManagedObjectNamesSize )
         {
             //Allocate memory for all parentManagedObjectNames
             pInput->parentManagedObjectNames = new const char *[parentManagedObjectNamesSize];
-            prismAssert (NULL != pInput->parentManagedObjectNames, __FILE__, __LINE__);
+            waveAssert (NULL != pInput->parentManagedObjectNames, __FILE__, __LINE__);
             pInput->parentManagedObjectNamesSize = parentManagedObjectNamesSize;
 
             for ( UI32 j = 0; j < parentManagedObjectNamesSize; j++ )
@@ -227,7 +227,7 @@ const void *UnifiedClientUpdateMessage::getCStructureForInputs ()
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("UnifiedClientUpdateMessage::getCStructureForInputs :: No attributes to send to the backend"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         delete (pInput);
         pInput = NULL;
     }
@@ -244,7 +244,7 @@ void UnifiedClientUpdateMessage::loadOutputsFromCStructure (const void *pOutputC
     }
 
     UnifiedClientMessageOutputForConfig_t *pResult = (UnifiedClientMessageOutputForConfig_t *)pOutputCStructure;
-    prismAssert ( NULL != pResult, __FILE__, __LINE__);
+    waveAssert ( NULL != pResult, __FILE__, __LINE__);
  
     UI32 warningCode = pResult->warningCode;
     

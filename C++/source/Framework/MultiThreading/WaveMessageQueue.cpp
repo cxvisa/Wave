@@ -81,7 +81,7 @@ template<class T> UI32 WaveMessageQueue<T>::removeTimerExpirationsForTimer (cons
     {
         pPrismTimerExpiredObjectManagerMessage = dynamic_cast<PrismTimerExpiredObjectManagerMessage *> (*element);
 
-        prismAssert (NULL != pPrismTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
 
         if ((pPrismTimerExpiredObjectManagerMessage->getTimerId ()) == timerHandle)
         {

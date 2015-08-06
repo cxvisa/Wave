@@ -44,7 +44,7 @@ WaveMessage *WaveSystemManagementGetPossibleCompletionsWorker::createMessageInst
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("WaveSystemManagementGetPossibleCompletionsMessage::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 

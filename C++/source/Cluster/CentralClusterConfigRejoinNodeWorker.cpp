@@ -144,7 +144,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
     if (NULL == pResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigRejoinNodeWorker::RejoinNodeValidateStep : Unable to obtain Cluster Managed Object from the database"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         pClusterRejoinContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
@@ -154,7 +154,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
     if (numberOfResults>1)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigRejoinNodeWorker::RejoinNodeValidateStep : There can only be one cluster in the system.We obtained ") + numberOfResults + string (" of clusters"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
         pClusterRejoinContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
@@ -164,7 +164,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
     if (0 == numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigRejoinNodeWorker::RejoinNodeValidateStep : There is no Cluster Created");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 	WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
         pClusterRejoinContext->executeNextStep (WAVE_MESSAGE_ERROR_CLUSTER_VALIDATION_FAILED);
         return;
@@ -180,11 +180,11 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
         // Validate the node name and port number, it should be same as any of current node;
         pResults = querySynchronously (WaveNode::getClassName ());
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
-	prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
+	waveAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
         UI32 numberOfNodes = pClusterObjectManagerRejoinNodeMessage->getNNodes ();
         UI32 numberOfNodesInTheDB = pResults->size ();
 
@@ -225,7 +225,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
             {
                 //Have to use a dynamic cast through a virtual base
                 WaveNode* pNode = dynamic_cast<WaveNode *> ((*pResults)[j]);
-                prismAssert(NULL!=pNode,__FILE__,__LINE__);
+                waveAssert(NULL!=pNode,__FILE__,__LINE__);
                 if(pNode->getIpAddress()== nodeIpAddress && pNode->getPort()==nodePort){
                     found = true;
                     break;
@@ -272,7 +272,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNod
     //Message pointer of the mesage received from VCS obtained from ctxt
     ClusterObjectManagerRejoinNodeMessage  *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
-    prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
 
     //This message will be sent to the Wave Framework running underneath and will start 
     //the process of rejoin processing at the F/W level on the primary
@@ -400,13 +400,13 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
 
     vector<WaveManagedObject *>  *pResultsCluster = querySynchronously (PrismCluster::getClassName ());
 
-    prismAssert (NULL != pResultsCluster, __FILE__, __LINE__);
+    waveAssert (NULL != pResultsCluster, __FILE__, __LINE__);
 
     UI32                          numberOfResults = pResultsCluster->size ();  
     if (numberOfResults>1)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigRejoinNodeWorker::RejoinNodeCommitStep : There can only be one cluster in the system.We obtained ") + numberOfResults + string (" of clusters"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
 	    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResultsCluster);
         pClusterRejoinContext->executeNextStep (WAVE_MESSAGE_ERROR);
@@ -416,7 +416,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
     if (numberOfResults!=1)
     {
         trace (TRACE_LEVEL_FATAL,"CentralClusterConfigRejoinNodeWorker::RejoinNodeValidateStep:There is no Cluster Created");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 	    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResultsCluster);
         pClusterRejoinContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
@@ -424,7 +424,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
 
     ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
-    prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
 
     UI32 noNewNode = pClusterObjectManagerRejoinNodeMessage->getNNodes ();
     PrismCluster* pPrismCluster = (static_cast<PrismCluster *> ((*pResultsCluster)[0]));
@@ -442,14 +442,14 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
             queryContext.addAndAttribute (new AttributeUI32   (newNodePort, "port"));
             
             vector<WaveManagedObject *>  *pResults = querySynchronously (&queryContext);
-            prismAssert (NULL != pResults, __FILE__, __LINE__);
+            waveAssert (NULL != pResults, __FILE__, __LINE__);
 
             numberOfResults = pResults->size ();
-            prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+            waveAssert (1 == numberOfResults, __FILE__, __LINE__);
 
 	    //No static cast through virtual base
             WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
-            prismAssert(NULL != pWaveNode, __FILE__, __LINE__);
+            waveAssert(NULL != pWaveNode, __FILE__, __LINE__);
             updateWaveManagedObject (pPrismCluster);
             waveNodeVectors.push_back (pResults);
     }
@@ -458,7 +458,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
     if (FRAMEWORK_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep : Failed to Persist the configuration.  Cannot Continue.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -494,7 +494,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep (Cluste
 
     ClusterObjectManagerRejoinNodeMessage *pClusterObjectManagerRejoinNodeMessage = dynamic_cast<ClusterObjectManagerRejoinNodeMessage *> (pClusterRejoinContext->getPWaveMessage ());
 
-    prismAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__ , __LINE__);
+    waveAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__ , __LINE__);
 
     UI32 noNewNode = pClusterObjectManagerRejoinNodeMessage->getNNodes ();
 
@@ -514,7 +514,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep (Cluste
         if (WAVE_MESSAGE_SUCCESS != status)
         {
                 trace (TRACE_LEVEL_FATAL, "CentralClusterConfigRejoinNodeWorker::rejoinNodeClusterStartHeartBeatsStep : Could not start heart beating with Node : " + newNodeIpAddress + string (", Port : ") + newNodePort + string (", Status = ") + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -522,7 +522,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep (Cluste
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
                     trace (TRACE_LEVEL_FATAL, "CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep : Could not start heart beating with Node : " + newNodeIpAddress + string (", Port : ") + newNodePort + string (", Completion Status = ") + FrameworkToolKit::localize (status));                     
-		    prismAssert (false, __FILE__, __LINE__);
+		    waveAssert (false, __FILE__, __LINE__);
                 }
         }
 

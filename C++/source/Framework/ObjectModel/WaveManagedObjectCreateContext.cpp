@@ -60,7 +60,7 @@ vector<Attribute *> WaveManagedObjectCreateContext::getChildAttributeVector () c
 
 void WaveManagedObjectCreateContext::addToChildAttributeVector (Attribute *pAttribute)
 {
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     m_childAttributes.push_back (pAttribute);
 }

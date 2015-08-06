@@ -105,7 +105,7 @@ void ApplicationService::addMessageHandlerToThisApplicationService (const UI32 &
     if (element != endElement)
     {
         trace (TRACE_LEVEL_FATAL, "ApplicationService::applicationServiceMessageHandler : Handler already registered for operation code : " + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -126,13 +126,13 @@ void ApplicationService::applicationServiceMessageHandler (ApplicationServiceMes
     if (NULL == pMessageHandler)
     {
         trace (TRACE_LEVEL_FATAL, "ApplicationService::applicationServiceMessageHandler : No Handler registered for operation code : " + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         ApplicationServiceMessageHandlerContext *pApplicationServiceMessageHandlerContext = new  ApplicationServiceMessageHandlerContext (this, pApplicationServiceMessage);
 
-        prismAssert (NULL != pApplicationServiceMessageHandlerContext, __FILE__, __LINE__);
+        waveAssert (NULL != pApplicationServiceMessageHandlerContext, __FILE__, __LINE__);
 
         (*pMessageHandler) (pPayLoad, payLoadLength, pApplicationServiceMessageHandlerContext);
     }
@@ -163,7 +163,7 @@ void ApplicationService::applicationServiceMessageCallback (FrameworkStatus fram
         delete pApplicationServiceMessage;
     }
 
-    prismAssert (NULL != pApplicationServiceSendContext, __FILE__, __LINE__);
+    waveAssert (NULL != pApplicationServiceSendContext, __FILE__, __LINE__);
 
     ApplicationServiceCallback  pApplicationServiceCallback = pApplicationServiceSendContext->getPApplicationServiceCallback ();
     void                       *pApplicationServiceContext  = pApplicationServiceSendContext->getPApplicationServiceContext ();

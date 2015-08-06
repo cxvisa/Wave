@@ -157,7 +157,7 @@ ResourceId PrismPostbootAgent::sendPostbootPassStep (PrismPostbootAgentContext *
         if (((m_postbootTable[m_eventId])[passNum].serviceId).size() != ((m_postbootTable[m_eventId])[passNum].recoveryType).size())
         {
             trace (TRACE_LEVEL_FATAL, string("PrismPostbootAgent::sendPostbootPassStep: #entries in serviceId vector != #entries in recoveryType vector!!. Check the postboot cpp generation process"));
-            prismAssert(false, __FILE__, __LINE__);
+            waveAssert(false, __FILE__, __LINE__);
         }
 
         for (serviceIdIndex = 0; serviceIdIndex < ((m_postbootTable[m_eventId])[passNum].serviceId).size(); serviceIdIndex++)
@@ -210,7 +210,7 @@ ResourceId PrismPostbootAgent::sendPostbootPassStep (PrismPostbootAgentContext *
                 if (serviceId == (m_postbootTable[m_eventId])[passNum].serviceId[checkIdIndex])
                 {
                     trace (TRACE_LEVEL_FATAL, string("PrismPostbootAgent::sendPostbootPassStep: Duplicate serviceID:") + serviceId + string(" not allowed in same pass!"));
-                    prismAssert(false, __FILE__, __LINE__);
+                    waveAssert(false, __FILE__, __LINE__);
                 }
             }
             
@@ -246,7 +246,7 @@ ResourceId PrismPostbootAgent::sendPostbootPassStep (PrismPostbootAgentContext *
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "PrismBootAgent::sendPostbootPassStep : Could not Postboot a service : " + FrameworkToolKit::getServiceNameById (serviceId));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 return (status);
             }
             else

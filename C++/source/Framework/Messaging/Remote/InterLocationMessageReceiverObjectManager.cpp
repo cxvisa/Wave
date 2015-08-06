@@ -215,7 +215,7 @@ InterLocationMessageReceiverObjectManager *InterLocationMessageReceiverObjectMan
     if (NULL == pInterLocationMessageReceiverObjectManager)
     {
         pInterLocationMessageReceiverObjectManager = new InterLocationMessageReceiverObjectManager ();
-        WaveNs::prismAssert (NULL != pInterLocationMessageReceiverObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pInterLocationMessageReceiverObjectManager, __FILE__, __LINE__);
     }
 
     return (pInterLocationMessageReceiverObjectManager);
@@ -242,7 +242,7 @@ void InterLocationMessageReceiverObjectManager::boot (WaveAsynchronousContextFor
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "InterLocationMessageReceiverObjectManager::initialize : Awaiting NEW Connections...");
 

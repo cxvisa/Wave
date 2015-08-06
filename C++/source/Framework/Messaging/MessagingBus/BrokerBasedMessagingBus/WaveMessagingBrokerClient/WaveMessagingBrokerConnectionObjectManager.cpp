@@ -37,7 +37,7 @@ WaveMessagingBrokerConnectionObjectManager *WaveMessagingBrokerConnectionObjectM
 {
     static WaveMessagingBrokerConnectionObjectManager *pWaveMessagingBrokerConnectionObjectManager = new WaveMessagingBrokerConnectionObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerConnectionObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerConnectionObjectManager, __FILE__, __LINE__);
 
     return (pWaveMessagingBrokerConnectionObjectManager);
 }
@@ -69,7 +69,7 @@ void WaveMessagingBrokerConnectionObjectManager::requestToTryForConnectionMessag
     UI32                           i                                = 0;
     WaveMessagingBrokerRepository *pWaveMessagingBrokerRepository   = WaveMessagingBrokerRepository::getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfWaveMessagingBrokerNames; i++)
     {
@@ -100,7 +100,7 @@ void WaveMessagingBrokerConnectionObjectManager::cancelRequestToTryForConnection
     UI32                           i                                = 0;
     WaveMessagingBrokerRepository *pWaveMessagingBrokerRepository   = pWaveMessagingBrokerRepository->getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerConnectionObjectManagerCancelRequestToTryForConnectionMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerConnectionObjectManagerCancelRequestToTryForConnectionMessage, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfWaveMessagingBrokerNames; i++)
     {
@@ -130,7 +130,7 @@ void WaveMessagingBrokerConnectionObjectManager::startTimerIfNeeded ()
         if (FRAMEWORK_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "WaveMessagingBrokerConnectionObjectManager::startTimerIfNeeded : Could not start a timer.  Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -141,7 +141,7 @@ void WaveMessagingBrokerConnectionObjectManager::timerCallback (TimerHandle time
 
     m_timerHandle = 0;
 
-    prismAssert (NULL == pContext, __FILE__, __LINE__);
+    waveAssert (NULL == pContext, __FILE__, __LINE__);
 
     map<string, string>::iterator element                                    = m_pendingWaveMessagingBrokerNamesToTryForConnection.begin ();
     map<string, string>::iterator endElement                                 = m_pendingWaveMessagingBrokerNamesToTryForConnection.end   ();
@@ -152,7 +152,7 @@ void WaveMessagingBrokerConnectionObjectManager::timerCallback (TimerHandle time
     {
         WaveMessagingBrokerRepository *pWaveMessagingBrokerRepository = WaveMessagingBrokerRepository::getInstance ();
 
-        prismAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
 
         const string               waveMessagingBrokerName = element->first;
 

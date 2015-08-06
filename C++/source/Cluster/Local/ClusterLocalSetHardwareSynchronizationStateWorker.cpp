@@ -100,7 +100,7 @@ void ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObj
     if (NULL == pClusterLocalSetHardwareSynchronizationStateMessage)
     {
         trace (TRACE_LEVEL_FATAL, "ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep : Dynamic cast to ClusterLocalSetHardwareSynchronizationStateMessage failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     ResourceId hardwareSynchronizationState = pClusterLocalSetHardwareSynchronizationStateMessage->getHardwareSynchronizationState ();
@@ -108,7 +108,7 @@ void ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObj
     // Query for the WaveNode MO that we need to update
 
     WaveNode *pWaveNode = ClusterLocalObjectManager::getInstance ()->getThisWaveNodeManagedObject ();
-    prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
     updateWaveManagedObject(pWaveNode);
 

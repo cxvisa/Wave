@@ -133,12 +133,12 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(WaveLinear
 
      ClusterConfigObjectManagerGetClusterInfoMessage* pClusterObjectManagerGetClusterInfoMsg =dynamic_cast<ClusterConfigObjectManagerGetClusterInfoMessage*>(pWaveLinearSequencerContext->getPWaveMessage());
 
-      prismAssert(pClusterObjectManagerGetClusterInfoMsg!=0,__FILE__,__LINE__);
+      waveAssert(pClusterObjectManagerGetClusterInfoMsg!=0,__FILE__,__LINE__);
 
      //pointer to the cluster MO. Note that this vector will have only one element 
      //because the node is part of only one cluster.
      vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
-     prismAssert (NULL != pResults, __FILE__, __LINE__);
+     waveAssert (NULL != pResults, __FILE__, __LINE__);
      if (NULL == pResults)
      {         
 	 trace(TRACE_LEVEL_INFO ,"MO for cluster not found");
@@ -152,7 +152,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(WaveLinear
      if (numberOfResults>1)
      {
 	 trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep : There can only be one cluster in the system.  Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
-	 prismAssert (false, __FILE__, __LINE__);
+	 waveAssert (false, __FILE__, __LINE__);
 
          WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
 	 pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
@@ -172,7 +172,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(WaveLinear
      //Pointer to cluster MO
      PrismCluster* pPrismCluster = (dynamic_cast<PrismCluster *> ((*pResults)[0]));
 
-     prismAssert(NULL != pPrismCluster,__FILE__,__LINE__);
+     waveAssert(NULL != pPrismCluster,__FILE__,__LINE__);
 
      //Cluster related info
      pClusterObjectManagerGetClusterInfoMsg->setClusterCreated(true);
@@ -235,10 +235,10 @@ void CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep(WaveLinea
 
      ClusterConfigObjectManagerGetClusterInfoMessage* pClusterObjectManagerGetClusterInfoMsg = dynamic_cast<ClusterConfigObjectManagerGetClusterInfoMessage*>(pWaveLinearSequencerContext->getPWaveMessage());
 
-     prismAssert(NULL != pClusterObjectManagerGetClusterInfoMsg,__FILE__,__LINE__);
+     waveAssert(NULL != pClusterObjectManagerGetClusterInfoMsg,__FILE__,__LINE__);
      //Populate the secondary Node vectors
      vector<WaveManagedObject *> *pResults = querySynchronously (WaveNode::getClassName ());
-     prismAssert (NULL != pResults, __FILE__, __LINE__);
+     waveAssert (NULL != pResults, __FILE__, __LINE__);
      UI32 nNodes = pResults->size();
 
      //Check if the number of secondary nodes from the Cluster MO pPrismCluster
@@ -252,7 +252,7 @@ void CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep(WaveLinea
 	 //Note that pResults points to a vector that has all the nodes 
 	 //including the principal.
 	 WaveNode*  pNode= dynamic_cast<WaveNode *> ((*pResults)[i]);
-         prismAssert (NULL!= pNode,__FILE__,__LINE__);
+         waveAssert (NULL!= pNode,__FILE__,__LINE__);
 
 	 string secondaryNodeIpAddress = pNode->getIpAddress();
 	 UI32   secondaryNodePort = pNode->getPort();

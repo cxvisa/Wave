@@ -187,7 +187,7 @@ HaPeerMessageReceiverObjectManager *HaPeerMessageReceiverObjectManager::getInsta
     if (NULL == pHaPeerMessageReceiverObjectManager)
     {
         pHaPeerMessageReceiverObjectManager = new HaPeerMessageReceiverObjectManager ();
-        WaveNs::prismAssert (NULL != pHaPeerMessageReceiverObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pHaPeerMessageReceiverObjectManager, __FILE__, __LINE__);
     }
 
     return (pHaPeerMessageReceiverObjectManager);
@@ -214,7 +214,7 @@ void HaPeerMessageReceiverObjectManager::boot (WaveAsynchronousContextForBootPha
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "HaPeerMessageReceiverObjectManager::initialize : Awaiting NEW Connections...");
 

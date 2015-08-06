@@ -87,7 +87,7 @@ void UI32VectorUC::fromString (const string &ui32VectorUCInStringFormat)
 
     numberOfToken = token.size ();
 
-    prismAssert (2 >= numberOfToken, __FILE__, __LINE__);
+    waveAssert (2 >= numberOfToken, __FILE__, __LINE__);
 
     if (numberOfToken > 1)
     {

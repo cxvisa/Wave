@@ -29,7 +29,7 @@ namespace WaveNs
     {
         static FileObjectManager *pFileObjectManager = new FileObjectManager ();
 
-        WaveNs::prismAssert (NULL != pFileObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFileObjectManager, __FILE__, __LINE__);
 
         return (pFileObjectManager);
     }
@@ -124,7 +124,7 @@ void FileObjectManager::failover (FailoverAsynchronousContext *pFailoverAsynchro
                break;
           }
           default:
-               prismAssert (false, __FILE__, __LINE__);
+               waveAssert (false, __FILE__, __LINE__);
                break;
      }
 
@@ -135,7 +135,7 @@ void FileObjectManager::failover (FailoverAsynchronousContext *pFailoverAsynchro
      for(itr = connectedLocationsVector.begin(); itr != connectedLocationsVector.end(); itr++)
      {
           FileAbortFileTransferMessage  *pAbortFTMessage = new FileAbortFileTransferMessage(failedLocationIds);
-          WaveNs::prismAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);     
+          WaveNs::waveAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);     
           status = sendSynchronously (pAbortFTMessage, *itr);
           if (WAVE_MESSAGE_SUCCESS != status)
           {
@@ -151,7 +151,7 @@ void FileObjectManager::failover (FailoverAsynchronousContext *pFailoverAsynchro
 #endif
 
     FileAbortFileTransferMessage  *pAbortFTMessage = new FileAbortFileTransferMessage (failedLocationIds);
-    WaveNs::prismAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);
     WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FileObjectManager::TriggerFailOverCallback), pFailoverAsynchronousContext);
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pAbortFTMessage);
@@ -168,7 +168,7 @@ void FileObjectManager::TriggerFailOverCallback( WaveSendToClusterContext *pWave
 
     trace (TRACE_LEVEL_DEBUG, "FileObjectManager::failover : status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
 
-    prismAssert (NULL != pFailoverAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL != pFailoverAsynchronousContext, __FILE__, __LINE__);
 
     pFailoverAsynchronousContext->setCompletionStatus(pWaveSendToClusterContext->getCompletionStatus());
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());

@@ -103,7 +103,7 @@ IpVxAddress AttributeIpVxAddress::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpVxAddress::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempIpVxAddres);
     }
 }
@@ -117,13 +117,13 @@ void AttributeIpVxAddress::setValue (const IpVxAddress &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpVxAddress::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeIpVxAddress::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeIpVxAddress == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeIpVxAddress == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeIpVxAddress == (getAttributeType ()))
     {
@@ -210,7 +210,7 @@ void AttributeIpVxAddress::getSqlForSelect (string &sqlForSelect, AttributeCondi
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeIpVxAddress::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -389,7 +389,7 @@ vector<IpVxAddress> AttributeIpVxAddressVector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpVxAddressVector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -403,13 +403,13 @@ void AttributeIpVxAddressVector::setValue (const vector<IpVxAddress> &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpVxAddressVector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeIpVxAddressVector::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeIpVxAddressVector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeIpVxAddressVector == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeIpVxAddressVector == (getAttributeType ()))
     {
@@ -460,7 +460,7 @@ void AttributeIpVxAddressVector::getSqlForSelect (string &sqlForSelect, Attribut
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeIpVxAddressVector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -609,7 +609,7 @@ void AttributeIpVxAddressVector::deleteAttributeFromVector (Attribute *attribute
         else
         {   
             trace (TRACE_LEVEL_FATAL, string ("AttributeIpVxAddressVector::deleteAttributeFromVector : Element to be deleted not found ."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

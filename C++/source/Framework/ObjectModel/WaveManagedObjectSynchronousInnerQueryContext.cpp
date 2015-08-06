@@ -26,7 +26,7 @@ WaveManagedObjectSynchronousInnerQueryContext::~WaveManagedObjectSynchronousInne
 UI32 WaveManagedObjectSynchronousInnerQueryContext::getPageSizeForQueryResults ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::getPageSizeForQueryResults : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (0);
 }
@@ -34,19 +34,19 @@ UI32 WaveManagedObjectSynchronousInnerQueryContext::getPageSizeForQueryResults (
 void WaveManagedObjectSynchronousInnerQueryContext::setPageSizeForQueryResults (UI32 limitForQueryResults)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::setPageSizeForQueryResults : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousInnerQueryContext::setPageQueryContext (WaveObjectManager* callingOm)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::setPageQueryContext : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool WaveManagedObjectSynchronousInnerQueryContext::isPageQueryContextSet ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::isPageQueryContextSet : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -54,7 +54,7 @@ bool WaveManagedObjectSynchronousInnerQueryContext::isPageQueryContextSet ()
 string WaveManagedObjectSynchronousInnerQueryContext::getPageQuerySql ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::getPageQuerySql : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return ("");
 }
@@ -67,7 +67,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::moveOffsetOnSuccessfulQuery 
 string WaveManagedObjectSynchronousInnerQueryContext::getSqlWithPagingEnabled (WaveObjectManager* callingOm)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::getSqlWithPagingEnabled : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return ("");
 }
@@ -117,7 +117,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::addSelectField (const string
         else
         {
             trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::addSelectField : Not Supported Yet : You cannot have a One to many relations as select fields in inner query context.");   
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
@@ -137,7 +137,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::addSelectField (const string
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -174,7 +174,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectIdWit
     if (true == isAColumn)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectIdWithSuffix : You cannot have a simple column while selecting ObjectId.");   
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else if (true == isARelation)
     {
@@ -190,7 +190,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectIdWit
         else
         {
             trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectIdWithSuffix : Not Supported Yet : You cannot have a One to many relations as select fields in inner query context.");   
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
@@ -208,7 +208,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectIdWit
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -216,7 +216,7 @@ void WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectIdWit
 void WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectId (const string &selectField)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousInnerQueryContext::addSelectFieldForObjectId : This method should never be invoked for this inner query context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool WaveManagedObjectSynchronousInnerQueryContext::isSelectFieldAlreadyAdded (const string &selectField) const

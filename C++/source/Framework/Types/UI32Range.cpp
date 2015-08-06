@@ -39,7 +39,7 @@ vector<UI32> UI32Range::parsingRangeIntegers (const string &rangeIntegerString) 
     {
         tokenize (firstLevelToken[i], secondLevelToken, '-');
         countSecondLevel = secondLevelToken.size ();
-        prismAssert (2 >= countSecondLevel, __FILE__, __LINE__);
+        waveAssert (2 >= countSecondLevel, __FILE__, __LINE__);
         startValue = strtoul (secondLevelToken[0].c_str (), NULL, 10);
         endValue   = strtoul (secondLevelToken[countSecondLevel - 1].c_str (), NULL, 10);
 
@@ -78,7 +78,7 @@ map<UI32, bool> UI32Range::parsingRangeIntegersToMap (const string &rangeInteger
     {
         tokenize (firstLevelToken[i], secondLevelToken, '-');
         countSecondLevel = secondLevelToken.size ();
-        prismAssert (2 >= countSecondLevel, __FILE__, __LINE__);
+        waveAssert (2 >= countSecondLevel, __FILE__, __LINE__);
     
         if (countSecondLevel == 2 || countSecondLevel == 1)
         {
@@ -215,7 +215,7 @@ UI32Range::UI32Range ()
 
 UI32Range::UI32Range (const string &rangeIntegerString)
 {
-    prismAssert (true == isAValidString (rangeIntegerString), __FILE__, __LINE__);
+    waveAssert (true == isAValidString (rangeIntegerString), __FILE__, __LINE__);
         
     copy (rangeIntegerString);
 }
@@ -242,7 +242,7 @@ UI32Range::UI32Range (const vector<UI32> &rangeIntegers)
 
     tempString = getUI32RangeStringFromVector (rangeIntegers);
 
-    prismAssert (true == isAValidString (tempString), __FILE__, __LINE__);
+    waveAssert (true == isAValidString (tempString), __FILE__, __LINE__);
 
     copy (tempString);
 }
@@ -254,7 +254,7 @@ string UI32Range::toString () const
 
 void UI32Range::fromString (const string &rangeIntegerString)
 {
-    prismAssert (true == isAValidString (rangeIntegerString), __FILE__, __LINE__);
+    waveAssert (true == isAValidString (rangeIntegerString), __FILE__, __LINE__);
     
     copy (rangeIntegerString);
 }
@@ -602,7 +602,7 @@ UI32 UI32Range::getCount () const
     {
         tokenize (firstLevelToken[i], secondLevelToken, '-');
         countSecondLevel = secondLevelToken.size ();
-        prismAssert (2 >= countSecondLevel, __FILE__, __LINE__);
+        waveAssert (2 >= countSecondLevel, __FILE__, __LINE__);
 
         if (countSecondLevel == 2 || countSecondLevel == 1)
         {

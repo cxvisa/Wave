@@ -83,7 +83,7 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "PrismSlotFailoverAgent::sendSlotFailoverStep: Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {

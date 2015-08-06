@@ -17,7 +17,7 @@ WaveMessagingBrokerTopic::WaveMessagingBrokerTopic (const string &name)
 {
     WaveMessagingBrokerTopicProcessorObjectManager *pWaveMessagingBrokerTopicProcessorObjectManager = new WaveMessagingBrokerTopicProcessorObjectManager (name);
 
-    prismAssert (NULL != pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerTopicProcessorObjectManager, __FILE__, __LINE__);
 }
 
 WaveMessagingBrokerTopic::~WaveMessagingBrokerTopic ()
@@ -51,7 +51,7 @@ void WaveMessagingBrokerTopic::addSubscription (const string &ipAddress, const S
 
     if (endElement != element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -66,7 +66,7 @@ void WaveMessagingBrokerTopic::addSubscription (const string &uniqueString)
 
     if (endElement != element)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -86,7 +86,7 @@ void WaveMessagingBrokerTopic::removeSubscription (const string &ipAddress, cons
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -101,7 +101,7 @@ void WaveMessagingBrokerTopic::removeSubscription (const string &uniqueString)
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

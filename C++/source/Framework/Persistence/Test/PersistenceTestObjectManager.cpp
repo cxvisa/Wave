@@ -28,7 +28,7 @@ PersistenceTestObjectManager * PersistenceTestObjectManager::getInstance ()
 {
     static PersistenceTestObjectManager *pPersistenceTestObjectManager = new PersistenceTestObjectManager ();
 
-    WaveNs::prismAssert (NULL != pPersistenceTestObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPersistenceTestObjectManager, __FILE__, __LINE__);
 
     return (pPersistenceTestObjectManager);
 }

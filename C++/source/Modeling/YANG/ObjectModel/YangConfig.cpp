@@ -34,7 +34,7 @@ void YangConfig::updateParentAnnotations ()
 
     string configValue;
     getAttributeValue ("value", configValue);
-    prismAssert ("" != configValue, __FILE__, __LINE__);
+    waveAssert ("" != configValue, __FILE__, __LINE__);
 
     if ("false" == configValue)
     {

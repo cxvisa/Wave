@@ -27,7 +27,7 @@ PrismNativeTest1Service *PrismNativeTest1Service::getInstance ()
     if (NULL == pPrismNativeTest1Service)
     {
         pPrismNativeTest1Service = new PrismNativeTest1Service ();
-        WaveNs::prismAssert (NULL != pPrismNativeTest1Service, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pPrismNativeTest1Service, __FILE__, __LINE__);
     }
 
     return (pPrismNativeTest1Service);

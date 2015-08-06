@@ -34,7 +34,7 @@ ClusterInterfaceObjectManager *ClusterInterfaceObjectManager::getInstance ()
     if (NULL == pClusterInterfaceObjectManager)
     {
         pClusterInterfaceObjectManager = new ClusterInterfaceObjectManager ();
-        WaveNs::prismAssert (NULL != pClusterInterfaceObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pClusterInterfaceObjectManager, __FILE__, __LINE__);
     }
 
     return (pClusterInterfaceObjectManager);
@@ -513,7 +513,7 @@ int  ClusterInterfaceObjectManager::getLocalIpAddr (ipString localIpAddr)
     string ipAddress     = FrameworkToolKit::getThisLocationIpAddress ();
     UI32   ipAddressSize = ipAddress.size ();
 
-    prismAssert (MAX_IP_STRING_LENGTH >= ipAddressSize + 1, __FILE__, __LINE__);
+    waveAssert (MAX_IP_STRING_LENGTH >= ipAddressSize + 1, __FILE__, __LINE__);
 
     memcpy (localIpAddr, ipAddress.c_str (), ipAddressSize);
     localIpAddr[ipAddressSize] = '\0';

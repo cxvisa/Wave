@@ -46,7 +46,7 @@ void MultiPartitionCleanupAgent::setPartialCleanupTag (const ResourceId &partial
 
 ResourceId MultiPartitionCleanupAgent::getPartialCleanupTag ()
 {
-    prismAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
+    waveAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
 
     return m_partialCleanupTag;
 }
@@ -129,7 +129,7 @@ ResourceId MultiPartitionCleanupAgent::sendMultiPartitionCleanupStep (MultiParti
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 trace (TRACE_LEVEL_FATAL, "PrismMultiPartitionCleanupAgent::sendMultiPartitionCleanupStep: Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {

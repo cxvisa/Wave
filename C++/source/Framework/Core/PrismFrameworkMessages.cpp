@@ -189,13 +189,13 @@ PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage (co
     : WaveMessage (0, WAVE_OBJECT_MANAGER_TIMER_EXPIRED)
 {
     trace (TRACE_LEVEL_FATAL, "PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage : Copy constructing PrismTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 PrismTimerExpiredObjectManagerMessage &PrismTimerExpiredObjectManagerMessage::operator = (const PrismTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
 {
     trace (TRACE_LEVEL_FATAL, "PrismTimerExpiredObjectManagerMessage::operator = : Assigning to a PrismTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
@@ -324,7 +324,7 @@ UI32 WaveObjectManagerSendValidationResultsMessage::getNumberOfLocationsThatSent
     if (numberOfIpAddresses != numberOfPorts)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManagerSendValidationResultsMessage::getNumberOfLocationsThatSentValidationResults : Corruption detected.  The number of IpAddresses must match with number of ports.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (0);
     }
@@ -342,14 +342,14 @@ void WaveObjectManagerSendValidationResultsMessage::getLocationDetailsAtIndex (c
     if (numberOfIpAddresses != numberOfPorts)
     {
         trace (TRACE_LEVEL_FATAL, "WaveObjectManagerSendValidationResultsMessage::getLocationDetailsAtIndex : Corruption detected.  The number of IpAddresses must match with number of ports.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
         if (numberOfIpAddresses <= index)
         {
             trace (TRACE_LEVEL_FATAL, string ("WaveObjectManagerSendValidationResultsMessage::getLocationDetailsAtIndex : Index (") + index + ") Out of range. Max Possible : " + (numberOfIpAddresses - 1));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -690,7 +690,7 @@ void PrismMultiPartitionCleanupObjectManagerMessage::setPartialCleanupTag (const
 
 ResourceId PrismMultiPartitionCleanupObjectManagerMessage::getPartialCleanupTag ()
 {
-    prismAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
+    waveAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
 
     return m_partialCleanupTag;
 }
@@ -903,7 +903,7 @@ void WaveObjectManagerUpdateWaveManagedObjectMessage::setAttributeUserTags(const
 {
     if ((0 != (m_attributeNames.size ())) && (0 != attributeUserTags.size ()))
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_attributeUserTags = attributeUserTags;
@@ -918,7 +918,7 @@ void WaveObjectManagerUpdateWaveManagedObjectMessage::setAttributeNames (const v
 {
     if ((0 != (m_attributeUserTags.size ())) && (0 != attributeNames.size ()))
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_attributeNames = attributeNames;
@@ -1393,7 +1393,7 @@ void WaveObjectManagerGetDataFromClientMessage::copyClientDataFromMessage ( Wave
     // This function is used when data sent from Client is received on the same node. To maintain uniqueness in buffer tag
     // we replace tag with locationId of the receiver. This removes conflict during collation of client data from all nodes
     //Since the tag is replaced with LocationId, only single buffer is supported
-    prismAssert ( 1 >= bufferTags.size(), __FILE__, __LINE__);
+    waveAssert ( 1 >= bufferTags.size(), __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_DEVEL, string("WaveOperationalDataObjectGetWorker::copyClientDataFromMessage : response buffer size is ") +  bufferTags.size());
 
@@ -1402,7 +1402,7 @@ void WaveObjectManagerGetDataFromClientMessage::copyClientDataFromMessage ( Wave
         UI32 size = 0;
         void * pBuffer = NULL;
         pBuffer = pWaveMessage->transferBufferToUser(bufferTags[i],size);
-        prismAssert ( NULL != pBuffer, __FILE__, __LINE__);
+        waveAssert ( NULL != pBuffer, __FILE__, __LINE__);
         //Dont free the buffer since it is owned by message
         this->addBuffer( FrameworkToolKit::getThisLocationId(), size, pBuffer, true);
         pBuffer = NULL;
@@ -1438,7 +1438,7 @@ void WaveObjectManagerGetDataFromClientMessage::getDataSentFromAllClients ( vect
             void * pBuffer = NULL;
             pBuffer = findBuffer(bufferTags[j],size);
             emp_t *pEmp_t = (emp_t *) pBuffer;
-            prismAssert ( NULL != pBuffer, __FILE__, __LINE__);
+            waveAssert ( NULL != pBuffer, __FILE__, __LINE__);
             //Dont free the buffer since it is owned by message
             trace (TRACE_LEVEL_INFO, string("WaveOperationalDataObjectGetWorker::sendMessageToAllNodesStepCallback : response buffer size is ") + size + (" ,x is -> ") + pEmp_t->x + (" flag is -> ") + pEmp_t->flag + (" tag is ") + bufferTags[j]);
             pBuffer = NULL;
@@ -1467,7 +1467,7 @@ void WaveObjectManagerGetDataFromClientMessage::getDataSentFromAllClients ( vect
         else
         {
             trace (TRACE_LEVEL_DEVEL, string("WaveObjectManagerGetDataFromClientMessage::getDataSentFromAllClients : client status not found "));
-            prismAssert ( false, __FILE__, __LINE__);
+            waveAssert ( false, __FILE__, __LINE__);
         }
 
         // Buffer tag would be locationId of the selected nodes

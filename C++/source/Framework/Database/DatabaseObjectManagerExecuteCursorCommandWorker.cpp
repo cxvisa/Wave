@@ -54,7 +54,7 @@ void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHan
 	DatabaseObjectManagerExecuteCursorCfgCommandMessage *pDatabaseObjectManagerExecuteCursorCfgCommandMessage =
 	dynamic_cast<DatabaseObjectManagerExecuteCursorCfgCommandMessage *>(pWaveLinearSequencerContext->getPWaveMessage());
 
-    prismAssert( NULL != pDatabaseObjectManagerExecuteCursorCfgCommandMessage , __FILE__, __LINE__ );
+    waveAssert( NULL != pDatabaseObjectManagerExecuteCursorCfgCommandMessage , __FILE__, __LINE__ );
 
 	if ((false == (DatabaseObjectManager::getIsDatabaseEnabled ())) && (false == m_isMultiDatabaseMode))
 	{
@@ -68,7 +68,7 @@ void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHan
 	ExecStatusType		databaseStatus		= PGRES_FATAL_ERROR;
 	PGconn			   *pConnection 		= getDatabaseServerConnection (pDatabaseObjectManagerExecuteCursorCfgCommandMessage->getClassName ());
 
-	prismAssert (NULL != pConnection, __FILE__, __LINE__);
+	waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
 	pResult = PQexec (pConnection, (pDatabaseObjectManagerExecuteCursorCfgCommandMessage->getCursorCfgCommand ()).c_str ());
 
@@ -123,7 +123,7 @@ PGconn *DatabaseObjectManagerExecuteCursorCommandWorker::getDatabaseServerConnec
     {
         DatabaseConnection *pDatabaseConnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-        prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
         pDatabaseServerConnection = pDatabaseConnection->getPConnection ();
     }
@@ -131,7 +131,7 @@ PGconn *DatabaseObjectManagerExecuteCursorCommandWorker::getDatabaseServerConnec
     {
         DatabaseMultiConnection *pDatabaseMultiConnection = DatabaseMultiConnection::getInstance ();
 
-        prismAssert (NULL != pDatabaseMultiConnection, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseMultiConnection, __FILE__, __LINE__);
 
         pDatabaseServerConnection = pDatabaseMultiConnection->getServerConnectionForManagedObject (className);
     }

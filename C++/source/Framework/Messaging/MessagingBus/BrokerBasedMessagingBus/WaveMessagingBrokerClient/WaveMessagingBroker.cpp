@@ -35,7 +35,7 @@ WaveMessagingBroker::~WaveMessagingBroker ()
 
     if (0 != m_numberOfOutstandingCheckouts)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     indicateClosing ();
@@ -98,7 +98,7 @@ ResourceId WaveMessagingBroker::connect (const UI32 &numberOfRetries, const UI32
     if (0 != (gettimeofday (&startTime, NULL)))
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveMessagingBroker::connect : Could not obtain start time."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         status = FRAMEWORK_ERROR;
     }
     else
@@ -115,7 +115,7 @@ ResourceId WaveMessagingBroker::connect (const UI32 &numberOfRetries, const UI32
             if (NULL == m_pClientStreamingSocket)
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveMessagingBroker::connect : Could not allocate a ClientSocket for Wave Messaging Broker: ") + m_ipAddress + m_port);
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 break;
             }
 
@@ -150,7 +150,7 @@ ResourceId WaveMessagingBroker::connect (const UI32 &numberOfRetries, const UI32
 
                 if (true != isSuccessful)
                 {
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 // now create the Wave Messaging Broker Client Information object and post it to the Wave Messaging Broker.
@@ -207,7 +207,7 @@ ResourceId WaveMessagingBroker::connect (const UI32 &numberOfRetries, const UI32
             if (0 != (gettimeofday (&currentTime, NULL)))
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveMessagingBroker::connect : Could not obtain current time."));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
                 status = FRAMEWORK_ERROR;
                 break;
             }
@@ -249,7 +249,7 @@ void WaveMessagingBroker::checkin ()
 
     if (0 == m_numberOfOutstandingCheckouts)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_numberOfOutstandingCheckouts--;
@@ -306,7 +306,7 @@ void WaveMessagingBroker::requestToTryForConnection (const string &waveMessaging
 {
     WaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage *pWaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage = new WaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage (waveMessagingBrokerName);
 
-    prismAssert (NULL != pWaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage, __FILE__, __LINE__);
 
     WaveObjectManagerToolKit::sendOneWay (pWaveMessagingBrokerConnectionObjectManagerRequestToTryForConnectionMessage);
 }

@@ -501,7 +501,7 @@ void WaveManagedObjectQueryContextBase::filterByUserDefinedAttributes (vector<At
     if (userDefinedKeyNames.size () != userDefinedAttributes.size ())
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::filterByUserDefinedAttributes : Count of User Defined Attributes should be same as number of user Defined keys defined in MO.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     bool found;
@@ -524,7 +524,7 @@ void WaveManagedObjectQueryContextBase::filterByUserDefinedAttributes (vector<At
         if (!found)
         {
             trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::filterByUserDefinedAttributes : User Defined key " + userDefinedKeyNames[i] + "is missing in the attribute list.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -537,7 +537,7 @@ void WaveManagedObjectQueryContextBase::setAttributeObjectIdVectorAssociation (A
     if (NULL != m_pAttributeObjectIdVectorAssociation)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::setAttributeObjectIdVectorAssociation : Already set.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_pAttributeObjectIdVectorAssociation = pAttributeObjectIdVectorAssociation;
@@ -598,7 +598,7 @@ string WaveManagedObjectQueryContextBase::getNTupleFormatForOrderField (const st
     if (false == isNTuple(keyName))
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::getNTupleFormateForOrderField : Key '" + keyName + "' has not been defined as an n-tuple format");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     numberOfTuples = m_nTupleNumber.find(keyName)->second;
@@ -772,7 +772,7 @@ AttributeConditionOperator WaveManagedObjectQueryContextBase::getConditionOperat
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::getConditionOperatorTypeFromString : Invalid or unsupported SQL condition operator specified: " + conditionOperator);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (attributeConditionOperator);
@@ -793,7 +793,7 @@ AttributeConcatenationOperator WaveManagedObjectQueryContextBase::getConcatenati
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::getConcatenationOperatorTypeFromString : Invalid SQL concatenation operator specified: " + concatenationOperator);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (attributeConcatenationOperator);
@@ -904,7 +904,7 @@ void WaveManagedObjectQueryContextBase::addSelectField (const string& selectFiel
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -999,14 +999,14 @@ void WaveManagedObjectQueryContextBase::setFilterByConnectedNodes (const bool fi
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::setFilterByConnectedNodes : Filtering by connected nodes should only be applied when querying for a local managed object.  " + m_classToQueryFor + " is detected to be a global managed object.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == m_filterByDisconnectedNodes && true == filterByConnectedNodes)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::setFilterByConnectedNodes : Filtering by connected nodes and filtering by disconnected nodes are mutually exclusive. Enabling both should not be done.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_filterByConnectedNodes = filterByConnectedNodes;
@@ -1034,14 +1034,14 @@ void WaveManagedObjectQueryContextBase::setFilterByDisconnectedNodes (const bool
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::setFilterByDisconnectedNodes : Filtering by disconnected nodes should only be applied when querying for a local managed object.  " + m_classToQueryFor + " is detected to be a global managed object.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == m_filterByConnectedNodes && true == filterByDisconnectedNodes)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::setFilterByDisconnectedNodes : Filtering by disconnected nodes and filtering by connected nodes are mutually exclusive. Enabling both should not be done.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_filterByDisconnectedNodes = filterByDisconnectedNodes;
@@ -1056,7 +1056,7 @@ UI32 WaveManagedObjectQueryContextBase::getPageSizeForQueryResults ()
 		if ( m_pagedQuerySize != m_pagedQueryContext->getPageSize())
 		{
 			trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::getPageSizeForQueryResults : Paged query size is not in sync.");
-			prismAssert (false, __FILE__, __LINE__);
+			waveAssert (false, __FILE__, __LINE__);
 		}
 	}
 
@@ -1096,7 +1096,7 @@ void WaveManagedObjectQueryContextBase::setPageQueryContext (WaveObjectManager* 
 	{
 		//Assert here;
 		trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::setPageQueryContext : PageQueryContext is already set.");
-		prismAssert (false, __FILE__, __LINE__);
+		waveAssert (false, __FILE__, __LINE__);
 	}
 
 }
@@ -1120,7 +1120,7 @@ string WaveManagedObjectQueryContextBase::getPageQuerySql ()
 	{
 		//Assert here;
 		trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::getPageQuerySql : PageQueryContext is not set.");
-		prismAssert (false, __FILE__, __LINE__);
+		waveAssert (false, __FILE__, __LINE__);
 	}
 	return m_pagedQueryContext->getSqlOfFetchCursor();
 }
@@ -1190,7 +1190,7 @@ void WaveManagedObjectQueryContextBase::createConditionSet (const string &condit
         m_pConditionSetBuilder = new WaveConditionSetBuilder ();
     }
 
-    prismAssert (NULL != m_pConditionSetBuilder, __FILE__, __LINE__);
+    waveAssert (NULL != m_pConditionSetBuilder, __FILE__, __LINE__);
 
     m_pConditionSetBuilder->createConditionSet (conditionSetName);
 }
@@ -1210,7 +1210,7 @@ void WaveManagedObjectQueryContextBase::addAttributeToConditionSet (const string
     if (NULL == m_pConditionSetBuilder)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::addAttributeToConditionSet : No condition sets have been created.  Please create a condition set before invoking this API.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_pConditionSetBuilder->addAttributeToConditionSet (conditionSetName, pAttribute, concatenationOperator, conditionOperator);
@@ -1223,7 +1223,7 @@ void WaveManagedObjectQueryContextBase::combineConditionSets (const string &cond
     if (NULL == m_pConditionSetBuilder)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectQueryContextBase::combineConditionSets : No condition sets have been created.  Please create a condition set before invoking this API.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_pConditionSetBuilder->combineConditionSets (conditionSetCombination);
@@ -1242,7 +1242,7 @@ bool WaveManagedObjectQueryContextBase::getSkipPropagatedPartitionFiltersFlag ()
 void WaveManagedObjectQueryContextBase::setPartitionFilter (const string &partitionName, const LocationId &partitionLocationId)
 {
     WaveObjectManager *pWaveObjectManager = WaveThread::getWaveObjectManagerForCurrentThread ();
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     // Object Id for partition is obtained by sending message to MultiPartitionObjectManager.
     // Object Id for location  is obtained by sending message to ClusterLocalObjectManager.

@@ -246,7 +246,7 @@ void HostUC::fromString (const string &hostAsString)
 
     numberOfToken = token.size ();
 
-    prismAssert (3 >= numberOfToken, __FILE__, __LINE__);
+    waveAssert (3 >= numberOfToken, __FILE__, __LINE__);
 
     if (numberOfToken > 0)
     {

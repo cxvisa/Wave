@@ -68,7 +68,7 @@ void ZeroizeForFIPSSecureDelete::cleanDeleteFile(const char *fpath, const struct
 
             if(s_zeroBuf == NULL) 
             {
-                prismAssert(false,__FILE__,__LINE__);
+                waveAssert(false,__FILE__,__LINE__);
             }
 
             memset(s_zeroBuf,0,ZeroizeForFIPSSecureDelete::BLOCK_SIZE);
@@ -89,7 +89,7 @@ void ZeroizeForFIPSSecureDelete::cleanDeleteFile(const char *fpath, const struct
             s_zeroBuf = (char*)malloc(sizeof(char) * f_size);
 
             if(s_zeroBuf == NULL) 
-                prismAssert(false,__FILE__,__LINE__);
+                waveAssert(false,__FILE__,__LINE__);
 
             memset(s_zeroBuf,0,f_size);
             remaining_size = f_size;

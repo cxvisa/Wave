@@ -45,7 +45,7 @@ LockManagementObjectManager *LockManagementObjectManager::getInstance ()
 {
     static LockManagementObjectManager *pLockManagementObjectManager = new LockManagementObjectManager ();
 
-    WaveNs::prismAssert (NULL != pLockManagementObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pLockManagementObjectManager, __FILE__, __LINE__);
 
     return (pLockManagementObjectManager);
 }
@@ -87,7 +87,7 @@ WaveMessage *LockManagementObjectManager::createMessageInstance (const UI32 &ope
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("LockManagementObjectManager::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -103,7 +103,7 @@ void LockManagementObjectManager::boot (WaveAsynchronousContextForBootPhases *pW
     {
         vector<WaveManagedObject *> *pResults = querySynchronously (LockManagedObject::getClassName ());
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
         
         UI32 numberOfLocks = pResults->size ();
 
@@ -209,20 +209,20 @@ ResourceId LockManagementObjectManager::queryLockManagedObjectFromServiceStringS
             else
             {
                 trace (TRACE_LEVEL_FATAL, string ("LockManagementObjectManager::queryLockManagedObjectFromServiceStringStep: No element found from the query"));
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
         }
         else
         {
             trace (TRACE_LEVEL_FATAL, string ("LockManagementObjectManager::queryLockManagedObjectFromServiceStringStep: There can be only one lock #no. of locks found = ")+numberOfResults+ "for serviceString = " + serviceString);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
     else
     {
         trace (TRACE_LEVEL_FATAL, "LockManagementObjectManager::queryLockManagedObjectFromServiceStringStep : System failure pResults is NULL");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
  
     pResults->clear ();
@@ -251,7 +251,7 @@ ResourceId LockManagementObjectManager::createLockManagedObjectInDataBaseStep (L
         if (FRAMEWORK_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "LockManagementObjectManager::createLockManagedObjectInDataBaseStep: Could not create LockManagedObject in database");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -267,7 +267,7 @@ ResourceId LockManagementObjectManager::createLockManagedObjectInDataBaseStep (L
         else
         {
             trace (TRACE_LEVEL_FATAL, "LockManagementObjectManager::createLockManagedObjectInDataBaseStep:Could not allocate memory");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         
 
@@ -327,7 +327,7 @@ ResourceId LockManagementObjectManager::deleteLockManagedObjectFromDataBaseStep 
         if (FRAMEWORK_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, string ("LockManagementObjectManager::deleteLockManagedObjectFromDataBaseStep: Could not delete LockManagedObject in database with serviceString = ") + serviceString);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -361,7 +361,7 @@ void LockManagementObjectManager::failover (FailoverAsynchronousContext *pFailov
         for (UI32 lockNumber = 0; lockNumber < noOfLocks; lockNumber++)
         {
             LockManagedObject *pLockManagedObject = dynamic_cast<LockManagedObject *> ((*pResults)[lockNumber]);
-			prismAssert (NULL != pLockManagedObject, __FILE__, __LINE__);
+			waveAssert (NULL != pLockManagedObject, __FILE__, __LINE__);
 			
             for (UI32 failedLocationNumber = 0; failedLocationNumber < failedLocationIds.size (); failedLocationNumber++)
             {
@@ -377,7 +377,7 @@ void LockManagementObjectManager::failover (FailoverAsynchronousContext *pFailov
                     if (FRAMEWORK_SUCCESS != status)
                     {
                         trace (TRACE_LEVEL_FATAL, string ("LockManagementObjectManager::failover: Could not delete LockManagedObject in database with Location id =") + failedLocationIds[failedLocationNumber]);
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                     else
                     {
@@ -397,7 +397,7 @@ void LockManagementObjectManager::failover (FailoverAsynchronousContext *pFailov
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("LockManagementObjectManager::failover: System failure. pResults is NULL"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);

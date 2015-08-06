@@ -25,7 +25,7 @@ FrameworkCoreTestObjectManager *FrameworkCoreTestObjectManager::getInstance ()
     if (NULL == pFrameworkCoreTestObjectManager)
     {
         pFrameworkCoreTestObjectManager = new FrameworkCoreTestObjectManager ();
-        WaveNs::prismAssert (NULL != pFrameworkCoreTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkCoreTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pFrameworkCoreTestObjectManager);

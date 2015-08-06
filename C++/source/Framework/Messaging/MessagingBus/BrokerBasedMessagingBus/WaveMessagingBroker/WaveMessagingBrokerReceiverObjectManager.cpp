@@ -41,7 +41,7 @@ WaveMessagingBrokerReceiverObjectManager *WaveMessagingBrokerReceiverObjectManag
 {
     static WaveMessagingBrokerReceiverObjectManager *pWaveMessagingBrokerReceiverObjectManager = new WaveMessagingBrokerReceiverObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerReceiverObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerReceiverObjectManager, __FILE__, __LINE__);
 
     return (pWaveMessagingBrokerReceiverObjectManager);
 }
@@ -62,7 +62,7 @@ void WaveMessagingBrokerReceiverObjectManager::initialize (WaveAsynchronousConte
 
     m_pServerSocketForWaveMessagingBrokerClients = new ServerStreamingSocket (FrameworkToolKit::getMessageBrokerPort(), 1);
 
-    prismAssert (NULL != m_pServerSocketForWaveMessagingBrokerClients, __FILE__, __LINE__);
+    waveAssert (NULL != m_pServerSocketForWaveMessagingBrokerClients, __FILE__, __LINE__);
 
     status = m_pServerSocketForWaveMessagingBrokerClients->getStatus ();
 
@@ -112,7 +112,7 @@ void WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventH
         ServerStreamingSocket *pNewServerStreamingSocket         = new ServerStreamingSocket;
         bool                   successfullyAcceptedNewConnection = false;
 
-        prismAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
+        waveAssert (NULL != pNewServerStreamingSocket, __FILE__, __LINE__);
 
         trace (TRACE_LEVEL_DEBUG, "WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventHandler : Awaiting NEW Management Interface Client Connections...");
 
@@ -156,7 +156,7 @@ void WaveMessagingBrokerReceiverObjectManager::debugPrintBrokerClientRepository 
 {
     WaveMessagingBrokerClientRepository *pWaveMessagingBrokerClientRepository  = WaveMessagingBrokerClientRepository::getInstance ();
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
 
     pWaveMessagingBrokerClientRepository->print ();
 }

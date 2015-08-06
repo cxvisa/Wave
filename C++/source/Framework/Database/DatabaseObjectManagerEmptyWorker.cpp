@@ -45,7 +45,7 @@ WaveMessage *DatabaseObjectManagerEmptyWorker::createMessageInstance (const UI32
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DatabaseObjectManagerEmptyWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }   
 
     return (pWaveMessage);
@@ -70,8 +70,8 @@ void DatabaseObjectManagerEmptyWorker::emptyMessageHandler (DatabaseObjectManage
     string                  waveSchema             = OrmRepository::getWaveCurrentSchema ();
     string                  sqlToEmptyOrmDatabase;
     
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     set<string> schemasToBeEmptied = pDatabaseObjectManagerEmptyMessage->getSchemasToBeEmptied ();
     UI32 emptyType = DatabaseObjectManager::determineDatabaseEmptyType (schemasToBeEmptied, pDatabaseObjectManagerEmptyMessage->getDatabaseEmptyType ());

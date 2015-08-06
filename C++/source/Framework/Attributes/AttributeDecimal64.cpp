@@ -105,7 +105,7 @@ Decimal64 AttributeDecimal64::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDecimal64::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempDecimal64);
     }
 }
@@ -120,7 +120,7 @@ void AttributeDecimal64::getAllValues (SI64 *val, UI8 *fractiondigits)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDecimal64::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -133,13 +133,13 @@ void AttributeDecimal64::setValue (const Decimal64 &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDecimal64::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeDecimal64::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeDecimal64 == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeDecimal64 == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeDecimal64 == (getAttributeType ()))
     {
@@ -214,7 +214,7 @@ void AttributeDecimal64::getSqlForSelect (string &sqlForSelect, AttributeConditi
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeDecimal64::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -386,7 +386,7 @@ vector<Decimal64> AttributeDecimal64Vector::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDecimal64Vector::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (temp);
     }
 }
@@ -400,13 +400,13 @@ void AttributeDecimal64Vector::setValue (const vector<Decimal64> &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeDecimal64Vector::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeDecimal64Vector::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeDecimal64Vector == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeDecimal64Vector == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeDecimal64Vector == (getAttributeType ()))
     {
@@ -458,7 +458,7 @@ void AttributeDecimal64Vector::getSqlForSelect (string &sqlForSelect, AttributeC
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeDecimal64Vector::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;
@@ -604,7 +604,7 @@ void AttributeDecimal64Vector::deleteAttributeFromVector (Attribute *attribute)
         else
         {   
             trace (TRACE_LEVEL_FATAL, string ("AttributeDecimal64Vector::deleteAttributeFromVector : Element to be deleted not found ."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }

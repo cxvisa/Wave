@@ -76,7 +76,7 @@ PrismFrameworkObjectManagerHaSyncWorker::~PrismFrameworkObjectManagerHaSyncWorke
 PrismFrameworkObjectManagerHaSyncWorker *PrismFrameworkObjectManagerHaSyncWorker::getInstance ()
 {
     static PrismFrameworkObjectManagerHaSyncWorker *pPrismFrameworkObjectManagerHaSyncWorker = (PrismFrameworkObjectManager::getInstance ())->m_pPrismFrameworkObjectManagerHaSyncWorker;
-    WaveNs::prismAssert (NULL != pPrismFrameworkObjectManagerHaSyncWorker, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pPrismFrameworkObjectManagerHaSyncWorker, __FILE__, __LINE__);
     return pPrismFrameworkObjectManagerHaSyncWorker;
 }
 
@@ -178,7 +178,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::initializeHaPeerServerCommunicatio
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::initializeHaPeerServerCommunications : This Locations is not configured yet.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -197,7 +197,7 @@ bool PrismFrameworkObjectManagerHaSyncWorker::acceptHaPeerConnection (ServerStre
     {
         trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManager::acceptHaPeerConnection : This Locations is not configured yet.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (successfullyAcceptedNewConnection);
@@ -598,7 +598,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCreateStandbyMessageStep (St
     LocationRole locationRole = FrameworkToolKit::getThisLocationRole ();
 
     PrismHaSyncConfigureStandbyMessage *pMessage = new PrismHaSyncConfigureStandbyMessage (prismVersionString, locationRole);
-    prismAssert (NULL != pMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
     UI32 context = pStartHaSyncDumpContext->getContextInfo ();
 
@@ -789,7 +789,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCreateDatabaseDumpStep (Star
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::createDatabaseDumpStep : Could not send message to backup database.  Status : " + FrameworkToolKit::localize (status));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -804,7 +804,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCreateDatabaseDumpStep (Star
             {
                 trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::createDatabaseDumpStep : Message to backup database failed.  Completion Status: " + FrameworkToolKit::localize (status));
 
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -830,8 +830,8 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep (St
     UI32                   numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
     UI32                   j                              = 0;
 
-    prismAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
-    prismAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
+    waveAssert (numberOfWaveServiceIds == numberOfValidationDetails, __FILE__, __LINE__);
+    waveAssert (numberOfWaveServiceIds == numberOfValidationDetailsSizes, __FILE__, __LINE__);
 
     PrismHaSyncConfigureStandbyMessage *pMessage = reinterpret_cast<PrismHaSyncConfigureStandbyMessage *> (pStartHaSyncDumpContext->getStandbyMessage ());
 
@@ -845,7 +845,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep (St
          {
               trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManager::haSyncGetValidationDetailsStep : We could not have added an entry with 0 size and/or NULL validation buffer.");
 
-              prismAssert (false, __FILE__, __LINE__);
+              waveAssert (false, __FILE__, __LINE__);
          }
     }
 }
@@ -903,13 +903,13 @@ void PrismFrameworkObjectManagerHaSyncWorker::createDatabaseBackupBuffer(char * 
     databaseBackupFile.seekg (0, ios::end);
     sizeOfBackupFile = databaseBackupFile.tellg ();
 
-    prismAssert (0 != sizeOfBackupFile, __FILE__, __LINE__);
+    waveAssert (0 != sizeOfBackupFile, __FILE__, __LINE__);
 
     if (0 < sizeOfBackupFile)
     {
         pDatabaseBackupBuffer = new char[sizeOfBackupFile];
 
-        prismAssert (NULL != pDatabaseBackupBuffer, __FILE__, __LINE__);
+        waveAssert (NULL != pDatabaseBackupBuffer, __FILE__, __LINE__);
 
         databaseBackupFile.seekg (0, ios::beg);
         databaseBackupFile.read (pDatabaseBackupBuffer, sizeOfBackupFile);
@@ -930,7 +930,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::resumeDatabase ()
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::resumeDatabase : Could not resume Database.  Status : " + FrameworkToolKit::localize (status));
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -940,7 +940,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::resumeDatabase ()
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::resumeDatabase : Could not resume Database.  Completion Status : " + FrameworkToolKit::localize (status));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -1314,7 +1314,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (PrismHaSy
         trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyHandler : unknown context");
     }
 
-	prismAssert (NULL != pReceiveHaSyncDumpContext, __FILE__, __LINE__);
+	waveAssert (NULL != pReceiveHaSyncDumpContext, __FILE__, __LINE__);
 	
     pReceiveHaSyncDumpContext->setContextInfo (context);
 
@@ -1674,7 +1674,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyBootServicesPrePha
 		{
 			trace (TRACE_LEVEL_FATAL, "HaSyncWorker::configureStandbyBootServicesPrePhaseStep : pre phase failed.");
 
-			prismAssert (false, __FILE__, __LINE__);
+			waveAssert (false, __FILE__, __LINE__);
 		}
     }
 
@@ -1721,7 +1721,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyEmptyDatabaseStep 
 		{
 			trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyEmptyDatabaseStep : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
 
-			prismAssert (false, __FILE__, __LINE__);
+			waveAssert (false, __FILE__, __LINE__);
 		}
 		else
 		{
@@ -1733,7 +1733,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyEmptyDatabaseStep 
 			{
 				trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyEmptyDatabaseStep : Message to empty database failed.  Completion Status : " +FrameworkToolKit::localize (status));
 
-				prismAssert (false, __FILE__, __LINE__);
+				waveAssert (false, __FILE__, __LINE__);
 			}
 		}
 
@@ -1786,7 +1786,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyLoadDatabaseFromAc
 			{
 				trace (TRACE_LEVEL_FATAL, "HaSyncWorker::configureStandbyLoadDatabaseFromActiveDatabaseStep : Could not send message to restore database.Status : " + FrameworkToolKit::localize (status));
 
-				prismAssert (false, __FILE__, __LINE__);
+				waveAssert (false, __FILE__, __LINE__);
 			}
 			else
 			{
@@ -1796,7 +1796,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyLoadDatabaseFromAc
 				{
 					trace (TRACE_LEVEL_FATAL, "HaSyncWorker::configureStandbyLoadDatabaseFromActiveDatabaseStep : Message to restore database failed.  Completion Status : " + FrameworkToolKit::localize (status));
 
-				    prismAssert (false, __FILE__, __LINE__);
+				    waveAssert (false, __FILE__, __LINE__);
 				}
 				else
 				{
@@ -1828,7 +1828,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyConvertDatabaseSte
             PrismFrameworkObjectManager::getInstance ()->setDbConversionStatus (DATABASE_SCHEMA_CONVERSION_FAILED);
 			trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyConvertDatabaseStep : Could not upgrade the database.  Status : " + FrameworkToolKit::localize (status));
 
-			prismAssert (false, __FILE__, __LINE__);
+			waveAssert (false, __FILE__, __LINE__);
 		}
         else
 		{
@@ -1886,7 +1886,7 @@ ResourceId PrismFrameworkObjectManagerHaSyncWorker::setFrameworkConfigurationFro
 
     LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
 
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     PrismFrameworkObjectManager::updateIpAddressForThisLocation (prismFrameworkConfiguration.getThisLocationIpAddress ());
 
@@ -1988,7 +1988,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseS
 		{
 			trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker:: post phase failed.");
 
-			prismAssert (false, __FILE__, __LINE__);
+			waveAssert (false, __FILE__, __LINE__);
 		}
     }
 
@@ -2074,7 +2074,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep (ReceiveHaSyn
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep : Could not send message to update instance Id.  Status : " + FrameworkToolKit::localize (status));
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -2084,7 +2084,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep (ReceiveHaSyn
             {
                 trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep : Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
 
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
     }
@@ -2621,7 +2621,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::pauseLocalPersistence ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::pauseLocalPersistence : Could not pause Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2630,7 +2630,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::pauseLocalPersistence ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::pauseLocalPersistence : Could not pause Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -2645,7 +2645,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::resumeLocalPersistence ()
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::resumeLocalPersistence : Could not resume Persistence.  Status : " + FrameworkToolKit::localize (status));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -2654,7 +2654,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::resumeLocalPersistence ()
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "PrismFrameworkObjectManagerHaSyncWorker::resumeLocalPersistence : Could not resume Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 

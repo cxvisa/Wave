@@ -55,7 +55,7 @@ AppInterfaceObjectManager *AppInterfaceObjectManager::createInstance (string app
 
     AppInterfaceObjectManager *pAppInterfaceObjectManager = new AppInterfaceObjectManager (appInterfaceName);
 
-    WaveNs::prismAssert (NULL != pAppInterfaceObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pAppInterfaceObjectManager, __FILE__, __LINE__);
 
     return (pAppInterfaceObjectManager);
 
@@ -357,7 +357,7 @@ int AppInterfaceObjectManager::duplicateCmds (unsigned int nCommands, commandDat
 
     trace (TRACE_LEVEL_DEVEL," ##### AppInterfaceObjectManager::duplicateCmds: Entery ... ");
 
-    prismAssert (NULL != pCommandDetail, __FILE__, __LINE__);
+    waveAssert (NULL != pCommandDetail, __FILE__, __LINE__);
 
     if (NULL == duplicateCmdResultCB)
     {
@@ -460,9 +460,9 @@ WaveMessageStatus AppInterfaceObjectManager::sendCommands (CommandInfo *pCommand
         return (WAVE_MESSAGE_ERROR);
     }
 
-    prismAssert (NULL != pCommandDetail, __FILE__, __LINE__);
-    prismAssert (NULL != pCommandDetail->pNodeResults, __FILE__, __LINE__);
-    prismAssert (NULL != expectedReply, __FILE__, __LINE__);
+    waveAssert (NULL != pCommandDetail, __FILE__, __LINE__);
+    waveAssert (NULL != pCommandDetail->pNodeResults, __FILE__, __LINE__);
+    waveAssert (NULL != expectedReply, __FILE__, __LINE__);
 
     AppInterfaceObjectManagerRemoteCommandsMessage *pRemoteCmdMessage = new AppInterfaceObjectManagerRemoteCommandsMessage (getServiceId ());
     pRemoteCmdMessage->setNodeName (node.m_nodeName);
@@ -593,7 +593,7 @@ void AppInterfaceObjectManager::processDuplicateCmdsReply (FrameworkStatus frame
 
     trace (TRACE_LEVEL_DEVEL, "AppInterfaceObjectManager::processDuplicateCmdsReply : Entering ...");
 
-    prismAssert (NULL != pCommandDetail, __FILE__, __LINE__);
+    waveAssert (NULL != pCommandDetail, __FILE__, __LINE__);
 
 #if 0
     if ((NULL == pCommandDetail) || (NULL == pCommandDetail->pNodeResults))
@@ -1015,7 +1015,7 @@ void AppInterfaceObjectManager::failover (FailoverAsynchronousContext *pFailover
                 break;
 
             default :
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
         }
     }
     else

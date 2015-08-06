@@ -35,7 +35,7 @@ WaveMessagingBrokerClientTestObjectManager *WaveMessagingBrokerClientTestObjectM
 {
     static WaveMessagingBrokerClientTestObjectManager *pWaveMessagingBrokerClientTestObjectManager = new WaveMessagingBrokerClientTestObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveMessagingBrokerClientTestObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveMessagingBrokerClientTestObjectManager, __FILE__, __LINE__);
 
     return (pWaveMessagingBrokerClientTestObjectManager);
 }
@@ -123,7 +123,7 @@ void WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageT
 
         WaveBrokerPublishTest1Message *pWaveBrokerPublishTest1Message = new WaveBrokerPublishTest1Message ();
 
-        prismAssert (NULL != pWaveBrokerPublishTest1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveBrokerPublishTest1Message, __FILE__, __LINE__);
 
         UI32 i = 0;
 
@@ -185,11 +185,11 @@ void WaveMessagingBrokerClientTestObjectManager::simpleSubscriptionCallback (con
 {
     static UI64 totalNumberOfPublishedMessagesReceived  = 0;
 
-    prismAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
 
     const WaveBrokerPublishTest1Message * const pWaveBrokerPublishTest1Message = dynamic_cast<const WaveBrokerPublishTest1Message * const> (pWaveBrokerPublishMessage);
 
-    prismAssert (NULL != pWaveBrokerPublishTest1Message, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerPublishTest1Message, __FILE__, __LINE__);
 
     totalNumberOfPublishedMessagesReceived++;
 

@@ -81,7 +81,7 @@ void PrismPostbootWorker::postbootBootWorkersStepCallback (WaveAsynchronousConte
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "PrismPostbootWorker::postbootBootWorkersStepCallback : Postbooting one worker failed.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pWaveLinearSequencerContext->executeNextStep (status);

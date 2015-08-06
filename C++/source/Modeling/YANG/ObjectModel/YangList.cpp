@@ -89,13 +89,13 @@ void YangList::processChildElement (YangElement *pYangElement)
     {
         YangKey *pYangKey = dynamic_cast<YangKey *> (pYangElement);
 
-        prismAssert (NULL != pYangKey, __FILE__, __LINE__);
+        waveAssert (NULL != pYangKey, __FILE__, __LINE__);
 
         string keyValue;
 
         pYangKey->getAttributeValue ("value", keyValue);
 
-        prismAssert ("" != keyValue, __FILE__, __LINE__);
+        waveAssert ("" != keyValue, __FILE__, __LINE__);
 
         vector<string> keyCombination;
 
@@ -114,16 +114,16 @@ void YangList::prepareTypeInformationForSelf ()
         string keyEntry = m_keyCombination[i];
 
         YangElement *pYangElement = getUniqueYangElementByName (keyEntry);
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         vector<YangElement *> allYangTypeChildElements;
         pYangElement->getAllChildrenByYangName (YangType::getYangName (), allYangTypeChildElements);
 
         UI32 numberOfAllYangTypeChildElements = allYangTypeChildElements.size ();
-        prismAssert (1 == numberOfAllYangTypeChildElements, __FILE__, __LINE__);
+        waveAssert (1 == numberOfAllYangTypeChildElements, __FILE__, __LINE__);
 
         YangType *pYangType = dynamic_cast<YangType *> (allYangTypeChildElements[0]);
-        prismAssert (NULL != pYangType, __FILE__, __LINE__);
+        waveAssert (NULL != pYangType, __FILE__, __LINE__);
 
         string typeName = pYangType->getName ();
         m_keyCombinationTypes.push_back (typeName);
@@ -137,7 +137,7 @@ void YangList::addKeyDefaultValue (const string &keyEntry, const string &default
     map<string, string>::const_iterator itr = m_keyNameToDefaultValueMap.find (keyEntry);
     map<string, string>::const_iterator end = m_keyNameToDefaultValueMap.end ();
 
-    prismAssert (end == itr, __FILE__, __LINE__);
+    waveAssert (end == itr, __FILE__, __LINE__);
 
     // Assertion checks END     ]
 
@@ -167,7 +167,7 @@ void YangList::collectInformationAboutChildLeafWithCustomDisplayForSelf ()
     for (UI32 i = 0; i < numberOfPChildLeafYangElements; i++)
     {
         YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (pChildLeafYangElements[i]);
-        prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+        waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
         if (true == pYangLeaf->getIsCliRunTemplate ())
         {
@@ -187,7 +187,7 @@ void YangList::displayConfiguration (YangDisplayConfigurationContext *pYangDispl
     }
 
     vector<WaveManagedObject *> *pResults = pYangDisplayConfigurationContext->getPManagedObjectsToDisplay ();
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32 numberOfResults = pResults->size ();
     vector<YangElement *> leafElements;
@@ -203,7 +203,7 @@ void YangList::displayConfiguration (YangDisplayConfigurationContext *pYangDispl
     for (UI32 i = 0; i < numberOfResults; i++)
     {   
         WaveManagedObject *pWaveManagedObject = (*pResults)[i];
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         string printStringForKey         = cliTargetNodeName;
         string printStringForNonKeyLeafs = "";
@@ -212,7 +212,7 @@ void YangList::displayConfiguration (YangDisplayConfigurationContext *pYangDispl
         for (UI32 j = 0; j < numberOfLeafElements; j++)
         {   
             YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (leafElements[j]);
-            prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
             
             if ((true == (pYangLeaf->getIsConfiguration ())) && (true == (isLeafNamePartOfKeyCombination (pYangLeaf->getName ()))))
             {   
@@ -223,7 +223,7 @@ void YangList::displayConfiguration (YangDisplayConfigurationContext *pYangDispl
                 exposeKeyString = pYangLeaf->getExposeKeyName ();
 
                 Attribute *pAttribute = pWaveManagedObject->getAttributeByUserTag (userTag);
-                prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+                waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
                 string fieldValue;
                 pAttribute->getPlainString (fieldValue);
@@ -247,7 +247,7 @@ void YangList::displayConfiguration (YangDisplayConfigurationContext *pYangDispl
                 string  fieldValue;
 
                 Attribute *pAttribute = pWaveManagedObject->getAttributeByUserTag (userTag);
-                prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+                waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
                 pAttribute->getPlainString (fieldValue);
 
@@ -334,15 +334,15 @@ void YangList::displayConfiguration2 (YangDisplayConfigurationContext *pYangDisp
         /* */ pYangDisplayConfigurationContext->addSlotForPartialOutput ();
 
         WaveManagedObject *pWaveManagedObject = pWaveManagedObjects[i];
-        prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
         if (true == getIsNodeSpecificBaseList ())
         {
             WaveLocalManagedObjectBase *pWaveLocalManagedObjectBase = dynamic_cast<WaveLocalManagedObjectBase *> (pWaveManagedObject);
-            prismAssert (NULL != pWaveLocalManagedObjectBase, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveLocalManagedObjectBase, __FILE__, __LINE__);
 
             ObjectId ownerWaveNodeObjectId = pWaveLocalManagedObjectBase->getOwnerWaveNodeObjectId ();
-            prismAssert (ObjectId::NullObjectId != ownerWaveNodeObjectId, __FILE__, __LINE__);
+            waveAssert (ObjectId::NullObjectId != ownerWaveNodeObjectId, __FILE__, __LINE__);
 
             pYangDisplayConfigurationContext->setOwnerWaveNodeObjectId (ownerWaveNodeObjectId);
         }
@@ -350,7 +350,7 @@ void YangList::displayConfiguration2 (YangDisplayConfigurationContext *pYangDisp
         if (true == getIsMultiPartitionBaseList ())
         {
             ObjectId ownerPartitionManagedObjectId = pWaveManagedObject->getOwnerPartitionManagedObjectId ();
-            prismAssert (ObjectId::NullObjectId != ownerPartitionManagedObjectId, __FILE__, __LINE__);
+            waveAssert (ObjectId::NullObjectId != ownerPartitionManagedObjectId, __FILE__, __LINE__);
 
             pYangDisplayConfigurationContext->setOwnerPartitionObjectId (ownerPartitionManagedObjectId);
         }
@@ -431,7 +431,7 @@ void YangList::displayConfigurationForOneInstanceOfList (YangDisplayConfiguratio
     }
 
     string keyCombinationValueString;
-	prismAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+	waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     ResourceId listInstanceKeyStatus = getKeyCombinationValueString (pYangDisplayConfigurationContext, pWaveManagedObject, keyCombinationValueString);
 
@@ -505,7 +505,7 @@ void YangList::displayConfigurationForOneInstanceOfList (YangDisplayConfiguratio
         if (YangLeaf::getYangName () == pYangElement->getYangName ())
         {
             YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (pYangElement);
-            prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
             if (true == isLeafNamePartOfKeyCombination (pYangLeaf->getName ()))
             {
@@ -522,7 +522,7 @@ void YangList::displayConfigurationForOneInstanceOfList (YangDisplayConfiguratio
         if (YangLeafList::getYangName () == pYangElement->getYangName ())
         {
             YangLeafList *pYangLeafList = dynamic_cast<YangLeafList *> (pYangElement);
-            prismAssert (NULL != pYangLeafList, __FILE__, __LINE__);
+            waveAssert (NULL != pYangLeafList, __FILE__, __LINE__);
 
             pYangLeafList->displayConfigurtionForLeaf (pYangDisplayConfigurationContext, pWaveManagedObject);
 
@@ -532,7 +532,7 @@ void YangList::displayConfigurationForOneInstanceOfList (YangDisplayConfiguratio
         if (YangContainer::getYangName () == pYangElement->getYangName ())
         {
             YangContainer *pYangContainer = dynamic_cast<YangContainer *> (pYangElement);
-            prismAssert (NULL != pYangContainer, __FILE__, __LINE__);
+            waveAssert (NULL != pYangContainer, __FILE__, __LINE__);
 
             pYangDisplayConfigurationContext->printNewLineIfRequired ();
 
@@ -588,7 +588,7 @@ ResourceId YangList::getKeyCombinationValueString (YangDisplayConfigurationConte
     ResourceId listInstanceKeyStatus = WAVE_MESSAGE_SUCCESS;
 
     ConfigurationSegmentInformation *pConfigurationSegmentInformation = getPConfigurationSegmentInformation ();
-    prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
     const vector<string> &userDefinedKeyCombination = pConfigurationSegmentInformation->getUserDefinedKeyCombination ();
 
@@ -597,8 +597,8 @@ ResourceId YangList::getKeyCombinationValueString (YangDisplayConfigurationConte
 
     // For 'config' data list, at least one key should be present.
 
-    prismAssert (0 != numberOfKeyCombinationEntries, __FILE__, __LINE__);
-    prismAssert (numberOfKeyCombinationEntries == numberOfAttributeNamesInUserDefinedKeyCombination, __FILE__, __LINE__);
+    waveAssert (0 != numberOfKeyCombinationEntries, __FILE__, __LINE__);
+    waveAssert (numberOfKeyCombinationEntries == numberOfAttributeNamesInUserDefinedKeyCombination, __FILE__, __LINE__);
 
     for (UI32 i = 0; i < numberOfKeyCombinationEntries; i++)
     {
@@ -609,8 +609,8 @@ ResourceId YangList::getKeyCombinationValueString (YangDisplayConfigurationConte
         string keyName;
 
         YangElement *pYangElement = getUniqueYangElementByName (keyEntry);
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
-        prismAssert (true == pYangElement->getIsConfiguration (), __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (true == pYangElement->getIsConfiguration (), __FILE__, __LINE__);
 
         if (false == (pYangElement->getExposeKeyName ()).empty ())
         {
@@ -624,10 +624,10 @@ ResourceId YangList::getKeyCombinationValueString (YangDisplayConfigurationConte
 
         // Assert that it is Data element.
         YangDataElement *pYangDataElement = dynamic_cast<YangDataElement *> (pYangElement);
-        prismAssert (NULL != pYangDataElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangDataElement, __FILE__, __LINE__);
 
         Attribute *pAttribute = pWaveManagedObject->getAttributeByName (userDefinedKeyCombination[i]);
-        prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+        waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
         string      valueString;
         ResourceId  valueType                       = WAVE_MESSAGE_ERROR;
@@ -715,7 +715,7 @@ UI32 YangList::absorbeKey (YangDisplayConfigurationContext *pYangDisplayConfigur
         }
 
         YangElement *pYangElement = getUniqueYangElementByName (keyCombination[i]);
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         if (false == (pYangElement->getExposeKeyName ()).empty ())
         {
@@ -872,20 +872,20 @@ ResourceId YangList::getStringRepresentationForKeyValueAtIndex (const UI32 &inde
 {
     UI32 numberOfKeyCombinationEntries = m_keyCombination.size ();
 
-    prismAssert (index < numberOfKeyCombinationEntries, __FILE__, __LINE__);
+    waveAssert (index < numberOfKeyCombinationEntries, __FILE__, __LINE__);
 
     if ("enumeration" == m_keyCombinationTypes[index])
     {
         string keyLeafName = m_keyCombination[index];
 
         YangElement *pYangElement = getUniqueYangElementByName (keyLeafName);
-        prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
         vector<YangElement *> allYangTypeChildElements;
         pYangElement->getAllChildrenByYangName (YangType::getYangName (), allYangTypeChildElements);
 
         YangType *pYangType = dynamic_cast<YangType *> (allYangTypeChildElements[0]);
-        prismAssert (NULL != pYangType, __FILE__, __LINE__);
+        waveAssert (NULL != pYangType, __FILE__, __LINE__);
 
         UI32 enumValue = 0;
         ResourceId status = pYangType->getValueFromEnumName (userInputKeyValue, enumValue);
@@ -908,7 +908,7 @@ ResourceId YangList::getStringRepresentationForKeyValueAtIndex (const UI32 &inde
 void YangList::propagateCompactSyntaxOneLevelForSelf ()
 {
     YangElement *pParentYangElement = getPParentElement ();
-    prismAssert (NULL != pParentYangElement, __FILE__, __LINE__);
+    waveAssert (NULL != pParentYangElement, __FILE__, __LINE__);
 
     if (true == (pParentYangElement->getCliCompactSyntax ()).empty ())
     {
@@ -934,7 +934,7 @@ WaveYangMemberElementFilterInformation *YangList::collectMemberElementFilterInfo
     for (UI32 i = 0; i < numberOfLeafChildElements; i++)
     {
         YangLeaf *pYangLeaf = dynamic_cast<YangLeaf *> (leafChildElements[i]);
-        prismAssert (NULL != pYangLeaf, __FILE__, __LINE__);
+        waveAssert (NULL != pYangLeaf, __FILE__, __LINE__);
 
         if (true == isLeafNamePartOfKeyCombination (pYangLeaf->getName ()))
         {

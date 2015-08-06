@@ -44,7 +44,7 @@ WaveMessage *DatabaseObjectManagerExecuteCopySchemaWorker::createMessageInstance
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DatabaseObjectManagerExecuteCopySchemaWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveMessage);
@@ -71,7 +71,7 @@ void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandl
     string              sourceSchema        = pDatabaseObjectManagerExecuteCopySchemaMessage->getSourceSchema ();
     string              destSchema          = pDatabaseObjectManagerExecuteCopySchemaMessage->getDestSchema ();
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     SI32           i                     = 0;
     string         sqlForCopy		 = "";
@@ -129,7 +129,7 @@ void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandl
                 break;
             }
             default:
-                prismAssert(false, __FILE__, __LINE__);
+                waveAssert(false, __FILE__, __LINE__);
         }
 
         /////////////////////////////////////////////////////////////////////////////
@@ -184,7 +184,7 @@ void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandl
                 break;
             }
             default:
-                prismAssert(false, __FILE__, __LINE__);
+                waveAssert(false, __FILE__, __LINE__);
         }
 	
 	}
@@ -227,7 +227,7 @@ void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandl
             
                 DatabaseObjectManager::handleIfDBCorruption (errorMessage, pCopyResultForReIndexing);
 
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -245,7 +245,7 @@ void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandl
 
                     DatabaseObjectManager::handleIfDBCorruption (errorMessage, pCopyResult);
 
-	                prismAssert (false, __FILE__, __LINE__);
+	                waveAssert (false, __FILE__, __LINE__);
                 }
             }
 
@@ -260,7 +260,7 @@ void DatabaseObjectManagerExecuteCopySchemaWorker::executeCopySchemaMessageHandl
 
             DatabaseObjectManager::handleIfDBCorruption (errorString, pCopyResult);
 
-    	    prismAssert (false, __FILE__, __LINE__);
+    	    waveAssert (false, __FILE__, __LINE__);
         }
 */
     }

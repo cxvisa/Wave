@@ -133,7 +133,7 @@ WaveMessage::WaveMessage (WaveServiceId serviceCode, UI32 operationCode)
     {
         pMessageCreationMutex = new WaveMutex ();
 
-        prismAssert (NULL != pMessageCreationMutex, __FILE__, __LINE__);
+        waveAssert (NULL != pMessageCreationMutex, __FILE__, __LINE__);
     }
 
     pMessageCreationMutex->lock ();
@@ -152,7 +152,7 @@ WaveMessage::WaveMessage (WaveServiceId serviceCode, UI32 operationCode)
 WaveMessage::WaveMessage (const WaveMessage &prismMessage)
 {
     trace (TRACE_LEVEL_FATAL, "WaveMessage::WaveMessage : Copy Constructing a WaveMessage does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 WaveMessage::~WaveMessage ()
@@ -176,7 +176,7 @@ WaveMessage::~WaveMessage ()
 WaveMessage &WaveMessage::operator = (const WaveMessage &prismMessage)
 {
     trace (TRACE_LEVEL_FATAL, "WaveMessage::operator = : Assigning to a WaveMessage does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
@@ -314,7 +314,7 @@ WaveMessageStatus WaveMessage::addBuffer (UI32 tag, UI32 size, const void *pBuff
     if (NULL == pBuffer)
     {
         cout << "WaveMessage::addBuffer : Cannot add NULL buffer to a WaveMessage." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_ADDING_NULL_BUFFER);
     }
@@ -324,7 +324,7 @@ WaveMessageStatus WaveMessage::addBuffer (UI32 tag, UI32 size, const void *pBuff
     if (NULL != pTempBuffer)
     {
         cout << "WaveMessage::addBuffer : A buffer already exists with the tag (" << tag << ")." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_EXISTS);
     }
@@ -393,7 +393,7 @@ WaveMessageStatus WaveMessage::removeBuffer (UI32 tag)
     if (NULL == pTempBuffer)
     {
         cout << "WaveMessage::addBuffer : A buffer does not exist with the tag (" << tag << ")." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_DOES_NOT_EXIST);
     }
@@ -557,7 +557,7 @@ void WaveMessage::transferAllBuffers (WaveMessage *pWaveMessage)
 {
     if (this == pWaveMessage)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -798,7 +798,7 @@ WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const string &serial
 
     WaveMessage *pWaveMessage = WaveMessageFactory::getMessageInstance (serviceId, operationCode);
 
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     if (NULL == pWaveMessage)
     {
@@ -815,8 +815,8 @@ WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const string &serial
 
 WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const UI8 *pData, const UI32 dataSize)
 {
-    prismAssert (NULL != pData, __FILE__, __LINE__);
-    prismAssert (0 != dataSize, __FILE__, __LINE__);
+    waveAssert (NULL != pData, __FILE__, __LINE__);
+    waveAssert (0 != dataSize, __FILE__, __LINE__);
 
     if ((NULL == pData) || (0 == dataSize))
     {
@@ -826,7 +826,7 @@ WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const UI8 *pData, co
     char   *pTempString     = new char[dataSize + 1];
     string  serializedData;
 
-    prismAssert (NULL != pTempString, __FILE__, __LINE__);
+    waveAssert (NULL != pTempString, __FILE__, __LINE__);
 
     if (NULL == pTempString)
     {
@@ -915,15 +915,15 @@ void WaveMessage::copyBuffersFrom (const WaveMessage &prismMessage)
 
         pBuffer = prismMessage.findBuffer (bufferTagsVector[i], bufferSize);
 
-        prismAssert (NULL != pBuffer, __FILE__, __LINE__);
-        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+        waveAssert (NULL != pBuffer, __FILE__, __LINE__);
+        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
         status = addBuffer (bufferTagsVector[i], bufferSize, pBuffer, false);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "WaveMessage::copyBuffersFrom : Copying a Buffer Failed.  Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
@@ -936,7 +936,7 @@ WaveMessage *WaveMessage::clone ()
     UI32          originalMessageId              = 0;
     UI32          waveClientMessageId            = 0;
 
-    prismAssert (NULL != pClonedWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedWaveMessage, __FILE__, __LINE__);
 
     if (NULL == pClonedWaveMessage)
     {
@@ -1354,7 +1354,7 @@ UI32 WaveMessage::getNumberOfStatusPropagation () const
     {
         trace (TRACE_LEVEL_FATAL, string ("WaveMessage::getNumberOfStatusPropagation : There is a mismatch between the size of the three status propagation vectors which should never happen.  Completion Status Vector Size: ") + numberOfCompletionStatus + ", Localized Completion Status Vector Size: " + numberOfLocalizedCompletionStatus + ", Locations Vector: " + numberOfLocations);
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (numberOfCompletionStatus);

@@ -726,7 +726,7 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
     friend void                          tracePrintf        (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...);
     friend void                          tracePrintf        (TraceLevel traceLevel, const char * const pFormat, ...);
 
-    friend void                          prismAssert        (bool isAssertRequired, const char *pFileName, UI32 lineNumber);
+    friend void                          waveAssert        (bool isAssertRequired, const char *pFileName, UI32 lineNumber);
 };
 
 }

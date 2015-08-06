@@ -50,7 +50,7 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
 
     DatabaseConnection *pDatabaseConnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
     if (NULL != (pDatabaseConnection->getPConnection ()))
     {
@@ -96,12 +96,12 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
             bool                isConnectedToDatabase = false;
             pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-            prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+            waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
             if (NULL != (pDatabaseConnection->getPConnection ()))
             {   
                 trace (TRACE_LEVEL_ERROR, "DatabaseStandaloneTransaction::bootDatabaseStep : Already connected to Wave Database. This should not happen as it is just started.");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             else
             {   
@@ -131,7 +131,7 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
         if (0 != status)
         {   
             tracePrintf (TRACE_LEVEL_WARN, true, false, string("DatabaseStandaloneTransaction::bootDatabaseStep : failed to start postgres server after [%s] retries also. Can't move forward. Asserting.").c_str(), retries);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         
     }
@@ -144,7 +144,7 @@ bool DatabaseStandaloneTransaction::executeStep (const string &sql)
 {
     DatabaseConnection *pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
     PGconn *pConnection = pDatabaseConnection->getPConnection ();
     if (NULL != pConnection)
@@ -161,7 +161,7 @@ bool DatabaseStandaloneTransaction::executeStep (const string &sql)
         return (false);
         }
     pConnection = pDatabaseConnection->getPConnection ();
-    prismAssert (pConnection != NULL, __FILE__, __LINE__);
+    waveAssert (pConnection != NULL, __FILE__, __LINE__);
     }
 
     trace (TRACE_LEVEL_INFO, "DatabaseStandaloneTransaction::executeStep : Succesfully connected to Wave Database.");
@@ -190,7 +190,7 @@ PGconn *DatabaseStandaloneTransaction::getDatabaseConnection ()
 {
     DatabaseConnection *pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
 
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
 
     PGconn *pConnection = pDatabaseConnection->getPConnection ();
     if (NULL != pConnection)
@@ -207,7 +207,7 @@ PGconn *DatabaseStandaloneTransaction::getDatabaseConnection ()
             return (NULL);
         }
         pConnection = pDatabaseConnection->getPConnection ();
-        prismAssert (pConnection != NULL, __FILE__, __LINE__);
+        waveAssert (pConnection != NULL, __FILE__, __LINE__);
     }
 
     return (pConnection);
@@ -326,7 +326,7 @@ UI32 DatabaseStandaloneTransaction::getSchemaChangeInfo (DatabaseSchema &databas
     if (NULL == pResult)                                                                                                                                                         
     {                                                                                                                                                                            
         trace (TRACE_LEVEL_WARN, "DatabaseStandaloneTransaction::getSchemaChangeInfo : SQL execution returned NULL result");                                                     
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }                                                                                                                                                                            
     else if (PGRES_TUPLES_OK != PQresultStatus (pResult))                                                                                                                        
     {                                                                                                                                                                            
@@ -335,7 +335,7 @@ UI32 DatabaseStandaloneTransaction::getSchemaChangeInfo (DatabaseSchema &databas
         DatabaseObjectManager::handleIfDBCorruption (errorMessage, pResult);
 
         PQclear (pResult);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }                                                                                                                                                                            
     else                                                                                                                                                                         
     {                                                                                                                                                                            
@@ -468,11 +468,11 @@ ResourceId DatabaseStandaloneTransaction::rollbackDatabase ()
 
     PGconn *pConnection        = getDatabaseConnection ();
     
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     // 1. empty the database first.
     OrmRepository      *pOrmRepository  = OrmRepository::getInstance ();
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     /*string commandString     = pOrmRepository->generateSqlToEmptyOrmDatabaseUsingTruncate (OrmRepository::getWaveCurrentSchema ());
            commandString    += pOrmRepository->generateSqlToEmptyOrmDatabaseUsingTruncate (OrmRepository::getWaveStartSchema   ());  */
@@ -549,11 +549,11 @@ ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (PrismFrameworkConf
 
     PGconn *pConnection        = getDatabaseConnection ();
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     // 1. empty the database first.
     OrmRepository      *pOrmRepository  = OrmRepository::getInstance ();
-    prismAssert (NULL != pOrmRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
     string      thisLocationIpAddress   = prismFrameworkConfiguration.getThisLocationIpAddress ();
     SI32        thisNodePort            = prismFrameworkConfiguration.getThisLocationPort ();
@@ -584,7 +584,7 @@ ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (PrismFrameworkConf
 
             if (1 != numberOfResults)
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
             
             char* pValue = PQgetvalue (pResult, 0, PQfnumber (pResult, "locationid"));
@@ -757,7 +757,7 @@ void DatabaseStandaloneTransaction::shutdownDatabase ()
         return;
 
     DatabaseConnection *pDatabaseConnection = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
-    prismAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pDatabaseConnection, __FILE__, __LINE__);
     DatabaseConnection::deleteInstance ();
 
     trace (TRACE_LEVEL_INFO, "DatabaseStandaloneTransaction::shutdownDatabase : Shutting down database after standalone transaction");

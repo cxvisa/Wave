@@ -29,7 +29,7 @@ FrameworkSequenceGenerator *FrameworkSequenceGeneratorFactory::obtainFrameworkSe
             {
                 s_pType0 = new FrameworkSequenceGeneratorType0 ();
 
-                prismAssert (NULL != s_pType0, __FILE__, __LINE__);
+                waveAssert (NULL != s_pType0, __FILE__, __LINE__);
             }
 
             pTemp = s_pType0;
@@ -40,7 +40,7 @@ FrameworkSequenceGenerator *FrameworkSequenceGeneratorFactory::obtainFrameworkSe
             {
                 s_pType1 = new FrameworkSequenceGeneratorType1 ();
 
-                prismAssert (NULL != s_pType1, __FILE__, __LINE__);
+                waveAssert (NULL != s_pType1, __FILE__, __LINE__);
             }
 
             pTemp = s_pType1;
@@ -51,14 +51,14 @@ FrameworkSequenceGenerator *FrameworkSequenceGeneratorFactory::obtainFrameworkSe
             {
                 s_pType2 = new FrameworkSequenceGeneratorType2 ();
 
-                prismAssert (NULL != s_pType2, __FILE__, __LINE__);
+                waveAssert (NULL != s_pType2, __FILE__, __LINE__);
             }
 
             pTemp = s_pType2;
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     };
 
     return (pTemp);

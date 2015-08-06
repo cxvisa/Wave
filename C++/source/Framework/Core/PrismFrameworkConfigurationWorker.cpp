@@ -469,7 +469,7 @@ ResourceId PrismFrameworkConfigurationWorker::setInMemoryConfiguration (PrismFra
 
     LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
 
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     PrismFrameworkObjectManager::updateIpAddressForThisLocation (prismFrameworkConfiguration.getThisLocationIpAddress ());
 

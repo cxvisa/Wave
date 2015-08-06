@@ -34,7 +34,7 @@ FrameworkTestability5ObjectManager *FrameworkTestability5ObjectManager::getInsta
     if (NULL == pFrameworkTestability5ObjectManager)
     {
         pFrameworkTestability5ObjectManager = new FrameworkTestability5ObjectManager ();
-        WaveNs::prismAssert (NULL != pFrameworkTestability5ObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFrameworkTestability5ObjectManager, __FILE__, __LINE__);
     }
 
     return (pFrameworkTestability5ObjectManager);

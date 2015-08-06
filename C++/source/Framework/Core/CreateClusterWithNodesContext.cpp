@@ -56,7 +56,7 @@ void CreateClusterWithNodesContext::addNewLocationId (const LocationId &location
     else
     {
         trace (TRACE_LEVEL_FATAL, "CreateClusterWithNodesContext::addNewLocationId : Trying to add already existing location.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -77,7 +77,7 @@ void CreateClusterWithNodesContext::removeNewLocationId (const LocationId &locat
     }
 
     trace (TRACE_LEVEL_FATAL, "CreateClusterWithNodesContext::removeNewLocationId : Trying to remove non-existing location.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 LocationId CreateClusterWithNodesContext::getNewLocationIdAt (const UI32 &i)
@@ -89,7 +89,7 @@ LocationId CreateClusterWithNodesContext::getNewLocationIdAt (const UI32 &i)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("CreateClusterWithNodesContext::getNewLocationIdAt : Index (") + i + ") is out of range (" + m_newLocationIdsVector.size () + ").");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (0);
     }
 }
@@ -129,7 +129,7 @@ void CreateClusterWithNodesContext::addValidaionResultsLocation (const string &i
 
 UI32 CreateClusterWithNodesContext::getNumberOfResultsLocations ()
 {
-    prismAssert (m_prismLocationIpAddressesForValidationResultsVector.size () == m_prismLocationPortsForValidationResultsVector.size (), __FILE__, __LINE__);
+    waveAssert (m_prismLocationIpAddressesForValidationResultsVector.size () == m_prismLocationPortsForValidationResultsVector.size (), __FILE__, __LINE__);
 
     return (m_prismLocationIpAddressesForValidationResultsVector.size ());
 }
@@ -183,7 +183,7 @@ void CreateClusterWithNodesContext::getValidationResultsForService (const string
     else
     {
         // We found the validation results but could not find the size of the validation results.  This must not happen.
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

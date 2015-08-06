@@ -43,7 +43,7 @@ AttributeSqlIn::~AttributeSqlIn ()
 bool AttributeSqlIn::validate () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn::validate : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -74,7 +74,7 @@ AttributeSqlIn &AttributeSqlIn::operator = (const AttributeSqlIn &attribute)
 string AttributeSqlIn::getSqlType ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return "";
 }
@@ -82,13 +82,13 @@ string AttributeSqlIn::getSqlType ()
 void AttributeSqlIn::setupOrm (OrmTable *pOrmTable)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 string AttributeSqlIn::getSqlForCreate ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return "";
 }
@@ -96,13 +96,13 @@ string AttributeSqlIn::getSqlForCreate ()
 void AttributeSqlIn::getSqlForInsert (string &sqlForPreValues, string &sqlForInsert, string &sqlForInsert2, bool isFirst)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::getSqlForUpdate (string &sqlForUpdate, string &sqlForUpdate2, bool isFirst)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::getSqlForSelect (string &sqlForSelect, AttributeConditionOperator attributeConditionOperator)
@@ -110,7 +110,7 @@ void AttributeSqlIn::getSqlForSelect (string &sqlForSelect, AttributeConditionOp
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeSqlIn::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (false == m_isInnerQuery)
@@ -125,7 +125,7 @@ void AttributeSqlIn::getSqlForSelect (string &sqlForSelect, AttributeConditionOp
             if (NULL == m_attributes[i])
             {
                 trace (TRACE_LEVEL_FATAL, "AttributeSqlIn::getSqlForSelect : Attribute is not initialized!");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             if (0 == i)
@@ -140,7 +140,7 @@ void AttributeSqlIn::getSqlForSelect (string &sqlForSelect, AttributeConditionOp
                 if (m_attributes[i]->getAttributeName () != attributeColumnName)
                 {
                     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn::getSqlForSelect : Attribute index: ") + i + " is for column \"" + m_attributes[i]->getAttributeName () + "\" and is not consistent with the initial attribute's column \"" + attributeColumnName + "\"");
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
             }
 
@@ -164,7 +164,7 @@ void AttributeSqlIn::getSqlForSelect (string &sqlForSelect, AttributeConditionOp
         if (1 != numberOfSelectFields)
         {
             trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn::getSqlForSelect : The inner query context cannot have more than 1 select fields but it has ") + numberOfSelectFields );
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         string  innerSqlQuery   = m_pWaveManagedObjectSynchronousInnerQueryContext->getSqlForSelect (false);
 
@@ -176,19 +176,19 @@ void AttributeSqlIn::getSqlForSelect (string &sqlForSelect, AttributeConditionOp
 void AttributeSqlIn::toString (string &valueString)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::fromString (const string &valueString)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void *AttributeSqlIn::getPData ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -196,13 +196,13 @@ void *AttributeSqlIn::getPData ()
 void AttributeSqlIn::setValue (const void *pData)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 Attribute *AttributeSqlIn::clone ()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -210,25 +210,25 @@ Attribute *AttributeSqlIn::clone ()
 void AttributeSqlIn::loadFromPostgresQueryResult (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult *> &auxilliaryResultsMap, const ObjectId &parentObjectId, const string &schema, WaveObjectManager *pWaveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 WaveManagedObject *AttributeSqlIn::getComposedManagedObject (const ObjectId &childObjectId)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return NULL;
 }
@@ -236,7 +236,7 @@ WaveManagedObject *AttributeSqlIn::getComposedManagedObject (const ObjectId &chi
 bool AttributeSqlIn::isDeletableForOperation (const WaveManagedObjectOperation &operation)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -244,13 +244,13 @@ bool AttributeSqlIn::isDeletableForOperation (const WaveManagedObjectOperation &
 void AttributeSqlIn::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::getRestRowData (string &restRowData)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 map<string, string> AttributeSqlIn::getSupportedConversions ()
@@ -263,18 +263,18 @@ map<string, string> AttributeSqlIn::getSupportedConversions ()
 void AttributeSqlIn::setDefaultValue()
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void AttributeSqlIn::getCValue(WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool AttributeSqlIn::isCurrentValueSameAsDefault () const
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn::isCurrentValueSameAsDefault : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (false);
 }
 }

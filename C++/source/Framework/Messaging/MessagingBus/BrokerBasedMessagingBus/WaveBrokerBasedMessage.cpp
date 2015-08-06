@@ -152,7 +152,7 @@ void WaveBrokerBasedMessage::transferAllBuffers (WaveBrokerBasedMessage *pWaveBr
 {
     if (this == pWaveBrokerBasedMessage)
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -185,7 +185,7 @@ WaveMessageStatus WaveBrokerBasedMessage::addBuffer (UI32 tag, UI32 size, const 
     if (NULL == pBuffer)
     {
         cout << "WaveMessage::addBuffer : Cannot add NULL buffer to a WaveMessage." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_ADDING_NULL_BUFFER);
     }
@@ -195,7 +195,7 @@ WaveMessageStatus WaveBrokerBasedMessage::addBuffer (UI32 tag, UI32 size, const 
     if (NULL != pTempBuffer)
     {
         cout << "WaveMessage::addBuffer : A buffer already exists with the tag (" << tag << ")." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_EXISTS);
     }
@@ -265,7 +265,7 @@ WaveMessageStatus WaveBrokerBasedMessage::removeBuffer (UI32 tag)
     if (NULL == pTempBuffer)
     {
         cout << "WaveMessage::addBuffer : A buffer does not exist with the tag (" << tag << ")." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return (WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_DOES_NOT_EXIST);
     }

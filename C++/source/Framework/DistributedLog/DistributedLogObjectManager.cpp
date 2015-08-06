@@ -63,7 +63,7 @@ DistributedLogObjectManager *DistributedLogObjectManager::getInstance ()
 {
     static DistributedLogObjectManager *pDistributedLogObjectManager = new DistributedLogObjectManager ();
 
-    WaveNs::prismAssert (NULL != pDistributedLogObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pDistributedLogObjectManager, __FILE__, __LINE__);
 
     return (pDistributedLogObjectManager);
 }
@@ -81,12 +81,12 @@ WaveMessage *DistributedLogObjectManager::createMessageInstance (const UI32 &ope
     {
         case DISTRIBUTED_LOG_ADD_LOG_ENTRY :
             pWaveMessage = new DistributedLogAddLogEntryMessage ();
-            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         case DISTRIBUTED_LOG_UPDATE_MAX_LOG_ENTRIES :
             pWaveMessage = new DistributedLogUpdateMaxLogEntriesMessage ();
-            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         default :
@@ -210,7 +210,7 @@ ResourceId DistributedLogObjectManager::distributedLogInstallDefaultConfiguratio
 
             DistributedLogConfigurationManagedObject *pDistributedLogConfigurationManagedObject = new DistributedLogConfigurationManagedObject (this);
 
-            prismAssert (NULL != pDistributedLogConfigurationManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pDistributedLogConfigurationManagedObject, __FILE__, __LINE__);
 
             pDistributedLogConfigurationManagedObject->setMaxLogEntries (m_maxLogEntries);
             pDistributedLogConfigurationManagedObject->setFirstLogId    (m_firstLogId);
@@ -227,7 +227,7 @@ ResourceId DistributedLogObjectManager::distributedLogInstallDefaultConfiguratio
     {
         trace (TRACE_LEVEL_FATAL, "DistributedLogObjectManager::distributedLogInstallDefaultConfigurationMOStep : Query of configuration managed object failed.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return (status);
@@ -247,7 +247,7 @@ ResourceId DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromC
         {
             DistributedLogConfigurationManagedObject *pDistributedLogConfigurationManagedObject = dynamic_cast<DistributedLogConfigurationManagedObject *> ((*pResults)[0]);
 
-            prismAssert (NULL != pDistributedLogConfigurationManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pDistributedLogConfigurationManagedObject, __FILE__, __LINE__);
 
             m_maxLogEntries = pDistributedLogConfigurationManagedObject->getMaxLogEntries ();
         }
@@ -293,17 +293,17 @@ ResourceId DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromE
 
     pResults = querySynchronously (&queryContextForFirstLogId);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     numberOfResults = pResults->size ();
 
-    prismAssert (1 >= numberOfResults, __FILE__, __LINE__);
+    waveAssert (1 >= numberOfResults, __FILE__, __LINE__);
 
     if (1 == numberOfResults)
     {
         DistributedLogEntryManagedObject *pDistributedLogEntryManagedObject = dynamic_cast<DistributedLogEntryManagedObject *> ((*pResults)[0]);
 
-        prismAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
 
         m_firstLogId = pDistributedLogEntryManagedObject->getLogId ();
 
@@ -325,17 +325,17 @@ ResourceId DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromE
 
     pResults = querySynchronously (&queryContextForLastLogId);
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     numberOfResults = pResults->size ();
 
-    prismAssert (1 >= numberOfResults, __FILE__, __LINE__);
+    waveAssert (1 >= numberOfResults, __FILE__, __LINE__);
 
     if (1 == numberOfResults)
     {
         DistributedLogEntryManagedObject *pDistributedLogEntryManagedObject = dynamic_cast<DistributedLogEntryManagedObject *> ((*pResults)[0]);
 
-        prismAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
 
         m_nextLogId = pDistributedLogEntryManagedObject->getLogId ();
         m_nextLogId++;
@@ -384,14 +384,14 @@ void DistributedLogObjectManager::dbInconsistencyCheck (WaveAsynchronousContextF
         else
         {
             trace (TRACE_LEVEL_ERROR, string ("DistributedLogObjectManager::dbInconsistencyCheck : Two entries found in DistributedLogConfigurationManagedObject."));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
     }
     else if (2 < pResults->size ())
     {
         trace (TRACE_LEVEL_ERROR, string ("DistributedLogObjectManager::dbInconsistencyCheck : Multiple entries found in DistributedLogConfigurationManagedObject."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     for (i = 0; i < pResults->size (); i++)
     {
@@ -463,7 +463,7 @@ void DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesMessageHandle
 ResourceId DistributedLogObjectManager::distributedLogSetupADelayedCommitTransactionIfRequiredStep (DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext)
 {
     DistributedLogAddLogEntryMessage *pDistributedLogAddLogEntryMessage = dynamic_cast<DistributedLogAddLogEntryMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPWaveMessage ());
-    prismAssert (NULL != pDistributedLogAddLogEntryMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pDistributedLogAddLogEntryMessage, __FILE__, __LINE__);
 
     ResourceId                        logDescriptionType                = pDistributedLogAddLogEntryMessage->getLogDescriptionType ();
     ResourceId                        status                            = WAVE_MESSAGE_SUCCESS;
@@ -485,7 +485,7 @@ ResourceId DistributedLogObjectManager::distributedLogSetupADelayedCommitTransac
 ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext)
 {
     DistributedLogAddLogEntryMessage *pDistributedLogAddLogEntryMessage = dynamic_cast<DistributedLogAddLogEntryMessage *> (pDistributedLogSynchronousLinearSequencerContext->getPWaveMessage ());
-    prismAssert (NULL != pDistributedLogAddLogEntryMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pDistributedLogAddLogEntryMessage, __FILE__, __LINE__);
 
     ResourceId                        logType                           = pDistributedLogAddLogEntryMessage->getLogType ();
     ResourceId                        logDescriptionType                = pDistributedLogAddLogEntryMessage->getLogDescriptionType ();
@@ -511,7 +511,7 @@ ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (Distribut
 
         pDistributedLogEntryManagedObject = new DistributedLogEntryManagedObject (this);
 
-        prismAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
 
         pDistributedLogEntryManagedObject->setLogId (m_nextLogId);
         pDistributedLogEntryManagedObject->setLogType (logType);
@@ -549,7 +549,7 @@ ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (Distribut
 
                 pDistributedLogEntryManagedObject = dynamic_cast<DistributedLogEntryManagedObject *> ((*pResults)[0]);
 
-                prismAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
+                waveAssert (NULL != pDistributedLogEntryManagedObject, __FILE__, __LINE__);
 
                 updateWaveManagedObject (pDistributedLogEntryManagedObject);
 
@@ -679,7 +679,7 @@ ResourceId DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesStep (D
         if (numberOfResults == 1)
         {
             DistributedLogConfigurationManagedObject *pDistributedLogConfigurationManagedObject = dynamic_cast<DistributedLogConfigurationManagedObject *> ((*pResults)[0]);
-            prismAssert (NULL != pDistributedLogConfigurationManagedObject, __FILE__, __LINE__);
+            waveAssert (NULL != pDistributedLogConfigurationManagedObject, __FILE__, __LINE__);
 
             updateWaveManagedObject (pDistributedLogConfigurationManagedObject);
 

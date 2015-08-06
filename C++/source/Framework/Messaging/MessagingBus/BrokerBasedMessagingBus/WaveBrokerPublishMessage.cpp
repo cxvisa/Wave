@@ -82,7 +82,7 @@ void WaveBrokerPublishMessage::decrementReferenceCount ()
 {
     m_mutex.lock ();
 
-    prismAssert (0 < m_referenceCount, __FILE__, __LINE__);
+    waveAssert (0 < m_referenceCount, __FILE__, __LINE__);
 
     m_referenceCount--;
 
@@ -93,7 +93,7 @@ void WaveBrokerPublishMessage::garbageCollect () const
 {
     WaveBrokerPublishMessage *pWaveBrokerPublishMessage = const_cast<WaveBrokerPublishMessage *> (this);
 
-    prismAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerPublishMessage, __FILE__, __LINE__);
 
     pWaveBrokerPublishMessage->decrementReferenceCount ();
 
@@ -125,7 +125,7 @@ void WaveBrokerPublishMessage::loadFromSerializedData2 ()
 {
     m_mutex.lock ();
 
-    prismAssert (NULL != m_pMessageBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != m_pMessageBuffer, __FILE__, __LINE__);
 
     SerializableObject::loadFromSerializedData2 (m_pMessageBuffer);
 

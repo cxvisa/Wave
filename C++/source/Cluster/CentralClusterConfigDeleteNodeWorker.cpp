@@ -109,7 +109,7 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep (WaveLinearSeq
 
     pResults = querySynchronously (WaveNode::getClassName ());
 
-    prismAssert (NULL != pResults, __FILE__, __LINE__);
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     noOfSecondaryNodes = pResults->size ();
 
@@ -125,7 +125,7 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep (WaveLinearSeq
         {
             pNode = dynamic_cast<WaveNode *> ((*pResults)[i]);
 
-            prismAssert (NULL != pNode, __FILE__, __LINE__);
+            waveAssert (NULL != pNode, __FILE__, __LINE__);
         
             if (((pNode->getIpAddress ()) ==  nodeName) && ((pNode->getPort ()) ==  (UI32) nodePort))
             {

@@ -21,7 +21,7 @@ StreamingSocket::StreamingSocket (const SI32 maximumNumberOfConnections)
     if (true != isValid ())
     {
         tracePrintf (TRACE_LEVEL_FATAL, "StreamingSocket::StreamingSocket : %d\n", errno);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     SI32 temp = 1;
@@ -29,13 +29,13 @@ StreamingSocket::StreamingSocket (const SI32 maximumNumberOfConnections)
     if (-1 == (setsockopt (m_socket, SOL_SOCKET, SO_REUSEADDR, (const char *) &temp, sizeof (temp))))
     {
         tracePrintf (TRACE_LEVEL_FATAL, "StreamingSocket::StreamingSocket : %d\n", errno);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (-1 == (setsockopt (m_socket, SOL_SOCKET, SO_KEEPALIVE, (const char *) &temp, sizeof (temp))))
     {
         tracePrintf (TRACE_LEVEL_FATAL, "StreamingSocket::StreamingSocket : %d\n", errno);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 // Disable the TCP_NODELAY option temporarily.  MPC 8548 ehternet driver performs pporly if TCP_NODELAY or TCP_CORK options are set.
@@ -46,7 +46,7 @@ StreamingSocket::StreamingSocket (const SI32 maximumNumberOfConnections)
 	if (false == tcpNoDelayStatus)
 	{
 		trace (TRACE_LEVEL_FATAL, "Not Able to Set No Tcp Delay");
-		prismAssert (false, __FILE__, __LINE__);
+		waveAssert (false, __FILE__, __LINE__);
 	}
 	else
 	{
@@ -62,7 +62,7 @@ StreamingSocket::StreamingSocket (const SI32 maximumNumberOfConnections)
     if (false == sendTimeoutStatus)
     {
         trace (TRACE_LEVEL_FATAL, "Not Able to set send timout");
-        prismAssert (false, __FILE__, __LINE__); 
+        waveAssert (false, __FILE__, __LINE__); 
     }
 
     memset (&m_socketAddress, 0, sizeof (m_socketAddress));

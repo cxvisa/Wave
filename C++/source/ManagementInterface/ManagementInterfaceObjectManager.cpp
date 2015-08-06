@@ -154,7 +154,7 @@ ManagementInterfaceObjectManager *ManagementInterfaceObjectManager::getInstance 
     if (NULL == pManagementInterfaceObjectManager)
     {
         pManagementInterfaceObjectManager = new ManagementInterfaceObjectManager ();
-        WaveNs::prismAssert (NULL != pManagementInterfaceObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pManagementInterfaceObjectManager, __FILE__, __LINE__);
     }
 
     return (pManagementInterfaceObjectManager);
@@ -222,7 +222,7 @@ void ManagementInterfaceObjectManager::getClientsInformation (WaveLinearSequence
 {
     ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage = dynamic_cast<ManagementInterfaceClientListMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
     
-    prismAssert( NULL != pManagementInterfaceClientListMessage , __FILE__ , __LINE__);
+    waveAssert( NULL != pManagementInterfaceClientListMessage , __FILE__ , __LINE__);
 
     vector<string> clientsConnected = m_clientsMap.getClientsConnected ();
 
@@ -239,7 +239,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
 
     ManagementInterfaceMessage *pManagementInterfaceMessage = dynamic_cast<ManagementInterfaceMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-    prismAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__); 
+    waveAssert( NULL != pManagementInterfaceMessage , __FILE__ , __LINE__); 
 
     bool                        isMessageCached       = false;
     ResourceId                  status;
@@ -259,7 +259,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep : Could not cache a message after sending out to a client.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             // FIXME : sagar : If we are not able to cache it.  What to do???
         }
@@ -278,7 +278,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
         if (true == isMessageCached)
         {
             pTempManagementInterfaceMessage = m_remoteMessagesMap.removeMessage (messageId);
-            prismAssert (pTempManagementInterfaceMessage == pManagementInterfaceMessage, __FILE__, __LINE__);
+            waveAssert (pTempManagementInterfaceMessage == pManagementInterfaceMessage, __FILE__, __LINE__);
         }
 
         pManagementInterfaceMessage->setCompletionStatus (status);
@@ -312,7 +312,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
  
             if (FRAMEWORK_SUCCESS != timeStatus)
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
         }
     }
@@ -426,13 +426,13 @@ void ManagementInterfaceObjectManager::callbackForSendUsedByReceiverThreads (Fra
     // but we know that we never requested a timeout period for this message while sending this message using send.  So make sure that the message
     // that we got back is a non NULL message.
 
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     pManagementInterfaceMessage->setType (WAVE_MESSAGE_TYPE_RESPONSE);
 
     // Ensure that there is no context associated with this reposnse.
 
-    prismAssert (NULL == pContext, __FILE__, __LINE__);
+    waveAssert (NULL == pContext, __FILE__, __LINE__);
 
     // The response we recieved is destined for a Management Interface Client.  So deliver it to that client.
     // We must not cache this since it is a response.  We assume that we do not have to track this any more.  We are simply
@@ -495,7 +495,7 @@ void ManagementInterfaceObjectManager::replyToBeUsedByReceiverThreads (Managemen
 {
     // This method Need not be protected with locking mechanism though it can be executed from mutiple receiver threads.
 
-    prismAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pManagementInterfaceMessage, __FILE__, __LINE__);
 
     if (NULL == pManagementInterfaceMessage)
     {
@@ -667,7 +667,7 @@ void ManagementInterfaceObjectManager::disconnectFromClient (const string &clien
 {
     lockAccess ();
     vector <WaveManagementClient *>*pWaveManagementClients = m_clientsMap.removeAllClient (clientIpAddress);
-	prismAssert (NULL != pWaveManagementClients, __FILE__, __LINE__);
+	waveAssert (NULL != pWaveManagementClients, __FILE__, __LINE__);
 	
     UI32 numberofClients = pWaveManagementClients->size ();
     UI32 i = 0;

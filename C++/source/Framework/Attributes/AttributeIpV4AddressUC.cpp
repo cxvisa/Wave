@@ -108,7 +108,7 @@ IpV4AddressUC AttributeIpV4AddressUC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpV4AddressUC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempIpV4Addres);
     }
 }
@@ -122,7 +122,7 @@ void AttributeIpV4AddressUC::setValue (const IpV4AddressUC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpV4AddressUC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -133,7 +133,7 @@ bool AttributeIpV4AddressUC::getIsNoElement () const
 
 bool AttributeIpV4AddressUC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeIpV4AddressUC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeIpV4AddressUC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeIpV4AddressUC == (getAttributeType ()))
     {
@@ -185,7 +185,7 @@ void AttributeIpV4AddressUC::getSqlForSelect (string &sqlForSelect, AttributeCon
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeIpV4AddressUC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

@@ -50,7 +50,7 @@ DatabaseConnection *DatabaseConnection::getInstance (const string &name, const U
         return (s_pDatabaseConnection);
     
     s_pDatabaseConnection = new DatabaseConnection (name, port);
-    prismAssert (NULL != s_pDatabaseConnection, __FILE__, __LINE__);
+    waveAssert (NULL != s_pDatabaseConnection, __FILE__, __LINE__);
 
     return (s_pDatabaseConnection);
 }

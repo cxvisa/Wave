@@ -78,7 +78,7 @@ void YangRefine::refineYangElements (vector<YangElement *> &childElementsInGroup
     for (UI32 i = 0; i < numberOfChildElementsInGrouping; i++)
     {
         YangElement *pYangElementToBeRefined = childElementsInGrouping[i];
-        prismAssert (NULL != pYangElementToBeRefined, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElementToBeRefined, __FILE__, __LINE__);
 
         if (targetRootName != pYangElementToBeRefined->getName ())
         {

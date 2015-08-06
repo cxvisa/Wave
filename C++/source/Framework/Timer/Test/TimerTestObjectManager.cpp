@@ -26,7 +26,7 @@ TimerTestObjectManager *TimerTestObjectManager::getInstance ()
     if (NULL == pTimerTestObjectManager)
     {
         pTimerTestObjectManager = new TimerTestObjectManager ();
-        WaveNs::prismAssert (NULL != pTimerTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pTimerTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pTimerTestObjectManager);

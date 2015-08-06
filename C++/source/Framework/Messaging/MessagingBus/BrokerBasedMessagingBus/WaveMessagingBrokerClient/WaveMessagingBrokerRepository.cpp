@@ -38,7 +38,7 @@ WaveMessagingBrokerRepository *WaveMessagingBrokerRepository::getInstance ()
     {
         pWaveMessagingBrokerClientRepository = new WaveMessagingBrokerRepository ();
 
-        prismAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBrokerClientRepository, __FILE__, __LINE__);
     }
 
     waveMessagingBrokerRepositoryMutex.unlock ();
@@ -150,7 +150,7 @@ bool WaveMessagingBrokerRepository::isAKnownBroker (const string& name, const st
 
     m_waveMessagingBrokersMutex.unlock();
 
-    prismAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
+    waveAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
 
     return (isKnownByName);
 }
@@ -195,7 +195,7 @@ bool WaveMessagingBrokerRepository::addBrokerIfNotAlreadyKnown (const string& na
 
         WaveMessagingBroker *pWaveMessagingBroker = new WaveMessagingBroker (name, ipAddress, port);
 
-        prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         m_waveMessagingBrokersMapByName[name]                                    = pWaveMessagingBroker;
         m_waveMessagingBrokersMapByUniqueString[waveMessagingBrokerUniqueString] = pWaveMessagingBroker;
@@ -238,20 +238,20 @@ void WaveMessagingBrokerRepository::addBroker (const string& name, const string 
         isKnownByUniqueString = false;
     }
 
-    prismAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
+    waveAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
 
     if (false == isKnownByName)
     {
         WaveMessagingBroker *pWaveMessagingBroker = new WaveMessagingBroker (name, ipAddress, port);
 
-        prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         m_waveMessagingBrokersMapByName[name]                                    = pWaveMessagingBroker;
         m_waveMessagingBrokersMapByUniqueString[waveMessagingBrokerUniqueString] = pWaveMessagingBroker;
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveMessagingBrokersMutex.unlock();
@@ -275,7 +275,7 @@ void WaveMessagingBrokerRepository::removeBroker (const string& name)
 
         pWaveMessagingBroker = element->second;
 
-        prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         waveMessagingBrokerUniqueString = pWaveMessagingBroker->getUniqueString ();
     }
@@ -296,7 +296,7 @@ void WaveMessagingBrokerRepository::removeBroker (const string& name)
         isKnownByUniqueString = false;
     }
 
-    prismAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
+    waveAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
 
     if (true == isKnownByName)
     {
@@ -305,7 +305,7 @@ void WaveMessagingBrokerRepository::removeBroker (const string& name)
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveMessagingBrokersMutex.unlock();
@@ -329,7 +329,7 @@ WaveMessagingBroker *WaveMessagingBrokerRepository::checkoutBroker (const string
 
         pWaveMessagingBroker = element->second;
 
-        prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         waveMessagingBrokerUniqueString = pWaveMessagingBroker->getUniqueString ();
     }
@@ -350,7 +350,7 @@ WaveMessagingBroker *WaveMessagingBrokerRepository::checkoutBroker (const string
         isKnownByUniqueString = false;
     }
 
-    prismAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
+    waveAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
 
     if (true == isKnownByName)
     {
@@ -381,7 +381,7 @@ WaveMessagingBroker *WaveMessagingBrokerRepository::checkoutBroker (const string
 
         pWaveMessagingBroker = element1->second;
 
-        prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         brokerName = pWaveMessagingBroker->getName ();
     }
@@ -402,7 +402,7 @@ WaveMessagingBroker *WaveMessagingBrokerRepository::checkoutBroker (const string
         isKnownByName = false;
     }
 
-    prismAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
+    waveAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
 
     if (true == isKnownByName)
     {
@@ -410,7 +410,7 @@ WaveMessagingBroker *WaveMessagingBrokerRepository::checkoutBroker (const string
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveMessagingBrokersMutex.unlock();
@@ -420,7 +420,7 @@ WaveMessagingBroker *WaveMessagingBrokerRepository::checkoutBroker (const string
 
 void WaveMessagingBrokerRepository::checkinBroker (WaveMessagingBroker *pWaveMessagingBroker)
 {
-    prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
     string               brokerName                       = pWaveMessagingBroker->getName ();
     bool                 isKnownByName                    = false;
@@ -439,7 +439,7 @@ void WaveMessagingBrokerRepository::checkinBroker (WaveMessagingBroker *pWaveMes
 
         pWaveMessagingBroker1 = element->second;
 
-        prismAssert (NULL != pWaveMessagingBroker1, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker1, __FILE__, __LINE__);
 
         waveMessagingBrokerUniqueString = pWaveMessagingBroker1->getUniqueString ();
     }
@@ -460,7 +460,7 @@ void WaveMessagingBrokerRepository::checkinBroker (WaveMessagingBroker *pWaveMes
         isKnownByUniqueString = false;
     }
 
-    prismAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
+    waveAssert (isKnownByName == isKnownByUniqueString, __FILE__, __LINE__);
 
     if (true == isKnownByName)
     {
@@ -468,7 +468,7 @@ void WaveMessagingBrokerRepository::checkinBroker (WaveMessagingBroker *pWaveMes
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_waveMessagingBrokersMutex.unlock();
@@ -478,7 +478,7 @@ WaveMessageBrokerStatus WaveMessagingBrokerRepository::subscribeToMessageBroker 
 {
     WaveMessagingBrokerRepository *pWaveMessagingBrokerRepository = getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
 
     WaveMessagingBroker *pWaveMessagingBroker = pWaveMessagingBrokerRepository->checkoutBroker (brokerName);
 
@@ -489,7 +489,7 @@ WaveMessageBrokerStatus WaveMessagingBrokerRepository::subscribeToMessageBroker 
 
     WaveBrokerSubscribeMessage *pWaveBrokerSubscribeMessage = new WaveBrokerSubscribeMessage (topicNames);
 
-    prismAssert (NULL != pWaveBrokerSubscribeMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveBrokerSubscribeMessage, __FILE__, __LINE__);
 
     bool status = (*pWaveMessagingBroker) << pWaveBrokerSubscribeMessage;
 
@@ -516,7 +516,7 @@ WaveMessageBrokerStatus WaveMessagingBrokerRepository::publishToMessageBroker (c
 {
     WaveMessagingBrokerRepository *pWaveMessagingBrokerRepository = getInstance ();
 
-    prismAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessagingBrokerRepository, __FILE__, __LINE__);
 
     WaveMessagingBroker *pWaveMessagingBroker = pWaveMessagingBrokerRepository->checkoutBroker (brokerName);
 
@@ -551,7 +551,7 @@ string WaveMessagingBrokerRepository::getBrokerName (const string &ipAddress, co
     {
         WaveMessagingBroker *pWaveMessagingBroker = element->second;
 
-        prismAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessagingBroker, __FILE__, __LINE__);
 
         brokerName = pWaveMessagingBroker->getName ();
     }

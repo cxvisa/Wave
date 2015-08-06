@@ -39,7 +39,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     if (3 > m_numberOfSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -48,7 +48,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     if (NULL == m_pSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -79,7 +79,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     if (3 > m_numberOfSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -88,7 +88,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     if (NULL == m_pSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -119,7 +119,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     if (3 > m_numberOfSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -128,7 +128,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     if (NULL == m_pSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -169,7 +169,7 @@ PrismSynchronousLinearSequencerContext &PrismSynchronousLinearSequencerContext::
     if (3 > m_numberOfSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::operator = : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (*this);
     }
 
@@ -178,7 +178,7 @@ PrismSynchronousLinearSequencerContext &PrismSynchronousLinearSequencerContext::
     if (NULL == m_pSteps)
     {
         cerr << "PrismSynchronousLinearSequencerContext::operator = : Could not allocate memory for steps." << endl;
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (*this);
     }
 
@@ -340,7 +340,7 @@ void PrismSynchronousLinearSequencerContext::addManagedObjectsForGarbageCollecti
 
 void PrismSynchronousLinearSequencerContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)
 {
-    prismAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
 
     m_managedObjectsForGarbageCollection.push_back (pWaveManagedObjectForGarbageCollection);
 }
@@ -352,7 +352,7 @@ void PrismSynchronousLinearSequencerContext::garbageCollect ()
 
     for (i = 0; i < numberOfManagedObjectsForGarbageCollection; i++)
     {
-        prismAssert (NULL != m_managedObjectsForGarbageCollection[i], __FILE__, __LINE__);
+        waveAssert (NULL != m_managedObjectsForGarbageCollection[i], __FILE__, __LINE__);
 
         delete (m_managedObjectsForGarbageCollection[i]);
     }

@@ -26,7 +26,7 @@ template<class T> template<class TX> WaveManagedObjectPointer<T>::WaveManagedObj
     if (0 != m_referenceCount)
     {
         WaveNs::trace (TRACE_LEVEL_FATAL, string ("WaveManagedObjectPointer<T>::WaveManagedObjectCountedPointer<TX> : Trying to Delete the Pointer when there are references pending.  Reference Count : ") + m_referenceCount);
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     delete m_pTX;
@@ -42,7 +42,7 @@ template<class T> template<class TX> void WaveManagedObjectPointer<T>::WaveManag
     if (0 == m_referenceCount)
     {
         trace (TRACE_LEVEL_FATAL, "WaveManagedObjectPointer<T>::WaveManagedObjectCountedPointer<TX>::operator -- : Trying to decrement reference count beyond 0");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_referenceCount--;
@@ -99,7 +99,7 @@ template<class T> WaveManagedObjectPointer<T>::WaveManagedObjectPointer (T *pT)
 {
     m_pWaveManagedObjectCountedPointer = new WaveManagedObjectCountedPointer<T> (pT);
 
-    prismAssert (NULL != m_pWaveManagedObjectCountedPointer, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveManagedObjectCountedPointer, __FILE__, __LINE__);
 }
 
 template<class T> void WaveManagedObjectPointer<T>::destroy ()

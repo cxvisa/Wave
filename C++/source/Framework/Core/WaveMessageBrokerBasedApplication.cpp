@@ -54,7 +54,7 @@ extern "C" int waveMessageBrokerMain (int argc, char *argv[])
     string                 startMode                                    = "normal";
     SI32                   messageBrokerPort                            = 19110;
 
-    prismAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
+    waveAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
 
     if (argc >= 2)
     {

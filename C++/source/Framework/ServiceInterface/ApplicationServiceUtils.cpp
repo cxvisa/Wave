@@ -68,7 +68,7 @@ WaveServiceId ApplicationServiceUtils::getWaveServiceIdForApplicationServiceId (
     {
         ApplicationLocalService *pApplicationLocalService = pApplicationServiceRepository->getApplicationLocalService (applicationServiceId);
 
-        prismAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
+        waveAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
 
         applicationServiceWaveServiceId = pApplicationLocalService->getServiceId ();
     }
@@ -76,7 +76,7 @@ WaveServiceId ApplicationServiceUtils::getWaveServiceIdForApplicationServiceId (
     {
         ApplicationService *pApplicationService = pApplicationServiceRepository->getApplicationService (applicationServiceId);
 
-        prismAssert (NULL != pApplicationService, __FILE__, __LINE__);
+        waveAssert (NULL != pApplicationService, __FILE__, __LINE__);
 
         applicationServiceWaveServiceId = pApplicationService->getServiceId ();
     }
@@ -102,17 +102,17 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
 
     pApplicationServiceRepository = ApplicationServiceRepository::getInstance ();
 
-    prismAssert (NULL != pApplicationServiceRepository, __FILE__, __LINE__);
+    waveAssert (NULL != pApplicationServiceRepository, __FILE__, __LINE__);
 
     ApplicationServiceSendContext *pApplicationServiceSendContext = new ApplicationServiceSendContext (pApplicationServiceCallback, pApplicationContext);
 
-    prismAssert (NULL != pApplicationServiceSendContext, __FILE__, __LINE__);
+    waveAssert (NULL != pApplicationServiceSendContext, __FILE__, __LINE__);
 
     if (true == (pApplicationServiceRepository->isAnApplicationLocalService (sendingApplicationWaveServiceId)))
     {
         ApplicationLocalService *pApplicationLocalService = pApplicationServiceRepository->getApplicationLocalService (sendingApplicationWaveServiceId);
 
-        prismAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
+        waveAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
 
         status = pApplicationLocalService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationLocalService::applicationLocalServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
 
@@ -125,7 +125,7 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
     {
         ApplicationService *pApplicationService = pApplicationServiceRepository->getApplicationService (sendingApplicationWaveServiceId);
 
-        prismAssert (NULL != pApplicationService, __FILE__, __LINE__);
+        waveAssert (NULL != pApplicationService, __FILE__, __LINE__);
 
         status = pApplicationService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationService::applicationServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
 
@@ -144,13 +144,13 @@ void ApplicationServiceUtils::replyToApplicationService (void *pOutputPayLoad, c
 {
     ApplicationServiceMessageHandlerContext *pApplicationServiceMessageHandlerContext = reinterpret_cast<ApplicationServiceMessageHandlerContext *> (pPrismContext);
 
-    prismAssert (NULL != pApplicationServiceMessageHandlerContext, __FILE__, __LINE__);
+    waveAssert (NULL != pApplicationServiceMessageHandlerContext, __FILE__, __LINE__);
 
     WaveObjectManager *pWaveObjectManager = pApplicationServiceMessageHandlerContext->getPWaveObjectManager ();
     WaveMessage       *pWaveMessage       = pApplicationServiceMessageHandlerContext->getPWaveMessage ();
 
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
-    prismAssert (NULL != pWaveMessage,       __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage,       __FILE__, __LINE__);
 
     if (NULL != pOutputPayLoad)
     {

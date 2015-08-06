@@ -64,7 +64,7 @@ void MultiByteWord::setPolynomialDegree (const UI32 &polynomialDegree)
 
 void MultiByteWord::setBit (const UI32 &index)
 {
-    prismAssert (index < m_polynomialDegree, __FILE__, __LINE__);
+    waveAssert (index < m_polynomialDegree, __FILE__, __LINE__);
 
     UI32 temp      = index + 1;
     UI32 temp1     = temp >> 5;
@@ -77,7 +77,7 @@ void MultiByteWord::setBit (const UI32 &index)
 
 void MultiByteWord::unsetBit (const UI32 &index)
 {
-    prismAssert (index < m_polynomialDegree, __FILE__, __LINE__);
+    waveAssert (index < m_polynomialDegree, __FILE__, __LINE__);
 
     UI32 temp      = index + 1;
     UI32 temp1     = temp >> 5;
@@ -90,7 +90,7 @@ void MultiByteWord::unsetBit (const UI32 &index)
 
 bool MultiByteWord::isBitSet (const UI32 &index)
 {
-    prismAssert (index < m_polynomialDegree, __FILE__, __LINE__);
+    waveAssert (index < m_polynomialDegree, __FILE__, __LINE__);
 
     UI32 temp      = index + 1;
     UI32 temp1     = temp >> 5;
@@ -104,7 +104,7 @@ bool MultiByteWord::isBitSet (const UI32 &index)
 
 MultiByteWord &MultiByteWord::i8Mod (const MultiByteWord &polynomial)
 {
-    prismAssert (m_numberOfWords == polynomial.m_numberOfWords, __FILE__, __LINE__);
+    waveAssert (m_numberOfWords == polynomial.m_numberOfWords, __FILE__, __LINE__);
 
     UI32 i    = 0;
     bool temp = false;
@@ -126,7 +126,7 @@ MultiByteWord &MultiByteWord::i8Mod (const MultiByteWord &polynomial)
 
 MultiByteWord &MultiByteWord::i1Mod (const MultiByteWord &polynomial)
 {
-    prismAssert (m_numberOfWords == polynomial.m_numberOfWords, __FILE__, __LINE__);
+    waveAssert (m_numberOfWords == polynomial.m_numberOfWords, __FILE__, __LINE__);
 
     bool temp = isBitSet (m_polynomialDegree - 1);
 
@@ -166,14 +166,14 @@ MultiByteWord &MultiByteWord::operator= (const UI32 &rhs)
 
 UI32 &MultiByteWord::operator[] (const UI32 &index)
 {
-    WaveNs::prismAssert (index <= (m_numberOfWords - 1), __FILE__, __LINE__);
+    WaveNs::waveAssert (index <= (m_numberOfWords - 1), __FILE__, __LINE__);
 
     return (m_pData[index]);
 }
 
 MultiByteWord &MultiByteWord::operator<<= (const UI32 &numberOfBitsToShift)
 {
-    prismAssert (numberOfBitsToShift <= m_polynomialDegree, __FILE__, __LINE__);
+    waveAssert (numberOfBitsToShift <= m_polynomialDegree, __FILE__, __LINE__);
 
     if (0 == numberOfBitsToShift)
     {
@@ -222,7 +222,7 @@ MultiByteWord MultiByteWord::operator<< (const UI32 &numberOfBitsToShift)
 
 MultiByteWord &MultiByteWord::operator^= (const MultiByteWord &rhs)
 {
-    prismAssert (m_numberOfWords == rhs.m_numberOfWords, __FILE__, __LINE__);
+    waveAssert (m_numberOfWords == rhs.m_numberOfWords, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -245,7 +245,7 @@ MultiByteWord MultiByteWord::operator^ (const MultiByteWord &rhs)
 
 MultiByteWord &MultiByteWord::operator|= (const MultiByteWord &rhs)
 {
-    prismAssert (m_numberOfWords == rhs.m_numberOfWords, __FILE__, __LINE__);
+    waveAssert (m_numberOfWords == rhs.m_numberOfWords, __FILE__, __LINE__);
 
     UI32 i = 0;
 
@@ -298,7 +298,7 @@ const UI32 MultiByteWord::getMsbBitMask () const
     UI32 numberOfMsbBitsToBeMasked = (m_numberOfWords << 5) - m_polynomialDegree;
     UI32 msbBitMask                = 0;
 
-    prismAssert (numberOfMsbBitsToBeMasked < 32, __FILE__, __LINE__);
+    waveAssert (numberOfMsbBitsToBeMasked < 32, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfMsbBitsToBeMasked; i++)
     {
@@ -319,7 +319,7 @@ string MultiByteWord::toHexString () const
     UI32    i             = 0;
     UI32    msbBitMask    = getMsbBitMask ();
 
-    WaveNs::prismAssert (NULL != pTemp, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     snprintf (pTemp, stringSize, "%08X", m_pData[numberOfWords - 1] & msbBitMask);
 

@@ -264,7 +264,7 @@ void PrismPersistableObject::setupOrm ()
     if (isAManagedView != m_isPrismView)
     {
         trace (TRACE_LEVEL_FATAL, "PrismPersistableObject::setupOrm : Classes derived from WaveManagedView should set isPrismView to true in PrismPersistebleObject constructor.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     if (false == isAManagedView)
@@ -286,7 +286,7 @@ void PrismPersistableObject::setupOrm ()
         if (NULL == pOrmTable)
         {
             trace (TRACE_LEVEL_FATAL, "PrismPersistableObject::setupOrm : Failed to allocate a new ORM Table.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         // Next Call the setupKeys Virtual Function.
@@ -313,7 +313,7 @@ void PrismPersistableObject::setupOrm ()
         {
             Attribute *pAttribute = m_persistableAttributes.getAttribute (m_userDefinedKeyCombination[i]);
 
-            prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+            waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
             userDefinedKeyCombinationWithTypes[pAttribute->getAttributeName ()] = pAttribute->clone ();
         }
@@ -334,7 +334,7 @@ void PrismPersistableObject::setupOrm ()
         if (NULL == pOrmView)
         {
             trace (TRACE_LEVEL_FATAL, "PrismPersistableObject::setupOrm : Failed to allocate a new ORM View.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         string viewDefinition = getSqlForCreateView ();
@@ -374,7 +374,7 @@ string PrismPersistableObject::computeSqlForCreateView ()
 {
     /*WaveManagedObjectSynchronousQueryContextForSetOperation *pViewContext = new WaveManagedObjectSynchronousQueryContextForSetOperation ();
 
-    prismAssert (NULL != pViewContext, __FILE__, __LINE__);
+    waveAssert (NULL != pViewContext, __FILE__, __LINE__);
 
     getSetContextForCreateView (pViewContext);
 
@@ -463,7 +463,7 @@ void PrismPersistableObject::setUserTagForAttribute (const string &attributeName
 
     Attribute *pAttribute = getAttributeByName (attributeName);
 
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     AttributeType attributeType = pAttribute->getAttributeType    ();
 
@@ -501,7 +501,7 @@ UI32 PrismPersistableObject::getCase (const UI32 &attributeUserTag)
 {
     trace (TRACE_LEVEL_ERROR, "PrismPersistableObject::getCase: Derived Class implementation must override this function");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return 0;
 }
@@ -665,7 +665,7 @@ void PrismPersistableObject::getRestRowData (string &restRowData, const WaveMana
     numberOfAttributeNamesForRest = attributeNamesForRest.size ();
     numberOfRestHeaderNames       = restHeaderNames.size       ();
 
-    prismAssert (numberOfAttributeNamesForRest == numberOfRestHeaderNames, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesForRest == numberOfRestHeaderNames, __FILE__, __LINE__);
 
     getManagedObjectClassNameForRest (managedObjectClassNameForRest);
 
@@ -690,7 +690,7 @@ void PrismPersistableObject::getRestRowData (string &restRowData, const vector<s
     numberOfAttributeNamesForRest = attributeNamesForRest.size ();
     numberOfRestHeaderNames       = restHeaderNames.size       ();
 
-    prismAssert (numberOfAttributeNamesForRest == numberOfRestHeaderNames, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesForRest == numberOfRestHeaderNames, __FILE__, __LINE__);
 
     getManagedObjectClassNameForRest (managedObjectClassNameForRest);
 
@@ -740,7 +740,7 @@ void PrismPersistableObject::getJsonObjectData (string &jsonObjectData, const Wa
     numberOfAttributeNamesForJson = attributeNamesForJson.size ();
     numberOfJsonNames             = jsonNames.size             ();
 
-    prismAssert (numberOfAttributeNamesForJson == numberOfJsonNames, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesForJson == numberOfJsonNames, __FILE__, __LINE__);
 
     getManagedObjectClassNameForJson (managedObjectClassNameForJson);
 
@@ -759,7 +759,7 @@ void PrismPersistableObject::getJsonObjectData (string &jsonObjectData, const ve
     numberOfAttributeNamesForJson = attributeNamesForJsonDefinedByUser.size ();
     numberOfJsonNames             = jsonNames.size                          ();
 
-    prismAssert (numberOfAttributeNamesForJson == numberOfJsonNames, __FILE__, __LINE__);
+    waveAssert (numberOfAttributeNamesForJson == numberOfJsonNames, __FILE__, __LINE__);
 
     getManagedObjectClassNameForJson (managedObjectClassNameForJson);
 
@@ -872,7 +872,7 @@ void PrismPersistableObject::setAttributesToBeUpdated (const vector<string> &att
                 attributeTypeToBeUpdated == AttributeType::AttributeTypeCompositionVector)
             {
                 trace (TRACE_LEVEL_ERROR, "PrismPersistableObject::addAttributeToBeUpdated: Attribute type cannot be ObjectIdVector, Composition or CompositionVector for InMemory Empty Managed Objects");
-                prismAssert (false , __FILE__, __LINE__);
+                waveAssert (false , __FILE__, __LINE__);
             }
 
         }
@@ -887,7 +887,7 @@ void PrismPersistableObject::setAttributesToBeUpdated (const vector<string> &att
 
 void PrismPersistableObject::addAttributeToBeUpdated (const string &attributeName)
 {
-    prismAssert ("" != attributeName, __FILE__, __LINE__);
+    waveAssert ("" != attributeName, __FILE__, __LINE__);
 
     if (ObjectId::NullObjectId != getObjectId ())
     {
@@ -916,7 +916,7 @@ void PrismPersistableObject::addAttributeToBeUpdated (const string &attributeNam
             attributeTypeToBeUpdated == AttributeType::AttributeTypeCompositionVector)
         {
             trace (TRACE_LEVEL_ERROR, "PrismPersistableObject::addAttributeToBeUpdated: Attribute type cannot be ObjectIdVector, Composition or CompositionVector for InMemory Empty Managed Objects");
-            prismAssert (false , __FILE__, __LINE__);
+            waveAssert (false , __FILE__, __LINE__);
         }
 
         if (0 == (m_attributesToBeUpdated.size ()))
@@ -937,11 +937,11 @@ void PrismPersistableObject::setDisableValidations (const string &attributeName,
 {
     Attribute *pAttribute = m_persistableAttributesForCreate.getAttribute (attributeName);
 
-    prismAssert ((AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ((AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType ()), __FILE__, __LINE__);
 
     AttributeManagedObjectVectorCompositionTemplateBase *pAttributeManagedObjectVectorCompositionTemplateBase = dynamic_cast<AttributeManagedObjectVectorCompositionTemplateBase *> (pAttribute);
 
-    prismAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
+    waveAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
 
     
     pAttributeManagedObjectVectorCompositionTemplateBase->setDisableValidations (disableValidations);

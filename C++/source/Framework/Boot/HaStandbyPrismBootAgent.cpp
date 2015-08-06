@@ -508,7 +508,7 @@ ResourceId HaStandbyPrismBootAgent::resetLocationRole (PrismSynchronousLinearSeq
 {
     LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
 
-    prismAssert (NULL != pThisLocation, __FILE__, __LINE__);
+    waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
     LocationRole    thisLocationRole = pThisLocation->getLocationRole ();
  

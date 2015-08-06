@@ -62,15 +62,15 @@ bool   WavePartitionManagedObject::isWaveNodeMappedToPartition(ObjectId &objId)
 
 void   WavePartitionManagedObject::addWaveNodeToPartition(ObjectId &objId)
 {
-        prismAssert(ObjectId::NullObjectId != objId , __FILE__, __LINE__);
-        prismAssert(false == isWaveNodeMappedToPartition(objId), __FILE__, __LINE__); 
+        waveAssert(ObjectId::NullObjectId != objId , __FILE__, __LINE__);
+        waveAssert(false == isWaveNodeMappedToPartition(objId), __FILE__, __LINE__); 
         m_waveNodeObjectIdList.push_back(objId);
 }
 
 UI32   WavePartitionManagedObject::removeWaveNodeFromPartition(ObjectId &objId)
 {
-    prismAssert(ObjectId::NullObjectId != objId , __FILE__, __LINE__);
-    prismAssert(true == isWaveNodeMappedToPartition(objId), __FILE__, __LINE__); 
+    waveAssert(ObjectId::NullObjectId != objId , __FILE__, __LINE__);
+    waveAssert(true == isWaveNodeMappedToPartition(objId), __FILE__, __LINE__); 
     vector<ObjectId>::iterator itr = m_waveNodeObjectIdList.begin(); 
     for (; itr!= m_waveNodeObjectIdList.end() ; itr++)
     {

@@ -36,12 +36,12 @@ WaveMessage *WaveDebugInformationWorker::createMessageInstance (const UI32 &oper
     {
         case WAVE_OBJECT_MANAGER_GET_DEBUG_INFORMATION :
             pWaveMessage = new WaveObjectManagerGetDebugInformationMessage;
-            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         case WAVE_OBJECT_MANAGER_RESET_DEBUG_INFORMATION :
             pWaveMessage = new WaveObjectManagerResetDebugInformationMessage;
-            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             break;
 
         default :
@@ -62,7 +62,7 @@ void WaveDebugInformationWorker::getDebugInformationHandler (WaveObjectManagerGe
     };
 
     WaveDebugInformationContext *pWaveDebugInformationContext = new WaveDebugInformationContext (pWaveObjectManagerGetDebugInformationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
-    prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
 
     pWaveDebugInformationContext->holdAll ();
@@ -77,7 +77,7 @@ void WaveDebugInformationWorker::getDebugInformationWorkersStep (WaveDebugInform
     //WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     vector<WaveWorker *>    waveWorkers         = pWaveObjectManager->getWorkers ();
     UI32                    numberOfWorkers     = waveWorkers.size ();
@@ -88,7 +88,7 @@ void WaveDebugInformationWorker::getDebugInformationWorkersStep (WaveDebugInform
     for (i = 0; i < numberOfWorkers; i++)
     {
         WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation = new WaveAsynchronousContextForDebugInformation (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveDebugInformationWorker::getDebugInformationWorkersStepCallback), pWaveDebugInformationContext);
-        prismAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
 
         ++(*pWaveDebugInformationContext);
 
@@ -105,7 +105,7 @@ void WaveDebugInformationWorker::getDebugInformationWorkersStepCallback (WaveAsy
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::getDebugInformationWorkersStepCallback : Entering ...");
 
     WaveDebugInformationContext    *pWaveDebugInformationContext    = reinterpret_cast<WaveDebugInformationContext *> (pWaveAsynchronousContextForDebugInformation->getPCallerContext ());
-    prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
     ResourceId                      status                          = pWaveAsynchronousContextForDebugInformation->getCompletionStatus ();
 
@@ -138,10 +138,10 @@ void WaveDebugInformationWorker::getDebugInformationObjectManagerStep (WaveDebug
     //WaveObjectManagerGetDebugInformationMessage *pWaveObjectManagerGetDebugInformationMessage = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation = new WaveAsynchronousContextForDebugInformation (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback), pWaveDebugInformationContext);
-    prismAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
 
     WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     pWaveObjectManager->getDebugInformation (pWaveAsynchronousContextForDebugInformation);
 }
@@ -151,10 +151,10 @@ void WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback (W
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback : Entering ...");
 
     WaveDebugInformationContext                    *pWaveDebugInformationContext                    = reinterpret_cast<WaveDebugInformationContext *> (pWaveAsynchronousContextForDebugInformation->getPCallerContext ());
-    prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
     WaveObjectManagerGetDebugInformationMessage    *pWaveObjectManagerGetDebugInformationMessage    = dynamic_cast<WaveObjectManagerGetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
-    prismAssert (NULL != pWaveObjectManagerGetDebugInformationMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerGetDebugInformationMessage, __FILE__, __LINE__);
 
     ResourceId                                      status                                          = pWaveAsynchronousContextForDebugInformation->getCompletionStatus ();
 
@@ -165,14 +165,14 @@ void WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback (W
     // Now append Generic Object Manager Statistics for Managed Objects that were created/deleted/updated during a commitTransaction
 
     WaveObjectManagerStatisticsTracker             *pWaveObjectManagerStatisticsTracker             = getPWaveObjectManagerStatisticsTracker ();
-    prismAssert (NULL != pWaveObjectManagerStatisticsTracker, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerStatisticsTracker, __FILE__, __LINE__);
 
     string managedObjectDebugInformation = pWaveObjectManagerStatisticsTracker->getAllManagedObjectStatistics ();
 
     if (0 < managedObjectDebugInformation.size ())
     {
         WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
-        prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
         managedObjectDebugInformation = "\n(" + pWaveObjectManager->getName () + ") OBJECT MANAGER COMMIT TRANSACTION STATISTICS:\n\n" + managedObjectDebugInformation;
 
@@ -183,7 +183,7 @@ void WaveDebugInformationWorker::getDebugInformationObjectManagerStepCallback (W
 
     WaveObjectManager *pWaveObjectManager = getPWaveObjectManager ();
 
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     string allTimingsAccumulateForSequencerSteps;
 
@@ -208,7 +208,7 @@ void WaveDebugInformationWorker::resetDebugInformationHandler (WaveObjectManager
     };
 
     WaveDebugInformationContext *pWaveDebugInformationContext = new WaveDebugInformationContext (pWaveObjectManagerResetDebugInformationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
-    prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
 
     pWaveDebugInformationContext->holdAll ();
@@ -222,7 +222,7 @@ void WaveDebugInformationWorker::resetDebugInformationWorkersStep (WaveDebugInfo
     //WaveObjectManagerResetDebugInformationMessage *pWaveObjectManagerResetDebugInformationMessage = dynamic_cast<WaveObjectManagerResetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     vector<WaveWorker *>    waveWorkers         = pWaveObjectManager->getWorkers ();
     UI32                    numberOfWorkers     = waveWorkers.size ();
@@ -233,7 +233,7 @@ void WaveDebugInformationWorker::resetDebugInformationWorkersStep (WaveDebugInfo
     for (i = 0; i < numberOfWorkers; i++)
     {
         WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation = new WaveAsynchronousContextForDebugInformation (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveDebugInformationWorker::resetDebugInformationWorkersStepCallback), pWaveDebugInformationContext);
-        prismAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
 
         ++(*pWaveDebugInformationContext);
         waveWorkers[i]->resetDebugInformation (pWaveAsynchronousContextForDebugInformation);
@@ -249,7 +249,7 @@ void WaveDebugInformationWorker::resetDebugInformationWorkersStepCallback (WaveA
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::resetDebugInformationWorkersStepCallback : Entering ...");
 
     WaveDebugInformationContext    *pWaveDebugInformationContext    = reinterpret_cast<WaveDebugInformationContext *> (pWaveAsynchronousContextForDebugInformation->getPCallerContext ());
-    prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
     ResourceId                      status                          = pWaveAsynchronousContextForDebugInformation->getCompletionStatus ();
 
@@ -279,10 +279,10 @@ void WaveDebugInformationWorker::resetDebugInformationObjectManagerStep (WaveDeb
     //WaveObjectManagerResetDebugInformationMessage *pWaveObjectManagerResetDebugInformationMessage = dynamic_cast<WaveObjectManagerResetDebugInformationMessage *> (pWaveDebugInformationContext->getPWaveMessage ());
 
     WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation = new WaveAsynchronousContextForDebugInformation (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveDebugInformationWorker::resetDebugInformationObjectManagerStepCallback), pWaveDebugInformationContext);
-    prismAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveAsynchronousContextForDebugInformation, __FILE__, __LINE__);
 
     WaveObjectManager      *pWaveObjectManager  = getPWaveObjectManager ();
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     pWaveObjectManager->resetDebugInformation (pWaveAsynchronousContextForDebugInformation);
 }
@@ -292,7 +292,7 @@ void WaveDebugInformationWorker::resetDebugInformationObjectManagerStepCallback 
     trace (TRACE_LEVEL_DEVEL, "WaveDebugInformationWorker::resetDebugInformationObjectManagerStepCallback : Entering ...");
 
     WaveDebugInformationContext        *pWaveDebugInformationContext        = reinterpret_cast<WaveDebugInformationContext *> (pWaveAsynchronousContextForDebugInformation->getPCallerContext ());
-    prismAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveDebugInformationContext, __FILE__, __LINE__);
 
     ResourceId                          status                              = pWaveAsynchronousContextForDebugInformation->getCompletionStatus ();
 
@@ -300,13 +300,13 @@ void WaveDebugInformationWorker::resetDebugInformationObjectManagerStepCallback 
     // Clear all Generic Managed Object Statistics collected for create/update/delete during a commitTransaction.
 
     WaveObjectManagerStatisticsTracker *pWaveObjectManagerStatisticsTracker = getPWaveObjectManagerStatisticsTracker ();
-    prismAssert (NULL != pWaveObjectManagerStatisticsTracker, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerStatisticsTracker, __FILE__, __LINE__);
 
     pWaveObjectManagerStatisticsTracker->clearAllManagedObjectStatistics ();
 
     WaveObjectManager *pWaveObjectManager = getPWaveObjectManager ();
 
-    prismAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
     pWaveObjectManager->clearAllTimingsAccumulatedForSequencerSteps ();
 

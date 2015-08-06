@@ -100,7 +100,7 @@ Uuid AttributeUUID::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUUID::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return (tempUuid);
     }
 }
@@ -114,13 +114,13 @@ void AttributeUUID::setValue (const Uuid &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUUID::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeUUID::validate () const
 {
-    prismAssert ( AttributeType::AttributeTypeUUID == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert ( AttributeType::AttributeTypeUUID == (getAttributeType ()), __FILE__, __LINE__);
 
     if ( AttributeType::AttributeTypeUUID == (getAttributeType ()))
     {
@@ -189,7 +189,7 @@ void AttributeUUID::getSqlForSelect (string &sqlForSelect, AttributeConditionOpe
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeUUID::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

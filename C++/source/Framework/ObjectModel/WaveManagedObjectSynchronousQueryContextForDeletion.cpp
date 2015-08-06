@@ -23,7 +23,7 @@ WaveManagedObjectSynchronousQueryContextForDeletion::~WaveManagedObjectSynchrono
 UI32 WaveManagedObjectSynchronousQueryContextForDeletion::getPageSizeForQueryResults ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForDeletion::getPageSizeForQueryResults : This method should never be invoked for this deletion context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (0);
 }
@@ -31,19 +31,19 @@ UI32 WaveManagedObjectSynchronousQueryContextForDeletion::getPageSizeForQueryRes
 void WaveManagedObjectSynchronousQueryContextForDeletion::setPageSizeForQueryResults (UI32 limitForQueryResults)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForDeletion::setPageSizeForQueryResults : This method should never be invoked for this deletion context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 void WaveManagedObjectSynchronousQueryContextForDeletion::setPageQueryContext (WaveObjectManager* callingOm)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForDeletion::setPageQueryContext : This method should never be invoked for this deletion context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 bool WaveManagedObjectSynchronousQueryContextForDeletion::isPageQueryContextSet ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForDeletion::isPageQueryContextSet : This method should never be invoked for this deletion context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (false);
 }
@@ -51,7 +51,7 @@ bool WaveManagedObjectSynchronousQueryContextForDeletion::isPageQueryContextSet 
 string WaveManagedObjectSynchronousQueryContextForDeletion::getPageQuerySql ()
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObjectSynchronousQueryContextForDeletion::getPageQuerySql : This method should never be invoked for this deletion context.");   
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return ("");
 }
@@ -72,7 +72,7 @@ void WaveManagedObjectSynchronousQueryContextForDeletion::getSqlForDelete (strin
 {
     UI32     i = 0;
     OrmTable *pTable = OrmRepository::getTableByName (getClassToQueryFor ());
-    prismAssert (NULL != pTable, __FILE__, __LINE__);
+    waveAssert (NULL != pTable, __FILE__, __LINE__);
 
     vector<OrmTable *> derivedTables;
     pTable->getAllDerivedTableIds (derivedTables);
@@ -83,7 +83,7 @@ void WaveManagedObjectSynchronousQueryContextForDeletion::getSqlForDelete (strin
 
     for (i = 0; i < derivedTables.size() ; i++)
     {
-        prismAssert (NULL != derivedTables[i], __FILE__, __LINE__);
+        waveAssert (NULL != derivedTables[i], __FILE__, __LINE__);
         
         string          instanceIdSql;
         instanceIdSql = string (" (SELECT ObjectIdInstanceId FROM ") + OrmRepository::getWaveCurrentSchema ()+ "." + derivedTables[i]->getName () + whereClause + ")";
@@ -173,7 +173,7 @@ void WaveManagedObjectSynchronousQueryContextForDeletion::getSqlForDeletingCompo
 {
     UI32     i = 0;
     OrmTable *pTable = OrmRepository::getTableByName (getClassToQueryFor ());
-    prismAssert (NULL != pTable, __FILE__, __LINE__);
+    waveAssert (NULL != pTable, __FILE__, __LINE__);
 
     vector<OrmTable *> derivedTables;
     pTable->getAllDerivedTableIds (derivedTables);
@@ -181,7 +181,7 @@ void WaveManagedObjectSynchronousQueryContextForDeletion::getSqlForDeletingCompo
 
     for (i = 0; i < derivedTables.size() ; i++)
     {
-        prismAssert (NULL != derivedTables[i], __FILE__, __LINE__);
+        waveAssert (NULL != derivedTables[i], __FILE__, __LINE__);
         
         getSqlForDeletingCompositionsPerTable (sql, compositions, derivedTables[i]);
 
@@ -292,7 +292,7 @@ void WaveManagedObjectSynchronousQueryContextForDeletion::getSqlForPartialDelete
 
     string   childClassName = getClassToQueryFor ();
     OrmTable *pChildTable = OrmRepository::getTableByName (getClassToQueryFor ());
-    prismAssert (NULL != pChildTable, __FILE__, __LINE__);
+    waveAssert (NULL != pChildTable, __FILE__, __LINE__);
 
     string          whereClause;
     string          instanceIdSql;

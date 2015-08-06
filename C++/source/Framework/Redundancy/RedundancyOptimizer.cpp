@@ -89,7 +89,7 @@ void RedundancyOptimizer::optimizeFile (const string &fileName)
     {
         pTempBuffer = pBuffer;
 
-        prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+        waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
         inputFileStream.read (pBuffer, m_fileIoSize);
         readLength = inputFileStream.gcount ();

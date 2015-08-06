@@ -79,7 +79,7 @@ string WaveSourceGeneratorForObjectManager::generateCppMemberFunctions () const
                        "{\n"
                        "    static " + generateClassName () + " *p" + generateClassName () + " = new " + generateClassName () + " ();\n"
                        "\n"
-                       "    WaveNs::prismAssert (NULL != p" + generateClassName () + ", __FILE__, __LINE__);\n"
+                       "    WaveNs::waveAssert (NULL != p" + generateClassName () + ", __FILE__, __LINE__);\n"
                        "\n"
                        "    return (p" + generateClassName () + ");\n"
                        "}\n"

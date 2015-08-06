@@ -30,21 +30,21 @@ UI32 HeartBeatLostContext::getNumberOfNodes () const
     UI32 numberOfNodeIpAddresses = m_nodeIpAddresses.size ();
     UI32 numberOfNodePorts       = m_nodePorts.size ();
 
-    prismAssert (numberOfNodeIpAddresses == numberOfNodePorts, __FILE__, __LINE__);
+    waveAssert (numberOfNodeIpAddresses == numberOfNodePorts, __FILE__, __LINE__);
 
     return (numberOfNodeIpAddresses);
 }
 
 string HeartBeatLostContext::getNodeIpAddressAtIndex (const UI32 &index) const
 {
-    prismAssert (index < (m_nodeIpAddresses.size ()), __FILE__, __LINE__);
+    waveAssert (index < (m_nodeIpAddresses.size ()), __FILE__, __LINE__);
 
     return (m_nodeIpAddresses[index]);
 }
 
 UI32 HeartBeatLostContext::getNodePortAtIndex (const UI32 &index) const
 {
-    prismAssert (index < (m_nodePorts.size ()), __FILE__, __LINE__);
+    waveAssert (index < (m_nodePorts.size ()), __FILE__, __LINE__);
 
     return (m_nodePorts[index]);
 }

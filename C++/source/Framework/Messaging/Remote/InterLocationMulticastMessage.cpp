@@ -169,7 +169,7 @@ void InterLocationMulticastMessage::setMessageRepliedToThisLocation (const Locat
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

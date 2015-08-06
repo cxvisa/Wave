@@ -63,7 +63,7 @@ void YangModule::processAttribute (const string &attributeName, const string &at
             {
                 string prefixString = attributeName.substr (s_xmlnsTokenPrefix.size (), string::npos);
 
-                prismAssert (false == prefixString.empty (), __FILE__, __LINE__);
+                waveAssert (false == prefixString.empty (), __FILE__, __LINE__);
 
                 addNamespace (prefixString, attributeValue);
             }
@@ -81,7 +81,7 @@ void YangModule::processChildElement (YangElement *pYangElement)
     {
         YangImport *pYangImport = dynamic_cast<YangImport *> (pYangElement);
 
-        prismAssert (NULL != pYangImport, __FILE__, __LINE__);
+        waveAssert (NULL != pYangImport, __FILE__, __LINE__);
 
         const string importedModuleName   = pYangImport->getModule ();
         const string importedModulePrefix = pYangImport->getPrefix ();
@@ -92,7 +92,7 @@ void YangModule::processChildElement (YangElement *pYangElement)
     {
         YangGrouping *pYangGrouping = dynamic_cast<YangGrouping *> (pYangElement);
 
-        prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+        waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
         addGrouping (pYangGrouping);
     }
@@ -100,7 +100,7 @@ void YangModule::processChildElement (YangElement *pYangElement)
     {
         YangTypedef *pYangTypedef = dynamic_cast<YangTypedef *> (pYangElement);
 
-        prismAssert (NULL != pYangTypedef, __FILE__, __LINE__);
+        waveAssert (NULL != pYangTypedef, __FILE__, __LINE__);
 
         addTypedef (pYangTypedef);
     }
@@ -108,13 +108,13 @@ void YangModule::processChildElement (YangElement *pYangElement)
     {
         YangPrefix *pYangPrefix = dynamic_cast<YangPrefix *> (pYangElement);
 
-        prismAssert (NULL != pYangPrefix, __FILE__, __LINE__);
+        waveAssert (NULL != pYangPrefix, __FILE__, __LINE__);
 
         string prefixValue;
 
         pYangPrefix->getAttributeValue ("value", prefixValue);
 
-        prismAssert ("" != prefixValue, __FILE__, __LINE__);
+        waveAssert ("" != prefixValue, __FILE__, __LINE__);
 
         setPrefix (prefixValue);
     }
@@ -122,7 +122,7 @@ void YangModule::processChildElement (YangElement *pYangElement)
     {
         YangNameSpace *pYangNameSpace = dynamic_cast<YangNameSpace *> (pYangElement);
 
-        prismAssert (NULL != pYangNameSpace, __FILE__, __LINE__);
+        waveAssert (NULL != pYangNameSpace, __FILE__, __LINE__);
 
         m_namespaceUri = pYangNameSpace->getUri ();
     }
@@ -139,7 +139,7 @@ string YangModule::getImportedModuleName (const string &importedModulePrefix) co
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     return ("");
@@ -155,7 +155,7 @@ void YangModule::addImportedModuleDetails (const string &importedModulePrefix, c
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -191,12 +191,12 @@ bool YangModule::isAKnownGrouping (const string &groupingName) const
 
 void YangModule::addGrouping (YangGrouping *pYangGrouping)
 {
-    prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+    waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
     const string groupingName = pYangGrouping->getName ();
     const bool   isKnown      = isAKnownGrouping (groupingName);
 
-    prismAssert (false == isKnown, __FILE__, __LINE__);
+    waveAssert (false == isKnown, __FILE__, __LINE__);
 
     m_groupingsMap[groupingName] = pYangGrouping;
 }
@@ -213,7 +213,7 @@ YangGrouping *YangModule::getGrouping (const string &groupingName) const
         pYangGrouping = element->second;
     }
 
-    prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+    waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
     return (pYangGrouping);
 }
@@ -222,7 +222,7 @@ void YangModule::incrementUsageCountForGrouping (const string &groupingName)
 {
     YangGrouping *pYangGrouping = getGrouping (groupingName);
 
-    prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+    waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
     pYangGrouping->incrementUsageCount ();
 }
@@ -231,7 +231,7 @@ void YangModule::incrementUsageCountForGroupingForProgrammingLanguages (const Ya
 {
     YangGrouping *pYangGrouping = getGrouping (groupingName);
 
-    prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+    waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
     pYangGrouping->incrementUsageCountForGroupingsInHierarchyForProgrammingLanguages (pYangModuleCollection);
 }
@@ -240,7 +240,7 @@ void YangModule::getClonedChildrenForGrouping (const string &groupingName, vecto
 {
     YangGrouping *pYangGrouping = getGrouping (groupingName);
 
-    prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+    waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
     pYangGrouping->getClonedChildren (clonedChildrenForGrouping);
 }
@@ -261,7 +261,7 @@ void YangModule::removeAllUnusedGroupings ()
     {
         YangGrouping *pYangGrouping = dynamic_cast<YangGrouping *> (allChildElementsByYangName[i]);
 
-        prismAssert (NULL != pYangGrouping, __FILE__, __LINE__);
+        waveAssert (NULL != pYangGrouping, __FILE__, __LINE__);
 
         if (0 == (pYangGrouping->getUsageCount ()))
         {
@@ -310,12 +310,12 @@ bool YangModule::isAKnownTypedef (const string &typedefName) const
 
 void YangModule::addTypedef (YangTypedef *pYangTypedef)
 {
-    prismAssert (NULL != pYangTypedef, __FILE__, __LINE__);
+    waveAssert (NULL != pYangTypedef, __FILE__, __LINE__);
 
     const string typedefName = pYangTypedef->getName ();
     const bool   isKnown     = isAKnownTypedef (typedefName);
 
-    prismAssert (false == isKnown, __FILE__, __LINE__);
+    waveAssert (false == isKnown, __FILE__, __LINE__);
 
     m_typedefsMap[typedefName] = pYangTypedef;
 }
@@ -333,7 +333,7 @@ YangTypedef *YangModule::getTypedef (const string &typedefName) const
         pYangTypedef = element->second;
     }
 
-    prismAssert (NULL != pYangTypedef, __FILE__, __LINE__);
+    waveAssert (NULL != pYangTypedef, __FILE__, __LINE__);
 
     return (pYangTypedef);
 }
@@ -342,7 +342,7 @@ void YangModule::getClonedChildrenForTypedef (string &typedefName, vector<YangEl
 {
     YangTypedef *pYangTypedef = getTypedef ( typedefName);
 
-    prismAssert (NULL != pYangTypedef, __FILE__, __LINE__);
+    waveAssert (NULL != pYangTypedef, __FILE__, __LINE__);
 
     pYangTypedef->getClonedChildren (clonedChildrenForTypedef);
 }
@@ -357,12 +357,12 @@ void YangModule::addNamespace (const string &namespacePrefix, const string &name
 {
     // Assertion checks begin   [
 
-    prismAssert (false == namespacePrefix.empty (), __FILE__, __LINE__);
-    prismAssert (false == namespaceString.empty (), __FILE__, __LINE__);
+    waveAssert (false == namespacePrefix.empty (), __FILE__, __LINE__);
+    waveAssert (false == namespaceString.empty (), __FILE__, __LINE__);
 
     map<string, string>::const_iterator itr = m_namespacePrefixToNamespaceMap.find (namespacePrefix);
     map<string, string>::const_iterator end = m_namespacePrefixToNamespaceMap.end ();
-    prismAssert (end == itr, __FILE__, __LINE__);
+    waveAssert (end == itr, __FILE__, __LINE__);
 
     // Assertion checks end     ]
 
@@ -374,7 +374,7 @@ string YangModule::getNamespaceStringForPrefix (const string &namespacePrefix) c
     map<string, string>::const_iterator itr = m_namespacePrefixToNamespaceMap.find (namespacePrefix);
     map<string, string>::const_iterator end = m_namespacePrefixToNamespaceMap.end ();
 
-    prismAssert (end != itr, __FILE__, __LINE__);
+    waveAssert (end != itr, __FILE__, __LINE__);
 
     return itr->second;
 }
@@ -388,7 +388,7 @@ string YangModule::getNamespaceUri () const
     if (0 < pNameSpaceChildElements.size ())
     {
         YangNameSpace *pYangNameSpace = dynamic_cast<YangNameSpace *> (pNameSpaceChildElements[0]);
-        prismAssert (NULL != pYangNameSpace, __FILE__, __LINE__);
+        waveAssert (NULL != pYangNameSpace, __FILE__, __LINE__);
 
         return pYangNameSpace->getUri ();
     }
@@ -403,8 +403,8 @@ string YangModule::getNamespaceUri () const
 
 bool YangModule::compareYangModulesByNamespaceUri (YangModule *pYangModule1, YangModule *pYangModule2)
 {
-    prismAssert (NULL != pYangModule1, __FILE__, __LINE__);
-    prismAssert (NULL != pYangModule2, __FILE__, __LINE__);
+    waveAssert (NULL != pYangModule1, __FILE__, __LINE__);
+    waveAssert (NULL != pYangModule2, __FILE__, __LINE__);
 
     string namespaceUri1 = pYangModule1->getNamespaceUri ();
     string namespaceUri2 = pYangModule2->getNamespaceUri ();

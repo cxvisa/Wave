@@ -114,7 +114,7 @@ UI64UC AttributeUI64UC::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUI64UC::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempUI64UC;
     }
 }
@@ -128,7 +128,7 @@ void AttributeUI64UC::setValue (const UI64UC &data)
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeUI64UC::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -139,7 +139,7 @@ bool AttributeUI64UC::getIsNoElement () const
 
 bool AttributeUI64UC::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeUI64UC == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeUI64UC == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeUI64UC == (getAttributeType ()))
     {
@@ -191,7 +191,7 @@ void AttributeUI64UC::getSqlForSelect (string &sqlForSelect, AttributeConditionO
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeUI64UC::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

@@ -139,7 +139,7 @@ vector<Attribute *> WaveManagedObjectUpdateContext::getAttributes () const
 
 void WaveManagedObjectUpdateContext::addToAttributeVector (Attribute *pAttribute)
 {
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     m_attributes.push_back (pAttribute); 
 }
@@ -181,7 +181,7 @@ void WaveManagedObjectUpdateContext::addAysnchronousContextForGarbageCollection 
 
 void WaveManagedObjectUpdateContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)
 {
-    prismAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
 
     PrismAsynchronousContext *pPrismAsynchronousContext = getPPrismAsynchronousContext ();
 

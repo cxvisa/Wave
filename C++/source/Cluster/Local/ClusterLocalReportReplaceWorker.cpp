@@ -103,7 +103,7 @@ void ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep(WaveLinear
     //Message from the context
     ClusterLocalReportReplaceMessage* pClusterLocalReportReplaceMessage = dynamic_cast<ClusterLocalReportReplaceMessage* >(pWaveLinearSequencerContext->getPWaveMessage());
 
-    prismAssert(NULL != pClusterLocalReportReplaceMessage, __FILE__, __LINE__);
+    waveAssert(NULL != pClusterLocalReportReplaceMessage, __FILE__, __LINE__);
 
     //Obtain the wavenode and set the ip address and port 
     startTransaction();
@@ -113,13 +113,13 @@ void ClusterLocalReportReplaceWorker::updateWaveNodeManagedObjectStep(WaveLinear
     queryContext.addAndAttribute (new AttributeLocationId (thisNodeLocationId,"locationid"));
 
     vector<WaveManagedObject *>              *pWaveNodeMOs = querySynchronously (&queryContext);
-    prismAssert(NULL != pWaveNodeMOs, __FILE__, __LINE__);
+    waveAssert(NULL != pWaveNodeMOs, __FILE__, __LINE__);
 
     UI32 numberOfResults = pWaveNodeMOs->size ();
-    prismAssert (1 == numberOfResults, __FILE__, __LINE__);
+    waveAssert (1 == numberOfResults, __FILE__, __LINE__);
             
     WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pWaveNodeMOs)[0]);
-    prismAssert (NULL != pWaveNode, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
 
     //Set new IP address and port 
     pWaveNode->setIpAddress (pClusterLocalReportReplaceMessage->getThisNodeIpAddress ());

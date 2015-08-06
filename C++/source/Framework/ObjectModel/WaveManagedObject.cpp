@@ -161,9 +161,9 @@ void WaveManagedObject::tracePrintf (TraceLevel traceLevel, const char * const p
     va_end (variableArguments);
 }
 
-void WaveManagedObject::prismAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
+void WaveManagedObject::waveAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
 {
-    m_pCurrentOwnerWaveObjectManager->prismAssert (isAssertNotRequired, pFileName, lineNumber);
+    m_pCurrentOwnerWaveObjectManager->waveAssert (isAssertNotRequired, pFileName, lineNumber);
 }
 
 void WaveManagedObject::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, WaveElement *pWaveElement)
@@ -502,14 +502,14 @@ ResourceId WaveManagedObject::sendOneWayToAllWaveClients(ManagementInterfaceMess
 WaveManagedObject *WaveManagedObject::createManagedObjectInstance (const string &managedClassName)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObject::createManagedObjectInstance : NOT SUPPORTED on ManagedObjects and their derivations.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (NULL);
 }
 
 WaveMessage *WaveManagedObject::createMessageInstance (const UI32 &operationCode)
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObject::createMessageInstance : NOT SUPPORTED on ManagedObjects and their derivations.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
     return (NULL);
 }
 
@@ -517,7 +517,7 @@ void WaveManagedObject::loadOperationalData (WaveManagedObjectLoadOperationalDat
 {
     trace (TRACE_LEVEL_FATAL, "WaveManagedObject::loadOperationalData : The Derived Managed Objects must overwrite this implementation.");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     pWaveManagedObjectLoadOperationalDataContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveManagedObjectLoadOperationalDataContext->callback ();
@@ -552,11 +552,11 @@ ResourceId WaveManagedObject::loadOperationalDataSynchronousWrapper (const vecto
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        prismAssert (NULL == (*pWaveManagedObject), __FILE__, __LINE__);
+        waveAssert (NULL == (*pWaveManagedObject), __FILE__, __LINE__);
     }
     else
     {
-        prismAssert (NULL != (*pWaveManagedObject), __FILE__, __LINE__);
+        waveAssert (NULL != (*pWaveManagedObject), __FILE__, __LINE__);
     }
 
     delete pLoadOperationalDataSynchronousContext;
@@ -1099,7 +1099,7 @@ UI32 WaveManagedObject::getCase (const UI32 &attributeUserTag)
 {
     AttributeUI32 *pAttribute = dynamic_cast<AttributeUI32 *> (getAttributeByUserTag (attributeUserTag));
 
-    prismAssert (NULL != pAttribute, __FILE__, __LINE__);
+    waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
     UI32 replyUserTag         = pAttribute->getValue ();
 
@@ -1165,7 +1165,7 @@ string WaveManagedObject::customConfigurationDisplay (WaveCustomCliDisplayConfig
     // the call should not come here
     trace (TRACE_LEVEL_FATAL, "WaveManagedObject::customConfigurationDisplay : The Derived Managed Objects must overwrite this implementation to support runtemplate.");
 
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return string("");
 }

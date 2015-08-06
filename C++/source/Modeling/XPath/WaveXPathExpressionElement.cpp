@@ -86,7 +86,7 @@ void WaveLocationPath::setIsAbsolute (const bool &isAbsolute)
 {
     if (true == isAbsolute)
     {
-        prismAssert (false != m_isAbsolute, __FILE__, __LINE__);
+        waveAssert (false != m_isAbsolute, __FILE__, __LINE__);
     }
     else
     {
@@ -96,13 +96,13 @@ void WaveLocationPath::setIsAbsolute (const bool &isAbsolute)
 
 void WaveLocationPath::incrementNumberOfStepsToReachRelativeRoot ()
 {
-    prismAssert (false == m_isAbsolute, __FILE__, __LINE__);
+    waveAssert (false == m_isAbsolute, __FILE__, __LINE__);
     m_numberOfStepsToReachRelativeRoot++;
 }
 
 void WaveLocationPath::addForwardStep (const string &stepName, const string &namespaceName)
 {
-    prismAssert (false == stepName.empty (), __FILE__, __LINE__);
+    waveAssert (false == stepName.empty (), __FILE__, __LINE__);
 
     m_forwardSteps.push_back (stepName);
     m_forwardStepNamespaceStrings.push_back (namespaceName);
@@ -122,14 +122,14 @@ bool WaveLocationPath::getIsAbsolute () const
 
 UI32 WaveLocationPath::getNumberOfStepsToReachRelativeRoot () const
 {
-    prismAssert (false == m_isAbsolute, __FILE__, __LINE__);
+    waveAssert (false == m_isAbsolute, __FILE__, __LINE__);
 
     return m_numberOfStepsToReachRelativeRoot;
 }
 
 string WaveLocationPath::getXPathStringForAbsolutePath () const
 {
-    prismAssert (true == m_isAbsolute, __FILE__, __LINE__);
+    waveAssert (true == m_isAbsolute, __FILE__, __LINE__);
 
     return m_stringRepresentation;
 }
@@ -143,7 +143,7 @@ UI32 WaveLocationPath::getNumberOfForwardSteps () const
 
 void WaveLocationPath::getForwardStepNameAtIndex (const UI32 &index, string &forwardStepName, string &forwardStepNamespaceString) const
 {
-    prismAssert (index < m_forwardSteps.size (), __FILE__, __LINE__);
+    waveAssert (index < m_forwardSteps.size (), __FILE__, __LINE__);
 
     forwardStepName             = m_forwardSteps[index];
     forwardStepNamespaceString  = m_forwardStepNamespaceStrings[index];
@@ -165,7 +165,7 @@ void WaveLocationPath::computeStringRepresentation ()
 
     UI32 numberOfForwardSteps = m_forwardSteps.size ();
 
-    prismAssert (numberOfForwardSteps == m_forwardStepNamespaceStrings.size (), __FILE__, __LINE__);
+    waveAssert (numberOfForwardSteps == m_forwardStepNamespaceStrings.size (), __FILE__, __LINE__);
 
     for (UI32 i = 0; i < numberOfForwardSteps; i++)
     {
@@ -359,7 +359,7 @@ WaveXPathExpressionElement::~WaveXPathExpressionElement ()
 
 void WaveXPathExpressionElement::addChildElement (WaveXPathExpressionElement *pWaveXPathExpressionElement)
 {
-    prismAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
 
     m_pChildElements.push_back (pWaveXPathExpressionElement);
 }
@@ -373,22 +373,22 @@ UI32 WaveXPathExpressionElement::getNumberOfChildElements () const
 
 WaveXPathExpressionElement *WaveXPathExpressionElement::getFirstChildElement () const
 {
-    prismAssert (1 <= m_pChildElements.size (), __FILE__, __LINE__);
+    waveAssert (1 <= m_pChildElements.size (), __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pWaveXPathExpressionElement = m_pChildElements[0];
 
-    prismAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
 
     return pWaveXPathExpressionElement;
 }
 
 WaveXPathExpressionElement *WaveXPathExpressionElement::getSecondChildElement () const
 {
-    prismAssert (2 <= m_pChildElements.size (), __FILE__, __LINE__);
+    waveAssert (2 <= m_pChildElements.size (), __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pWaveXPathExpressionElement = m_pChildElements[1];
 
-    prismAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
 
     return pWaveXPathExpressionElement;
 }
@@ -400,7 +400,7 @@ void WaveXPathExpressionElement::debugPrintChildElements (const UI32 &depth) con
     for (UI32 i = 0; i < numberOfChildElements; i++)
     {
         WaveXPathExpressionElement *pChildElement = m_pChildElements[i];
-        prismAssert (NULL != pChildElement, __FILE__, __LINE__);
+        waveAssert (NULL != pChildElement, __FILE__, __LINE__);
 
         pChildElement->debugPrint (depth);
     }
@@ -499,7 +499,7 @@ UI32 WaveXPathExpressionElement::loadFromParserXPathObject (const XALAN_CPP_NAME
         {
             cerr << "unknown opCode [" << opCode << "] at i = [" << i << "]" << "\r\n";
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
 
         if (NULL != pWaveXPathExpressionElement)
@@ -518,7 +518,7 @@ UI32 WaveXPathExpressionElement::loadFromParserXPathObject (const XALAN_CPP_NAME
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -629,7 +629,7 @@ WaveXPathExpressionValue WaveXPathExpressionXPath::evaluateElement (WaveXPathExp
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (1 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (1 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement = getFirstChildElement ();
 
@@ -660,7 +660,7 @@ WaveXPathExpressionValue WaveXPathExpressionGroup::evaluateElement (WaveXPathExp
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (1 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (1 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement = getFirstChildElement ();
 
@@ -743,14 +743,14 @@ UI32 WaveXPathExpressionLocationPath::loadFromParserXPathObject (const XALAN_CPP
             }
             else
             {
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             i += pXPathExpression->getOpCodeMapValue (i + 1);
         }
         else
         {
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
     }
 
@@ -791,7 +791,7 @@ WaveXPathExpressionValue WaveXPathExpressionFunctionNot::evaluateElement (WaveXP
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (1 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (1 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement = getFirstChildElement ();
 
@@ -821,7 +821,7 @@ WaveXPathExpressionValue WaveXPathExpressionFunctionContains::evaluateElement (W
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -884,7 +884,7 @@ WaveXPathExpressionValue WaveXPathExpressionAnd::evaluateElement (WaveXPathExpre
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -925,7 +925,7 @@ WaveXPathExpressionValue WaveXPathExpressionOr::evaluateElement (WaveXPathExpres
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -963,7 +963,7 @@ WaveXPathExpressionValue WaveXPathExpressionEquals::evaluateElement (WaveXPathEx
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -1006,7 +1006,7 @@ WaveXPathExpressionValue WaveXPathExpressionNotEquals::evaluateElement (WaveXPat
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -1049,7 +1049,7 @@ WaveXPathExpressionValue WaveXPathExpressionLt::evaluateElement (WaveXPathExpres
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -1092,7 +1092,7 @@ WaveXPathExpressionValue WaveXPathExpressionGt::evaluateElement (WaveXPathExpres
 {
     UI32 numberOfChildElements = getNumberOfChildElements ();
 
-    prismAssert (2 == numberOfChildElements, __FILE__, __LINE__);
+    waveAssert (2 == numberOfChildElements, __FILE__, __LINE__);
 
     WaveXPathExpressionElement *pChildElement1 = getFirstChildElement ();
 
@@ -1121,7 +1121,7 @@ WaveXPathExpressionValue WaveXPathExpressionGt::evaluateElement (WaveXPathExpres
 WaveXPathExpressionElement *WaveXPathExpressionElement::buildWaveXPathExpressionElementTree (const string &xpathExpressionString)
 {
     WaveXPathExpressionElement *pWaveXPathExpressionElement = new WaveXPathExpressionXPath ();
-    prismAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveXPathExpressionElement, __FILE__, __LINE__);
 
     XMLPlatformUtils::Initialize();         // [
     XPathEvaluator::initialize();       // [

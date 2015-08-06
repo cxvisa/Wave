@@ -44,7 +44,7 @@ WaveMessage *DatabaseObjectManagerShutdownWorker::createMessageInstance (const U
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DatabaseObjectManagerShutdownMessage ::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveMessage);

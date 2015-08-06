@@ -189,7 +189,7 @@ void WaveWorker::multiPartitionPartialCleanup (WaveAsynchronousContextForMultiPa
 {
     trace (TRACE_LEVEL_DEVEL, "WaveWorker::multiPartitionPartialCleanup : Entering ...");
 
-    prismAssert (true == pWaveAsynchronousContextForMultiPartitionCleanup->getIsPartialCleanup (), __FILE__, __LINE__);
+    waveAssert (true == pWaveAsynchronousContextForMultiPartitionCleanup->getIsPartialCleanup (), __FILE__, __LINE__);
 
     pWaveAsynchronousContextForMultiPartitionCleanup->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForMultiPartitionCleanup->callback ();
@@ -325,9 +325,9 @@ void WaveWorker::tracePrintf (TraceLevel traceLevel, const char * const pFormat,
     va_end (variableArguments);
 }
 
-void WaveWorker::prismAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
+void WaveWorker::waveAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber)
 {
-    m_pWaveObjectManager->prismAssert (isAssertNotRequired, pFileName, lineNumber);
+    m_pWaveObjectManager->waveAssert (isAssertNotRequired, pFileName, lineNumber);
 }
 
 void WaveWorker::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, WaveElement *pWaveElement)

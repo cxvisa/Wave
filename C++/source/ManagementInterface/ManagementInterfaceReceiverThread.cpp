@@ -107,7 +107,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
             if (0 == sizeOfConnectionInformation)
             {
                 trace (TRACE_LEVEL_FATAL, "WaveThreadStatus ManagementInterfaceReceiverThread::start : If we have read the size successfully, it cannot be zero.");
-                prismAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
+                waveAssert (0 != sizeOfConnectionInformation, __FILE__, __LINE__);
             }
         }
 
@@ -218,7 +218,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
             {
                 UI32 peerClientId = (ManagementInterfaceObjectManager::getInstance ())->getClientId (m_peerServerIpAddress, m_peerServerPort);
 
-                prismAssert (0 != peerClientId, __FILE__, __LINE__);
+                waveAssert (0 != peerClientId, __FILE__, __LINE__);
 
                 setPeerClientId (peerClientId);
             }
@@ -245,7 +245,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
             if (NULL == pNewFixedSizeBuffer)
             {
                 trace (TRACE_LEVEL_FATAL, string ("ManagementInterfaceReceiverThread::start : Could not allocate a new FixedSizeBuffer of size ") + messageSize + ".");
-                prismAssert (false, __FILE__, __LINE__);
+                waveAssert (false, __FILE__, __LINE__);
             }
 
             isSuccessful = (*m_pServerStreamingSocket) >> (*pNewFixedSizeBuffer);
@@ -278,7 +278,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
 
                 //trace (TRACE_LEVEL_DEVEL, messageString);
 
-                //prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+                //waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
                 // Now read the buffer data
 
@@ -312,11 +312,11 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
                             break;
                         }
 
-                        prismAssert (0 != bufferSize, __FILE__, __LINE__);
+                        waveAssert (0 != bufferSize, __FILE__, __LINE__);
 
                         pBuffer = new UI8[bufferSize];
 
-                        prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+                        waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
                         FixedSizeBuffer tempBuffer (bufferSize, pBuffer, false);
 
@@ -374,7 +374,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
                 }
                 else
                 {
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
 
                 // If we have a message at hand then attach the buffer to the message.
@@ -412,7 +412,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
                     {
                         trace (TRACE_LEVEL_FATAL, "ManagementInterfaceReceiverThread::start : Please make sure that only the messages derived from ManagementInterfaceMessage are used in CLI/GUI clients.");
                         trace (TRACE_LEVEL_FATAL, "ManagementInterfaceReceiverThread::start : The type of the failed message : " + string ((typeid (*pWaveMessage)).name ()));
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                     else
                     {
@@ -483,7 +483,7 @@ WaveThreadStatus ManagementInterfaceReceiverThread::start ()
                     else
                     {
                         trace (TRACE_LEVEL_FATAL, "ManagementInterfaceReceiverThread::start : Currently, Only Messages and their Responses can be transported across Locations.");
-                        prismAssert (false, __FILE__, __LINE__);
+                        waveAssert (false, __FILE__, __LINE__);
                     }
                 }
 

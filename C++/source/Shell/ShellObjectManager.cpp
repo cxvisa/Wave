@@ -31,7 +31,7 @@ ShellObjectManager *ShellObjectManager::getInstance ()
     if (NULL == pShellObjectManager)
     {
         pShellObjectManager = new ShellObjectManager ();
-        WaveNs::prismAssert (NULL != pShellObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pShellObjectManager, __FILE__, __LINE__);
     }
 
     return (pShellObjectManager);

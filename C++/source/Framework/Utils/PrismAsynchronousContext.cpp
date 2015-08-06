@@ -26,7 +26,7 @@ PrismAsynchronousContext::PrismAsynchronousContext (const PrismAsynchronousConte
       m_pCallerContext (NULL)
 {
     trace (TRACE_LEVEL_FATAL, "PrismAsynchronousContext::PrismAsynchronousContext : Copy constructing PrismAsynchronousContext does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 PrismAsynchronousContext::~PrismAsynchronousContext ()
@@ -37,7 +37,7 @@ PrismAsynchronousContext::~PrismAsynchronousContext ()
 PrismAsynchronousContext &PrismAsynchronousContext::operator = (const PrismAsynchronousContext &prismAsynchronousContext)
 {
     trace (TRACE_LEVEL_FATAL, "PrismAsynchronousContext::operator = : Assigning to a PrismAsynchronousContext does not make sense and hence not allowed.");
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
@@ -72,7 +72,7 @@ void PrismAsynchronousContext::addManagedObjectsForGarbageCollection (const vect
 
 void PrismAsynchronousContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)
 {
-    prismAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
 
     m_managedObjectsForGarbageCollection.push_back (pWaveManagedObjectForGarbageCollection);
 }
@@ -84,7 +84,7 @@ void PrismAsynchronousContext::garbageCollect ()
 
     for (i = 0; i < numberOfManagedObjectsForGarbageCollection; i++)
     {
-        prismAssert (NULL != m_managedObjectsForGarbageCollection[i], __FILE__, __LINE__);
+        waveAssert (NULL != m_managedObjectsForGarbageCollection[i], __FILE__, __LINE__);
 
         delete (m_managedObjectsForGarbageCollection[i]);
 

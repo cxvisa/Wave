@@ -56,7 +56,7 @@ void PrismTestManagedView2::getSetContextForCreateView (WaveManagedObjectSynchro
 
     WaveManagedObjectSynchronousInnerQueryContext* pInnerSynchronousQuery1 = viewContext.addInnerQueryContext (PrismTestManagedObject1::getClassName (), selectFields);
 
-    prismAssert (NULL != pInnerSynchronousQuery1, __FILE__, __LINE__);
+    waveAssert (NULL != pInnerSynchronousQuery1, __FILE__, __LINE__);
 
     selectFields.clear();
     selectFields.push_back ("integer2");
@@ -64,7 +64,7 @@ void PrismTestManagedView2::getSetContextForCreateView (WaveManagedObjectSynchro
 
     WaveManagedObjectSynchronousInnerQueryContext* pInnerSynchronousQuery2 = viewContext.addInnerQueryContext (PrismTestManagedObject2::getClassName (), selectFields, OPERATOR_UNION);
     
-    prismAssert (NULL != pInnerSynchronousQuery2, __FILE__, __LINE__);
+    waveAssert (NULL != pInnerSynchronousQuery2, __FILE__, __LINE__);
 }
 
 string PrismTestManagedView2::getMessage2 ()

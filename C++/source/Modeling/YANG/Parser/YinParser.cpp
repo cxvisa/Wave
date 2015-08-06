@@ -68,7 +68,7 @@ YangElement *YinParser::parseFile (const string &yinFileName)
     {
         pYangModule = new YangModule ();
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->setFileName (yinFileName);
 
@@ -172,7 +172,7 @@ YangElement *YinParser::parseYangUserInterface (const string &serializedYin)
 
     MemBufInputSource *pInputSource = new MemBufInputSource ((const XMLByte *) serializedYin.c_str (), strlen (serializedYin.c_str ()), pId, false);
 
-    prismAssert (NULL != pInputSource, __FILE__, __LINE__);
+    waveAssert (NULL != pInputSource, __FILE__, __LINE__);
 
     serializedYinParser.parse (*pInputSource);
 
@@ -191,7 +191,7 @@ YangElement *YinParser::parseYangUserInterface (const string &serializedYin)
     {
         pYangUserInterface = new YangUserInterface ();
 
-        prismAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
+        waveAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
 
         pYangUserInterface->loadFromDomElement (pDomElement);
     }

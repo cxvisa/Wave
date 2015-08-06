@@ -32,7 +32,7 @@ DatabaseMultiConnection *DatabaseMultiConnection::getInstance ()
     {
         m_pDatabaseMultiConnection = new DatabaseMultiConnection ();
 
-        prismAssert (NULL != m_pDatabaseMultiConnection, __FILE__, __LINE__);
+        waveAssert (NULL != m_pDatabaseMultiConnection, __FILE__, __LINE__);
     }
 
     unlock ();
@@ -335,7 +335,7 @@ void DatabaseMultiConnection::addServer (const string &serverName, const string 
     if (true == isKnown)
     {
         trace (TRACE_LEVEL_FATAL, "DatabaseMultiConnection::addServer : This server is already known : " + serverName);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
@@ -387,7 +387,7 @@ void DatabaseMultiConnection::addManagedObjectToServerNameMapEntry (const string
     else
     {
         trace (TRACE_LEVEL_FATAL, "DatabaseMultiConnection::addManagedObjectToServerNameMapEntry : " + managedObject + " is already added");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -410,7 +410,7 @@ PGconn *DatabaseMultiConnection::getServerConnectionForManagedObject (const stri
 {
     string serverName = getServerNameForManagedObject (managedObject);
 
-    prismAssert ("" != serverName, __FILE__, __LINE__);
+    waveAssert ("" != serverName, __FILE__, __LINE__);
 
     return (getServerConnection (serverName));
 }

@@ -106,7 +106,7 @@ bool FrameworkTestabilityMessage3::validateInputBuffer1 ()
 
     pBuffer = findBuffer (0, bufferSize);
 
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     if (0 == strcmp (pInputString1, reinterpret_cast<char *> (pBuffer)))
     {
@@ -125,7 +125,7 @@ bool FrameworkTestabilityMessage3::validateOutputBuffer1 ()
 
     pBuffer = findBuffer (1, bufferSize);
 
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     if (0 == strcmp (pOutputString1, reinterpret_cast<char *> (pBuffer)))
     {
@@ -167,8 +167,8 @@ bool FrameworkTestabilityMessage3::validateInputLargeBuffer1 ()
 
     //cout << "Buffer Size : " << bufferSize << endl;
 
-    prismAssert (s_largeInputBuffer1Size == bufferSize, __FILE__, __LINE__);
-    prismAssert (NULL != pBuffer, __FILE__, __LINE__);
+    waveAssert (s_largeInputBuffer1Size == bufferSize, __FILE__, __LINE__);
+    waveAssert (NULL != pBuffer, __FILE__, __LINE__);
 
     for (i = 0; i < s_largeInputBuffer1Size; i++)
     {
@@ -251,7 +251,7 @@ ResourceId FrameworkTestabilityMessage3::getRequestedCompletionStatus ()
     if (numberOfLocations <= i)
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestabilityMessage3::getRequestedCompletionStatus : Location id \"") + locationId + "\" could not be found in allLocations vector");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
 
@@ -316,7 +316,7 @@ ResourceId FrameworkTestabilityMessage3::getRequestedCompletionStatus ()
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("FrameworkTestabilityMessage3::getRequestedCompletionStatus : CompletionStatusType invalid."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     trace (TRACE_LEVEL_DEBUG, string ("FrameworkTestabilityMessage3::getRequestedCompletionStatus : CompletionStatusType : ") + m_completionStatusType + ", LocationId " + allLocations[i] + " => " + FrameworkToolKit::localize (status));

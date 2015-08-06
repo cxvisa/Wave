@@ -99,7 +99,7 @@ void WaveGroupManagedObject::addAssociatedUserObjectId (const ObjectId &associat
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveGroupManagedObject::addAssociatedUserObjectId : Adding a duplicate User Object Id : " + associatedUserObjectId.toString ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -115,7 +115,7 @@ void WaveGroupManagedObject::deleteAssociatedUserObjectId (const ObjectId &assoc
     else
     {
         trace (TRACE_LEVEL_FATAL, "WaveGroupManagedObject::addAssociatedUserObjectId : Trying to delete a non associated User Object Id : " + associatedUserObjectId.toString ());
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

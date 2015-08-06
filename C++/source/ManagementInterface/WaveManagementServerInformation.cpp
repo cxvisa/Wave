@@ -83,7 +83,7 @@ string WaveManagementServerInformation::getServiceNameAtIndex (const UI32 &index
 {
     UI32 numberOfServices = getNumberOfServices ();
 
-    prismAssert (index < numberOfServices, __FILE__, __LINE__);
+    waveAssert (index < numberOfServices, __FILE__, __LINE__);
 
     return (m_serviceNames[index]);
 }
@@ -92,7 +92,7 @@ UI32 WaveManagementServerInformation::getServiceIdAtIndex (const UI32 &index) co
 {
     UI32 numberOfServices = getNumberOfServices ();
 
-    prismAssert (index < numberOfServices, __FILE__, __LINE__);
+    waveAssert (index < numberOfServices, __FILE__, __LINE__);
 
     return (m_serviceIds[index]);
 }

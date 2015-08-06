@@ -37,7 +37,7 @@ void ServiceIndependentMessageHandlerMap::addOperationMap (UI32 serviceId, UI32 
         if (opcodeHandlerMapEnd != opcodeHandlerMapElement)
         {
             trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::addOperationMap : OperationMap already found for serviceId : ") + serviceId + string (" and operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             return;
         }
@@ -73,7 +73,7 @@ void ServiceIndependentMessageHandlerMap::addOperationMap (UI32 serviceId, UI32 
         if (opcodeHandlerMapEnd != opcodeHandlerMapElement)
         {
             trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::addOperationMap : OperationMap already found for serviceId : ") + serviceId + string (" and operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             return;
         }
@@ -103,7 +103,7 @@ void ServiceIndependentMessageHandlerMap::execute (WaveServiceIndependentMessage
     if (end == element)
     {
         trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::execute: OperationMap entry not found for this ServiceId : ") + serviceId + string (" opcode : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return;
     }    
@@ -116,7 +116,7 @@ void ServiceIndependentMessageHandlerMap::execute (WaveServiceIndependentMessage
     if (opcodeHandlerMapEnd == opcodeHandlerMapElement)
     {
         trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::execute: OperationMap entry not found for this serviceId : ") + serviceId + string (" opcode : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return;
     }
@@ -139,7 +139,7 @@ void ServiceIndependentMessageHandlerMap::execute (ManagementInterfaceServiceInd
     if (end == element)
     {
         trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::execute: OperationMap entry not found for this ServiceId : ") + serviceId + string (" opcode : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return;
     }
@@ -152,7 +152,7 @@ void ServiceIndependentMessageHandlerMap::execute (ManagementInterfaceServiceInd
     if (opcodeHandlerMapEnd == opcodeHandlerMapElement)
     {
         trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::execute: OperationMap entry not found for this serviceId : ") + serviceId + string (" opcode : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return;
     }
@@ -233,12 +233,12 @@ void ServiceIndependentMessageHandlerMap::removeOperationMap (UI32 serviceId, UI
     if ((false == isRemovedFromWaveServiceIndependentMessageHandlerMap) && (false == isRemovedFromManagementInterfaceServiceIndependentMessageHandlerMap))
     {
         trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::removeOperationMap : OperationMap NOT found either WaveServiceIndependentMessageHanderMap nor ManagementInterfaceServiceIndependentMessageHandlerMap for ServiceId : ") + serviceId + string (" and operation code : ") + operationCode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else if ((true == isRemovedFromWaveServiceIndependentMessageHandlerMap) && (true == isRemovedFromManagementInterfaceServiceIndependentMessageHandlerMap))
     {
         trace (TRACE_LEVEL_FATAL, string ("ServiceIndependentMessageHandlerMap::removeOperationMap : OperationMap found in BOTH WaveServiceIndependentMessageHanderMap and ManagementInterfaceServiceIndependentMessageHandlerMap for ServiceId : ") + serviceId + string (" and operation code : ") + operationCode + ".  This should never happen.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     s_serviceIndependentMessageHandlerMapMutex.unlock ();

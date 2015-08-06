@@ -36,11 +36,11 @@ CommandLineInterfaceReceiverWorkerThread::CommandLineInterfaceReceiverWorkerThre
 {
     m_pWaveMutex = new WaveMutex;
 
-    prismAssert (NULL != m_pWaveMutex, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveMutex, __FILE__, __LINE__);
 
     m_pWaveCondition = new WaveCondition (m_pWaveMutex);
 
-    prismAssert (NULL != m_pWaveCondition, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveCondition, __FILE__, __LINE__);
 }
 
 CommandLineInterfaceReceiverWorkerThread::~CommandLineInterfaceReceiverWorkerThread ()
@@ -63,7 +63,7 @@ CommandLineInterfaceReceiverWorkerThread::~CommandLineInterfaceReceiverWorkerThr
 
 void CommandLineInterfaceReceiverWorkerThread::submitCommandLineInterfaceWorkerMessage (CommandLineInterfaceWorkerMessage *pCommandLineInterfaceWorkerMessage)
 {
-    prismAssert (NULL != pCommandLineInterfaceWorkerMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pCommandLineInterfaceWorkerMessage, __FILE__, __LINE__);
 
     m_pWaveMutex->lock ();
 
@@ -139,9 +139,9 @@ void CommandLineInterfaceReceiverWorkerThread::processMessages ()
                     WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = pCommandLineInterfaceWorkerSendContext->getWaveMessageResponseHandler ();
                     void                                                                   *pWaveMessageContext                                                   = pCommandLineInterfaceWorkerSendContext->getPWaveMessageContext        ();
 
-                    prismAssert (NULL != pWaveMessage,                                                          __FILE__, __LINE__);
-                    prismAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
-                    prismAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
+                    waveAssert (NULL != pWaveMessage,                                                          __FILE__, __LINE__);
+                    waveAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
+                    waveAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
 
                     delete pCommandLineInterfaceWorkerSendContext;
 
@@ -173,7 +173,7 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
             break;
 
         default :
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 }
@@ -182,7 +182,7 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
 {
     ResourceId operationCode = pCommandLineInterfaceMessage->getOperationcode ();
 
-    prismAssert (WAVE_CLI_CLIENT_OPERATION_WRITE_REQUEST == operationCode, __FILE__, __LINE__);
+    waveAssert (WAVE_CLI_CLIENT_OPERATION_WRITE_REQUEST == operationCode, __FILE__, __LINE__);
 
     vector<string> inputString = pCommandLineInterfaceMessage->getInput ();
 
@@ -205,11 +205,11 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
 {
     ResourceId operationCode = pCommandLineInterfaceMessage->getOperationcode ();
 
-    prismAssert (WAVE_CLI_CLIENT_OPERATION_GET_YANG_USER_INTERFACE == operationCode, __FILE__, __LINE__);
+    waveAssert (WAVE_CLI_CLIENT_OPERATION_GET_YANG_USER_INTERFACE == operationCode, __FILE__, __LINE__);
 
     WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage = new WaveSystemManagementGetYangUserInterfaceMessage ();
 
-    prismAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSystemManagementGetYangUserInterfaceMessage, __FILE__, __LINE__);
 
     ResourceId status = send (pWaveSystemManagementGetYangUserInterfaceMessage, reinterpret_cast<WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread> (&CommandLineInterfaceReceiverWorkerThread::getYangUserInterfaceCallback), pCommandLineInterfaceMessage);
 
@@ -256,7 +256,7 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
 {
     ResourceId operationCode = pCommandLineInterfaceMessage->getOperationcode ();
 
-    prismAssert (WAVE_CLI_CLIENT_OPERATION_SHOW_RUNNING_CONFIGURATION == operationCode, __FILE__, __LINE__);
+    waveAssert (WAVE_CLI_CLIENT_OPERATION_SHOW_RUNNING_CONFIGURATION == operationCode, __FILE__, __LINE__);
 
     string targetNodeName = (pCommandLineInterfaceMessage->getInput ())[0];
     string ttyName        = pCommandLineInterfaceMessage->getTtyName ();
@@ -265,7 +265,7 @@ void CommandLineInterfaceReceiverWorkerThread::processCommandLineInterfaceMessag
 
     WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage = new WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage (targetNodeName);
 
-    prismAssert (NULL != pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, __FILE__, __LINE__);
     
     pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage->setTtyName (ttyName);
 

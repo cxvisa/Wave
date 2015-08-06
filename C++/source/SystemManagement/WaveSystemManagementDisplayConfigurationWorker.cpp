@@ -48,7 +48,7 @@ WaveMessage *WaveSystemManagementDisplayConfigurationWorker::createMessageInstan
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("WaveSystemManagementDisplayConfigurationWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             break;
     }
 
@@ -77,7 +77,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 
     WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage = dynamic_cast<WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *> (pDisplayCurrentConfigurationContext->getPWaveMessage ());
 
-    prismAssert (NULL != pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage, __FILE__, __LINE__);
 
     string       qualifiedYangPath  = pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage->getQualifiedYangPath ();
     YangElement *pYangElement       = (WaveSystemManagementObjectManager::getYangModuleCollection ())->getYangElementByQualifiedYangPath (qualifiedYangPath);
@@ -124,7 +124,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 
     WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = pDisplayCurrentConfigurationContext->getPWaveManagedObjectQueryContext ();
 
-    prismAssert (NULL != pWaveManagedObjectQueryContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjectQueryContext, __FILE__, __LINE__);
 
     query (pWaveManagedObjectQueryContext);
 
@@ -136,7 +136,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
     DisplayCurrentConfigurationContext *pDisplayCurrentConfigurationContext = reinterpret_cast<DisplayCurrentConfigurationContext *> (pWaveManagedObjectQueryContext->getPCallerContext ());
     ResourceId                          status                              = pWaveManagedObjectQueryContext->getCompletionStatus ();
 
-    prismAssert (NULL != pDisplayCurrentConfigurationContext, __FILE__, __LINE__);
+    waveAssert (NULL != pDisplayCurrentConfigurationContext, __FILE__, __LINE__);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -149,7 +149,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
     {
         vector<WaveManagedObject *> *pResults = pWaveManagedObjectQueryContext->getPResults ();
 
-        prismAssert (NULL != pResults, __FILE__, __LINE__);
+        waveAssert (NULL != pResults, __FILE__, __LINE__);
 
         pWaveManagedObjectQueryContext->setPResults (NULL);
 
@@ -157,8 +157,8 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
         YangDisplayConfigurationContext *pYangDisplayConfigurationContext = pDisplayCurrentConfigurationContext->getPYangDisplayConfigurationContext ();
         YangElement                     *pYangElement                     = pDisplayCurrentConfigurationContext->getPYangElement                     ();
 
-        prismAssert (NULL != pYangDisplayConfigurationContext, __FILE__, __LINE__);
-        prismAssert (NULL != pYangElement,                     __FILE__, __LINE__);
+        waveAssert (NULL != pYangDisplayConfigurationContext, __FILE__, __LINE__);
+        waveAssert (NULL != pYangElement,                     __FILE__, __LINE__);
 
         // If more results are expected, them issue the asynchronous query first before processing the current set of results.
 
@@ -193,7 +193,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 
                 pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<PrismAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
 
-                prismAssert (NULL != pWaveManagedObjectQueryContext, __FILE__, __LINE__);
+                waveAssert (NULL != pWaveManagedObjectQueryContext, __FILE__, __LINE__);
 
                 pWaveManagedObjectQueryContext->setPageSizeForQueryResults (50);
 
@@ -227,7 +227,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 
     WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage = dynamic_cast<WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *> (pDisplayCurrentConfigurationContext->getPWaveMessage ());
 
-    prismAssert (NULL != pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, __FILE__, __LINE__);
 
     string       targetNodeName        = pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage->getTargetNodeName ();
     vector<YangElement *> yangElements = (WaveSystemManagementObjectManager::getYangUserInterface ())->getYangElementsByTargetNodeName (targetNodeName);

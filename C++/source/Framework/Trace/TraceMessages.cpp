@@ -170,7 +170,7 @@ TraceClientId TraceObjectManagerGetClientsInformationMessage::getTraceClientIdAt
 {
     UI32 numberOfTraceClients = getNumberOfTraceClients ();
 
-    prismAssert (i < numberOfTraceClients, __FILE__, __LINE__);
+    waveAssert (i < numberOfTraceClients, __FILE__, __LINE__);
 
     if (i >= numberOfTraceClients)
     {
@@ -184,7 +184,7 @@ TraceLevel TraceObjectManagerGetClientsInformationMessage::getTraceLevelAt (cons
 {
     UI32 numberOfTraceClients = getNumberOfTraceClients ();
 
-    prismAssert (i < numberOfTraceClients, __FILE__, __LINE__);
+    waveAssert (i < numberOfTraceClients, __FILE__, __LINE__);
 
     if (i >= numberOfTraceClients)
     {
@@ -198,7 +198,7 @@ string TraceObjectManagerGetClientsInformationMessage::getServiceNameAt (const U
 {
     UI32 numberOfTraceClients = getNumberOfTraceClients ();
 
-    prismAssert (i < numberOfTraceClients, __FILE__, __LINE__);
+    waveAssert (i < numberOfTraceClients, __FILE__, __LINE__);
 
     if (i >= numberOfTraceClients)
     {

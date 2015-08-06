@@ -59,7 +59,7 @@ void DatabaseObjectManagerCleanPreparedTransactionsWorker::cleanPreparedTransact
     PGconn             *pConnection                  = pDatabaseConnection->getPConnection ();
     string              queryPreparedTransactionsSql = "SELECT gid FROM pg_prepared_xacts;";
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     pResult = PQexec (pDatabaseConnection->getPConnection (), queryPreparedTransactionsSql.c_str ());
 

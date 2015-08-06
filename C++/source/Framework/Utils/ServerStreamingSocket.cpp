@@ -23,14 +23,14 @@ ServerStreamingSocket::ServerStreamingSocket (SI32 port, SI32 maximumNumberOfCon
     {
 //        cout << "*** errno = " << errno << " ***\n";
         m_status = SERVER_STREAMING_SOCKET_ERROR_COULD_NOT_BIND;
-//        prismAssert (false, __FILE__,__LINE__);
+//        waveAssert (false, __FILE__,__LINE__);
     }
 
     if (true != (StreamingSocket::listen ()))
     {
 //        cout << "*** errno = " << errno << " ***\n";
         m_status = SERVER_STREAMING_SOCKET_ERROR_COULD_NOT_LISTEN;
-//        prismAssert (false, __FILE__,__LINE__);
+//        waveAssert (false, __FILE__,__LINE__);
     }
 }
 
@@ -49,7 +49,7 @@ const ServerStreamingSocket &ServerStreamingSocket::operator << (const string &d
     if (-1 == (send (dataString)))
     {
 //        cout << "*** errno = " << errno << " ***\n";
-        //prismAssert (false, __FILE__,__LINE__);
+        //waveAssert (false, __FILE__,__LINE__);
     }
 
     return (*this);
@@ -151,7 +151,7 @@ bool ServerStreamingSocket::setCustomKeepAliveTimeouts (UI32 keepAliveIdleTimeou
 
     // if (false == setSocketOptionStatus)
     // {
-    //     prismAssert (false, __FILE__, __LINE__);
+    //     waveAssert (false, __FILE__, __LINE__);
     // }
 
     if (true == setSocketOptionStatus)
@@ -160,7 +160,7 @@ bool ServerStreamingSocket::setCustomKeepAliveTimeouts (UI32 keepAliveIdleTimeou
 
         // if (false == setSocketOptionStatus)
         // {
-        //     prismAssert (false, __FILE__, __LINE__);
+        //     waveAssert (false, __FILE__, __LINE__);
         // }
     }
 
@@ -170,7 +170,7 @@ bool ServerStreamingSocket::setCustomKeepAliveTimeouts (UI32 keepAliveIdleTimeou
 
         // if (false == setSocketOptionStatus)
         // {
-        //     prismAssert (false, __FILE__, __LINE__);
+        //     waveAssert (false, __FILE__, __LINE__);
         // }
     }
 

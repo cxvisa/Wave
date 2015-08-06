@@ -31,7 +31,7 @@ YangModuleCollection::~YangModuleCollection ()
 
 bool YangModuleCollection::isAKnownYangModuleByName (YangModule *pYangModule) const
 {
-    prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+    waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
     const string yangModuleName = pYangModule->getName ();
 
@@ -55,7 +55,7 @@ bool YangModuleCollection::isAKnownYangModuleByName (const string &yangModuleNam
 
 bool YangModuleCollection::isAKnownYangModuleByPrefix (YangModule *pYangModule) const
 {
-    prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+    waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
     const string yangModulePrefix = pYangModule->getPrefix ();
 
@@ -79,14 +79,14 @@ bool YangModuleCollection::isAKnownYangModuleByPrefix (const string &yangModuleP
 
 void YangModuleCollection::addYangModule (YangModule *pYangModule)
 {
-    prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+    waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
     bool isKnown         = isAKnownYangModuleByName   (pYangModule);
     bool isKnownByPrefix = isAKnownYangModuleByPrefix (pYangModule);
 
     if ((true == isKnown) || (true == isKnownByPrefix))
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     else
     {
@@ -233,7 +233,7 @@ YangModule *YangModuleCollection::getYangModuleByName (const string &yangModuleN
 
         pYangModule = element->second;
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
     }
 
     return (pYangModule);
@@ -249,7 +249,7 @@ YangModule *YangModuleCollection::getYangModuleByPrefix (const string &yangModul
 
         pYangModule = element->second;
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
     }
 
     return (pYangModule);
@@ -261,17 +261,17 @@ YangModuleCollection *YangModuleCollection::clone () const
     UI32                  i                           = 0;
     YangModuleCollection *pClonedYangModuleCollection = new YangModuleCollection ();
 
-    prismAssert (NULL != pClonedYangModuleCollection, __FILE__, __LINE__);
+    waveAssert (NULL != pClonedYangModuleCollection, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfYangModules; i++)
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         YangModule *pClonedYangModule = dynamic_cast<YangModule *> (pYangModule->clone ());
 
-        prismAssert (NULL != pClonedYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pClonedYangModule, __FILE__, __LINE__);
 
         pClonedYangModuleCollection->addYangModule (pClonedYangModule);
     }
@@ -288,7 +288,7 @@ void YangModuleCollection::transferAllModulesToUserInterface (YangUserInterface 
     {
         YangModule *pYangModule = element->second;
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangUSerInterface->addChildElement (pYangModule);
 
@@ -307,7 +307,7 @@ void YangModuleCollection::computeUsageCountForGroupings ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->computeUsageCountForGroupings (this);
     }
@@ -322,7 +322,7 @@ void YangModuleCollection::computeUsageCountForGroupingsForProgrammingLanguages 
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->computeUsageCountForGroupingsForProgrammingLanguages (this);
     }
@@ -337,7 +337,7 @@ void YangModuleCollection::inlineGroupingUsage ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->inlineGroupingUsage (this);
     }
@@ -352,7 +352,7 @@ void YangModuleCollection::inlineGroupingUsageForRpcs ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->inlineGroupingUsageForRpcs (this);
     }
@@ -382,7 +382,7 @@ void YangModuleCollection::inlineAugmentUsage ()
         {
             YangModule *pYangModule = m_yangModules[i];
 
-            prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+            waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
             numberOfAugmentsResolvedPerModule    = 0;
             numberOfAugmentsNotResolvedPerModule = 0;
@@ -398,7 +398,7 @@ void YangModuleCollection::inlineAugmentUsage ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->rearrangeAugmenterChildElements ();
     }
@@ -413,7 +413,7 @@ void YangModuleCollection::checkIntegrity () const
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->checkIntegrity ();
     }
@@ -428,7 +428,7 @@ void YangModuleCollection::removeAllUnusedGroupings ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->removeAllUnusedGroupings ();
     }
@@ -443,7 +443,7 @@ void YangModuleCollection::removeAllGroupings ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->removeAllGroupings ();
     }
@@ -555,7 +555,7 @@ void YangModuleCollection::printYinForAllModules (FILE *pFile) const
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         string moduleName = pYangModule->getName ();
 
@@ -655,8 +655,8 @@ void YangModuleCollection::getTargetNodeDetails (const string &qualifiedYangPath
 
         numberOfLevel2TokensInQualifiedYangPath = qualifiedYangPathLevel2Tokens.size ();
 
-        prismAssert (1 <= numberOfLevel2TokensInQualifiedYangPath, __FILE__, __LINE__);
-        prismAssert (2 >= numberOfLevel2TokensInQualifiedYangPath, __FILE__, __LINE__);
+        waveAssert (1 <= numberOfLevel2TokensInQualifiedYangPath, __FILE__, __LINE__);
+        waveAssert (2 >= numberOfLevel2TokensInQualifiedYangPath, __FILE__, __LINE__);
 
         if (2 == numberOfLevel2TokensInQualifiedYangPath)
         {
@@ -683,7 +683,7 @@ void YangModuleCollection::getAllNames (set<string> &allNames) const
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->getAllNames (allNames);
     }
@@ -743,7 +743,7 @@ void YangModuleCollection::getAllCliTargetNodeNamesForData (vector<string> &allC
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->getAllCliTargetNodeNamesForData (allCliTargetNodeNamesForData);
     }
@@ -804,7 +804,7 @@ void YangModuleCollection::loadUserTagsFromFile (const string &userTagsFilePath)
 
     pLine = (char *) malloc (sizeof (char) * 1024);
 
-    prismAssert (NULL != pLine, __FILE__, __LINE__);
+    waveAssert (NULL != pLine, __FILE__, __LINE__);
 
     if (false == (userTagsFileStream.is_open ()))
     {
@@ -867,7 +867,7 @@ void YangModuleCollection::updateModulesWithUserTags ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->updateUserTags (this);
     }
@@ -882,7 +882,7 @@ void YangModuleCollection::computeConfigurationSegmentNames ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->computeConfigurationSegmentNames ();
     }
@@ -933,7 +933,7 @@ void YangModuleCollection::computeCliTargetNodeNames ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->computeCliTargetNodeNames ();
     }
@@ -951,7 +951,7 @@ void YangModuleCollection::markNodeSpecificAndPartitionBaseYangElements ()
         {
             break;
         }
-        // prismAssert (NULL != pYangModuleForNodeSpecific, __FILE__, __LINE__); // rolling reboot.
+        // waveAssert (NULL != pYangModuleForNodeSpecific, __FILE__, __LINE__); // rolling reboot.
 
         YangElement *pYangElementForNodeSpecificList = pYangModuleForNodeSpecific->getYangElementForTargetNode ("/rbridge-id");
 
@@ -959,7 +959,7 @@ void YangModuleCollection::markNodeSpecificAndPartitionBaseYangElements ()
         {
             break;
         }
-        // prismAssert (NULL != pYangElementForNodeSpecificList, __FILE__, __LINE__);
+        // waveAssert (NULL != pYangElementForNodeSpecificList, __FILE__, __LINE__);
 
         YangDataElement *pYangDataElementForNodeSpecificList = dynamic_cast<YangDataElement *> (pYangElementForNodeSpecificList);
 
@@ -967,7 +967,7 @@ void YangModuleCollection::markNodeSpecificAndPartitionBaseYangElements ()
         {
             break;
         }
-        // prismAssert (NULL != pYangDataElementForNodeSpecificList, __FILE__, __LINE__);
+        // waveAssert (NULL != pYangDataElementForNodeSpecificList, __FILE__, __LINE__);
 
         pYangDataElementForNodeSpecificList->setIsNodeSpecificBaseList ();
 
@@ -979,7 +979,7 @@ void YangModuleCollection::markNodeSpecificAndPartitionBaseYangElements ()
         {
             break;
         }
-        // prismAssert (NULL != pYangElementForMultiPartitionList, __FILE__, __LINE__);
+        // waveAssert (NULL != pYangElementForMultiPartitionList, __FILE__, __LINE__);
 
         YangDataElement *pYangDataElementForMultiPartitionList = dynamic_cast<YangDataElement *> (pYangElementForMultiPartitionList);
 
@@ -987,7 +987,7 @@ void YangModuleCollection::markNodeSpecificAndPartitionBaseYangElements ()
         {
             break;
         }
-        // prismAssert (NULL != pYangDataElementForMultiPartitionList, __FILE__, __LINE__);
+        // waveAssert (NULL != pYangDataElementForMultiPartitionList, __FILE__, __LINE__);
 
         pYangDataElementForMultiPartitionList->setIsMultiPartitionBaseList ();
 
@@ -1003,7 +1003,7 @@ void YangModuleCollection::processTypeInformations ()
     for (UI32 i = 0; i < numberOfYangModules; i++)
     {
         YangModule *pYangModule = m_yangModules[i];
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->processTypeInformations ();
     }
@@ -1018,7 +1018,7 @@ void YangModuleCollection::inlineTypedef ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->inlineTypedefInsideModule ();
     }
@@ -1027,7 +1027,7 @@ void YangModuleCollection::inlineTypedef ()
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->inlineTypedefFromImportedModule (this);
     }
@@ -1041,7 +1041,7 @@ UI32 YangModuleCollection::getNumberOfAllChildYangElementsInAllModules () const
     for (UI32 i = 0; i < numberOfYangModules; i++)
     {
         YangModule *pYangModule = m_yangModules[i];
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         numberOfAllChildElementsInTree += pYangModule->getNumberOfAllChildYangElementsInTree ();
     }
@@ -1056,7 +1056,7 @@ void YangModuleCollection::setOriginalModuleNameSpaceUriInAllModules ()
     for (UI32 i = 0; i < numberOfYangModules; i++)
     {
         YangModule *pYangModule = m_yangModules[i];
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         pYangModule->setOriginalModuleNameSpaceUriForTree ();
     }
@@ -1075,7 +1075,7 @@ void YangModuleCollection::generateHFilesForCLanguageForAllModules () const
     {
         YangModule *pYangModule = m_yangModules[i];
 
-        prismAssert (NULL != pYangModule, __FILE__, __LINE__);
+        waveAssert (NULL != pYangModule, __FILE__, __LINE__);
 
         string moduleName = pYangModule->getName ();
 

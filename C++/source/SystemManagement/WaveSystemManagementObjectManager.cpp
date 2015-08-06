@@ -29,23 +29,23 @@ WaveSystemManagementObjectManager::WaveSystemManagementObjectManager ()
 {
     m_pWaveSystemManagementDisplayConfigurationWorker = new WaveSystemManagementDisplayConfigurationWorker (this);
 
-    prismAssert (NULL != m_pWaveSystemManagementDisplayConfigurationWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveSystemManagementDisplayConfigurationWorker, __FILE__, __LINE__);
 
     m_pWaveSystemManagementGetYangUserInterfaceWorker = new WaveSystemManagementGetYangUserInterfaceWorker (this);
 
-    prismAssert (NULL != m_pWaveSystemManagementGetYangUserInterfaceWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveSystemManagementGetYangUserInterfaceWorker, __FILE__, __LINE__);
 
     m_pWaveSystemManagementYangInterfacesInitializeWorker = new WaveSystemManagementYangInterfacesInitializeWorker (this);
 
-    prismAssert (NULL != m_pWaveSystemManagementYangInterfacesInitializeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveSystemManagementYangInterfacesInitializeWorker, __FILE__, __LINE__);
 
     m_pWaveSystemManagementGetPossibleCompletionsWorker = new WaveSystemManagementGetPossibleCompletionsWorker (this);
 
-    prismAssert (NULL != m_pWaveSystemManagementGetPossibleCompletionsWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveSystemManagementGetPossibleCompletionsWorker, __FILE__, __LINE__);
 
     m_pWaveSystemManagementGatewayWorker = new WaveSystemManagementGatewayWorker (this);
 
-    prismAssert (NULL != m_pWaveSystemManagementGatewayWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveSystemManagementGatewayWorker, __FILE__, __LINE__);
 
     addDebugFunction ((ShellCmdFunction) (&CliConfigurationFile::debugLoad), "debugLoadCliFile");
 }
@@ -85,7 +85,7 @@ WaveSystemManagementObjectManager *WaveSystemManagementObjectManager::getInstanc
     if (NULL == pSoftwareManagementObjectManager)
     {
         pSoftwareManagementObjectManager = new WaveSystemManagementObjectManager ();
-        WaveNs::prismAssert (NULL != pSoftwareManagementObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pSoftwareManagementObjectManager, __FILE__, __LINE__);
     }
 
     return (pSoftwareManagementObjectManager);
@@ -123,11 +123,11 @@ YangUserInterface *WaveSystemManagementObjectManager::getClonedYangUserInterface
 
     YangElement *pYangElement = pWaveSystemManagementObjectManager->m_pWaveSystemManagementYangInterfacesInitializeWorker->getClonedYangUserInterface();
 
-    WaveNs::prismAssert (NULL != pYangElement, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pYangElement, __FILE__, __LINE__);
 
     YangUserInterface *pYangUserInterface = dynamic_cast<YangUserInterface *> (pYangElement);
 
-    WaveNs::prismAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pYangUserInterface, __FILE__, __LINE__);
 
     return (pYangUserInterface);
 }

@@ -26,7 +26,7 @@ WaveMutex                                                           MessageTrack
 
 bool MessageTracker::isAKnownMessage (const WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     map<const WaveMessage *, WaveThreadId>::iterator element    = m_currentlyAllocatedMessages.find (pWaveMessage);
     map<const WaveMessage *, WaveThreadId>::iterator endElement = m_currentlyAllocatedMessages.end ();
@@ -42,14 +42,14 @@ bool MessageTracker::isAKnownMessage (const WaveMessage *pWaveMessage)
 
 void MessageTracker::addToMessageTracker(const WaveMessage* pWaveMessage)
 {
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     m_messageTrackerMutex.lock ();
 
     if (true == (isAKnownMessage (pWaveMessage)))
     {
         trace (TRACE_LEVEL_FATAL, "MessageTracker::addToMessageTracker : Duplicate Tracking of a message detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         m_messageTrackerMutex.unlock ();
 
@@ -61,7 +61,7 @@ void MessageTracker::addToMessageTracker(const WaveMessage* pWaveMessage)
         if (true == (isAKnownMessageWithBt (pWaveMessage)))
         {
             trace (TRACE_LEVEL_FATAL, "MessageTracker::addToMessageTracker : Duplicate Tracking of a Message with Bt detected.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             m_messageTrackerMutex.unlock ();
 
@@ -86,7 +86,7 @@ void MessageTracker::addToMessageTracker(const WaveMessage* pWaveMessage)
 
 void MessageTracker::deleteFromMessageTracker(const WaveMessage* pWaveMessage)
 {
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     m_messageTrackerMutex.lock ();
 
@@ -94,7 +94,7 @@ void MessageTracker::deleteFromMessageTracker(const WaveMessage* pWaveMessage)
     {
         // When bt tracker is turned off, we clear "Message pointer" --> "bt string" map too.
         trace (TRACE_LEVEL_FATAL, "MessageTracker::deleteFromMessageTracker :Deleting of an unknown message. Possible DOUBLE DELETION / MEMORY CORRUPTION Detected.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         m_messageTrackerMutex.unlock ();
 
@@ -134,7 +134,7 @@ void MessageTracker::getMessagesForAThread (const WaveThreadId &prismThreadId, v
     for (; end2 != itr2; itr2++)
     {
         const WaveMessage *pWaveMessage = itr2->second;
-        prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
         messageServiceIds.push_back     (pWaveMessage->getServiceCode ());
         messageOperationCodes.push_back (pWaveMessage->getOperationCode ());
@@ -249,7 +249,7 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
         {
             const WaveMessage *pWaveMessage = messageElement->second;
 
-            prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
             messageServiceIds.push_back (pWaveMessage->getServiceCode ());
             messageOperationCodes.push_back (pWaveMessage->getOperationCode ());
@@ -282,7 +282,7 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
 
 bool MessageTracker::isAKnownMessageWithBt (const WaveMessage *pWaveMessage)
 {
-    prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     map<const WaveMessage *, string>::iterator element    = m_currentlyAllocatedMessagesWithBt.find (pWaveMessage);
     map<const WaveMessage *, string>::iterator endElement = m_currentlyAllocatedMessagesWithBt.end ();

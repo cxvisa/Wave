@@ -18,7 +18,7 @@ WaveMessageStatus WaveObjectManagerToolKit::sendOneWay (WaveMessage *pWaveMessag
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->sendOneWay (pWaveMessage, locationId));
 }
@@ -27,7 +27,7 @@ WaveMessageStatus WaveObjectManagerToolKit::sendOneWayToFront (WaveMessage *pWav
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->sendOneWayToFront (pWaveMessage, locationId));
 }
@@ -36,7 +36,7 @@ WaveMessageStatus WaveObjectManagerToolKit::sendSynchronously (WaveMessage *pWav
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->sendSynchronously (pWaveMessage, locationId));
 }
@@ -45,7 +45,7 @@ ResourceId WaveObjectManagerToolKit::sendSynchronouslyToWaveClient (const string
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->sendSynchronouslyToWaveClient (waveClientName, pManagementInterfaceMessage, Instance));
 }
@@ -54,7 +54,7 @@ WaveMessageStatus WaveObjectManagerToolKit::sendToWaveServer (const UI32 &waveSe
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->sendToWaveServer (waveServerId, pManagementInterfaceMessage, messageCallback, pWaveMessageSender, pInputContext, timeOutInMilliSeconds));
 }
@@ -63,7 +63,7 @@ ResourceId WaveObjectManagerToolKit::sendOneWayToAllWaveClients (ManagementInter
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->sendOneWayToAllWaveClients (pManagementInterfaceMessage));
 }
@@ -72,7 +72,7 @@ vector<WaveManagedObject *> *WaveObjectManagerToolKit::querySynchronously (WaveM
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronously (pWaveManagedObjectSynchronousQueryContext));
 }
@@ -81,7 +81,7 @@ vector<WaveManagedObject *> *WaveObjectManagerToolKit::querySynchronously (const
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronously (managedClassName, schema));
 }
@@ -90,7 +90,7 @@ vector<WaveManagedObject *> *WaveObjectManagerToolKit::querySynchronously (const
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronously (managedClassName, objectIds, schema));
 }
@@ -99,7 +99,7 @@ vector<WaveManagedObject *> *WaveObjectManagerToolKit::querySynchronouslyByName 
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronouslyByName (managedClassName, managedObjectName, schema));
 }
@@ -108,7 +108,7 @@ vector<WaveManagedObject *> *WaveObjectManagerToolKit:: querySynchronouslyLocalM
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronouslyLocalManagedObjectsForLocationId (locationId, className));
 }
@@ -117,7 +117,7 @@ WaveManagedObject *WaveObjectManagerToolKit::queryManagedObject (const ObjectId 
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->queryManagedObject (managedObjectId, schema));
 }
@@ -126,7 +126,7 @@ ResourceId WaveObjectManagerToolKit::querySynchronouslyForCount (WaveManagedObje
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronouslyForCount (pWaveManagedObjectSynchronousQueryContext, count));
 }
@@ -135,7 +135,7 @@ ResourceId WaveObjectManagerToolKit::querySynchronouslyForCount (const string &m
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronouslyForCount (managedClassName, count, schema));
 }
@@ -144,7 +144,7 @@ ResourceId WaveObjectManagerToolKit::querySynchronouslyForCount (const string &m
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     return (pWaveObjectManagerForCurrentThread->querySynchronouslyForCount (managedClassName, fieldName, range, count, schema));
 }
@@ -153,7 +153,7 @@ void WaveObjectManagerToolKit::getWaveConfigEntry (string &configName, Attribute
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 
-    prismAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
 
     pWaveObjectManagerForCurrentThread->getWaveConfigEntry (configName, attribute, configFound);
 

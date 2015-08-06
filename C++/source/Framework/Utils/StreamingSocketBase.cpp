@@ -135,7 +135,7 @@ SI32 StreamingSocketBase::send (SerializableObject *pSerializableObject)
     UI32   sizeOfDataToBeSent = 0;
     SI32   sentStatus         = -1;
 
-    prismAssert (NULL != pSerializableObject, __FILE__, __LINE__);
+    waveAssert (NULL != pSerializableObject, __FILE__, __LINE__);
 
     //pSerializableObject->serialize2 (dataToBeSent, m_toMessageVersion);
     pSerializableObject->serialize2 (dataToBeSent, m_toSerializationType);

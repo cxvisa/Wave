@@ -60,7 +60,7 @@ string Number::toString () const
     string  tempString;
     char   *pTempPtr    = new char[512];
 
-    prismAssert (NULL != pTempPtr, __FILE__, __LINE__);
+    waveAssert (NULL != pTempPtr, __FILE__, __LINE__);
 
     snprintf (pTempPtr, 512, "%Lf", m_ld);
 
@@ -83,7 +83,7 @@ void Number::fromString (const string &numberInStringFormat)
     }
     else
     {
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

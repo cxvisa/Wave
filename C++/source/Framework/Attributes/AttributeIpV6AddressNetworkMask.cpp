@@ -105,7 +105,7 @@ IpV6AddressNetworkMask AttributeIpV6AddressNetworkMask::getValue () const
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpV6AddressNetworkMask::getValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return tempIpV6AddressNetworkMask;
     }
 }
@@ -125,13 +125,13 @@ void AttributeIpV6AddressNetworkMask::setValue (const IpV6AddressNetworkMask &da
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("AttributeIpV6Address::setValue : Invalid Cast of the underlying Attribute."));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 
 bool AttributeIpV6AddressNetworkMask::validate () const
 {
-    prismAssert (AttributeType::AttributeTypeIpV6AddressNetworkMask == (getAttributeType ()), __FILE__, __LINE__);
+    waveAssert (AttributeType::AttributeTypeIpV6AddressNetworkMask == (getAttributeType ()), __FILE__, __LINE__);
 
     if (AttributeType::AttributeTypeIpV6AddressNetworkMask == (getAttributeType ()))
     {
@@ -218,7 +218,7 @@ void AttributeIpV6AddressNetworkMask::getSqlForSelect (string &sqlForSelect, Att
     if (false == isConditionOperatorSupported (attributeConditionOperator))
     {
         trace (TRACE_LEVEL_FATAL, "AttributeIpV6AddressNetworkMask::getSqlForSelect : This attribute does not support the condition operator:" + FrameworkToolKit::localize (attributeConditionOperator));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     string tempString;

@@ -140,7 +140,7 @@ WaveMessageStatus WaveSendToClientsContext::getSendStatusForPhase1 (const SI32 &
     map<SI32, WaveMessageStatus>::const_iterator element    = m_sendStatusForPhase1.find (instance);
     map<SI32, WaveMessageStatus>::const_iterator endElement = m_sendStatusForPhase1.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_sendStatusForPhase1[instance]);
 }
@@ -150,7 +150,7 @@ void WaveSendToClientsContext::setSendStatusForPhase1 (const SI32 &instance, con
     map<SI32, WaveMessageStatus>::const_iterator element    = m_sendStatusForPhase1.find (instance);
     map<SI32, WaveMessageStatus>::const_iterator endElement = m_sendStatusForPhase1.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_sendStatusForPhase1[instance] = sendStatusForPhase1;
 }
@@ -160,7 +160,7 @@ FrameworkStatus WaveSendToClientsContext::getFrameworkStatusForPhase1 (const SI3
     map<SI32, FrameworkStatus>::const_iterator element    = m_frameworkStatusForPhase1.find (instance);
     map<SI32, FrameworkStatus>::const_iterator endElement = m_frameworkStatusForPhase1.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_frameworkStatusForPhase1[instance]);
 }
@@ -170,7 +170,7 @@ void WaveSendToClientsContext::setFrameworkStatusForPhase1 (const SI32 &instance
     map<SI32, FrameworkStatus>::const_iterator element    = m_frameworkStatusForPhase1.find (instance);
     map<SI32, FrameworkStatus>::const_iterator endElement = m_frameworkStatusForPhase1.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_frameworkStatusForPhase1[instance] = frameworkStatusForPhase1;
 }
@@ -180,7 +180,7 @@ ResourceId WaveSendToClientsContext::getCompletionStatusForPhase1 (const SI32 &i
     map<SI32, ResourceId>::const_iterator element    = m_completionStatusForPhase1.find (instance);
     map<SI32, ResourceId>::const_iterator endElement = m_completionStatusForPhase1.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_completionStatusForPhase1[instance]);
 }
@@ -190,7 +190,7 @@ void WaveSendToClientsContext::setCompletionStatusForPhase1 (const SI32 &instanc
     map<SI32, ResourceId>::const_iterator element    = m_completionStatusForPhase1.find (instance);
     map<SI32, ResourceId>::const_iterator endElement = m_completionStatusForPhase1.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_completionStatusForPhase1[instance] = completionStatusForPhase1;
 }
@@ -200,7 +200,7 @@ ManagementInterfaceMessage *WaveSendToClientsContext::getResultingMessageForPhas
     map<SI32, ManagementInterfaceMessage *>::const_iterator element    = m_resultingMessageForPhase1.find (instance);
     map<SI32, ManagementInterfaceMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_resultingMessageForPhase1[instance]);
 }
@@ -210,7 +210,7 @@ void WaveSendToClientsContext::setResultingMessageForPhase1 (const SI32 &instanc
     map<SI32, ManagementInterfaceMessage *>::const_iterator element    = m_resultingMessageForPhase1.find (instance);
     map<SI32, ManagementInterfaceMessage *>::const_iterator endElement = m_resultingMessageForPhase1.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_resultingMessageForPhase1[instance] = pManagementInterfaceMessage;
 }
@@ -221,7 +221,7 @@ ManagementInterfaceMessage *WaveSendToClientsContext::transferResultingMessageFo
     map<SI32, ManagementInterfaceMessage *>::const_iterator  endElement    = m_resultingMessageForPhase1.end ();
     ManagementInterfaceMessage                                    *pManagementInterfaceMessage = NULL;
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     pManagementInterfaceMessage = m_resultingMessageForPhase1[instance];
 
@@ -255,7 +255,7 @@ WaveMessageStatus WaveSendToClientsContext::getSendStatusForPhase2 (const SI32 &
     map<SI32, WaveMessageStatus>::const_iterator element    = m_sendStatusForPhase2.find (instance);
     map<SI32, WaveMessageStatus>::const_iterator endElement = m_sendStatusForPhase2.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_sendStatusForPhase2[instance]);
 }
@@ -265,7 +265,7 @@ void WaveSendToClientsContext::setSendStatusForPhase2 (const SI32 &instance, con
     map<SI32, WaveMessageStatus>::const_iterator element    = m_sendStatusForPhase2.find (instance);
     map<SI32, WaveMessageStatus>::const_iterator endElement = m_sendStatusForPhase2.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_sendStatusForPhase2[instance] = sendStatusForPhase2;
 }
@@ -275,7 +275,7 @@ FrameworkStatus WaveSendToClientsContext::getFrameworkStatusForPhase2 (const SI3
     map<SI32, FrameworkStatus>::const_iterator element    = m_frameworkStatusForPhase2.find (instance);
     map<SI32, FrameworkStatus>::const_iterator endElement = m_frameworkStatusForPhase2.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_frameworkStatusForPhase2[instance]);
 }
@@ -285,7 +285,7 @@ void WaveSendToClientsContext::setFrameworkStatusForPhase2 (const SI32 &instance
     map<SI32, FrameworkStatus>::const_iterator element    = m_frameworkStatusForPhase2.find (instance);
     map<SI32, FrameworkStatus>::const_iterator endElement = m_frameworkStatusForPhase2.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_frameworkStatusForPhase2[instance] = frameworkStatusForPhase2;
 }
@@ -295,7 +295,7 @@ ResourceId WaveSendToClientsContext::getCompletionStatusForPhase2 (const SI32 &i
     map<SI32, ResourceId>::const_iterator element    = m_completionStatusForPhase2.find (instance);
     map<SI32, ResourceId>::const_iterator endElement = m_completionStatusForPhase2.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_completionStatusForPhase2[instance]);
 }
@@ -305,7 +305,7 @@ void WaveSendToClientsContext::setCompletionStatusForPhase2 (const SI32 &instanc
     map<SI32, ResourceId>::const_iterator element    = m_completionStatusForPhase2.find (instance);
     map<SI32, ResourceId>::const_iterator endElement = m_completionStatusForPhase2.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_completionStatusForPhase2[instance] = completionStatusForPhase2;
 }
@@ -315,7 +315,7 @@ ManagementInterfaceMessage *WaveSendToClientsContext::getResultingMessageForPhas
     map<SI32, ManagementInterfaceMessage *>::const_iterator element    = m_resultingMessageForPhase2.find (instance);
     map<SI32, ManagementInterfaceMessage *>::const_iterator endElement = m_resultingMessageForPhase2.end ();
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     return (m_resultingMessageForPhase2[instance]);
 }
@@ -325,7 +325,7 @@ void WaveSendToClientsContext::setResultingMessageForPhase2 (const SI32 &instanc
     map<SI32, ManagementInterfaceMessage *>::const_iterator element    = m_resultingMessageForPhase2.find (instance);
     map<SI32, ManagementInterfaceMessage *>::const_iterator endElement = m_resultingMessageForPhase2.end ();
 
-    prismAssert (endElement == element, __FILE__, __LINE__);
+    waveAssert (endElement == element, __FILE__, __LINE__);
 
     m_resultingMessageForPhase2[instance] = pManagementInterfaceMessage;
 }
@@ -336,7 +336,7 @@ ManagementInterfaceMessage *WaveSendToClientsContext::transferResultingMessageFo
     map<SI32, ManagementInterfaceMessage *>::const_iterator  endElement    = m_resultingMessageForPhase2.end ();
     ManagementInterfaceMessage         *pManagementInterfaceMessage = NULL;
 
-    prismAssert (endElement != element, __FILE__, __LINE__);
+    waveAssert (endElement != element, __FILE__, __LINE__);
 
     pManagementInterfaceMessage = m_resultingMessageForPhase2[instance];
 

@@ -57,7 +57,7 @@ void YangEnum::processChildElement (YangElement *pYangElement)
     {
         YangValue *pYangValue = dynamic_cast<YangValue *> (pYangElement);
 
-        prismAssert (NULL != pYangValue, __FILE__, __LINE__);
+        waveAssert (NULL != pYangValue, __FILE__, __LINE__);
 
         setValue (pYangValue->getValue ());
 

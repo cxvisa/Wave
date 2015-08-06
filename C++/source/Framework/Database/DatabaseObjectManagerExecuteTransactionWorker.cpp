@@ -54,7 +54,7 @@ WaveMessage *DatabaseObjectManagerExecuteTransactionWorker::createMessageInstanc
 
         default :
             trace (TRACE_LEVEL_FATAL, string ("DatabaseObjectManagerExecuteTransactionWorker::createMessageInstance : Unknown operation code : ") + operationCode);
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
     }
 
     return (pWaveMessage);
@@ -90,7 +90,7 @@ void DatabaseObjectManagerExecuteTransactionWorker::executeTransactionMessageHan
     ExecStatusType      databaseStatus      = PGRES_FATAL_ERROR;
     PGconn             *pConnection         = pDatabaseConnection->getPConnection ();
 
-    prismAssert (NULL != pConnection, __FILE__, __LINE__);
+    waveAssert (NULL != pConnection, __FILE__, __LINE__);
 
     pResult = PQexec (pDatabaseConnection->getPConnection (), sql.c_str ());
 
@@ -136,7 +136,7 @@ void DatabaseObjectManagerExecuteTransactionWorker::executeTransactionMessageHan
                     string errorMessage = string (PQresultErrorMessage (pResultForReIndexing));
                     trace (TRACE_LEVEL_ERROR, errorMessage);
                     DatabaseObjectManager::handleIfDBCorruption (errorMessage, pResultForReIndexing); 
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
                 else
                 {
@@ -178,7 +178,7 @@ void DatabaseObjectManagerExecuteTransactionWorker::executeTransactionMessageHan
                     string errorMessage = string (PQresultErrorMessage (pResultForRollback));
                     trace (TRACE_LEVEL_ERROR, errorMessage);
                     DatabaseObjectManager::handleIfDBCorruption (errorMessage, pResultForRollback);
-                    prismAssert (false, __FILE__, __LINE__);
+                    waveAssert (false, __FILE__, __LINE__);
                 }
                 else
                 {

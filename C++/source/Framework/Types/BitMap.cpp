@@ -45,7 +45,7 @@ void BitMap::resizewithoutcopy (const UI32 &numberOfBits)
 
 void BitMap::copy (const BitMap &bitMap)
 {
-    prismAssert (m_numberOfBits == bitMap.m_numberOfBits, __FILE__, __LINE__);
+    waveAssert (m_numberOfBits == bitMap.m_numberOfBits, __FILE__, __LINE__);
 
     memcpy(m_pBitBlocks, bitMap.m_pBitBlocks, (m_numberOfBitBlocks * 8)); 
 }
@@ -153,12 +153,12 @@ void BitMap::fromString (const string &bitMapInStringFormat, const UI32 &noOfBit
         countBitBlocks++;
     }
 
-    prismAssert (countBitBlocks == numberOfBitBlocks, __FILE__, __LINE__);
+    waveAssert (countBitBlocks == numberOfBitBlocks, __FILE__, __LINE__);
 
     if (noOfBits != 0)
     {
         UI32 differenceNumberOfBts = numberOfBits - noOfBits;
-        prismAssert ((0 <= differenceNumberOfBts) && (differenceNumberOfBts < 4), __FILE__, __LINE__);
+        waveAssert ((0 <= differenceNumberOfBts) && (differenceNumberOfBts < 4), __FILE__, __LINE__);
         m_numberOfBits = noOfBits;
     }
     else
@@ -244,7 +244,7 @@ ResourceId BitMap::loadFromPlainString (const string &bitMapInStringFormat, cons
 
 UI8 BitMap::getValue (const UI32 &index)
 {
-    prismAssert (index < m_numberOfBits, __FILE__, __LINE__);
+    waveAssert (index < m_numberOfBits, __FILE__, __LINE__);
     
     UI8  userBitInBlock = 0;
     UI32 bitBlockNumber = index/64;         /* Block Number Starts From 0 */
@@ -276,7 +276,7 @@ UI64 BitMap::getElemValue (void) const
 
 void BitMap::setValue (const UI32 &index, const UI8 &Value)
 {
-    prismAssert (index < m_numberOfBits, __FILE__, __LINE__);
+    waveAssert (index < m_numberOfBits, __FILE__, __LINE__);
 
     UI8  userBitInBlock = 0;
     UI32 bitBlockNumber = index/64;
@@ -298,7 +298,7 @@ void BitMap::setValue (const UI32 &index, const UI8 &Value)
 
 void BitMap::set (const UI32 &index)
 {
-    prismAssert (index < m_numberOfBits, __FILE__, __LINE__);
+    waveAssert (index < m_numberOfBits, __FILE__, __LINE__);
 
     setValue (index, 1);
 }
@@ -316,7 +316,7 @@ void BitMap::set ()
 
 void BitMap::reset (const UI32 &index)
 {
-    prismAssert (index < m_numberOfBits, __FILE__, __LINE__);
+    waveAssert (index < m_numberOfBits, __FILE__, __LINE__);
 
     setValue (index, 0);
 }
@@ -333,7 +333,7 @@ UI32 BitMap::getNumberOfBits () const
 
 UI8 BitMap::operator [] (const UI32 &index)
 {
-    prismAssert (index < m_numberOfBits, __FILE__, __LINE__);
+    waveAssert (index < m_numberOfBits, __FILE__, __LINE__);
 
     return (getValue (index));
 }

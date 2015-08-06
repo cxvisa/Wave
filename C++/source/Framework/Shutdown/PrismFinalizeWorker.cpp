@@ -64,10 +64,10 @@ ResourceId PrismFinalizeWorker::chooseAShutdownAgentStep (PrismFinalizeWorkerShu
     else
     {
         trace (TRACE_LEVEL_FATAL, string ("PrismFinalizeWorker::chooseAShutdownAgentStep : Unknown Prism Shutdown Mode : ") + (UI32) prismShutdownMode);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
-    prismAssert (NULL != m_pPrismShutdownAgent, __FILE__, __LINE__);
+    waveAssert (NULL != m_pPrismShutdownAgent, __FILE__, __LINE__);
 
     return (WAVE_MESSAGE_SUCCESS);
 }

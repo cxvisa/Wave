@@ -26,7 +26,7 @@ ApplicationSpecificServices *ApplicationSpecificServices::getInstance ()
     if (NULL == pApplicationSpecificServices)
     {
         pApplicationSpecificServices = new ApplicationSpecificServices ();
-        WaveNs::prismAssert (NULL != pApplicationSpecificServices, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pApplicationSpecificServices, __FILE__, __LINE__);
     }
 
     return (pApplicationSpecificServices);

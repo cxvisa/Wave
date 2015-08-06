@@ -102,7 +102,7 @@ ResourceId DatabaseSchema::getDatabaseSchema (DatabaseSchema &databaseSchema)
             if (0 == databaseObject.getSchemaChangeInfo (databaseSchema))
             {   
                 trace (TRACE_LEVEL_ERROR, "DatabaseSchema::getDatabaseSchema : Upgrade Mo has zero entries. DB must be emptied. Erroring out Schema conversion and wii go to First Time Boot.");
-                //prismAssert (false, __FILE__, __LINE__);
+                //waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
@@ -118,7 +118,7 @@ ResourceId DatabaseSchema::getDatabaseSchema (DatabaseSchema &databaseSchema)
         if (WAVE_MESSAGE_SUCCESS != status)
         {   
             trace (TRACE_LEVEL_ERROR, "DatabaseSchema::getDatabaseSchema :: failed to read upgradeMO. Status : " + FrameworkToolKit::localize (status));
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {   

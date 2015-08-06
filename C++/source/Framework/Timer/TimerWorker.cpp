@@ -65,7 +65,7 @@ void TimerWorker::addTimer (TimerObjectManagerAddTimerMessage *pMessage)
         // Could not stop the timer. Fatal error. Can not continue.
 
         trace (TRACE_LEVEL_ERROR, "TimerWorker::addTimer : Could not disable timer.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pMessage->setTimerId (0);
         pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_CANCEL_SYS_TIMER);
@@ -75,12 +75,12 @@ void TimerWorker::addTimer (TimerObjectManagerAddTimerMessage *pMessage)
     }
 
     TimerData                      *pTimerInfo  =   new TimerData ();
-    prismAssert (NULL != pTimerInfo, __FILE__, __LINE__);
+    waveAssert (NULL != pTimerInfo, __FILE__, __LINE__);
 
     if (NULL == pTimerInfo)
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::addTimer : Could not alloc memory.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pMessage->setTimerId (0);
         pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_ALLOC_MEMORY);
@@ -131,7 +131,7 @@ void TimerWorker::addTimer (TimerObjectManagerAddTimerMessage *pMessage)
     if (0 != restartTimer ())
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::addTimer : Could not restart timer.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pMessage->setTimerId (0);
         pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_START_SYS_TIMER);
@@ -300,7 +300,7 @@ int  TimerWorker::restartTimer ()
     if (0 != gettimeofday (&currTime, NULL))
     {
         trace (TRACE_LEVEL_FATAL, "TimerWorker::restartTimer : error getting time.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     // While the list is not empty and the expiration timer is before the current time, send expiration
@@ -312,7 +312,7 @@ int  TimerWorker::restartTimer ()
         // Send expiration message for the expired timer.
 
         PrismTimerExpiredObjectManagerMessage     *pPrismTimerExpiredObjectManagerMessage = new PrismTimerExpiredObjectManagerMessage (m_timerList[0]->m_serviceId, m_timerList[0]->m_timerId, m_timerList[0]->m_pPrismTimerExpirationCallback, m_timerList[0]->m_pPrismTimerExpirationContext, m_timerList[0]->m_pPrismTimerSender);
-        prismAssert (NULL != pPrismTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pPrismTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
 
         timerSendOneWay (pPrismTimerExpiredObjectManagerMessage);
 
@@ -469,7 +469,7 @@ void TimerWorker::deleteTimer (TimerObjectManagerDeleteTimerMessage *pMessage)
     if (0 != prismSetITimer (&timerVal))
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteTimer : Could not disable timer.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_CANCEL_SYS_TIMER);
         reply (pMessage);
@@ -496,7 +496,7 @@ void TimerWorker::deleteTimer (TimerObjectManagerDeleteTimerMessage *pMessage)
         if (0 != restartTimer ())
         {
             trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteTimer : Could not restart timer.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
             pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_START_SYS_TIMER);
             reply (pMessage);
             m_mutex.unlock ();
@@ -553,7 +553,7 @@ UI32 TimerWorker::removeTimer (TimerObjectManagerDeleteTimerMessage *pMessage, U
     if (NULL == pWaveThread)
     {
         trace (TRACE_LEVEL_FATAL, "TimerWorker::removeTimer : Calling thread for delete timer is NULL");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
         return 0;
     }
 
@@ -598,7 +598,7 @@ void TimerWorker::deleteAllTimersForService (TimerObjectManagerDeleteAllTimersFo
     if (0 != prismSetITimer (&timerVal))
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteAllTimersForService : Could not disable timer.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_CANCEL_SYS_TIMER);
         reply (pMessage);
@@ -623,7 +623,7 @@ void TimerWorker::deleteAllTimersForService (TimerObjectManagerDeleteAllTimersFo
         if (0 != restartTimer ())
         {
             trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteAllTimersForService : Could not restart timer.");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
 
             pMessage->setCompletionStatus (TIMER_ERROR_CAN_NOT_START_SYS_TIMER);
             reply (pMessage);
@@ -653,7 +653,7 @@ ResourceId TimerWorker::removeAllTimersForService (UI32 serviceId)
     if (NULL == pWaveThread)
     {
         trace (TRACE_LEVEL_FATAL, "TimerWorker::removeAllTimersForService : Calling thread for delete timer is NULL");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         return TIMER_ERROR_TIMER_SHUTDOWN;
     }
@@ -710,7 +710,7 @@ void TimerWorker::deleteAllTimers ()
     if (0 != prismSetITimer (&timerVal))
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteAllTimers : Could not disable timer.");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
 
         m_mutex.unlock ();
         return;
@@ -747,7 +747,7 @@ void TimerWorker::removeAllTimers ()
     {
         pTimerInfo      = m_timerList[0];
 
-        prismAssert (NULL != pTimerInfo, __FILE__, __LINE__);
+        waveAssert (NULL != pTimerInfo, __FILE__, __LINE__);
 
         delete (pTimerInfo);
         theIterator =  m_timerList.begin();
@@ -774,7 +774,7 @@ void TimerWorker::processTimeOut ()
     if (0 != (TimerObjectManager::getInstance ())->m_pTimerWorker->restartTimer ())
     {
         (TimerObjectManager::getInstance ())->m_pTimerWorker->trace (TRACE_LEVEL_ERROR, "Could not restart timer.");
-        (TimerObjectManager::getInstance ())->m_pTimerWorker->prismAssert (false, __FILE__, __LINE__);
+        (TimerObjectManager::getInstance ())->m_pTimerWorker->waveAssert (false, __FILE__, __LINE__);
     }
 
     (TimerObjectManager::getInstance ())->m_pTimerWorker->m_mutex.unlock ();

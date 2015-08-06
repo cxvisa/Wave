@@ -32,7 +32,7 @@ ClusterLocalWaveSlotManagementWorker::~ClusterLocalWaveSlotManagementWorker ()
 ClusterLocalWaveSlotManagementWorker *ClusterLocalWaveSlotManagementWorker::getInstance ()
 {
     static ClusterLocalWaveSlotManagementWorker *pVcsNodeSlotManagementWorker = (ClusterLocalObjectManager::getInstance ())->m_pClusterLocalWaveSlotManagementWorker;
-    WaveNs::prismAssert (NULL != pVcsNodeSlotManagementWorker, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pVcsNodeSlotManagementWorker, __FILE__, __LINE__);
     return pVcsNodeSlotManagementWorker;
 }
 
@@ -57,8 +57,8 @@ ResourceId ClusterLocalWaveSlotManagementWorker::getSlotObjects (ClusterLocalMes
     synchronousQueryContext.addAndAttribute(new AttributeObjectId (waveNodeObjectId , "ownerWaveNodeObjectId"));
     
     vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
-    prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
-    prismAssert (1 >= pWaveManagedObjects->size (), __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (1 >= pWaveManagedObjects->size (), __FILE__, __LINE__);
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalWaveSlotManagementWorker::getSlotObjects: # slot objects found in DB = ")+pWaveManagedObjects->size ());
     if (0 < pWaveManagedObjects->size ())
     {
@@ -76,7 +76,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::getSlotObjects (ClusterLocalMes
 ResourceId ClusterLocalWaveSlotManagementWorker::validateSlotAdd (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
     ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
-    prismAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
     UI32 slotNumberInMsg = pClusterLocalSlotOnlineMessage->getSlotNumber();
     UI32 hwTypeInMsg = pClusterLocalSlotOnlineMessage->getHwType ();
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalWaveSlotManagementWorker::validateSlotAdd SlotNumberInMsg = ")+slotNumberInMsg + " hwTypeInMsg = "+hwTypeInMsg);
@@ -108,7 +108,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::validateSlotAdd (ClusterLocalMe
 ResourceId ClusterLocalWaveSlotManagementWorker::createOrUpdateSlotManagedObject(ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
     ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
-    prismAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
     
     UI32 slotNumber = pClusterLocalSlotOnlineMessage->getSlotNumber();
     UI32 objectType = pClusterLocalSlotOnlineMessage->getObjectType ();
@@ -145,7 +145,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::createOrUpdateSlotManagedObject
         //slot object not found so create a new object
         trace (TRACE_LEVEL_INFO, string ("ClusterLocalWaveSlotManagementWorker::createOrUpdateSlotManagedObject slot does not exist will be created slotNumber = ")+slotNumber + " hwType = "+hwType+" objectType = "+objectType+" hwId = "+hwId+" slotState = "+slotState+" reason = "+reason+" version = "+version );
         pWaveSlotLocalManagedObject = new WaveSlotLocalManagedObject (ClusterLocalObjectManager::getInstance(), slotNumber, objectType, hwType, hwId, slotState, reason, version);
-        prismAssert (NULL != pWaveSlotLocalManagedObject, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveSlotLocalManagedObject, __FILE__, __LINE__);
         pClusterLocalMessagingContext->setWaveSlotManagedObjectPointer(pWaveSlotLocalManagedObject);
         pClusterLocalMessagingContext->setSlotCreatedFlag (true);
     }
@@ -169,7 +169,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfN
     if (NULL == pWaveNode)
     {
         trace (TRACE_LEVEL_FATAL, string ("ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfNewSlotMO local WaveNode object not found so asserting, slotNumber = ")+slotNumber+" hwType = "+hwType);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     WaveSlotLocalManagedObject *pWaveSlotLocalManagedObject = pClusterLocalMessagingContext->getWaveSlotManagedObjectPointer();
@@ -182,7 +182,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfN
         // Send the WaveNodeObjectId back
         ClusterLocalSlotOnlineMessage *pClusterLocalSlotOnlineMessage = reinterpret_cast<ClusterLocalSlotOnlineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
 
-        prismAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
+        waveAssert (pClusterLocalSlotOnlineMessage != NULL, __FILE__, __LINE__);
     
         pClusterLocalSlotOnlineMessage->setWaveNodeObjectId (pWaveNode->getObjectId ());
 
@@ -192,7 +192,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfN
     {
         //slot object not found so create a new object
         trace (TRACE_LEVEL_FATAL, string ("ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfNewSlotMO pPwaveSlotLocalManagedObject = NULL: should not happen so assert"));
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     pClusterLocalMessagingContext->setWaveNodePointer (pWaveNode);
@@ -237,7 +237,7 @@ void ClusterLocalWaveSlotManagementWorker::slotOnlineMessageHandler (ClusterLoca
 ResourceId ClusterLocalWaveSlotManagementWorker::updateSlotManagedObject(ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
     ClusterLocalSlotOfflineMessage *pClusterLocalSlotOfflineMessage = reinterpret_cast<ClusterLocalSlotOfflineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
-    prismAssert (pClusterLocalSlotOfflineMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pClusterLocalSlotOfflineMessage != NULL, __FILE__, __LINE__);
     
     UI32 slotNumber = pClusterLocalSlotOfflineMessage->getSlotNumber();
     UI32 hwType = pClusterLocalSlotOfflineMessage->getHwType ();
@@ -265,7 +265,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::updateSlotManagedObject(Cluster
 ResourceId ClusterLocalWaveSlotManagementWorker::validateSlotUpdate (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
     ClusterLocalSlotOfflineMessage *pClusterLocalSlotOfflineMessage = reinterpret_cast<ClusterLocalSlotOfflineMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
-    prismAssert (pClusterLocalSlotOfflineMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pClusterLocalSlotOfflineMessage != NULL, __FILE__, __LINE__);
     UI32 slotNumberInMsg = pClusterLocalSlotOfflineMessage->getSlotNumber();
     UI32 hwTypeInMsg = pClusterLocalSlotOfflineMessage->getHwType();
     UI32 slotStateInMsg = pClusterLocalSlotOfflineMessage->getSlotState ();
@@ -329,7 +329,7 @@ void ClusterLocalWaveSlotManagementWorker::slotOfflineMessageHandler (ClusterLoc
 ResourceId ClusterLocalWaveSlotManagementWorker::removeSlot (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
     ClusterLocalSlotRemoveMessage *pSlotRemoveMessage = reinterpret_cast<ClusterLocalSlotRemoveMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
-    prismAssert (pSlotRemoveMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pSlotRemoveMessage != NULL, __FILE__, __LINE__);
     UI32 slotNumber = pSlotRemoveMessage->getSlotNumber();
     UI32 hwType = pSlotRemoveMessage->getHwType ();
 
@@ -358,14 +358,14 @@ ResourceId ClusterLocalWaveSlotManagementWorker::removeSlotCompositionAssociatio
     WaveManagedObjectSynchronousQueryContext synchronousQueryContext (WaveNode::getClassName ());
     synchronousQueryContext.addAndAttribute (new AttributeLocationId (locationId, "locationId"));
     vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
-    prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
-    prismAssert (1 >= pWaveManagedObjects->size (), __FILE__, __LINE__);
+    waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+    waveAssert (1 >= pWaveManagedObjects->size (), __FILE__, __LINE__);
     WaveNode *pWaveNode = dynamic_cast<WaveNode *>((*pWaveManagedObjects)[0]);
     
     if (NULL == pWaveNode)
     {
         trace (TRACE_LEVEL_FATAL, string ("ClusterLocalWaveSlotManagementWorker::removeSlotCompositionAssociation WaveNode for locationId not found so asserting, locationId = ")+locationId);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
     
     pClusterLocalMessagingContext->setWaveNodePointer (pWaveNode);
@@ -418,7 +418,7 @@ void ClusterLocalWaveSlotManagementWorker::slotRemoveMessageHandler (ClusterLoca
 ResourceId ClusterLocalWaveSlotManagementWorker::removeAllSlots (ClusterLocalMessagingContext *pClusterLocalMessagingContext)
 {
     ClusterLocalSlotRemoveAllMessage *pSlotRemoveAllMessage = reinterpret_cast<ClusterLocalSlotRemoveAllMessage *> (pClusterLocalMessagingContext->getPWaveMessage ());
-    prismAssert (pSlotRemoveAllMessage != NULL, __FILE__, __LINE__);
+    waveAssert (pSlotRemoveAllMessage != NULL, __FILE__, __LINE__);
 
     trace (TRACE_LEVEL_INFO, string ("ClusterLocalWaveSlotManagementWorker::removeAllSlots: remove all slots "));
 
@@ -438,7 +438,7 @@ ResourceId ClusterLocalWaveSlotManagementWorker::removeAllSlots (ClusterLocalMes
         synchronousQueryContext.addAndAttribute (new AttributeUI32 (hwType, "hwType"));
         synchronousQueryContext.addAndAttribute(new AttributeObjectId (waveNodeObjectId , "ownerWaveNodeObjectId"));
         vector<WaveManagedObject *> *pWaveManagedObjects = querySynchronously (&synchronousQueryContext);
-        prismAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveManagedObjects, __FILE__, __LINE__);
 
         if (0 < pWaveManagedObjects->size ())
         {

@@ -53,7 +53,7 @@ extern "C" int prismMain (int argc, char *argv[])
     UI32                   haId                                         = 0;
     string                 startMode                                    = "normal";
 
-    prismAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
+    waveAssert (NULL != pChangeDirectoryToArray, __FILE__, __LINE__);
 
     if (argc >= 2)
     {

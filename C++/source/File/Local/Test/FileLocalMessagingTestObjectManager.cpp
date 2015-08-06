@@ -32,7 +32,7 @@ FileLocalMessagingTestObjectManager *FileLocalMessagingTestObjectManager::getIns
     if (NULL == pFileLocalMessagingTestObjectManager)
     {
         pFileLocalMessagingTestObjectManager = new FileLocalMessagingTestObjectManager ();
-        WaveNs::prismAssert (NULL != pFileLocalMessagingTestObjectManager, __FILE__, __LINE__);
+        WaveNs::waveAssert (NULL != pFileLocalMessagingTestObjectManager, __FILE__, __LINE__);
     }
 
     return (pFileLocalMessagingTestObjectManager);
@@ -245,7 +245,7 @@ void    FileLocalMessagingTestObjectManager::ASyncPushFileWith1KDatatoGoodLocati
     --(*pWaveLinearSequencerContext);
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
             pWaveLinearSequencerContext->incrementNumberOfFailures ();
@@ -353,7 +353,7 @@ void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDa
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        prismAssert (pMessage, __FILE__, __LINE__);
+        waveAssert (pMessage, __FILE__, __LINE__);
         if (WAVE_MESSAGE_SUCCESS != (pMessage->getCompletionStatus ()))
         {
             pWaveLinearSequencerContext->incrementNumberOfFailures ();

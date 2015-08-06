@@ -45,12 +45,12 @@ void AttributeManagedObjectVectorCompositionTemplateBase::setDisableValidations 
 
 void AttributeManagedObjectVectorCompositionTemplateBase::getCValue (WaveCValue *pCValue)
 {
-    prismAssert (false, __FILE__, __LINE__); 
+    waveAssert (false, __FILE__, __LINE__); 
 }
 
 void AttributeManagedObjectVectorCompositionTemplateBase::storeRelatedObjectVector (const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects)
 {
-    prismAssert (false, __FILE__, __LINE__);
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 }

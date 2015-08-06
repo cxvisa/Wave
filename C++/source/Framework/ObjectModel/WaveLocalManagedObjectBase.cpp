@@ -155,14 +155,14 @@ void WaveLocalManagedObjectBase::associateWithSlot (const UI32 &slotNumber, cons
         else
         {
             m_pWaveManagedObject->trace (TRACE_LEVEL_FATAL, "WaveLocalManagedObjectBase::associateWithSlot : The dummy slot creation logic failed and hence asserting");
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
                 
     }
     else
     {
          m_pWaveManagedObject->trace (TRACE_LEVEL_FATAL, string ("WaveLocalManagedObjectBase::associateWithSlot : Could not find the slot corresponding to slotNumber = ") + slotNumber + string (" and LocationId = ") + locationId);
-         prismAssert (false, __FILE__, __LINE__);
+         waveAssert (false, __FILE__, __LINE__);
     }
     
     ObjectId locationObjectId = FrameworkToolKit::getObjectIdForLocationId (locationId);
@@ -174,7 +174,7 @@ void WaveLocalManagedObjectBase::associateWithSlot (const UI32 &slotNumber, cons
     else
     {
         m_pWaveManagedObject->trace (TRACE_LEVEL_FATAL, string ("WaveLocalManagedObjectBase::associateWithSlot : The locationId to be associated with does not exist. Please check the location id provided. Asserting now ... location id is ") +  locationId);
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 }
 

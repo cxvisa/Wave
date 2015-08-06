@@ -34,14 +34,14 @@ void ApplicationServiceRepository::addNewApplicationService (const UI32 &newAppl
     {
         trace (TRACE_LEVEL_FATAL, string ("ApplicationServiceRepository::addApplicationService : Application Service ID (") + newApplicationServiceId + ") already exists in the map");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 == (strcmp ("", (newApplicationServiceName.c_str ()))))
     {
         trace (TRACE_LEVEL_FATAL, "ApplicationServiceRepository::addApplicationService : NULL Service name is not allowed.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_applicationServiceNamesMap[newApplicationServiceId] = newApplicationServiceName;
@@ -56,14 +56,14 @@ void ApplicationServiceRepository::addNewApplicationLocalService (const UI32 &ne
     {
         trace (TRACE_LEVEL_FATAL, string ("ApplicationServiceRepository::addNewApplicationLocalService : Application Service ID (") + newApplicationLocalServiceId + ") already exists in the map");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (0 == (strcmp ("", (newApplicationLocalServiceName.c_str ()))))
     {
         trace (TRACE_LEVEL_FATAL, "ApplicationServiceRepository::addNewApplicationLocalService : NULL Service name is not allowed.");
 
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     m_applicationLocalServiceNamesMap[newApplicationLocalServiceId] = newApplicationLocalServiceName;
@@ -103,11 +103,11 @@ void ApplicationServiceRepository::createApplicationServices ()
 
     while (element != endElement)
     {
-        prismAssert (NULL == m_applicationServicesMap[element->first], __FILE__, __LINE__);
+        waveAssert (NULL == m_applicationServicesMap[element->first], __FILE__, __LINE__);
 
         ApplicationService *pNewApplicationService = new ApplicationService (element->second, element->first);
 
-        prismAssert (NULL != pNewApplicationService, __FILE__, __LINE__);
+        waveAssert (NULL != pNewApplicationService, __FILE__, __LINE__);
 
         m_applicationServicesMap[element->first] = pNewApplicationService;
 
@@ -128,11 +128,11 @@ void ApplicationServiceRepository::createApplicationLocalServices ()
 
     while (element != endElement)
     {
-        prismAssert (NULL == m_applicationLocalServicesMap[element->first], __FILE__, __LINE__);
+        waveAssert (NULL == m_applicationLocalServicesMap[element->first], __FILE__, __LINE__);
 
         ApplicationLocalService *pNewApplicationLocalService = new ApplicationLocalService (element->second, element->first);
 
-        prismAssert (NULL != pNewApplicationLocalService, __FILE__, __LINE__);
+        waveAssert (NULL != pNewApplicationLocalService, __FILE__, __LINE__);
 
         m_applicationLocalServicesMap[element->first] = pNewApplicationLocalService;
 

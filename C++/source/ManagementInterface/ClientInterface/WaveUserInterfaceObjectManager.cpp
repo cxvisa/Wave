@@ -70,7 +70,7 @@ WaveUserInterfaceObjectManager *WaveUserInterfaceObjectManager:: getInstance ()
 {
     static WaveUserInterfaceObjectManager *pWaveUserInterfaceObjectManager = new WaveUserInterfaceObjectManager ();
 
-    WaveNs::prismAssert (NULL != pWaveUserInterfaceObjectManager, __FILE__, __LINE__);
+    WaveNs::waveAssert (NULL != pWaveUserInterfaceObjectManager, __FILE__, __LINE__);
 
     return (pWaveUserInterfaceObjectManager);
 }
@@ -124,7 +124,7 @@ WaveMessage *WaveUserInterfaceObjectManager::createMessageInstance (const UI32 &
             trace (TRACE_LEVEL_FATAL, "WaveUserInterfaceObjectManager::createMessageInstance : User defined Management Interface Message Instantiator has NOT been set.");
             trace (TRACE_LEVEL_FATAL, "WaveUserInterfaceObjectManager::createMessageInstance : Please use WaveUserInterfaceObjectManager::setManagementInterfaceMessageInstantiatorForClient to set it.");
 
-            prismAssert (false, __FILE__, __LINE__);
+            waveAssert (false, __FILE__, __LINE__);
         }
         else
         {
@@ -134,7 +134,7 @@ WaveMessage *WaveUserInterfaceObjectManager::createMessageInstance (const UI32 &
             {
                 trace (TRACE_LEVEL_FATAL, "WaveUserInterfaceObjectManager::createMessageInstance : User defined Management Interface Message Instantitor returned NULL.");
 
-                prismAssert (NULL != pWaveMessage, __FILE__, __LINE__);
+                waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
             }
         }
     }
@@ -167,7 +167,7 @@ void WaveUserInterfaceObjectManager::setManagementInterfaceMessageInstantiatorFo
     if (element != endElement)
     {
         WaveNs::trace (TRACE_LEVEL_FATAL, "WaveUserInterfaceObjectManager::setManagementInterfaceMessageInstantiatorForClient : Message Innstantiator for Client \'" + clientName + "\' has already been set.");
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     m_managementInterfaceMessageInstantiatorForClients[clientName] = managementInterfaceMessageInstantiatorForClient;
@@ -187,7 +187,7 @@ ManagementInterfaceMessageInstantiatorForClient WaveUserInterfaceObjectManager::
     if (element == endElement)
     {
         WaveNs::trace (TRACE_LEVEL_FATAL, "WaveUserInterfaceObjectManager::setManagementInterfaceMessageInstantiatorForClient : Message Innstantiator for Client \'" + clientName + "\' has not been set.");
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     managementInterfaceMessageInstantiatorForClient = m_managementInterfaceMessageInstantiatorForClients[clientName];
@@ -232,7 +232,7 @@ void WaveUserInterfaceObjectManager::sendToWaveServerCallback (FrameworkStatus f
 
         void *outputContext = m_managementClientInterfaceToLoadCStructureOuput (pManagementInterfaceMessage);
 
-        prismAssert (NULL != outputContext, __FILE__, __LINE__);
+        waveAssert (NULL != outputContext, __FILE__, __LINE__);
     
         handler (callbackStatus, outputContext, pInputContext);
 
@@ -281,7 +281,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
             {
                 isFrameworkOpCode = true;
                 updateMessage = dynamic_cast<UnifiedClientUpdateMessage *> ( pManagementInterfaceMessage);
-                prismAssert (NULL != updateMessage, __FILE__, __LINE__);
+                waveAssert (NULL != updateMessage, __FILE__, __LINE__);
                 pInput = updateMessage->getCStructureForInputs ();
             }
             break;
@@ -289,7 +289,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
             {
                 isFrameworkOpCode = true;
                 createMessage = dynamic_cast<UnifiedClientCreateMessage *> (pManagementInterfaceMessage);
-                prismAssert (NULL != createMessage, __FILE__, __LINE__);
+                waveAssert (NULL != createMessage, __FILE__, __LINE__);
                 pInput = createMessage->getCStructureForInputs ();
             }
             break;
@@ -297,7 +297,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
             {
                 isFrameworkOpCode = true;
                 deleteMessage = dynamic_cast<UnifiedClientDeleteMessage *> (pManagementInterfaceMessage);
-                prismAssert (NULL != deleteMessage, __FILE__, __LINE__);
+                waveAssert (NULL != deleteMessage, __FILE__, __LINE__);
                 pInput = deleteMessage->getCStructureForInputs ();
             }
             break;
@@ -305,7 +305,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
             {
                 isFrameworkOpCode = true;
                 postbootMessage = dynamic_cast<UnifiedClientPostbootMessage *> (pManagementInterfaceMessage);
-                prismAssert (NULL != postbootMessage, __FILE__, __LINE__);
+                waveAssert (NULL != postbootMessage, __FILE__, __LINE__);
                 pInput = postbootMessage->getCStructureForInputs ();
             }
             break;
@@ -313,7 +313,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
             {
                 isFrameworkOpCode = true;
                 notifyMessage = dynamic_cast<UnifiedClientNotifyMessage *> (pManagementInterfaceMessage);
-                prismAssert (NULL != notifyMessage, __FILE__, __LINE__);
+                waveAssert (NULL != notifyMessage, __FILE__, __LINE__);
                 pInput = notifyMessage->getCStructureForInputs ();
             }
             break;
@@ -321,7 +321,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
             {   
                 isFrameworkOpCode = true;
                 getDataMessage = dynamic_cast<UnifiedClientGetDataFromClientMessage *>(pManagementInterfaceMessage);
-                prismAssert (NULL != getDataMessage, __FILE__, __LINE__);
+                waveAssert (NULL != getDataMessage, __FILE__, __LINE__);
                 pInput = getDataMessage->getCStructureForInputs ();
             }
             break;
@@ -387,7 +387,7 @@ void WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler (M
         else
         {
             trace (TRACE_LEVEL_INFO, string ("WaveUserInterfaceObjectManager::genericManagementInterfaceMessageHandler : Handler not registered. Please register the handler for the operationCode ") + operationCode);
-            prismAssert (false , __FILE__, __LINE__);
+            waveAssert (false , __FILE__, __LINE__);
         }
     }
     else
@@ -458,7 +458,7 @@ void WaveUserInterfaceObjectManager::addMessageHandlerForCStyleApplication (cons
     {
         WaveNs::trace (TRACE_LEVEL_FATAL, string ("WaveUserInterfaceObjectManager::addMessageHandlerForCStyleApplication : Handler for Operation Code ") + operationCode + " already exists.");
 
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     m_managementInterfaceMessageHandlerMapForCStyleClientMutex.unlock ();
@@ -498,7 +498,7 @@ void WaveUserInterfaceObjectManager::addMessageCallbackHandlerAtClient (UI32 mes
     {
         WaveNs::trace (TRACE_LEVEL_FATAL, string ("WaveUserInterfaceObjectManager::addMessageCallbackHandlerAtClient: Handler for this message Id is already added once. You can not re-use same message pointer to send twice."));
 
-        WaveNs::prismAssert (false, __FILE__, __LINE__);
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
     m_managementInterfaceMessageCallbackHandlerAtCStyleClientMutex.unlock ();
@@ -520,7 +520,7 @@ ManagementInterfaceMessageCallbackHandlerAtClient WaveUserInterfaceObjectManager
     else
     {
         trace (TRACE_LEVEL_ERROR, "Last reply for this message already received");
-        prismAssert (false, __FILE__, __LINE__);
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     if (true == isLastReply)
