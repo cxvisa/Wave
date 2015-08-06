@@ -20,7 +20,7 @@ class HeartBeatFailureAgentContext : public PrismSynchronousLinearSequencerConte
     private :
     protected :
     public :
-                                        HeartBeatFailureAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        HeartBeatFailureAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~HeartBeatFailureAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

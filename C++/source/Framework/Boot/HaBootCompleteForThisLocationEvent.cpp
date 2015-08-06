@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 HaBootCompleteForThisLocationEvent::HaBootCompleteForThisLocationEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), HA_BOOT_COMPLETE_FOR_THIS_LOCATION)
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), HA_BOOT_COMPLETE_FOR_THIS_LOCATION)
 {
 }
 
@@ -22,7 +22,7 @@ HaBootCompleteForThisLocationEvent::~HaBootCompleteForThisLocationEvent ()
 
 void HaBootCompleteForThisLocationEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 }
 
 }

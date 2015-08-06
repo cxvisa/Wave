@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WavePartitionManagedObject::WavePartitionManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement                     (pWaveObjectManager),
+    : WaveElement                     (pWaveObjectManager),
       PrismPersistableObject           (WavePartitionManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager)
 {

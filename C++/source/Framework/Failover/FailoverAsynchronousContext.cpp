@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-FailoverAsynchronousContext::FailoverAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover)
+FailoverAsynchronousContext::FailoverAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover)
     : PrismAsynchronousContext              (pCaller, pCallback, pCallerContext),
       m_failoverReason                      (failoverReason),
       m_failedLocationIds                   (failedLocationIds),

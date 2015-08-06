@@ -35,7 +35,7 @@ class FrameworkPersistenceTestContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                                      FrameworkPersistenceTestContext  (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      FrameworkPersistenceTestContext  (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                      ~FrameworkPersistenceTestContext  ();
 
             vector<PrismTestManagedObject1 *>        &getCreatedObjects                 ();

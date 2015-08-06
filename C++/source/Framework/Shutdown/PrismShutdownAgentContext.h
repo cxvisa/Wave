@@ -20,7 +20,7 @@ class PrismShutdownAgentContext : public PrismSynchronousLinearSequencerContext
     private :
     protected :
     public :
-                                        PrismShutdownAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        PrismShutdownAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~PrismShutdownAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

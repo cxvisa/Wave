@@ -34,7 +34,7 @@ namespace WaveNs
 {
 
 WaveWorker::WaveWorker (WaveObjectManager *pWaveObjectManager)
-    : PrismElement                      (pWaveObjectManager),
+    : WaveElement                      (pWaveObjectManager),
       m_linkWorkerToParentObjectManager (true)
 {
     if (true == m_linkWorkerToParentObjectManager)
@@ -45,7 +45,7 @@ WaveWorker::WaveWorker (WaveObjectManager *pWaveObjectManager)
 
 // this form of the constructor is called by dynamic threads, worker is not added to the object manager worker vector, *p is a dummy parameter to overload the constructor
 WaveWorker::WaveWorker (WaveObjectManager *pWaveObjectManager, const bool &linkWorkerToParentObjectManager)
-    : PrismElement                      (pWaveObjectManager),
+    : WaveElement                      (pWaveObjectManager),
       m_linkWorkerToParentObjectManager (linkWorkerToParentObjectManager)
 {
     if (true == m_linkWorkerToParentObjectManager)
@@ -243,7 +243,7 @@ void WaveWorker::backendSyncUp (PrismAsynchronousContext *pPrismAsynchronousCont
     pPrismAsynchronousContext->callback ();
 }
 
-WaveMessageStatus WaveWorker::send  (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
+WaveMessageStatus WaveWorker::send  (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, WaveElement *pWaveMessageSender)
 {
     return (m_pWaveObjectManager->send (pWaveMessage, pWaveMessageCallback, pWaveMessageContext, timeOutInMilliSeconds, locationId, pWaveMessageSender != NULL ? pWaveMessageSender : this));
 }
@@ -288,14 +288,14 @@ WaveMessageStatus WaveWorker::reply (WaveMessage *pWaveMessage)
     return (m_pWaveObjectManager->reply (pWaveMessage));
 }
 
-WaveMessageStatus WaveWorker::reply (const PrismEvent *&pPrismEvent)
+WaveMessageStatus WaveWorker::reply (const WaveEvent *&pWaveEvent)
 {
-    return (m_pWaveObjectManager->reply (pPrismEvent));
+    return (m_pWaveObjectManager->reply (pWaveEvent));
 }
 
-WaveMessageStatus WaveWorker::broadcast (PrismEvent *pPrismEvent)
+WaveMessageStatus WaveWorker::broadcast (WaveEvent *pWaveEvent)
 {
-    return (m_pWaveObjectManager->broadcast (pPrismEvent));
+    return (m_pWaveObjectManager->broadcast (pWaveEvent));
 }
 
 void WaveWorker::trace (TraceLevel traceLevel, const string &stringToTrace)
@@ -330,14 +330,14 @@ void WaveWorker::prismAssert (bool isAssertNotRequired, const char *pFileName, U
     m_pWaveObjectManager->prismAssert (isAssertNotRequired, pFileName, lineNumber);
 }
 
-void WaveWorker::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, PrismElement *pPrismElement)
+void WaveWorker::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, WaveElement *pWaveElement)
 {
-    if (NULL == pPrismElement)
+    if (NULL == pWaveElement)
     {
-        pPrismElement = this;
+        pWaveElement = this;
     }
 
-    m_pWaveObjectManager->addOperationMap (operationCode, pWaveMessageHandler, pPrismElement);
+    m_pWaveObjectManager->addOperationMap (operationCode, pWaveMessageHandler, pWaveElement);
 }
 
 void WaveWorker::removeOperationMap (const UI32 &operationCode)
@@ -360,12 +360,12 @@ void WaveWorker::removeServiceIndependentOperationMap (UI32 operationCode)
     m_pWaveObjectManager->removeServiceIndependentOperationMap (operationCode);
 }
 
-ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender)
+ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
 {
     return (m_pWaveObjectManager->startTimer (timerHandle, startInterval, periodicInterval, pPrismTimerExpirationCallback, pPrismTimerExpirationContext, pPrismTimerSender != NULL ? pPrismTimerSender : this));
 }
 
-ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender)
+ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
 {
     return (m_pWaveObjectManager->startTimer (timerHandle, timeInMilliSeconds, pPrismTimerExpirationCallback, pPrismTimerExpirationContext, pPrismTimerSender != NULL ? pPrismTimerSender : this));
 }
@@ -668,9 +668,9 @@ WaveServiceId WaveWorker::getServiceId ()
     return (m_pWaveObjectManager->getServiceId ());
 }
 
-void WaveWorker::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement, const LocationId &sourceLocationId)
+void WaveWorker::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
 {
-    m_pWaveObjectManager->listenForEvent (prismServiceCode, sourceOperationCode, pPrismEventHandler, pPrismElement != NULL ? pPrismElement : this, sourceLocationId);
+    m_pWaveObjectManager->listenForEvent (prismServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
 }
 
 ResourceId WaveWorker::sendSynchronouslyToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance)
@@ -678,7 +678,7 @@ ResourceId WaveWorker::sendSynchronouslyToWaveClient (const string &waveClientNa
     return (m_pWaveObjectManager->sendSynchronouslyToWaveClient (waveClientName, pManagementInterfaceMessage, Instance));
 }
 
-WaveMessageStatus WaveWorker::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
+WaveMessageStatus WaveWorker::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
     return (m_pWaveObjectManager->sendToWaveServer (waveServerId, pManagementInterfaceMessage, messageCallback, pWaveMessageSender, pInputContext, timeOutInMilliSeconds));
 }
@@ -704,7 +704,7 @@ WaveManagedObject *WaveWorker::createManagedObjectInstance (const string &manage
     return (NULL);
 }
 
-void WaveWorker::addManagedClass (const string &managedClassName, PrismElement *pOwnerForInstantiation)
+void WaveWorker::addManagedClass (const string &managedClassName, WaveElement *pOwnerForInstantiation)
 {
     if (NULL == pOwnerForInstantiation)
     {
@@ -838,32 +838,32 @@ WaveMessageBrokerStatus WaveWorker::connectToMessageBroker (const string &broker
     return (m_pWaveObjectManager->connectToMessageBroker (brokerName, brokerIpAddress, brokerPort));
 }
 
-WaveMessageBrokerStatus WaveWorker::subscribeToMessageBroker (const string &brokerName, const vector<string> &topicNames, const vector<WaveBrokerPublishMessageHandler> publishMessageHandlers, PrismElement *pSubscriber)
+WaveMessageBrokerStatus WaveWorker::subscribeToMessageBroker (const string &brokerName, const vector<string> &topicNames, const vector<WaveBrokerPublishMessageHandler> publishMessageHandlers, WaveElement *pSubscriber)
 {
     return (m_pWaveObjectManager->subscribeToMessageBroker (brokerName, topicNames, publishMessageHandlers, pSubscriber != NULL ? pSubscriber : this));
 }
 
-WaveMessageBrokerStatus WaveWorker::subscribeToMessageBroker (const string &brokerName, const vector<string> &topicNames, WaveBrokerPublishMessageHandler publishMessageHandler, PrismElement *pSubscriber)
+WaveMessageBrokerStatus WaveWorker::subscribeToMessageBroker (const string &brokerName, const vector<string> &topicNames, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber)
 {
     return (m_pWaveObjectManager->subscribeToMessageBroker (brokerName, topicNames, publishMessageHandler, pSubscriber != NULL ? pSubscriber : this));
 }
 
-WaveMessageBrokerStatus WaveWorker::subscribeToMessageBroker (const string &brokerName, const string &topicName, WaveBrokerPublishMessageHandler publishMessageHandler, PrismElement *pSubscriber)
+WaveMessageBrokerStatus WaveWorker::subscribeToMessageBroker (const string &brokerName, const string &topicName, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber)
 {
     return (m_pWaveObjectManager->subscribeToMessageBroker (brokerName, brokerName, publishMessageHandler, pSubscriber != NULL ? pSubscriber : this));
 }
 
-WaveMessageBrokerStatus WaveWorker::unsubscribeToMessageBroker (const string &brokerName, const vector<string> &topicNames, PrismElement *pSubscriber)
+WaveMessageBrokerStatus WaveWorker::unsubscribeToMessageBroker (const string &brokerName, const vector<string> &topicNames, WaveElement *pSubscriber)
 {
     return (m_pWaveObjectManager->unsubscribeToMessageBroker (brokerName, topicNames, pSubscriber != NULL ? pSubscriber : this));
 }
 
-WaveMessageBrokerStatus WaveWorker::unsubscribeToMessageBroker (const string &brokerName, const string &topicName, PrismElement *pSubscriber)
+WaveMessageBrokerStatus WaveWorker::unsubscribeToMessageBroker (const string &brokerName, const string &topicName, WaveElement *pSubscriber)
 {
     return (m_pWaveObjectManager->unsubscribeToMessageBroker (brokerName, topicName, pSubscriber != NULL ? pSubscriber : this));
 }
 
-WaveMessageBrokerStatus WaveWorker::publishToMessageBroker (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, PrismElement *pSubscriber)
+WaveMessageBrokerStatus WaveWorker::publishToMessageBroker (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber)
 {
     return (m_pWaveObjectManager->publishToMessageBroker (brokerName, pWaveBrokerPublishMessage));
 }

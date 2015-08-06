@@ -18,8 +18,8 @@ class SecondaryNodeClusterContext: public PrismLinearSequencerContext
     private :
     protected :
     public :
-                    SecondaryNodeClusterContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
-                    SecondaryNodeClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
+                    SecondaryNodeClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
+                    SecondaryNodeClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
         virtual    ~SecondaryNodeClusterContext ();
 
         bool        getClusterHaSyncInProgress  () const;

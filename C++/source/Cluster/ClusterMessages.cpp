@@ -952,7 +952,7 @@ void LocalClusterConfigObjectManagerGetClusterConfigMessage::setSecondaryNodeSta
 
 
 
-HeartBeatLostMessage::HeartBeatLostMessage (/* WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
+HeartBeatLostMessage::HeartBeatLostMessage (/* WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, WaveElement *pStartHeartBeatSender */)
     : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_LOST)
 {
     m_dstIpAddress          =   dstIpAddress;
@@ -986,7 +986,7 @@ void HeartBeatLostMessage::setDstPort (UI32 dstPort)
     m_dstPort   = dstPort;
 }
 
-HeartBeatResumedMessage::HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender */)
+HeartBeatResumedMessage::HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, WaveElement *pStartHeartBeatSender */)
     : WaveMessage (LocalClusterConfigObjectManager::getWaveServiceId () /*id*/, CLUSTER_HEARTBEAT_RESUMED)
 {
     m_dstIpAddress          =   dstIpAddress;

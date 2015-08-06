@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-PrismAsynchronousContext::PrismAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+PrismAsynchronousContext::PrismAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : m_pCaller (pCaller),
       m_pCallback (pCallback),
       m_pCallerContext (pCallerContext)

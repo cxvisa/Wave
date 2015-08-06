@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
@@ -15,37 +15,37 @@
 namespace WaveNs
 {
 
-PrismElement::PrismElement (WaveObjectManager *pWaveObjectManager)
+WaveElement::WaveElement (WaveObjectManager *pWaveObjectManager)
     : m_pWaveObjectManager (pWaveObjectManager)
 {
     if (NULL == m_pWaveObjectManager)
     {
         // THIS MUST NEVER HAPPEN
         // We cannot use trace or prismAssert here since they are abstract virtual here
-        cerr << "Prismelement::Prismelement : You cannot create a PrismElement with NULL WaveObjectManager." << endl;
+        cerr << "Prismelement::Prismelement : You cannot create a WaveElement with NULL WaveObjectManager." << endl;
         assert (0);
     }
 }
 
-PrismElement::PrismElement (const PrismElement &prismElement)
+WaveElement::WaveElement (const WaveElement &prismElement)
 {
 // FIXME : sagar : Once we the cluster service fixes the NodeManagedObject copying by value into its vectors, enable the fatal statements below.
 
 #if 0
-    WaveNs::trace (TRACE_LEVEL_FATAL, "PrismElement::PrismElement : Copy Constructing a Prism Element does not make sense and hence not allowed.");
+    WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::WaveElement : Copy Constructing a Prism Element does not make sense and hence not allowed.");
     WaveNs::prismAssert (false, __FILE__, __LINE__);
 #else
     m_pWaveObjectManager = prismElement.m_pWaveObjectManager;
 #endif
 }
 
-PrismElement::~PrismElement ()
+WaveElement::~WaveElement ()
 {
 }
 
-PrismElement &PrismElement::operator = (const PrismElement &prismElement)
+WaveElement &WaveElement::operator = (const WaveElement &prismElement)
 {
-    WaveNs::trace (TRACE_LEVEL_FATAL, "PrismElement::operator = : Assigning to a Prism Element does not make sense and hence not allowed.");
+    WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::operator = : Assigning to a Prism Element does not make sense and hence not allowed.");
     WaveNs::prismAssert (false, __FILE__, __LINE__);
 
     return (*this);
@@ -56,9 +56,9 @@ PrismElement &PrismElement::operator = (const PrismElement &prismElement)
  * the transaction will be commited to preserve the semantics, even though if there is
  * no db update by the step and then the reply will happen as usual.
  */
-void PrismElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerSucceededStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerSucceededStep : Entering ...");
 
     WaveMessage             *pWaveMessage             = pPrismLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismLinearSequencerContext->getPPrismAsynchronousContext ();
@@ -102,9 +102,9 @@ void PrismElement::prismLinearSequencerSucceededStep (PrismLinearSequencerContex
     delete pPrismLinearSequencerContext;
 }
 
-void PrismElement::prismLinearSequencerFailedStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerFailedStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerFailedStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerFailedStep : Entering ...");
 
     WaveMessage             *pWaveMessage             = pPrismLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismLinearSequencerContext->getPPrismAsynchronousContext ();
@@ -134,9 +134,9 @@ void PrismElement::prismLinearSequencerFailedStep (PrismLinearSequencerContext *
     delete pPrismLinearSequencerContext;
 }
 
-void PrismElement::prismLinearSequencerStartTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerStartTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerStartTransactionStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerStartTransactionStep : Entering ...");
 
     if (false == (isTransactionInProgress ()))
     {
@@ -148,9 +148,9 @@ void PrismElement::prismLinearSequencerStartTransactionStep (PrismLinearSequence
     pPrismLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void PrismElement::prismLinearSequencerCommitTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
+void WaveElement::prismLinearSequencerCommitTransactionStep (PrismLinearSequencerContext *pPrismLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerCommitTransactionStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerCommitTransactionStep : Entering ...");
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
@@ -176,9 +176,9 @@ void PrismElement::prismLinearSequencerCommitTransactionStep (PrismLinearSequenc
  * the transaction will be commited to preserve the semantics, even though if there is
  * no db update by the step and then the reply will happen as usual.
  */
-ResourceId PrismElement::prismSynchronousLinearSequencerSucceededStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerSucceededStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismSynchronousLinearSequencerSucceededStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismSynchronousLinearSequencerSucceededStep : Entering ...");
 
     WaveMessage             *pWaveMessage             = pPrismSynchronousLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismSynchronousLinearSequencerContext->getPPrismAsynchronousContext ();
@@ -215,9 +215,9 @@ ResourceId PrismElement::prismSynchronousLinearSequencerSucceededStep (PrismSync
     return (completionStatus);
 }
 
-ResourceId PrismElement::prismSynchronousLinearSequencerFailedStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerFailedStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismSynchronousLinearSequencerFailedStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismSynchronousLinearSequencerFailedStep : Entering ...");
 
     WaveMessage             *pWaveMessage             = pPrismSynchronousLinearSequencerContext->getPWaveMessage ();
     PrismAsynchronousContext *pPrismAsynchronousContext = pPrismSynchronousLinearSequencerContext->getPPrismAsynchronousContext ();
@@ -244,9 +244,9 @@ ResourceId PrismElement::prismSynchronousLinearSequencerFailedStep (PrismSynchro
     return (completionStatus);
 }
 
-ResourceId PrismElement::prismSynchronousLinearSequencerStartTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerStartTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerStartTransactionStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerStartTransactionStep : Entering ...");
 
     if (false == (isTransactionInProgress ()))
     {
@@ -258,9 +258,9 @@ ResourceId PrismElement::prismSynchronousLinearSequencerStartTransactionStep (Pr
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId PrismElement::prismSynchronousLinearSequencerCommitTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerCommitTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "PrismElement::prismLinearSequencerCommitTransactionStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerCommitTransactionStep : Entering ...");
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
@@ -281,26 +281,26 @@ ResourceId PrismElement::prismSynchronousLinearSequencerCommitTransactionStep (P
     return (status);
 }
 
-WaveObjectManager *PrismElement::getPWaveObjectManager () const
+WaveObjectManager *WaveElement::getPWaveObjectManager () const
 {
     return (m_pWaveObjectManager);
 }
 
-WaveManagedObject *PrismElement::createManagedObjectInstance (const string &managedClassName)
+WaveManagedObject *WaveElement::createManagedObjectInstance (const string &managedClassName)
 {
-    trace (TRACE_LEVEL_ERROR, "PrismElement::createManagedObjectInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
-    trace (TRACE_LEVEL_ERROR, "PrismElement::createManagedObjectInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
+    trace (TRACE_LEVEL_ERROR, "WaveElement::createManagedObjectInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+    trace (TRACE_LEVEL_ERROR, "WaveElement::createManagedObjectInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
     return (NULL);
 }
 
-WaveMessage *PrismElement::createMessageInstance (const UI32 &operationCode)
+WaveMessage *WaveElement::createMessageInstance (const UI32 &operationCode)
 {
-    trace (TRACE_LEVEL_ERROR, "PrismElement::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
-    trace (TRACE_LEVEL_ERROR, "PrismElement::createMessageInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
+    trace (TRACE_LEVEL_ERROR, "WaveElement::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+    trace (TRACE_LEVEL_ERROR, "WaveElement::createMessageInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
     return (NULL);
 }
 
-void PrismElement::setPWaveObjectManager (WaveObjectManager *pWaveObjectManager)
+void WaveElement::setPWaveObjectManager (WaveObjectManager *pWaveObjectManager)
 {
     m_pWaveObjectManager = pWaveObjectManager;
 }

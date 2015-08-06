@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-WaveManagedObjectLoadOperationalDataContext::WaveManagedObjectLoadOperationalDataContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+WaveManagedObjectLoadOperationalDataContext::WaveManagedObjectLoadOperationalDataContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_pOwnerManagedObject    (NULL)
 {

@@ -11484,7 +11484,7 @@ void PrismFrameworkObjectManager::zeroizeForFIPSMessageHandler(ZeroizeForFIPSMes
         reinterpret_cast<PrismLinearSequencerStep> (&PrismFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
     
-    ZeroizeForFIPSLinearSequencerContext *pContext = new ZeroizeForFIPSLinearSequencerContext (pMessage, (PrismElement*)this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    ZeroizeForFIPSLinearSequencerContext *pContext = new ZeroizeForFIPSLinearSequencerContext (pMessage, (WaveElement*)this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     
     pContext->holdAll ();
     pContext->start (); 

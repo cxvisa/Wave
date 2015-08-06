@@ -6,12 +6,12 @@
 
 #ifndef WAVENODESADDITIONTOCLUSTERCOMPLETEDEVENT_H
 #define WAVENODESADDITIONTOCLUSTERCOMPLETEDEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class WaveNodesAdditionToClusterCompletedEvent : public PrismEvent
+class WaveNodesAdditionToClusterCompletedEvent : public WaveEvent
 {
     private :
 

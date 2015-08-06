@@ -7,7 +7,7 @@
 #ifndef COMMONMANAGEDOBJECTBASE_H
 #define COMMONMANAGEDOBJECTBASE_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/PrismPersistableObject.h"
 #include <string>

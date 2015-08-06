@@ -6,12 +6,12 @@
 
 #ifndef CLUSTERPHASE3COMPLETEEVENT_H
 #define CLUSTERPHASE3COMPLETEEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class ClusterPhase3CompleteEvent : public PrismEvent
+class ClusterPhase3CompleteEvent : public WaveEvent
 {
     private :
 

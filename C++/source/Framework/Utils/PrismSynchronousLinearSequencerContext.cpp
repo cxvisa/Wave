@@ -22,11 +22,11 @@ using namespace std;
 namespace WaveNs
 {
 
-PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                 = pWaveMessage;
     m_pPrismAsynchronousContext     = NULL;
-    m_pPrismElement                 = pPrismElement;
+    m_pWaveElement                 = pWaveElement;
     m_pSteps                        = NULL;
     m_numberOfSteps                 = numberOfSteps;
     m_currentStep                   = 0;
@@ -62,11 +62,11 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
     return;
 }
 
-PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                 = NULL;
     m_pPrismAsynchronousContext     = pPrismAsynchronousContext;
-    m_pPrismElement                 = pPrismElement;
+    m_pWaveElement                 = pWaveElement;
     m_pSteps                        = NULL;
     m_numberOfSteps                 = numberOfSteps;
     m_currentStep                   = 0;
@@ -106,7 +106,7 @@ PrismSynchronousLinearSequencerContext::PrismSynchronousLinearSequencerContext (
 {
     m_pWaveMessage                 = prismSynchronousLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext     = prismSynchronousLinearSequencerContext.m_pPrismAsynchronousContext;
-    m_pPrismElement                 = prismSynchronousLinearSequencerContext.m_pPrismElement;
+    m_pWaveElement                 = prismSynchronousLinearSequencerContext.m_pWaveElement;
     m_pSteps                        = prismSynchronousLinearSequencerContext.m_pSteps;
     m_numberOfSteps                 = prismSynchronousLinearSequencerContext.m_numberOfSteps;
     m_currentStep                   = prismSynchronousLinearSequencerContext.m_currentStep;
@@ -156,7 +156,7 @@ PrismSynchronousLinearSequencerContext &PrismSynchronousLinearSequencerContext::
 {
     m_pWaveMessage                 = prismSynchronousLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext     = prismSynchronousLinearSequencerContext.m_pPrismAsynchronousContext;
-    m_pPrismElement                 = prismSynchronousLinearSequencerContext.m_pPrismElement;
+    m_pWaveElement                 = prismSynchronousLinearSequencerContext.m_pWaveElement;
     m_pSteps                        = prismSynchronousLinearSequencerContext.m_pSteps;
     m_numberOfSteps                 = prismSynchronousLinearSequencerContext.m_numberOfSteps;
     m_currentStep                   = prismSynchronousLinearSequencerContext.m_currentStep;
@@ -213,7 +213,7 @@ ResourceId PrismSynchronousLinearSequencerContext::executeCurrentStep ()
 
     if (currentStep < (numberOfSteps - 2))
     {
-        if ((0 != m_clockId) && (NULL != m_pWaveMessage) && (NULL != m_pPrismElement))
+        if ((0 != m_clockId) && (NULL != m_pWaveMessage) && (NULL != m_pWaveElement))
         {
             operationCode = m_pWaveMessage->getOperationCode ();
 
@@ -223,7 +223,7 @@ ResourceId PrismSynchronousLinearSequencerContext::executeCurrentStep ()
     }
 
 
-    ResourceId status = (m_pPrismElement->*(m_pSteps[currentStep])) (this);
+    ResourceId status = (m_pWaveElement->*(m_pSteps[currentStep])) (this);
 
     if (currentStep < (numberOfSteps - 2))
     {
@@ -236,7 +236,7 @@ ResourceId PrismSynchronousLinearSequencerContext::executeCurrentStep ()
                 numberOfSeconds     = ts2.tv_sec  - ts1.tv_sec;
                 numberOfNanoSeconds = ts2.tv_nsec - ts1.tv_nsec;
 
-                m_pPrismElement->updateTimeConsumedInThisThread (operationCode, currentStep, numberOfSeconds, numberOfNanoSeconds);
+                m_pWaveElement->updateTimeConsumedInThisThread (operationCode, currentStep, numberOfSeconds, numberOfNanoSeconds);
             }
         }
 
@@ -249,7 +249,7 @@ ResourceId PrismSynchronousLinearSequencerContext::executeCurrentStep ()
                 numberOfSeconds     = tsr2.tv_sec  - tsr1.tv_sec;
                 numberOfNanoSeconds = tsr2.tv_nsec - tsr1.tv_nsec;
 
-                m_pPrismElement->updateRealTimeConsumedInThisThread (operationCode, currentStep, numberOfSeconds, numberOfNanoSeconds);
+                m_pWaveElement->updateRealTimeConsumedInThisThread (operationCode, currentStep, numberOfSeconds, numberOfNanoSeconds);
             }
         }
     }

@@ -19,7 +19,7 @@ class PrismLinearSequencerContextForShutdownPhase : public PrismLinearSequencerC
     private:
     protected:
     public:
-                      PrismLinearSequencerContextForShutdownPhase(PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                      PrismLinearSequencerContextForShutdownPhase(PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual      ~PrismLinearSequencerContextForShutdownPhase();
 
                 void  setBackendMap(const map<string,UnifiedClientBackendDetails*>  &backendMap);  

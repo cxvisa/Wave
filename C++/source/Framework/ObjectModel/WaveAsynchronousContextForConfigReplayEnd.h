@@ -17,7 +17,7 @@ class WaveAsynchronousContextForConfigReplayEnd: public PrismAsynchronousContext
     private :
     protected :
     public :
-                                WaveAsynchronousContextForConfigReplayEnd (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForConfigReplayEnd (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForConfigReplayEnd ();
 
     // Now the data members

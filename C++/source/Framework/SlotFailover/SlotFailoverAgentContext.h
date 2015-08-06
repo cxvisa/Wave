@@ -20,7 +20,7 @@ class SlotFailoverAgentContext : public PrismSynchronousLinearSequencerContext
     private :
     protected :
     public :
-                                        SlotFailoverAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        SlotFailoverAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~SlotFailoverAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

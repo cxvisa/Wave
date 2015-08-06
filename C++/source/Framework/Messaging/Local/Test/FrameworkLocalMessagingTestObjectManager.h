@@ -38,7 +38,7 @@ class FrameworkLocalMessagingTestObjectManager : public PrismTestObjectManager
                 void                                      frameworkTestabilityMessage6Callback     (FrameworkStatus frameworkStatus, FrameworkTestabilityMessage6 *pMessage, FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext);
                 void                                      simpleEventTestStep                      (FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext);
 
-                PrismEvent                               *createEventInstance                      (const UI32 &eventOperationCode);
+                WaveEvent                               *createEventInstance                      (const UI32 &eventOperationCode);
 
     // Now the data members
 

@@ -68,7 +68,7 @@ void ShellObjectManager::boot (WaveAsynchronousContextForBootPhases *pWaveAsynch
 
 void ShellObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&ShellObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&ShellObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -80,7 +80,7 @@ void ShellObjectManager::bootCompleteForThisLocationEventHandler (const BootComp
 
     unlistenEvents ();
 
-    reply (reinterpret_cast<const PrismEvent *&> (pBootCompleteForThisLocationEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pBootCompleteForThisLocationEvent));
 
     if (false == (FrameworkToolKit::getIsRunningAsADaemon ()))
     {

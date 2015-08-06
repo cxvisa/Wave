@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 PrismTestManagedView2::PrismTestManagedView2 (WaveObjectManager *pWaveObjectManager)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject (PrismTestManagedView2::getClassName ()), 
       WaveManagedObject (pWaveObjectManager),
       WaveManagedView   (pWaveObjectManager),

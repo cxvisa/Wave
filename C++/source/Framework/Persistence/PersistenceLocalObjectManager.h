@@ -46,7 +46,7 @@ class PersistenceLocalObjectManager : public WaveLocalObjectManager
                 void                            debugSchemaChangeMessageHandler                 (PersistenceLocalObjectManagerDebugSchemaChangeMessage *pPersistenceLocalObjectManagerDebugSchemaChangeMessage);
 
         virtual WaveMessage                   *createMessageInstance                           (const UI32 &operationCode);
-        virtual PrismEvent                     *createEventInstance                             (const UI32 &eventOperationCode);
+        virtual WaveEvent                     *createEventInstance                             (const UI32 &eventOperationCode);
 
         static  bool                            getDisableLocalCommitTransactions               ();
         static  void                            setDisableLocalCommitTransactions               (const bool &disableLocalCommitTransactions);

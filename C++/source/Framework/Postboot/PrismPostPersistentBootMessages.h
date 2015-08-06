@@ -7,7 +7,7 @@
 #ifndef PRISMPOSTPERSISTENTBOOTMESSAGES_H
 #define PRISMPOSTPERSISTENTBOOTMESSAGES_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 
 namespace WaveNs

@@ -7,7 +7,7 @@
 #ifndef PRISMOBJECTMANAGER_H
 #define PRISMOBJECTMANAGER_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/MultiThreading/WaveThread.h"
 #include <map>
 #include <vector>
@@ -16,7 +16,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/Utils/DatabaseQueryCursor.h"
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/ObjectRelationalMapping/CompositionEntry.h"
 #include "Framework/ObjectRelationalMapping/RelationshipEntry.h"
@@ -32,7 +32,7 @@ namespace WaveNs
 
 class WaveThread;
 class WaveWorker;
-class PrismEvent;
+class WaveEvent;
 class PrismInitializeObjectManagerMessage;
 class PrismListenForEventsObjectManagerMessage;
 class PrismInstallObjectManagerMessage;
@@ -115,7 +115,7 @@ class WaveConfigurationAttributes;
 
 class WaveDeliverBrokerPublishMessageWorker;
 
-class WaveObjectManager : public PrismElement
+class WaveObjectManager : public WaveElement
 {
     private :
         class WaveMessageResponseContext
@@ -123,7 +123,7 @@ class WaveObjectManager : public PrismElement
             private :
             protected :
             public :
-                              WaveMessageResponseContext       (WaveMessage *pWaveMessage, PrismElement *pWaveMessageSender, WaveMessageResponseHandler pWaveMessageSenderCallback, void *pWaveMessageSenderContext);
+                              WaveMessageResponseContext       (WaveMessage *pWaveMessage, WaveElement *pWaveMessageSender, WaveMessageResponseHandler pWaveMessageSenderCallback, void *pWaveMessageSenderContext);
                 void          executeResponseCallback           (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled = false);
                 void          executeResponseCallback           (FrameworkStatus frameworkStatus);
                 void          setIsMessageTimedOut              (bool isMessageTimedOut);
@@ -140,7 +140,7 @@ class WaveObjectManager : public PrismElement
 
             private :
                 WaveMessage                *m_pWaveMessage;
-                PrismElement                *m_pWaveMessageSender;
+                WaveElement                *m_pWaveMessageSender;
                 WaveMessageResponseHandler  m_pWaveMessageSenderCallback;
                 void                        *m_pWaveMessageSenderContext;
                 bool                         m_isMessageTimedOut;
@@ -157,44 +157,44 @@ class WaveObjectManager : public PrismElement
             private :
             protected :
             public :
-                     PrismOperationMapContext (PrismElement *pPrismElement, WaveMessageHandler pWaveMessageHandler);
+                     PrismOperationMapContext (WaveElement *pWaveElement, WaveMessageHandler pWaveMessageHandler);
                 void executeMessageHandler    (WaveMessage *&pWaveMessage);
 
             // Now the data members
 
             private :
-                PrismElement        *m_pPrismElementThatHandlesTheMessage;
+                WaveElement        *m_pWaveElementThatHandlesTheMessage;
                 WaveMessageHandler  m_pWaveMessageHandler;
 
             protected :
             public :
         };
 
-        class PrismEventMapContext
+        class WaveEventMapContext
         {
             private :
             protected :
             public :
-                     PrismEventMapContext (PrismElement *pPrismElement, PrismEventHandler pPrismEventHandler);
-                void executeEventHandler  (const PrismEvent *&pPrismEvent);
+                     WaveEventMapContext (WaveElement *pWaveElement, WaveEventHandler pWaveEventHandler);
+                void executeEventHandler  (const WaveEvent *&pWaveEvent);
 
             // Now the data members
 
             private :
-                PrismElement      *m_pPrismElementThatHandlesTheEvent;
-                PrismEventHandler  m_pPrismEventHandler;
+                WaveElement      *m_pWaveElementThatHandlesTheEvent;
+                WaveEventHandler  m_pWaveEventHandler;
 
             protected :
             public :
         };
 
-        class PrismEventListenerMapContext
+        class WaveEventListenerMapContext
         {
             private :
             protected :
             public :
-                 PrismEventListenerMapContext (const WaveServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId);
-                ~PrismEventListenerMapContext ();
+                 WaveEventListenerMapContext (const WaveServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId);
+                ~WaveEventListenerMapContext ();
 
                 WaveServiceId getEventListenerServiceId  () const;
                 LocationId     getEventListenerLocationId () const;
@@ -300,17 +300,17 @@ class WaveObjectManager : public PrismElement
             private :
             protected :
             public :
-                                                 WaveBrokerPublishMessageHandlerContext (WaveBrokerPublishMessageHandler waveBrokerPublishMessageHandler, PrismElement *pSubscriber);
+                                                 WaveBrokerPublishMessageHandlerContext (WaveBrokerPublishMessageHandler waveBrokerPublishMessageHandler, WaveElement *pSubscriber);
                                                 ~WaveBrokerPublishMessageHandlerContext ();
 
                 WaveBrokerPublishMessageHandler  getWaveBrokerPublishMessageHandler     ();
-                PrismElement                    *getPSubscriber                         ();
+                WaveElement                    *getPSubscriber                         ();
 
             // Now the data members
 
             private :
                 WaveBrokerPublishMessageHandler  m_waveBrokerPublishMessageHandler;
-                PrismElement                    *m_pSubscriber;
+                WaveElement                    *m_pSubscriber;
             protected :
             public :
         };
@@ -526,7 +526,7 @@ class WaveObjectManager : public PrismElement
                 bool                isEventOperationCodeSupportedForListening    (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
                 bool                isAKnownMessage                              (UI32 prismMessageId);
                 void                handleWaveMessage                           (WaveMessage *pWaveMessage);
-                void                handlePrismEvent                             (const PrismEvent *&pPrismEvent);
+                void                handleWaveEvent                             (const WaveEvent *&pWaveEvent);
                 void                handleWaveMessageResponse                   (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled = false);
                 void                handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 prismMessageId);
                 void                addWorker                                    (WaveWorker *pWorker);
@@ -536,13 +536,13 @@ class WaveObjectManager : public PrismElement
 
         virtual WaveMessage       *createMessageInstance                        (const UI32 &operationCode);
                 WaveMessage       *createMessageInstanceWrapper                 (const UI32 &operationCode);
-        virtual PrismEvent         *createEventInstance                          (const UI32 &eventOperationCode);
+        virtual WaveEvent         *createEventInstance                          (const UI32 &eventOperationCode);
         virtual WaveManagedObject  *createManagedObjectInstance                  (const string &managedClassName);
                 WaveManagedObject  *createManagedObjectInstanceWrapper           (const string &managedClassName);
 
                 void                addEventListener                             (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
                 void                removeEventListener                          (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
-                void                getEventListeners                            (const UI32 &eventOperationCode, vector<PrismEventListenerMapContext *> &eventListeners);
+                void                getEventListeners                            (const UI32 &eventOperationCode, vector<WaveEventListenerMapContext *> &eventListeners);
 
                 void                trackObjectCreatedDuringCurrentTransaction   (WaveManagedObject *pWaveManagedObject);
                 void                trackObjectDeletedDuringCurrentTransaction   (WaveManagedObject *pWaveManagedObject);
@@ -602,23 +602,23 @@ class WaveObjectManager : public PrismElement
         virtual                                                 ~WaveObjectManager                            ();
                 string                                           getName                                      () const;
                 WaveObjectManager                              &operator =                                    (const WaveObjectManager &prismObjectManager);
-                void                                             addOperationMap                              (UI32 operationCode, WaveMessageHandler pMessageHandler, PrismElement *pPrismElement = NULL);
+                void                                             addOperationMap                              (UI32 operationCode, WaveMessageHandler pMessageHandler, WaveElement *pWaveElement = NULL);
                 void                                             addServiceIndependentOperationMap            (UI32 operationCode, WaveServiceIndependentMessageHandler pWaveServiceIndependentMessageHandler);
                 void                                             addServiceIndependentOperationMap            (UI32 operationCode, ManagementInterfaceServiceIndependentMessageHandler pManagementInterfaceServiceIndependentMessageHandler);
                 void                                             removeServiceIndependentOperationMap         (UI32 operationCode);
                 void                                             removeOperationMap                           (const UI32 &operationCode);
         virtual void                                             addEventType                                 (const UI32 &eventOperationCode);
-        virtual void                                             listenForEvent                               (WaveServiceId prismServiceId, UI32 sourceOperationCode, PrismEventHandler pPrismEventHandler, PrismElement *pPrismElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                                             listenForEvent                               (WaveServiceId prismServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
         virtual void                                             unlistenEvents                               ();
                 void                                             addResponseMap                               (UI32 prismMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
                 WaveMessageResponseContext                     *removeResponseMap                            (UI32 prismMessageId);
                 PrismOperationMapContext                        *getWaveMessageHandler                       (UI32 operationCode, UI32 messageHandlerServiceCode = 0, UI32 thisServiceId = 0);
-                PrismEventMapContext                            *getPrismEventHandler                         (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
+                WaveEventMapContext                            *getWaveEventHandler                         (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
                 WaveObjectManager::WaveMessageResponseContext *getResponseContext                            (UI32 prismMessageId);
                 void                                             setIsEnabled                                 (bool isEnabled);
         virtual TraceClientId                                    getTraceClientId                             ();
 
-                void                                             addManagedClass                              (const string &managedClassName, PrismElement *pOwnerForInstantiation = NULL);
+                void                                             addManagedClass                              (const string &managedClassName, WaveElement *pOwnerForInstantiation = NULL);
                 void                                             addManagedClassWithoutOwnership              (const string &managedClassName);
         static  void                                             addOwnerForManagedClass                      (const string &managedClassName, WaveObjectManager *pWaveObjectManager);
         static  WaveObjectManager                               *getOwnerForManagedClass                      (const string &managedClassName);
@@ -628,7 +628,7 @@ class WaveObjectManager : public PrismElement
         virtual WaveMessageStatus                                postToRemoteLocation                         (WaveMessage *pWaveMessage);
         virtual WaveMessageStatus                                postToRemoteLocation                         (InterLocationMulticastMessage *pWaveMessage, set<LocationId> locationsToSent);
         virtual WaveMessageStatus                                postToHaPeerLocation                         (WaveMessage *pWaveMessage);
-        virtual WaveMessageStatus                                send                                         (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, PrismElement *pWaveMessageSender = NULL);
+        virtual WaveMessageStatus                                send                                         (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, WaveElement *pWaveMessageSender = NULL);
                 void                                             sendTimerExpiredCallback                     (TimerHandle timerHandle, void *pContext);
         virtual WaveMessageStatus                                sendOneWay                                   (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
         virtual WaveMessageStatus                                sendOneWayToFront                            (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
@@ -674,15 +674,15 @@ class WaveObjectManager : public PrismElement
         virtual WaveMessageStatus                                recall                                             (WaveMessage *pWaveMessage);
                 WaveMessageStatus                                recallButDoNotDeleteResponseMap                    (WaveMessage *pWaveMessage);
         virtual WaveMessageStatus                                reply                                              (WaveMessage *pWaveMessage);
-        virtual WaveMessageStatus                                broadcast                                          (PrismEvent *pPrismEvent);
-        virtual WaveMessageStatus                                reply                                              (const PrismEvent *&pPrismEvent);
+        virtual WaveMessageStatus                                broadcast                                          (WaveEvent *pWaveEvent);
+        virtual WaveMessageStatus                                reply                                              (const WaveEvent *&pWaveEvent);
 
         virtual void                                             trace                                              (TraceLevel traceLevel, const string &stringToTrace);
         virtual void                                             tracePrintf                                        (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...);
         virtual void                                             tracePrintf                                        (TraceLevel traceLevel, const char * const pFormat, ...);
         virtual void                                             prismAssert                                        (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
-        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, PrismElement *pPrismTimerSender = NULL);
-        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle,UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, PrismElement *pPrismTimerSender = NULL);
+        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
+        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle,UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
         void                                                     timerExpiredHandler                                (PrismTimerExpiredObjectManagerMessage *pTimerExpiredMessage);
         virtual ResourceId                                       deleteTimer                                        (TimerHandle timerHandle);
         virtual ResourceId                                       deleteAllTimersForService                          ();
@@ -775,7 +775,7 @@ class WaveObjectManager : public PrismElement
                 void                                             associateWithVirtualWaveObjectManager              (WaveObjectManager *pAssociatedVirtualWaveObjectManager);
 
         virtual ResourceId                                       sendSynchronouslyToWaveClient                      (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
-        virtual WaveMessageStatus                                sendToWaveServer                                   (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
+        virtual WaveMessageStatus                                sendToWaveServer                                   (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
         virtual ResourceId                                       sendToWaveClient                                   (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instnace = 0);
         virtual void                                             sendToWaveClients                                  (WaveSendToClientsContext *pWaveSendToClientsContext);
         virtual ResourceId                                       sendOneWayToAllWaveClients                         (ManagementInterfaceMessage *pManagementInterfaceMessage);
@@ -862,12 +862,12 @@ class WaveObjectManager : public PrismElement
         virtual void                                             bootStrapSelf                                       ();
 
         virtual WaveMessageBrokerStatus                          connectToMessageBroker                              (const string &brokerName, const string &brokerIpAddress, const SI32 &brokerPort);
-        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const vector<string> &topicNames, const vector<WaveBrokerPublishMessageHandler> publishMessageHandlers, PrismElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const vector<string> &topicNames, WaveBrokerPublishMessageHandler publishMessageHandler, PrismElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const string &topicName, WaveBrokerPublishMessageHandler publishMessageHandler, PrismElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                          (const string &brokerName, const vector<string> &topicNames, PrismElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                          (const string &brokerName, const string &topicName, PrismElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          publishToMessageBroker                              (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, PrismElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const vector<string> &topicNames, const vector<WaveBrokerPublishMessageHandler> publishMessageHandlers, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const vector<string> &topicNames, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const string &topicName, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                          (const string &brokerName, const vector<string> &topicNames, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                          (const string &brokerName, const string &topicName, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          publishToMessageBroker                              (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL);
 
                 bool                                             isAKnownWaveBrokerBasedMessageSubscription          (const string &brokerName, const string &topicName) const;
 
@@ -903,9 +903,9 @@ class WaveObjectManager : public PrismElement
                WaveThread                                                         *m_pAssociatedWaveThread;
                map<UI32, PrismOperationMapContext *>                                m_operationsMap;
                map<UI32, UI32>                                                      m_supportedEvents;
-               map<LocationId, map<UI32, map<UI32, PrismEventMapContext *> *> *>    m_eventsMap;
+               map<LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>    m_eventsMap;
                map<UI32, WaveMessageResponseContext *>                             m_responsesMap;
-               map<UI32, vector<PrismEventListenerMapContext *> *>                  m_eventListenersMap;
+               map<UI32, vector<WaveEventListenerMapContext *> *>                  m_eventListenersMap;
                map<string, vector<string> >                                         m_postbootManagedObjectNames;
                PrismMutex                                                           m_responsesMapMutex;
                PrismMutex                                                           m_sendReplyMutexForResponseMap;
@@ -938,9 +938,9 @@ class WaveObjectManager : public PrismElement
 
                WaveObjectManager                                                   *m_pAssociatedVirtualWaveObjectManager; // This filed will be used only by the derived classes of type WaveLocalObjectManager to represent virtual/global service corresponding to that locla service.
 
-        static map<string, PrismElement *>                                          m_ownersForCreatingManagedObjectInstances;
+        static map<string, WaveElement *>                                          m_ownersForCreatingManagedObjectInstances;
         static PrismMutex                                                           m_createManagedObjectInstanceWrapperMutex;
-               map<UI32, PrismElement *>                                            m_ownersForCreatingMessageInstances;
+               map<UI32, WaveElement *>                                            m_ownersForCreatingMessageInstances;
                PrismMutex                                                           m_createMessageInstanceWrapperMutex;
 
                bool                                                                 m_allowAutomaticallyUnlistenForEvents;

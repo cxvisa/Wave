@@ -7,12 +7,12 @@
 #ifndef HABOOTCOMPLETEFORTHISLOCATIONEVENT_H
 #define HABOOTCOMPLETEFORTHISLOCATIONEVENT_H
 
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class HaBootCompleteForThisLocationEvent : public PrismEvent
+class HaBootCompleteForThisLocationEvent : public WaveEvent
 {
     private :
     protected :

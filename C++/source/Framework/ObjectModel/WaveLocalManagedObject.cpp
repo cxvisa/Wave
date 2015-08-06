@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 WaveLocalManagedObject::WaveLocalManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement               (pWaveObjectManager),
+    : WaveElement               (pWaveObjectManager),
       PrismPersistableObject     (WaveLocalManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject          (pWaveObjectManager),
       WaveLocalManagedObjectBase (this)

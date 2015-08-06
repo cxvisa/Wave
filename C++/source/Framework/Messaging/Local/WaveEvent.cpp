@@ -4,35 +4,35 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 #include "Framework/Utils/TraceUtils.h"
 
 namespace WaveNs
 {
 
-PrismEvent::PrismEvent (WaveServiceId serviceCode, UI32 operationCode)
+WaveEvent::WaveEvent (WaveServiceId serviceCode, UI32 operationCode)
     : WaveMessage (serviceCode, operationCode),
       m_referenceCountForEventNotifications (1)
 {
     setType (WAVE_MESSAGE_TYPE_EVENT);
 }
 
-PrismEvent::~PrismEvent ()
+WaveEvent::~WaveEvent ()
 {
     if (0 != m_referenceCountForEventNotifications)
     {
-        trace (TRACE_LEVEL_FATAL, "PrismEvent::~PrismEvent : Trying to delete an event while it is still being used by a listener.");
+        trace (TRACE_LEVEL_FATAL, "WaveEvent::~WaveEvent : Trying to delete an event while it is still being used by a listener.");
     }
 }
 
-void PrismEvent::setupAttributesForSerialization ()
+void WaveEvent::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 }
 
-UI32 PrismEvent::getReferenceCountForEventNotifications () const
+UI32 WaveEvent::getReferenceCountForEventNotifications () const
 {
-    PrismEvent *pTempEvent = (PrismEvent *) this; // Consciously overriding the const behavior.
+    WaveEvent *pTempEvent = (WaveEvent *) this; // Consciously overriding the const behavior.
 
     UI32 referenceCountForEventNotifications = 0;
 
@@ -45,9 +45,9 @@ UI32 PrismEvent::getReferenceCountForEventNotifications () const
     return (referenceCountForEventNotifications);
 }
 
-UI32 PrismEvent::incrementReferenceCountForEventNotifications () const
+UI32 WaveEvent::incrementReferenceCountForEventNotifications () const
 {
-    PrismEvent *pTempEvent = (PrismEvent *) this; // Consciously overriding the const behavior.
+    WaveEvent *pTempEvent = (WaveEvent *) this; // Consciously overriding the const behavior.
 
     UI32 referenceCountForEventNotifications = 0;
 
@@ -61,9 +61,9 @@ UI32 PrismEvent::incrementReferenceCountForEventNotifications () const
     return (referenceCountForEventNotifications);
 }
 
-UI32 PrismEvent::decrementReferenceCountForEventNotifications () const
+UI32 WaveEvent::decrementReferenceCountForEventNotifications () const
 {
-    PrismEvent *pTempEvent = (PrismEvent *) this; // Consciously overriding the const behavior.
+    WaveEvent *pTempEvent = (WaveEvent *) this; // Consciously overriding the const behavior.
 
     UI32 referenceCountForEventNotifications = 0;
 
@@ -77,7 +77,7 @@ UI32 PrismEvent::decrementReferenceCountForEventNotifications () const
     return (referenceCountForEventNotifications);
 }
 
-void PrismEvent::setReferenceCountForEventNotifications (const UI32 &referenceCountForEventNotifications)
+void WaveEvent::setReferenceCountForEventNotifications (const UI32 &referenceCountForEventNotifications)
 {
     m_referenceCountForEventNotificationsMutex.lock ();
 

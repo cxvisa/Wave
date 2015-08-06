@@ -6,12 +6,12 @@
 
 #ifndef CLUSTERFAILOVERCOMPLETEEVENT_H
 #define CLUSTERFAILOVERCOMPLETEEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class ClusterFailoverCompleteEvent : public PrismEvent
+class ClusterFailoverCompleteEvent : public WaveEvent
 {
     private :
     protected :

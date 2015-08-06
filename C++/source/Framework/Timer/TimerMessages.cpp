@@ -29,7 +29,7 @@ TimerObjectManagerAddTimerMessage::~TimerObjectManagerAddTimerMessage ()
 }
 
 TimerObjectManagerAddTimerMessage::TimerObjectManagerAddTimerMessage (timeval &startInterval, timeval &periodicInterval, timeval &startTime,
-                        PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender)
+                        PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
     : WaveMessage (TimerObjectManager::getWaveServiceId (), TIMER_ADD_TIMER)
 {
     m_startInterval.tv_sec          =   startInterval.tv_sec;
@@ -76,7 +76,7 @@ void *TimerObjectManagerAddTimerMessage::getTimerExpirationContext ()
     return m_pPrismTimerExpirationContext;
 }
 
-PrismElement *TimerObjectManagerAddTimerMessage::getTimerSender ()
+WaveElement *TimerObjectManagerAddTimerMessage::getTimerSender ()
 {
     return m_pPrismTimerSender;
 }

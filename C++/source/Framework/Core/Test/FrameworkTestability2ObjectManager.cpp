@@ -52,12 +52,12 @@ WaveServiceId FrameworkTestability2ObjectManager::getWaveServiceId ()
 
 void FrameworkTestability2ObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::frameworkTestabilityEvent1EventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::PrimaryChangedEventHandler));
-    listenForEvent (PersistenceLocalObjectManager::getWaveServiceId (), STARTUP_SCHEMA_CHANGE_EVENT, reinterpret_cast<PrismEventHandler> (&FrameworkTestability2ObjectManager::StartupSchemaChangeEventHandler));
+    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<WaveEventHandler> (&FrameworkTestability2ObjectManager::frameworkTestabilityEvent1EventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<WaveEventHandler> (&FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT, reinterpret_cast<WaveEventHandler> (&FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT, reinterpret_cast<WaveEventHandler> (&FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT, reinterpret_cast<WaveEventHandler> (&FrameworkTestability2ObjectManager::PrimaryChangedEventHandler));
+    listenForEvent (PersistenceLocalObjectManager::getWaveServiceId (), STARTUP_SCHEMA_CHANGE_EVENT, reinterpret_cast<WaveEventHandler> (&FrameworkTestability2ObjectManager::StartupSchemaChangeEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -76,7 +76,7 @@ void FrameworkTestability2ObjectManager::frameworkTestabilityEvent1EventHandler 
         trace (TRACE_LEVEL_DEBUG, string ("m_eventString = ") + pEvent->getEventString ());
     }
 
-     reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+     reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 }
 
 /// Name
@@ -100,7 +100,7 @@ void FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler(const Wav
       tracePrintf(TRACE_LEVEL_INFO,"IpAddress: %s: Port: %d: LocationId: %d",pEvent->getIpAddressAtIndex(i).c_str(), pEvent->getPortAtIndex(i), pEvent->getLocationIdAtIndex(i));
   }
 
-   reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+   reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 
    trace(TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler..Exiting");
   return;
@@ -127,7 +127,7 @@ void FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEven
       tracePrintf(TRACE_LEVEL_INFO,"IpAddress: %s: Port: %d: LocationId: %d",pEvent->getIpAddressAtIndex(i).c_str(), pEvent->getPortAtIndex(i), pEvent->getLocationIdAtIndex(i));
   }
 
-   reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+   reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 
    trace(TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEventHandler..Exiting");
   return;
@@ -150,7 +150,7 @@ void FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler(co
 {
   trace(TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler..Entering");
 
-  reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+  reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 
   return;
 }
@@ -168,7 +168,7 @@ void FrameworkTestability2ObjectManager::PrimaryChangedEventHandler (const Prima
 
     trace (TRACE_LEVEL_INFO, string("New Primary locationId : ") + newPrimaryLocation);
     
-    reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 
     trace (TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::PrimaryChangedEventHandler : Exiting...");
     return;
@@ -194,7 +194,7 @@ void FrameworkTestability2ObjectManager::StartupSchemaChangeEventHandler (const 
     trace (TRACE_LEVEL_DEBUG, string ("fromFilePath : ") + schemaFile);
     trace (TRACE_LEVEL_DEBUG, string ("toFilePath : ") + toSchemaFile);
 
-    reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 }
 
 }

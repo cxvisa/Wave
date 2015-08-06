@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveNodeDeleteClusterEvent::WaveNodeDeleteClusterEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DELETE_CLUSTER_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DELETE_CLUSTER_EVENT),
       m_isRebootRequired (true)
 {
 }
@@ -25,7 +25,7 @@ WaveNodeDeleteClusterEvent::~WaveNodeDeleteClusterEvent ()
 
 void WaveNodeDeleteClusterEvent::setupAttributesForSerialization ()
 {
-  PrismEvent::setupAttributesForSerialization ();
+  WaveEvent::setupAttributesForSerialization ();
 }
 
 void WaveNodeDeleteClusterEvent::setIsRebootRequired (const bool &isRebootRequired)

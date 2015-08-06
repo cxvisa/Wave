@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-ClusterFailoverContext::ClusterFailoverContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
-    : PrismSynchronousLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+ClusterFailoverContext::ClusterFailoverContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
+    : PrismSynchronousLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_failoverReason (failoverReason),
       m_failedLocationIds (failedLocationIds),
       m_pPrismCluster       (NULL),
@@ -24,8 +24,8 @@ ClusterFailoverContext::ClusterFailoverContext (WaveMessage *pWaveMessage, Prism
 {
 }
 
-ClusterFailoverContext::ClusterFailoverContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
-    : PrismSynchronousLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+ClusterFailoverContext::ClusterFailoverContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
+    : PrismSynchronousLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_failoverReason (failoverReason),
       m_failedLocationIds (failedLocationIds),
       m_pPrismCluster       (NULL),

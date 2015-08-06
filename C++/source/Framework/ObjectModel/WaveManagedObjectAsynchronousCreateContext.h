@@ -18,7 +18,7 @@ class WaveManagedObjectAsynchronousCreateContext : public PrismAsynchronousConte
     protected :
     public :
 
-                            WaveManagedObjectAsynchronousCreateContext  (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            WaveManagedObjectAsynchronousCreateContext  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~WaveManagedObjectAsynchronousCreateContext  ();
 
         vector<string>      getAttributeNames                           () const;

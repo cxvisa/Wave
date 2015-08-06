@@ -6,7 +6,7 @@
 
 #ifndef STARTUPSCHEMACHANGEEVENT_H
 #define STARTUPSCHEMACHANGEEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
@@ -19,7 +19,7 @@ typedef enum
     SCHEMA_FILE
 }SchemaType;
     
-class StartupSchemaChangeEvent : public PrismEvent
+class StartupSchemaChangeEvent : public WaveEvent
 {
     private :
 

@@ -202,7 +202,7 @@ void WaveUserInterfaceObjectManager::replyToWaveServer (ManagementInterfaceMessa
     (WaveUserInterfaceObjectManager::getInstance ())->reply (pManagementInterfaceMessage);
 }
 
-WaveMessageStatus WaveUserInterfaceObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
+WaveMessageStatus WaveUserInterfaceObjectManager::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, ManagementInterfaceMessageCallbackHandlerAtClient messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, WaveElement *pWaveMessageSender)
 {
     pManagementInterfaceMessage->setServiceCode (WaveClientTransportObjectManager::getWaveServiceId ());
     pManagementInterfaceMessage->setServerId (waveServerId);

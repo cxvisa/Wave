@@ -12,12 +12,12 @@
 
 #ifndef CONFIGREPLAYCOMPLETEDEVENT_H
 #define CONFIGREPLAYCOMPLETEDEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class ConfigReplayCompletedEvent : public PrismEvent
+class ConfigReplayCompletedEvent : public WaveEvent
 {
     private :
     protected :

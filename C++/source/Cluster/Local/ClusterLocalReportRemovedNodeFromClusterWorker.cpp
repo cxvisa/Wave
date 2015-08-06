@@ -27,7 +27,7 @@ namespace WaveNs
 /// Constructor:Registers the handler to handle the node removal message
 /// from the Framework
 /// Input
-/// ClusterLocalObjectManager *: Registered with the PrismElement
+/// ClusterLocalObjectManager *: Registered with the WaveElement
 /// Output
 /// None
 /// Return

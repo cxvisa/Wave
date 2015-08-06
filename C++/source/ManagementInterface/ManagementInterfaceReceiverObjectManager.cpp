@@ -266,7 +266,7 @@ void ManagementInterfaceReceiverObjectManager::boot (WaveAsynchronousContextForB
 
 void ManagementInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -278,7 +278,7 @@ void ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventH
 
     unlistenEvents ();
 
-    reply (reinterpret_cast<const PrismEvent *&> (pBootCompleteForThisLocationEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pBootCompleteForThisLocationEvent));
 
     trace (TRACE_LEVEL_INFO, "ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Now accepting connections from Wave Clients.");
 

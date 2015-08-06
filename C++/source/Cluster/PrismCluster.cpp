@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 PrismCluster::PrismCluster (WaveObjectManager *pWaveObjectManager)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject (PrismCluster::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_primaryLocationId (0),

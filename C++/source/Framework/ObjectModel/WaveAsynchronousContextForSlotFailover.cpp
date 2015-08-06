@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForSlotFailover::WaveAsynchronousContextForSlotFailover (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+WaveAsynchronousContextForSlotFailover::WaveAsynchronousContextForSlotFailover (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_slotNumber (0)
 {

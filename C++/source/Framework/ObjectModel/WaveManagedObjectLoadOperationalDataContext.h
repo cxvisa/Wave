@@ -17,7 +17,7 @@ class WaveManagedObjectLoadOperationalDataContext : public PrismAsynchronousCont
     private :
     protected :
     public :
-                        WaveManagedObjectLoadOperationalDataContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                        WaveManagedObjectLoadOperationalDataContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
                        ~WaveManagedObjectLoadOperationalDataContext ();
 
         vector<string>  getOperationalDataFields                    () const;

@@ -8,7 +8,7 @@
 #include <strings.h>
 
 #include "Framework/Core/Wave.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "ManagementInterface/ClientInterface/WaveClientSynchronousConnection.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/TraceUtils.h"

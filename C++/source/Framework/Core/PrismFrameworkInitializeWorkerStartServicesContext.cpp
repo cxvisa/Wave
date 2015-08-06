@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-PrismFrameworkInitializeWorkerStartServicesContext::PrismFrameworkInitializeWorkerStartServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismSynchronousLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+PrismFrameworkInitializeWorkerStartServicesContext::PrismFrameworkInitializeWorkerStartServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismSynchronousLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_prismBootMode                (WAVE_BOOT_FIRST_TIME),
       m_waveBootPhase                (WAVE_BOOT_PHASE_ALL_PHASES),
       m_pPrismBootAgent              (NULL),

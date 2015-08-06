@@ -45,7 +45,7 @@ WaveServiceId FrameworkTestability3ObjectManager::getWaveServiceId ()
 
 void FrameworkTestability3ObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<PrismEventHandler> (&FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler));
+    listenForEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1, reinterpret_cast<WaveEventHandler> (&FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -71,7 +71,7 @@ void FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler 
         trace (TRACE_LEVEL_DEBUG, string ("m_eventString = ") + pEvent->getEventString ());
     }
 
-    reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 }
 
 }

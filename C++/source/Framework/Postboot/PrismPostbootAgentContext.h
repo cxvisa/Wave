@@ -20,7 +20,7 @@ class PrismPostbootAgentContext : public PrismSynchronousLinearSequencerContext
     private :
     protected :
     public :
-                                        PrismPostbootAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        PrismPostbootAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~PrismPostbootAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

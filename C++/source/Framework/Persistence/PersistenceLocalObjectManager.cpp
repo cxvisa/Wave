@@ -160,14 +160,14 @@ WaveMessage *PersistenceLocalObjectManager::createMessageInstance (const UI32 &o
     return (pWaveMessage);
 }
 
-PrismEvent *PersistenceLocalObjectManager::createEventInstance (const UI32 &eventOperationCode)
+WaveEvent *PersistenceLocalObjectManager::createEventInstance (const UI32 &eventOperationCode)
 {
-    PrismEvent *pPrismEvent = NULL;
+    WaveEvent *pWaveEvent = NULL;
 
     switch (eventOperationCode)
     {
         case STARTUP_SCHEMA_CHANGE_EVENT:
-            pPrismEvent = new StartupSchemaChangeEvent ();
+            pWaveEvent = new StartupSchemaChangeEvent ();
             break;
 
         default:
@@ -175,7 +175,7 @@ PrismEvent *PersistenceLocalObjectManager::createEventInstance (const UI32 &even
             prismAssert (false, __FILE__, __LINE__);
     }
 
-    return (pPrismEvent);
+    return (pWaveEvent);
 }
 
 /*********************************************************************************

@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForDebugInformation::WaveAsynchronousContextForDebugInformation (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+WaveAsynchronousContextForDebugInformation::WaveAsynchronousContextForDebugInformation (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
     m_debugInformation  ("")
 {

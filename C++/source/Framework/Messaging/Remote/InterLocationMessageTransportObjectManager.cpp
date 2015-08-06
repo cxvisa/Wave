@@ -256,7 +256,7 @@ void InterLocationMessageTransportObjectManager::initialize (WaveAsynchronousCon
 
 void InterLocationMessageTransportObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (0, WAVE_OBJECT_MANAGER_ANY_EVENT, reinterpret_cast<PrismEventHandler> (&InterLocationMessageTransportObjectManager::interLocationEventTransportHandler));
+    listenForEvent (0, WAVE_OBJECT_MANAGER_ANY_EVENT, reinterpret_cast<WaveEventHandler> (&InterLocationMessageTransportObjectManager::interLocationEventTransportHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -662,9 +662,9 @@ void InterLocationMessageTransportObjectManager::replyToRemoteMessagesPendingOnL
     unlockGlobalAccessMutexForMulticastMessaging ();
 }
 
-void InterLocationMessageTransportObjectManager::interLocationEventTransportHandler (const PrismEvent *&pPrismEvent)
+void InterLocationMessageTransportObjectManager::interLocationEventTransportHandler (const WaveEvent *&pWaveEvent)
 {
-    reply (reinterpret_cast<const PrismEvent *&> (pPrismEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pWaveEvent));
 }
 
 void InterLocationMessageTransportObjectManager::lockGlobalAccessMutexForMulticastMessaging ()

@@ -9,16 +9,16 @@
 namespace WaveNs
 {
 
-DestroyClusterContext::DestroyClusterContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : DeleteNodesFromClusterContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+DestroyClusterContext::DestroyClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : DeleteNodesFromClusterContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_thisLocationRoleBeforeDestroy (LOCATION_STAND_ALONE),
       m_reasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED),
       m_isRebootRequired (true)
 {
 }
 
-DestroyClusterContext::DestroyClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : DeleteNodesFromClusterContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+DestroyClusterContext::DestroyClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : DeleteNodesFromClusterContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_thisLocationRoleBeforeDestroy (LOCATION_STAND_ALONE),
       m_reasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED),
       m_isRebootRequired (true)

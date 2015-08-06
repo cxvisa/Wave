@@ -266,9 +266,9 @@ WaveMessage *ClusterLocalObjectManager::createMessageInstance (const UI32 &opera
 
 void ClusterLocalObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::nodeAddedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::phase3StartEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_COMPLETE_EVENT, reinterpret_cast<PrismEventHandler> (&ClusterLocalObjectManager::phase3CompleteEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::nodeAddedEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::phase3StartEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_COMPLETE_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::phase3CompleteEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -559,7 +559,7 @@ void ClusterLocalObjectManager::nodeAddedEventHandler (const WaveNewNodesAddedEv
         }
     }
     delete pThisWaveNode;
-    reply (reinterpret_cast<const PrismEvent *&>(pEvent));
+    reply (reinterpret_cast<const WaveEvent *&>(pEvent));
 }
 
 void ClusterLocalObjectManager::phase3StartEventHandler( const ClusterPhase3StartEvent* &pEvent )
@@ -610,7 +610,7 @@ void ClusterLocalObjectManager::phase3StartEventHandler( const ClusterPhase3Star
         }
     }
     delete pThisWaveNode;
-    reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 }
 
 void ClusterLocalObjectManager::phase3CompleteEventHandler( const ClusterPhase3CompleteEvent* &pEvent )
@@ -651,7 +651,7 @@ void ClusterLocalObjectManager::phase3CompleteEventHandler( const ClusterPhase3C
         }
     }
     delete pThisWaveNode;
-    reply (reinterpret_cast<const PrismEvent *&> (pEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 }
 
 void ClusterLocalObjectManager::setThisWaveHaNodeRole (const WaveHaNodeRole &thisWaveHaNodeRole)

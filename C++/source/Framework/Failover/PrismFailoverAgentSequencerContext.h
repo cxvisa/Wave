@@ -22,8 +22,8 @@ class PrismFailoverAgentSequencerContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                    PrismFailoverAgentSequencerContext      (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                    PrismFailoverAgentSequencerContext      (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                    PrismFailoverAgentSequencerContext      (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                    PrismFailoverAgentSequencerContext      (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                    ~PrismFailoverAgentSequencerContext      ();
 
                 void                setFailedLocationIds                    (const vector<LocationId> &failedLocationIds);

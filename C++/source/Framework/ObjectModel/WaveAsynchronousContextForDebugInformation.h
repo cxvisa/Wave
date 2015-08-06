@@ -18,7 +18,7 @@ class WaveAsynchronousContextForDebugInformation : public PrismAsynchronousConte
     private :
     protected :
     public :
-                                    WaveAsynchronousContextForDebugInformation  (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                    WaveAsynchronousContextForDebugInformation  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                    ~WaveAsynchronousContextForDebugInformation  ();
 
                 void                setDebugInformation                         (const string &debugInformation);

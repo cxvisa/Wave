@@ -50,7 +50,7 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
 
     protected :
     public :
-                                                 WaveSendToClusterContext           (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                                 WaveSendToClusterContext           (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                                 ~WaveSendToClusterContext           ();
 
                 WaveMessage                    *getPWaveMessageForPhase1          () const;

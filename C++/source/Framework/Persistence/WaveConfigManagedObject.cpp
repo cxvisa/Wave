@@ -15,7 +15,7 @@ namespace WaveNs
  */
 WaveConfigManagedObject::WaveConfigManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveConfigurationAttributes ("", "", 0),
-      PrismElement               (pWaveObjectManager),
+      WaveElement               (pWaveObjectManager),
       PrismPersistableObject     (WaveConfigManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject          (pWaveObjectManager)
 {

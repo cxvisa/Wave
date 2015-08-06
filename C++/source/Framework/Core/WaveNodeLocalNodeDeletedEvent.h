@@ -6,12 +6,12 @@
 
 #ifndef WAVENODELOCALNODEDELETEDEVENT_H
 #define WAVENODELOCALNODEDELETEDEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class WaveNodeLocalNodeDeletedEvent : public PrismEvent
+class WaveNodeLocalNodeDeletedEvent : public WaveEvent
 {
     private :
     protected :

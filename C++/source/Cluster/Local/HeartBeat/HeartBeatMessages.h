@@ -7,7 +7,7 @@
 #ifndef HEARTBEATMESSAGES_H
 #define HEARTBEATMESSAGES_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/Local/HeartBeat/HeartBeatTypes.h"
 

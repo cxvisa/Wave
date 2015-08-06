@@ -6,7 +6,7 @@
 #ifndef PRISMASYNCHRONOUSCONTEXT_H
 #define PRISMASYNCHRONOUSCONTEXT_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 
 namespace WaveNs
 {
@@ -14,7 +14,7 @@ namespace WaveNs
 class PrismAsynchronousContext;
 class WaveManagedObject;
 
-typedef void (PrismElement::* PrismAsynchronousCallback) (PrismAsynchronousContext *);
+typedef void (WaveElement::* PrismAsynchronousCallback) (PrismAsynchronousContext *);
 
 class PrismAsynchronousContext
 {
@@ -22,7 +22,7 @@ class PrismAsynchronousContext
                 void                      garbageCollect     ();
     protected :
     public :
-                                          PrismAsynchronousContext              (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                          PrismAsynchronousContext              (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
                                           PrismAsynchronousContext              (const PrismAsynchronousContext &prismAsynchronousContext);
         virtual                          ~PrismAsynchronousContext              ();
                 PrismAsynchronousContext &operator =                            (const PrismAsynchronousContext &prismAsynchronousContext);
@@ -38,7 +38,7 @@ class PrismAsynchronousContext
     // Now the data members
 
     private :
-        PrismElement              *      m_pCaller;
+        WaveElement              *      m_pCaller;
         PrismAsynchronousCallback        m_pCallback;
         void                      *const m_pCallerContext;
         ResourceId                       m_completionStatus;

@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveNodeLocalNodeDeletedEvent::WaveNodeLocalNodeDeletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT)
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT)
 {
 }
 
@@ -24,7 +24,7 @@ WaveNodeLocalNodeDeletedEvent::~WaveNodeLocalNodeDeletedEvent ()
 
 void WaveNodeLocalNodeDeletedEvent::setupAttributesForSerialization ()
 {
-  PrismEvent::setupAttributesForSerialization ();
+  WaveEvent::setupAttributesForSerialization ();
 }
 
 }

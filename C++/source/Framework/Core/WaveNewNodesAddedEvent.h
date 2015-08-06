@@ -6,12 +6,12 @@
 
 #ifndef WAVENEWNODESADDEDEVENT_H
 #define WAVENEWNODESADDEDEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class WaveNewNodesAddedEvent : public PrismEvent
+class WaveNewNodesAddedEvent : public WaveEvent
 {
     private :
 

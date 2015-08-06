@@ -17,7 +17,7 @@ class WaveManagedObjectAsynchronousPluginContext : public PrismAsynchronousConte
     protected :
     public :
 
-                            WaveManagedObjectAsynchronousPluginContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            WaveManagedObjectAsynchronousPluginContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~WaveManagedObjectAsynchronousPluginContext ();
 
         vector<UI32>        getAttributeUserTags    () const;
@@ -65,7 +65,7 @@ class UpdateNewAttributeInManagedObjectContext : public WaveManagedObjectAsynchr
     protected :
     public :
 
-                            UpdateNewAttributeInManagedObjectContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            UpdateNewAttributeInManagedObjectContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~UpdateNewAttributeInManagedObjectContext ();
     
         vector<string >     getNewAttributeNames                     () const;
@@ -85,7 +85,7 @@ class IsAssociatedManagedObjectToBeCreatedContext : public WaveManagedObjectAsyn
     protected :
     public :
 
-                            IsAssociatedManagedObjectToBeCreatedContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            IsAssociatedManagedObjectToBeCreatedContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~IsAssociatedManagedObjectToBeCreatedContext ();
 
         WaveMessage       *getMessage                  () const;
@@ -125,8 +125,8 @@ class GetHardwareConfigurationDetailsContext : public WaveManagedObjectAsynchron
     protected :
     public :
 
-                                      GetHardwareConfigurationDetailsContext  (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
-                                      GetHardwareConfigurationDetailsContext  (WaveManagedObject *pOperateOnWaveManagedObject , PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                                      GetHardwareConfigurationDetailsContext  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                                      GetHardwareConfigurationDetailsContext  (WaveManagedObject *pOperateOnWaveManagedObject , WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual                      ~GetHardwareConfigurationDetailsContext  ();
 
 
@@ -173,9 +173,9 @@ class GetHardwareConfigurationDetailsForPostbootContext : public GetHardwareConf
     private :
     protected :
     public :
-                            GetHardwareConfigurationDetailsForPostbootContext  (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
-                            GetHardwareConfigurationDetailsForPostbootContext  (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext); 
-                            GetHardwareConfigurationDetailsForPostbootContext  (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, const map<UI32, bool> &groupCodeChoiceFlag, map<UI32, map<UI32, vector<UI32> > > &choiceCaseGroup, PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            GetHardwareConfigurationDetailsForPostbootContext  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            GetHardwareConfigurationDetailsForPostbootContext  (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext); 
+                            GetHardwareConfigurationDetailsForPostbootContext  (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, const map<UI32, bool> &groupCodeChoiceFlag, map<UI32, map<UI32, vector<UI32> > > &choiceCaseGroup, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~GetHardwareConfigurationDetailsForPostbootContext  ();
 
         void                            setPassName                             ( const string &passName );

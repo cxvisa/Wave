@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveNodesAdditionToClusterCompletedEvent::WaveNodesAdditionToClusterCompletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT )
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_NODES_ADDITION_TO_CLUSTER_COMPLETED_EVENT )
 {
 }
 
@@ -23,7 +23,7 @@ WaveNodesAdditionToClusterCompletedEvent::~WaveNodesAdditionToClusterCompletedEv
 
 void WaveNodesAdditionToClusterCompletedEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 }
 
 void WaveNodesAdditionToClusterCompletedEvent::addNewNodeDetails (const LocationId &locationId, const string &ipAddress, const UI32 &port)

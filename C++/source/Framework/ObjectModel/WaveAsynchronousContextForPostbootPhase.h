@@ -18,7 +18,7 @@ class WaveAsynchronousContextForPostbootPhase : public WaveAsynchronousContextFo
     private :
     protected :
     public :
-                                WaveAsynchronousContextForPostbootPhase (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForPostbootPhase (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForPostbootPhase ();
 
                 SI8             getPassNum                           () const;

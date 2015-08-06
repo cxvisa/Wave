@@ -24,8 +24,8 @@ class ClusterDeleteContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                     ClusterDeleteContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                     ClusterDeleteContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                     ClusterDeleteContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                     ClusterDeleteContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                     ~ClusterDeleteContext ();
 
         PrismCluster                *getPPrismCluster     () const;

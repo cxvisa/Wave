@@ -19,7 +19,7 @@ class PrismFrameworkFailoverWorkerContext : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                                      PrismFrameworkFailoverWorkerContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                                      PrismFrameworkFailoverWorkerContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                                      ~PrismFrameworkFailoverWorkerContext ();
 
                 LocationRole                          getThisLocationRole                 () const;

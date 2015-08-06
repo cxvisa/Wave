@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-WaveManagedObjectCreateContext::WaveManagedObjectCreateContext (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : WaveManagedObjectUpdateContext   (pWaveMessage, pPrismElement, pSteps, numberOfSteps)
+WaveManagedObjectCreateContext::WaveManagedObjectCreateContext (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
+    : WaveManagedObjectUpdateContext   (pWaveMessage, pWaveElement, pSteps, numberOfSteps)
 {
       m_pInputWaveManagedObject     = NULL;
       m_pOperateOnWaveManagedObject = NULL;
@@ -19,8 +19,8 @@ WaveManagedObjectCreateContext::WaveManagedObjectCreateContext (WaveMessage* pWa
       m_needToCreateManagedObject = false;
 }
 
-WaveManagedObjectCreateContext::WaveManagedObjectCreateContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : WaveManagedObjectUpdateContext   (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps)
+WaveManagedObjectCreateContext::WaveManagedObjectCreateContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
+    : WaveManagedObjectUpdateContext   (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps)
 {
       m_pInputWaveManagedObject     = NULL;
       m_pOperateOnWaveManagedObject = NULL;

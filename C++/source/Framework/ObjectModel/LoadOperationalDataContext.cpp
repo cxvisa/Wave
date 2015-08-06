@@ -10,15 +10,15 @@
 namespace WaveNs
 {
 
-LoadOperationalDataContext::LoadOperationalDataContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+LoadOperationalDataContext::LoadOperationalDataContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_pWaveManagedObject        (NULL),
       m_pOwnerWaveManagedObject   (NULL)
 {
 }
 
-LoadOperationalDataContext::LoadOperationalDataContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+LoadOperationalDataContext::LoadOperationalDataContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_pWaveManagedObject        (NULL),
       m_pOwnerWaveManagedObject   (NULL)
 {

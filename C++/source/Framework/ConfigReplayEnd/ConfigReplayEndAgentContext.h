@@ -20,7 +20,7 @@ class ConfigReplayEndAgentContext : public PrismSynchronousLinearSequencerContex
     private :
     protected :
     public :
-                                        ConfigReplayEndAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        ConfigReplayEndAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~ConfigReplayEndAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

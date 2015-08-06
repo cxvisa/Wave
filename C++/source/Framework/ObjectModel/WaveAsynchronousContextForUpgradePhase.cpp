@@ -34,7 +34,7 @@ bool FirmwareVersion::isSameVersion (const string &versionString)
     return (false);
 }
 
-WaveAsynchronousContextForUpgradePhase::WaveAsynchronousContextForUpgradePhase (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+WaveAsynchronousContextForUpgradePhase::WaveAsynchronousContextForUpgradePhase (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : WaveAsynchronousContextForBootPhases (pCaller, pCallback, pCallerContext)
 {
 }

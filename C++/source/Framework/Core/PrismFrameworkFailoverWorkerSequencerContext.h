@@ -19,7 +19,7 @@ class PrismFrameworkFailoverWorkerSequencerContext : public PrismLinearSequencer
     private :
     protected :
     public :
-                                                      PrismFrameworkFailoverWorkerSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      PrismFrameworkFailoverWorkerSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                      ~PrismFrameworkFailoverWorkerSequencerContext ();
 
                 LocationRole                          getThisLocationRole                          () const;

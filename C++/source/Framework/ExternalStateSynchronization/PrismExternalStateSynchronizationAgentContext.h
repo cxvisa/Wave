@@ -19,7 +19,7 @@ class PrismExternalStateSynchronizationAgentContext : public PrismSynchronousLin
     private :
     protected :
     public :
-                                        PrismExternalStateSynchronizationAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        PrismExternalStateSynchronizationAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~PrismExternalStateSynchronizationAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

@@ -20,7 +20,7 @@ class PrismZeroizeAgentContext : public PrismSynchronousLinearSequencerContext
     private :
     protected :
     public :
-            PrismZeroizeAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+            PrismZeroizeAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
             virtual                        ~PrismZeroizeAgentContext ();
 
             vector<WaveServiceId> &getZeroizableServices        ();

@@ -24,8 +24,8 @@ class CreateClusterWithNodesContext : public PrismLinearSequencerContext
 
     protected :
     public :
-                                CreateClusterWithNodesContext   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                CreateClusterWithNodesContext   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                CreateClusterWithNodesContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                CreateClusterWithNodesContext   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~CreateClusterWithNodesContext   ();
         void                    addNewLocationId                (const LocationId &locationId);
         void                    removeNewLocationId             (const LocationId &locationId);

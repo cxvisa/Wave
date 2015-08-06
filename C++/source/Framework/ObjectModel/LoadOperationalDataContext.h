@@ -23,8 +23,8 @@ class LoadOperationalDataContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                           LoadOperationalDataContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                           LoadOperationalDataContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           LoadOperationalDataContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           LoadOperationalDataContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                           ~LoadOperationalDataContext ();
 
         ObjectId           getWaveManagedObjectId     () const;

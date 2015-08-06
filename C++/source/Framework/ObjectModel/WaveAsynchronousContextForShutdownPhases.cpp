@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForShutDownPhases::WaveAsynchronousContextForShutDownPhases (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+WaveAsynchronousContextForShutDownPhases::WaveAsynchronousContextForShutDownPhases (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_shutDownReason         (WAVE_SHUTDOWN_FIRST_TIME)
 {

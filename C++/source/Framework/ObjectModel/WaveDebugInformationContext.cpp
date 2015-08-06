@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-WaveDebugInformationContext::WaveDebugInformationContext (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+WaveDebugInformationContext::WaveDebugInformationContext (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
     m_debugInformation  ("")
 {
 }

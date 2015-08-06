@@ -13,7 +13,7 @@ namespace WaveNs
 
 // Dummy Constructor: This should not be called
 WaveSlotLocalManagedObject::WaveSlotLocalManagedObject ()
-    : PrismElement               (*this),
+    : WaveElement               (*this),
       PrismPersistableObject     (WaveSlotLocalManagedObjectBase::getClassName (), WaveLocalManagedObject::getClassName ()),
       WaveManagedObject          (*this),
       WaveLocalManagedObjectBase (this),
@@ -25,7 +25,7 @@ WaveSlotLocalManagedObject::WaveSlotLocalManagedObject ()
 } 
 
 WaveSlotLocalManagedObject::WaveSlotLocalManagedObject (ClusterLocalObjectManager *pClusterLocalObjectManager)
-    : PrismElement               (pClusterLocalObjectManager),
+    : WaveElement               (pClusterLocalObjectManager),
       PrismPersistableObject     (WaveSlotLocalManagedObject::getClassName (), WaveLocalManagedObject::getClassName ()),
       WaveManagedObject          (pClusterLocalObjectManager),
       WaveLocalManagedObjectBase (this),
@@ -37,7 +37,7 @@ WaveSlotLocalManagedObject::WaveSlotLocalManagedObject (ClusterLocalObjectManage
 }
 
 WaveSlotLocalManagedObject::WaveSlotLocalManagedObject (ClusterLocalObjectManager *pClusterLocalObjectManager, UI32 &slotNumber, UI32 &objectType, UI32 &hwType, UI32 &hwId, UI32 &slotState, UI32 &reason, UI32 &version)
-    : PrismElement               (pClusterLocalObjectManager),
+    : WaveElement               (pClusterLocalObjectManager),
       PrismPersistableObject     (WaveSlotLocalManagedObject::getClassName (), WaveLocalManagedObject::getClassName ()),
       WaveManagedObject          (pClusterLocalObjectManager),
       WaveLocalManagedObjectBase (this),

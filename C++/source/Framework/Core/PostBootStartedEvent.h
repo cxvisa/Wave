@@ -11,12 +11,12 @@
  */
 #ifndef POSTBOOTSTARTEDEVENT_H
 #define POSTBOOTSTARTEDEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class PostBootStartedEvent : public PrismEvent
+class PostBootStartedEvent : public WaveEvent
 {
     private :
     protected :

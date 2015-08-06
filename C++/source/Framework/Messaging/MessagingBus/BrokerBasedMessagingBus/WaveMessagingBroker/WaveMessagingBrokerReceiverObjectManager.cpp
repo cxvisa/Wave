@@ -91,7 +91,7 @@ void WaveMessagingBrokerReceiverObjectManager::boot (WaveAsynchronousContextForB
 
 void WaveMessagingBrokerReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -103,7 +103,7 @@ void WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventH
 
     unlistenEvents ();
 
-    reply (reinterpret_cast<const PrismEvent *&> (pBootCompleteForThisLocationEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pBootCompleteForThisLocationEvent));
 
     trace (TRACE_LEVEL_INFO, "WaveMessagingBrokerReceiverObjectManager::bootCompleteForThisLocationEventHandler : Now accepting connections from Wave Clients.");
 

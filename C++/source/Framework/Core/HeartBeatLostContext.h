@@ -19,7 +19,7 @@ class HeartBeatLostContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                      HeartBeatLostContext    (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                      HeartBeatLostContext    (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual      ~HeartBeatLostContext    ();
 
                 void   addNodeIpAddressAndPort (const string &nodeIpAddress, const UI32 &port);

@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveUserManagedObject::WaveUserManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement           (pWaveObjectManager),
+    : WaveElement           (pWaveObjectManager),
       PrismPersistableObject (WaveUserManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager),
       m_userId               (0),
@@ -22,7 +22,7 @@ WaveUserManagedObject::WaveUserManagedObject (WaveObjectManager *pWaveObjectMana
 }
 
 WaveUserManagedObject::WaveUserManagedObject (WaveObjectManager *pWaveObjectManager, const string &name)
-    : PrismElement           (pWaveObjectManager),
+    : WaveElement           (pWaveObjectManager),
       PrismPersistableObject (WaveUserManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager),
       m_userId               (0),

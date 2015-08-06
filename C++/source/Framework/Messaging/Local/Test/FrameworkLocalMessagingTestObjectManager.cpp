@@ -517,14 +517,14 @@ void FrameworkLocalMessagingTestObjectManager::simpleEventTestStep (FrameworkLoc
     pFrameworkLocalMessagingTestContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-PrismEvent *FrameworkLocalMessagingTestObjectManager::createEventInstance (const UI32 &eventOperationCode)
+WaveEvent *FrameworkLocalMessagingTestObjectManager::createEventInstance (const UI32 &eventOperationCode)
 {
-    PrismEvent *pPrismEvent = NULL;
+    WaveEvent *pWaveEvent = NULL;
 
     switch (eventOperationCode)
     {
         case FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1:
-            pPrismEvent = new FrameworkTestabilityEvent1;
+            pWaveEvent = new FrameworkTestabilityEvent1;
             break;
 
         default :
@@ -532,7 +532,7 @@ PrismEvent *FrameworkLocalMessagingTestObjectManager::createEventInstance (const
             prismAssert (false, __FILE__, __LINE__);
     }
 
-    return (pPrismEvent);
+    return (pWaveEvent);
 }
 
 }

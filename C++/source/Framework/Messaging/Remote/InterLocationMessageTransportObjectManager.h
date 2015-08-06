@@ -64,7 +64,7 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
         void                getPendingMessagesForRemoteLocationForReplying  (LocationId locationId, vector<WaveMessage *> &messagesVector);
         void                replyToRemoteMessagesPendingOnLocation          (LocationId locationId, ResourceId completionStatus);
 
-        void                interLocationEventTransportHandler              (const PrismEvent *&pPrismEvent);
+        void                interLocationEventTransportHandler              (const WaveEvent *&pWaveEvent);
 
         void                lockGlobalAccessMutexForMulticastMessaging      ();
         void                unlockGlobalAccessMutexForMulticastMessaging    ();

@@ -18,7 +18,7 @@ class ClusterTestContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-            ClusterTestContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+            ClusterTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
            ~ClusterTestContext ();
 
         UI32  getNumberOfFailures                ();

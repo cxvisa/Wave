@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_serviceToBeIgnored                   (0),
       m_isConfigurationChange                (false),
       m_olderPrimaryLocationId               (0),
@@ -22,8 +22,8 @@ PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (WaveMess
 {
 }
 
-PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+PrismFailoverAgentSequencerContext::PrismFailoverAgentSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
        m_serviceToBeIgnored                   (0),
        m_isConfigurationChange                (false),
        m_olderPrimaryLocationId               (0),

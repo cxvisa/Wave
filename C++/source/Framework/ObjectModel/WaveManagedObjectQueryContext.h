@@ -18,7 +18,7 @@ class WaveManagedObjectQueryContext : public PrismAsynchronousContext, public Wa
     private :
     protected :
     public :
-         WaveManagedObjectQueryContext (const string &classToQueryFor, PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+         WaveManagedObjectQueryContext (const string &classToQueryFor, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         ~WaveManagedObjectQueryContext ();
 
     // Now the data members

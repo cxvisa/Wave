@@ -6,7 +6,7 @@
 
 #include "Framework/ObjectRelationalMapping/SchemaDifference.h"
 #include "Framework/ObjectRelationalMapping/RelationshipInfoFromSchemaDifference.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 

@@ -12,14 +12,14 @@
 namespace WaveNs
 {
 
-SecondaryNodeClusterPhase2Context::SecondaryNodeClusterPhase2Context(WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag)
-    : SecondaryNodeClusterContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps, false, false)
+SecondaryNodeClusterPhase2Context::SecondaryNodeClusterPhase2Context(WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag)
+    : SecondaryNodeClusterContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps, false, false)
 {
     m_resetSecondaryNodeClusterCreationFlag = resetSecondaryNodeClusterCreationFlag;
 }
 
-SecondaryNodeClusterPhase2Context::SecondaryNodeClusterPhase2Context(PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag)
-    : SecondaryNodeClusterContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps, false, false)
+SecondaryNodeClusterPhase2Context::SecondaryNodeClusterPhase2Context(PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag)
+    : SecondaryNodeClusterContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps, false, false)
 {
      m_resetSecondaryNodeClusterCreationFlag = resetSecondaryNodeClusterCreationFlag;
 }

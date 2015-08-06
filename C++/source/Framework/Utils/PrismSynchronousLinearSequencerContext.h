@@ -18,12 +18,12 @@ namespace WaveNs
 {
 
 class WaveMessage;
-class PrismElement;
+class WaveElement;
 class PrismSynchronousLinearSequencerContext;
 class PrismAsynchronousContext;
 class WaveManagedObject;
 
-typedef ResourceId (PrismElement::* PrismSynchronousLinearSequencerStep) (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+typedef ResourceId (WaveElement::* PrismSynchronousLinearSequencerStep) (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
 
 class PrismSynchronousLinearSequencerContext
 {
@@ -34,8 +34,8 @@ class PrismSynchronousLinearSequencerContext
 
     protected :
     public :
-                                                        PrismSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                                        PrismSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                        PrismSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                        PrismSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                         PrismSynchronousLinearSequencerContext (const PrismSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext);
         virtual                                        ~PrismSynchronousLinearSequencerContext ();
                 PrismSynchronousLinearSequencerContext &operator =                             (const PrismSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext);
@@ -58,7 +58,7 @@ class PrismSynchronousLinearSequencerContext
     private :
         WaveMessage                        *m_pWaveMessage;
         PrismAsynchronousContext            *m_pPrismAsynchronousContext;
-        PrismElement                        *m_pPrismElement;
+        WaveElement                        *m_pWaveElement;
         PrismSynchronousLinearSequencerStep *m_pSteps;
         UI32                                 m_numberOfSteps;
         UI32                                 m_currentStep;

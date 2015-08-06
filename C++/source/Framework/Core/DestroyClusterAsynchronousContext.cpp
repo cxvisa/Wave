@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-DestroyClusterAsynchronousContext::DestroyClusterAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+DestroyClusterAsynchronousContext::DestroyClusterAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext     (pCaller, pCallback, pCallerContext),
       m_reasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED),
       m_originalRequester          (0),

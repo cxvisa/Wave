@@ -10,7 +10,7 @@
 #include "Framework/Utils/PrismMutex.h"
 
 #include "Framework/Types/Types.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveManagedObjectQueryContextBase.h"
 
 #include <map>
@@ -22,8 +22,8 @@ using namespace std;
 namespace WaveNs
 {
 
-typedef void (*ConfigurationSegmentQueryContextModificationFunction)      (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
-typedef bool (*ConfigurationSegmentQueryContextModificationFunction2)     (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
+typedef void (*ConfigurationSegmentQueryContextModificationFunction)      (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
+typedef bool (*ConfigurationSegmentQueryContextModificationFunction2)     (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
 
 class WaveClientSynchronousConnection;
 
@@ -32,7 +32,7 @@ class ConfigurationSegmentInformation
     private:
     protected:
     public:
-                                        ConfigurationSegmentInformation                     (const string &managedObjectClassName, PrismElement *pPrismElement);
+                                        ConfigurationSegmentInformation                     (const string &managedObjectClassName, WaveElement *pWaveElement);
                                        ~ConfigurationSegmentInformation                     ();
                         string          getManagedObjectClassName                           () const;
 
@@ -65,7 +65,7 @@ class ConfigurationSegmentInformation
 
     private :
             string                      m_managedObjectClassName;
-            PrismElement               *m_pPrismElement;
+            WaveElement               *m_pWaveElement;
             bool                        m_isSingleton;
             bool                        m_nodeSpecificSupported;
             bool                        m_partitionSupported;
@@ -114,7 +114,7 @@ class WaveConfigurationSegmentMap
     protected :
     public :
         static bool   isAKnownConfigurationSegmentName                          (const string &configurationSegmentName);
-        static void   addConfigurationSegmentInformation                        (const string &configurationSegmentName, const string &managedObjectClassName, PrismElement *pPrismElement = NULL);
+        static void   addConfigurationSegmentInformation                        (const string &configurationSegmentName, const string &managedObjectClassName, WaveElement *pWaveElement = NULL);
         static string getManagedObjectClassNameByConfigurationSegmentName       (const string &configurationSegmentName);
         static void   getAllConfigurationSegmentNamesAndManagedObjectClassNames (vector<string> &configurationSegmentNames, vector<string> &managedObjectClassNames);
 
@@ -127,9 +127,9 @@ class WaveConfigurationSegmentMap
         static void                             registerSetNTupleSortingFunction                (ConfigurationSegmentQueryContextModificationFunction setNTupleSortingFunction);
         static void                             registerCustomQueryFilterFunction               (ConfigurationSegmentQueryContextModificationFunction customQueryFilterFunction);
         static void                             registerAddCustomOrderFieldFunction             (ConfigurationSegmentQueryContextModificationFunction2 addCustomOrderFieldFunction);
-        static void                             applySetNTupleSortingFunction                   (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
-        static void                             applyCustomQueryFilterFunction                  (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
-        static bool                             applyAddCustomOrderFieldFunction                (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
+        static void                             applySetNTupleSortingFunction                   (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
+        static void                             applyCustomQueryFilterFunction                  (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
+        static bool                             applyAddCustomOrderFieldFunction                (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase);
 
         static void                             setConfigurationSegmentNameForNodeSpecificList      (const string &configurationSegmentNameForNodeSpecificList);
         static void                             setConfigurationSegmentNameForMultiPartitionList    (const string &configurationSegmentNameForMultiPartitionList);

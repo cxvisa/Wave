@@ -7,7 +7,7 @@
 #ifndef CLUSTERMESSAGES_H
 #define CLUSTERMESSAGES_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/NodeManagedObject.h"
 #include "Cluster/ClusterTypes.h"
@@ -435,7 +435,7 @@ class HeartBeatLostMessage : public WaveMessage
     protected :
     public :
         virtual         ~HeartBeatLostMessage   ();
-                HeartBeatLostMessage   (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort/* , PrismElement *pStartHeartBeatSender*/);
+                HeartBeatLostMessage   (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort/* , WaveElement *pStartHeartBeatSender*/);
                 string   getDstIpAddress        ();
                 void     setDstIpAddress        (string dstIpAddress);
                 UI32     getDstPort             ();
@@ -443,7 +443,7 @@ class HeartBeatLostMessage : public WaveMessage
     // Now the data members
 
     private :
-//        PrismElement  *m_pStartHeartBeatSender;
+//        WaveElement  *m_pStartHeartBeatSender;
         string         m_dstIpAddress;
         UI32           m_dstPort;
 
@@ -457,7 +457,7 @@ class HeartBeatResumedMessage : public WaveMessage
     protected :
     public :
         virtual         ~HeartBeatResumedMessage ();
-        HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, PrismElement *pStartHeartBeatSender*/);
+        HeartBeatResumedMessage (/*WaveServiceId id, */string dstIpAddress, UI32 dstPort /*, WaveElement *pStartHeartBeatSender*/);
         string   getDstIpAddress         ();
         void     setDstIpAddress         (string dstIpAddress);
         UI32     getDstPort              ();
@@ -465,7 +465,7 @@ class HeartBeatResumedMessage : public WaveMessage
     // Now the data members
 
     private :
-//        PrismElement  *m_pStartHeartBeatSender;
+//        WaveElement  *m_pStartHeartBeatSender;
         string         m_dstIpAddress;
         UI32           m_dstPort;
 

@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-PersistenceExecuteTransactionContext::PersistenceExecuteTransactionContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &sql)
-    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+PersistenceExecuteTransactionContext::PersistenceExecuteTransactionContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &sql)
+    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_currentTransactionId        (0),
       m_startupFileType             (0),
       m_isStartupValid              (false),
@@ -25,8 +25,8 @@ PersistenceExecuteTransactionContext::PersistenceExecuteTransactionContext (Wave
 }
 
 #if 0
-PersistenceExecuteTransactionContext::PersistenceExecuteTransactionContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+PersistenceExecuteTransactionContext::PersistenceExecuteTransactionContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_currentTransactionId        (0),
       m_startupFileType             (0),
       m_isStartupValid              (false),

@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-DetachFromClusterAsynchronousContext::DetachFromClusterAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+DetachFromClusterAsynchronousContext::DetachFromClusterAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_reasonForDetachingFromCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED)
 {

@@ -17,7 +17,7 @@ class WaveAsynchronousContextForMultiPartitionCleanup : public PrismAsynchronous
     private :
     protected :
     public :
-                        WaveAsynchronousContextForMultiPartitionCleanup (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                        WaveAsynchronousContextForMultiPartitionCleanup (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual        ~WaveAsynchronousContextForMultiPartitionCleanup ();
 
         string          getPartitionName                                 () const;

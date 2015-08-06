@@ -16,13 +16,13 @@ namespace WaveNs
 {
 
 LastConfigReplayCompletedEvent::LastConfigReplayCompletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
       m_lastConfigReplayCompletedEventStatus (WAVE_MESSAGE_SUCCESS)
 {
 }
 
 LastConfigReplayCompletedEvent::LastConfigReplayCompletedEvent (const ResourceId &completionStatus)
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LAST_CONFIG_REPLAY_COMPLETED_EVENT),
       m_lastConfigReplayCompletedEventStatus (completionStatus)
 {
 }
@@ -33,7 +33,7 @@ LastConfigReplayCompletedEvent::~LastConfigReplayCompletedEvent ()
 
 void LastConfigReplayCompletedEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 }
 
 ResourceId LastConfigReplayCompletedEvent::getLastConfigReplayCompletedEventStatus () const

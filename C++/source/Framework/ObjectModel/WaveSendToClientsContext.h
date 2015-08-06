@@ -24,7 +24,7 @@ class WaveSendToClientsContext : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                                 WaveSendToClientsContext           (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL, const string &clientName = "", bool isSubInstanceToBeIncluded = false);
+                                                 WaveSendToClientsContext           (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL, const string &clientName = "", bool isSubInstanceToBeIncluded = false);
         virtual                                 ~WaveSendToClientsContext           ();
 
                 ManagementInterfaceMessage      *getPManagementInterfaceMessageForPhase1          () const;

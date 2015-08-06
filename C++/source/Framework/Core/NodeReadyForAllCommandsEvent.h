@@ -11,12 +11,12 @@
  */
 #ifndef NODEREADYFORALLCOMMANDSEVENT_H
 #define NODEREADYFORALLCOMMANDSEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class NodeReadyForAllCommandsEvent : public PrismEvent
+class NodeReadyForAllCommandsEvent : public WaveEvent
 {
     private :
     protected :

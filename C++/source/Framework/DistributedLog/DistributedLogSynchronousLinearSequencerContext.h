@@ -17,8 +17,8 @@ class DistributedLogSynchronousLinearSequencerContext : public PrismSynchronousL
     private:
     protected:
     public:
-                            DistributedLogSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                            DistributedLogSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DistributedLogSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DistributedLogSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual            ~DistributedLogSynchronousLinearSequencerContext (); 
 
                 UI64        getNumberOfLogEntries                           () const;

@@ -24,12 +24,12 @@ namespace WaveNs
 {
 
 class WaveMessage;
-class PrismElement;
+class WaveElement;
 class PrismLinearSequencerContext;
 class PrismAsynchronousContext;
 class WaveManagedObject;
 
-typedef void (PrismElement::* PrismLinearSequencerStep) (PrismLinearSequencerContext *pPrismLinearSequencerContext);
+typedef void (WaveElement::* PrismLinearSequencerStep) (PrismLinearSequencerContext *pPrismLinearSequencerContext);
 
 class PrismLinearSequencerContext
 {
@@ -41,8 +41,8 @@ class PrismLinearSequencerContext
 
     protected :
     public :
-                                             PrismLinearSequencerContext                   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                             PrismLinearSequencerContext                   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             PrismLinearSequencerContext                   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             PrismLinearSequencerContext                   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                              PrismLinearSequencerContext                   (const PrismLinearSequencerContext &prismLinearSequencerContext);
         virtual                             ~PrismLinearSequencerContext                   ();
                 PrismLinearSequencerContext &operator =                                    (const PrismLinearSequencerContext &prismLinearSequencerContext);
@@ -81,7 +81,7 @@ class PrismLinearSequencerContext
     private :
         WaveMessage                *m_pWaveMessage;
         PrismAsynchronousContext    *m_pPrismAsynchronousContext;
-        PrismElement                *m_pPrismElement;
+        WaveElement                *m_pWaveElement;
         PrismLinearSequencerStep    *m_pSteps;
         UI32                         m_numberOfSteps;
         UI32                         m_currentStep;

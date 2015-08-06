@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 WaveGroupManagedObject::WaveGroupManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement           (pWaveObjectManager),
+    : WaveElement           (pWaveObjectManager),
       PrismPersistableObject (WaveGroupManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager),
       m_groupId              (0),
@@ -24,7 +24,7 @@ WaveGroupManagedObject::WaveGroupManagedObject (WaveObjectManager *pWaveObjectMa
 }
 
 WaveGroupManagedObject::WaveGroupManagedObject (WaveObjectManager *pWaveObjectManager, const string &name)
-    : PrismElement           (pWaveObjectManager),
+    : WaveElement           (pWaveObjectManager),
       PrismPersistableObject (WaveGroupManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager),
       m_groupId              (0),

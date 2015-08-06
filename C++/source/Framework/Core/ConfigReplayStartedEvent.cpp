@@ -15,13 +15,13 @@ namespace WaveNs
 {
 
 ConfigReplayStartedEvent::ConfigReplayStartedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_STARTED_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_STARTED_EVENT),
     m_configFileReplayFlag (false)
 {
 }
 
 ConfigReplayStartedEvent::ConfigReplayStartedEvent (const bool &flag)
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_STARTED_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_STARTED_EVENT),
     m_configFileReplayFlag (flag)
 {
 }
@@ -32,7 +32,7 @@ ConfigReplayStartedEvent::~ConfigReplayStartedEvent ()
 
 void ConfigReplayStartedEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 }
 
 bool ConfigReplayStartedEvent::getConfigFileReplayFlag () const

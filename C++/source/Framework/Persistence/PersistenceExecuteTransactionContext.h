@@ -26,8 +26,8 @@ class PersistenceExecuteTransactionContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                                      PersistenceExecuteTransactionContext        (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &sql);
-                                                      //PersistenceExecuteTransactionContext        (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      PersistenceExecuteTransactionContext        (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &sql);
+                                                      //PersistenceExecuteTransactionContext        (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
 
         virtual                                ~PersistenceExecuteTransactionContext        ();
 

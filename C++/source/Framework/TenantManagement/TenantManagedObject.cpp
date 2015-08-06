@@ -10,7 +10,7 @@ namespace WaveNs
 {
 
 TenantManagedObject::TenantManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement           (pWaveObjectManager),
+    : WaveElement           (pWaveObjectManager),
       PrismPersistableObject (TenantManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager)
 {

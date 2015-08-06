@@ -18,7 +18,7 @@ class DestroyClusterAsynchronousContext : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                                      DestroyClusterAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                                                      DestroyClusterAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual                                      ~DestroyClusterAsynchronousContext ();
 
                 FrameworkObjectManagerFailoverReason  getReasonForDestroyingCluster     () const;

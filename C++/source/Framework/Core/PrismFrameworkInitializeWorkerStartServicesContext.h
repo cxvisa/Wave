@@ -20,7 +20,7 @@ class PrismFrameworkInitializeWorkerStartServicesContext : public PrismSynchrono
     private :
     protected :
     public :
-                        PrismFrameworkInitializeWorkerStartServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                        PrismFrameworkInitializeWorkerStartServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                        ~PrismFrameworkInitializeWorkerStartServicesContext ();
         void            setPrismBootMode                                   (PrismBootMode prismBootMode);
         PrismBootMode   getPrismBootMode                                   () const;

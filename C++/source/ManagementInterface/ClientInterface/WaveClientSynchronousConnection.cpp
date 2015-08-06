@@ -261,7 +261,7 @@ WaveMessageStatus WaveClientSynchronousConnection::sendSynchronouslyToWaveServer
 }
 
 
-WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveClientMessageCallbackHandler messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, PrismElement *pWaveMessageSender)
+WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveClientMessageCallbackHandler messageCallback, void *pInputContext, UI32 timeOutInMilliSeconds, LocationId locationId, WaveElement *pWaveMessageSender)
 {
     WaveMessageStatus status = WAVE_MESSAGE_ERROR;
 
@@ -270,7 +270,7 @@ WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementI
     return (status);
 }
 
-WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
+WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
     WaveMessageStatus status = WAVE_MESSAGE_ERROR;
 

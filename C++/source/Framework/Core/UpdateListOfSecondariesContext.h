@@ -22,8 +22,8 @@ class UpdateListOfSecondariesContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                            UpdateListOfSecondariesContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                            UpdateListOfSecondariesContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            UpdateListOfSecondariesContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            UpdateListOfSecondariesContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual            ~UpdateListOfSecondariesContext ();
                 void        addSecondaryNodeDetails        (const LocationId &locationId, const string &ipAddress, const UI32 &port, bool isNodeNew);
                 void        setIsThisNodeNew               (bool thisNodeNew);

@@ -7,7 +7,7 @@
 #ifndef SERVICEINDEPENDENTMESSAGEHANDLERMAP_H
 #define SERVICEINDEPENDENTMESSAGEHANDLERMAP_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/PrismMutex.h"
 #include <map>

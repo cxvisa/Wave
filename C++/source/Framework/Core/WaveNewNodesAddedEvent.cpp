@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 WaveNewNodesAddedEvent::WaveNewNodesAddedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (),FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT )
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (),FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT )
 {
 }
 
@@ -23,7 +23,7 @@ WaveNewNodesAddedEvent::~WaveNewNodesAddedEvent ()
 
 void WaveNewNodesAddedEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 }
 
 void WaveNewNodesAddedEvent::addNewNodeDetails (const LocationId &locationId, const string &ipAddress, const UI32 &port)

@@ -7,7 +7,7 @@
 #ifndef TIMERMESSAGES_H
 #define TIMERMESSAGES_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Timer/TimerTypes.h"
 
@@ -21,14 +21,14 @@ class TimerObjectManagerAddTimerMessage : public WaveMessage
     public :
         virtual                            ~TimerObjectManagerAddTimerMessage   ();
                                             TimerObjectManagerAddTimerMessage   ();
-                                            TimerObjectManagerAddTimerMessage   (timeval &startInterval, timeval &periodicInterval, timeval &startTime, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender);
+                                            TimerObjectManagerAddTimerMessage   (timeval &startInterval, timeval &periodicInterval, timeval &startTime, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender);
                 TimerHandle                 getTimerId                          ();
                 timeval                     getStartInterval                    ();
                 timeval                     getPeriodicInterval                 ();
                 timeval                     getStartTime                        ();
                 PrismTimerExpirationHandler getTimerExpirationCallback          ();
                 void                       *getTimerExpirationContext           ();
-                PrismElement               *getTimerSender                      ();
+                WaveElement               *getTimerSender                      ();
                 void                        setTimerId                          (TimerHandle timerId);
 
     // Now the data members
@@ -40,7 +40,7 @@ class TimerObjectManagerAddTimerMessage : public WaveMessage
         TimerHandle                 m_timerId;
         PrismTimerExpirationHandler m_pPrismTimerExpirationCallback;
         void                       *m_pPrismTimerExpirationContext;
-        PrismElement               *m_pPrismTimerSender;
+        WaveElement               *m_pPrismTimerSender;
     protected :
     public :
 };

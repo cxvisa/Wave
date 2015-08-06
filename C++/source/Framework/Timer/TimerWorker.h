@@ -80,7 +80,7 @@ class TimerData
                 UI32                            m_timerId;
                 PrismTimerExpirationHandler     m_pPrismTimerExpirationCallback;
                 void                           *m_pPrismTimerExpirationContext;
-                PrismElement                   *m_pPrismTimerSender;
+                WaveElement                   *m_pPrismTimerSender;
                 WaveServiceId                  m_serviceId;
 };
 

@@ -18,7 +18,7 @@ class DetachFromClusterAsynchronousContext : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                                      DetachFromClusterAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                                                      DetachFromClusterAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
         virtual                                      ~DetachFromClusterAsynchronousContext ();
 
                 FrameworkObjectManagerFailoverReason  getReasonForDetachingFromCluster     () const;

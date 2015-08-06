@@ -8,7 +8,7 @@
 #define CLUSTERLOCALREPORTREPLACEMESSAGE_H
 
 #include <string>
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 namespace WaveNs
 {

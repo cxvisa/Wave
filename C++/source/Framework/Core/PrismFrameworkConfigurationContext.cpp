@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-PrismFrameworkConfigurationContext::PrismFrameworkConfigurationContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &prismFrameworkConfigurationFileName)
-    : PrismSynchronousLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+PrismFrameworkConfigurationContext::PrismFrameworkConfigurationContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &prismFrameworkConfigurationFileName)
+    : PrismSynchronousLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_prismFrameworkConfigurationFileName (prismFrameworkConfigurationFileName),
       m_syncToStandby (false)
 {

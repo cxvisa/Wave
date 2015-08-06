@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-WaveSendToClientsContext::WaveSendToClientsContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, const string &clientName, bool isSubInstanceToBeIncluded)
+WaveSendToClientsContext::WaveSendToClientsContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, const string &clientName, bool isSubInstanceToBeIncluded)
     : PrismAsynchronousContext    (pCaller, pCallback, pCallerContext),
       m_pManagementInterfaceMessageForPhase1    (NULL),
       m_pManagementInterfaceMessageForPhase2    (NULL),

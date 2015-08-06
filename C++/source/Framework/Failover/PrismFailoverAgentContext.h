@@ -21,7 +21,7 @@ class PrismFailoverAgentContext : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                    PrismFailoverAgentContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                    PrismFailoverAgentContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                    ~PrismFailoverAgentContext ();
 
                 void                setFailedLocationIds(const vector<LocationId> &failedLocationIds);

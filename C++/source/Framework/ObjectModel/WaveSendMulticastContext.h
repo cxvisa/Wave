@@ -24,7 +24,7 @@ class WaveSendMulticastContext : public PrismAsynchronousContext
     private:
     protected:
     public:
-                                            WaveSendMulticastContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                            WaveSendMulticastContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                            ~WaveSendMulticastContext ();
                 void                        setWaveMessage          (WaveMessage *pWaveMessage);
                 WaveMessage*               getWaveMessage          ();

@@ -20,7 +20,7 @@ class MultiPartitionCleanupAgentContext : public PrismSynchronousLinearSequencer
     private :
     protected :
     public :
-                                        MultiPartitionCleanupAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        MultiPartitionCleanupAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~MultiPartitionCleanupAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

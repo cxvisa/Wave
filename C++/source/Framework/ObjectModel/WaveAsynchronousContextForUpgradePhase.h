@@ -39,7 +39,7 @@ class WaveAsynchronousContextForUpgradePhase : public WaveAsynchronousContextFor
     private :
     protected :
     public :
-                                WaveAsynchronousContextForUpgradePhase  (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForUpgradePhase  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForUpgradePhase  ();
         
 /*

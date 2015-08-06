@@ -5,7 +5,7 @@
 
 #include "Framework/Utils/PrismLinearSequencerContext.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Utils/PrismAsynchronousContext.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
@@ -15,11 +15,11 @@ using namespace std;
 namespace WaveNs
 {
 
-PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                              = pWaveMessage;
     m_pPrismAsynchronousContext                  = NULL;
-    m_pPrismElement                              = pPrismElement;
+    m_pWaveElement                              = pWaveElement;
     m_pSteps                                     = NULL;
     m_numberOfSteps                              = numberOfSteps;
     m_currentStep                                = 0;
@@ -61,11 +61,11 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (WaveMessage *pWaveMess
     return;
 }
 
-PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+PrismLinearSequencerContext::PrismLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                              = NULL;
     m_pPrismAsynchronousContext                  = pPrismAsynchronousContext;
-    m_pPrismElement                              = pPrismElement;
+    m_pWaveElement                              = pWaveElement;
     m_pSteps                                     = NULL;
     m_numberOfSteps                              = numberOfSteps;
     m_currentStep                                = 0;
@@ -111,7 +111,7 @@ PrismLinearSequencerContext::PrismLinearSequencerContext (const PrismLinearSeque
 {
     m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
-    m_pPrismElement                              = prismLinearSequencerContext.m_pPrismElement;
+    m_pWaveElement                              = prismLinearSequencerContext.m_pWaveElement;
     m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
     m_numberOfSteps                              = prismLinearSequencerContext.m_numberOfSteps;
     m_currentStep                                = prismLinearSequencerContext.m_currentStep;
@@ -182,7 +182,7 @@ PrismLinearSequencerContext &PrismLinearSequencerContext::operator = (const Pris
 {
     m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
     m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
-    m_pPrismElement                              = prismLinearSequencerContext.m_pPrismElement;
+    m_pWaveElement                              = prismLinearSequencerContext.m_pWaveElement;
     m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
     m_numberOfSteps                              = prismLinearSequencerContext.m_numberOfSteps;
     m_currentStep                                = prismLinearSequencerContext.m_currentStep;
@@ -233,7 +233,7 @@ void PrismLinearSequencerContext::executeCurrentStep ()
 {
     if (m_currentStep < (m_numberOfSteps - 2))
     {
-        if ((0 != m_clockId) && (NULL != m_pWaveMessage) && (NULL != m_pPrismElement))
+        if ((0 != m_clockId) && (NULL != m_pWaveMessage) && (NULL != m_pWaveElement))
         {
             m_operationCode = m_pWaveMessage->getOperationCode ();
             m_returnValue   = clock_gettime (m_clockId,      &m_ts1);
@@ -241,7 +241,7 @@ void PrismLinearSequencerContext::executeCurrentStep ()
         }
     }
 
-    (m_pPrismElement->*(m_pSteps[m_currentStep])) (this);
+    (m_pWaveElement->*(m_pSteps[m_currentStep])) (this);
 }
 
 ResourceId PrismLinearSequencerContext::getCompletionStatus ()
@@ -308,7 +308,7 @@ void PrismLinearSequencerContext::executeNextStep (const ResourceId &currentStep
                 numberOfSeconds     = m_ts2.tv_sec  - m_ts1.tv_sec;
                 numberOfNanoSeconds = m_ts2.tv_nsec - m_ts1.tv_nsec;
 
-                m_pPrismElement->updateTimeConsumedInThisThread (m_operationCode, m_currentStep, numberOfSeconds, numberOfNanoSeconds);
+                m_pWaveElement->updateTimeConsumedInThisThread (m_operationCode, m_currentStep, numberOfSeconds, numberOfNanoSeconds);
             }
         }
 
@@ -321,7 +321,7 @@ void PrismLinearSequencerContext::executeNextStep (const ResourceId &currentStep
                 numberOfSeconds     = m_tsr2.tv_sec  - m_tsr1.tv_sec;
                 numberOfNanoSeconds = m_tsr2.tv_nsec - m_tsr1.tv_nsec;
 
-                m_pPrismElement->updateRealTimeConsumedInThisThread (m_operationCode, m_currentStep, numberOfSeconds, numberOfNanoSeconds);
+                m_pWaveElement->updateRealTimeConsumedInThisThread (m_operationCode, m_currentStep, numberOfSeconds, numberOfNanoSeconds);
             }
         }
     }
@@ -388,17 +388,17 @@ UI32 PrismLinearSequencerContext::getNumberOfCallbacksBeforeAdvancingToNextStep 
 
 void PrismLinearSequencerContext::holdAll ()
 {
-    prismAssert (NULL != m_pPrismElement, __FILE__, __LINE__);
+    prismAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
 
-    m_pPrismElement->holdAll ();
+    m_pWaveElement->holdAll ();
     m_isHoldAllRequested = true;
 }
 
 void PrismLinearSequencerContext::unholdAll ()
 {
-    prismAssert (NULL != m_pPrismElement, __FILE__, __LINE__);
+    prismAssert (NULL != m_pWaveElement, __FILE__, __LINE__);
 
-    m_pPrismElement->unholdAll ();
+    m_pWaveElement->unholdAll ();
     m_isHoldAllRequested = false;
 }
 

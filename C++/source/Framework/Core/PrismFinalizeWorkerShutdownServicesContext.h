@@ -18,7 +18,7 @@ class PrismFinalizeWorkerShutdownServicesContext : public PrismSynchronousLinear
     private :
     protected :
     public :
-                        PrismFinalizeWorkerShutdownServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                        PrismFinalizeWorkerShutdownServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                        ~PrismFinalizeWorkerShutdownServicesContext ();
         void                setPrismShutdownMode                               (const PrismShutdownMode &prismShutdownMode);
         PrismShutdownMode   getPrismShutdownMode                               () const;

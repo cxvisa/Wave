@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-StartHaSyncDumpContext::StartHaSyncDumpContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps), 
+StartHaSyncDumpContext::StartHaSyncDumpContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps), 
       m_standbyMessage (NULL), 
       m_haVersion (0),
       m_isDbSyncRequired (false),
@@ -24,8 +24,8 @@ StartHaSyncDumpContext::StartHaSyncDumpContext (WaveMessage *pWaveMessage, Prism
 {
 }
 
-StartHaSyncDumpContext::StartHaSyncDumpContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps), 
+StartHaSyncDumpContext::StartHaSyncDumpContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps), 
       m_standbyMessage (NULL), 
       m_haVersion (0),
       m_isDbSyncRequired (false),
@@ -178,15 +178,15 @@ SI32 StartHaSyncDumpContext::getHaPeerPort () const
 }
 
 
-ReceiveHaSyncDumpContext::ReceiveHaSyncDumpContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+ReceiveHaSyncDumpContext::ReceiveHaSyncDumpContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_isDbSyncRequired (false),
       m_contextInfo (0)
 {
 }
 
-ReceiveHaSyncDumpContext::ReceiveHaSyncDumpContext (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement,PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismLinearSequencerContext (pPrismAsynchronousContext, pPrismElement, pSteps, numberOfSteps),
+ReceiveHaSyncDumpContext::ReceiveHaSyncDumpContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement,PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : PrismLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_isDbSyncRequired (false),
       m_contextInfo (0)
 {

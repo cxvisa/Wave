@@ -19,7 +19,7 @@ class PersistenceObjectManagerExecuteTransactionAsynchronousContext : public Pri
     private :
     protected :
     public :
-                                    PersistenceObjectManagerExecuteTransactionAsynchronousContext   (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                    PersistenceObjectManagerExecuteTransactionAsynchronousContext   (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                    ~PersistenceObjectManagerExecuteTransactionAsynchronousContext   ();
 
                 string              getSql                                                          () const;

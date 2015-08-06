@@ -13,7 +13,7 @@
 namespace WaveNs
 {
 
-class PrismEvent : public WaveMessage
+class WaveEvent : public WaveMessage
 {
     private :
         UI32 getReferenceCountForEventNotifications       () const;
@@ -22,11 +22,11 @@ class PrismEvent : public WaveMessage
         void setReferenceCountForEventNotifications       (const UI32 &referenceCountForEventNotifications);
 
     protected :
-                     PrismEvent                      (WaveServiceId serviceCode, UI32 operationCode);
+                     WaveEvent                      (WaveServiceId serviceCode, UI32 operationCode);
         virtual void setupAttributesForSerialization ();
 
     public :
-        ~PrismEvent ();
+        ~WaveEvent ();
 
     // Now the data members
 

@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 ConfigurationManagedObject::ConfigurationManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject (ConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager)
 {
@@ -87,7 +87,7 @@ void ConfigurationManagedObject::resetConfigurationManagedObject ()
 }
 
 XPathStringManagedObject::XPathStringManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement                      (pWaveObjectManager),
+    : WaveElement                      (pWaveObjectManager),
       PrismPersistableObject            (XPathStringManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject                 (pWaveObjectManager)
 {

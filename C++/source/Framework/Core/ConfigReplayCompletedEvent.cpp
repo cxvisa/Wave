@@ -17,12 +17,12 @@ namespace WaveNs
 {
 
 ConfigReplayCompletedEvent::ConfigReplayCompletedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_COMPLETED_EVENT)
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_COMPLETED_EVENT)
 {
 }
 
 ConfigReplayCompletedEvent::ConfigReplayCompletedEvent (const ResourceId &recoveryType)
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_COMPLETED_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIG_REPLAY_COMPLETED_EVENT),
      m_recoveryType (recoveryType)
 {
 }
@@ -34,7 +34,7 @@ ConfigReplayCompletedEvent::~ConfigReplayCompletedEvent ()
 
 void ConfigReplayCompletedEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
      addSerializableAttribute (new AttributeResourceId (&m_recoveryType, "recoveryType"));
 }
 

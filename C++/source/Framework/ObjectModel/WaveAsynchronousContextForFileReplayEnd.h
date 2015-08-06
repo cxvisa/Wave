@@ -17,7 +17,7 @@ class WaveAsynchronousContextForFileReplayEnd: public PrismAsynchronousContext
     private :
     protected :
     public :
-                                WaveAsynchronousContextForFileReplayEnd (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForFileReplayEnd (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForFileReplayEnd ();
 
     // Now the data members

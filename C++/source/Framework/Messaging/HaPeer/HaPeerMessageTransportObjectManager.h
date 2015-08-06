@@ -59,7 +59,7 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
         void                getPendingMessagesForRemoteLocation        (LocationId locationId, vector<WaveMessage *> &messagesVector);
         void                replyToRemoteMessagesPendingOnLocation     (LocationId locationId, ResourceId completionStatus);
 
-        void                haPeerEventTransportHandler                (PrismEvent *pPrismEvent);
+        void                haPeerEventTransportHandler                (WaveEvent *pWaveEvent);
 
     protected :
     public :

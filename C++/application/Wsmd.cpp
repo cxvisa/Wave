@@ -11,7 +11,7 @@
 #include "Framework/Core/Wave.h"
 #include "Framework/ServiceInterface/ApplicationService.h"
 #include "Framework/ServiceInterface/ApplicationLocalService.h"
-#include "Framework/Messaging/Local/PrismMessage.h"
+#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ServiceInterface/Test/PrismNativeTest1Service.h"
 #include "Framework/ServiceInterface/ApplicationServiceUtils.h"
 #include "Framework/Utils/Integer.h"

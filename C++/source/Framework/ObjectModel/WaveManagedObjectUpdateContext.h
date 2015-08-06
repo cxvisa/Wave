@@ -22,8 +22,8 @@ class WaveManagedObjectUpdateContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                                           WaveManagedObjectUpdateContext               (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
-                                           WaveManagedObjectUpdateContext               (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                           WaveManagedObjectUpdateContext               (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                           WaveManagedObjectUpdateContext               (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
         virtual                           ~WaveManagedObjectUpdateContext               ();
 
                 ObjectId                   getInputWaveManagedObjectId                  () const;

@@ -17,7 +17,7 @@ class WaveAsynchronousContextForShutDownPhases : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                WaveAsynchronousContextForShutDownPhases (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForShutDownPhases (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForShutDownPhases ();
 
                 WaveShutDownReason  getShutDownReason                        () const;

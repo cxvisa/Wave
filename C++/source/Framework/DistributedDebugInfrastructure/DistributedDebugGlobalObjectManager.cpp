@@ -23,7 +23,7 @@
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugInfrastructureMessages.h"
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugGlobalObjectManager.h" 
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugInfrastructureTypes.h" 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
 #include "Framework/Utils/PrismLinearSequencerContext.h"
 #include "Framework/Utils/PrismCondition.h"

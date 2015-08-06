@@ -9,12 +9,12 @@
 
 #ifndef PRIMARYCHANGEDEVENT_H
 #define PRIMARYCHANGEDEVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class PrimaryChangedEvent : public PrismEvent
+class PrimaryChangedEvent : public WaveEvent
 {
     private :
 

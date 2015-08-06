@@ -17,7 +17,7 @@ class WaveAsynchronousContextForSlotFailover : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                WaveAsynchronousContextForSlotFailover (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForSlotFailover (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForSlotFailover ();
 
                 UI32            getSlotNumber                          () const;

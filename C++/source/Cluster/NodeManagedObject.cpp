@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager)
 {
@@ -24,7 +24,7 @@ NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager)
 }
 /*
 NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, string nodeName)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       WaveManagedObject (pWaveObjectManager),
       m_nodeName (nodeName)
 {
@@ -33,7 +33,7 @@ NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, str
 }
 */
 NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, LocationId locationId, string nodeName, UI32 nodePort)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_locationId (locationId),
@@ -44,7 +44,7 @@ NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, Loc
 }
 
 NodeManagedObject::NodeManagedObject (const NodeManagedObject &rhs)
-    : PrismElement (rhs.m_pWaveObjectManager),
+    : WaveElement (rhs.m_pWaveObjectManager),
       PrismPersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (rhs.m_pWaveObjectManager)
 {

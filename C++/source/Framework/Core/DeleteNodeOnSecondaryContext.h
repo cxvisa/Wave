@@ -23,8 +23,8 @@ class DeleteNodeOnSecondaryContext : public PrismLinearSequencerContext
 
     protected :
     public :
-                                DeleteNodeOnSecondaryContext   (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                DeleteNodeOnSecondaryContext   (PrismAsynchronousContext *pPrismAsynchronousContext, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                DeleteNodeOnSecondaryContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                DeleteNodeOnSecondaryContext   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~DeleteNodeOnSecondaryContext   ();
 
         void                    addKnownLocationId             (const LocationId &locationId);

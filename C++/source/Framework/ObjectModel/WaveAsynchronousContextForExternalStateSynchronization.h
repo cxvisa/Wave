@@ -17,7 +17,7 @@ class WaveAsynchronousContextForExternalStateSynchronization: public PrismAsynch
     private :
     protected :
     public :
-                                WaveAsynchronousContextForExternalStateSynchronization (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForExternalStateSynchronization (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForExternalStateSynchronization ();
 
                 UI32            getFssStageNumber                                      () const;

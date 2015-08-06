@@ -19,7 +19,7 @@ namespace WaveNs
 {
 
 PrimaryChangedEvent::PrimaryChangedEvent ()
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT),
       m_newPrimaryLocationId (0)
 {
 }
@@ -30,7 +30,7 @@ PrimaryChangedEvent::~PrimaryChangedEvent ()
 
 void PrimaryChangedEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 }
 
 LocationId PrimaryChangedEvent::getNewPrimaryLocationId () const

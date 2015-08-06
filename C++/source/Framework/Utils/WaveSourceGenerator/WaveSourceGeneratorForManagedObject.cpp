@@ -65,7 +65,7 @@ string WaveSourceGeneratorForManagedObject::generateCppMemberFunctions () const
     string memberFunctions;
 
     memberFunctions += generateClassName () + "::" + generateClassName () + " (WaveObjectManager *pWaveObjectManager)\n"
-                       "    : PrismElement           (pWaveObjectManager),\n"
+                       "    : WaveElement           (pWaveObjectManager),\n"
                        "      PrismPersistableObject (" + generateClassName () + "::getClassName (), WaveManagedObject::getClassName ()),\n"
                        "      WaveManagedObject     (pWaveObjectManager)\n"
                        "{\n"

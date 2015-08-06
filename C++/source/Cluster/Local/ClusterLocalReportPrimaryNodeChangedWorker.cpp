@@ -29,7 +29,7 @@ namespace WaveNs
 /// notification from the framework.
 /// Constructor
 /// Input
-/// ClusterLocalObjectManager *: Registered with the PrismElement
+/// ClusterLocalObjectManager *: Registered with the WaveElement
 /// Output
 /// None
 /// Return

@@ -6,7 +6,7 @@
 
 #include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -115,7 +115,7 @@ WaveThreadStatus WaveThread::start ()
     setCpuAffinity (m_cpuAffinityVector);
 
     WaveMessage *pWaveMessage = NULL;
-    PrismEvent   *pPrismEvent   = NULL;
+    WaveEvent   *pWaveEvent   = NULL;
 
     while (true)
     {
@@ -184,23 +184,23 @@ WaveThreadStatus WaveThread::start ()
                     break;
 
                 case WAVE_MESSAGE_TYPE_EVENT :
-                    pPrismEvent = dynamic_cast<PrismEvent *> (pWaveMessage);
-                    prismAssert( NULL != pPrismEvent , __FILE__ , __LINE__);
+                    pWaveEvent = dynamic_cast<WaveEvent *> (pWaveMessage);
+                    prismAssert( NULL != pWaveEvent , __FILE__ , __LINE__);
 
-                    pWaveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (pPrismEvent->getSenderLocationId (), pPrismEvent->getServiceCode (), pPrismEvent->getOperationCode ());
+                    pWaveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (pWaveEvent->getSenderLocationId (), pWaveEvent->getServiceCode (), pWaveEvent->getOperationCode ());
 
                     if (NULL != pWaveObjectManager)
                     {
-                        const PrismEvent *pTempEvent = reinterpret_cast <const PrismEvent *> (pPrismEvent);
+                        const WaveEvent *pTempEvent = reinterpret_cast <const WaveEvent *> (pWaveEvent);
 
-                        pWaveObjectManager->handlePrismEvent (pTempEvent);
+                        pWaveObjectManager->handleWaveEvent (pTempEvent);
                     }
                     else
                     {
                         cerr << "This Service does not have any object managers to handle any events.";
                         prismAssert (false, __FILE__, __LINE__);
 
-                        delete pPrismEvent;
+                        delete pWaveEvent;
                     }
 
                     break;
@@ -236,7 +236,7 @@ WaveThreadStatus WaveThread::consumePendingMessages ()
     }
 
     WaveMessage *pWaveMessage = NULL;
-    PrismEvent   *pPrismEvent   = NULL;
+    WaveEvent   *pWaveEvent   = NULL;
 
     while (true)
     {
@@ -305,23 +305,23 @@ WaveThreadStatus WaveThread::consumePendingMessages ()
 
                 case WAVE_MESSAGE_TYPE_EVENT :
 
-                    pPrismEvent = dynamic_cast<PrismEvent *> (pWaveMessage);
-                    prismAssert( NULL != pPrismEvent , __FILE__ , __LINE__);
+                    pWaveEvent = dynamic_cast<WaveEvent *> (pWaveMessage);
+                    prismAssert( NULL != pWaveEvent , __FILE__ , __LINE__);
 
-                    pWaveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (pPrismEvent->getSenderLocationId (), pPrismEvent->getServiceCode (), pPrismEvent->getOperationCode ());
+                    pWaveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (pWaveEvent->getSenderLocationId (), pWaveEvent->getServiceCode (), pWaveEvent->getOperationCode ());
 
                     if (NULL != pWaveObjectManager)
                     {
-                        const PrismEvent *pTempEvent = reinterpret_cast <const PrismEvent *> (pPrismEvent);
+                        const WaveEvent *pTempEvent = reinterpret_cast <const WaveEvent *> (pWaveEvent);
 
-                        pWaveObjectManager->handlePrismEvent (pTempEvent);
+                        pWaveObjectManager->handleWaveEvent (pTempEvent);
                     }
                     else
                     {
                         cerr << "This Service does not have any object managers to handle any events.";
                         prismAssert (false, __FILE__, __LINE__);
 
-                        delete pPrismEvent;
+                        delete pWaveEvent;
                     }
 
                     break;
@@ -769,9 +769,9 @@ WaveMessageStatus WaveThread::submitReplyMessage (WaveMessage *pWaveMessage)
     return (status);
 }
 
-WaveMessageStatus WaveThread::submitEvent (PrismEvent *pPrismEvent)
+WaveMessageStatus WaveThread::submitEvent (WaveEvent *pWaveEvent)
 {
-    prismAssert (NULL != pPrismEvent, __FILE__, __LINE__);
+    prismAssert (NULL != pWaveEvent, __FILE__, __LINE__);
 
 #if 0
     // Check if the message has been submitted to a wrong thread.  This done by comparing this thread serviceid
@@ -782,7 +782,7 @@ WaveMessageStatus WaveThread::submitEvent (PrismEvent *pPrismEvent)
     // Events are defined by the Sender (broadcasting) Service where as messages are defined by the recipient service.  So, we need to
     // compare the event receiver service id to the current thread service id.
 
-    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) && (m_prismServiceId != (pPrismEvent->getReceiverServiceId ())))
+    if (((InterLocationMessageTransportObjectManager::getWaveServiceId ()) != m_prismServiceId) && (m_prismServiceId != (pWaveEvent->getReceiverServiceId ())))
     {
         cerr << "WaveThread::submitEvent : Internal Error : Submitted message to a wrong Prism Thread." << endl;
         prismAssert (false, __FILE__, __LINE__);
@@ -794,9 +794,9 @@ WaveMessageStatus WaveThread::submitEvent (PrismEvent *pPrismEvent)
     // We accept a few messages even before the service is enabled.  We accept messages like initialize
     // and enable messages.
 
-    WaveServiceId      eventSourceServiceId  = pPrismEvent->getServiceCode ();
-    UI32                eventOperationCode    = pPrismEvent->getOperationCode ();
-    LocationId          eventSourceLocationId = pPrismEvent->getSenderLocationId ();
+    WaveServiceId      eventSourceServiceId  = pWaveEvent->getServiceCode ();
+    UI32                eventOperationCode    = pWaveEvent->getOperationCode ();
+    LocationId          eventSourceLocationId = pWaveEvent->getSenderLocationId ();
     WaveObjectManager *pWaveObjectManager   = getWaveObjectManagerForEventOperationCodeForListening (eventSourceLocationId, eventSourceServiceId, eventOperationCode);
 
     // by the time we reach here we must not encounter a NULL WaveObjectManager.
@@ -832,7 +832,7 @@ WaveMessageStatus WaveThread::submitEvent (PrismEvent *pPrismEvent)
 
     m_wakeupCaller.lock ();
 
-    WaveMessage *pWaveMessage = dynamic_cast<WaveMessage *> (pPrismEvent);
+    WaveMessage *pWaveMessage = dynamic_cast<WaveMessage *> (pWaveEvent);
 
     m_events.insertAtTheBack (pWaveMessage);
 

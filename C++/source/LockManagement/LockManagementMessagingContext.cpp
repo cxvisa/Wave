@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-LockManagementMessagingContext::LockManagementMessagingContext (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps) 
-    : PrismSynchronousLinearSequencerContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps),
+LockManagementMessagingContext::LockManagementMessagingContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps) 
+    : PrismSynchronousLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
         m_locationId (0),
         m_lockManagedObject (NULL)
 {

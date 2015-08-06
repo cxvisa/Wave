@@ -8,7 +8,7 @@
 #define COMMANDLINEINTERFACEWORKERSENDCONTEXT_H
 
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceReceiverWorkerThread.h"
 
 namespace WaveNs

@@ -10,7 +10,7 @@ namespace WaveNs
 {
 
 PrismTestManagedObject4::PrismTestManagedObject4 (WaveObjectManager *pWaveObjectManager)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject (PrismTestManagedObject4::getClassName (), PrismTestManagedObject1::getClassName ()),
       PrismTestManagedObject1 (pWaveObjectManager),
       m_integer4              (0)

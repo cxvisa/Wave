@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-WaveManagedObjectDeleteContext::WaveManagedObjectDeleteContext (WaveMessage* pWaveMessage, PrismElement* pPrismElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : WaveManagedObjectUpdateContext (pWaveMessage, pPrismElement, pSteps, numberOfSteps)
+WaveManagedObjectDeleteContext::WaveManagedObjectDeleteContext (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
+    : WaveManagedObjectUpdateContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)
 {
       m_pInputWaveManagedObject     = NULL;
       m_pOperateOnWaveManagedObject = NULL;

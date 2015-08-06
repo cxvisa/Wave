@@ -22,7 +22,7 @@ class TraceTestContext : public PrismLinearSequencerContext
     private :
     protected :
     public :
-                               TraceTestContext             (WaveMessage *pWaveMessage, PrismElement *pPrismElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                               TraceTestContext             (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual               ~TraceTestContext             ();
                 void           clearTraceClientsInformation ();
                 UI32           getNumberOfTraceClients      ();

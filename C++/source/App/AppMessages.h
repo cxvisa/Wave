@@ -7,7 +7,7 @@
 #ifndef APPMESSAGES_H
 #define APPMESSAGES_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Cluster/ClusterTypes.h"
 #include "App/AppInterface.h"

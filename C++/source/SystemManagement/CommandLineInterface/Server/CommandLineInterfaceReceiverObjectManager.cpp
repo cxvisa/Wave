@@ -90,7 +90,7 @@ void CommandLineInterfaceReceiverObjectManager::boot (WaveAsynchronousContextFor
 
 void CommandLineInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<PrismEventHandler> (&CommandLineInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&CommandLineInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -102,7 +102,7 @@ void CommandLineInterfaceReceiverObjectManager::bootCompleteForThisLocationEvent
 
     unlistenEvents ();
 
-    reply (reinterpret_cast<const PrismEvent *&> (pBootCompleteForThisLocationEvent));
+    reply (reinterpret_cast<const WaveEvent *&> (pBootCompleteForThisLocationEvent));
 
     m_pCommandLineInterfaceReceiverThread = new CommandLineInterfaceReceiverThread (this, m_pServerSocketForCommandLineInterfaceClients);
 

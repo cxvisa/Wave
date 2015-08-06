@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 FrameworkTestabilityEvent1::FrameworkTestabilityEvent1 ()
-    : PrismEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1)
+    : WaveEvent (FrameworkLocalMessagingTestObjectManager::getWaveServiceId (), FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1)
 {
     m_eventUI32  = 0;
 }
@@ -22,7 +22,7 @@ FrameworkTestabilityEvent1::~FrameworkTestabilityEvent1 ()
 
 void FrameworkTestabilityEvent1::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32   (&m_eventUI32,       "eventUI32"));
      addSerializableAttribute (new AttributeString (&m_eventString,     "eventString"));

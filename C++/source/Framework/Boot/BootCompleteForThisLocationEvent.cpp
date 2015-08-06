@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 BootCompleteForThisLocationEvent::BootCompleteForThisLocationEvent (bool flagSchemaChange)
-    : PrismEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION),
+    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION),
       m_logSchemaChangeFlag (flagSchemaChange)
 {
 }
@@ -23,7 +23,7 @@ BootCompleteForThisLocationEvent::~BootCompleteForThisLocationEvent ()
 
 void BootCompleteForThisLocationEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeBool (&m_logSchemaChangeFlag, "logSchemaChangeFlag"));
 }

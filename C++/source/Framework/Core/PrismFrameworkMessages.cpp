@@ -175,7 +175,7 @@ PrismPingObjectManagerMessage::PrismPingObjectManagerMessage (WaveServiceId id)
     setPriority (WAVE_MESSAGE_PRIORITY_HIGH);
 }
 
-PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage (WaveServiceId id, TimerHandle timerId, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, PrismElement *pPrismTimerSender)
+PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage (WaveServiceId id, TimerHandle timerId, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_TIMER_EXPIRED)
 {
     m_timerId                       =   timerId;
@@ -215,7 +215,7 @@ TimerHandle PrismTimerExpiredObjectManagerMessage::getTimerId ()
     return  m_timerId;
 }
 
-PrismElement *PrismTimerExpiredObjectManagerMessage::getTimerSender ()
+WaveElement *PrismTimerExpiredObjectManagerMessage::getTimerSender ()
 {
     return  m_pPrismTimerSender;
 }

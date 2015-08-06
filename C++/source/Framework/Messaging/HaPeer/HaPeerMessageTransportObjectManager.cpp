@@ -196,7 +196,7 @@ void HaPeerMessageTransportObjectManager::initialize (WaveAsynchronousContextFor
 
 void HaPeerMessageTransportObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (0, WAVE_OBJECT_MANAGER_ANY_EVENT, reinterpret_cast<PrismEventHandler> (&HaPeerMessageTransportObjectManager::haPeerEventTransportHandler));
+    listenForEvent (0, WAVE_OBJECT_MANAGER_ANY_EVENT, reinterpret_cast<WaveEventHandler> (&HaPeerMessageTransportObjectManager::haPeerEventTransportHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -477,7 +477,7 @@ void HaPeerMessageTransportObjectManager::replyToRemoteMessagesPendingOnLocation
     }
 }
 
-void HaPeerMessageTransportObjectManager::haPeerEventTransportHandler (PrismEvent *pPrismEvent)
+void HaPeerMessageTransportObjectManager::haPeerEventTransportHandler (WaveEvent *pWaveEvent)
 {
 }
 

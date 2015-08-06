@@ -51,8 +51,8 @@ class WaveClientSynchronousConnection
         WaveMessageStatus     sendOneWayToWaveServer                                  (ManagementInterfaceMessage *pManagementInterfaceMessage, const LocationId &locationId = 0);
         WaveMessageStatus     sendSynchronouslyToWaveServer                           (ManagementInterfaceMessage *pManagementInterfaceMessage, const LocationId &locationId = 0);
 
-        WaveMessageStatus     sendToWaveServer                                        (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveClientMessageCallbackHandler messageCallback, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, PrismElement *pWaveMessageSender = NULL);
-        WaveMessageStatus     sendToWaveServer                                        (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0);
+        WaveMessageStatus     sendToWaveServer                                        (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveClientMessageCallbackHandler messageCallback, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, WaveElement *pWaveMessageSender = NULL);
+        WaveMessageStatus     sendToWaveServer                                        (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0);
         // Other management interface related member functions.
 
         string                getServiceNameById                                      (const WaveServiceId &prismServiceId) const;

@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-PrismFailoverAgentContext::PrismFailoverAgentContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+PrismFailoverAgentContext::PrismFailoverAgentContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
     : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_serviceToBeIgnored     (0),
       m_isConfigurationChange  (false)

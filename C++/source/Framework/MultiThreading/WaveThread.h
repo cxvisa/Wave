@@ -35,7 +35,7 @@ class WaveThread : public PrismPosixThread
         WaveMessageStatus   recallMessage                                          (WaveMessage *pWaveMessage);
         UI32                recallTimerExpirationMessagesForTimer                  (const TimerHandle &timerHandle);
         WaveMessageStatus   submitReplyMessage                                     (WaveMessage *pWaveMessage);
-        WaveMessageStatus   submitEvent                                            (PrismEvent *pPrismEvent);
+        WaveMessageStatus   submitEvent                                            (WaveEvent *pWaveEvent);
         WaveObjectManager *getWaveObjectManagerForOperationCode                  (UI32 operationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCode             (UI32 eventOperationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);

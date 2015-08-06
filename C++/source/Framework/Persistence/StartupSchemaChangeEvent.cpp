@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 StartupSchemaChangeEvent::StartupSchemaChangeEvent ()
-    : PrismEvent (PersistenceLocalObjectManager::getWaveServiceId (), STARTUP_SCHEMA_CHANGE_EVENT),
+    : WaveEvent (PersistenceLocalObjectManager::getWaveServiceId (), STARTUP_SCHEMA_CHANGE_EVENT),
       m_operationStatus(1), 
       m_fromSchema (RUNNING_SCHEMA),
       m_pathForFromSchemaFile (""),
@@ -29,7 +29,7 @@ StartupSchemaChangeEvent::~StartupSchemaChangeEvent ()
 
 void StartupSchemaChangeEvent::setupAttributesForSerialization ()
 {
-    PrismEvent::setupAttributesForSerialization ();
+    WaveEvent::setupAttributesForSerialization ();
 
     addSerializableAttribute (new AttributeBool           (&m_operationStatus,          "operationStatus"));
     addSerializableAttribute (new AttributeEnum ((UI32 *) (&m_fromSchema),              "fromSchema"));

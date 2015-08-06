@@ -31,9 +31,9 @@ map<string, ConfigurationSegmentImportantInfo *>        WaveConfigurationSegment
 PrismMutex                                              WaveConfigurationSegmentMap::m_configSegmentImportantInfoMapMutex;
 // ConfigurationSegmentInformation :
 
-ConfigurationSegmentInformation::ConfigurationSegmentInformation (const string &managedObjectClassName, PrismElement *pPrismElement)
+ConfigurationSegmentInformation::ConfigurationSegmentInformation (const string &managedObjectClassName, WaveElement *pWaveElement)
     : m_managedObjectClassName          (managedObjectClassName),
-      m_pPrismElement                   (pPrismElement),
+      m_pWaveElement                   (pWaveElement),
       m_isSingleton                     (false),
       m_nodeSpecificSupported           (false),
       m_partitionSupported              (false),
@@ -140,17 +140,17 @@ string ConfigurationSegmentInformation::getParentManagedObjectClassNameAtIndex (
 
 void ConfigurationSegmentInformation::applySetNTupleSortingFunction (WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
 {
-    if (NULL != m_pPrismElement)
+    if (NULL != m_pWaveElement)
     {
-        WaveConfigurationSegmentMap::applySetNTupleSortingFunction (m_pPrismElement, waveManagedObjectQueryContextBase);
+        WaveConfigurationSegmentMap::applySetNTupleSortingFunction (m_pWaveElement, waveManagedObjectQueryContextBase);
     }
 }
 
 void ConfigurationSegmentInformation::applyCustomQueryFilterFunction (WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
 {
-    if (NULL != m_pPrismElement)
+    if (NULL != m_pWaveElement)
     {
-        WaveConfigurationSegmentMap::applyCustomQueryFilterFunction (m_pPrismElement, waveManagedObjectQueryContextBase);
+        WaveConfigurationSegmentMap::applyCustomQueryFilterFunction (m_pWaveElement, waveManagedObjectQueryContextBase);
     }
 }
 
@@ -158,9 +158,9 @@ bool ConfigurationSegmentInformation::applyAddCustomOrderFieldFunction (WaveMana
 {
     bool returnValue = false;
 
-    if (NULL != m_pPrismElement)
+    if (NULL != m_pWaveElement)
     {
-        returnValue = WaveConfigurationSegmentMap::applyAddCustomOrderFieldFunction (m_pPrismElement, waveManagedObjectQueryContextBase);
+        returnValue = WaveConfigurationSegmentMap::applyAddCustomOrderFieldFunction (m_pWaveElement, waveManagedObjectQueryContextBase);
     }
 
     return returnValue;
@@ -219,7 +219,7 @@ bool WaveConfigurationSegmentMap::isAKnownConfigurationSegmentName (const string
     return (isKnown);
 }
 
-void WaveConfigurationSegmentMap::addConfigurationSegmentInformation (const string &configurationSegmentName, const string &managedObjectClassName, PrismElement *pPrismElement)
+void WaveConfigurationSegmentMap::addConfigurationSegmentInformation (const string &configurationSegmentName, const string &managedObjectClassName, WaveElement *pWaveElement)
 {
     m_configurationSegmentMapMutex.lock ();
 
@@ -229,7 +229,7 @@ void WaveConfigurationSegmentMap::addConfigurationSegmentInformation (const stri
 
     trace (TRACE_LEVEL_DEVEL, "Adding configuration Segment Map " + configurationSegmentName + " : " + managedObjectClassName);
 
-    ConfigurationSegmentInformation *pConfigurationSegmentInformation = new ConfigurationSegmentInformation (managedObjectClassName, pPrismElement);
+    ConfigurationSegmentInformation *pConfigurationSegmentInformation = new ConfigurationSegmentInformation (managedObjectClassName, pWaveElement);
 
     prismAssert (NULL != pConfigurationSegmentInformation, __FILE__, __LINE__);
 
@@ -340,31 +340,31 @@ void WaveConfigurationSegmentMap::registerAddCustomOrderFieldFunction (Configura
     s_queryContextModificationFunctionsMutex.unlock ();
 }
 
-void WaveConfigurationSegmentMap::applySetNTupleSortingFunction (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
+void WaveConfigurationSegmentMap::applySetNTupleSortingFunction (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
 {
     s_queryContextModificationFunctionsMutex.lock ();
 
     if (NULL != s_setNTupleSortingFunction)
     {
-        (*s_setNTupleSortingFunction) (pPrismElement, waveManagedObjectQueryContextBase);
+        (*s_setNTupleSortingFunction) (pWaveElement, waveManagedObjectQueryContextBase);
     }
 
     s_queryContextModificationFunctionsMutex.unlock ();
 }
 
-void WaveConfigurationSegmentMap::applyCustomQueryFilterFunction (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
+void WaveConfigurationSegmentMap::applyCustomQueryFilterFunction (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
 {
     s_queryContextModificationFunctionsMutex.lock ();
 
     if (NULL != s_customQueryFilterFunction)
     {
-        (*s_customQueryFilterFunction) (pPrismElement, waveManagedObjectQueryContextBase);
+        (*s_customQueryFilterFunction) (pWaveElement, waveManagedObjectQueryContextBase);
     }
 
     s_queryContextModificationFunctionsMutex.unlock ();
 }
 
-bool WaveConfigurationSegmentMap::applyAddCustomOrderFieldFunction (PrismElement *pPrismElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
+bool WaveConfigurationSegmentMap::applyAddCustomOrderFieldFunction (WaveElement *pWaveElement, WaveManagedObjectQueryContextBase &waveManagedObjectQueryContextBase)
 {
     bool returnValue = false;
 
@@ -372,7 +372,7 @@ bool WaveConfigurationSegmentMap::applyAddCustomOrderFieldFunction (PrismElement
 
     if (NULL != s_addCustomOrderFieldFunction)
     {
-        returnValue = (*s_addCustomOrderFieldFunction) (pPrismElement, waveManagedObjectQueryContextBase);
+        returnValue = (*s_addCustomOrderFieldFunction) (pWaveElement, waveManagedObjectQueryContextBase);
     }
 
     s_queryContextModificationFunctionsMutex.unlock ();

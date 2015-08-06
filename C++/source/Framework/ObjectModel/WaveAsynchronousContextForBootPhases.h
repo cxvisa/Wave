@@ -17,7 +17,7 @@ class WaveAsynchronousContextForBootPhases : public PrismAsynchronousContext
     private :
     protected :
     public :
-                                WaveAsynchronousContextForBootPhases (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForBootPhases (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForBootPhases ();
 
                 WaveBootReason  getBootReason                        () const;

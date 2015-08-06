@@ -5,7 +5,7 @@
  ***************************************************************************/
 #include "Framework/ObjectRelationalMapping/RelationReferenceCountPointer.cpp"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfo.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"

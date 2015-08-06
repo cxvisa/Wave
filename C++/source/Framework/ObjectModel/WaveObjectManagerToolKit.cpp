@@ -50,7 +50,7 @@ ResourceId WaveObjectManagerToolKit::sendSynchronouslyToWaveClient (const string
     return (pWaveObjectManagerForCurrentThread->sendSynchronouslyToWaveClient (waveClientName, pManagementInterfaceMessage, Instance));
 }
 
-WaveMessageStatus WaveObjectManagerToolKit::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
+WaveMessageStatus WaveObjectManagerToolKit::sendToWaveServer (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds)
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
 

@@ -12,7 +12,7 @@
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include <vector>
 #include <string>
 
@@ -41,7 +41,7 @@ class WaveObjectManagerToolKit
         static WaveMessageStatus            sendOneWayToFront               (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
         static WaveMessageStatus            sendSynchronously               (WaveMessage *pWaveMessage, const LocationId &locationId = 0);
         static ResourceId                   sendSynchronouslyToWaveClient   (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
-        static WaveMessageStatus            sendToWaveServer                (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, PrismElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
+        static WaveMessageStatus            sendToWaveServer                (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
         static ResourceId                   sendOneWayToAllWaveClients      (ManagementInterfaceMessage *pManagementInterfaceMessage);
 
         static vector<WaveManagedObject *> *querySynchronously       (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext);

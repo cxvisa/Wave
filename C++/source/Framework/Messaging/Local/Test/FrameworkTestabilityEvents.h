@@ -7,13 +7,13 @@
 #ifndef FRAMEWORKTESTABILITYEVENTS_H
 #define FRAMEWORKTESTABILITYEVENTS_H
 
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 #include "Framework/Messaging/Local/Test/FrameworkLocalMessagingTestTypes.h"
 
 namespace WaveNs
 {
 
-class FrameworkTestabilityEvent1 : public PrismEvent
+class FrameworkTestabilityEvent1 : public WaveEvent
 {
     private :
     protected :

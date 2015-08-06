@@ -17,7 +17,7 @@ class FailoverAsynchronousContext : public PrismAsynchronousContext
     private :
     protected :
     public :
-                        FailoverAsynchronousContext (PrismElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover);
+                        FailoverAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover);
         virtual        ~FailoverAsynchronousContext ();
 
         FrameworkObjectManagerFailoverReason    getfailoverReason                       () const;

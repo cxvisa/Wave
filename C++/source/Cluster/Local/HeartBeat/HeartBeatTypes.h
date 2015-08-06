@@ -7,7 +7,7 @@
 #ifndef HEARTBEATTYPES_H
 #define HEARTBEATTYPES_H
 
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 
 namespace WaveNs
 {

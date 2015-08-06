@@ -6,12 +6,12 @@
 
 #ifndef WAVENODEDELETECLUSTEREVENT_H
 #define WAVENODEDELETECLUSTEREVENT_H
-#include "Framework/Messaging/Local/PrismEvent.h"
+#include "Framework/Messaging/Local/WaveEvent.h"
 
 namespace WaveNs
 {
 
-class WaveNodeDeleteClusterEvent : public PrismEvent
+class WaveNodeDeleteClusterEvent : public WaveEvent
 {
     private :
     protected :

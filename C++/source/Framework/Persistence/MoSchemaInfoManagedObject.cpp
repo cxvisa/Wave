@@ -7,7 +7,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
 #include "Framework/Persistence/MoSchemaInfoManagedObject.h"
-#include "Framework/ObjectModel/PrismElement.h"
+#include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/PrismPersistableObject.h"
 
 namespace WaveNs
@@ -19,7 +19,7 @@ namespace WaveNs
  * @param pWaveObjectManager
  */
 MoSchemaInfoManagedObject::MoSchemaInfoManagedObject (WaveObjectManager *pWaveObjectManager)
-    : PrismElement (pWaveObjectManager),
+    : WaveElement (pWaveObjectManager),
       PrismPersistableObject    (MoSchemaInfoManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject         (pWaveObjectManager),
       m_classId                  (0),
