@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 
 public class WaveServiceMap
@@ -28,21 +29,21 @@ public class WaveServiceMap
 
         if (null != tempWaveThread)
         {
-            waveAssert (false, __FILE__, __LINE__);
+            WaveAssertUtils.waveAssert (false);
             System.err.println ("Cannot proceed.  Trying to add a duplicate service id.");
             System.exit (1);
         }
 
-        if (0 != tempWaveServiceId)
+        if (0 != (tempWaveServiceId.getId ()))
         {
-            waveAssert (false, __FILE__, __LINE__);
+            WaveAssertUtils.waveAssert (false);
             System.err.println ("Cannot proceed.  Trying to add a duplicate service name.");
             System.exit (2);
         }
 
-        m_servicesMap[id]            = waveThread;
-        m_servicesNameMap[id]        = serviceName;
-        m_servicesIdMap[serviceName] = id;
+        m_servicesMap.put     (id, waveThread);
+        m_servicesNameMap.put (id, serviceName);
+        m_servicesIdMap.put   (serviceName, id);
 
         m_mutex.unlock ();
     }

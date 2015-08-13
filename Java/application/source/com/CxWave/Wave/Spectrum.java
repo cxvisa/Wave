@@ -6,6 +6,7 @@
 
 package com.CxWave.Wave;
 
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
@@ -55,5 +56,7 @@ class Spectrum
         System.out.println ("List of all Available Classes : ");
 
         DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClasses ());
+
+        WaveAssertUtils.waveAssert (false);
     }
 }
