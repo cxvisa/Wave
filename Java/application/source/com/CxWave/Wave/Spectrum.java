@@ -7,6 +7,7 @@
 package com.CxWave.Wave;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
@@ -56,6 +57,24 @@ class Spectrum
         System.out.println ("List of all Available Classes : ");
 
         DebugUtils.prettyPrint (SourceUtils.getListOfAllAvailableClasses ());
+
+        System.out.println ("Just before Daemonize ...");
+
+        DaemonUtils.daemonize ();
+
+        while (true)
+        {
+            try
+            {
+                System.out.println ("After Daemonize ...");
+                Thread.sleep (1000);
+            }
+            catch (Exception exception)
+            {
+                System.out.println ("Failed to sleep.");
+                break;
+            }
+        }
 
         WaveAssertUtils.waveAssert (false);
     }

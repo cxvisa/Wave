@@ -10,6 +10,7 @@ public class DaemonUtils
 {
     public static void daemonize ()
     {
-
+        System.out.close ();
+        System.err.close ();
     }
 }
