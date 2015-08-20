@@ -51,5 +51,5 @@ doc: $(ALL_JAVA_SOURCES)
 	find . -name "*.java" > $(BUILD_DIR_DYNAMIC)/allJavaSourceFiles && rm -rf $(DOCS_DIR) && javadoc -d $(DOCS_DIR) @$(BUILD_DIR_DYNAMIC)/allJavaSourceFiles
 
 clean:
-	rm -rf ../build/obj/* ../build/lib/* ../build/DynamicSource/*
+	rm -rf ../build/obj/* ../build/lib/* ../build/DynamicSource/* ../build/DynamicSource/._*
 
