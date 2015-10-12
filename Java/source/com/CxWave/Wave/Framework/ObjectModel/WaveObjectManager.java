@@ -20,7 +20,7 @@ import com.CxWave.Wave.Framework.Type.WaveGenericContext;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 
-public class WaveObjectManager
+public class WaveObjectManager extends WaveElement
 {
     private class PrismOperationMapContext
     {

@@ -4,22 +4,16 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-package com.CxWave.Wave.Framework.Utils.Assert;
+package com.CxWave.Wave.Framework.Utils.Reflection;
 
-public class WaveAssertUtils
+public class WaveReflectionUtils
 {
-    private WaveAssertUtils ()
+    private WaveReflectionUtils ()
     {
     }
 
-    public static void waveAssert (boolean isAssertNotRequired)
+    public static boolean isMethodPresent (final Class<?> classToCheckOn, final String methodName, Class<?>... classes)
     {
-        Thread.dumpStack ();
-        (Runtime.getRuntime()).halt (-1);
-    }
-
-    public static void waveAssert ()
-    {
-        waveAssert (false);
+        return (false);
     }
 }
