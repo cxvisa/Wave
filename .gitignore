@@ -1,1 +1,10 @@
 *..attach_pid*
+
+*.log
+*.log.*
+*.log.*.*
+
+*.trc
+*.trc.*
+*.trc.*.*
+

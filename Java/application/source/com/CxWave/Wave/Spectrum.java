@@ -6,11 +6,16 @@
 
 package com.CxWave.Wave;
 
+import com.CxWave.Wave.Framework.Trace.TraceClientMap;
+import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
+import com.CxWave.Wave.Framework.Trace.WaveTraceFile;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
+import com.CxWave.Wave.Framework.Type.TraceClientId;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 class Spectrum
 {
@@ -60,7 +65,26 @@ class Spectrum
 
         System.out.println ("Just before Daemonize ...");
 
-        DaemonUtils.daemonize ();
+        TraceClientMap tcm = TraceClientMap.getInstance ();
+
+        TraceClientId tci = tcm.addClient (TraceLevel.TRACE_LEVEL_UNKNOWN, "Test Trace Client");
+        TraceObjectManager tom = TraceObjectManager.getInstance ();
+
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test\n", false, true);
+
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_UNKNOWN,    "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_DEVEL,      "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_DEBUG,      "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_INFO,       "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_PERF_START, "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_PERF_END  , "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
+        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
+
+
+        //DaemonUtils.daemonize ();
 
         while (true)
         {

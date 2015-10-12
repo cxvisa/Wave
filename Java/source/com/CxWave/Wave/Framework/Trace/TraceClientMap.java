@@ -17,11 +17,13 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class TraceClientMap
 {
-    private Map<TraceClientId, TraceLevel> m_traceClientsAndLevels;
-    private Map<TraceClientId, String>     m_traceClientsAndNames;
-    private TraceClientId                  m_nextAvailableTraceClientId;
+    private        Map<TraceClientId, TraceLevel> m_traceClientsAndLevels;
+    private        Map<TraceClientId, String>     m_traceClientsAndNames;
+    private        TraceClientId                  m_nextAvailableTraceClientId;
 
-    WaveMutex                              m_traceClientMapMutex;
+    private        WaveMutex                      m_traceClientMapMutex;
+
+    private static TraceClientMap                 s_traceClientMap              = new TraceClientMap ();
 
     private TraceClientMap ()
     {
@@ -184,5 +186,10 @@ public class TraceClientMap
         m_traceClientMapMutex.unlock ();
 
         return (traceClientName);
+    }
+
+    public static TraceClientMap getInstance ()
+    {
+        return (s_traceClientMap);
     }
 }
