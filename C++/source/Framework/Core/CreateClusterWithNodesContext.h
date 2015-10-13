@@ -31,15 +31,15 @@ class CreateClusterWithNodesContext : public WaveLinearSequencerContext
         void                    removeNewLocationId             (const LocationId &locationId);
         UI32                    getNumberOfNewLocationIds       ();
         LocationId              getNewLocationIdAt              (const UI32 &i);
-        void                    addValidationDetailsForService  (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size);
+        void                    addValidationDetailsForService  (const WaveServiceId &waveServiceId, void *pValidationDetials, const UI32 size);
         vector<WaveServiceId> &getWaveServiceIdsVector        ();
         vector<void *>         &getValidationDetailsVector      ();
         vector<UI32>           &getValidationDetailsSizesVector ();
         void                    addValidaionResultsLocation     (const string &ipAddress, const SI32 &port);
         UI32                    getNumberOfResultsLocations     ();
         void                    getResultsLocationAt            (const UI32 &i, string &ipAddress, SI32 &port);
-        void                    addValidationResultsForService  (const string &ipAddress, const SI32 &port, const WaveServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
-        void                    getValidationResultsForService  (const string &ipAddress, const SI32 &port, const WaveServiceId &prismServiceId, void *&pValidationResults, UI32 &validationResultsSize);
+        void                    addValidationResultsForService  (const string &ipAddress, const SI32 &port, const WaveServiceId &waveServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
+        void                    getValidationResultsForService  (const string &ipAddress, const SI32 &port, const WaveServiceId &waveServiceId, void *&pValidationResults, UI32 &validationResultsSize);
         vector<WaveServiceId> &getWaveServiceIdsToCommunicate ();
 
         void                    addToSuccessfullyAddedLocationIdVector (LocationId locationId);

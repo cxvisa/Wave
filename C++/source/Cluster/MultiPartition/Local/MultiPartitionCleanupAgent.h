@@ -26,7 +26,7 @@ class MultiPartitionCleanupAgent : protected WaveWorker
                 ResourceId  getListOfEnabledServicesStep        (MultiPartitionCleanupAgentContext *pMultiPartitionCleanupAgentContext);
                 ResourceId  sendMultiPartitionCleanupStep         (MultiPartitionCleanupAgentContext *pMultiPartitionCleanupAgentContext);
 
-                bool        requiresMultiPartitionCleanupNotification (const WaveServiceId &prismServiceId);
+                bool        requiresMultiPartitionCleanupNotification (const WaveServiceId &waveServiceId);
                 ObjectId    getOwnerPartitionManagedObjectId    () const ;
                 bool        getIsPartialCleanup                 () const;
 

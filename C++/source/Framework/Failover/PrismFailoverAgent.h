@@ -22,9 +22,9 @@ class PrismFailoverAgentContext;
 class PrismFailoverAgent : protected WaveWorker
 {
     private :
-        virtual bool           isToBeExcludedForFailover                    (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedDuringPrePhase                 (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcluded                               (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedForFailover                    (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedDuringPrePhase                 (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcluded                               (const WaveServiceId &waveServiceId);
         virtual WaveBootReason getBootReason                                () const = 0;
 
         virtual FrameworkObjectManagerFailoverReason getFailoverReason      () const = 0;

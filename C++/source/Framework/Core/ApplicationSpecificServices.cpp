@@ -32,19 +32,19 @@ ApplicationSpecificServices *ApplicationSpecificServices::getInstance ()
     return (pApplicationSpecificServices);
 }
 
-void ApplicationSpecificServices::setWaveServiceId (WaveServiceId prismServiceId)
+void ApplicationSpecificServices::setWaveServiceId (WaveServiceId waveServiceId)
 {
-    m_WaveServiceId.push_back (prismServiceId);
+    m_WaveServiceId.push_back (waveServiceId);
 }
 
-bool ApplicationSpecificServices::isApplicationSpecificServiceId (WaveServiceId prismServiceId)
+bool ApplicationSpecificServices::isApplicationSpecificServiceId (WaveServiceId waveServiceId)
 {
     vector<WaveServiceId>::iterator element = m_WaveServiceId.begin ();
     vector<WaveServiceId>::iterator end     = m_WaveServiceId.end ();
 
     while (end != element)
     {
-        if (prismServiceId == (*element))
+        if (waveServiceId == (*element))
         {
             return (true);
         }

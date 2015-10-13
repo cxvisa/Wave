@@ -1970,7 +1970,7 @@ bool PrismBootAgent::isAPersistentBoot ()
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &waveServiceId)
 {
     return (false);
 }
@@ -1980,27 +1980,27 @@ bool PrismBootAgent::willBeAPrimaryLocation ()
     return ((FrameworkToolKit::isStandAloneLocation ()) || (FrameworkToolKit::isPrimaryLocation ()));
 }
 
-bool PrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId waveServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     return (false);
 }
 
-bool PrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
+bool PrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
     return (false);
 }

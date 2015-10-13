@@ -153,17 +153,17 @@ bool PrismZeroizeAgent::isZeroizeAtBoot()
     return(m_zeroizeAtBoot);
 }
 
-bool PrismZeroizeAgent::needsZeroize(const WaveServiceId &prismServiceId)
+bool PrismZeroizeAgent::needsZeroize(const WaveServiceId &waveServiceId)
 {
 
     bool returnFlag = true;
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId))
     {
         returnFlag = false;
     }
-    else if( (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    else if( (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
-        if ( TraceObjectManager::getWaveServiceId () == prismServiceId)
+        if ( TraceObjectManager::getWaveServiceId () == waveServiceId)
         {
             returnFlag = true;
         }

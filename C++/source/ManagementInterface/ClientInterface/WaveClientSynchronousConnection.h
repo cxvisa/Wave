@@ -55,16 +55,16 @@ class WaveClientSynchronousConnection
         WaveMessageStatus     sendToWaveServer                                        (ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext = NULL, UI32 timeOutInMilliSeconds = 0);
         // Other management interface related member functions.
 
-        string                getServiceNameById                                      (const WaveServiceId &prismServiceId) const;
+        string                getServiceNameById                                      (const WaveServiceId &waveServiceId) const;
         WaveServiceId        getServiceIdByName                                      (const string &prismServiceName) const;
 
         ResourceId            getListOfTestServices                                   (vector<RegressionTestEntry> &testServices);
-        ResourceId            prepareTestForAService                                  (const WaveServiceId &prismServiceId, const vector<string> &inputStrings);
-        ResourceId            runTestForAService                                      (const WaveServiceId &prismServiceId, const UI32 &numberOfTimesToRunTheTest = 1);
+        ResourceId            prepareTestForAService                                  (const WaveServiceId &waveServiceId, const vector<string> &inputStrings);
+        ResourceId            runTestForAService                                      (const WaveServiceId &waveServiceId, const UI32 &numberOfTimesToRunTheTest = 1);
 
         ResourceId            getServicesInformation                                  (vector<WaveServiceId> &serviceIds, vector<string> &serviceNames, vector<bool> &enabledStates, vector<bool> &localServiceStates, vector<string> &cpuAffinities);
 
-        ResourceId            setCpuAffinityForService                                (const WaveServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector);
+        ResourceId            setCpuAffinityForService                                (const WaveServiceId &waveServiceId, const vector<UI32> &cpuAffinityVector);
         void                  setWaveServerIpAddress                                  (const string &waveServerIpAddress);
         string                getWaveServerIpAddress                                  () const;
         // Clustering related API.
@@ -107,8 +107,8 @@ class WaveClientSynchronousConnection
         ResourceId            compareDBWithPrimary                                    ();
 
         // Message History (debug) related functions-
-        ResourceId            dumpMessageHistoryOfAService                            (const WaveServiceId &prismServiceId);
-        ResourceId            configMessageHistoryOfAService                          (const WaveServiceId &prismServiceId, bool messageHistoryState, const UI32 &messageHistorySize);
+        ResourceId            dumpMessageHistoryOfAService                            (const WaveServiceId &waveServiceId);
+        ResourceId            configMessageHistoryOfAService                          (const WaveServiceId &waveServiceId, bool messageHistoryState, const UI32 &messageHistorySize);
 
         //Lock Management related functions
         ResourceId            acquireLock                                             (const string &serviceString);

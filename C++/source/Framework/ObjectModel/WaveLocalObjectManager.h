@@ -17,11 +17,11 @@ class WaveLocalObjectManager : public WaveObjectManager
     private :
     protected :
                      WaveLocalObjectManager (const string &objectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
-        virtual bool isALocalPrismService    ();
+        virtual bool isALocalWaveService    ();
 
     public :
         virtual      ~WaveLocalObjectManager ();
-        static  bool  isALocalService         (const WaveServiceId &prismServiceId);
+        static  bool  isALocalService         (const WaveServiceId &waveServiceId);
 
     // Now the data members
 

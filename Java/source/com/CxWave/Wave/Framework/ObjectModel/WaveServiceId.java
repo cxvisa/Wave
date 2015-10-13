@@ -20,6 +20,11 @@ public class WaveServiceId
         m_id = id;
     }
 
+    public WaveServiceId (final WaveServiceId waveServiceId)
+    {
+        m_id = waveServiceId.m_id;
+    }
+
     public long getId ()
     {
         return (m_id);
@@ -28,5 +33,10 @@ public class WaveServiceId
     public void setId (final long id)
     {
         m_id = id;
+    }
+
+    public void increment ()
+    {
+        m_id++;
     }
 }

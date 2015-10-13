@@ -22,9 +22,9 @@ WaveMessagingBrokerTopic::WaveMessagingBrokerTopic (const string &name)
 
 WaveMessagingBrokerTopic::~WaveMessagingBrokerTopic ()
 {
-    WaveServiceId prismServiceId = WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (m_name);
+    WaveServiceId waveServiceId = WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (m_name);
 
-    WaveObjectManager::endOfLifeService (prismServiceId);
+    WaveObjectManager::endOfLifeService (waveServiceId);
 }
 
 bool WaveMessagingBrokerTopic::isAKnownSubscription (const string &ipAddress, const SI32 &port) const

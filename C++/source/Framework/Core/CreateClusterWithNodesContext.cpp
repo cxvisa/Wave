@@ -99,9 +99,9 @@ UI32 CreateClusterWithNodesContext::getNumberOfNewLocationIds ()
     return (m_newLocationIdsVector.size ());
 }
 
-void CreateClusterWithNodesContext::addValidationDetailsForService (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size)
+void CreateClusterWithNodesContext::addValidationDetailsForService (const WaveServiceId &waveServiceId, void *pValidationDetials, const UI32 size)
 {
-    m_waveServiceIdsVector.push_back        (prismServiceId);
+    m_waveServiceIdsVector.push_back        (waveServiceId);
     m_validationDetailsVector.push_back      (pValidationDetials);
     m_validationDetailsSizesVector.push_back (size);
 }
@@ -146,17 +146,17 @@ void CreateClusterWithNodesContext::getResultsLocationAt (const UI32 &i, string 
     }
 }
 
-void CreateClusterWithNodesContext::addValidationResultsForService (const string &ipAddress, const SI32 &port, const WaveServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize)
+void CreateClusterWithNodesContext::addValidationResultsForService (const string &ipAddress, const SI32 &port, const WaveServiceId &waveServiceId, void *const &pValidationResults, const UI32 &validationResultsSize)
 {
-    string uniqueIdString = ipAddress + string (":") + port + string (":") + prismServiceId;
+    string uniqueIdString = ipAddress + string (":") + port + string (":") + waveServiceId;
 
     m_prismLocationValidationResultsVector[uniqueIdString]      = pValidationResults;
     m_prismLocationValidationResultsSizesVector[uniqueIdString] = validationResultsSize;
 }
 
-void CreateClusterWithNodesContext::getValidationResultsForService (const string &ipAddress, const SI32 &port, const WaveServiceId &prismServiceId, void *&pValidationResults, UI32 &validationResultsSize)
+void CreateClusterWithNodesContext::getValidationResultsForService (const string &ipAddress, const SI32 &port, const WaveServiceId &waveServiceId, void *&pValidationResults, UI32 &validationResultsSize)
 {
-    string uniqueIdString = ipAddress + string (":") + port + string (":") + prismServiceId;
+    string uniqueIdString = ipAddress + string (":") + port + string (":") + waveServiceId;
 
     pValidationResults    = NULL;
     validationResultsSize = 0;

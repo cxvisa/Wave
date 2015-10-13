@@ -151,6 +151,9 @@ public class WaveObjectManager extends WaveElement
         }
     };
 
+    private static WaveMutex s_waveObjectManagerMutex = new WaveMutex ();
+    private static WaveServiceId s_nextAvailableWaveServiceId = new WaveServiceId (0);
+
     private String                                                                 m_name;
     private WaveThread                                                             m_associatedWaveThread;
     private Map<BigInteger, PrismOperationMapContext>                              m_operationsMap;
@@ -166,10 +169,27 @@ public class WaveObjectManager extends WaveElement
     private WaveMutex                                                              m_isEnabledMutex;
     private TraceClientId                                                          m_traceClientId;
 
+    private WaveServiceId                                                          m_serviceId;
+
     protected WaveObjectManager (final String waveObjectManagerName)
     {
         m_name = new String (waveObjectManagerName);
 
         m_traceClientId = TraceObjectManager.addClient (TraceLevel.TRACE_LEVEL_INFO, m_name);
+
+        s_waveObjectManagerMutex.lock ();
+        s_nextAvailableWaveServiceId.increment ();
+        m_serviceId = new WaveServiceId (s_nextAvailableWaveServiceId);
+        s_waveObjectManagerMutex.unlock ();
+    }
+
+    public WaveServiceId getServiceId ()
+    {
+        return (m_serviceId);
+    }
+
+    protected boolean isALocalWaveService ()
+    {
+        return (false);
     }
 }

@@ -40,7 +40,7 @@ class DistributedLogEntryManagedObject : public WaveManagedObject
                 DateTime        getDateTimeStamp                 () const;
         void                    setDateTimeStamp                 (const DateTime &dateTimeStamp);
                 WaveServiceId  getWaveServiceId                () const;
-        void                    setWaveServiceId                (const WaveServiceId &prismServiceId);
+        void                    setWaveServiceId                (const WaveServiceId &waveServiceId);
                 string          getUsername                      () const;
         void                    setUsername                      (const string &username);
                 string          getDescription                   () const;

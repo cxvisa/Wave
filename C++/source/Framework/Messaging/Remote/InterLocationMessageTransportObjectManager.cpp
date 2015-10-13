@@ -215,22 +215,22 @@ InterLocationMessageTransportObjectManager::~InterLocationMessageTransportObject
 
 WaveServiceId InterLocationMessageTransportObjectManager::getWaveServiceId ()
 {
-    WaveServiceId prismServiceId = 0;
+    WaveServiceId waveServiceId = 0;
 
     s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.lock ();
 
     if (NULL != s_pWaveThreadForInterLocationMessageTransportObjectManager)
     {
-        prismServiceId = (getInstance ())->getServiceId ();
+        waveServiceId = (getInstance ())->getServiceId ();
     }
     else
     {
-        prismServiceId = 0;
+        waveServiceId = 0;
     }
 
     s_mutexForWaveThreadForInterLocationMessageTransportObjectManager.unlock ();
 
-    return (prismServiceId);
+    return (waveServiceId);
 }
 
 WaveThread *InterLocationMessageTransportObjectManager::getWaveThread ()

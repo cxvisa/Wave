@@ -61,7 +61,7 @@ void DistributedLogEntryManagedObject::setupAttributesForPersistence ()
     addPersistableAttribute (new AttributeResourceId (&m_logType, "logType"));
     addPersistableAttribute (new AttributeResourceId (&m_logDescriptionType, "logDescriptionType"));
     addPersistableAttribute (new AttributeDateTime (&m_dateTimeStamp, "dateTimeStamp"));
-    addPersistableAttribute (new AttributeWaveServiceId (&m_waveServiceId, "prismServiceId"));
+    addPersistableAttribute (new AttributeWaveServiceId (&m_waveServiceId, "waveServiceId"));
     addPersistableAttribute (new AttributeString (&m_username, "username"));
     addPersistableAttribute (new AttributeString (&m_description, "description"));
     addPersistableAttribute (new AttributeObjectId (&m_waveNodeObjectId, "waveNodeObjectId"));
@@ -76,7 +76,7 @@ void DistributedLogEntryManagedObject::setupAttributesForCreate ()
     addPersistableAttributeForCreate (new AttributeResourceId (&m_logType, "logType"));
     addPersistableAttributeForCreate (new AttributeResourceId (&m_logDescriptionType, "logDescriptionType"));
     addPersistableAttributeForCreate (new AttributeDateTime (&m_dateTimeStamp, "dateTimeStamp"));
-    addPersistableAttributeForCreate (new AttributeWaveServiceId (&m_waveServiceId, "prismServiceId"));
+    addPersistableAttributeForCreate (new AttributeWaveServiceId (&m_waveServiceId, "waveServiceId"));
     addPersistableAttributeForCreate (new AttributeString (&m_username, "username"));
     addPersistableAttributeForCreate (new AttributeString (&m_description, "description"));
     addPersistableAttributeForCreate (new AttributeObjectId (&m_waveNodeObjectId, "waveNodeObjectId"));
@@ -137,9 +137,9 @@ WaveServiceId DistributedLogEntryManagedObject::getWaveServiceId () const
     return (m_waveServiceId);
 }
 
-void DistributedLogEntryManagedObject::setWaveServiceId (const WaveServiceId &prismServiceId)
+void DistributedLogEntryManagedObject::setWaveServiceId (const WaveServiceId &waveServiceId)
 {
-    m_waveServiceId = prismServiceId;
+    m_waveServiceId = waveServiceId;
 }
 
 string DistributedLogEntryManagedObject::getUsername () const

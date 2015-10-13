@@ -335,21 +335,21 @@ const string FrameworkToolKit::getServiceNameById (const WaveServiceId &id)
 
 const WaveServiceId FrameworkToolKit::getServiceIdByName (const string &serviceName)
 {
-    WaveServiceId prismServiceId = 0;
+    WaveServiceId waveServiceId = 0;
     WaveManagementInterfaceRole waveManagementInterfaceRole = getManagementInterfaceRole ();
 
     if ((WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
     {
-        prismServiceId = WaveThread::getWaveServiceIdForServiceName (serviceName);
+        waveServiceId = WaveThread::getWaveServiceIdForServiceName (serviceName);
     }
     else
     {
-        prismServiceId = WaveClientTransportObjectManager::getWaveServiceId ();
+        waveServiceId = WaveClientTransportObjectManager::getWaveServiceId ();
     }
 
-    trace (TRACE_LEVEL_DEBUG, "FrameworkToolKit::getServiceIdByName : Service Name : " + serviceName + string (" :" ) + prismServiceId);
+    trace (TRACE_LEVEL_DEBUG, "FrameworkToolKit::getServiceIdByName : Service Name : " + serviceName + string (" :" ) + waveServiceId);
 
-    return (prismServiceId);
+    return (waveServiceId);
 }
 
 LocationId FrameworkToolKit::getLocationIdForIpAddressAndPort (const string &ipAddress, const SI32 &port)
@@ -838,9 +838,9 @@ ResourceId FrameworkToolKit::debugSavePrismConfiguration (UI32 argc, vector<stri
     return (savePrismConfiguration ());
 }
 
-const bool FrameworkToolKit::isALocalService (const WaveServiceId &prismServiceId)
+const bool FrameworkToolKit::isALocalService (const WaveServiceId &waveServiceId)
 {
-    return (WaveLocalObjectManager::isALocalService (prismServiceId));
+    return (WaveLocalObjectManager::isALocalService (waveServiceId));
 }
 
 const bool FrameworkToolKit::isPrimaryLocation ()
@@ -855,16 +855,16 @@ const bool FrameworkToolKit::isStandAloneLocation ()
 
 ResourceId FrameworkToolKit::printServices (UI32 argc, vector<string> argv)
 {
-    vector<WaveServiceId> prismServiceIds;
+    vector<WaveServiceId> waveServiceIds;
     UI32                   numberOfPrismServices;
     UI32                   i;
 
-    WaveThread::getListOfServiceIds (prismServiceIds);
-    numberOfPrismServices = prismServiceIds.size ();
+    WaveThread::getListOfServiceIds (waveServiceIds);
+    numberOfPrismServices = waveServiceIds.size ();
 
     for (i = 0; i < numberOfPrismServices; i++)
     {
-        printf ("%5u:%50s:%10s:%10s\n", prismServiceIds[i], (FrameworkToolKit::getServiceNameById (prismServiceIds[i])).c_str (), WaveObjectManager::isServiceEnabled (prismServiceIds[i]) ? "Enabled" : "Disabled", isALocalService(prismServiceIds[i]) ? "Local" : "Global");
+        printf ("%5u:%50s:%10s:%10s\n", waveServiceIds[i], (FrameworkToolKit::getServiceNameById (waveServiceIds[i])).c_str (), WaveObjectManager::isServiceEnabled (waveServiceIds[i]) ? "Enabled" : "Disabled", isALocalService(waveServiceIds[i]) ? "Local" : "Global");
     }
 
     return (0);
@@ -927,15 +927,15 @@ ResourceId FrameworkToolKit::debugMessageLeak (UI32 argc, vector<string> argv)
         vector<UI32>            messageOperationCodes;
         vector<string>          btStrings;
         vector<WaveMessageType> messageTypes;
-        WaveServiceId          prismServiceId         = atoi ((argv[1]).c_str ());
+        WaveServiceId          waveServiceId         = atoi ((argv[1]).c_str ());
         UI32                    numberOfLeakedMessages = 0;
         UI32                    i                      = 0;
 
-        MessageTracker::getMessages (prismServiceId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
+        MessageTracker::getMessages (waveServiceId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
 
         numberOfLeakedMessages = messageServiceIds.size ();
 
-        trace (TRACE_LEVEL_INFO, "Leaked Message Summary For Service : \'" + getServiceNameById (prismServiceId) + "\'");
+        trace (TRACE_LEVEL_INFO, "Leaked Message Summary For Service : \'" + getServiceNameById (waveServiceId) + "\'");
 
         tracePrintf (TRACE_LEVEL_SUCCESS, true, false, "%-7s %-6s %-50s %-16s %-16s", "_______", "______", "__________________________________________________", "________________", "________________");
         tracePrintf (TRACE_LEVEL_SUCCESS, true, false, "%-7s %-6s %-50s %-16s %-16s", "   #   ", " S ID ", "                   Service Name                   ", "     OpCode     ", "      Type      ");
@@ -973,15 +973,15 @@ ResourceId FrameworkToolKit::debugObjectLeak (UI32 argc, vector<string> argv)
         vector<string>  managedObjectNames;
         vector<bool>    queryResults;
         vector<string>  btStrings;
-        WaveServiceId  prismServiceId           = atoi ((argv[1]).c_str ());
+        WaveServiceId  waveServiceId           = atoi ((argv[1]).c_str ());
         UI32            numberOfLeakedObjects    = 0;
         UI32            i                        = 0;
 
-        ObjectTracker::getObjects (prismServiceId, managedObjectClassNames, managedObjectNames, queryResults, btStrings);
+        ObjectTracker::getObjects (waveServiceId, managedObjectClassNames, managedObjectNames, queryResults, btStrings);
 
         numberOfLeakedObjects = managedObjectClassNames.size ();
 
-        trace (TRACE_LEVEL_INFO, "Leaked Object Summary For Service : \'" + getServiceNameById (prismServiceId) + "\'");
+        trace (TRACE_LEVEL_INFO, "Leaked Object Summary For Service : \'" + getServiceNameById (waveServiceId) + "\'");
 
         for (i = 0; i < numberOfLeakedObjects; i++)
         {

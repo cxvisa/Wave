@@ -124,7 +124,7 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 void          getInstancesAndSubInstances                                      (vector<SI32> &connectedInstanceVector, vector<SI32> &connectedSubInstanceVector);
                 SI32          getThisSlotInstance                                              ();
                 void          createDummySlot                                                  (const UI32 slotNumber);
-                bool          isServiceToBeExcludedInClusterCommunications                     (const WaveServiceId &prismServiceId);
+                bool          isServiceToBeExcludedInClusterCommunications                     (const WaveServiceId &waveServiceId);
 
                 void          createClusterWithNodesMessageHandler                             (PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage);
                 void          createClusterWithNodesValidateStep                               (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
@@ -502,10 +502,10 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
         static  void                         acquireBootSynchronizationMutex                       ();
         static  void                         releaseBootSynchronizationMutex                       ();
 
-                void                         dynamicallyExcludeServiceFromClusterCommunications    (const WaveServiceId &prismServiceId);
-                bool                         isServiceDynamicallyExcludedFromClusterCommunications (const WaveServiceId &prismServiceId);
+                void                         dynamicallyExcludeServiceFromClusterCommunications    (const WaveServiceId &waveServiceId);
+                bool                         isServiceDynamicallyExcludedFromClusterCommunications (const WaveServiceId &waveServiceId);
 
-        static  void                         excludeServiceForClusterValidationPhase               (const WaveServiceId &prismServiceId);
+        static  void                         excludeServiceForClusterValidationPhase               (const WaveServiceId &waveServiceId);
 
         static  void                         setIpAddressForThisLocation                           (const string &ipAddressForThisLocation);
         static  string                       getIpAddressForThisLocation                           ();
@@ -594,8 +594,8 @@ class PrismFrameworkObjectManager : WaveLocalObjectManager
                 ResourceId                   setVcsClusterConfigData                               (VcsClusterConfiguration *pDcmVcsClusterConfigData, const UI32 &context);
                 void                         getVcsClusterConfigData                               (VcsClusterConfiguration *pDcmVcsClusterConfigData, const UI32 &context);
                 bool                         getIsSyncDumpCompleted                                ();
-		static	bool						 isExternalStateSynchronizationRequired (WaveServiceId prismServiceId);
-		static	void						 addToExternalStateSynchronizationRequiredList (WaveServiceId prismServiceId);
+		static	bool						 isExternalStateSynchronizationRequired (WaveServiceId waveServiceId);
+		static	void						 addToExternalStateSynchronizationRequiredList (WaveServiceId waveServiceId);
                 UI32                         getSyncState                                          ();
                 void                         setSyncState                                          (const UI32& syncState);
                 UI32                         getStandbySyncState                                   ();

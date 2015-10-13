@@ -154,15 +154,15 @@ void MessageTracker::getMessagesForAThread (const WaveThreadId &prismThreadId, v
     }
 }
 
-void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
+void MessageTracker::getMessages (const WaveServiceId &waveServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
 {
     m_messageTrackerMutex.lock ();
 
-    WaveThread *pWaveThread = WaveThread::getWaveThreadForServiceId (prismServiceId);
+    WaveThread *pWaveThread = WaveThread::getWaveThreadForServiceId (waveServiceId);
 
     if (NULL == pWaveThread)
     {
-        tracePrintf (TRACE_LEVEL_ERROR, true, false, "MessageTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", prismServiceId);
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "MessageTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", waveServiceId);
 
         m_messageTrackerMutex.unlock ();
         return;
@@ -174,7 +174,7 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
 
     WaveServiceId serviceIdForReservedWaveLocalObjectManager = ReservedWaveLocalObjectManager::getWaveServiceId ();
 
-    if (prismServiceId == serviceIdForReservedWaveLocalObjectManager)
+    if (waveServiceId == serviceIdForReservedWaveLocalObjectManager)
     {
         // 1. Get set of all thread ids tracked.
 
@@ -202,9 +202,9 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
 
         for (; end2 != itr2; itr2++)
         {
-            WaveServiceId prismServiceIdForAService = *itr2;
+            WaveServiceId waveServiceIdForAService = *itr2;
 
-            WaveThread *pWaveThreadForAService = WaveThread::getWaveThreadForServiceId (prismServiceIdForAService);
+            WaveThread *pWaveThreadForAService = WaveThread::getWaveThreadForServiceId (waveServiceIdForAService);
 
             if (NULL != pWaveThreadForAService)
             {
@@ -235,7 +235,7 @@ void MessageTracker::getMessages (const WaveServiceId &prismServiceId, vector<Wa
     }
 
 #if 0
-    WaveThreadId                                                                  prismThreadId    = (WaveThread::getWaveThreadForServiceId (prismServiceId))->getId ();
+    WaveThreadId                                                                  prismThreadId    = (WaveThread::getWaveThreadForServiceId (waveServiceId))->getId ();
     map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadElement    = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
     map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadEndElement = m_currentlyAllocatedMessagesByThread.end  ();
 

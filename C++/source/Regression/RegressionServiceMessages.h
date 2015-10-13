@@ -20,7 +20,7 @@ class RegressionTestObjectManagerGetTestServiceEntriesMessage : public Managemen
 {
     private :
         void setNumberOfTestServiceEntries (UI32 numberOfTestServiceEntries);
-        void addTestServiceEntry           (const WaveServiceId &prismServiceId, const bool &isServiceEnabled);
+        void addTestServiceEntry           (const WaveServiceId &waveServiceId, const bool &isServiceEnabled);
 
     protected :
     public :

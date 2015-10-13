@@ -367,7 +367,7 @@ void DistributedLogTestObjectManager::addMaximumLogEntriesTestStep (DistributedL
     UI64                 lastLogId                  = pDistributedLogTestContext->getNextLogId ();
     UI64                 numberOfLogEntries         = lastLogId - firstLogId; 
     UI64                 numberOfLogEntriesToAdd    = maxLogEntries - numberOfLogEntries;
-    WaveServiceId       prismServiceId             = pDistributedLogTestContext->getWaveServiceId ();
+    WaveServiceId       waveServiceId             = pDistributedLogTestContext->getWaveServiceId ();
     ObjectId             configInfoObjectId         = pDistributedLogTestContext->getManagedObjectId ();
     WaveMessageStatus    status                     = WAVE_MESSAGE_ERROR;
 
@@ -379,7 +379,7 @@ void DistributedLogTestObjectManager::addMaximumLogEntriesTestStep (DistributedL
         DistributedLogAddLogEntryMessage message;
         message.setDescription      (string ("This is the add maximum logs description : ") + i);
         message.setUsername         ("root");
-        message.setWaveServiceId   (prismServiceId);
+        message.setWaveServiceId   (waveServiceId);
         message.setManagedObjectId  (configInfoObjectId);
 
         status = sendSynchronously (&message);       
@@ -431,7 +431,7 @@ void DistributedLogTestObjectManager::verifyMaximumLogEntriesTestStep (Distribut
 void DistributedLogTestObjectManager::rotateLogEntriesTestStep (DistributedLogTestContext *pDistributedLogTestContext)
 {
     UI64               numberOfLogEntries   = pDistributedLogTestContext->getCurrentMaxAllowedLogEntries ();
-    WaveServiceId     prismServiceId       = pDistributedLogTestContext->getWaveServiceId ();
+    WaveServiceId     waveServiceId       = pDistributedLogTestContext->getWaveServiceId ();
     ObjectId           objectId             = pDistributedLogTestContext->getManagedObjectId ();
     WaveMessageStatus  status               = WAVE_MESSAGE_ERROR;
 
@@ -442,7 +442,7 @@ void DistributedLogTestObjectManager::rotateLogEntriesTestStep (DistributedLogTe
         DistributedLogAddLogEntryMessage    message;
         message.setUsername                 ("admin");
         message.setDescription              (string ("This is the rotate logs description : ") + i);
-        message.setWaveServiceId           (prismServiceId);
+        message.setWaveServiceId           (waveServiceId);
         message.setManagedObjectId          (objectId);
 
         status = sendSynchronously (&message);

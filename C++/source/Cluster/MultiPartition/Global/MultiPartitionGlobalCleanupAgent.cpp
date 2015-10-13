@@ -143,17 +143,17 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool MultiPartitionGlobalCleanupAgent::requiresMultiPartitionGlobalCleanupNotification (const WaveServiceId &prismServiceId)
+bool MultiPartitionGlobalCleanupAgent::requiresMultiPartitionGlobalCleanupNotification (const WaveServiceId &waveServiceId)
 {
     // 1. Exlude PrismFrameworkObjectManager (in general.)
     // 2. Exclude MultiTenencyLocalObjectManager (It is running this Agent)
     // 3. Exclude Local services
     // 4. Exclude User Specific Local services.
 
-    if (((PrismFrameworkObjectManager::getWaveServiceId()) == prismServiceId) ||
-        ((MultiPartitionObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId()) == waveServiceId) ||
+        ((MultiPartitionObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

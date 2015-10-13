@@ -15,7 +15,7 @@ namespace WaveNs
 class PrismSecondaryUncontrolledFailoverAgent : public PrismFailoverAgent
 {
     private :
-        virtual bool                                 isToBeExcludedForFailover (const WaveServiceId &prismServiceId);
+        virtual bool                                 isToBeExcludedForFailover (const WaveServiceId &waveServiceId);
         virtual FrameworkObjectManagerFailoverReason getFailoverReason         () const;
         virtual WaveBootReason                       getBootReason             () const;
 

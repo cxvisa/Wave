@@ -1484,8 +1484,8 @@ void WaveObjectManagerGetDataFromClientMessage::getDataSentFromAllClients ( vect
 
 }
 
-WaveDeliverBrokerPublishMessage::WaveDeliverBrokerPublishMessage (WaveServiceId prismServiceId)
-    : WaveMessage                (prismServiceId, WAVE_OBJECT_MANAGER_DELIVER_WAVE_BROKER_PUBLISH_MESSAGE),
+WaveDeliverBrokerPublishMessage::WaveDeliverBrokerPublishMessage (WaveServiceId waveServiceId)
+    : WaveMessage                (waveServiceId, WAVE_OBJECT_MANAGER_DELIVER_WAVE_BROKER_PUBLISH_MESSAGE),
       m_pWaveBrokerPublishMessage (NULL)
 {
 }

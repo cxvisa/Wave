@@ -87,11 +87,11 @@ ResourceId PrismExternalStateSynchronizationAgent::externalStateSynchronizationS
     return (WAVE_MESSAGE_SUCCESS);
 }
                 
-bool PrismExternalStateSynchronizationAgent::requiresExternalStateSynchronization (const WaveServiceId &prismServiceId)
+bool PrismExternalStateSynchronizationAgent::requiresExternalStateSynchronization (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) ||
-        (false == PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (prismServiceId)))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) ||
+        (false == PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (waveServiceId)))
     {
         return (false);
     }

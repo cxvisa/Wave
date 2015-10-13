@@ -491,7 +491,7 @@ ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (Distribut
     ResourceId                        logDescriptionType                = pDistributedLogAddLogEntryMessage->getLogDescriptionType ();
     DateTime                          dateTimeStamp                     = pDistributedLogAddLogEntryMessage->getDateTimeStamp ();
     string                            username                          = pDistributedLogAddLogEntryMessage->getUsername ();
-    WaveServiceId                    prismServiceId                    = pDistributedLogAddLogEntryMessage->getWaveServiceId ();
+    WaveServiceId                    waveServiceId                    = pDistributedLogAddLogEntryMessage->getWaveServiceId ();
     string                            description                       = pDistributedLogAddLogEntryMessage->getDescription ();
     ObjectId                          waveNodeObjectId                  = pDistributedLogAddLogEntryMessage->getWaveNodeObjectId ();
     ObjectId                          managedObjectId                   = pDistributedLogAddLogEntryMessage->getManagedObjectId ();
@@ -517,7 +517,7 @@ ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (Distribut
         pDistributedLogEntryManagedObject->setLogType (logType);
         pDistributedLogEntryManagedObject->setLogDescriptionType (logDescriptionType);
         pDistributedLogEntryManagedObject->setDateTimeStamp (dateTimeStamp);
-        pDistributedLogEntryManagedObject->setWaveServiceId (prismServiceId);
+        pDistributedLogEntryManagedObject->setWaveServiceId (waveServiceId);
         pDistributedLogEntryManagedObject->setUsername (username);
         pDistributedLogEntryManagedObject->setDescription (description);
         pDistributedLogEntryManagedObject->setWaveNodeObjectId (waveNodeObjectId);
@@ -557,7 +557,7 @@ ResourceId DistributedLogObjectManager::distributedLogAddLogEntryStep (Distribut
                 pDistributedLogEntryManagedObject->setLogType (logType);
                 pDistributedLogEntryManagedObject->setLogDescriptionType (logDescriptionType);
                 pDistributedLogEntryManagedObject->setDateTimeStamp (dateTimeStamp);
-                pDistributedLogEntryManagedObject->setWaveServiceId (prismServiceId);
+                pDistributedLogEntryManagedObject->setWaveServiceId (waveServiceId);
                 pDistributedLogEntryManagedObject->setUsername (username);
                 pDistributedLogEntryManagedObject->setDescription (description);
                 pDistributedLogEntryManagedObject->setWaveNodeObjectId (waveNodeObjectId);

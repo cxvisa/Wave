@@ -92,10 +92,10 @@ ResourceId WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep (PrismSynchronousLi
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool WaveNodeBackendSyncUpAgent::requiresBackendSyncUpNotification (const WaveServiceId &prismServiceId)
+bool WaveNodeBackendSyncUpAgent::requiresBackendSyncUpNotification (const WaveServiceId &waveServiceId)
 {
-    if ((!FrameworkToolKit::isALocalService (prismServiceId)) || ((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
-		 (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId)))
+    if ((!FrameworkToolKit::isALocalService (waveServiceId)) || ((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+		 (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId)))
     {
         return (false);
     }

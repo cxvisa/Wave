@@ -928,16 +928,16 @@ void DatabaseObjectManager::goOnInfiniteLoopBeforeReboot ()
 
 void DatabaseObjectManager::createInMemoryManagedObjectHandler (DatabaseObjectManagerCreateInMemoryManagedObjectMessage *pDatabaseObjectManagerCreateInMemoryManagedObjectMessage)
 {
-    WaveServiceId    prismServiceId;
+    WaveServiceId    waveServiceId;
     string            className           = pDatabaseObjectManagerCreateInMemoryManagedObjectMessage->getClassName ();
     WaveManagedObject *pWaveManagedObject = NULL;
              
     trace (TRACE_LEVEL_DEVEL, "DatabaseObjectManager::createInMemoryManagedObjectHandler");
                   
     WaveObjectManager *pWaveObjectManager = WaveObjectManager::getOwnerForManagedClass (className);
-    prismServiceId = pWaveObjectManager->getServiceId();
+    waveServiceId = pWaveObjectManager->getServiceId();
                            
-    pWaveManagedObject = WaveManagedObjectFactory::getWaveManagedObjectInstance (prismServiceId, className);
+    pWaveManagedObject = WaveManagedObjectFactory::getWaveManagedObjectInstance (waveServiceId, className);
     waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
 
     pWaveManagedObject->setPCurrentOwnerWaveObjectManager (pDatabaseObjectManagerCreateInMemoryManagedObjectMessage->getPWaveObjectManager ());

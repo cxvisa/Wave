@@ -156,22 +156,22 @@ HaPeerMessageTransportObjectManager::~HaPeerMessageTransportObjectManager ()
 
 WaveServiceId HaPeerMessageTransportObjectManager::getWaveServiceId ()
 {
-    WaveServiceId prismServiceId = 0;
+    WaveServiceId waveServiceId = 0;
 
     s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.lock ();
 
     if (NULL != s_pWaveThreadForHaPeerMessageTransportObjectManager)
     {
-        prismServiceId = (getInstance ())->getServiceId ();
+        waveServiceId = (getInstance ())->getServiceId ();
     }
     else
     {
-        prismServiceId = 0;
+        waveServiceId = 0;
     }
 
     s_mutexForWaveThreadForHaPeerMessageTransportObjectManager.unlock ();
 
-    return (prismServiceId);
+    return (waveServiceId);
 }
 
 WaveThread *HaPeerMessageTransportObjectManager::getWaveThread ()

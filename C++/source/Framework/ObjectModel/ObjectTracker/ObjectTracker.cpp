@@ -128,21 +128,21 @@ void ObjectTracker::deleteFromObjectTracker(const WaveManagedObject* pWaveManage
     m_objectTrackerMutex.unlock ();
 }
 
-void ObjectTracker::getObjects (const WaveServiceId &prismServiceId, vector<string> &objectClassNames, vector<string> &objectNames, vector<bool> &queryResults, vector<string> &btStrings)
+void ObjectTracker::getObjects (const WaveServiceId &waveServiceId, vector<string> &objectClassNames, vector<string> &objectNames, vector<bool> &queryResults, vector<string> &btStrings)
 {
     m_objectTrackerMutex.lock ();
 
-    WaveThread *pWaveThread = WaveThread::getWaveThreadForServiceId (prismServiceId);
+    WaveThread *pWaveThread = WaveThread::getWaveThreadForServiceId (waveServiceId);
 
     if (NULL == pWaveThread)
     {
-        tracePrintf (TRACE_LEVEL_ERROR, true, false, "ObjectTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", prismServiceId);
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "ObjectTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", waveServiceId);
 
         m_objectTrackerMutex.unlock ();
         return;
     }
 
-    WaveThreadId                                                                            prismThreadId    = (WaveThread::getWaveThreadForServiceId (prismServiceId))->getId ();
+    WaveThreadId                                                                            prismThreadId    = (WaveThread::getWaveThreadForServiceId (waveServiceId))->getId ();
     map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadElement    = m_currentlyAllocatedObjectsByThread.find (prismThreadId);
     map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadEndElement = m_currentlyAllocatedObjectsByThread.end  ();
 

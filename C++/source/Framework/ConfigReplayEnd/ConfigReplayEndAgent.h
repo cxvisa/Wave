@@ -26,7 +26,7 @@ class ConfigReplayEndAgent : protected WaveWorker
                 ResourceId  getListOfEnabledServicesStep        (ConfigReplayEndAgentContext *pConfigReplayEndAgentContext);
                 ResourceId  sendConfigReplayEndStep             (ConfigReplayEndAgentContext *pConfigReplayEndAgentContext);
 
-                bool        requiresConfigReplayEndNotification (const WaveServiceId &prismServiceId);
+                bool        requiresConfigReplayEndNotification (const WaveServiceId &waveServiceId);
 
     // Now the data members
 

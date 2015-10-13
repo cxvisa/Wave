@@ -69,9 +69,9 @@ WaveServiceId DistributedLogTestContext::getWaveServiceId () const
     return (m_waveServiceId);
 }
 
-void DistributedLogTestContext::setWaveServiceId (const WaveServiceId &prismServiceId)
+void DistributedLogTestContext::setWaveServiceId (const WaveServiceId &waveServiceId)
 {
-    m_waveServiceId = prismServiceId;
+    m_waveServiceId = waveServiceId;
 }
 
 ObjectId DistributedLogTestContext::getManagedObjectId () const

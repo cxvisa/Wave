@@ -357,10 +357,10 @@ ResourceId PrismShutdownAgent::uninitializePostPhaseServicesStep (PrismShutdownA
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool PrismShutdownAgent::requiresShutdown (const WaveServiceId &prismServiceId)
+bool PrismShutdownAgent::requiresShutdown (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

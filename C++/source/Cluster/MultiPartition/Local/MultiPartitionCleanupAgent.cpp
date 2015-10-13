@@ -143,18 +143,18 @@ ResourceId MultiPartitionCleanupAgent::sendMultiPartitionCleanupStep (MultiParti
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool MultiPartitionCleanupAgent::requiresMultiPartitionCleanupNotification(const WaveServiceId &prismServiceId)
+bool MultiPartitionCleanupAgent::requiresMultiPartitionCleanupNotification(const WaveServiceId &waveServiceId)
 {
     // 1. Exlude PrismFrameworkObjectManager (in general.)
     // 2. Exclude MultiTenencyLocalObjectManager (It is running this Agent)
     // 3. Exclude Global services
     // 4. Exclude User Specific Local services.
 
-    if (((PrismFrameworkObjectManager::getWaveServiceId()) == prismServiceId) ||
-        ((MultiPartitionLocalObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        ((ClusterLocalObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (false == (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId()) == waveServiceId) ||
+        ((MultiPartitionLocalObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        ((ClusterLocalObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (false == (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

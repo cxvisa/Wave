@@ -301,9 +301,9 @@ void RegressionTestObjectManager::runAServiceTestMessageHandler (RegressionTestO
     reply (pMessage);
 }
 
-void RegressionTestObjectManager::addToRegressionShell (const WaveServiceId &prismServiceId, const bool &isEnabledByDefault)
+void RegressionTestObjectManager::addToRegressionShell (const WaveServiceId &waveServiceId, const bool &isEnabledByDefault)
 {
-    (getInstance ())->m_testServiceEntries.push_back (RegressionTestEntry (prismServiceId, isEnabledByDefault));
+    (getInstance ())->m_testServiceEntries.push_back (RegressionTestEntry (waveServiceId, isEnabledByDefault));
 }
 
 }

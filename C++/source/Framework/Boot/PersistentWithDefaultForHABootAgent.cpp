@@ -160,10 +160,10 @@ WaveBootReason PersistentWithDefaultForHABootAgent::getReason () const
     return (WAVE_BOOT_PERSISTENT_WITH_DEFAULT_BOOT);
 }
 
-bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
+bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -173,10 +173,10 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializeDuringPreP
     }
 }
 
-bool PersistentWithDefaultForHABootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& prismServiceId)
+bool PersistentWithDefaultForHABootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -186,10 +186,10 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedForEnableAndBoot (const 
     }
 }
 
-bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
+bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if ((prismServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if ((waveServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -199,10 +199,10 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstallDuringPrePhas
     }
 }
 
-bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
+bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -212,10 +212,10 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializePhase (con
     }
 }
 
-bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstall (const WaveServiceId &prismServiceId)
+bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }

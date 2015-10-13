@@ -97,11 +97,11 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool SlotFailoverAgent::requiresSlotFailoverNotification(const WaveServiceId &prismServiceId)
+bool SlotFailoverAgent::requiresSlotFailoverNotification(const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true != (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true != (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

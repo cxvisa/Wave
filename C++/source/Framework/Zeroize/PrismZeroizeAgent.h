@@ -21,7 +21,7 @@ class PrismZeroizeAgent : protected WaveWorker
 {
     private :
         bool                isZeroizeAtBoot             ();
-        bool                needsZeroize                ( const WaveServiceId &prismServiceId );
+        bool                needsZeroize                ( const WaveServiceId &waveServiceId );
     protected :
     public :
                             PrismZeroizeAgent           (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);

@@ -74,11 +74,11 @@ void PrismSecondaryUncontrolledFailoverAgent::execute (PrismFailoverAgentContext
     pPrismFailoverAgentSequencerContext->start ();
 }
 
-bool PrismSecondaryUncontrolledFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &prismServiceId)
+bool PrismSecondaryUncontrolledFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }

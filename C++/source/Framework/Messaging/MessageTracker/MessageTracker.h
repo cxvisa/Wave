@@ -34,7 +34,7 @@ class MessageTracker
     public :
         static void addToMessageTracker      (const WaveMessage *pWaveMessage);
         static void deleteFromMessageTracker (const WaveMessage *pWaveMessage);
-        static void getMessages              (const WaveServiceId &prismServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings);
+        static void getMessages              (const WaveServiceId &waveServiceId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings);
         static void changeBtTrackerState     (const bool &btTrackerState);
 
     // Now the data members

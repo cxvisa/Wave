@@ -96,7 +96,7 @@ class FrameworkToolKit
         static const ResourceId                  savePrismConfiguration                     (const bool &syncToStandby = false);
         static const ResourceId                  getPrismConfigurationValidity              (bool &validity);
         static const ResourceId                  changePrismConfigurationValidity           (const bool &validity);
-        static const bool                        isALocalService                            (const WaveServiceId &prismServiceId);
+        static const bool                        isALocalService                            (const WaveServiceId &waveServiceId);
         static const bool                        isPrimaryLocation                          ();
         static const bool                        isStandAloneLocation                       ();
         static const SI32                        getManagementInterfaceReceiverPort         ();

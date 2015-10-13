@@ -21,8 +21,8 @@ class ApplicationSpecificServices
                                      virtual    ~ApplicationSpecificServices ();
 
         static   ApplicationSpecificServices    *getInstance                    ();
-                                        void     setWaveServiceId              (WaveServiceId prismServiceId);
-                                        bool     isApplicationSpecificServiceId (WaveServiceId prismServiceId);   
+                                        void     setWaveServiceId              (WaveServiceId waveServiceId);
+                                        bool     isApplicationSpecificServiceId (WaveServiceId waveServiceId);   
 
     // Now the data members
 

@@ -139,10 +139,10 @@ WaveBootReason HaStandbyPrismBootAgent::getReason () const
     return (WAVE_BOOT_HASTANDBY_BOOT);
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -152,10 +152,10 @@ bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceI
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if ((prismServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if ((waveServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -165,10 +165,10 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const Wav
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -178,10 +178,10 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &pr
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -191,10 +191,10 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const 
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -204,7 +204,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServi
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromCurrentBootPhase (const WaveServiceId &prismServiceId)
+bool HaStandbyPrismBootAgent::isToBeExcludedFromCurrentBootPhase (const WaveServiceId &waveServiceId)
 {
     return (false);
 }

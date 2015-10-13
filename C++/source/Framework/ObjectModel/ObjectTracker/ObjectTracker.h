@@ -33,7 +33,7 @@ class ObjectTracker
     public :
         static void addToObjectTracker           (const WaveManagedObject *pWaveManagedObject, const bool &queryResults = false, WaveObjectManager *pWaveObjectManager = NULL);
         static void deleteFromObjectTracker      (const WaveManagedObject *pWaveManagedObject);
-        static void getObjects                   (const WaveServiceId &prismServiceId, vector<string> &objectClassNames, vector<string> &objectNames, vector<bool> &queryResults, vector<string> &btStrings);
+        static void getObjects                   (const WaveServiceId &waveServiceId, vector<string> &objectClassNames, vector<string> &objectNames, vector<bool> &queryResults, vector<string> &btStrings);
 
         static void addQueriedObjectsToBtTracker (vector<WaveManagedObject *> *queryResults);
         static void changeBtTrackerState         (const bool &btTrackerState);

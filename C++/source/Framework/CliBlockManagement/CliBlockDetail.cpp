@@ -20,9 +20,9 @@ CliBlockDetail::CliBlockDetail ()
     m_cliBlockContext   = CliBlockContext ();
 }
 
-CliBlockDetail::CliBlockDetail (WaveServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext)
+CliBlockDetail::CliBlockDetail (WaveServiceId waveServiceId, LocationId originator, const CliBlockContext &cliBlockContext)
 {
-    m_waveServiceId    = prismServiceId;
+    m_waveServiceId    = waveServiceId;
     m_originator        = originator;
     m_cliBlockContext   = cliBlockContext;
 }

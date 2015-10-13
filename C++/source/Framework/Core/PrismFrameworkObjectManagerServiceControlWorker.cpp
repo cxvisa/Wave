@@ -47,7 +47,7 @@ WaveMessage *PrismFrameworkObjectManagerServiceControlWorker::createMessageInsta
 
 void PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHandler (FrameworkObjectManagerServiceControlListMessage *pFrameworkObjectManagerServiceControlListMessage)
 {
-    vector<WaveServiceId> prismServiceIds;
+    vector<WaveServiceId> waveServiceIds;
     UI32                   numberOfPrismServices;
     UI32                   i;
     WaveServiceId         serviceId              = 0;
@@ -59,12 +59,12 @@ void PrismFrameworkObjectManagerServiceControlWorker::serviceControlListMessageH
     UI32                   numberOfCpus           = 0;
     UI32                   j                      = 0;
 
-    WaveThread::getListOfServiceIds (prismServiceIds);
-    numberOfPrismServices = prismServiceIds.size ();
+    WaveThread::getListOfServiceIds (waveServiceIds);
+    numberOfPrismServices = waveServiceIds.size ();
 
     for (i = 0; i < numberOfPrismServices; i++)
     {
-        serviceId         = prismServiceIds[i];
+        serviceId         = waveServiceIds[i];
         serviceName       = FrameworkToolKit::getServiceNameById (serviceId);
         isEnabled         = WaveObjectManager::isServiceEnabled (serviceId);
         isLocal           = FrameworkToolKit::isALocalService (serviceId);
@@ -89,13 +89,13 @@ void PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessa
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessageHandler : Entering ...");
 
-          WaveServiceId                           prismServiceId                          = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getWaveServiceId ();
+          WaveServiceId                           waveServiceId                          = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getWaveServiceId ();
           vector<UI32>                             cpuAffinityVector                       = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getCpuAffinityVector ();
-          PrismSetCpuAffinityObjectManagerMessage  prismSetCpuAffinityObjectManagerMessage   (prismServiceId);
+          PrismSetCpuAffinityObjectManagerMessage  prismSetCpuAffinityObjectManagerMessage   (waveServiceId);
           ResourceId                               status                                  = WAVE_MESSAGE_SUCCESS;
     const WaveServiceId                           thisServiceId                           = getServiceId ();
 
-    if (thisServiceId != prismServiceId)
+    if (thisServiceId != waveServiceId)
     {
         prismSetCpuAffinityObjectManagerMessage.setCpuAffinityVector (cpuAffinityVector);
 
@@ -107,7 +107,7 @@ void PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessa
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessageHandler : Failed to set Cpu Affinity for service \'" + FrameworkToolKit::getServiceNameById (prismServiceId) + "\'.  Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_ERROR, "PrismFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessageHandler : Failed to set Cpu Affinity for service \'" + FrameworkToolKit::getServiceNameById (waveServiceId) + "\'.  Status : " + FrameworkToolKit::localize (status));
             }
         }
         else

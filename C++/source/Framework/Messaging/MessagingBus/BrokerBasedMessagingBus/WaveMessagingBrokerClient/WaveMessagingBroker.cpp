@@ -331,9 +331,9 @@ bool WaveMessagingBroker::operator << (WaveBrokerSubscribeMessage *pWaveBrokerSu
     {
         m_currentSubscritptions[topicNames[i]] = topicNames[i];
 
-        WaveServiceId prismServiceId = WaveThread::getWaveServiceIdForCurrentThread ();
+        WaveServiceId waveServiceId = WaveThread::getWaveServiceIdForCurrentThread ();
 
-        addServiceSubscription (topicNames[i], prismServiceId);
+        addServiceSubscription (topicNames[i], waveServiceId);
     }
 
     m_mutex.unlock ();
@@ -385,9 +385,9 @@ void WaveMessagingBroker::postCurrentSubscriptions ()
     }
 }
 
-void WaveMessagingBroker::addServiceSubscription (const string &topicName, const WaveServiceId &prismServiceId)
+void WaveMessagingBroker::addServiceSubscription (const string &topicName, const WaveServiceId &waveServiceId)
 {
-    m_currentlySubscribedServicesByTopicName[topicName][prismServiceId] = prismServiceId;
+    m_currentlySubscribedServicesByTopicName[topicName][waveServiceId] = waveServiceId;
 }
 
 void WaveMessagingBroker::getCurrentlySubscribedServicesForTopicName (const string &topicName, vector<WaveServiceId> &currentlySubscribedServices)

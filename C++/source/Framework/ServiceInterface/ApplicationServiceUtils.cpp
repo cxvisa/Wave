@@ -86,9 +86,9 @@ WaveServiceId ApplicationServiceUtils::getWaveServiceIdForApplicationServiceId (
     return (applicationServiceWaveServiceId);
 }
 
-ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceId &sendingApplicationWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &receivingApplicationprismServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext)
+ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceId &sendingApplicationWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &receivingApplicationwaveServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext)
 {
-    ApplicationServiceMessage *pApplicationServiceMessage = new ApplicationServiceMessage (getWaveServiceIdForApplicationServiceId (receivingApplicationprismServiceId));
+    ApplicationServiceMessage *pApplicationServiceMessage = new ApplicationServiceMessage (getWaveServiceIdForApplicationServiceId (receivingApplicationwaveServiceId));
     ResourceId                 status                     = WAVE_MESSAGE_ERROR;
 
     if (NULL != pPayLoad)

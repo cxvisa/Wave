@@ -25,7 +25,7 @@ class PrismSecondaryControlledFailoverAgent : public PrismFailoverAgent
          void setFailoverDueToPrimaryRemoval   ();
          bool getFailoverDueToPrimaryRemoval   () const;
          virtual void execute (PrismFailoverAgentContext *pPrismFailoverAgentContext);
-         virtual bool isToBeExcludedForFailover (const WaveServiceId &prismServiceId);        
+         virtual bool isToBeExcludedForFailover (const WaveServiceId &waveServiceId);        
 
 
     // Now the data members

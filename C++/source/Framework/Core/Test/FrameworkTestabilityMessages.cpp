@@ -539,9 +539,9 @@ void FrameworkTestabilityMessage4::setupAttributesForSerialization ()
      addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType2, "prismMessageType2"));
      addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType3, "prismMessageType3"));
 
-     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId1, "prismServiceId1"));
-     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId2, "prismServiceId2"));
-     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId3, "prismServiceId3"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId1, "waveServiceId1"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId2, "waveServiceId2"));
+     addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId3, "waveServiceId3"));
 
      addSerializableAttribute (new AttributeSerializableObjectType (&m_serializableObjectType1, "serializableObjectType1"));
      addSerializableAttribute (new AttributeSerializableObjectType (&m_serializableObjectType2, "serializableObjectType2"));

@@ -25,13 +25,13 @@ class SecondaryNodeRejoinPrismBootAgent : public PrismBootAgent
 	//Rejoin Boot is always persistent
         virtual bool           isAPersistentBoot                       ();
 	//QUESTION: SAGAR
-        virtual bool           isToBeExcludedForEnableAndBoot          (const WaveServiceId& prismServiceId);
+        virtual bool           isToBeExcludedForEnableAndBoot          (const WaveServiceId& waveServiceId);
 
         virtual bool           willBeAPrimaryLocation                  ();
 
-        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInitializePhase            (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromCurrentBootPhase           (WaveServiceId prismServiceId);
+        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromInitializePhase            (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromCurrentBootPhase           (WaveServiceId waveServiceId);
 	//Reason for boot
         virtual WaveBootReason getReason                               () const;
 

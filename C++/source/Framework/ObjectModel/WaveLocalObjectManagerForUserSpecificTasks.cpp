@@ -24,18 +24,18 @@ WaveLocalObjectManagerForUserSpecificTasks::~WaveLocalObjectManagerForUserSpecif
 {
 }
 
-void WaveLocalObjectManagerForUserSpecificTasks::addToUserspecificServicesMap (const WaveServiceId &prismServiceId)
+void WaveLocalObjectManagerForUserSpecificTasks::addToUserspecificServicesMap (const WaveServiceId &waveServiceId)
 {
     s_userSpecificServicesMapMutex.lock ();
-    s_userSpecificServicesMap[prismServiceId] = prismServiceId;
+    s_userSpecificServicesMap[waveServiceId] = waveServiceId;
     s_userSpecificServicesMapMutex.unlock ();
 }
 
-bool WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (const WaveServiceId &prismServiceId)
+bool WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (const WaveServiceId &waveServiceId)
 {
     s_userSpecificServicesMapMutex.lock ();
 
-    map<WaveServiceId, WaveServiceId>::iterator element = s_userSpecificServicesMap.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator element = s_userSpecificServicesMap.find (waveServiceId);
     map<WaveServiceId, WaveServiceId>::iterator end     = s_userSpecificServicesMap.end ();
     bool                                          found   = false;
 

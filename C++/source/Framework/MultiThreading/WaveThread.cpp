@@ -1425,7 +1425,7 @@ WaveObjectManager *WaveThread::getWaveObjectManagerForCurrentThread ()
 WaveServiceId WaveThread::getWaveServiceIdForCurrentThread ()
 {
     WaveObjectManager *pWaveObjectManager = NULL;
-    WaveServiceId     prismServiceId;
+    WaveServiceId     waveServiceId;
 
     m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
 
@@ -1443,11 +1443,11 @@ WaveServiceId WaveThread::getWaveServiceIdForCurrentThread ()
 
     waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-    prismServiceId = pWaveObjectManager->getServiceId ();
+    waveServiceId = pWaveObjectManager->getServiceId ();
 
     m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
 
-    return (prismServiceId);
+    return (waveServiceId);
 }
 
 void WaveThread::requestForThreadTermination ()

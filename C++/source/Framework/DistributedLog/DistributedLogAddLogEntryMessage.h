@@ -23,9 +23,9 @@ class DistributedLogAddLogEntryMessage : public ManagementInterfaceMessage
                                 DistributedLogAddLogEntryMessage ();
                                 DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description);
                                 DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const string &username);
-                                DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const string &username, const WaveServiceId &prismServiceId, const ObjectId &waveNodeObjectId);
-                                DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const WaveServiceId &prismServiceId, const ObjectId &waveNodeObjectId);
-                                DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const WaveServiceId &prismServiceId, const ObjectId &waveNodeObjectId, const ObjectId &managedObjectId);
+                                DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const string &username, const WaveServiceId &waveServiceId, const ObjectId &waveNodeObjectId);
+                                DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const WaveServiceId &waveServiceId, const ObjectId &waveNodeObjectId);
+                                DistributedLogAddLogEntryMessage (const ResourceId &logType, const ResourceId &logDescriptionType, const string &description, const WaveServiceId &waveServiceId, const ObjectId &waveNodeObjectId, const ObjectId &managedObjectId);
         virtual                ~DistributedLogAddLogEntryMessage ();
 
                 ResourceId      getLogType                       () const;
@@ -37,7 +37,7 @@ class DistributedLogAddLogEntryMessage : public ManagementInterfaceMessage
                 string          getUsername                      () const;
         void                    setUsername                      (const string &username);
                 WaveServiceId  getWaveServiceId                () const;
-        void                    setWaveServiceId                (WaveServiceId prismServiceId);
+        void                    setWaveServiceId                (WaveServiceId waveServiceId);
                 DateTime        getDateTimeStamp                 () const;
         void                    setDateTimeStamp                 (const DateTime &dateTimeStamp);
                 ObjectId        getWaveNodeObjectId              () const;

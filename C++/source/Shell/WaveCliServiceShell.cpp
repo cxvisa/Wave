@@ -165,7 +165,7 @@ void WaveCliServiceShell::clientListHelp ()
 ResourceId WaveCliServiceShell::serviceSetCpuAffinity (const vector<string> &arguments)
 {
     UI32                            numberOfArguments   = arguments.size ();
-    WaveServiceId                  prismServiceId      = 0;
+    WaveServiceId                  waveServiceId      = 0;
     vector<string>                  cpuAffinityStrings;
     ResourceId                      status              = WAVE_MESSAGE_ERROR;
     UI32                            numberOfCpuValues   = 0;
@@ -181,7 +181,7 @@ ResourceId WaveCliServiceShell::serviceSetCpuAffinity (const vector<string> &arg
     }
     else
     {
-        prismServiceId = strtoul (arguments[0].c_str (), NULL, 10);
+        waveServiceId = strtoul (arguments[0].c_str (), NULL, 10);
 
         tokenize (arguments[1], cpuAffinityStrings, ':');
 
@@ -196,7 +196,7 @@ ResourceId WaveCliServiceShell::serviceSetCpuAffinity (const vector<string> &arg
 
         if (0 != numberOfCpuValues)
         {
-            status = connection.setCpuAffinityForService (prismServiceId, cpuAffinityVector);
+            status = connection.setCpuAffinityForService (waveServiceId, cpuAffinityVector);
         }
         else
         {

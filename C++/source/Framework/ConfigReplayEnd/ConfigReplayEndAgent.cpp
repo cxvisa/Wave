@@ -86,10 +86,10 @@ ResourceId ConfigReplayEndAgent::sendConfigReplayEndStep (ConfigReplayEndAgentCo
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool ConfigReplayEndAgent::requiresConfigReplayEndNotification(const WaveServiceId &prismServiceId)
+bool ConfigReplayEndAgent::requiresConfigReplayEndNotification(const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

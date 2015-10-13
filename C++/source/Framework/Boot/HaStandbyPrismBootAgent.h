@@ -16,12 +16,12 @@ class HaStandbyPrismBootAgent : public PrismBootAgent
 {
     private :
         virtual bool           isAPersistentBoot                            ();
-        virtual bool           isToBeExcludedForEnableAndBoot               (const WaveServiceId& prismServiceId);
-        virtual bool           isToBeExcludedFromInstallDuringPrePhase      (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInstall                    (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInitializePhase            (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromCurrentBootPhase           (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedForEnableAndBoot               (const WaveServiceId& waveServiceId);
+        virtual bool           isToBeExcludedFromInstallDuringPrePhase      (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromInstall                    (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromInitializePhase            (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromCurrentBootPhase           (const WaveServiceId &waveServiceId);
         virtual WaveBootReason getReason                                    () const;
 
     protected :

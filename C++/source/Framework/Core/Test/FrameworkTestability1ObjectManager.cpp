@@ -877,17 +877,17 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
 {
     trace (TRACE_LEVEL_DEBUG, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessage1RequestHandler : ");
 
-    WaveServiceId prismServiceId = pMessage->getWaveServiceId ();
+    WaveServiceId waveServiceId = pMessage->getWaveServiceId ();
     vector<WaveServiceId>  messageServiceIds;
     vector<UI32>            messageOperationCodes;
     vector<WaveMessageType> messageTypes;
     vector<string>          btStrings;
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler : Getting Message Leaks For Service : %u, \"%s\"", prismServiceId, (FrameworkToolKit::getServiceNameById (prismServiceId)).c_str ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler : Getting Message Leaks For Service : %u, \"%s\"", waveServiceId, (FrameworkToolKit::getServiceNameById (waveServiceId)).c_str ());
 
-    MessageTracker::getMessages (prismServiceId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
+    MessageTracker::getMessages (waveServiceId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler : Got %u Message Leaks For Service : %u, \"%s\"", messageServiceIds.size (), prismServiceId, (FrameworkToolKit::getServiceNameById (prismServiceId)).c_str ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceMessageLeakMessageRequestHandler : Got %u Message Leaks For Service : %u, \"%s\"", messageServiceIds.size (), waveServiceId, (FrameworkToolKit::getServiceNameById (waveServiceId)).c_str ());
 
     pMessage->setMessageArguments (messageServiceIds, messageOperationCodes, messageTypes, btStrings);
 
@@ -900,14 +900,14 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
 {
     trace (TRACE_LEVEL_DEBUG, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceObjectLeakMessageRequestHandler ");
 
-    WaveServiceId prismServiceId = pMessage->getWaveServiceId ();
+    WaveServiceId waveServiceId = pMessage->getWaveServiceId ();
 
     vector<string>  managedObjectClassNames;
     vector<string>  managedObjectNames;
     vector<bool>    queryResults;
     vector<string>  btStrings;
 
-    ObjectTracker::getObjects (prismServiceId, managedObjectClassNames, managedObjectNames, queryResults, btStrings);
+    ObjectTracker::getObjects (waveServiceId, managedObjectClassNames, managedObjectNames, queryResults, btStrings);
 
     pMessage->setMessageArguments (managedObjectClassNames, managedObjectNames, queryResults, btStrings);
 
@@ -920,7 +920,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfacF
 {
     trace (TRACE_LEVEL_DEBUG, "FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterfaceObjectLeakMessageRequestHandler ");
 
-    // WaveServiceId prismServiceId = pMessage->getWaveServiceId ();
+    // WaveServiceId waveServiceId = pMessage->getWaveServiceId ();
     bool bFileServiceUsageFlag = pMessage->getFileServiceUseforFileTransferFlag();
 
     if (true == bFileServiceUsageFlag)

@@ -17,9 +17,9 @@ class SecondaryNodeUnconfigurePrismBootAgent : public PrismBootAgent
 {
     private :
         virtual bool            isAPersistentBoot                           ();
-        virtual bool            isToBeExcludedForEnableAndBoot              (const WaveServiceId &prismServiceId);
-        virtual bool            isToBeExcludedFromInitializeDuringPrePhase  (const WaveServiceId &prismServiceId);
-        virtual bool            isToBeExcludedFromInitializePhase           (const WaveServiceId &prismServiceId);
+        virtual bool            isToBeExcludedForEnableAndBoot              (const WaveServiceId &waveServiceId);
+        virtual bool            isToBeExcludedFromInitializeDuringPrePhase  (const WaveServiceId &waveServiceId);
+        virtual bool            isToBeExcludedFromInitializePhase           (const WaveServiceId &waveServiceId);
         virtual bool            willBeAPrimaryLocation                      ();
         virtual WaveBootReason  getReason                                   () const;
 

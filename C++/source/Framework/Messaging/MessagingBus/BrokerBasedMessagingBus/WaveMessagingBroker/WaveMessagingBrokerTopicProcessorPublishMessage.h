@@ -19,7 +19,7 @@ class WaveMessagingBrokerTopicProcessorPublishMessage : public WaveMessage
     private :
     protected :
     public :
-                                               WaveMessagingBrokerTopicProcessorPublishMessage (const WaveServiceId &prismServiceId);
+                                               WaveMessagingBrokerTopicProcessorPublishMessage (const WaveServiceId &waveServiceId);
         virtual                               ~WaveMessagingBrokerTopicProcessorPublishMessage ();
 
                 WaveBrokerBasedMessagePayload *getPWaveBrokerBasedMessagePayload               ();

@@ -22,7 +22,7 @@ class CliBlockDetail
     protected :
     public :
                                     CliBlockDetail                      ();
-                                    CliBlockDetail                      (WaveServiceId prismServiceId, LocationId originator, const CliBlockContext &cliBlockContext);
+                                    CliBlockDetail                      (WaveServiceId waveServiceId, LocationId originator, const CliBlockContext &cliBlockContext);
                                     CliBlockDetail                      (const CliBlockServiceIndependentMessage &cliBlockServiceIndependentMessage);
                                     CliBlockDetail                      (const CliBlockDetail &detail);
                                    ~CliBlockDetail                      ();

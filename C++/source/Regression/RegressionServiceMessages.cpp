@@ -36,9 +36,9 @@ void RegressionTestObjectManagerGetTestServiceEntriesMessage::setNumberOfTestSer
     m_numberOfTestServiceEntries = numberOfTestServiceEntries;
 }
 
-void RegressionTestObjectManagerGetTestServiceEntriesMessage::addTestServiceEntry (const WaveServiceId &prismServiceId, const bool &isServiceEnabled)
+void RegressionTestObjectManagerGetTestServiceEntriesMessage::addTestServiceEntry (const WaveServiceId &waveServiceId, const bool &isServiceEnabled)
 {
-    m_testServiceIds.push_back (prismServiceId);
+    m_testServiceIds.push_back (waveServiceId);
     m_testServiceStates.push_back (isServiceEnabled);
 }
 

@@ -25,7 +25,7 @@ class WaveMessagingBroker
 {
     private :
         void postCurrentSubscriptions ();
-        void addServiceSubscription   (const string &topicName, const WaveServiceId &prismServiceId);
+        void addServiceSubscription   (const string &topicName, const WaveServiceId &waveServiceId);
 
     protected :
     public :

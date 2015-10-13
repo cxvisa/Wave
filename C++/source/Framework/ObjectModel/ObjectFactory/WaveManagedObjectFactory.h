@@ -24,8 +24,8 @@ class WaveManagedObjectFactory
     private :
     protected :
     public :
-        static WaveManagedObject *getWaveManagedObjectInstance         (const WaveServiceId &prismServiceId, const  string &className);
-        static WaveObjectManager *getWaveObjectManagerForManagedObject (const WaveServiceId &prismServiceId, const  string &className);
+        static WaveManagedObject *getWaveManagedObjectInstance         (const WaveServiceId &waveServiceId, const  string &className);
+        static WaveObjectManager *getWaveObjectManagerForManagedObject (const WaveServiceId &waveServiceId, const  string &className);
 
     // Now the data members
 

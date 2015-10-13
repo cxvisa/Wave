@@ -50,9 +50,9 @@ vector<WaveServiceId> &StartHaSyncDumpContext::getWaveServiceIdsVector ()
     return (m_waveServiceIdsVector);
 }
 
-void StartHaSyncDumpContext::addValidationDetailsForService (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size)
+void StartHaSyncDumpContext::addValidationDetailsForService (const WaveServiceId &waveServiceId, void *pValidationDetials, const UI32 size)
 {
-    m_waveServiceIdsVector.push_back        (prismServiceId);
+    m_waveServiceIdsVector.push_back        (waveServiceId);
     m_validationDetailsVector.push_back      (pValidationDetials);
     m_validationDetailsSizesVector.push_back (size);
 }
@@ -67,16 +67,16 @@ vector<UI32> &StartHaSyncDumpContext::getValidationDetailsSizesVector ()
     return (m_validationDetailsSizesVector);
 }
 
-void StartHaSyncDumpContext::addValidationResultsForService (const WaveServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize)
+void StartHaSyncDumpContext::addValidationResultsForService (const WaveServiceId &waveServiceId, void *const &pValidationResults, const UI32 &validationResultsSize)
 {
-    string uniqueIdString = string ("service ") + prismServiceId;
+    string uniqueIdString = string ("service ") + waveServiceId;
     m_validationResultsVector[uniqueIdString]      = pValidationResults;
     m_validationResultsSizesVector[uniqueIdString] = validationResultsSize;
 }
 
-void StartHaSyncDumpContext::getValidationResultsForService (const WaveServiceId &prismServiceId, void *&pValidationResults, UI32 &validationResultsSize)
+void StartHaSyncDumpContext::getValidationResultsForService (const WaveServiceId &waveServiceId, void *&pValidationResults, UI32 &validationResultsSize)
 {
-    string uniqueIdString = string ("service ") + prismServiceId;
+    string uniqueIdString = string ("service ") + waveServiceId;
 
     pValidationResults    = NULL;
     validationResultsSize = 0;

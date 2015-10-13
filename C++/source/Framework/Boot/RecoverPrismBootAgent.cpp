@@ -125,10 +125,10 @@ ResourceId RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep (Pri
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &prismServiceId)
+bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if ((TimerSignalObjectManager::getWaveServiceId               ()) == prismServiceId ||
-        ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
+    if ((TimerSignalObjectManager::getWaveServiceId               ()) == waveServiceId ||
+        ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
     {   
         return (true);
     }
@@ -138,10 +138,10 @@ bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const Wa
     }
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &prismServiceId)
+bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &waveServiceId)
 {
-    if ((TimerSignalObjectManager::getWaveServiceId               ()) == prismServiceId ||
-        ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
+    if ((TimerSignalObjectManager::getWaveServiceId               ()) == waveServiceId ||
+        ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
     {   
         return (true);
     }
@@ -151,10 +151,10 @@ bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId 
     }
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &prismServiceId)
+bool RecoverPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if ((TimerSignalObjectManager::getWaveServiceId               ()) == prismServiceId ||
-        ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
+    if ((TimerSignalObjectManager::getWaveServiceId               ()) == waveServiceId ||
+        ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
     {   
         return (true);
     }

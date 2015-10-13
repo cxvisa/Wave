@@ -14,9 +14,9 @@
 namespace WaveNs
 {
 
-WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const WaveServiceId &prismServiceId, const  string &className)
+WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const WaveServiceId &waveServiceId, const  string &className)
 {
-    WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForManagedObject (prismServiceId, className);
+    WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForManagedObject (waveServiceId, className);
     WaveManagedObject *pWaveManagedObject = NULL;
 
     if (NULL != pWaveObjectManager)
@@ -26,7 +26,7 @@ WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const
 
     if (NULL == pWaveManagedObject)
     {
-        trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Could not create Managed Object instance for  Service : " + FrameworkToolKit::getServiceNameById (prismServiceId) + ", Class Name = " + className + ".");
+        trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Could not create Managed Object instance for  Service : " + FrameworkToolKit::getServiceNameById (waveServiceId) + ", Class Name = " + className + ".");
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Have you implemented the createManagedObjectInstance on the object manager yet???.");
         waveAssert (false, __FILE__, __LINE__);
     }
@@ -34,12 +34,12 @@ WaveManagedObject *WaveManagedObjectFactory::getWaveManagedObjectInstance (const
     return (pWaveManagedObject);
 }
 
-WaveObjectManager *WaveManagedObjectFactory::getWaveObjectManagerForManagedObject (const WaveServiceId &prismServiceId, const  string &className)
+WaveObjectManager *WaveManagedObjectFactory::getWaveObjectManagerForManagedObject (const WaveServiceId &waveServiceId, const  string &className)
 {
     WaveThread        *pWaveThread        = NULL;
     WaveObjectManager *pWaveObjectManager = NULL;
 
-    pWaveThread = WaveThread::getWaveThreadForServiceId (prismServiceId);
+    pWaveThread = WaveThread::getWaveThreadForServiceId (waveServiceId);
 
     if (NULL != pWaveThread)
     {

@@ -279,9 +279,9 @@ WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementI
     return (status);
 }
 
-string WaveClientSynchronousConnection::getServiceNameById (const WaveServiceId &prismServiceId) const
+string WaveClientSynchronousConnection::getServiceNameById (const WaveServiceId &waveServiceId) const
 {
-    return ((WaveClientTransportObjectManager::getInstance ())->getPrismServiceNameForServiceId (getWaveServerId (), prismServiceId));
+    return ((WaveClientTransportObjectManager::getInstance ())->getPrismServiceNameForServiceId (getWaveServerId (), waveServiceId));
 }
 
 WaveServiceId WaveClientSynchronousConnection::getServiceIdByName (const string &prismServiceName) const
@@ -338,9 +338,9 @@ ResourceId WaveClientSynchronousConnection::getListOfTestServices (vector<Regres
     return (clientStatus);
 }
 
-ResourceId WaveClientSynchronousConnection::prepareTestForAService (const WaveServiceId &prismServiceId, const vector<string> &inputStrings )
+ResourceId WaveClientSynchronousConnection::prepareTestForAService (const WaveServiceId &waveServiceId, const vector<string> &inputStrings )
 {
-    RegressionTestObjectManagerPrepareTestForAServiceMessage message (prismServiceId, inputStrings);
+    RegressionTestObjectManagerPrepareTestForAServiceMessage message (waveServiceId, inputStrings);
     WaveMessageStatus         status;
     ResourceId                completionStatus = WAVE_MESSAGE_SUCCESS;
     ResourceId                clientStatus     = WAVE_MESSAGE_ERROR;
@@ -377,9 +377,9 @@ ResourceId WaveClientSynchronousConnection::prepareTestForAService (const WaveSe
     return (clientStatus);
 }
 
-ResourceId WaveClientSynchronousConnection::runTestForAService (const WaveServiceId &prismServiceId, const UI32 &numberOfTimesToRunTheTest)
+ResourceId WaveClientSynchronousConnection::runTestForAService (const WaveServiceId &waveServiceId, const UI32 &numberOfTimesToRunTheTest)
 {
-    RegressionTestObjectManagerRunTestForAServiceMessage message            (prismServiceId, numberOfTimesToRunTheTest);
+    RegressionTestObjectManagerRunTestForAServiceMessage message            (waveServiceId, numberOfTimesToRunTheTest);
     WaveMessageStatus                                    status;
     ResourceId                                           completionStatus = WAVE_MESSAGE_SUCCESS;
     ResourceId                                           clientStatus     = WAVE_MESSAGE_ERROR;
@@ -526,9 +526,9 @@ ResourceId WaveClientSynchronousConnection::getClientInformation (vector<string>
     return (clientStatus);
 }
 
-ResourceId WaveClientSynchronousConnection::setCpuAffinityForService (const WaveServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector)
+ResourceId WaveClientSynchronousConnection::setCpuAffinityForService (const WaveServiceId &waveServiceId, const vector<UI32> &cpuAffinityVector)
 {
-    FrameworkObjectManagerServiceSetCpuAffinityMessage message            (prismServiceId, cpuAffinityVector);
+    FrameworkObjectManagerServiceSetCpuAffinityMessage message            (waveServiceId, cpuAffinityVector);
     WaveMessageStatus                                  status;
     ResourceId                                         completionStatus = WAVE_MESSAGE_SUCCESS;
     ResourceId                                         clientStatus     = WAVE_MESSAGE_ERROR;
@@ -1301,12 +1301,12 @@ ResourceId WaveClientSynchronousConnection::compareDBWithPrimary ()
 }
 
 
-ResourceId WaveClientSynchronousConnection::dumpMessageHistoryOfAService (const WaveServiceId &prismServiceId)
+ResourceId WaveClientSynchronousConnection::dumpMessageHistoryOfAService (const WaveServiceId &waveServiceId)
 {
     WaveMessageStatus                                       status;
     ResourceId                                              completionStatus = WAVE_MESSAGE_SUCCESS;
     ResourceId                                              clientStatus     = WAVE_MESSAGE_ERROR;
-    TraceObjectManagerMessageHistoryDumpForAServiceMessage  message (prismServiceId);
+    TraceObjectManagerMessageHistoryDumpForAServiceMessage  message (waveServiceId);
 
     if (true == (isCurrentlyConnected ()))
     {
@@ -1359,13 +1359,13 @@ ResourceId WaveClientSynchronousConnection::dumpMessageHistoryOfAService (const 
     return clientStatus;
 }
 
-ResourceId WaveClientSynchronousConnection::configMessageHistoryOfAService (const WaveServiceId &prismServiceId, bool messageHistoryState, const UI32 &messageHistorySize)
+ResourceId WaveClientSynchronousConnection::configMessageHistoryOfAService (const WaveServiceId &waveServiceId, bool messageHistoryState, const UI32 &messageHistorySize)
 {
     WaveMessageStatus                                        status;
     ResourceId                                               completionStatus = WAVE_MESSAGE_SUCCESS;
     ResourceId                                               clientStatus     = WAVE_MESSAGE_ERROR;
 
-    TraceObjectManagerMessageHistoryConfigForAServiceMessage message (prismServiceId);
+    TraceObjectManagerMessageHistoryConfigForAServiceMessage message (waveServiceId);
 
     message.setMessageHistoryState   (messageHistoryState);
     message.setMessageHistoryMaxSize (messageHistorySize);

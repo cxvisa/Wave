@@ -761,15 +761,15 @@ void WaveManagedObject::preCreateHardwareStepForOperateOnWaveManagedObject (Pris
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectCreateContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
-    WaveServiceId                  prismServiceId;
+    WaveServiceId                  waveServiceId;
     bool                            isNeedSurrogateSupportFlag = false;
     bool                            isPartialSuccessFlag = false;
 
-    if (true == getPluginDetailsForDistribution (newOperateOnWaveManagedObjectId, prismServiceId, locationIds, isNeedSurrogateSupportFlag, isPartialSuccessFlag ))
+    if (true == getPluginDetailsForDistribution (newOperateOnWaveManagedObjectId, waveServiceId, locationIds, isNeedSurrogateSupportFlag, isPartialSuccessFlag ))
     {
         trace(TRACE_LEVEL_DEVEL, "WaveManagedObject::preCreateHardwareStepForOperateOnWaveManagedObject entering .. ");
 
-        WaveObjectManagerCreateWaveManagedObjectMessage *pMessage           = new WaveObjectManagerCreateWaveManagedObjectMessage (prismServiceId);
+        WaveObjectManagerCreateWaveManagedObjectMessage *pMessage           = new WaveObjectManagerCreateWaveManagedObjectMessage (waveServiceId);
         vector<string>                                   attributeNames     = pWaveManagedObjectCreateContext->getAttributeNames    ();
         vector<string>                                   attributeValues    = pWaveManagedObjectCreateContext->getAttributeValues   ();
 
@@ -804,15 +804,15 @@ void WaveManagedObject::preDeleteHardwareStepForOperateOnWaveManagedObject (Pris
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectDeleteContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
-    WaveServiceId                  prismServiceId;
+    WaveServiceId                  waveServiceId;
     bool                            isNeedSurrogateSupportFlag = false;
     bool                            isPartialSuccessFlag = false;
 
-    if (true == getPluginDetailsForDistribution (newOperateOnWaveManagedObjectId, prismServiceId, locationIds, isNeedSurrogateSupportFlag, isPartialSuccessFlag ))
+    if (true == getPluginDetailsForDistribution (newOperateOnWaveManagedObjectId, waveServiceId, locationIds, isNeedSurrogateSupportFlag, isPartialSuccessFlag ))
     {
         trace(TRACE_LEVEL_DEVEL, "WaveManagedObject::preDeleteHardwareStepForOperateOnWaveManagedObject entering .. ");
 
-        WaveObjectManagerDeleteWaveManagedObjectMessage *pMessage           = new WaveObjectManagerDeleteWaveManagedObjectMessage (prismServiceId);
+        WaveObjectManagerDeleteWaveManagedObjectMessage *pMessage           = new WaveObjectManagerDeleteWaveManagedObjectMessage (waveServiceId);
         vector<string>                                   attributeNames     = pWaveManagedObjectDeleteContext->getAttributeNames    ();
         vector<string>                                   attributeValues    = pWaveManagedObjectDeleteContext->getAttributeValues   ();
 
@@ -843,21 +843,21 @@ void WaveManagedObject::preUpdateHardwareStepForOperateOnWaveManagedObject (Pris
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectUpdateContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
-    WaveServiceId                  prismServiceId;
+    WaveServiceId                  waveServiceId;
     bool                            isNeedSurrogateSupportFlag = false;
     bool                            isPartialSuccessFlag = false;
 
     /*
        Plugin developer overrides the getPluginDetailsForDistribution function.
        newOperateOnWaveManagedObjectId - set the objectId of the managed object, which the plugin developer wants to send to the local services.
-       prismServiceId                  - set the serviceId of the service to which the message is need to send.
+       waveServiceId                  - set the serviceId of the service to which the message is need to send.
        locationIds                     - set locationId of the cluster nodes to which message is need to send, if not set, message will be send to all cluster nodes.
     */
-    if (true == getPluginDetailsForDistribution (newOperateOnWaveManagedObjectId, prismServiceId, locationIds, isNeedSurrogateSupportFlag, isPartialSuccessFlag ))
+    if (true == getPluginDetailsForDistribution (newOperateOnWaveManagedObjectId, waveServiceId, locationIds, isNeedSurrogateSupportFlag, isPartialSuccessFlag ))
     {
         trace(TRACE_LEVEL_DEVEL, "WaveManagedObject::preUpdateHardwareStepForOperateOnWaveManagedObject entering .. ");
 
-        WaveObjectManagerUpdateWaveManagedObjectMessage *pMessage           = new WaveObjectManagerUpdateWaveManagedObjectMessage (prismServiceId);
+        WaveObjectManagerUpdateWaveManagedObjectMessage *pMessage           = new WaveObjectManagerUpdateWaveManagedObjectMessage (waveServiceId);
         vector<string>                                   attributeNames     = pWaveManagedObjectUpdateContext->getAttributeNames    ();
         vector<string>                                   attributeValues    = pWaveManagedObjectUpdateContext->getAttributeValues   ();
 
@@ -945,7 +945,7 @@ void WaveManagedObject::getPluginDetailsForDistributionCallback (WaveSendToClust
     pPrismAsynchronousContext->callback ();
 }
 
-bool WaveManagedObject::getPluginDetailsForDistribution (ObjectId &newOperateOnWaveManagedObjectId, WaveServiceId &prismServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag)
+bool WaveManagedObject::getPluginDetailsForDistribution (ObjectId &newOperateOnWaveManagedObjectId, WaveServiceId &waveServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag)
 {
     return (false);
 }

@@ -17,9 +17,9 @@ class RecoverPrismBootAgent : public FirstTimePrismBootAgent
 {
     private :
 
-        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedForEnableAndBoot               (const WaveServiceId &prismServiceId);
-        virtual bool           isToBeExcludedFromInstallDuringPrePhase      (const WaveServiceId &prismServiceId);
+        virtual bool           isToBeExcludedFromInitializeDuringPrePhase   (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedForEnableAndBoot               (const WaveServiceId &waveServiceId);
+        virtual bool           isToBeExcludedFromInstallDuringPrePhase      (const WaveServiceId &waveServiceId);
 
     protected :
     public :

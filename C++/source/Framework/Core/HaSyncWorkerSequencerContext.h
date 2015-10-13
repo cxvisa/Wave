@@ -48,12 +48,12 @@ class StartHaSyncDumpContext : public WaveLinearSequencerContext
         vector<WaveServiceId> &getWaveServiceIdsToCommunicate ();
         vector<WaveServiceId> &getWaveServiceIdsVector        ();
 
-        void                    addValidationDetailsForService  (const WaveServiceId &prismServiceId, void *pValidationDetials, const UI32 size);
+        void                    addValidationDetailsForService  (const WaveServiceId &waveServiceId, void *pValidationDetials, const UI32 size);
         vector<void *>         &getValidationDetailsVector      ();
         vector<UI32>           &getValidationDetailsSizesVector ();
-        void                    addValidationResultsForService (const WaveServiceId &prismServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
+        void                    addValidationResultsForService (const WaveServiceId &waveServiceId, void *const &pValidationResults, const UI32 &validationResultsSize);
 
-        void                    getValidationResultsForService  (const WaveServiceId &prismServiceId, void *&pValidationResults, UI32 &size);
+        void                    getValidationResultsForService  (const WaveServiceId &waveServiceId, void *&pValidationResults, UI32 &size);
         void                    setStandbyMessage               (WaveMessage *standbyMessage);
         WaveMessage *          getStandbyMessage               ();
         void                    setHaVersion                    (const UI32 &haVersion);

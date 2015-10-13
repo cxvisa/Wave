@@ -86,10 +86,10 @@ ResourceId FileReplayEndAgent::sendFileReplayEndStep (FileReplayEndAgentContext 
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool FileReplayEndAgent::requiresFileReplayEndNotification(const WaveServiceId &prismServiceId)
+bool FileReplayEndAgent::requiresFileReplayEndNotification(const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

@@ -418,7 +418,7 @@ class FrameworkObjectManagerDestroyClusterMessage : public WaveMessage
         virtual                                      ~FrameworkObjectManagerDestroyClusterMessage ();
                 FrameworkObjectManagerFailoverReason  getReasonForDestroyingCluster               () const;
                 void                                  setReasonForDestroyingCluster               (const FrameworkObjectManagerFailoverReason &reasonForDestroyingCluster = FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED);
-                void                                  setOriginalRequester                        (const WaveServiceId &prismServiceId);
+                void                                  setOriginalRequester                        (const WaveServiceId &waveServiceId);
                 WaveServiceId                        getOriginalRequester                        () const;
                 void                                  setIsRebootRequired                         (const bool &isRebootRequired);
                 bool                                  getIsRebootRequired                         () const;
@@ -770,8 +770,8 @@ class FrameworkObjectManagerServiceControlListMessage : public ManagementInterfa
              ~FrameworkObjectManagerServiceControlListMessage ();
 
         UI32  getNumberOfServices                             () const;
-        void  addAService                                     (const WaveServiceId &prismServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity);
-        void  getServiceAtIndex                               (const UI32 &index, WaveServiceId &prismServiceId, string &serviceName, bool &isEnabled, bool &isLocal, string &cpuAffinity);
+        void  addAService                                     (const WaveServiceId &waveServiceId, const string &serviceName, const bool &isEnabled, const bool &isLocal, const string &cpuAffinity);
+        void  getServiceAtIndex                               (const UI32 &index, WaveServiceId &waveServiceId, string &serviceName, bool &isEnabled, bool &isLocal, string &cpuAffinity);
 
     // Now the data members
 
@@ -794,7 +794,7 @@ class FrameworkObjectManagerServiceSetCpuAffinityMessage : public ManagementInte
     protected :
     public :
                     FrameworkObjectManagerServiceSetCpuAffinityMessage ();
-                    FrameworkObjectManagerServiceSetCpuAffinityMessage (const WaveServiceId &prismServiceId, const vector<UI32> &cpuAffinityVector);
+                    FrameworkObjectManagerServiceSetCpuAffinityMessage (const WaveServiceId &waveServiceId, const vector<UI32> &cpuAffinityVector);
                    ~FrameworkObjectManagerServiceSetCpuAffinityMessage ();
 
     WaveServiceId  getWaveServiceId                                  ();

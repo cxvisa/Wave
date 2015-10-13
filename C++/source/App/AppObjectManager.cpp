@@ -25,20 +25,20 @@ static WaveMutex                          s_applicationSpecificServicesMutex;
 
 static vector <AppDetail *>               s_appsInfo;
 
-void AppObjectManager::addToApplicationSpecificServicesVector (const WaveServiceId &prismServiceId)
+void AppObjectManager::addToApplicationSpecificServicesVector (const WaveServiceId &waveServiceId)
 {
     s_applicationSpecificServicesMutex.lock ();
-    s_applicationSpecificServicesMap[prismServiceId] = prismServiceId;
+    s_applicationSpecificServicesMap[waveServiceId] = waveServiceId;
     s_applicationSpecificServicesMutex.unlock ();
 }
 
-bool AppObjectManager::isAnApplicationSpecificService (const WaveServiceId &prismServiceId)
+bool AppObjectManager::isAnApplicationSpecificService (const WaveServiceId &waveServiceId)
 {
     bool serviceFound = false;
 
     s_applicationSpecificServicesMutex.lock ();
 
-    map<WaveServiceId, WaveServiceId>::iterator element = s_applicationSpecificServicesMap.find (prismServiceId);
+    map<WaveServiceId, WaveServiceId>::iterator element = s_applicationSpecificServicesMap.find (waveServiceId);
     map<WaveServiceId, WaveServiceId>::iterator end     = s_applicationSpecificServicesMap.end ();
 
     if (element != end)

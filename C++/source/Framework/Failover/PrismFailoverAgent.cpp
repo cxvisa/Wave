@@ -532,11 +532,11 @@ void PrismFailoverAgent::resetThisLocationToPrimaryStep (PrismFailoverAgentSeque
     pPrismFailoverAgentSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
-bool PrismFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &prismServiceId)
+bool PrismFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -1486,11 +1486,11 @@ void PrismFailoverAgent::informSecondaryLocationsToRemoveFailedFromKnownLocation
     pPrismFailoverAgentSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-bool PrismFailoverAgent::isToBeExcluded (const WaveServiceId &prismServiceId)
+bool PrismFailoverAgent::isToBeExcluded (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -1500,11 +1500,11 @@ bool PrismFailoverAgent::isToBeExcluded (const WaveServiceId &prismServiceId)
     }
 }
 
-bool PrismFailoverAgent::isToBeExcludedDuringPrePhase (const WaveServiceId &prismServiceId)
+bool PrismFailoverAgent::isToBeExcludedDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (true == (FrameworkToolKit::isALocalService (prismServiceId))) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }

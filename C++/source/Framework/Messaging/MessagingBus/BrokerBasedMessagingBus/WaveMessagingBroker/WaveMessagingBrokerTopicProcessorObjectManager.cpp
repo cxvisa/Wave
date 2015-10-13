@@ -80,7 +80,7 @@ string WaveMessagingBrokerTopicProcessorObjectManager::getTopicName () const
 
 WaveServiceId WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdByTopicName (const string &topicName)
 {
-    WaveServiceId prismServiceId = 0;
+    WaveServiceId waveServiceId = 0;
 
     m_topicNameToWaveServiceIdMapMutex.lock ();
 
@@ -89,12 +89,12 @@ WaveServiceId WaveMessagingBrokerTopicProcessorObjectManager::getWaveServiceIdBy
 
     if (endElement != element)
     {
-        prismServiceId = element->second;
+        waveServiceId = element->second;
     }
 
     m_topicNameToWaveServiceIdMapMutex.unlock ();
 
-    return (prismServiceId);
+    return (waveServiceId);
 }
 
 }

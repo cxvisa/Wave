@@ -46,17 +46,17 @@ class FrameworkSequenceGenerator
         virtual void  getFailoverSequence                 (vector<WaveServiceId> &serviceIds) const;
         virtual void  getZeroizeSequence                 (vector<WaveServiceId> &serviceIds) const;
 
-        virtual void  addWaveServiceIdToAll              (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToInitialize       (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToEnable           (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToInstall          (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToBoot             (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToShutdown         (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToUninstall        (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToUninitialize     (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToDisable          (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToFailover         (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
-        virtual void  addWaveServiceIdToZeroize 		  (const WaveServiceId &prismServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToAll              (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToInitialize       (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToEnable           (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToInstall          (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToBoot             (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToShutdown         (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToUninstall        (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToUninitialize     (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToDisable          (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToFailover         (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
+        virtual void  addWaveServiceIdToZeroize 		  (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
 
     // Nowe the data members
 

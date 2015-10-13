@@ -1138,7 +1138,7 @@ void TraceObjectManager::rotateTraceFile(bool noSizeCheck)
 
 void TraceObjectManager::messageHistoryConfigForAServiceMessageHandler (TraceObjectManagerMessageHistoryConfigForAServiceMessage *pMessageHistoryConfigForAServiceMessage)
 {
-    WaveServiceId  prismServiceId          = pMessageHistoryConfigForAServiceMessage->getWaveServiceId ();
+    WaveServiceId  waveServiceId          = pMessageHistoryConfigForAServiceMessage->getWaveServiceId ();
     bool            messageHistoryState     = pMessageHistoryConfigForAServiceMessage->getMessageHistoryState ();
     UI32            messageHistoryMaxSize   = pMessageHistoryConfigForAServiceMessage->getMessageHistoryMaxSize ();
     ResourceId      status                  = WAVE_MESSAGE_ERROR;
@@ -1150,19 +1150,19 @@ void TraceObjectManager::messageHistoryConfigForAServiceMessageHandler (TraceObj
     LocationId      thisLocationId          = FrameworkToolKit::getThisLocationId ();
     LocationId      primaryLocationId       = FrameworkToolKit::getClusterPrimaryLocationId ();
 
-    if (thisServiceId == prismServiceId)
+    if (thisServiceId == waveServiceId)
     {
         // This message is for local service
         updateMessageHistoryConfig (messageHistoryState, messageHistoryMaxSize);
         completionStatus = WAVE_MESSAGE_SUCCESS;
     }
-    else if ((false == FrameworkToolKit::isALocalService (prismServiceId)) && (thisLocationId != primaryLocationId))
+    else if ((false == FrameworkToolKit::isALocalService (waveServiceId)) && (thisLocationId != primaryLocationId))
     {
         // It is a global service, and this location is not primary location.
         completionStatus = WAVE_MESSAGE_ERROR;
         messageString   += "Message History config for a global service should be done at primary node.";
     }
-    else if (true == WaveNs::WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))
+    else if (true == WaveNs::WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))
     {
         // These services dont do normal messaging
         completionStatus = WAVE_MESSAGE_ERROR;
@@ -1170,7 +1170,7 @@ void TraceObjectManager::messageHistoryConfigForAServiceMessageHandler (TraceObj
     }
     else
     {
-        WaveObjectManagerMessageHistoryConfigMessage waveObjectManagerMessageHistoryConfigMessage (prismServiceId);
+        WaveObjectManagerMessageHistoryConfigMessage waveObjectManagerMessageHistoryConfigMessage (waveServiceId);
         waveObjectManagerMessageHistoryConfigMessage.setMessageHistoryState (messageHistoryState);
         waveObjectManagerMessageHistoryConfigMessage.setMessageHistoryMaxSize (messageHistoryMaxSize);
 
@@ -1203,7 +1203,7 @@ void TraceObjectManager::messageHistoryConfigForAServiceMessageHandler (TraceObj
 
 void TraceObjectManager::messageHistoryDumpForAServiceMessageHandler (TraceObjectManagerMessageHistoryDumpForAServiceMessage *pMessageHistoryDumpForAServiceMessage)
 {
-    WaveServiceId  prismServiceId          = pMessageHistoryDumpForAServiceMessage->getWaveServiceId ();
+    WaveServiceId  waveServiceId          = pMessageHistoryDumpForAServiceMessage->getWaveServiceId ();
     ResourceId      status                  = WAVE_MESSAGE_ERROR;
     ResourceId      completionStatus        = WAVE_MESSAGE_ERROR;
     string          messageString           = "";
@@ -1213,7 +1213,7 @@ void TraceObjectManager::messageHistoryDumpForAServiceMessageHandler (TraceObjec
     LocationId      thisLocationId          = FrameworkToolKit::getThisLocationId ();
     LocationId      primaryLocationId       = FrameworkToolKit::getClusterPrimaryLocationId ();
 
-    if (thisServiceId == prismServiceId)
+    if (thisServiceId == waveServiceId)
     {
         // This message is for local service
         vector<string>  messageHistoryDumpStringVector;
@@ -1221,13 +1221,13 @@ void TraceObjectManager::messageHistoryDumpForAServiceMessageHandler (TraceObjec
         pMessageHistoryDumpForAServiceMessage->setMessageHistoryDumpStringVector (messageHistoryDumpStringVector);
         completionStatus = WAVE_MESSAGE_SUCCESS;
     }
-    else if ((false == FrameworkToolKit::isALocalService (prismServiceId)) && (thisLocationId != primaryLocationId))
+    else if ((false == FrameworkToolKit::isALocalService (waveServiceId)) && (thisLocationId != primaryLocationId))
     {
         // It is a global service, and this location is not primary location.
         completionStatus = WAVE_MESSAGE_ERROR;
         messageString   += "Message History config for a global service should be done at primary node.";
     }
-    else if (true == WaveNs::WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))
+    else if (true == WaveNs::WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))
     {
         // These services dont do normal messaging
         completionStatus = WAVE_MESSAGE_ERROR;
@@ -1235,7 +1235,7 @@ void TraceObjectManager::messageHistoryDumpForAServiceMessageHandler (TraceObjec
     }
     else
     {
-        WaveObjectManagerMessageHistoryDumpMessage waveObjectManagerMessageHistoryDumpMessage (prismServiceId);
+        WaveObjectManagerMessageHistoryDumpMessage waveObjectManagerMessageHistoryDumpMessage (waveServiceId);
 
         status = sendSynchronously (&waveObjectManagerMessageHistoryDumpMessage);
 

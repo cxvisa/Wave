@@ -34,7 +34,7 @@ class DistributedLogTestContext : public WaveLinearSequencerContext
                 void            setNextLogId                    (const UI64 &nextLogId);
 
                 WaveServiceId  getWaveServiceId               () const;
-                void            setWaveServiceId               (const WaveServiceId &prismServiceId);
+                void            setWaveServiceId               (const WaveServiceId &waveServiceId);
 
                 ObjectId        getManagedObjectId              () const;
                 void            setManagedObjectId              (const ObjectId &managedObjectId);

@@ -26,7 +26,7 @@ class HeartBeatFailureAgent : protected WaveWorker
                 ResourceId  getListOfEnabledServicesStep         (HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext);
                 ResourceId  sendHeartBeatFailureStep             (HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext);
 
-                bool        requiresHeartBeatFailureNotification (const WaveServiceId &prismServiceId);
+                bool        requiresHeartBeatFailureNotification (const WaveServiceId &waveServiceId);
 
     // Now the data members
 

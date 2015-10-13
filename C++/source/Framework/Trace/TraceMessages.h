@@ -239,7 +239,7 @@ class TraceObjectManagerMessageHistoryDumpForAServiceMessage : public Management
     protected :
     public :
                                 TraceObjectManagerMessageHistoryDumpForAServiceMessage  ();
-                                TraceObjectManagerMessageHistoryDumpForAServiceMessage  (const WaveServiceId prismServiceId);
+                                TraceObjectManagerMessageHistoryDumpForAServiceMessage  (const WaveServiceId waveServiceId);
                                ~TraceObjectManagerMessageHistoryDumpForAServiceMessage  ();
 
         WaveServiceId          getWaveServiceId                                       () const;
@@ -264,7 +264,7 @@ class TraceObjectManagerMessageHistoryConfigForAServiceMessage : public Manageme
     protected :
     public :
                                 TraceObjectManagerMessageHistoryConfigForAServiceMessage ();
-                                TraceObjectManagerMessageHistoryConfigForAServiceMessage (WaveServiceId prismServiceId);
+                                TraceObjectManagerMessageHistoryConfigForAServiceMessage (WaveServiceId waveServiceId);
                                ~TraceObjectManagerMessageHistoryConfigForAServiceMessage ();
 
         WaveServiceId          getWaveServiceId                                        () const;

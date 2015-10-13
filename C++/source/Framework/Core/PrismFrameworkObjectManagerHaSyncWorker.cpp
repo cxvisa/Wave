@@ -344,29 +344,29 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCollectValidationDataStep (S
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::collectHaSyncValidationDataStep");
 
-    vector<WaveServiceId>  prismServiceIds;
+    vector<WaveServiceId>  waveServiceIds;
     UI32                    numberOfWaveServiceIds;
     UI32                    i;
     ResourceId              status                       = WAVE_MESSAGE_SUCCESS;
-    vector<WaveServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
+    vector<WaveServiceId> &waveServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
 
-    WaveThread::getListOfServiceIds (prismServiceIds);
-    numberOfWaveServiceIds = prismServiceIds.size ();
+    WaveThread::getListOfServiceIds (waveServiceIds);
+    numberOfWaveServiceIds = waveServiceIds.size ();
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
     {
-        trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::haSyncCollectHaSyncValidationDataStep : Collecting Validation Information from Service : ") + prismServiceIds[i]);
+        trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::haSyncCollectHaSyncValidationDataStep : Collecting Validation Information from Service : ") + waveServiceIds[i]);
 
-        if (true == (isServiceToBeExcludedInHaSyncCommunications (prismServiceIds[i])))
+        if (true == (isServiceToBeExcludedInHaSyncCommunications (waveServiceIds[i])))
         {
             continue;
         }
 
         // Collect the list of services so that we use the list later.
 
-        prismServiceIdsToCommunicate.push_back (prismServiceIds[i]);
+        waveServiceIdsToCommunicate.push_back (waveServiceIds[i]);
 
-        WaveObjectManagerHaSyncCollectValidationDataMessage message (prismServiceIds[i]);
+        WaveObjectManagerHaSyncCollectValidationDataMessage message (waveServiceIds[i]);
 
         status  = sendSynchronously (&message);
 
@@ -374,7 +374,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCollectValidationDataStep (S
         {
             status = FRAMEWORK_ERROR_COULD_NOT_COLLECT_VALIDATION_DATA;
 
-            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::CollectHaSyncValidationDataStep : Failed to obtain Validation Details for Service (") + FrameworkToolKit::getServiceNameById (prismServiceIds[i]) + "), Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::CollectHaSyncValidationDataStep : Failed to obtain Validation Details for Service (") + FrameworkToolKit::getServiceNameById (waveServiceIds[i]) + "), Status : " + FrameworkToolKit::localize (status));
 
             break;
         }
@@ -385,7 +385,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCollectValidationDataStep (S
         {
             status = FRAMEWORK_ERROR_COULD_NOT_COLLECT_VALIDATION_DATA;
 
-            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::CollectHaSyncValidationDataStep : Failed to obtain Validation Details for Service (") + FrameworkToolKit::getServiceNameById (prismServiceIds[i]) + "), Completion Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::CollectHaSyncValidationDataStep : Failed to obtain Validation Details for Service (") + FrameworkToolKit::getServiceNameById (waveServiceIds[i]) + "), Completion Status : " + FrameworkToolKit::localize (status));
 
             break;
         }
@@ -397,13 +397,13 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncCollectValidationDataStep (S
 
         if ((0 != size) && (NULL != pData))
         {
-            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::CollectHaSyncValidationDataStep: Obtained Validation Data for Service : " + FrameworkToolKit::getServiceNameById (prismServiceIds[i]));
+            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::CollectHaSyncValidationDataStep: Obtained Validation Data for Service : " + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
 
-            pStartHaSyncDumpContext->addValidationDetailsForService (prismServiceIds[i], pData, size);
+            pStartHaSyncDumpContext->addValidationDetailsForService (waveServiceIds[i], pData, size);
         }
         else
         {
-            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::CollectHaSyncValidationDataStep : No Validation details are obtained for Service : " + FrameworkToolKit::getServiceNameById (prismServiceIds[i]));
+            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::CollectHaSyncValidationDataStep : No Validation details are obtained for Service : " + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
         }
     }
 
@@ -821,11 +821,11 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep (St
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep : Starting ...");
 
-    vector<WaveServiceId> &prismServiceIds                = pStartHaSyncDumpContext->getWaveServiceIdsVector ();
+    vector<WaveServiceId> &waveServiceIds                = pStartHaSyncDumpContext->getWaveServiceIdsVector ();
     vector<void *>         &validationDetailsVector        = pStartHaSyncDumpContext->getValidationDetailsVector ();
     vector<UI32>           &validationDetailsSizesVector   = pStartHaSyncDumpContext->getValidationDetailsSizesVector ();
 
-    UI32                   numberOfWaveServiceIds        = prismServiceIds.size ();
+    UI32                   numberOfWaveServiceIds        = waveServiceIds.size ();
     UI32                   numberOfValidationDetails      = validationDetailsVector.size ();
     UI32                   numberOfValidationDetailsSizes = validationDetailsSizesVector.size ();
     UI32                   j                              = 0;
@@ -839,7 +839,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationDetailsStep (St
     {
          if ((0 != validationDetailsSizesVector[j]) && (NULL != validationDetailsVector[j]))
          {
-              pMessage->addBuffer (prismServiceIds[j], validationDetailsSizesVector[j], validationDetailsVector[j]);
+              pMessage->addBuffer (waveServiceIds[j], validationDetailsSizesVector[j], validationDetailsVector[j]);
          }
          else
          {
@@ -959,8 +959,8 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationResultsStep (St
 
     if (NULL != pPrismHaSyncConfigureStandbyMessage)
     {
-        vector<WaveServiceId> &prismServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
-        UI32                    numberOfPrismServices        = prismServiceIdsToCommunicate.size ();
+        vector<WaveServiceId> &waveServiceIdsToCommunicate = pStartHaSyncDumpContext->getWaveServiceIdsToCommunicate ();
+        UI32                    numberOfPrismServices        = waveServiceIdsToCommunicate.size ();
         UI32                    i                            = 0;
 
         for (i = 0; i < numberOfPrismServices; i++)
@@ -968,9 +968,9 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncGetValidationResultsStep (St
             void *pValidationResults    = NULL;
             UI32  validationResultsSize = 0;
 
-            pValidationResults = pPrismHaSyncConfigureStandbyMessage->transferBufferToUser (s_offSetForHaSyncValidationResults + prismServiceIdsToCommunicate[i], validationResultsSize);
+            pValidationResults = pPrismHaSyncConfigureStandbyMessage->transferBufferToUser (s_offSetForHaSyncValidationResults + waveServiceIdsToCommunicate[i], validationResultsSize);
 
-            pStartHaSyncDumpContext->addValidationResultsForService (prismServiceIdsToCommunicate[i], pValidationResults, validationResultsSize);
+            pStartHaSyncDumpContext->addValidationResultsForService (waveServiceIdsToCommunicate[i], pValidationResults, validationResultsSize);
         }
     }
 
@@ -1017,10 +1017,10 @@ void PrismFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpCallback (Fr
     }
 }
 
-bool PrismFrameworkObjectManagerHaSyncWorker::isServiceToBeExcludedInHaSyncCommunications (const WaveServiceId &prismServiceId)
+bool PrismFrameworkObjectManagerHaSyncWorker::isServiceToBeExcludedInHaSyncCommunications (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == prismServiceId)           ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId)           ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
     }
@@ -1406,20 +1406,20 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
 {
     trace (TRACE_LEVEL_INFO, "PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServiceStep");
 
-    vector<WaveServiceId> prismServiceIds;
+    vector<WaveServiceId> waveServiceIds;
     UI32                   numberOfWaveServiceIds;
     UI32                   i;
     LocationId             thisLocationId           = FrameworkToolKit::getThisLocationId ();
     ResourceId             status                   = WAVE_MESSAGE_SUCCESS;
 
-    WaveThread::getListOfServiceIds (prismServiceIds);
-    numberOfWaveServiceIds = prismServiceIds.size ();
+    WaveThread::getListOfServiceIds (waveServiceIds);
+    numberOfWaveServiceIds = waveServiceIds.size ();
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
     {
-        trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesStep : Validating Service : ") + prismServiceIds[i]);
+        trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesStep : Validating Service : ") + waveServiceIds[i]);
 
-        if (true == (isServiceToBeExcludedInHaSyncCommunications (prismServiceIds[i])))
+        if (true == (isServiceToBeExcludedInHaSyncCommunications (waveServiceIds[i])))
         {
             continue;
         }
@@ -1428,15 +1428,15 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
         void                                  *pValidationData                        = NULL;
         UI32                                   size                                   = 0;
 
-        pValidationData = pPrismHaSyncConfigureStandbyMessage->transferBufferToUser (prismServiceIds[i], size);
+        pValidationData = pPrismHaSyncConfigureStandbyMessage->transferBufferToUser (waveServiceIds[i], size);
 
-        WaveObjectManagerHaSyncValidateDataMessage message (prismServiceIds[i]);
+        WaveObjectManagerHaSyncValidateDataMessage message (waveServiceIds[i]);
 
         // If we have got some validation data then attach it and send it to the service.
 
         if ((NULL != pValidationData) && (0 != size))
         {
-            trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Sending Validation details to Service : ") + FrameworkToolKit::getServiceNameById (prismServiceIds[i]));
+            trace (TRACE_LEVEL_DEBUG, string ("PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Sending Validation details to Service : ") + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
 
             message.setValidationDetails (pValidationData, size, true);
         }
@@ -1447,7 +1447,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
         {
             status = FRAMEWORK_ERROR_SERVICE_VALIDATION_FAILED;
 
-            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Failed to Validate Service (") + FrameworkToolKit::getServiceNameById (prismServiceIds[i]) + "), Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Failed to Validate Service (") + FrameworkToolKit::getServiceNameById (waveServiceIds[i]) + "), Status : " + FrameworkToolKit::localize (status));
 
             break;
         }
@@ -1458,7 +1458,7 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
         {
             status = FRAMEWORK_ERROR_SERVICE_VALIDATION_FAILED;
 
-            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Failed to Validate Service (") + FrameworkToolKit::getServiceNameById (prismServiceIds[i]) + "), Completion Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_ERROR, string ("PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Failed to Validate Service (") + FrameworkToolKit::getServiceNameById (waveServiceIds[i]) + "), Completion Status : " + FrameworkToolKit::localize (status));
 
             break;
         }
@@ -1469,13 +1469,13 @@ void PrismFrameworkObjectManagerHaSyncWorker::configureStandbyValidateServicesSt
 
         if ((0 != size) && (NULL != pValidationResults))
         {
-            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Obtained Validation Results for Service : " + FrameworkToolKit::getServiceNameById (prismServiceIds[i]));
+            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::configureStandbyValidateServicesStep : Obtained Validation Results for Service : " + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
 
-            pPrismHaSyncConfigureStandbyMessage->addBuffer (prismServiceIds[i] + s_offSetForHaSyncValidationResults, size, pValidationResults, true);
+            pPrismHaSyncConfigureStandbyMessage->addBuffer (waveServiceIds[i] + s_offSetForHaSyncValidationResults, size, pValidationResults, true);
         }
         else
         {
-            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::configureStandbyValidateServicesStep : No Validation Results are obtained for Service : " + FrameworkToolKit::getServiceNameById (prismServiceIds[i]));
+            trace (TRACE_LEVEL_DEBUG, "PrismFrameworkObjectManager::configureStandbyValidateServicesStep : No Validation Results are obtained for Service : " + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
         }
     }
 

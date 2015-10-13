@@ -111,7 +111,7 @@ class FrameworkTestabilityManagementInterfaceMessageLeakMessage : public Managem
                                 void      setMessageArguments (const vector<WaveServiceId>  &messageServiceIds, const vector<UI32> &messageOperationCodes, const vector<WaveMessageType> &messageTypes, const vector<string> &btStrings);
                                 void      getMessageArguments (vector<WaveServiceId>  &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings) const;
 
-                                void      setWaveServiceId (const WaveServiceId prismServiceId);
+                                void      setWaveServiceId (const WaveServiceId waveServiceId);
                       WaveServiceId      getWaveServiceId () const;
     // now the data members
 
@@ -137,7 +137,7 @@ class FrameworkTestabilityManagementInterfaceObjectLeakMessage : public Manageme
             
                 void     setMessageArguments (const vector<string> &managedObjectClassNames, const vector<string>  &managedObjectNames, const vector<bool> &queryResults, const vector<string> &btStrings);
                 void     getMessageArguments (vector<string> &managedObjectClassNames, vector<string>  &managedObjectNames, vector<bool> &queryResults, vector<string> &btStrings) const;
-                void     setWaveServiceId (WaveServiceId prismServiceId);
+                void     setWaveServiceId (WaveServiceId waveServiceId);
       WaveServiceId     getWaveServiceId () const;
     // now the data members
 

@@ -107,84 +107,84 @@ void FrameworkSequenceGenerator::getZeroizeSequence (vector<WaveServiceId> &serv
     serviceIds = m_waveServiceIdsToZeroize;
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToAll (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToAll (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
     if (true == isForNormalPhase)
     {
-        m_waveServiceIdsToInitialize.push_back (prismServiceId);
-        m_waveServiceIdsToEnable.push_back (prismServiceId);
-        m_waveServiceIdsToInstall.push_back (prismServiceId);
-        m_waveServiceIdsToBoot.push_back (prismServiceId);
-        m_waveServiceIdsToShutdown.insert (m_waveServiceIdsToShutdown.begin (), prismServiceId);
-        m_waveServiceIdsToUninstall.insert (m_waveServiceIdsToUninstall.begin (), prismServiceId);
-        m_waveServiceIdsToUninitialize.insert (m_waveServiceIdsToUninitialize.begin (), prismServiceId);
-        m_waveServiceIdsToDisable.insert (m_waveServiceIdsToDisable.begin (), prismServiceId);
+        m_waveServiceIdsToInitialize.push_back (waveServiceId);
+        m_waveServiceIdsToEnable.push_back (waveServiceId);
+        m_waveServiceIdsToInstall.push_back (waveServiceId);
+        m_waveServiceIdsToBoot.push_back (waveServiceId);
+        m_waveServiceIdsToShutdown.insert (m_waveServiceIdsToShutdown.begin (), waveServiceId);
+        m_waveServiceIdsToUninstall.insert (m_waveServiceIdsToUninstall.begin (), waveServiceId);
+        m_waveServiceIdsToUninitialize.insert (m_waveServiceIdsToUninitialize.begin (), waveServiceId);
+        m_waveServiceIdsToDisable.insert (m_waveServiceIdsToDisable.begin (), waveServiceId);
     }
     else
     {
-        m_waveServiceIdsToInitializeDuringPrePhase.push_back (prismServiceId);
-        m_waveServiceIdsToEnableDuringPrePhase.push_back (prismServiceId);
-        m_waveServiceIdsToInstallDuringPrePhase.push_back (prismServiceId);
-        m_waveServiceIdsToBootDuringPrePhase.push_back (prismServiceId);
-        m_waveServiceIdsToShutdownDuringPostPhase.insert (m_waveServiceIdsToShutdownDuringPostPhase.begin (), prismServiceId);
-        m_waveServiceIdsToUninstallDuringPostPhase.insert (m_waveServiceIdsToUninstallDuringPostPhase.begin (), prismServiceId);
-        m_waveServiceIdsToUninitializeDuringPostPhase.insert (m_waveServiceIdsToUninitializeDuringPostPhase.begin (), prismServiceId);
-        m_waveServiceIdsToDisableDuringPostPhase.insert (m_waveServiceIdsToDisableDuringPostPhase.begin (), prismServiceId);
+        m_waveServiceIdsToInitializeDuringPrePhase.push_back (waveServiceId);
+        m_waveServiceIdsToEnableDuringPrePhase.push_back (waveServiceId);
+        m_waveServiceIdsToInstallDuringPrePhase.push_back (waveServiceId);
+        m_waveServiceIdsToBootDuringPrePhase.push_back (waveServiceId);
+        m_waveServiceIdsToShutdownDuringPostPhase.insert (m_waveServiceIdsToShutdownDuringPostPhase.begin (), waveServiceId);
+        m_waveServiceIdsToUninstallDuringPostPhase.insert (m_waveServiceIdsToUninstallDuringPostPhase.begin (), waveServiceId);
+        m_waveServiceIdsToUninitializeDuringPostPhase.insert (m_waveServiceIdsToUninitializeDuringPostPhase.begin (), waveServiceId);
+        m_waveServiceIdsToDisableDuringPostPhase.insert (m_waveServiceIdsToDisableDuringPostPhase.begin (), waveServiceId);
     }
 
-    m_waveServiceIdsToFailover.push_back   (prismServiceId);
-    m_waveServiceIdsToZeroize.push_back    (prismServiceId);
+    m_waveServiceIdsToFailover.push_back   (waveServiceId);
+    m_waveServiceIdsToZeroize.push_back    (waveServiceId);
     
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToInitialize (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToInitialize (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToInitialize.push_back (prismServiceId);
+    m_waveServiceIdsToInitialize.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToEnable (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToEnable (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToEnable.push_back (prismServiceId);
+    m_waveServiceIdsToEnable.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToInstall (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToInstall (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToInstall.push_back (prismServiceId);
+    m_waveServiceIdsToInstall.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToBoot (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToBoot (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToBoot.push_back (prismServiceId);
+    m_waveServiceIdsToBoot.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToShutdown (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToShutdown (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToShutdown.push_back (prismServiceId);
+    m_waveServiceIdsToShutdown.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToUninstall (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToUninstall (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToUninstall.push_back (prismServiceId);
+    m_waveServiceIdsToUninstall.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToUninitialize (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToUninitialize (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToUninitialize.push_back (prismServiceId);
+    m_waveServiceIdsToUninitialize.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToDisable (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToDisable (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToDisable.push_back (prismServiceId);
+    m_waveServiceIdsToDisable.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToFailover (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToFailover (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToFailover.push_back (prismServiceId);
+    m_waveServiceIdsToFailover.push_back (waveServiceId);
 }
 
-void FrameworkSequenceGenerator::addWaveServiceIdToZeroize (const WaveServiceId &prismServiceId, const bool &isForNormalPhase)
+void FrameworkSequenceGenerator::addWaveServiceIdToZeroize (const WaveServiceId &waveServiceId, const bool &isForNormalPhase)
 {
-    m_waveServiceIdsToZeroize.push_back(prismServiceId);
+    m_waveServiceIdsToZeroize.push_back(waveServiceId);
 }
 
 }

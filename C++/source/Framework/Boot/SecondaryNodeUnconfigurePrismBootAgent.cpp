@@ -49,9 +49,9 @@ bool SecondaryNodeUnconfigurePrismBootAgent::isAPersistentBoot ()
     return (false);
 }
 
-bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &prismServiceId)
+bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &waveServiceId)
 {
-    if (true == (FrameworkToolKit::isALocalService (prismServiceId)))
+    if (true == (FrameworkToolKit::isALocalService (waveServiceId)))
     {
         return (true);
     }
@@ -61,9 +61,9 @@ bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedForEnableAndBoot (con
     }
 }
 
-bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase  (const WaveServiceId &prismServiceId)
+bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase  (const WaveServiceId &waveServiceId)
 {
-    if (true == (FrameworkToolKit::isALocalService (prismServiceId)))
+    if (true == (FrameworkToolKit::isALocalService (waveServiceId)))
     {
         return (true);
     }
@@ -73,9 +73,9 @@ bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedFromInitializeDuringP
     }
 }
 
-bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &prismServiceId)
+bool SecondaryNodeUnconfigurePrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (true == (FrameworkToolKit::isALocalService (prismServiceId)))
+    if (true == (FrameworkToolKit::isALocalService (waveServiceId)))
     {
         return (true);
     }

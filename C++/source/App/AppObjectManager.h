@@ -20,7 +20,7 @@ class AppObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
 {
     private :
                       AppObjectManager                       (AppDetail *appDetail, UI32 applicationId, const UI32 &stackSize = 0);
-        static  void  addToApplicationSpecificServicesVector (const WaveServiceId &prismServiceId);
+        static  void  addToApplicationSpecificServicesVector (const WaveServiceId &waveServiceId);
 
     protected :
     public :
@@ -34,7 +34,7 @@ class AppObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
         static AppInterfaceObjectManager   *getAppInterfaceObjectManagerForServiceId (UI32 appInterafceServiceId);
         static AppObjectManager            *getAppObjectManager                      (UI32 appId);
 
-        static bool                         isAnApplicationSpecificService           (const WaveServiceId &prismServiceId);
+        static bool                         isAnApplicationSpecificService           (const WaveServiceId &waveServiceId);
         static bool                         validateAppId                            (SI32 appId);
 
     // Now the data members

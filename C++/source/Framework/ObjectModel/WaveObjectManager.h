@@ -336,8 +336,8 @@ class WaveObjectManager : public WaveElement
                 void                installInstallSelfStepCallback               (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                install                                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-        static  void                addServiceToEnabledServicesList              (const WaveServiceId &prismServiceId);
-        static  void                removeServiceFromEnabledServicesList         (const WaveServiceId &prismServiceId);
+        static  void                addServiceToEnabledServicesList              (const WaveServiceId &waveServiceId);
+        static  void                removeServiceFromEnabledServicesList         (const WaveServiceId &waveServiceId);
 
                 void                enableHandler                                (PrismEnableObjectManagerMessage *pEnableMessage);
                 void                enableEnableWorkersStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
@@ -608,7 +608,7 @@ class WaveObjectManager : public WaveElement
                 void                                             removeServiceIndependentOperationMap         (UI32 operationCode);
                 void                                             removeOperationMap                           (const UI32 &operationCode);
         virtual void                                             addEventType                                 (const UI32 &eventOperationCode);
-        virtual void                                             listenForEvent                               (WaveServiceId prismServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                                             listenForEvent                               (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
         virtual void                                             unlistenEvents                               ();
                 void                                             addResponseMap                               (UI32 prismMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
                 WaveMessageResponseContext                     *removeResponseMap                            (UI32 prismMessageId);
@@ -700,7 +700,7 @@ class WaveObjectManager : public WaveElement
         virtual UI32                                             getNumberOfPendingNormalMessages                   ();
         virtual UI32                                             getNumberOfPendingHighPriorityMessages             ();
 
-        virtual bool                                             isALocalPrismService                               ();
+        virtual bool                                             isALocalWaveService                               ();
 
                 void                                             registerEventListenerHandler                       (WaveObjectManagerRegisterEventListenerMessage *pWaveObjectManagerRegisterEventListenerMessage);
 
@@ -873,7 +873,7 @@ class WaveObjectManager : public WaveElement
 
     public :
         static void                getListOfEnabledServices                    (vector<WaveServiceId> &enabledServices);
-        static bool                isServiceEnabled                            (const WaveServiceId &prismServiceId);
+        static bool                isServiceEnabled                            (const WaveServiceId &waveServiceId);
 
         // The following is a special function for consuming all pending messages.  This is not to be used in general.
         // This is being implemented so that the CSCN based application can consume Wave messages as well.
@@ -893,8 +893,8 @@ class WaveObjectManager : public WaveElement
                 void               getAllOwnedManagedObjectClassNames          (vector<string> &ownedManagedObjectClassNames) const ;
                 void               checkMessageAttributesInSerialization       ();
 
-        static  void               endOfLifeService                            (WaveServiceId prismServiceId);
-        static  void               bootStrapService                            (WaveServiceId prismServiceId);
+        static  void               endOfLifeService                            (WaveServiceId waveServiceId);
+        static  void               bootStrapService                            (WaveServiceId waveServiceId);
 
     // Now the data members
 

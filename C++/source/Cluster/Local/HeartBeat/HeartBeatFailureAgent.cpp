@@ -90,10 +90,10 @@ ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgen
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool HeartBeatFailureAgent::requiresHeartBeatFailureNotification(const WaveServiceId &prismServiceId)
+bool HeartBeatFailureAgent::requiresHeartBeatFailureNotification(const WaveServiceId &waveServiceId)
 {
-    if (((HeartBeatObjectManager::getWaveServiceId               ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((HeartBeatObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

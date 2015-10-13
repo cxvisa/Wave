@@ -46,7 +46,7 @@ void CliBlockServiceIndependentMessage::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeBool (&m_operation, "operation"));
     addSerializableAttribute (new AttributeResourceId (&m_reason, "reason"));
     addSerializableAttribute (new AttributeLocationId (&m_originator, "originator"));
-    addSerializableAttribute (new AttributeUI32 (&m_waveServiceId, "prismServiceId"));
+    addSerializableAttribute (new AttributeUI32 (&m_waveServiceId, "waveServiceId"));
 
 }
 

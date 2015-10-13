@@ -286,10 +286,10 @@ ResourceId PrismPostbootAgent::notifyPostbootCompletedStep (PrismPostbootAgentCo
     return (status);
 }
 
-bool PrismPostbootAgent::requiresPostboot (const WaveServiceId &prismServiceId)
+bool PrismPostbootAgent::requiresPostboot (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == prismServiceId) ||
-        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (prismServiceId))))
+    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+        (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (false);
     }

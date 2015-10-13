@@ -27,7 +27,7 @@ class PrismExternalStateSynchronizationAgent : protected WaveWorker
                 ResourceId  getListOfEnabledServicesStep                (PrismExternalStateSynchronizationAgentContext *pPrismExternalStateSynchronizationAgentContext);
                 ResourceId  externalStateSynchronizationServicesStep    (PrismExternalStateSynchronizationAgentContext *pPrismExternalStateSynchronizationAgentContext);
 
-                bool        requiresExternalStateSynchronization        (const WaveServiceId &prismServiceId);
+                bool        requiresExternalStateSynchronization        (const WaveServiceId &waveServiceId);
 
     // Now the data members
     private :

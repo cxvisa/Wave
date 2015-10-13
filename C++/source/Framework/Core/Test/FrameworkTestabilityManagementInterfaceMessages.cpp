@@ -245,7 +245,7 @@ void FrameworkTestabilityManagementInterfaceMessageLeakMessage::setupAttributesF
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeUI32 (&m_waveServiceId,                "prismServiceId"));
+     addSerializableAttribute (new AttributeUI32 (&m_waveServiceId,                "waveServiceId"));
      addSerializableAttribute (new AttributeUI32Vector (&m_messageServiceIds,       "messageServiceIds"));
      addSerializableAttribute (new AttributeUI32Vector (&m_messageOperationCodes,   "messageOperationCodes"));
      addSerializableAttribute (new AttributeUI32Vector (&m_messageTypes,            "messageTypes"));
@@ -282,9 +282,9 @@ void FrameworkTestabilityManagementInterfaceMessageLeakMessage::getMessageArgume
     btStrings             = m_btStrings;
 }
 
-void FrameworkTestabilityManagementInterfaceMessageLeakMessage::setWaveServiceId (const WaveServiceId prismServiceId)
+void FrameworkTestabilityManagementInterfaceMessageLeakMessage::setWaveServiceId (const WaveServiceId waveServiceId)
 {
-    m_waveServiceId = prismServiceId;
+    m_waveServiceId = waveServiceId;
 }
 
 WaveServiceId FrameworkTestabilityManagementInterfaceMessageLeakMessage::getWaveServiceId () const
@@ -306,7 +306,7 @@ void FrameworkTestabilityManagementInterfaceObjectLeakMessage::setupAttributesFo
 {
     ManagementInterfaceMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeUI32 (&m_waveServiceId,                    "prismServiceId"));
+     addSerializableAttribute (new AttributeUI32 (&m_waveServiceId,                    "waveServiceId"));
      addSerializableAttribute (new AttributeStringVector (&m_managedObjectClassNames,   "managedObjectClassNames"));
      addSerializableAttribute (new AttributeStringVector (&m_managedObjectNames,        "managedObjectNames"));
      addSerializableAttribute (new AttributeBoolVector (&m_queryResults,                "queryResults"));
@@ -329,9 +329,9 @@ void FrameworkTestabilityManagementInterfaceObjectLeakMessage::getMessageArgumen
     btStrings               = m_btStrings;
 }
 
-void FrameworkTestabilityManagementInterfaceObjectLeakMessage::setWaveServiceId (WaveServiceId prismServiceId)
+void FrameworkTestabilityManagementInterfaceObjectLeakMessage::setWaveServiceId (WaveServiceId waveServiceId)
 {
-    m_waveServiceId = prismServiceId;
+    m_waveServiceId = waveServiceId;
 }
 
 WaveServiceId FrameworkTestabilityManagementInterfaceObjectLeakMessage::getWaveServiceId () const

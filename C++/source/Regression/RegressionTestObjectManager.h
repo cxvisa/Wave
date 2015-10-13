@@ -38,7 +38,7 @@ class RegressionTestObjectManager : public WaveLocalObjectManager
         static WaveServiceId               getWaveServiceId    ();
         static string                       getServiceName       ();
 
-        static void                         addToRegressionShell (const WaveServiceId &prismServiceId, const bool &isEnabledByDefault);
+        static void                         addToRegressionShell (const WaveServiceId &waveServiceId, const bool &isEnabledByDefault);
 
     // Now the data members
 
