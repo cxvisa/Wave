@@ -6,12 +6,15 @@
 
 package com.CxWave.Wave.Framework.Trace;
 
+import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils;
 import com.CxWave.Wave.Framework.Utils.Time.WaveTimeUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
-public class TraceObjectManager
+public class TraceObjectManager extends WaveObjectManager
 {
     private static TraceObjectManager s_traceObjectManager = null;
 
@@ -19,9 +22,16 @@ public class TraceObjectManager
     private static boolean            s_isFirstTime        = true;
     private static WaveTraceFile      s_waveTraceFile      = new WaveTraceFile ();
     private static TraceClientMap     s_traceClientMap     = null;
+    private static WaveMutex          s_mutexForTracing    = new WaveMutex ();
 
+    public static String getClassName ()
+    {
+        return ("Trace");
+    }
     private TraceObjectManager ()
     {
+        super (getClassName ());
+
         s_traceClientMap = TraceClientMap.getInstance ();
     }
 
@@ -99,6 +109,8 @@ public class TraceObjectManager
 
     public static void traceDirectly (final TraceClientId traceClientId, final TraceLevel requestedTraceLevel, final String stringToTrace, final boolean addNewLine, final boolean suppressPrefix)
     {
+        s_mutexForTracing.lock ();
+
         if (s_isFirstTime)
         {
             s_waveTraceFile.setNewFilePath (s_waveTraceFilePath);
@@ -137,5 +149,18 @@ public class TraceObjectManager
 
             WaveTerminalUtils.waveResetConsoleTextColor ();
         }
+
+        s_mutexForTracing.unlock ();
+    }
+
+    public static TraceClientId addClient (final TraceLevel traceLevel, final String traceClientName)
+    {
+        TraceClientMap traceClientMap = TraceClientMap.getInstance ();
+
+        WaveAssertUtils.waveAssert (null != traceClientMap);
+
+        TraceClientId traceClientId = traceClientMap.addClient (traceLevel, traceClientName);
+
+        return (traceClientId);
     }
 }

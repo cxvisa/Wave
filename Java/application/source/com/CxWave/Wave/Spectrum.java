@@ -16,6 +16,7 @@ import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 class Spectrum
 {
@@ -70,18 +71,18 @@ class Spectrum
         TraceClientId tci = tcm.addClient (TraceLevel.TRACE_LEVEL_UNKNOWN, "Test Trace Client");
         TraceObjectManager tom = TraceObjectManager.getInstance ();
 
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test\n", false, true);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test\n", false, true);
 
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_UNKNOWN,    "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_DEVEL,      "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_DEBUG,      "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_INFO,       "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_PERF_START, "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_PERF_END  , "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
-        tom.traceDirectly (tci, TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN,    "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_DEVEL,      "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_DEBUG,      "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_INFO,       "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_PERF_START, "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_PERF_END  , "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
+        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
 
 
         //DaemonUtils.daemonize ();

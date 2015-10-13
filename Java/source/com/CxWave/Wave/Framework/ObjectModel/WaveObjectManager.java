@@ -13,12 +13,14 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.WaveGenericContext;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class WaveObjectManager extends WaveElement
 {
@@ -163,4 +165,11 @@ public class WaveObjectManager extends WaveElement
     private boolean                                                                m_isEnabled;
     private WaveMutex                                                              m_isEnabledMutex;
     private TraceClientId                                                          m_traceClientId;
+
+    protected WaveObjectManager (final String waveObjectManagerName)
+    {
+        m_name = new String (waveObjectManagerName);
+
+        m_traceClientId = TraceObjectManager.addClient (TraceLevel.TRACE_LEVEL_INFO, m_name);
+    }
 }
