@@ -6,6 +6,7 @@
 
 package com.CxWave.Wave;
 
+import com.CxWave.Wave.Framework.ToolKits.Xml.XmlFile;
 import com.CxWave.Wave.Framework.Trace.TraceClientMap;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Trace.WaveTraceFile;
@@ -68,9 +69,10 @@ class Spectrum
 
         TraceClientMap tcm = TraceClientMap.getInstance ();
 
-        TraceClientId tci = tcm.addClient (TraceLevel.TRACE_LEVEL_UNKNOWN, "Test Trace Client");
+        //TraceClientId      tci = tcm.addClient (TraceLevel.TRACE_LEVEL_UNKNOWN, "Test Trace Client");
         TraceObjectManager tom = TraceObjectManager.getInstance ();
 
+        /*
         WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test", true, false);
         WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test\n", false, true);
 
@@ -83,7 +85,11 @@ class Spectrum
         WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
         WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
         WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
+        */
 
+        XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
+
+        xmlFile.debugPrint ();
 
         //DaemonUtils.daemonize ();
 
