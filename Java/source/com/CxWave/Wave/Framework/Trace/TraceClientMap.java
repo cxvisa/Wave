@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Trace;
@@ -17,18 +15,18 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class TraceClientMap
 {
-    private        Map<TraceClientId, TraceLevel> m_traceClientsAndLevels;
-    private        Map<TraceClientId, String>     m_traceClientsAndNames;
-    private        TraceClientId                  m_nextAvailableTraceClientId;
+    private Map<TraceClientId, TraceLevel> m_traceClientsAndLevels;
+    private Map<TraceClientId, String>     m_traceClientsAndNames;
+    private TraceClientId                  m_nextAvailableTraceClientId;
 
-    private        WaveMutex                      m_traceClientMapMutex;
+    private WaveMutex m_traceClientMapMutex;
 
-    private static TraceClientMap                 s_traceClientMap              = new TraceClientMap ();
+    private static final TraceClientMap s_traceClientMap = new TraceClientMap ();
 
     private TraceClientMap ()
     {
         m_traceClientsAndLevels = new HashMap<TraceClientId, TraceLevel> ();
-        m_traceClientsAndNames  = new HashMap<TraceClientId, String>     ();
+        m_traceClientsAndNames = new HashMap<TraceClientId, String> ();
 
         m_nextAvailableTraceClientId = new TraceClientId (1);
 

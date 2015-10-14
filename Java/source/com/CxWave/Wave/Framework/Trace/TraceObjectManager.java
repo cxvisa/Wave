@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Trace;
@@ -18,21 +16,19 @@ public class TraceObjectManager extends WaveObjectManager
 {
     private static TraceObjectManager s_traceObjectManager = null;
 
-    private static String             s_waveTraceFilePath  = "waveTraceFile.log";
-    private static boolean            s_isFirstTime        = true;
-    private static WaveTraceFile      s_waveTraceFile      = new WaveTraceFile ();
-    private static TraceClientMap     s_traceClientMap     = null;
-    private static WaveMutex          s_mutexForTracing    = new WaveMutex ();
+    private static String        s_waveTraceFilePath = "waveTraceFile.log";
+    private static boolean       s_isFirstTime       = true;
+    private static WaveTraceFile s_waveTraceFile     = new WaveTraceFile ();
+    private static WaveMutex     s_mutexForTracing   = new WaveMutex ();
 
     public static String getClassName ()
     {
         return ("Trace");
     }
+
     private TraceObjectManager ()
     {
         super (getClassName ());
-
-        s_traceClientMap = TraceClientMap.getInstance ();
     }
 
     public static TraceObjectManager getInstance ()
@@ -118,7 +114,9 @@ public class TraceObjectManager extends WaveObjectManager
             s_isFirstTime = false;
         }
 
-        TraceLevel currentTraceLevel = s_traceClientMap.getTraceClientLevel (traceClientId);
+        final TraceClientMap traceClientMap = TraceClientMap.getInstance ();
+
+        TraceLevel currentTraceLevel = traceClientMap.getTraceClientLevel (traceClientId);
 
         if (0 >= (currentTraceLevel.compareTo (requestedTraceLevel)))
         {
@@ -126,7 +124,7 @@ public class TraceObjectManager extends WaveObjectManager
 
             WaveTerminalUtils.waveSetConsoleTextColor (requestedTraceLevel);
 
-            if (! suppressPrefix)
+            if (!suppressPrefix)
             {
                 computedTraceString.append (getTraceTagForLevel (requestedTraceLevel));
 

@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.ObjectModel;
@@ -29,10 +27,10 @@ public class WaveObjectManager extends WaveElement
         private WaveElement        m_waveElementThatHandlesTheMessage;
         private WaveMessageHandler m_waveMessageHandler;
 
-        public PrismOperationMapContext   (WaveElement waveElement, WaveMessageHandler waveMessageHandler)
+        public PrismOperationMapContext (WaveElement waveElement, WaveMessageHandler waveMessageHandler)
         {
             m_waveElementThatHandlesTheMessage = waveElement;
-            m_waveMessageHandler               = waveMessageHandler;
+            m_waveMessageHandler = waveMessageHandler;
         }
 
         public void executeMessageHandler (WaveMessage waveMessage)
@@ -50,10 +48,10 @@ public class WaveObjectManager extends WaveElement
         public WaveEventMapContext (WaveElement waveElement, WaveEventHandler waveEventHandler)
         {
             m_waveElementThatHandlesTheEvent = waveElement;
-            m_waveEventHandler               = waveEventHandler;
+            m_waveEventHandler = waveEventHandler;
         }
 
-        public void executeEventHandler  (final WaveEvent waveEvent)
+        public void executeEventHandler (final WaveEvent waveEvent)
         {
             m_waveEventHandler.execute (waveEvent, m_waveElementThatHandlesTheEvent);
         }
@@ -136,7 +134,7 @@ public class WaveObjectManager extends WaveElement
 
         public WaveEventListenerMapContext (final WaveServiceId eventListenerServiceId, final LocationId eventListenerLocationId)
         {
-            m_eventListenerSericeId   = eventListenerServiceId;
+            m_eventListenerSericeId = eventListenerServiceId;
             m_eventListenerLocationId = eventListenerLocationId;
         }
 
@@ -151,7 +149,7 @@ public class WaveObjectManager extends WaveElement
         }
     };
 
-    private static WaveMutex s_waveObjectManagerMutex = new WaveMutex ();
+    private static WaveMutex     s_waveObjectManagerMutex     = new WaveMutex ();
     private static WaveServiceId s_nextAvailableWaveServiceId = new WaveServiceId (0);
 
     private String                                                                 m_name;
@@ -161,7 +159,7 @@ public class WaveObjectManager extends WaveElement
     private Map<LocationId, Map<BigInteger, Map<BigInteger, WaveEventMapContext>>> m_eventsMap;
     private Map<BigInteger, WaveMessageResponseContext>                            m_responsesMap;
     private Map<BigInteger, Vector<WaveEventListenerMapContext>>                   m_eventListenersMap;
-    private Map<String, Vector<String> >                                           m_postbootManagedObjectNames;
+    private Map<String, Vector<String>>                                            m_postbootManagedObjectNames;
     private WaveMutex                                                              m_responsesMapMutex;
     private WaveMutex                                                              m_sendReplyMutexForResponseMap;
     private Vector<WaveWorker>                                                     m_workers;
@@ -169,7 +167,7 @@ public class WaveObjectManager extends WaveElement
     private WaveMutex                                                              m_isEnabledMutex;
     private TraceClientId                                                          m_traceClientId;
 
-    private WaveServiceId                                                          m_serviceId;
+    private WaveServiceId m_serviceId;
 
     protected WaveObjectManager (final String waveObjectManagerName)
     {
