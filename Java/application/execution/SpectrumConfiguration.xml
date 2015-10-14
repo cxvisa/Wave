@@ -1,0 +1,112 @@
+<wave>
+    <application>
+        <name>Spectrum</name>
+
+        <daemonize>true</daemonize>
+
+        <initial-working-directory>
+        </initial-working-directory>
+
+        <ethernet-interface>
+        </ethernet-interface>
+    </application>
+
+    <database>
+        <enable>true</enable>
+
+        <port>
+        </port>
+
+        <handle-corruption>
+        </handle-corruption>
+
+        <enable-log>
+        </enable-log>
+    </database>
+
+    <management>
+        <server>
+            <enable>
+            </enable>
+
+            <port>
+            </port>
+        </server>
+
+        <client>
+            <enable>
+            </enable>
+
+            <port>
+            </port>
+        </client>
+    </management>
+
+    <system-management>
+        <wyser>
+            <yang>
+            </yang>
+        </wyser>
+    </system-management>
+
+    <cluster>
+        <enable>
+        </enable>
+
+        <port>
+        </port>
+    </cluster>
+
+    <ras>
+        <syslog>
+            <enable>
+            </enable>
+        </syslog>
+
+       <trace>
+           <enable>
+           </enable>
+
+           <file-size>
+           </file-size>
+
+           <number-of-files>
+           </number-of-files>
+       </trace>
+
+       <log>
+       </log>
+
+       <audit-log>
+       </audit-log>
+    </ras>
+
+    <ha>
+        <enable>
+        </enable>
+
+        <port>
+        </port>
+    </ha>
+
+    <http>
+        <enable>
+        </enable>
+
+        <port>
+        </port>
+    </http>
+
+    <orm>
+        <schema>
+            <detect-diff>
+            </detect-diff>
+        </schema>
+    </orm>
+
+    <upgrade>
+        <dump-db>
+        </dump-db>
+    </upgrade>
+</wave>
+
