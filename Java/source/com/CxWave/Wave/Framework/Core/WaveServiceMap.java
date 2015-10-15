@@ -1,8 +1,6 @@
-/***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
- ***************************************************************************/
+/*************************************************************************************************************************
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
+ *************************************************************************************************************************/
 
 package com.CxWave.Wave.Framework.Core;
 
@@ -20,11 +18,11 @@ public class WaveServiceMap
     private Map<String, WaveServiceId>     m_servicesIdMap;
     private WaveMutex                      m_mutex;
 
-    public void addServiceMap  (WaveServiceId id, WaveThread waveThread, final String serviceName)
+    public void addServiceMap (WaveServiceId id, WaveThread waveThread, final String serviceName)
     {
         m_mutex.lock ();
 
-        WaveThread    tempWaveThread    = m_servicesMap.get(id);
+        WaveThread tempWaveThread = m_servicesMap.get (id);
         WaveServiceId tempWaveServiceId = m_servicesIdMap.get (serviceName);
 
         if (null != tempWaveThread)
@@ -41,9 +39,9 @@ public class WaveServiceMap
             System.exit (2);
         }
 
-        m_servicesMap.put     (id, waveThread);
+        m_servicesMap.put (id, waveThread);
         m_servicesNameMap.put (id, serviceName);
-        m_servicesIdMap.put   (serviceName, id);
+        m_servicesIdMap.put (serviceName, id);
 
         m_mutex.unlock ();
     }

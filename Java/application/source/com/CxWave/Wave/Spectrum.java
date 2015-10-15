@@ -78,6 +78,7 @@ class Spectrum
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO,       "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_PERF_START, "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_PERF_END  , "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_SUCCESS,    "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);

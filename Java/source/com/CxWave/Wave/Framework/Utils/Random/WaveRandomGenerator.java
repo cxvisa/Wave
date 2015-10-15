@@ -2,20 +2,24 @@
  * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  *************************************************************************************************************************/
 
-package com.CxWave.Wave.Framework.Core;
+package com.CxWave.Wave.Framework.Utils.Random;
 
-import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
+import java.util.Random;
 
-public class Wave
+public class WaveRandomGenerator
 {
-    private Wave ()
+    private static Random s_random = new Random (System.currentTimeMillis ());
+
+    private WaveRandomGenerator ()
     {
     }
 
-    public void initialize ()
+    public static void initialize ()
     {
-        // Initialize Random Generator
+    }
 
-        WaveRandomGenerator.initialize ();
+    public static int generate ()
+    {
+        return (s_random.nextInt ());
     }
 }

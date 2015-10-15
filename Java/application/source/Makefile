@@ -34,4 +34,4 @@ clean:
 
 runspectrum:
 	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
-	java -jar ../build/lib/libSpectrum-1.5.jar ..
+	java -XX:ThreadStackSize=1024k -jar ../build/lib/libSpectrum-1.5.jar ..
