@@ -4,21 +4,34 @@
 
 package com.CxWave.Wave.Framework.ToolKits.Framework;
 
+import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
+
 public class FrameworkToolKit
 {
-    private static boolean s_isRunningAsADaemon = false;
+    private static boolean                     s_isRunningAsADaemon          = false;
+    private static WaveManagementInterfaceRole s_waveManagementInterfaceRole = WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER;
 
     private FrameworkToolKit ()
     {
     }
 
-    public boolean getIsRunningAsADaemon ()
+    public static boolean getIsRunningAsADaemon ()
     {
         return (s_isRunningAsADaemon);
     }
 
-    public void setIsRunningAsADaemon (final boolean isRunningAsADaemon)
+    public static void setIsRunningAsADaemon (final boolean isRunningAsADaemon)
     {
         s_isRunningAsADaemon = isRunningAsADaemon;
+    }
+
+    public static WaveManagementInterfaceRole getWaveManagementInterfaceRole ()
+    {
+        return (s_waveManagementInterfaceRole);
+    }
+
+    public static void setWaveManagementInterfaceRole (final WaveManagementInterfaceRole waveManagementInterfaceRole)
+    {
+        s_waveManagementInterfaceRole = waveManagementInterfaceRole;
     }
 }

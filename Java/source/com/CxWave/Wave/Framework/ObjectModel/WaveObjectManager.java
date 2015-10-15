@@ -190,4 +190,9 @@ public class WaveObjectManager extends WaveElement
     {
         return (false);
     }
+
+    protected void trace (final TraceLevel requestedTraceLevel, final String stringToTrace, final boolean addNewLine, final boolean suppressPrefix)
+    {
+        TraceObjectManager.traceDirectly (m_traceClientId, requestedTraceLevel, stringToTrace, addNewLine, suppressPrefix);
+    }
 }

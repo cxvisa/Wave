@@ -59,19 +59,17 @@
 
     <ras>
         <syslog>
-            <enable>
-            </enable>
+            <enable>true</enable>
         </syslog>
 
        <trace>
-           <enable>
-           </enable>
+           <enable>true</enable>
 
-           <file-size>
-           </file-size>
+           <file-size>10MB</file-size>
 
-           <number-of-files>
-           </number-of-files>
+           <number-of-files>5</number-of-files>
+
+           <default-level>INFO</default-level>
        </trace>
 
        <log>

@@ -67,31 +67,26 @@ class Spectrum
 
         System.out.println ("Just before Daemonize ...");
 
-        TraceClientMap tcm = TraceClientMap.getInstance ();
-
-        //TraceClientId      tci = tcm.addClient (TraceLevel.TRACE_LEVEL_UNKNOWN, "Test Trace Client");
         TraceObjectManager tom = TraceObjectManager.getInstance ();
 
-        /*
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test\n", false, true);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_UNKNOWN, "This is a test\n", false, true);
 
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_UNKNOWN,    "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_DEVEL,      "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_DEBUG,      "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_INFO,       "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_PERF_START, "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_PERF_END  , "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
-        WaveTraceUtils.trace (tci, TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
-        */
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_UNKNOWN,    "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_DEVEL,      "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_DEBUG,      "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO,       "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_PERF_START, "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_PERF_END  , "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
 
         XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
 
         xmlFile.debugPrint ();
 
-        //DaemonUtils.daemonize ();
+        DaemonUtils.daemonize ();
 
         while (true)
         {
