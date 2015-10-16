@@ -16,12 +16,19 @@ import java.util.Vector;
 
 public class WaveResourceRepository
 {
-    private static Vector<WaveResource> m_allWaveResources     = new Vector<WaveResource> ();
-    private static String               m_waveResourceEnumName = "AllWaveResources";
+    private static Vector<WaveResource>     m_allWaveResources                          = new Vector<WaveResource> ();
+    private static Vector<WaveResourceEnum> m_allWaveResourceEnums                      = new Vector<WaveResourceEnum> ();
+    private static String                   m_waveResourceEnumName                      = "AllWaveResources";
+    private static String                   m_waveResourcesRespositoryPopulatorEnumName = "WaveResourcesRepositoryPopulator";
 
     public static void add (final WaveResource waveResource)
     {
         m_allWaveResources.add (waveResource);
+    }
+
+    public static void add (final WaveResourceEnum waveResourceEnum)
+    {
+        m_allWaveResourceEnums.add (waveResourceEnum);
     }
 
     public static void generateAllWaveResourcesJavaFile (final String destinationPath, final String packageName)
@@ -50,7 +57,7 @@ public class WaveResourceRepository
         }
         catch (SecurityException securityException)
         {
-            System.out.println ("Failed to generate Java Resource Enum. Failed to craete parent direcrory : " + securityException.toString ());
+            System.out.println ("Failed to generate All Java Resources. Failed to create parent direcrory : " + securityException.toString ());
         }
 
         try (Writer writer = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (parentDirectory + "/" + m_waveResourceEnumName + ".java"), "utf-8")))
@@ -151,7 +158,100 @@ public class WaveResourceRepository
         }
         catch (IOException ioException)
         {
-            System.out.println ("Failed to generate Java Resource Enum.  Failed to write the file : " + ioException.toString ());
+            System.out.println ("Failed to generate All Java Resources.  Failed to write the file : " + ioException.toString ());
+        }
+    }
+
+    public static void generateWaveResourcesRepositoryPopulator (final String destinationPath, final String packageName)
+    {
+        String parentDirectory = destinationPath;
+
+        //System.out.println ("The parent directory is : " + parentDirectory);
+
+        parentDirectory = parentDirectory.trim ();
+
+        if ("".equals (parentDirectory))
+        {
+            parentDirectory = ".";
+        }
+
+        parentDirectory += "/" + packageName.replace ('.', '/');
+
+        File dir = new File (parentDirectory);
+
+        try
+        {
+            if (! (dir.exists ()))
+            {
+                dir.mkdirs ();
+            }
+        }
+        catch (SecurityException securityException)
+        {
+            System.out.println ("Failed to generate Java Resource Populator. Failed to create parent direcrory : " + securityException.toString ());
+        }
+
+        try (Writer writer = new BufferedWriter (new OutputStreamWriter (new FileOutputStream (parentDirectory + "/" + m_waveResourcesRespositoryPopulatorEnumName + ".java"), "utf-8")))
+        {
+            writer.write ("package " + packageName + ";\n");
+            writer.write ("\n");
+            writer.write ("import com.CxWave.Wave.Resources.Repository.WaveResourcesRepository;\n");
+            writer.write ("\n");
+            writer.write ("public class " + m_waveResourcesRespositoryPopulatorEnumName + "\n");
+
+            writer.write ("{\n");
+
+            int maximumLengthForWaveResourceName = 0;
+
+            for (WaveResource waveResource : m_allWaveResources)
+            {
+                int lengthForWaveResourceName = (waveResource.getWaveResourceName ()).length ();
+
+                if (maximumLengthForWaveResourceName < lengthForWaveResourceName)
+                {
+                    maximumLengthForWaveResourceName = lengthForWaveResourceName;
+                }
+            }
+
+            writer.write ("    private " + m_waveResourcesRespositoryPopulatorEnumName + " ()\n");
+            writer.write ("    {\n");
+            writer.write ("    }\n");
+            writer.write ("\n");
+
+            writer.write ("    public static void initializeWaveResourceIds ()\n");
+            writer.write ("    {\n");
+
+            writer.write ("        WaveResourcesRepository waveResourcesRepository = WaveResourcesRepository.getInstance ();\n");
+            writer.write ("\n");
+
+            for (WaveResource waveResource : m_allWaveResources)
+            {
+                int    waveResourceNamePaddingSize = maximumLengthForWaveResourceName - (waveResource.getWaveResourceName ()).length ();
+                String paddingString               = null;
+
+                if (0 < waveResourceNamePaddingSize)
+                {
+                    paddingString = new String (new char[waveResourceNamePaddingSize]);
+                    paddingString = paddingString.replace ('\0', ' ');
+                }
+                else
+                {
+                    paddingString = new String ("");
+                }
+
+                writer.write ("        waveResourcesRepository.addResourceId (\"");
+                writer.write (waveResource.getWaveResourceName () + "\", ");
+                writer.write (paddingString);
+                writer.write ((String.format ("0x%08X", waveResource.getEffectiveResourceId ())) + ", \"" + waveResource.getWaveResourceValue () + "\");\n");
+            }
+
+            writer.write ("    }\n");
+            writer.write ("}\n\n");
+
+        }
+        catch (IOException ioException)
+        {
+            System.out.println ("Failed to generate Java Resource Populator.  Failed to write the file : " + ioException.toString ());
         }
     }
 }

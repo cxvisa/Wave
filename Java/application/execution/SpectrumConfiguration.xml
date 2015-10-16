@@ -9,19 +9,22 @@
 
         <ethernet-interface>
         </ethernet-interface>
+
+        <environment>
+            <workind-directory>.</workind-directory>
+            <language>en</language>
+            <country>US</country>
+        </environment>
     </application>
 
     <database>
         <enable>true</enable>
 
-        <port>
-        </port>
+        <port>3016</port>
 
-        <handle-corruption>
-        </handle-corruption>
+        <handle-corruption>true</handle-corruption>
 
-        <enable-log>
-        </enable-log>
+        <enable-log>true</enable-log>
     </database>
 
     <management>

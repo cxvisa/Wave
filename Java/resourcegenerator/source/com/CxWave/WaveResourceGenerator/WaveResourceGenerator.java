@@ -286,7 +286,8 @@ class WaveResourceGenerator
 
         waveResourceGenerator.printAllAvailableClassesInThisBundle ();
 
-        WaveResourceRepository.generateAllWaveResourcesJavaFile (waveResourceGenerator.getDestinationPath (), waveResourceGenerator.getPackageName ());
+        WaveResourceRepository.generateAllWaveResourcesJavaFile         (waveResourceGenerator.getDestinationPath (), waveResourceGenerator.getPackageName ());
+        WaveResourceRepository.generateWaveResourcesRepositoryPopulator (waveResourceGenerator.getDestinationPath (), waveResourceGenerator.getPackageName ());
 
         printManifestInfo ();
     }

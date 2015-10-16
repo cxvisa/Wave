@@ -105,6 +105,8 @@ public class WaveModuleResources extends WaveResourceGeneratorElement
 
                     m_waveResourceEnums.add (waveResourceEnum);
 
+                    WaveResourceRepository.add (waveResourceEnum);
+
                     waveResourceEnum.generateJavaEnumFile ();
                 }
             }
@@ -149,6 +151,6 @@ public class WaveModuleResources extends WaveResourceGeneratorElement
 
     public void setDestinationPath (final String destinationPath)
     {
-                          m_destinationPath = destinationPath;
+        m_destinationPath = destinationPath;
     }
 }
