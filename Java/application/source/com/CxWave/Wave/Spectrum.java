@@ -6,6 +6,7 @@
 
 package com.CxWave.Wave;
 
+import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.ToolKits.Xml.XmlFile;
 import com.CxWave.Wave.Framework.Trace.TraceClientMap;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
@@ -18,6 +19,7 @@ import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Framework.Core.Wave;
 
 class Spectrum
 {
@@ -82,6 +84,10 @@ class Spectrum
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN,       "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
+
+        Wave.initialize (null);
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN,       "This is a test. H : " + TimeZoneToolKit.getTimeZoneHours ().getValue () + ", M : " + TimeZoneToolKit.getTimeZoneMinutes ().getValue () + ", DTZ : " + TimeZoneToolKit.getDefaultTimeZone ().toString (), true, false);
 
         XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
 

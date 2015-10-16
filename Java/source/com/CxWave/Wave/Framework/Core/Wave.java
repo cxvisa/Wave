@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Core;
 
 import com.CxWave.Wave.Framework.Database.DatabaseObjectManager;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 
@@ -15,7 +16,7 @@ public class Wave
     {
     }
 
-    public void initialize (final WaveMainConfiguration waveMainConfiguration)
+    public static void initialize (final WaveMainConfiguration waveMainConfiguration)
     {
         // Initialize Random Generator
 
@@ -24,6 +25,10 @@ public class Wave
         // Set the Management Interface Role
 
         FrameworkToolKit.setWaveManagementInterfaceRole (WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER);
+
+        // Initialize time zone information
+
+        TimeZoneToolKit.initialize ();
 
         // Set if the database is to be enabled.
 
