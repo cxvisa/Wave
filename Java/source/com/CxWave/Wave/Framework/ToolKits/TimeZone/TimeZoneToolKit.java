@@ -27,9 +27,6 @@ public class TimeZoneToolKit
         final long numberOfHoursInOffset = offSet / 1000 / 3600;
         final long numberOfMinutesInOffset = (offSet % 3600000) / 60;
 
-        System.out.println ("xxxxx : " + offSet + ", H : " + numberOfHoursInOffset + ", M : " + numberOfMinutesInOffset);
-        System.out.printf ("yyyyy : %016x", numberOfHoursInOffset);
-
         s_timeZoneHours = new SI8 (numberOfHoursInOffset);
         s_timeZoneMinutes = new SI8 (numberOfMinutesInOffset);
 

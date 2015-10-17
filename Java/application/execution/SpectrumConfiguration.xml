@@ -4,11 +4,9 @@
 
         <daemonize>true</daemonize>
 
-        <initial-working-directory>
-        </initial-working-directory>
+        <initial-working-directory>.</initial-working-directory>
 
-        <ethernet-interface>
-        </ethernet-interface>
+        <ethernet-interface>eno16777736</ethernet-interface>
 
         <environment>
             <workind-directory>.</workind-directory>
@@ -29,19 +27,15 @@
 
     <management>
         <server>
-            <enable>
-            </enable>
+            <enable>true</enable>
 
-            <port>
-            </port>
+            <port>9110</port>
         </server>
 
         <client>
-            <enable>
-            </enable>
+            <enable>true</enable>
 
-            <port>
-            </port>
+            <port>true</port>
         </client>
     </management>
 
@@ -53,11 +47,9 @@
     </system-management>
 
     <cluster>
-        <enable>
-        </enable>
+        <enable>yes</enable>
 
-        <port>
-        </port>
+        <port>3016</port>
     </cluster>
 
     <ras>
@@ -79,6 +71,8 @@
        </log>
 
        <audit-log>
+          <enable>true</enable>
+          <number-of-logs>100000</number-of-logs>
        </audit-log>
     </ras>
 
@@ -91,11 +85,9 @@
     </ha>
 
     <http>
-        <enable>
-        </enable>
+        <enable>true</enable>
 
-        <port>
-        </port>
+        <port>1100</port>
     </http>
 
     <orm>

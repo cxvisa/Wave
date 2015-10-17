@@ -697,7 +697,7 @@ void Wave::getLinecardReadySlotIdBitMap ( BitMap &linecardReadySlotIdBitMap , UI
         m_linecardReadySlotIdBitMapFunction ( linecardReadySlotIdBitMap, maxLinecards );
     }
 
-    m_linecardReadySlotIdBitMapFunctionMutex.unlock();    
+    m_linecardReadySlotIdBitMapFunctionMutex.unlock();
 }
 
 void Wave::setWaveUserClientPath (const string &path)
@@ -778,7 +778,7 @@ void Wave::instantiateNativePrismServices ()
 
 void Wave::waveExit ()
 {
-#if 0 
+#if 0
     map<WaveThreadId, WaveThreadId> mapOfCurrentWaveThreads;
 
     PrismFrameworkObjectManager::getAllWaveThreads (mapOfCurrentWaveThreads);
@@ -786,17 +786,17 @@ void Wave::waveExit ()
     map<WaveThreadId, WaveThreadId>::iterator  threadIterator;
 
     for (threadIterator = mapOfCurrentWaveThreads.begin (); threadIterator != mapOfCurrentWaveThreads.end (); threadIterator++)
-    {   
+    {
         pthread_cancel (threadIterator->first);
-    }   
+    }
 
     for (threadIterator = mapOfCurrentWaveThreads.begin (); threadIterator != mapOfCurrentWaveThreads.end (); threadIterator++)
-    {   
+    {
         void *pContext = NULL;
 
         pthread_join (threadIterator->first, &pContext);
-    }   
-#endif 
+    }
+#endif
     PrismFrameworkObjectManager::deleteAllWaveThreads ();
 
     exit (0);
