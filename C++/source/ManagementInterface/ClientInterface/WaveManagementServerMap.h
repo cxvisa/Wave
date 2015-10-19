@@ -42,7 +42,7 @@ class WaveManagementServerMap
          UI32                  getServerIdIfKnownForUniqueServerIdentifier  (const string &ipAddress, const SI32 &port, const UI32 &uniqueServerIdentifierFromServerPerspective);
          WaveManagementServer *getServer                                    (const UI32 &id);
          WaveServiceId        getWaveServiceIdForServiceName              (const UI32 &serverId, const string &serviceName);
-         string                getPrismServiceNameForServiceId              (const UI32 &serverId, const WaveServiceId &serviceId);
+         string                getWaveServiceNameForServiceId              (const UI32 &serverId, const WaveServiceId &serviceId);
          void                  addServiceCache                              (const UI32 &serverId, const vector<string> &serviceNames, const vector<UI32> &serviceIds);
          ResourceId            post                                         (ManagementInterfaceMessage *pManagementInterfaceMessage);
          void                  updateMessageVersionAndSerializationTypeForServer   (const UI32 &serverId, const string &version); 

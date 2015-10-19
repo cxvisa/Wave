@@ -8,7 +8,7 @@
 #define CLUSTERTESTOBJECTMANAGER_H
 
 #include "Cluster/Test/ClusterTestContexts.h"
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 #include "Cluster/ClusterMessages.h"
 #include <time.h>
 
@@ -17,7 +17,7 @@ namespace WaveNs
 #define                 MAX_DUP_COMMAND_TRIALS      3
 class ClusterTestData;
 
-class ClusterTestObjectManager : public PrismTestObjectManager
+class ClusterTestObjectManager : public WaveTestObjectManager
 {
     private :
                                 ClusterTestObjectManager        ();

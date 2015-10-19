@@ -17,7 +17,7 @@ namespace WaveNs
 {
 
 
-class PrismSynchronousLinearSequencerContext;
+class WaveSynchronousLinearSequencerContext;
 class RunDebugScriptOnClusterMemberMessage;
 
 class DistributedDebugLocalObjectManager : public WaveLocalObjectManager
@@ -37,7 +37,7 @@ class DistributedDebugLocalObjectManager : public WaveLocalObjectManager
     virtual WaveMessage *createMessageInstance    (const UI32 &operationCode);
 
 
-              void executeScriptStep (PrismSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext);
+              void executeScriptStep (WaveSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext);
 
               void  runDebugScriptOnClusterMemberMessageHandler(RunDebugScriptOnClusterMemberMessage*  pRunDebugScriptOnClusterMemberMessage);
 

@@ -150,7 +150,7 @@ void AttributeSqlExists::loadFromPostgresAuxilliaryQueryResult (map<string, PGre
     waveAssert (false, __FILE__, __LINE__);
 }
 
-void AttributeSqlExists::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+void AttributeSqlExists::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
     waveAssert (false, __FILE__, __LINE__);
@@ -172,7 +172,7 @@ bool AttributeSqlExists::isDeletableForOperation (const WaveManagedObjectOperati
     return (false);
 }
 
-void AttributeSqlExists::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+void AttributeSqlExists::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlExists:: : This attribute is only for the SQL EXISTS condition and does not make sense to invoke this method."));
     waveAssert (false, __FILE__, __LINE__);

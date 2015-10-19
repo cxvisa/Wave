@@ -7,7 +7,7 @@
 #ifndef SLOTFAILOVERAGENTCONTEXT_H
 #define SLOTFAILOVERAGENTCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include <vector>
 
 using namespace std;
@@ -15,12 +15,12 @@ using namespace std;
 namespace WaveNs
 {
 
-class SlotFailoverAgentContext : public PrismSynchronousLinearSequencerContext
+class SlotFailoverAgentContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                        SlotFailoverAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        SlotFailoverAgentContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~SlotFailoverAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

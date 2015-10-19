@@ -22,7 +22,7 @@ class ReservedWaveLocalObjectManager : public WaveLocalObjectManager
 
         static  ReservedWaveLocalObjectManager *getInstance                    ();
         static  WaveServiceId                  getWaveServiceId              ();
-        static  string                          getPrismServiceName            ();
+        static  string                          getWaveServiceName            ();
 
     // Now the data members
 

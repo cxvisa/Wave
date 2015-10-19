@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include <stdio.h>
-#include "Framework/OsLayer/PrismOsLayer.h"
+#include "Framework/OsLayer/WaveOsLayer.h"
 
 using namespace WaveNs;
 

@@ -7,7 +7,7 @@
 #ifndef MULTIPARTITIONCLEANUPAGENTCONTEXT_H
 #define MULTIPARTITIONCLEANUPAGENTCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include <vector>
 
 using namespace std;
@@ -15,12 +15,12 @@ using namespace std;
 namespace WaveNs
 {
 
-class MultiPartitionCleanupAgentContext : public PrismSynchronousLinearSequencerContext
+class MultiPartitionCleanupAgentContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                        MultiPartitionCleanupAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        MultiPartitionCleanupAgentContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~MultiPartitionCleanupAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

@@ -114,11 +114,11 @@ WaveMessage *AppInterfaceObjectManager::createMessageInstance (const UI32 &opera
 // Framework will collect data from all the services in the node and will send
 // This data to the appropriate services in the secondary nodes.
 
-void AppInterfaceObjectManager::clusterCreateCollectValidationData (WaveObjectManagerCollectValidationDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
+void AppInterfaceObjectManager::clusterCreateCollectValidationData (WaveObjectManagerCollectValidationDataMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, string ("AppInterfaceObjectManager::clusterCreateCollectValidationData : Entering ...service ") + getServiceId ());
 
-    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<WaveMessageHandler *> (pMessage), pPrismAsynchronousContext, getServiceId ());
+    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<WaveMessageHandler *> (pMessage), pWaveAsynchronousContext, getServiceId ());
     clusterCollectValidationHandler_t   clusterCollectValidationHandler;
 
     m_mutex.lock ();
@@ -134,8 +134,8 @@ void AppInterfaceObjectManager::clusterCreateCollectValidationData (WaveObjectMa
     else
     {
         trace (TRACE_LEVEL_WARN, "No Collect Validation handler");
-        pMessageAndContext->m_pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-        pMessageAndContext->m_pPrismAsynchronousContext->callback ();
+        pMessageAndContext->m_pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pMessageAndContext->m_pWaveAsynchronousContext->callback ();
     }
     delete (pMessageAndContext);
 
@@ -157,15 +157,15 @@ void AppInterfaceObjectManager::clusterCollectValidationReply (void *pContext, U
 
     if (WAVE_MESSAGE_SUCCESS == validationStatus)
     {
-        pMessageAndContext->m_pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pMessageAndContext->m_pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     }
     else
     {
-        pMessageAndContext->m_pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_ERROR);
+        pMessageAndContext->m_pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_ERROR);
     }
 
     // Send data to framework.
-    pMessageAndContext->m_pPrismAsynchronousContext->callback ();
+    pMessageAndContext->m_pWaveAsynchronousContext->callback ();
 
     delete (pMessageAndContext);
 }
@@ -176,14 +176,14 @@ void AppInterfaceObjectManager::clusterCollectValidationReply (void *pContext, U
 // secondary switches. The App in the secondary switch will verify that it can join
 // the cluster based on the data it receives.
 
-void AppInterfaceObjectManager::clusterCreateValidate (WaveObjectManagerValidateClusterCreationMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
+void AppInterfaceObjectManager::clusterCreateValidate (WaveObjectManagerValidateClusterCreationMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "AppInterfaceObjectManager::clusterCreateValidate : Entering ...");
 
     clusterValidationHandler_t          clusterValidationHandler;
     void                               *pValidationData;
     UI32                                Validationlen;
-    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<WaveMessageHandler *> (pMessage), pPrismAsynchronousContext, getServiceId ());
+    MessageAndContext                  *pMessageAndContext = new MessageAndContext (reinterpret_cast<WaveMessageHandler *> (pMessage), pWaveAsynchronousContext, getServiceId ());
 
     m_mutex.lock ();
     clusterValidationHandler = m_clusterValidationHandler;
@@ -198,8 +198,8 @@ void AppInterfaceObjectManager::clusterCreateValidate (WaveObjectManagerValidate
     else
     {
         trace (TRACE_LEVEL_WARN, "No Validation handler");
-        pMessageAndContext->m_pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-        pMessageAndContext->m_pPrismAsynchronousContext->callback ();
+        pMessageAndContext->m_pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pMessageAndContext->m_pWaveAsynchronousContext->callback ();
     }
     delete (pMessageAndContext);
 
@@ -221,15 +221,15 @@ void AppInterfaceObjectManager::clusterValidationReply (void *pContext, UI32 val
 
     if (WAVE_MESSAGE_SUCCESS == validationStatus)
     {
-        pMessageAndContext->m_pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pMessageAndContext->m_pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     }
     else
     {
-        pMessageAndContext->m_pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_ERROR);
+        pMessageAndContext->m_pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_ERROR);
     }
 
     // Send results to framework.
-    pMessageAndContext->m_pPrismAsynchronousContext->callback ();
+    pMessageAndContext->m_pWaveAsynchronousContext->callback ();
 
     delete (pMessageAndContext);
 }
@@ -238,7 +238,7 @@ void AppInterfaceObjectManager::clusterValidationReply (void *pContext, UI32 val
 // This code will be running in the primay node and this function will be called after cluster creation
 // is complete (successed or failed).
 
-void AppInterfaceObjectManager::clusterCreateSendValidationResults (WaveObjectManagerSendValidationResultsMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext)
+void AppInterfaceObjectManager::clusterCreateSendValidationResults (WaveObjectManagerSendValidationResultsMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "AppInterfaceObjectManager::clusterCreateSendValidationResults : Entering ...");
 
@@ -297,8 +297,8 @@ void AppInterfaceObjectManager::clusterCreateSendValidationResults (WaveObjectMa
         trace (TRACE_LEVEL_ERROR, "AppInterfaceObjectManager::clusterCreateSendValidationResults : clusterReportValidationHandler == NULL");
     }
 
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 
 }
 
@@ -831,10 +831,10 @@ CommandInfo::~CommandInfo ()
 {
 }
 
-MessageAndContext::MessageAndContext (WaveMessageHandler *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext, unsigned int appId)
+MessageAndContext::MessageAndContext (WaveMessageHandler *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext, unsigned int appId)
 {
     m_pMessage                  = pMessage;
-    m_pPrismAsynchronousContext = pPrismAsynchronousContext;
+    m_pWaveAsynchronousContext = pWaveAsynchronousContext;
     m_appId                     = appId;
 }
 
@@ -842,7 +842,7 @@ MessageAndContext::MessageAndContext ()
 {
     m_appId                     = 0; 
     m_pMessage                  = NULL;
-    m_pPrismAsynchronousContext = NULL ;
+    m_pWaveAsynchronousContext = NULL ;
 }
 
 MessageAndContext::~MessageAndContext ()

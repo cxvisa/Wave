@@ -8,7 +8,7 @@
 #define LOADOPERATIONALDATACONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 #include <vector>
@@ -23,8 +23,8 @@ class LoadOperationalDataContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                           LoadOperationalDataContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                           LoadOperationalDataContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           LoadOperationalDataContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           LoadOperationalDataContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
                           ~LoadOperationalDataContext ();
 
         ObjectId           getWaveManagedObjectId     () const;

@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMMESSAGEQUEUE_H
-#define PRISMMESSAGEQUEUE_H
+#ifndef WAVEMESSAGEQUEUE_H
+#define WAVEMESSAGEQUEUE_H
 
 #include <deque>
 #include "Framework/Messaging/Local/WaveMessage.h"
@@ -44,4 +44,4 @@ template<class T> class WaveMessageQueue // This is a thread safe class
 
 }
 
-#endif //PRISMMESSAGEQUEUE_H
+#endif //WAVEMESSAGEQUEUE_H

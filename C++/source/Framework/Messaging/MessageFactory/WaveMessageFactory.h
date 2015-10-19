@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMMESSAGEFACTORY_H
-#define PRISMMESSAGEFACTORY_H
+#ifndef WAVEMESSAGEFACTORY_H
+#define WAVEMESSAGEFACTORY_H
 
 #include "Framework/Types/Types.h"
 
@@ -35,4 +35,4 @@ class WaveMessageFactory
 
 }
 
-#endif // PRISMMESSAGEFACTORY_H
+#endif // WAVEMESSAGEFACTORY_H

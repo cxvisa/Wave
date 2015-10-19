@@ -17,7 +17,7 @@
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/ObjectModel/WaveManagedObjectOperation.h"
 
 #include <vector>
@@ -433,14 +433,14 @@ template <class T> Attribute *AttributeManagedObjectVectorComposition<T>::clone 
     return (pAttributeManagedObjectVectorComposition);
 }
 
-template <class T> void AttributeManagedObjectVectorComposition<T>::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+template <class T> void AttributeManagedObjectVectorComposition<T>::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
     UI32 numberOfObjectsInComposition = m_pData->size ();
     UI32 i                            = 0;
 
     for (i = 0; i < numberOfObjectsInComposition; i++)
     {
-        ((*m_pData)[i])->setOwnerManagedObjectId (pPrismPersistableObject->getObjectId ());
+        ((*m_pData)[i])->setOwnerManagedObjectId (pWavePersistableObject->getObjectId ());
     }
 }
 
@@ -495,14 +495,14 @@ template <class T> bool AttributeManagedObjectVectorComposition<T>::isDeletableF
     return (true);
 }
 
-template <class T> void AttributeManagedObjectVectorComposition<T>::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+template <class T> void AttributeManagedObjectVectorComposition<T>::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
     UI32 numberOfObjectsInComposition = m_pData->size ();
     UI32 i                            = 0;
 
     for (i = 0; i < numberOfObjectsInComposition; i++)
     {
-        ((*m_pData)[i])->prependOwnerKeyString (pPrismPersistableObject->getKeyString ());
+        ((*m_pData)[i])->prependOwnerKeyString (pWavePersistableObject->getKeyString ());
     }
 }
 

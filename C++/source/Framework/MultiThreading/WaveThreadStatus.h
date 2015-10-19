@@ -3,8 +3,8 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#ifndef PRISMTHREADSTATUS_H
-#define PRISMTHREADSTATUS_H
+#ifndef WAVETHREADSTATUS_H
+#define WAVETHREADSTATUS_H
 
 namespace WaveNs
 {

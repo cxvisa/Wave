@@ -9,7 +9,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 
 namespace WaveNs
 {

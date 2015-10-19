@@ -8,7 +8,7 @@
 #define WAVEMESSAGINGBROKERCLIENTTESTOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 #include "Regression/RegressionTestMessage.h"
 
 namespace WaveNs
@@ -17,7 +17,7 @@ namespace WaveNs
 class WaveLinearSequencerContext;
 class WaveBrokerPublishMessage;
 
-class WaveMessagingBrokerClientTestObjectManager : public PrismTestObjectManager
+class WaveMessagingBrokerClientTestObjectManager : public WaveTestObjectManager
 {
     private :
         virtual void testRequestHandler                       (RegressionTestMessage *pRegressionTestMessage);

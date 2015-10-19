@@ -22,8 +22,8 @@ class WaveManagedObjectUpdateContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                           WaveManagedObjectUpdateContext               (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
-                                           WaveManagedObjectUpdateContext               (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                           WaveManagedObjectUpdateContext               (WaveMessage* pWaveMessage, WaveElement* pWaveElement, WaveLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                           WaveManagedObjectUpdateContext               (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement* pWaveElement, WaveLinearSequencerStep* pSteps, UI32 numberOfSteps);
         virtual                           ~WaveManagedObjectUpdateContext               ();
 
                 ObjectId                   getInputWaveManagedObjectId                  () const;
@@ -59,7 +59,7 @@ class WaveManagedObjectUpdateContext : public WaveLinearSequencerContext
                 ResourceId                 getErrorInCreatingMO                         () const;
                 void                       setErrorInCreatingMO                         (const ResourceId &errorInCreatingMO);
 
-                void                       addAysnchronousContextForGarbageCollection   (PrismAsynchronousContext *prismAsynchronousContext);
+                void                       addAysnchronousContextForGarbageCollection   (WaveAsynchronousContext *prismAsynchronousContext);
 
         virtual void                       addManagedObjectForGarbageCollection         (WaveManagedObject *pWaveManagedObjectForGarbageCollection);
                
@@ -104,7 +104,7 @@ class WaveManagedObjectUpdateContext : public WaveLinearSequencerContext
         ObjectId                                m_parentObjectId;
         UI32                                    m_childUserTag;
         ResourceId                              m_errorInCreatingMO;
-        vector<PrismAsynchronousContext *>      m_prismAsynchronousContext;
+        vector<WaveAsynchronousContext *>      m_prismAsynchronousContext;
         bool                                    m_isDatabaseUpdateRequired;
         bool                                    m_isBackendUpdateRequired;    
         vector<string>                          m_parentManagedObjectNames;

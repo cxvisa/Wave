@@ -4,11 +4,11 @@
  *   Author : Jayanth Venkataraman                                         *
  ***************************************************************************/
 
-#ifndef PRISMLINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H
-#define PRISMLINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H
+#ifndef WAVELINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H
+#define WAVELINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/ObjectRelationalMapping/OMSpecificSchemaChangeInfoForUpgrade.h"
 
@@ -24,7 +24,7 @@ class WaveLinearSequencerContextForUpgradePhase : public WaveLinearSequencerCont
     private :
     protected :
     public :
-                           WaveLinearSequencerContextForUpgradePhase (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           WaveLinearSequencerContextForUpgradePhase (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual           ~WaveLinearSequencerContextForUpgradePhase ();
 
 /*
@@ -51,4 +51,4 @@ class WaveLinearSequencerContextForUpgradePhase : public WaveLinearSequencerCont
 
 }
 
-#endif // PRISMLINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H 
+#endif // WAVELINEARSEQUENCERCONTEXTFORUPGRADEPHASE_H 

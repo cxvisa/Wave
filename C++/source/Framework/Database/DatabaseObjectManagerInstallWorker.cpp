@@ -55,15 +55,15 @@ void DatabaseObjectManagerInstallWorker::install (WaveAsynchronousContextForBoot
         return;
     }
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installBootDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installBootDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installCreateWaveDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -162,7 +162,7 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
         return;
     }
 
-    trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installBootDatabaseStep : Booting the database to create Prism Database...");
+    trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installBootDatabaseStep : Booting the database to create Wave Database...");
 
     // Indicate that pg_ctl command output starts below this
     string echoStr = string ("echo \"Executing the pg_ctl start command\" >> ") + DatabaseObjectManager::getDatabaseLogFileName ();
@@ -245,7 +245,7 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
+void DatabaseObjectManagerInstallWorker::installCreateWaveDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
     if (false == (DatabaseObjectManager::getIsDatabaseEnabled ()))
     {
@@ -264,7 +264,7 @@ void DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep (WaveLin
     const string   completionFilePath                = databaseDirectory + "/" + databaseInstallCompletionFileName;
           ofstream completionfileNew;
 
-    trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installCreatePrismDatabaseStep : Creating Prism Database...");
+    trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installCreateWaveDatabaseStep : Creating Wave Database...");
 
     string commandString = string ("createdb ") + DatabaseObjectManager::getDatabaseName () + " -p " + DatabaseObjectManager::getDatabasePort ();
     system (commandString.c_str ());
@@ -290,7 +290,7 @@ void DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep (WaveLinear
         return;
     }
 
-    trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep : Shutting down the database to create Prism Database...");
+    trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep : Shutting down the database to create Wave Database...");
 
     string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" -o \" -p ") + DatabaseObjectManager::getDatabasePort () + "\" stop > /dev/null";
     system (commandString.c_str ());

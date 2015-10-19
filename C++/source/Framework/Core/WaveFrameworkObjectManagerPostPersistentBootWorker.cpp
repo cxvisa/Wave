@@ -14,10 +14,10 @@
 #include "Framework/ObjectModel/WavePostBootEvent.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Database/DatabaseObjectManagerExecuteCopySchemaMessage.h"
-#include "Framework/Postboot/PrismPostbootMessages.h"
-#include "Framework/Postboot/PrismPostbootAgent.h"
-#include "Framework/Postboot/PrismPostbootAgentThread.h"
-#include "Framework/Postboot/PrismPostPersistentBootWorkerClusterContext.h"    
+#include "Framework/Postboot/WavePostbootMessages.h"
+#include "Framework/Postboot/WavePostbootAgent.h"
+#include "Framework/Postboot/WavePostbootAgentThread.h"
+#include "Framework/Postboot/WavePostPersistentBootWorkerClusterContext.h"    
 #include "Framework/Core/ConfigReplayStartedEvent.h"
 #include "Framework/Core/ConfigReplayCompletedEvent.h"
 #include "Framework/Core/LastConfigReplayCompletedEvent.h"
@@ -44,13 +44,13 @@ WaveFrameworkObjectManagerPostPersistentBootWorker::~WaveFrameworkObjectManagerP
 {
 }
 
-void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessageHandler (PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage)
+void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessageHandler (WavePostPersistenceBootMessage *pWavePostPersistenceBootMessage)
 {
-    bool        isPostbootRequired                  = pPrismPostPersistenceBootMessage->getIsPostbootRequired ();
-    bool        executeConfigReplaySequence         = pPrismPostPersistenceBootMessage->getExecuteConfigReplaySequence ();
-    bool        executeNodeReadySequence            = pPrismPostPersistenceBootMessage->getExecuteNodeReadySequence ();
-    bool        isBannerOutputToClientsRequired     = pPrismPostPersistenceBootMessage->getIsBannerOutputToClientsRequired ();
-    ResourceId  recoveryType                        = pPrismPostPersistenceBootMessage->getRecoveryType ();
+    bool        isPostbootRequired                  = pWavePostPersistenceBootMessage->getIsPostbootRequired ();
+    bool        executeConfigReplaySequence         = pWavePostPersistenceBootMessage->getExecuteConfigReplaySequence ();
+    bool        executeNodeReadySequence            = pWavePostPersistenceBootMessage->getExecuteNodeReadySequence ();
+    bool        isBannerOutputToClientsRequired     = pWavePostPersistenceBootMessage->getIsBannerOutputToClientsRequired ();
+    ResourceId  recoveryType                        = pWavePostPersistenceBootMessage->getRecoveryType ();
     bool        isAllCommandReadyEvent              = false;
     bool        skipReply                           = false;
     bool        fileReplay                          = false;
@@ -64,7 +64,7 @@ void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessa
 
     if (isPostbootRequired)
     {
-        switch (pPrismPostPersistenceBootMessage->getEventId())
+        switch (pWavePostPersistenceBootMessage->getEventId())
         {
             case POSTBOOT_EVENT_SERVICE_READY:
             {
@@ -92,21 +92,21 @@ void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessa
                     }
                 }
 
-                triggerPostBootPassTable (POSTBOOT_GLOBAL_CONFIG, 0, pPrismPostPersistenceBootMessage);
+                triggerPostBootPassTable (POSTBOOT_GLOBAL_CONFIG, 0, pWavePostPersistenceBootMessage);
                 trace (TRACE_LEVEL_PERF_END, "Global Postboot.");
                 break;
             }
             case POSTBOOT_EVENT_LINECARD_READY:
-                trace (TRACE_LEVEL_INFO, string("WaveFrameworkObjectManagerPostPersistentBootWorker:: POSTBOOT_EVENT_LINECARD_READY recved") + pPrismPostPersistenceBootMessage->getParameter() );
+                trace (TRACE_LEVEL_INFO, string("WaveFrameworkObjectManagerPostPersistentBootWorker:: POSTBOOT_EVENT_LINECARD_READY recved") + pWavePostPersistenceBootMessage->getParameter() );
 
                 if (true == FrameworkToolKit::getSecondaryClusterFormationFlag ())
                 {
                     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessageHandler: secondaryClusterFormationFlag is set to true.");
-                    postponeMessageHandling (pPrismPostPersistenceBootMessage);
+                    postponeMessageHandling (pWavePostPersistenceBootMessage);
                     return;
                 }
 
-                triggerPostBootPassTable (POSTBOOT_LINECARD_CONFIG, pPrismPostPersistenceBootMessage->getParameter(),pPrismPostPersistenceBootMessage);
+                triggerPostBootPassTable (POSTBOOT_LINECARD_CONFIG, pWavePostPersistenceBootMessage->getParameter(),pWavePostPersistenceBootMessage);
                 skipReply = true;
                 break;
 
@@ -206,7 +206,7 @@ void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessa
     else if ((isPostbootRequired == false) && (executeConfigReplaySequence == false))
     {
 		// This is the case of Ccmd which need neitehr postboot nor config replay
-        switch (pPrismPostPersistenceBootMessage->getEventId())
+        switch (pWavePostPersistenceBootMessage->getEventId())
         {
             case POSTBOOT_EVENT_SERVICE_READY:
                 isActivationCompleteEvent = true;
@@ -251,24 +251,24 @@ void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootMessa
 	}
     if (skipReply == false)
     {
-        pPrismPostPersistenceBootMessage->setCompletionStatus (status);
-        reply (pPrismPostPersistenceBootMessage);
+        pWavePostPersistenceBootMessage->setCompletionStatus (status);
+        reply (pWavePostPersistenceBootMessage);
     }
 }
 
-void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootServiceAndWaveSlotsMessageHandler (PrismPostPersistenceBootServiceAndWaveSlotsMessage *pPrismPostPersistenceBootServiceAndWaveSlotsMessage)
+void WaveFrameworkObjectManagerPostPersistentBootWorker::postPersistentBootServiceAndWaveSlotsMessageHandler (WavePostPersistenceBootServiceAndWaveSlotsMessage *pWavePostPersistenceBootServiceAndWaveSlotsMessage)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new PrismPostPersistentBootWorkerClusterContext (0, 0, WAVE_HA_COLD_RECOVERY);
+    WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new WavePostPersistentBootWorkerClusterContext (0, 0, WAVE_HA_COLD_RECOVERY);
     waveAssert (NULL != pPostPersistentBootWorkerClusterContext, __FILE__, __LINE__);
 
     status = triggerPostBootPassTableForAll (pPostPersistentBootWorkerClusterContext);
 
     delete (pPostPersistentBootWorkerClusterContext);
 
-    pPrismPostPersistenceBootServiceAndWaveSlotsMessage->setCompletionStatus (status);
-    reply (pPrismPostPersistenceBootServiceAndWaveSlotsMessage);
+    pWavePostPersistenceBootServiceAndWaveSlotsMessage->setCompletionStatus (status);
+    reply (pWavePostPersistenceBootServiceAndWaveSlotsMessage);
 }
 
 ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::copyRunningToStart ()
@@ -317,7 +317,7 @@ string WaveFrameworkObjectManagerPostPersistentBootWorker::createReplayString (c
     return contents;
 }
 
-ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForAll ( PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext )
+ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForAll ( WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext )
 {
     ResourceId  status = WAVE_MESSAGE_SUCCESS;
     ResourceId recoveryType = pPostPersistentBootWorkerClusterContext->getRecoveryType();
@@ -383,7 +383,7 @@ ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPa
     return ( status );
 }
 
-ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent ( const PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext )
+ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent ( const WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext )
 {
     trace (TRACE_LEVEL_INFO, string("WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : Entered"));
 
@@ -397,42 +397,42 @@ ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPa
     {   
         trace (TRACE_LEVEL_INFO, string("WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : starting Postboot thread for POSTBOOT_LINECARD_CONFIG"));
 
-        PrismPostbootAgentThreadContext *pPrismPostbootAgentThreadContext = new PrismPostbootAgentThreadContext ();
-        waveAssert (NULL != pPrismPostbootAgentThreadContext, __FILE__, __LINE__);
+        WavePostbootAgentThreadContext *pWavePostbootAgentThreadContext = new WavePostbootAgentThreadContext ();
+        waveAssert (NULL != pWavePostbootAgentThreadContext, __FILE__, __LINE__);
 
-        PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage = NULL;
-        pPrismPostPersistenceBootMessage = pPostPersistentBootWorkerClusterContext->getPostbootMessagePointer();
+        WavePostPersistenceBootMessage *pWavePostPersistenceBootMessage = NULL;
+        pWavePostPersistenceBootMessage = pPostPersistentBootWorkerClusterContext->getPostbootMessagePointer();
 
-        if ( NULL != pPrismPostPersistenceBootMessage )
+        if ( NULL != pWavePostPersistenceBootMessage )
         {
             // Since message is not null, we can reply 
-            pPrismPostbootAgentThreadContext->setPostbootMessagePointer ( pPrismPostPersistenceBootMessage );
+            pWavePostbootAgentThreadContext->setPostbootMessagePointer ( pWavePostPersistenceBootMessage );
         }
         else if ( NULL != pPostPersistentBootWorkerClusterContext->getPostbootMutex() )
         {
             // Since message is null, we can signal the waiting thread    
-            pPrismPostbootAgentThreadContext->setPostbootMutex ( pPostPersistentBootWorkerClusterContext->getPostbootMutex() );
-            pPrismPostbootAgentThreadContext->setPostbootSynchronizingCondition ( pPostPersistentBootWorkerClusterContext->getPostbootSynchronizingCondition() );
+            pWavePostbootAgentThreadContext->setPostbootMutex ( pPostPersistentBootWorkerClusterContext->getPostbootMutex() );
+            pWavePostbootAgentThreadContext->setPostbootSynchronizingCondition ( pPostPersistentBootWorkerClusterContext->getPostbootSynchronizingCondition() );
         }
         
-        PrismPostbootAgentThread *pPrismPostbootAgentThread = new PrismPostbootAgentThread(m_pWaveObjectManager, eventId, parameter, recoveryType, pPrismPostbootAgentThreadContext);
-        WaveThreadStatus threadStatus = pPrismPostbootAgentThread->run ();
+        WavePostbootAgentThread *pWavePostbootAgentThread = new WavePostbootAgentThread(m_pWaveObjectManager, eventId, parameter, recoveryType, pWavePostbootAgentThreadContext);
+        WaveThreadStatus threadStatus = pWavePostbootAgentThread->run ();
 
         if (WAVE_THREAD_SUCCESS != threadStatus)
         {   
-            trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : PrismPostbootAgent thread failed with status:" + FrameworkToolKit::localize (threadStatus));
+            trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : WavePostbootAgent thread failed with status:" + FrameworkToolKit::localize (threadStatus));
             status = threadStatus ;
         }
         else
         {   
-            trace (TRACE_LEVEL_SUCCESS, "WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : PrismPostbootAgent thread status success");
+            trace (TRACE_LEVEL_SUCCESS, "WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : WavePostbootAgent thread status success");
         }
     }
     else
     {   
-        PrismPostbootAgent  *pPrismPostbootAgent = new PrismPostbootAgent(m_pWaveObjectManager, eventId, parameter, recoveryType);
-        waveAssert (NULL != pPrismPostbootAgent, __FILE__, __LINE__);
-        status = pPrismPostbootAgent->execute();
+        WavePostbootAgent  *pWavePostbootAgent = new WavePostbootAgent(m_pWaveObjectManager, eventId, parameter, recoveryType);
+        waveAssert (NULL != pWavePostbootAgent, __FILE__, __LINE__);
+        status = pWavePostbootAgent->execute();
 
         if ( status != WAVE_MESSAGE_SUCCESS )
         {
@@ -442,19 +442,19 @@ ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPa
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTableForEvent : PostbootAgent Completed : " + FrameworkToolKit::localize (status));
         }
-        delete (pPrismPostbootAgent);
+        delete (pWavePostbootAgent);
     }    
     
     return (status);
 
 }
 
-void WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTable (const UI32 &eventId, const UI32 &parameter, PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage)
+void WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTable (const UI32 &eventId, const UI32 &parameter, WavePostPersistenceBootMessage *pWavePostPersistenceBootMessage)
 {
     ResourceId  status = WAVE_MESSAGE_SUCCESS;
     trace (TRACE_LEVEL_INFO, string("WaveFrameworkObjectManagerPostPersistentBootWorker::triggerPostBootPassTable : send for Triggering POSTBOOT TABLE"));
 
-    PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new PrismPostPersistentBootWorkerClusterContext ( eventId, parameter, pPrismPostPersistenceBootMessage->getRecoveryType(), pPrismPostPersistenceBootMessage );
+    WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new WavePostPersistentBootWorkerClusterContext ( eventId, parameter, pWavePostPersistenceBootMessage->getRecoveryType(), pWavePostPersistenceBootMessage );
 
     status = triggerPostBootPassTableForEvent ( pPostPersistentBootWorkerClusterContext );
     delete (pPostPersistentBootWorkerClusterContext);
@@ -536,11 +536,11 @@ ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFil
     /* Call the virtual function ConfigReplayEnd so that the plugins get to merge the configuration based on their internal requirements */
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerPostPersistentBootWorker::triggerStartupFileReplay : Start the Config Replay End .... ");
 
-    ConfigReplayEndAgent *pPrismConfigReplayEnd = new ConfigReplayEndAgent (m_pWaveObjectManager);
+    ConfigReplayEndAgent *pWaveConfigReplayEnd = new ConfigReplayEndAgent (m_pWaveObjectManager);
 
-    pPrismConfigReplayEnd->execute ();
+    pWaveConfigReplayEnd->execute ();
 
-    delete pPrismConfigReplayEnd;
+    delete pWaveConfigReplayEnd;
 
     //  Copy running to start
 
@@ -578,7 +578,7 @@ ResourceId WaveFrameworkObjectManagerPostPersistentBootWorker::setupStartupAfter
     FrameworkToolKit::setStartupFileName ("");
 
     // Save persistent configuration
-    status = FrameworkToolKit::savePrismConfiguration ();
+    status = FrameworkToolKit::saveWaveConfiguration ();
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {

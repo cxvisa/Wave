@@ -7,7 +7,7 @@
 #ifndef FILESVCLOCALMESSAGINGTESTOBJECTMANAGER_H
 #define FILESVCLOCALMESSAGINGTESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 #include "File/Local/FilePushFileMessage.h"
 
 namespace WaveNs
@@ -15,7 +15,7 @@ namespace WaveNs
 class CopyFileWaveClientMessage;
 class CopyFileToHaPeerWaveClientMessage;
 
-class FileLocalMessagingTestObjectManager : public PrismTestObjectManager
+class FileLocalMessagingTestObjectManager : public WaveTestObjectManager
 {
      private :
           FileLocalMessagingTestObjectManager ();

@@ -14,7 +14,7 @@ namespace WaveNs
 
 WavePartitionManagedObject::WavePartitionManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement                     (pWaveObjectManager),
-      PrismPersistableObject           (WavePartitionManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject           (WavePartitionManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager)
 {
     setEmptyNeededOnPersistentBoot (true);

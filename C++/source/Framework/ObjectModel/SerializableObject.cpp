@@ -9,7 +9,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/WaveMutex.h"
 #include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 //#include <xercesc/dom/DOM.hpp>
 //#include <xercesc/framework/MemBufInputSource.hpp>
 //#include <xercesc/framework/MemBufFormatTarget.hpp>

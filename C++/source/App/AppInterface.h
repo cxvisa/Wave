@@ -380,11 +380,11 @@ extern "C"
 
     /*
         This function register the main for the application that will use prism. This function
-        should be call before PrismInit is called. Prism will create a seperate thread and call
+        should be call before WaveInit is called. Wave will create a seperate thread and call
         "applicationMain" from that thread.
 
     Parameters:
-        applicationMain: Main entry for the application using Prism.
+        applicationMain: Main entry for the application using Wave.
             int  (*applicationMainFunction)         (int argc, char *argv[]);
                 argc:   Number of arguments.
                 argv:   Parameter list.

@@ -10,7 +10,7 @@
 #include "Cluster/Local/HeartBeat/HeartBeatMessages.h"
 #include "Cluster/ClusterDeleteContext.h"
 #include "Cluster/ClusterMessages.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
@@ -49,14 +49,14 @@ WaveMessage *CentralClusterConfigDeleteClusterWorker::createMessageInstance (con
 
 void CentralClusterConfigDeleteClusterWorker::deleteClusterMessageHandler (ClusterObjectManagerDeleteClusterMessage *pClusterObjectManagerDeleteClusterMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterCommitStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDeleteClusterStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterCommitStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDeleteClusterStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::prismLinearSequencerFailedStep)
     };
 
     ClusterDeleteContext *pClusterDeleteContext = new ClusterDeleteContext (pClusterObjectManagerDeleteClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -71,7 +71,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep (Cluster
 
     // Check if cluster is already created and reject if it is not already created.
 
-    vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
 
     waveAssert (NULL != pResults, __FILE__, __LINE__);
 
@@ -97,7 +97,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterValidateStep (Cluster
     }
     else
     {
-        pClusterDeleteContext->setPPrismCluster (dynamic_cast<PrismCluster *> ((*pResults)[0]));
+        pClusterDeleteContext->setPWaveCluster (dynamic_cast<WaveCluster *> ((*pResults)[0]));
     }
 
     pResults->clear ();
@@ -110,7 +110,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep : Entering ...");
 
-    PrismCluster                                *pPrismCluster          = pClusterDeleteContext->getPPrismCluster ();
+    WaveCluster                                *pWaveCluster          = pClusterDeleteContext->getPWaveCluster ();
     vector<ObjectId>                             secondaryNodes;
     UI32                                         numberOfSecondaryNodes = 0;
     UI32                                         i                      = 0;
@@ -123,9 +123,9 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
     ClusterObjectManagerDeleteClusterMessage    *pMessage               = reinterpret_cast<ClusterObjectManagerDeleteClusterMessage *> (pClusterDeleteContext->getPWaveMessage ());
     WaveNode                                     tempNode               (getPWaveObjectManager (), FrameworkToolKit::getThisLocationId (), FrameworkToolKit::getThisLocationIpAddress (), FrameworkToolKit::getThisLocationPort ());
 
-    waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveCluster, __FILE__, __LINE__);
 
-    secondaryNodes         = pPrismCluster->getSecondaryNodes ();
+    secondaryNodes         = pWaveCluster->getSecondaryNodes ();
     numberOfSecondaryNodes = secondaryNodes.size ();
 
     if (numberOfSecondaryNodes)
@@ -195,13 +195,13 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterCommitStep (ClusterDe
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigDeleteClusterWorker::deleteClusterCommitStep : Entering ...");
 
-    PrismCluster                 *pPrismCluster          = pClusterDeleteContext->getPPrismCluster ();
+    WaveCluster                 *pWaveCluster          = pClusterDeleteContext->getPWaveCluster ();
     ResourceId                    status                 = WAVE_MESSAGE_SUCCESS;
 
     startTransaction ();
 
-    delete pPrismCluster;
-    pClusterDeleteContext->setPPrismCluster (NULL);
+    delete pWaveCluster;
+    pClusterDeleteContext->setPWaveCluster (NULL);
 
     //Also update the status of local wavenode
 

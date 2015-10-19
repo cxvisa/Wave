@@ -181,7 +181,7 @@ void AttributeSqlBetween::loadFromPostgresAuxilliaryQueryResult (map<string, PGr
     waveAssert (false, __FILE__, __LINE__);
 }
 
-void AttributeSqlBetween::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+void AttributeSqlBetween::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
     waveAssert (false, __FILE__, __LINE__);
@@ -203,7 +203,7 @@ bool AttributeSqlBetween::isDeletableForOperation (const WaveManagedObjectOperat
     return (false);
 }
 
-void AttributeSqlBetween::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+void AttributeSqlBetween::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlBetween:: : This attribute is only for the SQL BETWEEN condition and does not make sense to invoke this method."));
     waveAssert (false, __FILE__, __LINE__);

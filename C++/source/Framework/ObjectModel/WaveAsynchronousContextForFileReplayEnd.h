@@ -7,17 +7,17 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFORFILEREPLAYEND_H
 #define WAVEASYNCHRONOUSCONTEXTFORFILEREPLAYEND_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForFileReplayEnd: public PrismAsynchronousContext
+class WaveAsynchronousContextForFileReplayEnd: public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                WaveAsynchronousContextForFileReplayEnd (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForFileReplayEnd (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForFileReplayEnd ();
 
     // Now the data members

@@ -9,11 +9,11 @@
 namespace WaveNs
 {
 
-WaveFrameworkInitializeWorkerStartServicesContext::WaveFrameworkInitializeWorkerStartServicesContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : PrismSynchronousLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+WaveFrameworkInitializeWorkerStartServicesContext::WaveFrameworkInitializeWorkerStartServicesContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : WaveSynchronousLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_prismBootMode                (WAVE_BOOT_FIRST_TIME),
       m_waveBootPhase                (WAVE_BOOT_PHASE_ALL_PHASES),
-      m_pPrismBootAgent              (NULL),
+      m_pWaveBootAgent              (NULL),
       m_isSchemaChangedOnFwdl        (false),
       m_isSchemaUpgradedSuccessfully (false)
 {
@@ -21,25 +21,25 @@ WaveFrameworkInitializeWorkerStartServicesContext::WaveFrameworkInitializeWorker
 
 WaveFrameworkInitializeWorkerStartServicesContext::~WaveFrameworkInitializeWorkerStartServicesContext ()
 {
-    m_pPrismBootAgent = NULL;
+    m_pWaveBootAgent = NULL;
 }
 
-PrismBootAgent *WaveFrameworkInitializeWorkerStartServicesContext::getPPrismBootAgent ()
+WaveBootAgent *WaveFrameworkInitializeWorkerStartServicesContext::getPWaveBootAgent ()
 {
-    return (m_pPrismBootAgent);
+    return (m_pWaveBootAgent);
 }
 
-void WaveFrameworkInitializeWorkerStartServicesContext::setPPrismBootAgent (PrismBootAgent *pPrismBootAgent)
+void WaveFrameworkInitializeWorkerStartServicesContext::setPWaveBootAgent (WaveBootAgent *pWaveBootAgent)
 {
-    m_pPrismBootAgent = pPrismBootAgent;
+    m_pWaveBootAgent = pWaveBootAgent;
 }
 
-PrismBootMode WaveFrameworkInitializeWorkerStartServicesContext::getPrismBootMode () const
+WaveBootMode WaveFrameworkInitializeWorkerStartServicesContext::getWaveBootMode () const
 {
     return (m_prismBootMode);
 }
 
-void WaveFrameworkInitializeWorkerStartServicesContext::setPrismBootMode (PrismBootMode prismBootMode)
+void WaveFrameworkInitializeWorkerStartServicesContext::setWaveBootMode (WaveBootMode prismBootMode)
 {
     m_prismBootMode = prismBootMode;
 }

@@ -58,8 +58,8 @@ using namespace std;
 namespace WaveNs
 {
 
-typedef        WaveObjectManager *  (* NativePrismServiceInstantiator) ();
-typedef vector<WaveObjectManager *> (* NativeMultiplePrismServiceInstantiator) ();
+typedef        WaveObjectManager *  (* NativeWaveServiceInstantiator) ();
+typedef vector<WaveObjectManager *> (* NativeMultipleWaveServiceInstantiator) ();
 typedef        ResourceId           (* PersistencePostBootCheck) ();
 typedef        bool                 (* ClusterEnabledCheck) ();
 typedef        void                 (* LogOperationStatusFunction) (ResourceId);
@@ -76,10 +76,10 @@ class WaveMessageBroker
         static string       getConfigurationFileDirectory             ();
         static string       getProfileFileDirectory                   ();
 
-        static void         registerNativeService                     (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
-        static void         registerApplicationSpecificNativeServices (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
-        static void         registerNativeServiceInternal             (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
-        static void         registerNativeService                     (NativeMultiplePrismServiceInstantiator pNativeMultiplePrismServiceInstantiator);
+        static void         registerNativeService                     (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
+        static void         registerApplicationSpecificNativeServices (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
+        static void         registerNativeServiceInternal             (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
+        static void         registerNativeService                     (NativeMultipleWaveServiceInstantiator pNativeMultipleWaveServiceInstantiator);
         static void         registerPersistencePostBootCheck          (PersistencePostBootCheck pPersistencePostBootCheck);
         static void         registerClusterEnabledCheck               (ClusterEnabledCheck pClusterEnabledCheck);
         static void         registerLogOperationStatusFunction        (LogOperationStatusFunction pLogOperationStatusFunction);
@@ -124,16 +124,16 @@ class WaveMessageBroker
         static void         logOperationStatus                    (UI32 status);
         static void         getLinecardReadySlotIdBitMap          ( BitMap &linecardReadySlotIdBitMap, UI32 &maxLinecards );
 
-        static void         instantiateNativePrismServices ();
+        static void         instantiateNativeWaveServices ();
         static void         waveExit ();
     // Now the data members
 
     private :
-        static vector<NativePrismServiceInstantiator>         m_nativePrismServiceInstantiators;
-        static vector<bool>                                   m_nativePrismServiceInstantiatorIsForNormalPhase;
-        static vector<NativeMultiplePrismServiceInstantiator> m_nativeMultiplePrismServiceInstantiators;
-        static vector<NativePrismServiceInstantiator>         m_nativeApplicationSpecificPrismServiceInstantiators;
-        static vector<ResourceId>                             m_nativePrismServiceInstantiationMode;
+        static vector<NativeWaveServiceInstantiator>         m_nativeWaveServiceInstantiators;
+        static vector<bool>                                   m_nativeWaveServiceInstantiatorIsForNormalPhase;
+        static vector<NativeMultipleWaveServiceInstantiator> m_nativeMultipleWaveServiceInstantiators;
+        static vector<NativeWaveServiceInstantiator>         m_nativeApplicationSpecificWaveServiceInstantiators;
+        static vector<ResourceId>                             m_nativeWaveServiceInstantiationMode;
         static PersistencePostBootCheck                       m_persistencePostBootCheck;
         static LogOperationStatusFunction                     m_logOperationStatusFunction;
         static WaveMutex                                     m_logOperationStatusMutex;

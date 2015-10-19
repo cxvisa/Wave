@@ -138,7 +138,7 @@ class AttributeType
 
         static AttributeType AttributeTypeNumber;
 
-        // The Start Value for Attribute Type Indicator that can be used out side of Prism Code base
+        // The Start Value for Attribute Type Indicator that can be used out side of Wave Code base
 
         static const UI32 AttributeTypeIndicatorStartValueForPublicUsage = 0x1 << 16;
 };

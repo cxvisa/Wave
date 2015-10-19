@@ -10,7 +10,7 @@
 #include "Cluster/ClusterTypes.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -55,25 +55,25 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeMessageHandler (ClusterObje
     // done during HB failure.    
     if (true == pClusterObjectManagerDeleteNodeMessage->getIsDisconnected())
     {
-        PrismLinearSequencerStep sequencerForDisconnectedSteps[] =
+        WaveLinearSequencerStep sequencerForDisconnectedSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
         };
 
         pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerForDisconnectedSteps, sizeof (sequencerForDisconnectedSteps) / sizeof (sequencerForDisconnectedSteps[0]));
     }
     else  
     {
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatsStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatsStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
         };
 
         pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

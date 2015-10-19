@@ -120,8 +120,8 @@ class WaveClientSynchronousConnection
         ResourceId            getDebugInformation                                     (const string &serviceName, string &debugInformation);
         ResourceId            resetDebugInformation                                   (const string &serviceName);
 
-        // Change PrismConfiguration Validity
-        ResourceId            setPrismConfigurationValid                              (const bool &validity , const string schemaFile = "");
+        // Change WaveConfiguration Validity
+        ResourceId            setWaveConfigurationValid                              (const bool &validity , const string schemaFile = "");
 
 	    // Running Debug Script on all nodes
 	    ResourceId            runDebugScript                                          (DistributedDebugParameters &distributedDebugParameters);

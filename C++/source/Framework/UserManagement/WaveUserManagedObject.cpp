@@ -6,7 +6,7 @@
 
 #include "Framework/UserManagement/WaveUserManagedObject.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/UserManagement/WaveGroupManagedObject.h"
 
 namespace WaveNs
@@ -14,7 +14,7 @@ namespace WaveNs
 
 WaveUserManagedObject::WaveUserManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement           (pWaveObjectManager),
-      PrismPersistableObject (WaveUserManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (WaveUserManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager),
       m_userId               (0),
       m_isActive             (false)
@@ -23,7 +23,7 @@ WaveUserManagedObject::WaveUserManagedObject (WaveObjectManager *pWaveObjectMana
 
 WaveUserManagedObject::WaveUserManagedObject (WaveObjectManager *pWaveObjectManager, const string &name)
     : WaveElement           (pWaveObjectManager),
-      PrismPersistableObject (WaveUserManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (WaveUserManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject      (pWaveObjectManager),
       m_userId               (0),
       m_isActive             (false)

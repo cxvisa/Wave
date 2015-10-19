@@ -7,18 +7,18 @@
 #ifndef DISTRIBUTEDLOGSYNCHRONOUSLINEARSEQUENCERCONTEXT_H
 #define DISTRIBUTEDLOGSYNCHRONOUSLINEARSEQUENCERCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 
 namespace WaveNs
 {
 
-class DistributedLogSynchronousLinearSequencerContext : public PrismSynchronousLinearSequencerContext
+class DistributedLogSynchronousLinearSequencerContext : public WaveSynchronousLinearSequencerContext
 {
     private:
     protected:
     public:
-                            DistributedLogSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                            DistributedLogSynchronousLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DistributedLogSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DistributedLogSynchronousLinearSequencerContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual            ~DistributedLogSynchronousLinearSequencerContext (); 
 
                 UI64        getNumberOfLogEntries                           () const;

@@ -8,7 +8,7 @@
 #define CREATECLUSTERWITHNODESCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include <vector>
 #include <map>
 
@@ -24,8 +24,8 @@ class CreateClusterWithNodesContext : public WaveLinearSequencerContext
 
     protected :
     public :
-                                CreateClusterWithNodesContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                CreateClusterWithNodesContext   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                CreateClusterWithNodesContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                CreateClusterWithNodesContext   (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~CreateClusterWithNodesContext   ();
         void                    addNewLocationId                (const LocationId &locationId);
         void                    removeNewLocationId             (const LocationId &locationId);

@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 FrameworkRemoteMessagingTestObjectManager2::FrameworkRemoteMessagingTestObjectManager2 ()
-    : PrismTestObjectManager ("Framework Remote Messaging Test 2")
+    : WaveTestObjectManager ("Framework Remote Messaging Test 2")
 {
 }
 
@@ -42,23 +42,23 @@ WaveServiceId FrameworkRemoteMessagingTestObjectManager2::getWaveServiceId ()
 
 void FrameworkRemoteMessagingTestObjectManager2::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::selectARemoteLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::simpleOneWayMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::simpleSynchronousMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageWithBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::selectARemoteLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::simpleOneWayMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::simpleSynchronousMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageWithBuffersTestStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageWithLargeBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageAttributeTest),
-        //reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageWithLargeBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageAttributeTest),
+        //reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::prismLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -129,7 +129,7 @@ void FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestSt
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -225,7 +225,7 @@ void FrameworkRemoteMessagingTestObjectManager2::simpleOneWayMessageTestStep (Fr
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }
@@ -348,7 +348,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersT
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithBuffersTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -531,7 +531,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuf
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -673,7 +673,7 @@ void FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTes
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -876,7 +876,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep (Framewo
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -928,7 +928,7 @@ void FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestSt
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {

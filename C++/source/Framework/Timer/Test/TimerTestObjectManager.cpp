@@ -15,7 +15,7 @@ namespace WaveNs
 {
 
 TimerTestObjectManager::TimerTestObjectManager ()
-    : PrismTestObjectManager ("Framwork Timer Test")
+    : WaveTestObjectManager ("Framwork Timer Test")
 {
 }
 
@@ -43,16 +43,16 @@ WaveServiceId TimerTestObjectManager::getWaveServiceId ()
 
 void TimerTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::timerAccuracyTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::timerShowStatStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::periodicTimerAccuracyTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::timerShowStatStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::timerCancelTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::periodicTimerCancelTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TimerTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::timerAccuracyTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::timerShowStatStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::periodicTimerAccuracyTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::timerShowStatStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::timerCancelTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::periodicTimerCancelTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     FrameworkTimerTestContext *pFrameworkTimerTestContext = new FrameworkTimerTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -86,7 +86,7 @@ void TimerTestObjectManager::timerAccuracyTestStep (FrameworkTimerTestContext *p
 
         gettimeofday (&pTimerTestInfo->m_startTime, NULL);
 
-        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<PrismTimerExpirationHandler> (&TimerTestObjectManager::timerExpiredCallback), (void*) pTimerTestInfo);
+        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<WaveTimerExpirationHandler> (&TimerTestObjectManager::timerExpiredCallback), (void*) pTimerTestInfo);
 
         if (FRAMEWORK_SUCCESS != retCode)
         {
@@ -144,7 +144,7 @@ void TimerTestObjectManager::periodicTimerAccuracyTestStep (FrameworkTimerTestCo
 
         gettimeofday (&(pTimerTestInfo->m_startTime), NULL);
 
-        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<PrismTimerExpirationHandler> (&TimerTestObjectManager::timerExpiredCallback), (void*) pTimerTestInfo);
+        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<WaveTimerExpirationHandler> (&TimerTestObjectManager::timerExpiredCallback), (void*) pTimerTestInfo);
 
         if (FRAMEWORK_SUCCESS != retCode)
         {
@@ -320,7 +320,7 @@ void TimerTestObjectManager::timerCancelTestStep (FrameworkTimerTestContext *pFr
 
         gettimeofday (&pTimerTestInfo->m_startTime, NULL);
 
-        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<PrismTimerExpirationHandler> (&TimerTestObjectManager::cancelTimerTestCallback), (void*) pTimerTestInfo);
+        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<WaveTimerExpirationHandler> (&TimerTestObjectManager::cancelTimerTestCallback), (void*) pTimerTestInfo);
 
         if (FRAMEWORK_SUCCESS != retCode)
         {
@@ -397,7 +397,7 @@ void TimerTestObjectManager::periodicTimerCancelTestStep (FrameworkTimerTestCont
 
         gettimeofday (&pTimerTestInfo->m_startTime, NULL);
 
-        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<PrismTimerExpirationHandler> (&TimerTestObjectManager::cancelTimerTestCallback), (void*) pTimerTestInfo);
+        retCode = startTimer (pTimerTestInfo->m_timerId, pTimerTestInfo->m_startInterval, pTimerTestInfo->m_periodicInterval, reinterpret_cast<WaveTimerExpirationHandler> (&TimerTestObjectManager::cancelTimerTestCallback), (void*) pTimerTestInfo);
 
         if (FRAMEWORK_SUCCESS != retCode)
         {

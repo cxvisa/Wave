@@ -30,7 +30,7 @@ namespace WaveNs
             void              boot                                         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
             void              install                                      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 		  void              disable                                      (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
-		  void              shutdown                                     (PrismAsynchronousContext *pPrismAsynchronousContext);
+		  void              shutdown                                     (WaveAsynchronousContext *pWaveAsynchronousContext);
   		  void              failover                                     (FailoverAsynchronousContext *pFailoverAsynchronousContext);
 		  void              listenForEvents                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
             void              TriggerFailOverCallback                      (WaveSendToClusterContext *pWaveSendToClusterContext );

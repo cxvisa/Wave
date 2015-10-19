@@ -52,23 +52,23 @@ void WaveManagedObjectUpdateWorker::updateHandler (WaveObjectManagerUpdateWaveMa
 {
     trace (TRACE_LEVEL_DEBUG, "WaveManagedObjectUpdateWorker::updateHandler : update message recived by OM");
             
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateQueryManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateValidateManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::WaveManagedObjectStartTransactionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePreUpdateManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateUpdateManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateUpdateNewAttributeInManagedObject),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePostUpdateManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::commitWaveManagedObjectBeforeUpdatingBackend),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateUpdateHardwareStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePostUpdateHardwareStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateAttributesPostUpdateHardwareStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::commitWaveManagedObjectAfterUpdatingBackend),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectUpdateWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateQueryManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateValidateManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::WaveManagedObjectStartTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePreUpdateManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateUpdateManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateUpdateNewAttributeInManagedObject),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePostUpdateManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::commitWaveManagedObjectBeforeUpdatingBackend),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateUpdateHardwareStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePostUpdateHardwareStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateAttributesPostUpdateHardwareStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::commitWaveManagedObjectAfterUpdatingBackend),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::prismLinearSequencerFailedStep),
     };
 
     WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = new WaveManagedObjectUpdateContext (pWaveObjectManagerUpdateWaveManagedObjectMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -299,7 +299,7 @@ void WaveManagedObjectUpdateWorker::updateValidateManagedObjectStep (WaveManaged
 
         if(FrameworkToolKit::isALocalService (getServiceId())) 
         {
-            ValidateForUpdateAtThisNodeContext *pValidateForUpdateAtThisNodeContext = new ValidateForUpdateAtThisNodeContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::validateForUpdateAtThisNodeCallBack), pWaveManagedObjectUpdateContext); 
+            ValidateForUpdateAtThisNodeContext *pValidateForUpdateAtThisNodeContext = new ValidateForUpdateAtThisNodeContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::validateForUpdateAtThisNodeCallBack), pWaveManagedObjectUpdateContext); 
 
             pValidateForUpdateAtThisNodeContext->setAttributeNames      (attributeNames);
             pValidateForUpdateAtThisNodeContext->setAttributeValues     (attributeValues);
@@ -313,7 +313,7 @@ void WaveManagedObjectUpdateWorker::updateValidateManagedObjectStep (WaveManaged
          
             if (NULL != pWaveManagedObject)
             {
-                ValidateForUpdateAtThisNodeContext *pValidateGlobalForUpdateAtThisNodeContext = new ValidateForUpdateAtThisNodeContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::validateForUpdateAtThisNodeCallBack), pWaveManagedObjectUpdateContext);
+                ValidateForUpdateAtThisNodeContext *pValidateGlobalForUpdateAtThisNodeContext = new ValidateForUpdateAtThisNodeContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::validateForUpdateAtThisNodeCallBack), pWaveManagedObjectUpdateContext);
          
                 pValidateGlobalForUpdateAtThisNodeContext->setAttributeNames      (attributeNames);
                 pValidateGlobalForUpdateAtThisNodeContext->setAttributeValues     (attributeValues);
@@ -445,7 +445,7 @@ void WaveManagedObjectUpdateWorker::updatePreUpdateManagedObjectStep (WaveManage
             } 
             else 
             {
-                IsAssociatedManagedObjectToBeCreatedContext *pAssociatedContext = new IsAssociatedManagedObjectToBeCreatedContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::isAssociatedManagedObjectToBeCreatedCallback), pWaveManagedObjectUpdateContext);
+                IsAssociatedManagedObjectToBeCreatedContext *pAssociatedContext = new IsAssociatedManagedObjectToBeCreatedContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::isAssociatedManagedObjectToBeCreatedCallback), pWaveManagedObjectUpdateContext);
 
                 pAssociatedContext->setAssociatedClassName(associatedClassName);
                 pAssociatedContext->setAssociatedAttributeName(pAssociatedAttribute->getAttributeName());
@@ -588,7 +588,7 @@ void WaveManagedObjectUpdateWorker::isAssociatedManagedObjectToBeCreatedCallback
         else
         {
             //owner of associated Managed Object is the same as mine. Using Asynchronous context to call the function in WaveManagedObjectCreateWorker.
-            WaveManagedObjectAsynchronousCreateContext *pWaveManagedObjectAsynchronousCreateContext = new WaveManagedObjectAsynchronousCreateContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::createAssociatedManagedObjectCallback), pWaveManagedObjectUpdateContext);
+            WaveManagedObjectAsynchronousCreateContext *pWaveManagedObjectAsynchronousCreateContext = new WaveManagedObjectAsynchronousCreateContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::createAssociatedManagedObjectCallback), pWaveManagedObjectUpdateContext);
             vector<string>                              associatedAttributeNames;
             vector<string>                              associatedAttributeValues;
 
@@ -761,7 +761,7 @@ void WaveManagedObjectUpdateWorker::updateUpdateNewAttributeInManagedObject (Wav
     vector<Attribute*> attributes                = pWaveManagedObjectUpdateContext->getAttributes ();
     WaveManagedObject *pWaveManagedObject        = pWaveManagedObjectUpdateContext->getPOperateOnWaveManagedObject ();
 
-    UpdateNewAttributeInManagedObjectContext *pUpdateNewAttributeInManagedObjectContext = new UpdateNewAttributeInManagedObjectContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::updateUpdateNewAttributeInManagedObjectCallback), pWaveManagedObjectUpdateContext);
+    UpdateNewAttributeInManagedObjectContext *pUpdateNewAttributeInManagedObjectContext = new UpdateNewAttributeInManagedObjectContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::updateUpdateNewAttributeInManagedObjectCallback), pWaveManagedObjectUpdateContext);
 
     pUpdateNewAttributeInManagedObjectContext->setAttributeVector (pWaveManagedObjectUpdateContext->getAttributes ());
 
@@ -826,16 +826,16 @@ void WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStep (WaveManagedObje
         return;        
     }
 
-    PrismAsynchronousContext *pPrismAsynchronousContext     = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStepCallback), pWaveManagedObjectUpdateContext);
+    WaveAsynchronousContext *pWaveAsynchronousContext     = new WaveAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStepCallback), pWaveManagedObjectUpdateContext);
     WaveManagedObject        *pOperateOnWaveManagedObject   = pWaveManagedObjectUpdateContext->getPOperateOnWaveManagedObject   ();
    
     if (NULL != pOperateOnWaveManagedObject)
     {
-        pOperateOnWaveManagedObject->preUpdateHardwareStepForOperateOnWaveManagedObject (pPrismAsynchronousContext);
+        pOperateOnWaveManagedObject->preUpdateHardwareStepForOperateOnWaveManagedObject (pWaveAsynchronousContext);
     }
 	else
 	{
-		delete pPrismAsynchronousContext;
+		delete pWaveAsynchronousContext;
 		pWaveManagedObjectUpdateContext->executeNextStep (WAVE_MESSAGE_ERROR);
 		
 	}
@@ -843,19 +843,19 @@ void WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStep (WaveManagedObje
     return;
 }
 
-void WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStepCallback (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStepCallBack : Entering ...");
 
-    WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = reinterpret_cast<WaveManagedObjectUpdateContext *> (pPrismAsynchronousContext->getPCallerContext ());
-    ResourceId                      status                          = pPrismAsynchronousContext->getCompletionStatus ();
+    WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = reinterpret_cast<WaveManagedObjectUpdateContext *> (pWaveAsynchronousContext->getPCallerContext ());
+    ResourceId                      status                          = pWaveAsynchronousContext->getCompletionStatus ();
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, "WaveManagedObjectUpdateWorker::updatePreUpdateHardwareStepCallback completion status " + FrameworkToolKit::localize (status));
     }
 
-    delete pPrismAsynchronousContext;
+    delete pWaveAsynchronousContext;
     pWaveManagedObjectUpdateContext->executeNextStep (status);
 }
 
@@ -874,7 +874,7 @@ void WaveManagedObjectUpdateWorker::updateUpdateHardwareStep (WaveManagedObjectU
 
     if (NULL != pOperateOnWaveManagedObject)
     {    
-        GetHardwareConfigurationDetailsForUpdateContext *pGetHardwareConfigurationDetailsForUpdateContext = new GetHardwareConfigurationDetailsForUpdateContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectUpdateWorker::updateUpdateHardwareStepCallBack), pWaveManagedObjectUpdateContext);
+        GetHardwareConfigurationDetailsForUpdateContext *pGetHardwareConfigurationDetailsForUpdateContext = new GetHardwareConfigurationDetailsForUpdateContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectUpdateWorker::updateUpdateHardwareStepCallBack), pWaveManagedObjectUpdateContext);
 
         pGetHardwareConfigurationDetailsForUpdateContext->setAttributeNames      (pWaveManagedObjectUpdateContext->getAttributeNames ());
         pGetHardwareConfigurationDetailsForUpdateContext->setAttributeValues     (pWaveManagedObjectUpdateContext->getAttributeValues ());

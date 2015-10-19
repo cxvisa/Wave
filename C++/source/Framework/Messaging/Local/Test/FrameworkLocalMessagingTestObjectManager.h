@@ -7,7 +7,7 @@
 #ifndef FRAMEWORKLOCALMESSAGINGTESTOBJECTMANAGER_H
 #define FRAMEWORKLOCALMESSAGINGTESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 
 namespace WaveNs
 {
@@ -17,7 +17,7 @@ class FrameworkTestabilityMessage5;
 class FrameworkTestabilityMessage6;
 class FrameworkLocalMessagingTestContext;
 
-class FrameworkLocalMessagingTestObjectManager : public PrismTestObjectManager
+class FrameworkLocalMessagingTestObjectManager : public WaveTestObjectManager
 {
     private :
         FrameworkLocalMessagingTestObjectManager ();

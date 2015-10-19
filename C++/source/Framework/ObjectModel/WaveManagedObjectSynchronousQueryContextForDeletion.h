@@ -4,8 +4,8 @@
  *   Author : Brian Adaniya                                                *
  ***************************************************************************/
 
-#ifndef PRISMMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXTFORDELETION_H
-#define PRISMMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXTFORDELETION_H
+#ifndef WAVEMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXTFORDELETION_H
+#define WAVEMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXTFORDELETION_H
 
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
@@ -45,4 +45,4 @@ class WaveManagedObjectSynchronousQueryContextForDeletion : public WaveManagedOb
 
 }
 
-#endif // PRISMMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXTFORDELETION_H
+#endif // WAVEMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXTFORDELETION_H

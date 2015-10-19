@@ -14,7 +14,7 @@
 #include "ManagementInterface/ClientInterface/WaveManagementClientInformation.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 #include "ManagementInterface/ClientInterface/WaveUserInterfaceObjectManager.h"
-#include "Version/PrismVersion.h" 
+#include "Version/WaveVersion.h" 
 #include <stdio.h>
 
 namespace WaveNs
@@ -111,14 +111,14 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
                 // the header currently contains The pass code for authorization, ipaddress and
                 // the server port for this location so that the remote locations knows how to contact us back.
 
-                isSuccessful = (*m_pClientStreamingSocket) << FrameworkToolKit::getPrismConnectionPassPhrase ();
+                isSuccessful = (*m_pClientStreamingSocket) << FrameworkToolKit::getWaveConnectionPassPhrase ();
 
                 if (true != isSuccessful)
                 {
                     waveAssert (false, __FILE__, __LINE__);
                 }
 
-                string messageVersion = PrismVersion::getVersionString ();
+                string messageVersion = WaveVersion::getVersionString ();
 
                 // now create the Wave Management Server Information object and post it to the Management Interface Client.
 
@@ -277,7 +277,7 @@ WaveServiceId WaveManagementServer::getWaveServiceIdForServiceName (const string
     return (serviceId);
 }
 
-string WaveManagementServer::getPrismServiceNameForServiceId (const WaveServiceId &serviceId)
+string WaveManagementServer::getWaveServiceNameForServiceId (const WaveServiceId &serviceId)
 {
     map<UI32, string>::iterator element     = m_serviceMapById.find (serviceId);
     map<UI32, string>::iterator end         = m_serviceMapById.end ();

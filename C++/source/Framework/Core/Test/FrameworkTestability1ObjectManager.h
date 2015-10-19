@@ -46,7 +46,7 @@ class FrameworkTestability1ObjectManager : public WaveLocalObjectManager
         virtual                                    ~FrameworkTestability1ObjectManager                            ();
         static  FrameworkTestability1ObjectManager *getInstance                                                   ();
         static  WaveServiceId                      getWaveServiceId                                             ();
-        static  string                              getPrismServiceName                                           ();
+        static  string                              getWaveServiceName                                           ();
 
                 void                                frameworkTestabilityMessage1RequestHandler                    (FrameworkTestabilityMessage1 *pMessage);
                 void                                frameworkTestabilityMessage2RequestHandler                    (FrameworkTestabilityMessage2 *pMessage);

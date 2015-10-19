@@ -8,17 +8,17 @@
 #define WAVEASYNCHRONOUSCONTEXTFORDEBUGINFORMATION_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForDebugInformation : public PrismAsynchronousContext
+class WaveAsynchronousContextForDebugInformation : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                    WaveAsynchronousContextForDebugInformation  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                    WaveAsynchronousContextForDebugInformation  (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                    ~WaveAsynchronousContextForDebugInformation  ();
 
                 void                setDebugInformation                         (const string &debugInformation);

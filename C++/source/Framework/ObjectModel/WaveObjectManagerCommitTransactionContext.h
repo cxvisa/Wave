@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 class WaveLinearSequencerContext;
-class PrismSynchronousLinearSequencerContext;
+class WaveSynchronousLinearSequencerContext;
 
 class WaveObjectManagerCommitTransactionContext
 {
@@ -20,7 +20,7 @@ class WaveObjectManagerCommitTransactionContext
     public :
                                         WaveObjectManagerCommitTransactionContext   ();
                                         WaveObjectManagerCommitTransactionContext   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                                        WaveObjectManagerCommitTransactionContext   (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                                        WaveObjectManagerCommitTransactionContext   (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
         virtual                        ~WaveObjectManagerCommitTransactionContext   ();
 
                 bool                    getIsADelayedCommitTransaction              () const;

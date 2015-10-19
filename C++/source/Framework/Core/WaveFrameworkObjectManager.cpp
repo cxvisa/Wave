@@ -6,7 +6,7 @@
 
 #include <time.h>
 #include <signal.h>
-#include "Framework/OsLayer/PrismOsLayer.h"
+#include "Framework/OsLayer/WaveOsLayer.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/WaveFrameworkObjectManagerInitializeWorker.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
@@ -37,14 +37,14 @@
 #include "Framework/Core/DestroyClusterContext.h"
 #include "Framework/Messaging/Remote/InterLocationMessageReceiverObjectManager.h"
 #include "Framework/Core/WaveFrameworkConfigurationWorker.h"
-#include "Framework/Shutdown/PrismFinalizeWorker.h"
+#include "Framework/Shutdown/WaveFinalizeWorker.h"
 #include "Framework/Timer/TimerSignalObjectManager.h"
 #include "Framework/Trace/TraceObjectManager.h"
 #include "Shell/ShellObjectManager.h"
 #include "Regression/RegressionTestObjectManager.h"
 #include "App/AppObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 #include "Framework/Core/HeartBeatLostContext.h"
 #include "Framework/Core/DestroyClusterAsynchronousContext.h"
 #include "Framework/Core/DetachFromClusterAsynchronousContext.h"
@@ -68,14 +68,14 @@
 #include "Framework/Core/WaveFrameworkObjectManagerPostPersistentBootWorker.h"
 #include "Framework/Core/WaveFrameworkObjectManagerHaSyncWorker.h"
 #include "Cluster/Local/WaveNode.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include <sys/types.h>
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Cluster/Local/ClusterLocalReportPrimaryNodeChangedMessage.h"
 #include "Cluster/Local/ClusterLocalReportRemovedNodeFromClusterMessage.h"
 #include "Cluster/Local/ClusterLocalReportReplaceMessage.h"
 
-#include "Framework/ExternalStateSynchronization/PrismExternalStateSynchronizationAgent.h"
+#include "Framework/ExternalStateSynchronization/WaveExternalStateSynchronizationAgent.h"
 #include "Framework/SlotFailover/SlotFailoverAgent.h"
 #include "Framework/Core/WaveNewNodesAddedEvent.h"
 #include "Framework/Core/WaveNodesAdditionToClusterCompletedEvent.h"
@@ -84,8 +84,8 @@
 #include "Framework/Core/ClusterPhase3StartEvent.h"
 #include "Framework/Core/ClusterPhase3CompleteEvent.h"
 #include "Framework/Core/PrimaryChangedEvent.h"
-#include "Framework/Postboot/PrismPostbootMessages.h"
- #include "Framework/Postboot/PrismPostPersistentBootWorkerClusterContext.h"
+#include "Framework/Postboot/WavePostbootMessages.h"
+ #include "Framework/Postboot/WavePostPersistentBootWorkerClusterContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Persistence/PersistenceObjectManagerExecuteTransactionMessage.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
@@ -93,7 +93,7 @@
 #include <set>
 #include "Framework/Zeroize/ZeroizeForFIPSLinearSequencerContext.h"
 #include "Framework/Zeroize/ZeroizeForFIPSMessage.h"
-#include "Framework/Zeroize/PrismZeroizeAgent.h"
+#include "Framework/Zeroize/WaveZeroizeAgent.h"
 #include "Framework/Core/Wave.h"
 #include "Framework/Core/VcsClusterConfiguration.h"
 #include "ManagementInterface/ClientInterface/WaveClientTransportObjectManager.h"
@@ -214,9 +214,9 @@ void WaveFrameworkObjectManager::setLastUsedLocationIdInWaveFrameworkObjectManag
     m_lastUsedLocationId = locationId;
 }
 
-bool WaveFrameworkObjectManager::getPrismConfigurationValidity ()
+bool WaveFrameworkObjectManager::getWaveConfigurationValidity ()
 {
-    return (m_pConfigurationWorker)->getPrismConfigurationValidity ();
+    return (m_pConfigurationWorker)->getWaveConfigurationValidity ();
 }
 
 WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
@@ -268,9 +268,9 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
 
     waveAssert (NULL != m_pInitializeWorker, __FILE__, __LINE__);
 
-    m_pPrismFinalizeWorker = new PrismFinalizeWorker (this);
+    m_pWaveFinalizeWorker = new WaveFinalizeWorker (this);
 
-    waveAssert (NULL != m_pPrismFinalizeWorker, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveFinalizeWorker, __FILE__, __LINE__);
 
     m_pConfigurationWorker = new WaveFrameworkConfigurationWorker (this);
 
@@ -317,12 +317,12 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
 
     // Now send a oneway initialize message to self.
 
-    // We know the service id for the Prism framework object manager must be 1.  And it must not be anything else.  So we use the value 1 in the next statement.
+    // We know the service id for the Wave framework object manager must be 1.  And it must not be anything else.  So we use the value 1 in the next statement.
 
-    PrismInitializeObjectManagerMessage *pPrismInitializeObjectManagerMessage = new PrismInitializeObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
+    WaveInitializeObjectManagerMessage *pWaveInitializeObjectManagerMessage = new WaveInitializeObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                                         // We always say it is the first time boot, but, this reason is not to be looked into in the initialize for this OM.
 
-    WaveMessageStatus status = sendOneWay (pPrismInitializeObjectManagerMessage);
+    WaveMessageStatus status = sendOneWay (pWaveInitializeObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -330,10 +330,10 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
         exit (-2);
     }
 
-    PrismEnableObjectManagerMessage *pPrismEnableObjectManagerMessage = new PrismEnableObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
+    WaveEnableObjectManagerMessage *pWaveEnableObjectManagerMessage = new WaveEnableObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                             // We always say it is the first time boot, but, this reason is not to be looked into in the enable for this OM.
 
-    status = sendOneWay (pPrismEnableObjectManagerMessage);
+    status = sendOneWay (pWaveEnableObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -341,10 +341,10 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
         exit (-3);
     }
 
-    PrismInstallObjectManagerMessage *pPrismInstallObjectManagerMessage = new PrismInstallObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
+    WaveInstallObjectManagerMessage *pWaveInstallObjectManagerMessage = new WaveInstallObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                                // We always say it is the first time boot, but, this reason is not to be looked into in the install for this OM.
 
-    status = sendOneWay (pPrismInstallObjectManagerMessage);
+    status = sendOneWay (pWaveInstallObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -352,10 +352,10 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
         exit (-4);
     }
 
-    PrismBootObjectManagerMessage *pPrismBootObjectManagerMessage = new PrismBootObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
+    WaveBootObjectManagerMessage *pWaveBootObjectManagerMessage = new WaveBootObjectManagerMessage (1, WAVE_BOOT_FIRST_TIME_BOOT); // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it iwill invariably fail since we are inside the getInstance method
                                                                                                                                       // We always say it is the first time boot, but, this reason is not to be looked into in the boot for this OM.
 
-    status = sendOneWay (pPrismBootObjectManagerMessage);
+    status = sendOneWay (pWaveBootObjectManagerMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -440,7 +440,7 @@ WaveFrameworkObjectManager *WaveFrameworkObjectManager::getInstance ()
 
 string WaveFrameworkObjectManager::getServiceName ()
 {
-    return ("Prism Framework");
+    return ("Wave Framework");
 }
 
 WaveFrameworkObjectManager::~WaveFrameworkObjectManager ()
@@ -450,9 +450,9 @@ WaveFrameworkObjectManager::~WaveFrameworkObjectManager ()
         delete m_pInitializeWorker;
     }
 
-    if (NULL != m_pPrismFinalizeWorker)
+    if (NULL != m_pWaveFinalizeWorker)
     {
-        delete m_pPrismFinalizeWorker;
+        delete m_pWaveFinalizeWorker;
     }
 
     if (NULL != m_pConfigurationWorker)
@@ -509,19 +509,19 @@ WaveMessage *WaveFrameworkObjectManager::createMessageInstance (const UI32 &oper
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY :
-            pWaveMessage = new PrismConfigureClusterSecondaryMessage;
+            pWaveMessage = new WaveConfigureClusterSecondaryMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1 :
-            pWaveMessage = new PrismConfigureClusterSecondaryPhase1Message;
+            pWaveMessage = new WaveConfigureClusterSecondaryPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2 :
-            pWaveMessage = new PrismConfigureClusterSecondaryPhase2Message;
+            pWaveMessage = new WaveConfigureClusterSecondaryPhase2Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3 :
-            pWaveMessage = new PrismConfigureClusterSecondaryPhase3Message;
+            pWaveMessage = new WaveConfigureClusterSecondaryPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_UNCONFIGURE_CLUSTER_SECONDARY :
@@ -533,15 +533,15 @@ WaveMessage *WaveFrameworkObjectManager::createMessageInstance (const UI32 &oper
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1 :
-            pWaveMessage = new PrismRejoinClusterSecondaryPhase1Message();
+            pWaveMessage = new WaveRejoinClusterSecondaryPhase1Message();
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2 :
-            pWaveMessage = new PrismRejoinClusterSecondaryPhase2Message();
+            pWaveMessage = new WaveRejoinClusterSecondaryPhase2Message();
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3 :
-            pWaveMessage = new PrismRejoinClusterSecondaryPhase3Message();
+            pWaveMessage = new WaveRejoinClusterSecondaryPhase3Message();
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE :
@@ -580,15 +580,15 @@ WaveMessage *WaveFrameworkObjectManager::createMessageInstance (const UI32 &oper
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER:
-            pWaveMessage = new PrismConfigureClusterSecondaryHaPeerMessage;
+            pWaveMessage = new WaveConfigureClusterSecondaryHaPeerMessage;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1:
-            pWaveMessage = new PrismConfigureClusterSecondaryHaPeerPhase1Message;
+            pWaveMessage = new WaveConfigureClusterSecondaryHaPeerPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3:
-            pWaveMessage = new PrismConfigureClusterSecondaryHaPeerPhase3Message;
+            pWaveMessage = new WaveConfigureClusterSecondaryHaPeerPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER:
@@ -596,11 +596,11 @@ WaveMessage *WaveFrameworkObjectManager::createMessageInstance (const UI32 &oper
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1:
-            pWaveMessage = new PrismRejoinClusterSecondaryHaPeerPhase1Message;
+            pWaveMessage = new WaveRejoinClusterSecondaryHaPeerPhase1Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3:
-            pWaveMessage = new PrismRejoinClusterSecondaryHaPeerPhase3Message;
+            pWaveMessage = new WaveRejoinClusterSecondaryHaPeerPhase3Message;
             break;
 
         case FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_MESSAGE_HA_PEER:
@@ -654,7 +654,7 @@ void WaveFrameworkObjectManager::boot (WaveAsynchronousContextForBootPhases *pWa
 
     // Start the Initialization sequnce.
 
-    ResourceId status = m_pInitializeWorker->startPrismServices ();
+    ResourceId status = m_pInitializeWorker->startWaveServices ();
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -677,7 +677,7 @@ void  WaveFrameworkObjectManager::validateAndZeroizeAtBoot()
         Wave::logOperationStatus (FIPS_OPERATION_TRIGGER_CLEANUP_FOR_ZEROIZE);
     
         FrameworkSequenceGenerator &frameworkSequenceGenerator = getCurrentFrameworkSequenceGenerator ();
-        PrismZeroizeAgent *pZAgent = new PrismZeroizeAgent(this, frameworkSequenceGenerator,noShutdownAtZeroize);
+        WaveZeroizeAgent *pZAgent = new WaveZeroizeAgent(this, frameworkSequenceGenerator,noShutdownAtZeroize);
 
         waveAssert(NULL != pZAgent, __FILE__,__LINE__);
     
@@ -696,18 +696,18 @@ void  WaveFrameworkObjectManager::validateAndZeroizeAtBoot()
 
 }
 
-void WaveFrameworkObjectManager::bootPrism ()
+void WaveFrameworkObjectManager::bootWave ()
 {
     setIsFrameworkReadyToBoot (true);
 }
 
-void WaveFrameworkObjectManager::waitForPrismServicesToFinish ()
+void WaveFrameworkObjectManager::waitForWaveServicesToFinish ()
 {
-    WaveMutex mutexForAllPrismServices;
+    WaveMutex mutexForAllWaveServices;
 
 	// double lock to ensure this function doesn't complete
-    mutexForAllPrismServices.lock ();
-    mutexForAllPrismServices.lock ();
+    mutexForAllWaveServices.lock ();
+    mutexForAllWaveServices.lock ();
 }
 
 void WaveFrameworkObjectManager::configureThisLocationAsLocation (SI32 port)
@@ -1130,42 +1130,42 @@ void WaveFrameworkObjectManager::createDatabaseBackupBuffer(char * &pDatabaseBac
     databaseBackupFile.close ();
 }
 
-void WaveFrameworkObjectManager::createClusterWithNodesMessageHandler (PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage)
+void WaveFrameworkObjectManager::createClusterWithNodesMessageHandler (WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesReplayGlobalOnlyConfigIfRequiredStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToSecondaryNodes),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNodesAdditionToClusterCompletedEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesReplayGlobalOnlyConfigIfRequiredStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToSecondaryNodes),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNodesAdditionToClusterCompletedEvent),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
     };
 
-    CreateClusterWithNodesContext *pCreateClusterWithNodesContext = new CreateClusterWithNodesContext (pPrismCreateClusterWithNodesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    CreateClusterWithNodesContext *pCreateClusterWithNodesContext = new CreateClusterWithNodesContext (pWaveCreateClusterWithNodesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pCreateClusterWithNodesContext->setIsCreateClusterContext (true);
 
@@ -1187,7 +1187,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep 
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationRole                        currentRole                         = m_pThisLocation->getLocationRole ();
     ResourceId                          status                              = WAVE_MESSAGE_SUCCESS;
 
@@ -1196,7 +1196,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep 
     //                 in the cluster creation message.  Since the message has been generated, we might have changed our locationId.
     //                 Also we know that this request can only come from the CEntral cluster that is local to us.
 
-    pPrismCreateClusterWithNodesMessage->setSenderLocationId (FrameworkToolKit::getThisLocationId ());
+    pWaveCreateClusterWithNodesMessage->setSenderLocationId (FrameworkToolKit::getThisLocationId ());
 
     if (LOCATION_PRIMARY == currentRole)
     {
@@ -1220,7 +1220,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesValidateLocationRoleStep 
         // If we respond it may cause the response to be delivered to a wrong location as the requesting
         // location is considered to be an imposter.
 
-        pPrismCreateClusterWithNodesMessage->setDropReplyAcrossLocations (true);
+        pWaveCreateClusterWithNodesMessage->setDropReplyAcrossLocations (true);
     }
 
     pCreateClusterWithNodesContext->executeNextStep (status);
@@ -1231,8 +1231,8 @@ void WaveFrameworkObjectManager::createClusterWithNodesValidateStep (CreateClust
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::createClusterWithNodesValidateStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
-    UI32                                numberOfNewNodes                    = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    UI32                                numberOfNewNodes                    = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
     UI32                                i                                   = 0;
     string                              thisLocationIpAddress               = FrameworkToolKit::getThisLocationIpAddress ();
     SI32                                thisLocationPort                    = FrameworkToolKit::getThisLocationPort ();
@@ -1259,8 +1259,8 @@ void WaveFrameworkObjectManager::createClusterWithNodesValidateStep (CreateClust
 
     for (i = 0; i < numberOfNewNodes; i++)
     {
-        string ipAddress = pPrismCreateClusterWithNodesMessage->getNodeAt (i);
-        SI32   port             = pPrismCreateClusterWithNodesMessage->getNodePortAt (i);
+        string ipAddress = pWaveCreateClusterWithNodesMessage->getNodeAt (i);
+        SI32   port             = pWaveCreateClusterWithNodesMessage->getNodePortAt (i);
 
         if ("" == ipAddress)
         {
@@ -1368,8 +1368,8 @@ void WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep (Cr
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
-    UI32                                numberOfNewNodes                    = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    UI32                                numberOfNewNodes                    = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
     UI32                                i                                   = 0;
     UI32                                numberOfFailures                    = 0;
     string                              ipAddress                           = "";
@@ -1378,8 +1378,8 @@ void WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep (Cr
 
     for (i = 0; i < numberOfNewNodes; i++)
     {
-        ipAddress = pPrismCreateClusterWithNodesMessage->getNodeAt (i);
-        port      = pPrismCreateClusterWithNodesMessage->getNodePortAt (i);
+        ipAddress = pWaveCreateClusterWithNodesMessage->getNodeAt (i);
+        port      = pWaveCreateClusterWithNodesMessage->getNodePortAt (i);
 
         if (false == (FrameworkToolKit::isAKnownLocation (ipAddress, port)))
         {
@@ -1394,14 +1394,14 @@ void WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep (Cr
             {
                 numberOfFailures++;
                 trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep Location Ids are not Available");
-                pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, FRAMEWORK_ERROR_NO_UNUSED_LOCATION_IDS_AVAILABLE);
+                pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, FRAMEWORK_ERROR_NO_UNUSED_LOCATION_IDS_AVAILABLE);
             }
         }
         else
         {
             numberOfFailures++;
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep Already a member of cluster");
-            pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, FRAMEWORK_ERROR_IPADDRESS_ALREADY_MEMBER_OF_CLUSTER);
+            pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, FRAMEWORK_ERROR_IPADDRESS_ALREADY_MEMBER_OF_CLUSTER);
         }
     }
 
@@ -1424,7 +1424,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocation
 
     static const UI32                                maximumNumberOfRetriesToConnectToARemoteLocation  = 30;
     static const UI32                                maximumNumberOfSecondsToWaitToConnect             = 30;
-                 PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage               = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+                 WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage               = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
                  UI32                                numberOfNewLocationIds                            = pCreateClusterWithNodesContext->getNumberOfNewLocationIds ();
                  LocationId                          newLocationId                                     = 0;
                  SI32                                i                                                 = 0;
@@ -1450,7 +1450,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocation
                 // Indicate that the status saying that we could not connect to the location.
                 // For this location we will not send a message to configure itself as a secondary.
 
-                pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, status);
+                pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, status);
 
                 // Since we are not able to connect to the location remove it from the known locations.
 
@@ -1554,7 +1554,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     UI32                                numberOfNewLocationIds              = pCreateClusterWithNodesContext->getNumberOfNewLocationIds ();
     UI32                                i                                   = 0;
     LocationId                          thisLocationId                      = FrameworkToolKit::getThisLocationId ();
@@ -1564,11 +1564,11 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     string                              ipAddress                           = "";
     SI32                                port                                = 0;
     UI32                                numberOfFailures                    = 0;
-    string                              prismVersionString                  = PrismVersion::getVersionString ();
+    string                              prismVersionString                  = WaveVersion::getVersionString ();
 
 
 
-    waveAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
     ++(*pCreateClusterWithNodesContext);
 
@@ -1584,7 +1584,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
         if (true == (FrameworkToolKit::isAKnownLocation (ipAddress, port)))
         {
-            PrismConfigureClusterSecondaryMessage *pMessage = new PrismConfigureClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
+            WaveConfigureClusterSecondaryMessage *pMessage = new WaveConfigureClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
 
             // Add all the validation buffers to the message before sending out
 
@@ -1615,7 +1615,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
             pMessage->setSchemaChangeVectors ();
 
-            pMessage->setIsAddNodeForSpecialCaseFlag (pPrismCreateClusterWithNodesMessage->getIsAddNodeForSpecialCaseFlag ());
+            pMessage->setIsAddNodeForSpecialCaseFlag (pWaveCreateClusterWithNodesMessage->getIsAddNodeForSpecialCaseFlag ());
 
             pMessage->setToAllowSendForOneWayCommunication (true);
 
@@ -1624,7 +1624,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 removeKnownLocation (newLocationId);
-                pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, status);
+                pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, status);
                 trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep : Not able to configure one secondary location : ") + newLocationId + string (" Error Code : ") + status);
                 numberOfFailures++;
 
@@ -1657,47 +1657,47 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     }
 }
 
-void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsCallback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage, void *pContext)
+void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsCallback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage, void *pContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsCallback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationId                          newLocationId;
     string                              ipAddress;
     SI32                                port;
 
     --(*pCreateClusterWithNodesContext);
 
-    if (NULL != pPrismConfigureClusterSecondaryMessage)
+    if (NULL != pWaveConfigureClusterSecondaryMessage)
     {
-        newLocationId = pPrismConfigureClusterSecondaryMessage->getLocationId ();
+        newLocationId = pWaveConfigureClusterSecondaryMessage->getLocationId ();
         ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
         port          = FrameworkToolKit::getPortForLocationId (newLocationId);
 
         pCreateClusterWithNodesContext->addValidaionResultsLocation (ipAddress, port);
 
         vector<WaveServiceId> &waveServiceIdsToCommunicate = pCreateClusterWithNodesContext->getWaveServiceIdsToCommunicate ();
-        UI32                    numberOfPrismServices        = waveServiceIdsToCommunicate.size ();
+        UI32                    numberOfWaveServices        = waveServiceIdsToCommunicate.size ();
         UI32                    i                            = 0;
 
-        for (i = 0; i < numberOfPrismServices; i++)
+        for (i = 0; i < numberOfWaveServices; i++)
         {
             void *pValidationResults    = NULL;
             UI32  validationResultsSize = 0;
 
-            pValidationResults = pPrismConfigureClusterSecondaryMessage->transferBufferToUser (s_offSetForValidationResults + waveServiceIdsToCommunicate[i], validationResultsSize);
+            pValidationResults = pWaveConfigureClusterSecondaryMessage->transferBufferToUser (s_offSetForValidationResults + waveServiceIdsToCommunicate[i], validationResultsSize);
 
             pCreateClusterWithNodesContext->addValidationResultsForService (ipAddress, port, waveServiceIdsToCommunicate[i], pValidationResults, validationResultsSize);
         }
 
         if (FRAMEWORK_SUCCESS == frameworkStatus)
         {
-            waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
-            ResourceId completionStatus = pPrismConfigureClusterSecondaryMessage->getCompletionStatus ();
+            ResourceId completionStatus = pWaveConfigureClusterSecondaryMessage->getCompletionStatus ();
 
-            pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, completionStatus);
+            pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress, port, completionStatus);
 
             if (WAVE_MESSAGE_SUCCESS != completionStatus)
             {
@@ -1707,13 +1707,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         }
         else
         {
-            if (NULL != pPrismConfigureClusterSecondaryMessage)
+            if (NULL != pWaveConfigureClusterSecondaryMessage)
             {
-                LocationId newLocationId1 = pPrismConfigureClusterSecondaryMessage->getLocationId ();
+                LocationId newLocationId1 = pWaveConfigureClusterSecondaryMessage->getLocationId ();
                 string     ipAddress1     = FrameworkToolKit::getIpAddressForLocationId (newLocationId1);
                 SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
-                pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress1, port1, frameworkStatus);
+                pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress1, port1, frameworkStatus);
     
                 removeKnownLocation (newLocationId1);
             }
@@ -1721,14 +1721,14 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryMessage)
+    if (NULL != pWaveConfigureClusterSecondaryMessage)
     {
-        delete pPrismConfigureClusterSecondaryMessage;
+        delete pWaveConfigureClusterSecondaryMessage;
     }
 
     if (0 == (pCreateClusterWithNodesContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
     {
-        UI32       numberOfNewIpAddresses  = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+        UI32       numberOfNewIpAddresses  = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
         UI32       i                       = 0;
         LocationId newLocationId1          = 0;
         string     ipAddress1              = "";
@@ -1737,13 +1737,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
         for (i = 0; i < numberOfNewIpAddresses; i++)
         {
-            ipAddress1     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
-            port1          = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
+            ipAddress1     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
+            port1          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
             newLocationId1 = FrameworkToolKit::getLocationIdForIpAddressAndPort (ipAddress1, port1);
 
-            if (true != (pPrismCreateClusterWithNodesMessage->isNewNodeStatusSet (ipAddress1, port1)))
+            if (true != (pWaveCreateClusterWithNodesMessage->isNewNodeStatusSet (ipAddress1, port1)))
             {
-                pPrismCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_TIMED_OUT);
+                pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_TIMED_OUT);
 
                 if (0 != newLocationId1)
                 {
@@ -1754,7 +1754,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             }
             else
             {
-                if (WAVE_MESSAGE_SUCCESS != (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+                if (WAVE_MESSAGE_SUCCESS != (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
                 {
                     numberOfFailures++;
                 }
@@ -1779,12 +1779,12 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
-    waveAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
     UI32                                i                                   = 0;
-    UI32                                numberOfNewIpAddresses              = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+    UI32                                numberOfNewIpAddresses              = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
     LocationId                          newLocationId1                      = 0;
     string                              ipAddress1                          = "";     SI32                                port1                               = 0;
     UI32                                numberOfFailures                    = 0;
@@ -1797,7 +1797,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     ++(*pCreateClusterWithNodesContext);
 
 
-    pPrismCreateClusterWithNodesMessage->getFilenamesToSync ( filenamesToSync );    
+    pWaveCreateClusterWithNodesMessage->getFilenamesToSync ( filenamesToSync );    
     
     if ( filenamesToSync.size() == numberOfNewIpAddresses )
     {
@@ -1808,8 +1808,8 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     
     for (i = 0; i < numberOfNewIpAddresses; i++)
     {
-        ipAddress1     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
-        port1          = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
+        ipAddress1     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
+        port1          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
         newLocationId1 = FrameworkToolKit::getLocationIdForIpAddressAndPort (ipAddress1, port1);
 
         // We will send configure phase1 message only to the locations that are known to us at this point.
@@ -1817,9 +1817,9 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         // If user supplied a bogus ipaddress, we would have timed out trying to add that location in the prior steps
         // and hence that location will not be known to us at this time.
 
-        if (WAVE_MESSAGE_SUCCESS == (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+        if (WAVE_MESSAGE_SUCCESS == (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
         {
-            PrismConfigureClusterSecondaryPhase1Message *pMessage = new PrismConfigureClusterSecondaryPhase1Message ();
+            WaveConfigureClusterSecondaryPhase1Message *pMessage = new WaveConfigureClusterSecondaryPhase1Message ();
 
             if (NULL != pDatabaseBackupBuffer)
             {
@@ -1855,7 +1855,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 removeKnownLocation (newLocationId1);
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, status);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, status);
                 trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : Not able to configure one secondary location During Phase 2: ") + newLocationId1 + string (" Status : ") + FrameworkToolKit::localize (status));
                 numberOfFailures++;
 
@@ -1863,7 +1863,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             }
             else
             {
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE1_UNKNOWN);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE1_UNKNOWN);
                 ++(*pCreateClusterWithNodesContext);
             }
         }
@@ -1899,12 +1899,12 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 }
 
 
-void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message, void *pContext)
+void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryPhase1Message *pWaveConfigureClusterSecondaryPhase1Message, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationId                          newLocationId;
     string                              ipAddress;
     SI32                                port;
@@ -1913,15 +1913,15 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        waveAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
-        newLocationId = pPrismConfigureClusterSecondaryPhase1Message->getReceiverLocationId ();
+        newLocationId = pWaveConfigureClusterSecondaryPhase1Message->getReceiverLocationId ();
         ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
         port          = FrameworkToolKit::getPortForLocationId (newLocationId);
 
-        ResourceId completionStatus = pPrismConfigureClusterSecondaryPhase1Message->getCompletionStatus ();
+        ResourceId completionStatus = pWaveConfigureClusterSecondaryPhase1Message->getCompletionStatus ();
 
-        pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress, port, completionStatus);
+        pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress, port, completionStatus);
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
@@ -1931,27 +1931,27 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     }
     else
     {
-        if (NULL != pPrismConfigureClusterSecondaryPhase1Message)
+        if (NULL != pWaveConfigureClusterSecondaryPhase1Message)
         {
-            LocationId newLocationId1 = pPrismConfigureClusterSecondaryPhase1Message->getReceiverLocationId ();
+            LocationId newLocationId1 = pWaveConfigureClusterSecondaryPhase1Message->getReceiverLocationId ();
             string     ipAddress1     = FrameworkToolKit::getIpAddressForLocationId (newLocationId1);
             SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
-            pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, frameworkStatus);
+            pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, frameworkStatus);
 
             trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Callback : Case 2 - Configuring ") + ipAddress + " failed : " + frameworkStatus);
             removeKnownLocation (newLocationId1);
         }
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryPhase1Message)
+    if (NULL != pWaveConfigureClusterSecondaryPhase1Message)
     {
-        delete pPrismConfigureClusterSecondaryPhase1Message;
+        delete pWaveConfigureClusterSecondaryPhase1Message;
     }
 
     if (0 == (pCreateClusterWithNodesContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
     {
-        UI32       numberOfNewIpAddresses  = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+        UI32       numberOfNewIpAddresses  = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
         UI32       i                       = 0;
         LocationId newLocationId1          = 0;
         string     ipAddress1              = "";
@@ -1960,13 +1960,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
         for (i = 0; i < numberOfNewIpAddresses; i++)
         {
-            ipAddress1     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
-            port1          = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
+            ipAddress1     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
+            port1          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
             newLocationId1 = FrameworkToolKit::getLocationIdForIpAddressAndPort (ipAddress1, port1);
 
-            if (FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE1_UNKNOWN == (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+            if (FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE1_UNKNOWN == (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
             {
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE1_TIMED_OUT);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE1_TIMED_OUT);
 
                 if (0 != newLocationId1)
                 {
@@ -1978,7 +1978,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             }
             else
             {
-                if (WAVE_MESSAGE_SUCCESS != (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+                if (WAVE_MESSAGE_SUCCESS != (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
                 {
                     numberOfFailures++;
                 }
@@ -2007,7 +2007,7 @@ void WaveFrameworkObjectManager::resumeDatabase ()
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::resumeDatabase : Starting ...");
 
-    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
+    WaveResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -2038,7 +2038,7 @@ void WaveFrameworkObjectManager::pausePersistence ()
 
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::pausePersistence : Starting ...");
 
-    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
+    WavePauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -2066,7 +2066,7 @@ void WaveFrameworkObjectManager::resumePersistence ()
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::resumePersistence : Starting ...");
 
-    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
+    WaveResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -2111,12 +2111,12 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
-    waveAssert (NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveCreateClusterWithNodesMessage, __FILE__, __LINE__);
 
     UI32                                i                                   = 0;
-    UI32                                numberOfNewIpAddresses              = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+    UI32                                numberOfNewIpAddresses              = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
     LocationId                          newLocationId1                      = 0;
     string                              ipAddress1                          = "";
     SI32                                port1                               = 0;
@@ -2127,8 +2127,8 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
     for (i = 0; i < numberOfNewIpAddresses; i++)
     {
-        ipAddress1     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
-        port1          = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
+        ipAddress1     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
+        port1          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
         newLocationId1 = FrameworkToolKit::getLocationIdForIpAddressAndPort (ipAddress1, port1);
 
         // We will send configure phase2 message only to the locations that are known to us at this point.
@@ -2136,16 +2136,16 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         // If user supplied a bogus ipaddress, we would have timed out trying to add that location in the prior steps
         // and hence that location will not be known to us at this time.
 
-        if (WAVE_MESSAGE_SUCCESS == (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+        if (WAVE_MESSAGE_SUCCESS == (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
         {
-            PrismConfigureClusterSecondaryPhase2Message *pMessage = new PrismConfigureClusterSecondaryPhase2Message ();
+            WaveConfigureClusterSecondaryPhase2Message *pMessage = new WaveConfigureClusterSecondaryPhase2Message ();
 
             WaveMessageStatus status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback), pCreateClusterWithNodesContext, 120000, newLocationId1);
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 removeKnownLocation (newLocationId1);
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, status);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, status);
                 trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step : Not able to configure one secondary location During Phase 2: ") + newLocationId1 + string (" Status : ") + FrameworkToolKit::localize (status));
                 numberOfFailures++;
 
@@ -2153,7 +2153,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             }
             else
             {
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE2_UNKNOWN);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE2_UNKNOWN);
 
                 ++(*pCreateClusterWithNodesContext);
             }
@@ -2184,12 +2184,12 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     }
 }
 
-void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryPhase2Message *pPrismConfigureClusterSecondaryPhase2Message, void *pContext)
+void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryPhase2Message *pWaveConfigureClusterSecondaryPhase2Message, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     LocationId                          newLocationId;
     string                              ipAddress;
     SI32                                port;
@@ -2198,15 +2198,15 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        waveAssert (NULL != pPrismConfigureClusterSecondaryPhase2Message, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveConfigureClusterSecondaryPhase2Message, __FILE__, __LINE__);
 
-        newLocationId = pPrismConfigureClusterSecondaryPhase2Message->getReceiverLocationId ();
+        newLocationId = pWaveConfigureClusterSecondaryPhase2Message->getReceiverLocationId ();
         ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
         port          = FrameworkToolKit::getPortForLocationId (newLocationId);
 
-        ResourceId completionStatus = pPrismConfigureClusterSecondaryPhase2Message->getCompletionStatus ();
+        ResourceId completionStatus = pWaveConfigureClusterSecondaryPhase2Message->getCompletionStatus ();
 
-        pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress, port, completionStatus);
+        pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress, port, completionStatus);
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
@@ -2220,13 +2220,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     }
     else
     {
-        if (NULL != pPrismConfigureClusterSecondaryPhase2Message)
+        if (NULL != pWaveConfigureClusterSecondaryPhase2Message)
         {
-            LocationId newLocationId1 = pPrismConfigureClusterSecondaryPhase2Message->getReceiverLocationId ();
+            LocationId newLocationId1 = pWaveConfigureClusterSecondaryPhase2Message->getReceiverLocationId ();
             string     ipAddress1     = FrameworkToolKit::getIpAddressForLocationId (newLocationId1);
             SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
-            pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, frameworkStatus);
+            pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, frameworkStatus);
 
             trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Callback : Case 2 - Configuring ") + ipAddress + " failed : " + frameworkStatus);
 
@@ -2237,14 +2237,14 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         }
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryPhase2Message)
+    if (NULL != pWaveConfigureClusterSecondaryPhase2Message)
     {
-        delete pPrismConfigureClusterSecondaryPhase2Message;
+        delete pWaveConfigureClusterSecondaryPhase2Message;
     }
 
     if (0 == (pCreateClusterWithNodesContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
     {
-        UI32       numberOfNewIpAddresses  = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+        UI32       numberOfNewIpAddresses  = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
         UI32       i                       = 0;
         LocationId newLocationId1          = 0;
         string     ipAddress1              = "";
@@ -2253,13 +2253,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
         for (i = 0; i < numberOfNewIpAddresses; i++)
         {
-            ipAddress1     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
-            port1          = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
+            ipAddress1     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
+            port1          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
             newLocationId1 = FrameworkToolKit::getLocationIdForIpAddressAndPort (ipAddress1, port1);
 
-            if (FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE2_UNKNOWN == (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+            if (FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE2_UNKNOWN == (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
             {
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE2_TIMED_OUT);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_CREATE_CLUSTER_CONFIGURE_SECONDARY_PHASE2_TIMED_OUT);
 
                 if (0 != newLocationId1)
                 {
@@ -2275,13 +2275,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             }
             else
             {
-                if (WAVE_MESSAGE_SUCCESS != (pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
+                if (WAVE_MESSAGE_SUCCESS != (pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1)))
                 {
                     numberOfFailures++;
                 }
             }
 
-            if (WAVE_MESSAGE_SUCCESS == pPrismCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1))
+            if (WAVE_MESSAGE_SUCCESS == pWaveCreateClusterWithNodesMessage->getNewNodeStatus (ipAddress1, port1))
             {
                 pCreateClusterWithNodesContext->addToSuccessfullyAddedLocationIdVector (newLocationId1);
             }
@@ -2300,7 +2300,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             if (0 < numberOffailedLocationIdsVector)
             {
 
-                WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2Callback), pCreateClusterWithNodesContext);
+                WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2Callback), pCreateClusterWithNodesContext);
 
                 for (UI32 k = 0; k < numberOffailedLocationIdsVector; k++)
                 {
@@ -2331,7 +2331,7 @@ void WaveFrameworkObjectManager::failoverforNodesFailedInPhase2 (CreateClusterWi
 
     if (0 < numberOffailedLocationIdsVector)
     {
-        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2Callback), pCreateClusterWithNodesContext);
+        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2Callback), pCreateClusterWithNodesContext);
 
         for (UI32 k = 0; k < numberOffailedLocationIdsVector; k++)
         {
@@ -2456,7 +2456,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Step : Starting ...");
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     vector<LocationId>                  successfullyAddedLocationIdVector   = pCreateClusterWithNodesContext->getSuccessfullyAddedLocationIdVector ();
                  UI32                   numberOfSuccessfullyAddedNode       = successfullyAddedLocationIdVector.size ();
                  UI32                   numberOfFailures                    = 0;
@@ -2469,15 +2469,15 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
         locationId = successfullyAddedLocationIdVector[i];
 
-        PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message = new PrismConfigureClusterSecondaryPhase3Message ();
+        WaveConfigureClusterSecondaryPhase3Message *pWaveConfigureClusterSecondaryPhase3Message = new WaveConfigureClusterSecondaryPhase3Message ();
 
-        WaveMessageStatus status = send (pPrismConfigureClusterSecondaryPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback), pCreateClusterWithNodesContext, 0, locationId);
+        WaveMessageStatus status = send (pWaveConfigureClusterSecondaryPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback), pCreateClusterWithNodesContext, 0, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            if (NULL != pPrismCreateClusterWithNodesMessage)
+            if (NULL != pWaveCreateClusterWithNodesMessage)
             {
-                pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), status);
+                pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), status);
             }
 
             disconnectFromLocation (locationId);
@@ -2489,7 +2489,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
             numberOfFailures++;
 
-            delete (pPrismConfigureClusterSecondaryPhase3Message);
+            delete (pWaveConfigureClusterSecondaryPhase3Message);
         }
         else
         {
@@ -2533,7 +2533,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         vector<LocationId> failedLocationIdsVectorInPhase3                   = pCreateClusterWithNodesContext->getFailedLocationIdVector ();
                       UI32 numberOffailedLocationIdsVectorInPhase3           = failedLocationIdsVectorInPhase3.size ();
 
-            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback), pCreateClusterWithNodesContext);
+            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback), pCreateClusterWithNodesContext);
 
             for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase3; j++)
             {
@@ -2553,26 +2553,26 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     }
 }
 
-void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message, void *pContext)
+void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryPhase3Message *pWaveConfigureClusterSecondaryPhase3Message, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback : Starting ...");
 
     CreateClusterWithNodesContext      *pCreateClusterWithNodesContext      = reinterpret_cast<CreateClusterWithNodesContext *> (pContext);
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = reinterpret_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
-    waveAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
  
-    LocationId locationId = pPrismConfigureClusterSecondaryPhase3Message->getReceiverLocationId ();
+    LocationId locationId = pWaveConfigureClusterSecondaryPhase3Message->getReceiverLocationId ();
     
     --(*pCreateClusterWithNodesContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        ResourceId completionStatus = pPrismConfigureClusterSecondaryPhase3Message->getCompletionStatus ();
+        ResourceId completionStatus = pWaveConfigureClusterSecondaryPhase3Message->getCompletionStatus ();
 
-        if (NULL != pPrismCreateClusterWithNodesMessage)
+        if (NULL != pWaveCreateClusterWithNodesMessage)
         {
-            pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), completionStatus);
+            pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), completionStatus);
         }
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
@@ -2588,9 +2588,9 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     {
          trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Callback : Failed to configure Location Id ") + locationId + " status : " + frameworkStatus);
 
-        if (NULL != pPrismCreateClusterWithNodesMessage)
+        if (NULL != pWaveCreateClusterWithNodesMessage)
         {
-            pPrismCreateClusterWithNodesMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), frameworkStatus);
+            pWaveCreateClusterWithNodesMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), frameworkStatus);
         }
 
         disconnectFromLocation (locationId);
@@ -2606,15 +2606,15 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         
         if (false == pCreateClusterWithNodesContext->getIsCreateClusterContext ())
         {
-            vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
+            vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
 
             waveAssert (NULL != pResults, __FILE__, __LINE__);
 
             if (0 == pResults->size ())
             {
-                if (NULL != pPrismConfigureClusterSecondaryPhase3Message)
+                if (NULL != pWaveConfigureClusterSecondaryPhase3Message)
                 {
-                    delete pPrismConfigureClusterSecondaryPhase3Message;
+                    delete pWaveConfigureClusterSecondaryPhase3Message;
                 }
 
                 WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pResults);
@@ -2632,7 +2632,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         if (0 < numberOffailedLocationIdsVectorInPhase3)
         {
             
-            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback), pCreateClusterWithNodesContext);
+            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback), pCreateClusterWithNodesContext);
 
             for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase3; j++)
             {
@@ -2652,7 +2652,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         }
     }
 
-    delete (pPrismConfigureClusterSecondaryPhase3Message);
+    delete (pWaveConfigureClusterSecondaryPhase3Message);
 }
 
 void WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext)
@@ -2910,11 +2910,11 @@ void WaveFrameworkObjectManager::startFileReplayEndAgent ()
    /* Call the virtual function FileReplayEnd */
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::setFileReplayCompleted : Start the File Replay End Agent.... ");
 
-    FileReplayEndAgent *pPrismFileReplayEnd = new FileReplayEndAgent (m_pWaveObjectManager);
+    FileReplayEndAgent *pWaveFileReplayEnd = new FileReplayEndAgent (m_pWaveObjectManager);
 
-    pPrismFileReplayEnd->execute ();
+    pWaveFileReplayEnd->execute ();
 
-    delete pPrismFileReplayEnd;
+    delete pWaveFileReplayEnd;
 
     // Print the FileReplay Started and Ended timestamp 
 
@@ -3162,7 +3162,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep : Starting ...");
 
     vector<WaveServiceId> &waveServiceIdsToCommunicate = pCreateClusterWithNodesContext->getWaveServiceIdsToCommunicate ();
-    UI32                    numberOfPrismServices        = waveServiceIdsToCommunicate.size ();
+    UI32                    numberOfWaveServices        = waveServiceIdsToCommunicate.size ();
     UI32                    i                            = 0;
 
     UI32                    numberOfResultsLocations     = pCreateClusterWithNodesContext->getNumberOfResultsLocations ();
@@ -3173,7 +3173,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep
     void                   *pValidationResults           = NULL;
     UI32                    validationResultsSize        = 0;
 
-    for (i = 0; i < numberOfPrismServices; i++)
+    for (i = 0; i < numberOfWaveServices; i++)
     {
         WaveObjectManagerSendValidationResultsMessage *pMessage = new WaveObjectManagerSendValidationResultsMessage (waveServiceIdsToCommunicate[i]);
 
@@ -3225,11 +3225,11 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAl
 
 //    ++(*pCreateClusterWithNodesContext);
 
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = 0;
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = 0;
     if(pCreateClusterWithNodesContext->getPWaveMessage()) 
     {
-     pPrismCreateClusterWithNodesMessage =  dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
-    waveAssert(NULL != pPrismCreateClusterWithNodesMessage, __FILE__, __LINE__);
+     pWaveCreateClusterWithNodesMessage =  dynamic_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    waveAssert(NULL != pWaveCreateClusterWithNodesMessage, __FILE__, __LINE__);
     }
 
 
@@ -3248,17 +3248,17 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAl
             //determine whether info for a node  being sent in the message is 
             // for a newlyadded node
             bool isNewlyAddedNode = false; 
-            if(pPrismCreateClusterWithNodesMessage) 
+            if(pWaveCreateClusterWithNodesMessage) 
             {
-                 UI32 numberOfNewIpAddresses = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+                 UI32 numberOfNewIpAddresses = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
             //Loop through each node in the message
                 for(UI32 k = 0; k <numberOfNewIpAddresses; ++k) 
                 {
-                    string      tempIpAddress     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) k);
-                    UI32        tempPort          = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) k);
+                    string      tempIpAddress     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) k);
+                    UI32        tempPort          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) k);
                     LocationId  tempLocationId = FrameworkToolKit::getLocationIdForIpAddressAndPort (tempIpAddress, tempPort);
 
-                    if((locationId == tempLocationId)  && (WAVE_MESSAGE_SUCCESS == pPrismCreateClusterWithNodesMessage->getNewNodeStatus(tempIpAddress,tempPort))) 
+                    if((locationId == tempLocationId)  && (WAVE_MESSAGE_SUCCESS == pWaveCreateClusterWithNodesMessage->getNewNodeStatus(tempIpAddress,tempPort))) 
                     {
                         isNewlyAddedNode = true;
                         break;
@@ -3343,20 +3343,20 @@ void WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep(Create
     trace(TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimary: Entering..");
 
     //Extract the message
-    PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage = dynamic_cast<PrismCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
-    waveAssert(NULL != pPrismCreateClusterWithNodesMessage,__FILE__, __LINE__);
+    WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = dynamic_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
+    waveAssert(NULL != pWaveCreateClusterWithNodesMessage,__FILE__, __LINE__);
 
     //Number of nodes in the message received from the cluster service
-    UI32 numberOfNewIpAddresses = pPrismCreateClusterWithNodesMessage->getNumberOfNewNodes ();
+    UI32 numberOfNewIpAddresses = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
 
     WaveNewNodesAddedEvent* pWaveNewNodesAddedEvent = new WaveNewNodesAddedEvent();
     for(UI32 i = 0; i<numberOfNewIpAddresses; ++i)
     {
-       string ipAddress     = pPrismCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
-       UI32    port         = pPrismCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
+       string ipAddress     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
+       UI32    port         = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) i);
 
        //Only nodes that were successfully added
-       if(WAVE_MESSAGE_SUCCESS == pPrismCreateClusterWithNodesMessage->getNewNodeStatus(ipAddress, port))
+       if(WAVE_MESSAGE_SUCCESS == pWaveCreateClusterWithNodesMessage->getNewNodeStatus(ipAddress, port))
         {
            LocationId locationId = FrameworkToolKit::getLocationIdForIpAddressAndPort (ipAddress, port);
            pWaveNewNodesAddedEvent->addNewNodeDetails(locationId,ipAddress,port);
@@ -3384,118 +3384,118 @@ void WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep(Create
 }
 
 
-void WaveFrameworkObjectManager::configureSecondaryNodeMessageHandler (PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage)
+void WaveFrameworkObjectManager::configureSecondaryNodeMessageHandler (WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
     
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeMessageHandler: (ACTIVE)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateDefaultConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeShutdownServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeAddNewKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeConnectToNewKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeConfigureMyLocationIdStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateDefaultConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeShutdownServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeAddNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeConnectToNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeConfigureMyLocationIdStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
-    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pPrismConfigureClusterSecondaryMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveConfigureClusterSecondaryMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pSecondaryNodeClusterContext->setClusterPrimaryIpAddress  (pPrismConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ());
-    pSecondaryNodeClusterContext->setClusterPrimaryPort       (pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ());
-    pSecondaryNodeClusterContext->setClusterPrimaryLocationId (pPrismConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ());
+    pSecondaryNodeClusterContext->setClusterPrimaryIpAddress  (pWaveConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ());
+    pSecondaryNodeClusterContext->setClusterPrimaryPort       (pWaveConfigureClusterSecondaryMessage->getClusterPrimaryPort ());
+    pSecondaryNodeClusterContext->setClusterPrimaryLocationId (pWaveConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ());
 
     pSecondaryNodeClusterContext->holdAll ();
     pSecondaryNodeClusterContext->start ();
 }
 
-void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerMessageHandler (PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage)
+void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerMessageHandler (WaveConfigureClusterSecondaryHaPeerMessage *pWaveConfigureClusterSecondaryHaPeerMessage)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeHaPeerMessageHandler: (STANDBY)");
 
     // Timers are not required on standby since active triggers rollback on standby
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeShutdownServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeSetLocationRoleOnStandbyStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeShutdownServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeSetLocationRoleOnStandbyStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pPrismConfigureClusterSecondaryHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveConfigureClusterSecondaryHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterContext->holdAll ();
     pSecondaryNodeClusterContext->start ();
 }
 
-void WaveFrameworkObjectManager::configureSecondaryNodePhase1MessageHandler (PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message)
+void WaveFrameworkObjectManager::configureSecondaryNodePhase1MessageHandler (WaveConfigureClusterSecondaryPhase1Message *pWaveConfigureClusterSecondaryPhase1Message)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodePhase1MessageHandler: (ACTIVE)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase1),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase1),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
-    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pPrismConfigureClusterSecondaryPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveConfigureClusterSecondaryPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterContext->holdAll ();
     pSecondaryNodeClusterContext->start ();
 }
 
-void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase1MessageHandler (PrismConfigureClusterSecondaryHaPeerPhase1Message *pPrismConfigureClusterSecondaryHaPeerPhase1Message)
+void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase1MessageHandler (WaveConfigureClusterSecondaryHaPeerPhase1Message *pWaveConfigureClusterSecondaryHaPeerPhase1Message)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase1MessageHandler: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pPrismConfigureClusterSecondaryHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveConfigureClusterSecondaryHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterContext->holdAll ();
     pSecondaryNodeClusterContext->start ();
@@ -3527,7 +3527,7 @@ void WaveFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencer
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rollbackNodeIfRequiredStep : Rolling back as the node is in phase 0/1");
 
-        status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE);
+        status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -3540,7 +3540,7 @@ void WaveFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencer
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rollbackNodeIfRequiredStep : Rolling back as the node is in phase 2");
 
-        status = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
+        status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -3548,7 +3548,7 @@ void WaveFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencer
             waveAssert (false, __FILE__, __LINE__);
         }
 
-        status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
+        status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -3577,23 +3577,23 @@ void WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeC
     
     if ((LOCATION_SECONDARY == currentRole) || (LOCATION_PRIMARY_UNCONFIRMED == currentRole) || (LOCATION_SECONDARY_UNCONFIRMED == currentRole))
     {
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryDisconnectFromConnectedLocationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUpdateThisLocationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryDisconnectFromConnectedLocationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUpdateThisLocationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
         };
 
-        PrismAsynchronousContext *pPrismAsynchronousContext = new PrismAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::prepareSecondaryNodeForAddNodeIfRequiredCallback), pSecondaryNodeClusterContext);
+        WaveAsynchronousContext *pWaveAsynchronousContext = new WaveAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::prepareSecondaryNodeForAddNodeIfRequiredCallback), pSecondaryNodeClusterContext);
 
-        DeleteNodeOnSecondaryContext *pDeleteNodeOnSecondaryContext = new DeleteNodeOnSecondaryContext (pPrismAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        DeleteNodeOnSecondaryContext *pDeleteNodeOnSecondaryContext = new DeleteNodeOnSecondaryContext (pWaveAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         pDeleteNodeOnSecondaryContext->holdAll ();
         pDeleteNodeOnSecondaryContext->start ();
@@ -3606,7 +3606,7 @@ void WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeC
 
         //Destroy cluster 
         //Note: This will not send unconfigure to all secondary nodes
-        DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = new DestroyClusterAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::preparePrimaryNodeForAddNodeIfRequiredCallBack), pSecondaryNodeClusterContext);
+        DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = new DestroyClusterAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::preparePrimaryNodeForAddNodeIfRequiredCallBack), pSecondaryNodeClusterContext);
 
         pDestroyClusterAsynchronousContext->setPreparingForAddNode        (true);
         pDestroyClusterAsynchronousContext->setReasonForDestroyingCluster (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED);
@@ -3617,16 +3617,16 @@ void WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeC
     }
 }
 
-void WaveFrameworkObjectManager::prepareSecondaryNodeForAddNodeIfRequiredCallback (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveFrameworkObjectManager::prepareSecondaryNodeForAddNodeIfRequiredCallback (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    waveAssert (NULL != pPrismAsynchronousContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveAsynchronousContext, __FILE__, __LINE__);
 
-    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pPrismAsynchronousContext->getPCallerContext ());
-    ResourceId                   status                       = pPrismAsynchronousContext->getCompletionStatus ();
+    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pWaveAsynchronousContext->getPCallerContext ());
+    ResourceId                   status                       = pWaveAsynchronousContext->getCompletionStatus ();
 
     waveAssert (NULL != pSecondaryNodeClusterContext, __FILE__, __LINE__);
 
-    delete pPrismAsynchronousContext;
+    delete pWaveAsynchronousContext;
 
     pSecondaryNodeClusterContext->executeNextStep (status);
 }
@@ -3680,7 +3680,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateDefaultConfigurat
 
 void WaveFrameworkObjectManager::configureSecondaryNodeValidateStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     LocationRole                           currentRole                            = m_pThisLocation->getLocationRole ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
 
@@ -3710,7 +3710,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateStep (SecondaryNo
         status = FRAMEWORK_ERROR_CANNOT_BECOME_SECONDARY_REQUESTING_LOCATION_UNAVAILABLE;
     }
 
-    string ipAddressForThisLocation = pPrismConfigureClusterSecondaryMessage->getIpAddress ();
+    string ipAddressForThisLocation = pWaveConfigureClusterSecondaryMessage->getIpAddress ();
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeValidateStep : Currently assumed IP Address for this location : " + m_pThisLocation->getIpAddress ());
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeValidateStep : Requested         IP Address for this Location : " + ipAddressForThisLocation);
@@ -3979,9 +3979,9 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
 
 void WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    string                                 primaryPrismVersionString              = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPrismVersion ();
-    string                                 thisLocationPrismPrimaryVersionString  = PrismVersion::getVersionString ();
+    WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    string                                 primaryWaveVersionString              = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryWaveVersion ();
+    string                                 thisLocationWavePrimaryVersionString  = WaveVersion::getVersionString ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
 
     if (getNumberOfLineCardPostBootCurrentlyRunning ())
@@ -3991,10 +3991,10 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep (Seco
         return;
     }
 
-    trace (TRACE_LEVEL_INFO, "This       Location Prism Version : " + thisLocationPrismPrimaryVersionString);
-    trace (TRACE_LEVEL_INFO, "Requesting Location Prism Version : " + primaryPrismVersionString);
+    trace (TRACE_LEVEL_INFO, "This       Location Wave Version : " + thisLocationWavePrimaryVersionString);
+    trace (TRACE_LEVEL_INFO, "Requesting Location Wave Version : " + primaryWaveVersionString);
 
-    if (0 == thisLocationPrismPrimaryVersionString.compare (primaryPrismVersionString))
+    if (0 == thisLocationWavePrimaryVersionString.compare (primaryWaveVersionString))
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep : Version Check succeeded.\n");
 
@@ -4014,7 +4014,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep (Seco
     vector<UI32>    classIds;
     vector<UI32>    parentTableIds;
 
-    pPrismConfigureClusterSecondaryMessage->getSchemaChangeVectors (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds); 
+    pWaveConfigureClusterSecondaryMessage->getSchemaChangeVectors (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds); 
 
     if (!isSchemaReceivedFromPrimaryCompatible (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds))
     {
@@ -4036,8 +4036,8 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Sec
     WaveThread::getListOfServiceIds (waveServiceIds);
     numberOfWaveServiceIds = waveServiceIds.size ();
 
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+    WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    waveAssert (NULL != pWaveConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
     for (i = 0; i < numberOfWaveServiceIds; i++)
     {
@@ -4048,11 +4048,11 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Sec
             continue;
         }
 
-        //PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+        //WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
         void                                  *pValidationData                        = NULL;
         UI32                                   size                                   = 0;
 
-        pValidationData = pPrismConfigureClusterSecondaryMessage->transferBufferToUser (waveServiceIds[i], size);
+        pValidationData = pWaveConfigureClusterSecondaryMessage->transferBufferToUser (waveServiceIds[i], size);
 
         WaveObjectManagerValidateClusterCreationMessage message (waveServiceIds[i]);
 
@@ -4091,7 +4091,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Sec
         {
             trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep : Obtained Validation Results for Service : " + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
 
-            pPrismConfigureClusterSecondaryMessage->addBuffer (waveServiceIds[i] + s_offSetForValidationResults, size, pValidationResults, true);
+            pWaveConfigureClusterSecondaryMessage->addBuffer (waveServiceIds[i] + s_offSetForValidationResults, size, pValidationResults, true);
         }
         else
         {
@@ -4122,20 +4122,20 @@ void WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Secondar
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Ha Peer is connected and Live Sync enabled.");
 
-        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-        waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+        WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+        waveAssert (NULL != pWaveConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
-        PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage = new PrismConfigureClusterSecondaryHaPeerMessage ();
-        waveAssert (NULL != pPrismConfigureClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
+        WaveConfigureClusterSecondaryHaPeerMessage *pWaveConfigureClusterSecondaryHaPeerMessage = new WaveConfigureClusterSecondaryHaPeerMessage ();
+        waveAssert (NULL != pWaveConfigureClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
 
-        pPrismConfigureClusterSecondaryHaPeerMessage->copyBuffersFrom (*pPrismConfigureClusterSecondaryMessage);
+        pWaveConfigureClusterSecondaryHaPeerMessage->copyBuffersFrom (*pWaveConfigureClusterSecondaryMessage);
 
-        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pWaveConfigureClusterSecondaryHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
             
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Send to Ha Peer failed.");
-            delete pPrismConfigureClusterSecondaryHaPeerMessage;
+            delete pWaveConfigureClusterSecondaryHaPeerMessage;
             FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
         }
         else
@@ -4161,7 +4161,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Secondar
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage, void *pContext)
+void WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerMessage *pWaveConfigureClusterSecondaryHaPeerMessage, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback: Begin.");
 
@@ -4172,7 +4172,7 @@ void WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback 
     }
     else
     {
-        ResourceId status = pPrismConfigureClusterSecondaryHaPeerMessage->getCompletionStatus ();
+        ResourceId status = pWaveConfigureClusterSecondaryHaPeerMessage->getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -4181,9 +4181,9 @@ void WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback 
         }
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryHaPeerMessage)
+    if (NULL != pWaveConfigureClusterSecondaryHaPeerMessage)
     {
-        delete pPrismConfigureClusterSecondaryHaPeerMessage;
+        delete pWaveConfigureClusterSecondaryHaPeerMessage;
     }
 
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext);
@@ -4230,24 +4230,24 @@ void WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep (SecondaryNodeClus
 
 void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    waveAssert (NULL != pPrismConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
+    WaveConfigureClusterSecondaryPhase1Message *pWaveConfigureClusterSecondaryPhase1Message = reinterpret_cast<WaveConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    waveAssert (NULL != pWaveConfigureClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
-        PrismConfigureClusterSecondaryHaPeerPhase1Message *pPrismConfigureClusterSecondaryHaPeerPhase1Message = new PrismConfigureClusterSecondaryHaPeerPhase1Message;
-        waveAssert (NULL != pPrismConfigureClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
+        WaveConfigureClusterSecondaryHaPeerPhase1Message *pWaveConfigureClusterSecondaryHaPeerPhase1Message = new WaveConfigureClusterSecondaryHaPeerPhase1Message;
+        waveAssert (NULL != pWaveConfigureClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
 
-        pPrismConfigureClusterSecondaryHaPeerPhase1Message->copyBuffersFrom (*pPrismConfigureClusterSecondaryPhase1Message);
+        pWaveConfigureClusterSecondaryHaPeerPhase1Message->copyBuffersFrom (*pWaveConfigureClusterSecondaryPhase1Message);
 
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pWaveConfigureClusterSecondaryHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep: Send to Ha Peer failed.");
-            delete pPrismConfigureClusterSecondaryHaPeerPhase1Message;
+            delete pWaveConfigureClusterSecondaryHaPeerPhase1Message;
             FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
         }
         else
@@ -4267,7 +4267,7 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseStep (Secondary
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryHaPeerPhase1Message *pPrismConfigureClusterSecondaryHaPeerPhase1Message, void *pContext)
+void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerPhase1Message *pWaveConfigureClusterSecondaryHaPeerPhase1Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback: Begin.");
 
@@ -4278,7 +4278,7 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (Frame
     }
     else
     {
-        ResourceId status = pPrismConfigureClusterSecondaryHaPeerPhase1Message->getCompletionStatus ();
+        ResourceId status = pWaveConfigureClusterSecondaryHaPeerPhase1Message->getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -4287,9 +4287,9 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (Frame
         }
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryHaPeerPhase1Message)
+    if (NULL != pWaveConfigureClusterSecondaryHaPeerPhase1Message)
     {
-        delete pPrismConfigureClusterSecondaryHaPeerPhase1Message;
+        delete pWaveConfigureClusterSecondaryHaPeerPhase1Message;
     }
 
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext);
@@ -4310,24 +4310,24 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPrePhaseCallback (Frame
 
 void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
-    PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
-    waveAssert (NULL != pPrismConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    WaveConfigureClusterSecondaryPhase3Message *pWaveConfigureClusterSecondaryPhase3Message = reinterpret_cast<WaveConfigureClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
+    waveAssert (NULL != pWaveConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
-        PrismConfigureClusterSecondaryHaPeerPhase3Message *pPrismConfigureClusterSecondaryHaPeerPhase3Message = new PrismConfigureClusterSecondaryHaPeerPhase3Message;
-        waveAssert (NULL != pPrismConfigureClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
+        WaveConfigureClusterSecondaryHaPeerPhase3Message *pWaveConfigureClusterSecondaryHaPeerPhase3Message = new WaveConfigureClusterSecondaryHaPeerPhase3Message;
+        waveAssert (NULL != pWaveConfigureClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
 
-        pPrismConfigureClusterSecondaryHaPeerPhase3Message->copyBuffersFrom (*pPrismConfigureClusterSecondaryPhase3Message);
+        pWaveConfigureClusterSecondaryHaPeerPhase3Message->copyBuffersFrom (*pWaveConfigureClusterSecondaryPhase3Message);
 
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismConfigureClusterSecondaryHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pWaveConfigureClusterSecondaryHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep: Send to Ha Peer failed.");
-            delete pPrismConfigureClusterSecondaryHaPeerPhase3Message;
+            delete pWaveConfigureClusterSecondaryHaPeerPhase3Message;
             FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
         }
         else
@@ -4347,7 +4347,7 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep (Secondar
     pSecondaryNodeClusterPhase3Context->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryHaPeerPhase3Message *pPrismConfigureClusterSecondaryHaPeerPhase3Message, void *pContext)
+void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerPhase3Message *pWaveConfigureClusterSecondaryHaPeerPhase3Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback: Begin.");
  
@@ -4358,7 +4358,7 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback (Fram
     }
     else
     {
-        ResourceId status = pPrismConfigureClusterSecondaryHaPeerPhase3Message->getCompletionStatus ();
+        ResourceId status = pWaveConfigureClusterSecondaryHaPeerPhase3Message->getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -4367,9 +4367,9 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback (Fram
         }
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryHaPeerPhase3Message)
+    if (NULL != pWaveConfigureClusterSecondaryHaPeerPhase3Message)
     {
-        delete pPrismConfigureClusterSecondaryHaPeerPhase3Message;
+        delete pWaveConfigureClusterSecondaryHaPeerPhase3Message;
     }
 
     SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = reinterpret_cast<SecondaryNodeClusterPhase3Context *> (pContext); 
@@ -4404,8 +4404,8 @@ void WaveFrameworkObjectManager::configureSecondaryNodeAddNewKnownLocationsStep 
 
 void WaveFrameworkObjectManager::configureSecondaryNodeConnectToNewKnownLocationsStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-                 PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage           = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-                 LocationId                             clusterPrimaryLocationId                         = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ();
+                 WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage           = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+                 LocationId                             clusterPrimaryLocationId                         = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ();
     static const UI32                                   maximumNumberOfRetriesToConnectToARemoteLocation = 30;
     static const UI32                                   maximumNumberOfSecondsToWaitToConnect            = 30;
 
@@ -4508,22 +4508,22 @@ void WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep (Second
 void WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep : Entering ...");
-    PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message = reinterpret_cast<PrismConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    WaveConfigureClusterSecondaryPhase1Message *pWaveConfigureClusterSecondaryPhase1Message = reinterpret_cast<WaveConfigureClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
     UI32                                   sizeOfTheDatabaseBackupFromPrimary     = 0;
-    char                                  *pBuffer                                = reinterpret_cast<char *> (pPrismConfigureClusterSecondaryPhase1Message->findBuffer (pPrismConfigureClusterSecondaryPhase1Message->getDatabaseBackupBufferTag (), sizeOfTheDatabaseBackupFromPrimary));
+    char                                  *pBuffer                                = reinterpret_cast<char *> (pWaveConfigureClusterSecondaryPhase1Message->findBuffer (pWaveConfigureClusterSecondaryPhase1Message->getDatabaseBackupBufferTag (), sizeOfTheDatabaseBackupFromPrimary));
 
     string backupFileName = string (FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + FrameworkToolKit::getDatabaseBackupFileName3 ());
 
     string filenameToSync;
 
-    pPrismConfigureClusterSecondaryPhase1Message->getFilenameToSync (filenameToSync);
+    pWaveConfigureClusterSecondaryPhase1Message->getFilenameToSync (filenameToSync);
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
     if ( false == filenameToSync.empty())
     {
         UI32   sizeOfFileBuffer;
-        char *pFileBuffer = (reinterpret_cast<char *> (pPrismConfigureClusterSecondaryPhase1Message->findBuffer ( 11, sizeOfFileBuffer) ));
+        char *pFileBuffer = (reinterpret_cast<char *> (pWaveConfigureClusterSecondaryPhase1Message->findBuffer ( 11, sizeOfFileBuffer) ));
         waveAssert ( NULL != pFileBuffer, __FILE__, __LINE__);
 
         string configMgmtScriptsPath = ConfigFileManagementToolKit::getConfigFileManagementScriptsDirectory ();
@@ -4612,7 +4612,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeShutdownServicesStep (Sec
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    status = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_CONFIGURE);
+    status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_CONFIGURE);
 
     pSecondaryNodeClusterContext->executeNextStep (status);
 }
@@ -4621,10 +4621,10 @@ void WaveFrameworkObjectManager::configureSecondaryNodeConfigureMyLocationIdStep
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodeConfigureMyLocationIdStep : Entering ...");
 
-    PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    LocationId                             myNewLocationId                        = pPrismConfigureClusterSecondaryMessage->getLocationId ();
-    SI32                                   clusterPrimaryPort                     = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
-    LocationId                             clusterPrimaryLocationId               = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ();
+    WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    LocationId                             myNewLocationId                        = pWaveConfigureClusterSecondaryMessage->getLocationId ();
+    SI32                                   clusterPrimaryPort                     = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
+    LocationId                             clusterPrimaryLocationId               = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryLocationId ();
 
     // First set my new locationId.  Because, when we inform the localclusterservice it might try to use remote communication
     // for heartbeat purposes.
@@ -4650,7 +4650,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseStep 
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseStep : Entering ...");
 
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_CONFIGURE, WAVE_BOOT_PHASE_PRE_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_CONFIGURE, WAVE_BOOT_PHASE_PRE_PHASE);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -4665,7 +4665,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForSt
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep : Entering ...");
 
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_PRE_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_PRE_PHASE);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -4688,7 +4688,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeSetLocationRoleOnStandbyS
 
     // Save the location role in configuration file on standby to ensure it comes in appropriate role even
     // if something unexpected happens on standby
-    FrameworkToolKit::savePrismConfiguration (false);
+    FrameworkToolKit::saveWaveConfiguration (false);
     
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -4705,7 +4705,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbyStep
 
     // Save the location role in configuration file on standby to ensure it comes in appropriate role even
     // if something unexpected happens on standby
-    FrameworkToolKit::savePrismConfiguration (false);
+    FrameworkToolKit::saveWaveConfiguration (false);
 
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -4790,7 +4790,7 @@ void WaveFrameworkObjectManager::startClusterPhaseTimer (WaveLinearSequencerCont
         m_clusterPhaseTimerHandler = 0;
     }
 
-    startTimer (m_clusterPhaseTimerHandler, 300000, reinterpret_cast<PrismTimerExpirationHandler> (&WaveFrameworkObjectManager::clusterPhaseTimerCallback));
+    startTimer (m_clusterPhaseTimerHandler, 300000, reinterpret_cast<WaveTimerExpirationHandler> (&WaveFrameworkObjectManager::clusterPhaseTimerCallback));
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -4821,7 +4821,7 @@ void WaveFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHan
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::WaveFrameworkObjectManager::clusterPhaseTimerCallback : Timer expired as Expected Phase 2 is not Received");
 
-        ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE);
+        ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -4845,7 +4845,7 @@ void WaveFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHan
 
         ResourceId status = WAVE_MESSAGE_SUCCESS;
     
-        status = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
+        status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
         
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -4853,7 +4853,7 @@ void WaveFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHan
             waveAssert (false, __FILE__, __LINE__);
         }
         
-        status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
+        status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -4874,22 +4874,22 @@ void WaveFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHan
 
 }
 
-void WaveFrameworkObjectManager::configureSecondaryNodePhase2MessageHandler (PrismConfigureClusterSecondaryPhase2Message *pPrismConfigureClusterSecondaryPhase2Message)
+void WaveFrameworkObjectManager::configureSecondaryNodePhase2MessageHandler (WaveConfigureClusterSecondaryPhase2Message *pWaveConfigureClusterSecondaryPhase2Message)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase2),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),  
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-//        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase2),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),  
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+//        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
-    SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context = new SecondaryNodeClusterPhase2Context (pPrismConfigureClusterSecondaryPhase2Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), false);
+    SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context = new SecondaryNodeClusterPhase2Context (pWaveConfigureClusterSecondaryPhase2Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), false);
 
     pSecondaryNodeClusterPhase2Context->holdAll ();
     pSecondaryNodeClusterPhase2Context->start ();
@@ -4915,7 +4915,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPha
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep : Entering ...");
 
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_CONFIGURE, WAVE_BOOT_PHASE_POST_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_CONFIGURE, WAVE_BOOT_PHASE_POST_PHASE);
 
     // Instead of asserting, rollback to last known good state.
 
@@ -4925,7 +4925,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPha
 
         disconnectFromAllConnectedNodes ();
 
-        ResourceId rollbackStatus = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
+        ResourceId rollbackStatus = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -4933,7 +4933,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPha
             waveAssert (false, __FILE__, __LINE__);
         }
 
-        rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
+        rollbackStatus = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -4969,10 +4969,10 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeeded
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeededStep : Entering ...");
 
-    PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase2Message *> (pSecondaryNodeClusterPhase2Context->getPWaveMessage ());
+    WaveRejoinClusterSecondaryPhase2Message *pWaveRejoinClusterSecondaryPhase2Message = reinterpret_cast<WaveRejoinClusterSecondaryPhase2Message *> (pSecondaryNodeClusterPhase2Context->getPWaveMessage ());
     ResourceId         processingStatus = WAVE_MESSAGE_SUCCESS;   
 
-    if (true == pPrismRejoinClusterSecondaryPhase2Message->getIsReplaceRejoin ())
+    if (true == pWaveRejoinClusterSecondaryPhase2Message->getIsReplaceRejoin ())
     {
         // Inform the local cluster configuration service that the node was replaced so that it can configure itself
         ClusterLocalReportReplaceMessage message;
@@ -5115,7 +5115,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep
     // During cluster reformation since DB is replaced we trigger COLD recovery
     ResourceId recoveryType = WAVE_HA_COLD_RECOVERY;
 
-    PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new PrismPostPersistentBootWorkerClusterContext();
+    WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext = new WavePostPersistentBootWorkerClusterContext();
     pPostPersistentBootWorkerClusterContext->setRecoveryType( recoveryType );
 
     status = m_pWaveFrameworkObjectManagerPostPersistentBootWorker->triggerPostBootPassTableForAll ( pPostPersistentBootWorkerClusterContext );
@@ -5129,52 +5129,52 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep
     pSecondaryNodeClusterPhase3Context->executeNextStep(status);
 }
 
-void WaveFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler (PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message)
+void WaveFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler (WaveConfigureClusterSecondaryPhase3Message *pWaveConfigureClusterSecondaryPhase3Message)
 {
     SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler: (ACTIVE)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase3),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ReplayLocalOnlyConfigIfRequiredStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepPhase3Complete),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase3),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ReplayLocalOnlyConfigIfRequiredStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepPhase3Complete),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pPrismConfigureClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveConfigureClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterPhase3Context->holdAll ();
     pSecondaryNodeClusterPhase3Context->start ();
 }
 
-void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase3MessageHandler (PrismConfigureClusterSecondaryHaPeerPhase3Message *pPrismConfigureClusterSecondaryHaPeerPhase3Message)
+void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase3MessageHandler (WaveConfigureClusterSecondaryHaPeerPhase3Message *pWaveConfigureClusterSecondaryHaPeerPhase3Message)
 {
     SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pPrismConfigureClusterSecondaryHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveConfigureClusterSecondaryHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterPhase3Context->holdAll ();
     pSecondaryNodeClusterPhase3Context->start ();
@@ -5208,7 +5208,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPo
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPostPhaseStep : Entering ...");
 
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_CONFIGURE, WAVE_BOOT_PHASE_AFTER_POST_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_CONFIGURE, WAVE_BOOT_PHASE_AFTER_POST_PHASE);
 
     // Instead of asserting, rollback to last known good state.
 
@@ -5218,7 +5218,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPo
 
         disconnectFromAllConnectedNodes ();
 
-        ResourceId rollbackStatus = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
+        ResourceId rollbackStatus = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -5226,7 +5226,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3BootServicesAfterPo
             waveAssert (false, __FILE__, __LINE__);
         }
 
-        rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
+        rollbackStatus = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -5295,16 +5295,16 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3ReplayLocalOnlyConf
 
 void WaveFrameworkObjectManager::updateListOfSecondariesMessageHandler (FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesSetupContextStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesAddKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocationsStep),        
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),  
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesSetupContextStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesAddKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocationsStep),        
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),  
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     UpdateListOfSecondariesContext *pUpdateListOfSecondariesContext = new UpdateListOfSecondariesContext (pFrameworkObjectManagerUpdateListOfSecondariesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5621,32 +5621,32 @@ LocationId WaveFrameworkObjectManager::getNextLocationId ()
 
 void WaveFrameworkObjectManager::addNodesToClusterMessageHandler (FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),        
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::addNodesToClusterValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep), // Reuse Sequencer Step
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep), // Reuse Sequencer Step
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToSecondaryNodes),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNodesAdditionToClusterCompletedEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),        
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::addNodesToClusterValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep), // Reuse Sequencer Step
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesAddKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase2Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep), // Reuse Sequencer Step
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase2),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase3Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToSecondaryNodes),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNodesAdditionToClusterCompletedEvent),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
     };
 
     AddNodesToClusterContext *pAddNodesToClusterContext = new AddNodesToClusterContext (pFrameworkObjectManagerAddNodesToClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5850,7 +5850,7 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep
     string                            ipAddress                         = "";
     SI32                              port                              = 0;
     UI32                              numberOfFailures                  = 0;
-    string                            prismVersionString                = PrismVersion::getVersionString ();
+    string                            prismVersionString                = WaveVersion::getVersionString ();
 
     waveAssert (NULL != pFrameworkObjectManagerAddNodesToClusterMessage, __FILE__, __LINE__);
 
@@ -5868,7 +5868,7 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep
 
         if (true == (FrameworkToolKit::isAKnownLocation (ipAddress, port)))
         {
-            PrismConfigureClusterSecondaryMessage *pMessage = new PrismConfigureClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
+            WaveConfigureClusterSecondaryMessage *pMessage = new WaveConfigureClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
 
             // Add all the validation buffers to the message before sending out
 
@@ -5931,7 +5931,7 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep
     }
 }
 
-void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCallback (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage, void *pContext)
+void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCallback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage, void *pContext)
 {
     AddNodesToClusterContext                       *pAddNodesToClusterContext                       = reinterpret_cast<AddNodesToClusterContext *> (pContext);
     FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage = reinterpret_cast<FrameworkObjectManagerAddNodesToClusterMessage *> (pAddNodesToClusterContext->getPWaveMessage ());
@@ -5941,33 +5941,33 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCall
 
     --(*pAddNodesToClusterContext);
 
-    if (NULL != pPrismConfigureClusterSecondaryMessage)
+    if (NULL != pWaveConfigureClusterSecondaryMessage)
     {
-        newLocationId = pPrismConfigureClusterSecondaryMessage->getLocationId ();
+        newLocationId = pWaveConfigureClusterSecondaryMessage->getLocationId ();
         ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
         port          = FrameworkToolKit::getPortForLocationId (newLocationId);
 
         pAddNodesToClusterContext->addValidaionResultsLocation (ipAddress, port);
 
         vector<WaveServiceId> &waveServiceIdsToCommunicate = pAddNodesToClusterContext->getWaveServiceIdsToCommunicate ();
-        UI32                    numberOfPrismServices        = waveServiceIdsToCommunicate.size ();
+        UI32                    numberOfWaveServices        = waveServiceIdsToCommunicate.size ();
         UI32                    i                            = 0;
 
-        for (i = 0; i < numberOfPrismServices; i++)
+        for (i = 0; i < numberOfWaveServices; i++)
         {
             void *pValidationResults    = NULL;
             UI32  validationResultsSize = 0;
 
-            pValidationResults = pPrismConfigureClusterSecondaryMessage->transferBufferToUser (s_offSetForValidationResults + waveServiceIdsToCommunicate[i], validationResultsSize);
+            pValidationResults = pWaveConfigureClusterSecondaryMessage->transferBufferToUser (s_offSetForValidationResults + waveServiceIdsToCommunicate[i], validationResultsSize);
 
             pAddNodesToClusterContext->addValidationResultsForService (ipAddress, port, waveServiceIdsToCommunicate[i], pValidationResults, validationResultsSize);
         }
 
         if (FRAMEWORK_SUCCESS == frameworkStatus)
         {
-            waveAssert (NULL != pPrismConfigureClusterSecondaryMessage, __FILE__, __LINE__);
+            waveAssert (NULL != pWaveConfigureClusterSecondaryMessage, __FILE__, __LINE__);
 
-            ResourceId completionStatus = pPrismConfigureClusterSecondaryMessage->getCompletionStatus ();
+            ResourceId completionStatus = pWaveConfigureClusterSecondaryMessage->getCompletionStatus ();
 
             pFrameworkObjectManagerAddNodesToClusterMessage->setNewNodeStatus (ipAddress, port, completionStatus);
 
@@ -5978,9 +5978,9 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCall
         }
         else
         {
-            if (NULL != pPrismConfigureClusterSecondaryMessage)
+            if (NULL != pWaveConfigureClusterSecondaryMessage)
             {
-                LocationId newLocationId1 = pPrismConfigureClusterSecondaryMessage->getLocationId ();
+                LocationId newLocationId1 = pWaveConfigureClusterSecondaryMessage->getLocationId ();
                 string     ipAddress1     = FrameworkToolKit::getIpAddressForLocationId (newLocationId1);
                 SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
@@ -5992,9 +5992,9 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCall
 
     }
 
-    if (NULL != pPrismConfigureClusterSecondaryMessage)
+    if (NULL != pWaveConfigureClusterSecondaryMessage)
     {
-        delete pPrismConfigureClusterSecondaryMessage;
+        delete pWaveConfigureClusterSecondaryMessage;
     }
 
     if (0 == (pAddNodesToClusterContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
@@ -6046,16 +6046,16 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCall
 void WaveFrameworkObjectManager::deleteNodesFromClusterMessageHandler (FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage)
 {
  
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterValidateStep),
-// reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),        
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterValidateStep),
+// reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterUnconfigureKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),        
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     DeleteNodesFromClusterContext *pDeleteNodesFromClusterContext = new DeleteNodesFromClusterContext (pFrameworkObjectManagerDeleteNodesFromClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6251,7 +6251,7 @@ void WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep (DeleteNo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep : Entering ...");
 
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverCallback), pDeleteNodesFromClusterContext);
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverCallback), pDeleteNodesFromClusterContext);
     UI32                                 numberOfLocationIds                  = pDeleteNodesFromClusterContext->getNumberOfLocationIds ();
     UI32                                 i                                    = 0;
     LocationId                           locationId                           = 0;
@@ -6294,19 +6294,19 @@ void WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverCallback (Wave
 
 void WaveFrameworkObjectManager::unconfigureClusterSecondaryMessageHandler (FrameworkObjectManagerUnconfigureClusterSecondaryMessage *pFrameworkObjectManagerUnconfigureClusterSecondaryMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep),      
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryDisconnectFromKnownLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUpdateThisLocationStep), 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterBroadcastLocalNodeDeletedEventStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep),      
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryDisconnectFromKnownLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUpdateThisLocationStep), 
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterBroadcastLocalNodeDeletedEventStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     DeleteNodeOnSecondaryContext *pDeleteNodeOnSecondaryContext = new DeleteNodeOnSecondaryContext (pFrameworkObjectManagerUnconfigureClusterSecondaryMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6482,7 +6482,7 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep
 
     if (true == pDeleteNodeOnSecondaryContext->getIsStartServiceIsRequired ())
     {
-        status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_UNCONFIGURE);
+        status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_UNCONFIGURE);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -6549,7 +6549,7 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep (Del
     set<LocationId>::iterator       it;
     UI32                            i = 0; 
     
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback), pDeleteNodeOnSecondaryContext);
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback), pDeleteNodeOnSecondaryContext);
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -6626,7 +6626,7 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback 
 
 void WaveFrameworkObjectManager::destroyClusterMessageHandler (FrameworkObjectManagerDestroyClusterMessage *pFrameworkObjectManagerDestroyClusterMessage)
 {
-    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = new DestroyClusterAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::destroyClusterMessageHandlerCallback), pFrameworkObjectManagerDestroyClusterMessage);
+    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = new DestroyClusterAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::destroyClusterMessageHandlerCallback), pFrameworkObjectManagerDestroyClusterMessage);
 
     pDestroyClusterAsynchronousContext->setReasonForDestroyingCluster (pFrameworkObjectManagerDestroyClusterMessage->getReasonForDestroyingCluster ());
     pDestroyClusterAsynchronousContext->setOriginalRequester          (pFrameworkObjectManagerDestroyClusterMessage->getOriginalRequester ());
@@ -6652,20 +6652,20 @@ void WaveFrameworkObjectManager::destroyClusterMessageHandlerCallback (DestroyCl
 
 void WaveFrameworkObjectManager::destroyClusterAsynchronousHandler (DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterGetKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterDeleteHeartBeatToKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterTerminateClientConnectionsForKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterRemoveKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterUnconfigureSelfStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterRunFailoverStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterBroadcastDeleteClusterEventStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterGetKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterUnconfigureKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterDeleteHeartBeatToKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterTerminateClientConnectionsForKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterRemoveKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterUnconfigureSelfStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterRunFailoverStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterBroadcastDeleteClusterEventStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     DestroyClusterContext *pDestroyClusterContext = new DestroyClusterContext (pDestroyClusterAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6838,7 +6838,7 @@ void WaveFrameworkObjectManager::destroyClusterTerminateClientConnectionsForKnow
     SI32       clusterPrimaryPort       = -1;
     bool       isPreparingForAddNode    = false;
 
-    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPPrismAsynchronousContext ());
+    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPWaveAsynchronousContext ());
 
     isPreparingForAddNode = pDestroyClusterAsynchronousContext->getIsPreparingForAddNode ();
 
@@ -6846,10 +6846,10 @@ void WaveFrameworkObjectManager::destroyClusterTerminateClientConnectionsForKnow
     {
         SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ()); 
 
-        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+        WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
-        clusterPrimaryIpAddress = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
-        clusterPrimaryPort      = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
+        clusterPrimaryIpAddress = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
+        clusterPrimaryPort      = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
     }
 
     for (i = 0; i < numberOfLocationIds; i++)
@@ -6877,7 +6877,7 @@ void WaveFrameworkObjectManager::destroyClusterRemoveKnownLocationsStep (Destroy
     SI32       clusterPrimaryPort       = -1;
     bool       isPreparingForAddNode    = false;
 
-    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPPrismAsynchronousContext ()); 
+    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPWaveAsynchronousContext ()); 
 
     isPreparingForAddNode = pDestroyClusterAsynchronousContext->getIsPreparingForAddNode ();
 
@@ -6885,10 +6885,10 @@ void WaveFrameworkObjectManager::destroyClusterRemoveKnownLocationsStep (Destroy
     {    
         SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ()); 
 
-        PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage = reinterpret_cast<PrismConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ()); 
+        WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ()); 
 
-        clusterPrimaryIpAddress = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
-        clusterPrimaryPort      = pPrismConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
+        clusterPrimaryIpAddress = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
+        clusterPrimaryPort      = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
     }    
 
     for (i = 0; i < numberOfLocationIds; i++)
@@ -6921,9 +6921,9 @@ void WaveFrameworkObjectManager::destroyClusterRunFailoverStep (DestroyClusterCo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::destroyClusterRunFailoverStep : Entering ...");
 
-    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPPrismAsynchronousContext ());
+    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPWaveAsynchronousContext ());
 
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::destroyClusterRunFailoverCallback), pDestroyClusterContext);
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::destroyClusterRunFailoverCallback), pDestroyClusterContext);
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -6996,30 +6996,30 @@ void WaveFrameworkObjectManager::destroyClusterBroadcastDeleteClusterEventStep (
 /// none
 void WaveFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1Step),
 
 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep), 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3Step),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToSecondaryNodes),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNodesAdditionToClusterCompletedEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep), 
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3Step),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToSecondaryNodes),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNodesAdditionToClusterCompletedEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
     };
 
     //This memory is freed within the Framework as part of prsimLinearSequencerSucceeded or
@@ -7208,7 +7208,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
     waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
     WaveMessageStatus status  = WAVE_MESSAGE_ERROR;  
-    string prismVersionString = PrismVersion::getVersionString ();
+    string prismVersionString = WaveVersion::getVersionString ();
 
     ++(*pRejoinNodesToClusterContext);
 
@@ -7462,7 +7462,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
         if (WAVE_MESSAGE_SUCCESS == (pFrameworkObjectManagerRejoinNodesToClusterMessage->getNewNodeStatus (ipAddress1, port1)))
         {
-            PrismRejoinClusterSecondaryPhase1Message *pMessage = new PrismRejoinClusterSecondaryPhase1Message ();
+            WaveRejoinClusterSecondaryPhase1Message *pMessage = new WaveRejoinClusterSecondaryPhase1Message ();
 
             if (NULL != pDatabaseBackupBuffer)
             {
@@ -7519,7 +7519,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 }
 
 
-void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback(FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message, void *pContext)
+void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback(FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryPhase1Message *pWaveRejoinClusterSecondaryPhase1Message, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager:: rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback: Starting ...");
 
@@ -7533,13 +7533,13 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        waveAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
-        LocationId  newLocationId = pPrismRejoinClusterSecondaryPhase1Message->getReceiverLocationId ();
+        LocationId  newLocationId = pWaveRejoinClusterSecondaryPhase1Message->getReceiverLocationId ();
         string      ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
         SI32        port          = FrameworkToolKit::getPortForLocationId (newLocationId);
 
-        ResourceId completionStatus = pPrismRejoinClusterSecondaryPhase1Message->getCompletionStatus ();
+        ResourceId completionStatus = pWaveRejoinClusterSecondaryPhase1Message->getCompletionStatus ();
 
         pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus(ipAddress, port, completionStatus);
 
@@ -7550,9 +7550,9 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
     }
     else
     {
-        if (NULL != pPrismRejoinClusterSecondaryPhase1Message)
+        if (NULL != pWaveRejoinClusterSecondaryPhase1Message)
         {
-            LocationId newLocationId1 = pPrismRejoinClusterSecondaryPhase1Message->getReceiverLocationId();
+            LocationId newLocationId1 = pWaveRejoinClusterSecondaryPhase1Message->getReceiverLocationId();
             string     ipAddress1     = FrameworkToolKit::getIpAddressForLocationId (newLocationId1);
             SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
@@ -7562,9 +7562,9 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         }
     }
 
-    if (NULL != pPrismRejoinClusterSecondaryPhase1Message)
+    if (NULL != pWaveRejoinClusterSecondaryPhase1Message)
     {
-        delete pPrismRejoinClusterSecondaryPhase1Message;
+        delete pWaveRejoinClusterSecondaryPhase1Message;
     }
 
     if (0 == (pRejoinNodesToClusterContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
@@ -7657,7 +7657,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
         if (WAVE_MESSAGE_SUCCESS == (pFrameworkObjectManagerRejoinNodesToClusterMessage->getNewNodeStatus (ipAddress1, port1)))
         {
-            PrismRejoinClusterSecondaryPhase2Message *pMessage = new PrismRejoinClusterSecondaryPhase2Message ();
+            WaveRejoinClusterSecondaryPhase2Message *pMessage = new WaveRejoinClusterSecondaryPhase2Message ();
 
             pMessage->setIsReplaceRejoin (pFrameworkObjectManagerRejoinNodesToClusterMessage->getIsReplaceRejoin ());
 
@@ -7715,7 +7715,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 /// whether the entire processing was scuccessful or not.
 ///  Input
 /// FrameworkStatus: success/failure in framework
-/// PrismRejoinClusterSecondaryPhase2Message: pointer to the phase 2 message 
+/// WaveRejoinClusterSecondaryPhase2Message: pointer to the phase 2 message 
 /// received back from the secondary in reply
 /// RejoinNodesToClusterContext:pointer for  context for rejoin created in
 /// the handler
@@ -7724,7 +7724,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 /// Return
 /// none
 
-void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback(FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message, void *pContext)
+void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback(FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryPhase2Message *pWaveRejoinClusterSecondaryPhase2Message, void *pContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager:: rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback: Starting ...");
 
@@ -7739,12 +7739,12 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        waveAssert (NULL != pPrismRejoinClusterSecondaryPhase2Message, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveRejoinClusterSecondaryPhase2Message, __FILE__, __LINE__);
 
-        LocationId  newLocationId = pPrismRejoinClusterSecondaryPhase2Message->getReceiverLocationId ();
+        LocationId  newLocationId = pWaveRejoinClusterSecondaryPhase2Message->getReceiverLocationId ();
         string      ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
         SI32        port          = FrameworkToolKit::getPortForLocationId (newLocationId);       
-        ResourceId completionStatus = pPrismRejoinClusterSecondaryPhase2Message->getCompletionStatus ();
+        ResourceId completionStatus = pWaveRejoinClusterSecondaryPhase2Message->getCompletionStatus ();
 
         pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus(ipAddress, port, completionStatus);
 
@@ -7758,9 +7758,9 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
     }
     else
     {
-        if (NULL != pPrismRejoinClusterSecondaryPhase2Message)
+        if (NULL != pWaveRejoinClusterSecondaryPhase2Message)
         {
-            LocationId newLocationId1 = pPrismRejoinClusterSecondaryPhase2Message->getReceiverLocationId();
+            LocationId newLocationId1 = pWaveRejoinClusterSecondaryPhase2Message->getReceiverLocationId();
             string     ipAddress1     = FrameworkToolKit::getIpAddressForLocationId (newLocationId1);
             SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
@@ -7771,9 +7771,9 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         }
     }
 
-    if (NULL != pPrismRejoinClusterSecondaryPhase2Message)
+    if (NULL != pWaveRejoinClusterSecondaryPhase2Message)
     {
-        delete pPrismRejoinClusterSecondaryPhase2Message;
+        delete pWaveRejoinClusterSecondaryPhase2Message;
     }
 
     //All responses have been received
@@ -7818,7 +7818,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
             if (0 < numberOffailedLocationIdsVectorInPhase2)
             {
-                WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2Callback), pRejoinNodesToClusterContext);
+                WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2Callback), pRejoinNodesToClusterContext);
 
                 for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase2; j++)
                 {
@@ -7848,7 +7848,7 @@ void WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2 (RejoinNod
 
     if (0 < numberOffailedLocationIdsVector)
     {
-        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2Callback), pRejoinNodesToClusterContext);
+        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase2Callback), pRejoinNodesToClusterContext);
 
         for (UI32 k = 0; k < numberOffailedLocationIdsVector; k++)
         {
@@ -7913,9 +7913,9 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
         locationId = successfullyAddedLocationIdVector[i];
 
-        PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message = new PrismRejoinClusterSecondaryPhase3Message ();
+        WaveRejoinClusterSecondaryPhase3Message *pWaveRejoinClusterSecondaryPhase3Message = new WaveRejoinClusterSecondaryPhase3Message ();
 
-        WaveMessageStatus status = send (pPrismRejoinClusterSecondaryPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback), pRejoinNodesToClusterContext, 0, locationId);
+        WaveMessageStatus status = send (pWaveRejoinClusterSecondaryPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback), pRejoinNodesToClusterContext, 0, locationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -7931,7 +7931,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
                 pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), status);
             }
 
-            delete pPrismRejoinClusterSecondaryPhase3Message;            
+            delete pWaveRejoinClusterSecondaryPhase3Message;            
         }
         else
         {
@@ -7947,7 +7947,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         vector<LocationId> failedLocationIdsVectorInPhase3           = pRejoinNodesToClusterContext->getFailedLocationIdVector ();
         UI32               numberOffailedLocationIdsVectorInPhase3   = failedLocationIdsVectorInPhase3.size ();
 
-        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback), pRejoinNodesToClusterContext); 
+        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback), pRejoinNodesToClusterContext); 
 
         for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase3; j++)
         {
@@ -7967,22 +7967,22 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
     }
 }
 
-void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message, void *pContext)
+void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryPhase3Message *pWaveRejoinClusterSecondaryPhase3Message, void *pContext)
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback: Starting ....");
 
     RejoinNodesToClusterContext                       *pRejoinNodesToClusterContext                       = reinterpret_cast<RejoinNodesToClusterContext *> (pContext);
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-    waveAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
-    LocationId                   locationId                   = pPrismRejoinClusterSecondaryPhase3Message->getReceiverLocationId ();
+    LocationId                   locationId                   = pWaveRejoinClusterSecondaryPhase3Message->getReceiverLocationId ();
 
     --(*pRejoinNodesToClusterContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
-        ResourceId completionStatus = pPrismRejoinClusterSecondaryPhase3Message->getCompletionStatus ();
+        ResourceId completionStatus = pWaveRejoinClusterSecondaryPhase3Message->getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
@@ -8017,7 +8017,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
         if (0 < numberOffailedLocationIdsVectorInPhase3)
         {
-            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback), pRejoinNodesToClusterContext);
+            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback), pRejoinNodesToClusterContext);
 
             for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase3; j++)
             {
@@ -8037,7 +8037,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         }
     } 
 
-    delete pPrismRejoinClusterSecondaryPhase3Message;
+    delete pWaveRejoinClusterSecondaryPhase3Message;
 }
 
 void WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext)
@@ -8074,26 +8074,26 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryMessageHandler (Framework
     
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryMessageHandler: (ACTIVE)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopHeartBeatToNode),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopHeartBeatToNode),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
     //Note that memory is freed in the framework in the success or the failure step
@@ -8113,18 +8113,18 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageHandler (Fra
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageHandler: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbyStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbyStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -8134,48 +8134,48 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageHandler (Fra
 
 }
 
-void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler (PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message)
+void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler (WaveRejoinClusterSecondaryPhase1Message *pWaveRejoinClusterSecondaryPhase1Message)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler: (ACTIVE)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase1),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase1),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
-    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pPrismRejoinClusterSecondaryPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveRejoinClusterSecondaryPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterContext->holdAll ();
     pSecondaryNodeClusterContext->start ();
 }
 
-void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase1MessageHandler (PrismRejoinClusterSecondaryHaPeerPhase1Message *pPrismRejoinClusterSecondaryHaPeerPhase1Message)
+void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase1MessageHandler (WaveRejoinClusterSecondaryHaPeerPhase1Message *pWaveRejoinClusterSecondaryHaPeerPhase1Message)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pPrismRejoinClusterSecondaryHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveRejoinClusterSecondaryHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterContext->holdAll ();
     pSecondaryNodeClusterContext->start ();
@@ -8352,8 +8352,8 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep (Seconda
 
    waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
  
-    string                                 primaryPrismVersionString              = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getClusterPrimaryPrismVersion ();
-    string                                 thisLocationPrismPrimaryVersionString  = PrismVersion::getVersionString ();
+    string                                 primaryWaveVersionString              = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getClusterPrimaryWaveVersion ();
+    string                                 thisLocationWavePrimaryVersionString  = WaveVersion::getVersionString ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
 
     if (getNumberOfLineCardPostBootCurrentlyRunning ())
@@ -8363,10 +8363,10 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep (Seconda
         return;
     }
 
-    trace (TRACE_LEVEL_INFO, "This       Location Prism Version : " + thisLocationPrismPrimaryVersionString);
-    trace (TRACE_LEVEL_INFO, "Requesting Location Prism Version : " + primaryPrismVersionString);
+    trace (TRACE_LEVEL_INFO, "This       Location Wave Version : " + thisLocationWavePrimaryVersionString);
+    trace (TRACE_LEVEL_INFO, "Requesting Location Wave Version : " + primaryWaveVersionString);
 
-    if (0 == thisLocationPrismPrimaryVersionString.compare (primaryPrismVersionString))
+    if (0 == thisLocationWavePrimaryVersionString.compare (primaryWaveVersionString))
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep : Version Check succeeded.\n");
 
@@ -8603,7 +8603,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep (Second
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    status = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_REJOIN);
+    status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_REJOIN);
 
     pSecondaryNodeClusterContext->executeNextStep (status);
 }
@@ -8688,7 +8688,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Second
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep : Rolling back as the node is in phase 0/1");
 
-        ResourceId rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0);
+        ResourceId rollbackStatus = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -8769,7 +8769,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep (Se
 
     //The first parameter will result in the worker choosing a specific boot agent written especially for rejoin.
     //It will trigger the pre phase
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_REJOIN, WAVE_BOOT_PHASE_PRE_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_REJOIN, WAVE_BOOT_PHASE_PRE_PHASE);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -8786,28 +8786,28 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep (Se
 /// This handler establishes the steps to process te phase 2
 /// rejoin message from the secondary and kick starts its processing.
 /// Input
-/// PrismRejoinClusterSecondaryPhase2Message: Pointer to phase 2 message
+/// WaveRejoinClusterSecondaryPhase2Message: Pointer to phase 2 message
 /// Output
 /// none
 /// Return
 /// none
 
-void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase2MessageHandler (PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message)
+void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase2MessageHandler (WaveRejoinClusterSecondaryPhase2Message *pWaveRejoinClusterSecondaryPhase2Message)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase2),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase2),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
-    SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context = new SecondaryNodeClusterPhase2Context (pPrismRejoinClusterSecondaryPhase2Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), false);
+    SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context = new SecondaryNodeClusterPhase2Context (pWaveRejoinClusterSecondaryPhase2Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), false);
 
     pSecondaryNodeClusterPhase2Context->holdAll ();
     pSecondaryNodeClusterPhase2Context->start ();
@@ -8845,7 +8845,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseS
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep : Entering ...");
 
     //The first argument results in selection of specific boot agent for rejoin node
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_REJOIN, WAVE_BOOT_PHASE_POST_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_REJOIN, WAVE_BOOT_PHASE_POST_PHASE);
 
     // Instead of asserting, rollback to last known good state.
 
@@ -8855,7 +8855,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseS
 
         disconnectFromAllConnectedNodes ();
 
-        ResourceId rollbackStatus = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
+        ResourceId rollbackStatus = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -8863,7 +8863,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseS
             waveAssert (false, __FILE__, __LINE__);
         }
 
-        rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
+        rollbackStatus = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -8882,7 +8882,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseS
     pSecondaryNodeClusterPhase2Context->executeNextStep (status);
 }
 
-void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler (PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message)
+void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler (WaveRejoinClusterSecondaryPhase3Message *pWaveRejoinClusterSecondaryPhase3Message)
 {
     SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = NULL;
 
@@ -8893,25 +8893,25 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler (Pri
         // Perform post boot in this case after backend sync up.
         // Backend sync up is done as part of rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep
 
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3Complete),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3Complete),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
         };
 
-        pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pPrismRejoinClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveRejoinClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         pSecondaryNodeClusterPhase3Context->holdAll ();
         pSecondaryNodeClusterPhase3Context->start ();
@@ -8919,45 +8919,45 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler (Pri
     }
     else
     {
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3Complete),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3Complete),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
         };
 
-        pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pPrismRejoinClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveRejoinClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
         pSecondaryNodeClusterPhase3Context->holdAll ();
         pSecondaryNodeClusterPhase3Context->start ();
     }
 }
 
-void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandler (PrismRejoinClusterSecondaryHaPeerPhase3Message *pPrismRejoinClusterSecondaryHaPeerPhase3Message)
+void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandler (WaveRejoinClusterSecondaryHaPeerPhase3Message *pWaveRejoinClusterSecondaryHaPeerPhase3Message)
 {
     SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = NULL;
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
-    pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pPrismRejoinClusterSecondaryHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveRejoinClusterSecondaryHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pSecondaryNodeClusterPhase3Context->holdAll ();
     pSecondaryNodeClusterPhase3Context->start ();
@@ -8965,24 +8965,24 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandle
 
 void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep (SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
-    waveAssert (NULL != pPrismRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
+    WaveRejoinClusterSecondaryPhase1Message *pWaveRejoinClusterSecondaryPhase1Message = reinterpret_cast<WaveRejoinClusterSecondaryPhase1Message *> (pSecondaryNodeClusterContext->getPWaveMessage ());
+    waveAssert (NULL != pWaveRejoinClusterSecondaryPhase1Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
-        PrismRejoinClusterSecondaryHaPeerPhase1Message *pPrismRejoinClusterSecondaryHaPeerPhase1Message = new PrismRejoinClusterSecondaryHaPeerPhase1Message;
-        waveAssert (NULL != pPrismRejoinClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
+        WaveRejoinClusterSecondaryHaPeerPhase1Message *pWaveRejoinClusterSecondaryHaPeerPhase1Message = new WaveRejoinClusterSecondaryHaPeerPhase1Message;
+        waveAssert (NULL != pWaveRejoinClusterSecondaryHaPeerPhase1Message, __FILE__, __LINE__);
 
-        pPrismRejoinClusterSecondaryHaPeerPhase1Message->copyBuffersFrom (*pPrismRejoinClusterSecondaryPhase1Message);
+        pWaveRejoinClusterSecondaryHaPeerPhase1Message->copyBuffersFrom (*pWaveRejoinClusterSecondaryPhase1Message);
 
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismRejoinClusterSecondaryHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pWaveRejoinClusterSecondaryHaPeerPhase1Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep: Send to Ha Peer failed.");
-            delete pPrismRejoinClusterSecondaryHaPeerPhase1Message;
+            delete pWaveRejoinClusterSecondaryHaPeerPhase1Message;
             FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
         }
         else
@@ -9002,7 +9002,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep (SecondaryNod
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryHaPeerPhase1Message *pPrismRejoinClusterSecondaryHaPeerPhase1Message, void *pContext)
+void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryHaPeerPhase1Message *pWaveRejoinClusterSecondaryHaPeerPhase1Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback: Begin.");
     
@@ -9013,7 +9013,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (Framewor
     }
     else
     {
-        ResourceId status = pPrismRejoinClusterSecondaryHaPeerPhase1Message->getCompletionStatus ();
+        ResourceId status = pWaveRejoinClusterSecondaryHaPeerPhase1Message->getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -9022,9 +9022,9 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (Framewor
         }
     }
 
-    if (NULL != pPrismRejoinClusterSecondaryHaPeerPhase1Message)
+    if (NULL != pWaveRejoinClusterSecondaryHaPeerPhase1Message)
     {
-        delete pPrismRejoinClusterSecondaryHaPeerPhase1Message;
+        delete pWaveRejoinClusterSecondaryHaPeerPhase1Message;
     }
 
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext); 
@@ -9045,24 +9045,24 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (Framewor
 
 void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
 {
-    PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message = reinterpret_cast<PrismRejoinClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
-    waveAssert (NULL != pPrismRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
+    WaveRejoinClusterSecondaryPhase3Message *pWaveRejoinClusterSecondaryPhase3Message = reinterpret_cast<WaveRejoinClusterSecondaryPhase3Message *> (pSecondaryNodeClusterPhase3Context->getPWaveMessage ());
+    waveAssert (NULL != pWaveRejoinClusterSecondaryPhase3Message, __FILE__, __LINE__);
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
-        PrismRejoinClusterSecondaryHaPeerPhase3Message *pPrismRejoinClusterSecondaryHaPeerPhase3Message = new PrismRejoinClusterSecondaryHaPeerPhase3Message;
-        waveAssert (NULL != pPrismRejoinClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
+        WaveRejoinClusterSecondaryHaPeerPhase3Message *pWaveRejoinClusterSecondaryHaPeerPhase3Message = new WaveRejoinClusterSecondaryHaPeerPhase3Message;
+        waveAssert (NULL != pWaveRejoinClusterSecondaryHaPeerPhase3Message, __FILE__, __LINE__);
 
-        pPrismRejoinClusterSecondaryHaPeerPhase3Message->copyBuffersFrom (*pPrismRejoinClusterSecondaryPhase3Message);
+        pWaveRejoinClusterSecondaryHaPeerPhase3Message->copyBuffersFrom (*pWaveRejoinClusterSecondaryPhase3Message);
 
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep: Ha Peer is connected and Live Sync enabled.");
 
-        ResourceId haPeerSendStatus = send (pPrismRejoinClusterSecondaryHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
+        ResourceId haPeerSendStatus = send (pWaveRejoinClusterSecondaryHaPeerPhase3Message, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback), pSecondaryNodeClusterPhase3Context, s_clusterPhase3TimeoutInMilliseconds, FrameworkToolKit::getHaPeerLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep: Send to Ha Peer failed.");
-            delete pPrismRejoinClusterSecondaryHaPeerPhase3Message;
+            delete pWaveRejoinClusterSecondaryHaPeerPhase3Message;
             FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
         }
         else
@@ -9082,7 +9082,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep (SecondaryNo
     pSecondaryNodeClusterPhase3Context->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryHaPeerPhase3Message *pPrismRejoinClusterSecondaryHaPeerPhase3Message, void *pContext)
+void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryHaPeerPhase3Message *pWaveRejoinClusterSecondaryHaPeerPhase3Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback: Begin.");
  
@@ -9093,7 +9093,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback (Framewo
     }
     else
     {
-        ResourceId status = pPrismRejoinClusterSecondaryHaPeerPhase3Message->getCompletionStatus ();
+        ResourceId status = pWaveRejoinClusterSecondaryHaPeerPhase3Message->getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -9102,9 +9102,9 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback (Framewo
         }
     }
 
-    if (NULL != pPrismRejoinClusterSecondaryHaPeerPhase3Message)
+    if (NULL != pWaveRejoinClusterSecondaryHaPeerPhase3Message)
     {
-        delete pPrismRejoinClusterSecondaryHaPeerPhase3Message;
+        delete pWaveRejoinClusterSecondaryHaPeerPhase3Message;
     }
 
     SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = reinterpret_cast<SecondaryNodeClusterPhase3Context *> (pContext); 
@@ -9150,7 +9150,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostP
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep : Entering ...");
 
     //The first argument results in selection of specific boot agent for rejoin node
-    ResourceId status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_SECONDARY_REJOIN, WAVE_BOOT_PHASE_AFTER_POST_PHASE);
+    ResourceId status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_SECONDARY_REJOIN, WAVE_BOOT_PHASE_AFTER_POST_PHASE);
 
     // Instead of asserting, rollback to last known good state.
 
@@ -9160,7 +9160,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostP
 
         disconnectFromAllConnectedNodes ();
 
-        ResourceId rollbackStatus = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
+        ResourceId rollbackStatus = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -9168,7 +9168,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostP
             waveAssert (false, __FILE__, __LINE__);
         }
 
-        rollbackStatus = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
+        rollbackStatus = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != rollbackStatus)
         {
@@ -9192,7 +9192,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostP
 
 void WaveFrameworkObjectManager::detachFromClusterMessageHandler (FrameworkObjectManagerDetachFromClusterMessage *pFrameworkObjectManagerDetachFromClusterMessage)
 {
-    DetachFromClusterAsynchronousContext *pDetachFromClusterAsynchronousContext = new DetachFromClusterAsynchronousContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::detachFromClusterMessageHandlerCallback), pFrameworkObjectManagerDetachFromClusterMessage);
+    DetachFromClusterAsynchronousContext *pDetachFromClusterAsynchronousContext = new DetachFromClusterAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::detachFromClusterMessageHandlerCallback), pFrameworkObjectManagerDetachFromClusterMessage);
 
     pDetachFromClusterAsynchronousContext->setReasonForDetachingFromCluster (pFrameworkObjectManagerDetachFromClusterMessage->getReasonForDetachingFromCluster ());
 
@@ -9216,16 +9216,16 @@ void WaveFrameworkObjectManager::detachFromClusterMessageHandlerCallback (Detach
 
 void WaveFrameworkObjectManager::detachFromClusterAsynchronousHandler (DetachFromClusterAsynchronousContext *pDetachFromClusterAsynchronousContext)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterTerminateClientConnectionsForKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterDisconnectFromKnownLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterUnconfigureThisLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterRunFailoverStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterTerminateClientConnectionsForKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterDisconnectFromKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterUnconfigureThisLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterRunFailoverStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     DetachFromClusterContext *pDetachFromClusterContext = new DetachFromClusterContext (pDetachFromClusterAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9290,7 +9290,7 @@ void WaveFrameworkObjectManager::detachFromClusterRunFailoverStep (DetachFromClu
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::detachFromClusterRunFailoverStep : Entering ...");
 
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::detachFromClusterRunFailoverCallback), pDetachFromClusterContext);
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::detachFromClusterRunFailoverCallback), pDetachFromClusterContext);
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -9321,11 +9321,11 @@ void WaveFrameworkObjectManager::lostHeartBeatMessageHandler (FrameworkObjectMan
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::lostHeartBeatMessageHandler : Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::lostHeartBeatStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::lostHeartBeatStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     HeartBeatLostContext *pHeartBeatLostContext      = new HeartBeatLostContext (pFrameworkObjectManagerLostHeartBeatMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9357,7 +9357,7 @@ void WaveFrameworkObjectManager::lostHeartBeatStep (HeartBeatLostContext *pHeart
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::lostHeartBeatCleanupClusterStep : Initiating Primary Un-Controlled Failover.");
 
-        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatPrimaryUncontrolledFailoverCallback), pHeartBeatLostContext);
+        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatPrimaryUncontrolledFailoverCallback), pHeartBeatLostContext);
 
         waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
         waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -9426,7 +9426,7 @@ void WaveFrameworkObjectManager::lostHeartBeatStep (HeartBeatLostContext *pHeart
 
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::lostHeartBeatCleanupClusterStep : Initiating Secondary Un-Controlled Failover.");
 
-            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pHeartBeatLostContext);
+            WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pHeartBeatLostContext);
 
             waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
             waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -9565,11 +9565,11 @@ void WaveFrameworkObjectManager::startExternalStateSynchronizationHandler(Framew
     string perfTraceStr = string("ESS Bootup; stage: ") + stageNumber + string("; service-type: ") + FrameworkToolKit::localize(serviceType);
     trace (TRACE_LEVEL_PERF_START, perfTraceStr);
 
-    PrismExternalStateSynchronizationAgent *pPrismExternalStateSynchronization = new PrismExternalStateSynchronizationAgent (m_pWaveObjectManager, stageNumber, serviceType);
+    WaveExternalStateSynchronizationAgent *pWaveExternalStateSynchronization = new WaveExternalStateSynchronizationAgent (m_pWaveObjectManager, stageNumber, serviceType);
 
-    pPrismExternalStateSynchronization->execute ();
+    pWaveExternalStateSynchronization->execute ();
 
-    delete pPrismExternalStateSynchronization;
+    delete pWaveExternalStateSynchronization;
 
     pFrameworkObjectManagerStartExternalStateSynchronizationMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     reply (pFrameworkObjectManagerStartExternalStateSynchronizationMessage);
@@ -9601,24 +9601,24 @@ void WaveFrameworkObjectManager::primaryChangedMessageHandler (FrameworkObjectMa
     
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedMessageHandler: Received Primary changed notification(ACTIVE).");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedUpdatePrimaryDetailsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedNotifyHaPeerStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedEmptyDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedUpdatePrimaryDetailsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeBootServicesPrePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedNotifyHaPeerStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedEmptyDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerPrimaryChangedMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9637,19 +9637,19 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerMessageHandler (FrameworkOb
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedHaPeerMessageHandler: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbyStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedEmptyDatabaseStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::removePreviousDatabaseBackupFile),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeShutdownServicesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBootServicesPrePhaseForStandbyStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeBackupCurrentDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbyStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedEmptyDatabaseStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerPrimaryChangedHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9666,18 +9666,18 @@ void WaveFrameworkObjectManager::primaryChangedPhase1MessageHandler (FrameworkOb
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedPhase1MessageHandler: Received Primary changed notification: (ACTIVE)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase1),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase1),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerPrimaryChangedPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9700,13 +9700,13 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPhase1MessageHandler (Frame
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedPhase1MessageHandler: Received Primary changed notification: (STANDBY)");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep),
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9999,10 +9999,10 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
 
     // Shutdown All Services First
 
-    status = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_CONFIGURE);
+    status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_CONFIGURE);
 
     // Bringup PrePhase service
-    status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_PRE_PHASE);
+    status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_PRE_PHASE);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -10088,7 +10088,7 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Not Able to Restore DB from Backed Up File. Completion Status : " + FrameworkToolKit::localize (status));
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Going For Extreme Recovery By going to default/startup configuration");
 
-            status = FrameworkToolKit::changePrismConfigurationValidity ( false );
+            status = FrameworkToolKit::changeWaveConfigurationValidity ( false );
             if ( status != WAVE_MESSAGE_SUCCESS  )
             {
                 trace (TRACE_LEVEL_FATAL, ("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Removing CFG file failed in extreme Recoverycase "));
@@ -10113,10 +10113,10 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
 
     // Save Configuration File After DB restore.
 
-    FrameworkToolKit::savePrismConfiguration ();
+    FrameworkToolKit::saveWaveConfiguration ();
 
     // Bring up postphase service
-    status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_POST_PHASE);
+    status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_POST_PHASE);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -10334,16 +10334,16 @@ void WaveFrameworkObjectManager::primaryChangedPhase2MessageHandler (FrameworkOb
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::primaryChangedPhase2MessageHandler : Received Primary changed notification ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase2),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase2),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
     SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context = new SecondaryNodeClusterPhase2Context (pFrameworkObjectManagerPrimaryChangedPhase2Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]),false);
@@ -10358,22 +10358,22 @@ void WaveFrameworkObjectManager::primaryChangedPhase3MessageHandler (FrameworkOb
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedPhase3MessageHandler: Received Primary changed notification(ACTIVE) ");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3Complete),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastPrimaryChangedEventForPlugins),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::savePrismConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase3BootServicesAfterPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase3Complete),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastClusterPhase3CompleteEvent),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastPrimaryChangedEventForPlugins),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pFrameworkObjectManagerPrimaryChangedPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10388,12 +10388,12 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPhase3MessageHandler (Frame
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedPhase3MessageHandler: Received Primary changed notification(STANDBY) ");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        //reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10493,10 +10493,10 @@ void WaveFrameworkObjectManager::broadcastPrimaryChangedEventForPlugins (Seconda
     pSecondaryNodeClusterPhase3Context->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void  WaveFrameworkObjectManager::savePrismConfigurationStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
+void  WaveFrameworkObjectManager::saveWaveConfigurationStep(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    trace(TRACE_LEVEL_DEVEL,"WaveFrameworkObjectManager::savePrismConfigurationStep: Entering");
-    FrameworkToolKit::savePrismConfiguration(true);
+    trace(TRACE_LEVEL_DEVEL,"WaveFrameworkObjectManager::saveWaveConfigurationStep: Entering");
+    FrameworkToolKit::saveWaveConfiguration(true);
     pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 
 }
@@ -10525,12 +10525,12 @@ FrameworkSequenceGenerator &WaveFrameworkObjectManager::getCurrentFrameworkSeque
 
 ResourceId WaveFrameworkObjectManager::saveConfiguration (const bool &syncToStandby)
 {
-    return (m_pConfigurationWorker->savePrismConfiguration (s_frameworkConfigurationFile, syncToStandby));
+    return (m_pConfigurationWorker->saveWaveConfiguration (s_frameworkConfigurationFile, syncToStandby));
 }
 
-ResourceId WaveFrameworkObjectManager::changePrismConfigurationValidity( const bool &validity)
+ResourceId WaveFrameworkObjectManager::changeWaveConfigurationValidity( const bool &validity)
 {
-    return (m_pConfigurationWorker->changePrismConfigurationValidity( validity ));
+    return (m_pConfigurationWorker->changeWaveConfigurationValidity( validity ));
 }
 
 string WaveFrameworkObjectManager::getConfigurationFileName ()
@@ -10558,9 +10558,9 @@ WaveFrameworkConfigurationWorker *WaveFrameworkObjectManager::getPConfigurationW
     return (m_pConfigurationWorker);
 }
 
-PrismFinalizeWorker *WaveFrameworkObjectManager::getPFinalizeWorker ()
+WaveFinalizeWorker *WaveFrameworkObjectManager::getPFinalizeWorker ()
 {
-    return (m_pPrismFinalizeWorker);
+    return (m_pWaveFinalizeWorker);
 }
 
 WaveFrameworkObjectManagerInitializeWorker *WaveFrameworkObjectManager::getPInitializeWorker ()
@@ -10861,11 +10861,11 @@ void WaveFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler(
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager:: secondaryNodeFailureNotificationMessageHandler: Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::processSecondeyNodeFailureMessage),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::processSecondeyNodeFailureMessage),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10892,7 +10892,7 @@ void WaveFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSeq
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler::Initiating Primary Controlled Failover.");
 
-        pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback), pWaveLinearSequencerContext);
+        pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback), pWaveLinearSequencerContext);
 
         waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
         waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -10905,7 +10905,7 @@ void WaveFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSeq
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler::Initiating Primary Un-Controlled Failover.");
 
-        pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
+        pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
         waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
         waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -10944,16 +10944,16 @@ void WaveFrameworkObjectManager::newPrincipalSelectedAfterFaioverMessageHandler(
 
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager:: newPrincipalSelectedAfterFaioverMessageHandler: Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-    reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::validateNewPrincipalSelection),
-    reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage),
+    reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::validateNewPrincipalSelection),
+    reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage),
 #if 0
-    reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::updateWaveNodeManagedObjctsStep),
-    reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToAllSecondariesStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateWaveNodeManagedObjctsStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startHeartBeatToAllSecondariesStep),
 #endif
-    reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
-    reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
     };
     
     setPrimaryNodeClusterOperationFlag (true);
@@ -11011,7 +11011,7 @@ void WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLine
    // Activate the Secondary Uncontrolled Failover Agent.
   
 
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -11036,11 +11036,11 @@ void WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLine
 
 void WaveFrameworkObjectManager::disconnectFromAllNodesHandler (FrameworkObjectManagerDisconnectFromAllNodesMessage *pFrameworkObjectManagerDisconnectFromAllNodesMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectAllKnownLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectAllKnownLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllNodesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11051,11 +11051,11 @@ void WaveFrameworkObjectManager::disconnectFromAllNodesHandler (FrameworkObjectM
 
 void WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler (FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage* pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage)
 {
-    PrismLinearSequencerStep sequencerSteps [] = 
+    WaveLinearSequencerStep sequencerSteps [] = 
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep)
     };
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
@@ -11071,7 +11071,7 @@ void WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep (WaveL
 
     resetLocationToPrimary ();
     
-    FrameworkToolKit::savePrismConfiguration (true);
+    FrameworkToolKit::saveWaveConfiguration (true);
 
     pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
@@ -11121,14 +11121,14 @@ void WaveFrameworkObjectManager::resetNodeForClusterMergeHandler (FrameworkObjec
         return;
     }    
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::stopHeartBeatToNode),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectFromAllNodes),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::configureNodeForResetAndStartServices),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopHeartBeatToNode),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectFromAllNodes),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureNodeForResetAndStartServices),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerResetNodeToUnconfirmRole, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11148,7 +11148,7 @@ void WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (W
     WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = NULL;
 
 
-    pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCallback), pWaveLinearSequencerContext);
+    pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodesCallback), pWaveLinearSequencerContext);
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
@@ -11195,7 +11195,7 @@ void WaveFrameworkObjectManager::configureNodeForResetAndStartServices (WaveLine
     }
     else if (LOCATION_SECONDARY == m_pThisLocation->getLocationRole ())
     {
-        status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE);
+        status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -11359,7 +11359,7 @@ void WaveFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler 
 
     pFrameworkObjectManagerRemoveKnownLocationsMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
-    FrameworkToolKit::savePrismConfiguration(true);
+    FrameworkToolKit::saveWaveConfiguration(true);
 
     reply (pFrameworkObjectManagerRemoveKnownLocationsMessage);
 }
@@ -11444,11 +11444,11 @@ void WaveFrameworkObjectManager::createDummySlot (const UI32 slotNumber)
 
 void WaveFrameworkObjectManager::disconnectFromAllInstanceClientsHandler (FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage *pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectAllInstanceClientsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectAllInstanceClientsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11475,13 +11475,13 @@ void WaveFrameworkObjectManager::zeroizeForFIPSMessageHandler(ZeroizeForFIPSMess
 {
 
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::zeroizeForFIPSMessageHandler: processing FIPSMEssage");
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::validateStandaloneStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::notifyAllClientSessionsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::triggerFIPSZeroizeStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::zeroizeSuccessStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::validateStandaloneStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::notifyAllClientSessionsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::triggerFIPSZeroizeStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::zeroizeSuccessStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
     };
     
     ZeroizeForFIPSLinearSequencerContext *pContext = new ZeroizeForFIPSLinearSequencerContext (pMessage, (WaveElement*)this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11592,7 +11592,7 @@ void WaveFrameworkObjectManager::triggerFIPSZeroizeStep (ZeroizeForFIPSLinearSeq
     Wave::logOperationStatus (FIPS_OPERATION_TRIGGER_CLEANUP_FOR_ZEROIZE);
 
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    PrismZeroizeAgent *pZAgent = new PrismZeroizeAgent(this, frameworkSequenceGenerator);
+    WaveZeroizeAgent *pZAgent = new WaveZeroizeAgent(this, frameworkSequenceGenerator);
 
     status = pZAgent->execute();
     if(status != WAVE_MESSAGE_SUCCESS)
@@ -11601,7 +11601,7 @@ void WaveFrameworkObjectManager::triggerFIPSZeroizeStep (ZeroizeForFIPSLinearSeq
     }
     else
     {
-        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::triggerFIPSZeroizeStep : successfully executed PrismZeroizeAgent.");
+        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::triggerFIPSZeroizeStep : successfully executed WaveZeroizeAgent.");
 
         Wave::logOperationStatus (FIPS_OPERATION_ZEROIZE_SUCCESS);
     }
@@ -11697,7 +11697,7 @@ void WaveFrameworkObjectManager::rollbackCfgFile ()
 
         pResults = NULL;
 
-        pResults = querySynchronously (PrismCluster::getClassName ());
+        pResults = querySynchronously (WaveCluster::getClassName ());
 
         waveAssert (NULL != pResults, __FILE__, __LINE__);
 
@@ -11711,7 +11711,7 @@ void WaveFrameworkObjectManager::rollbackCfgFile ()
         trace (TRACE_LEVEL_WARN, "Database is in inconsistent state, Query For WaveNode returns 0 WaveNode");
         trace (TRACE_LEVEL_WARN, "Going For Extreme Recovery");
 
-        ResourceId status = FrameworkToolKit::changePrismConfigurationValidity ( false );
+        ResourceId status = FrameworkToolKit::changeWaveConfigurationValidity ( false );
         if ( status != WAVE_MESSAGE_SUCCESS  )
         {
             trace (TRACE_LEVEL_FATAL, ("WaveFrameworkObjectManager::rollbackCfgFile : Removing CFG file failed in extreme Recoverycase "));        
@@ -11763,7 +11763,7 @@ void WaveFrameworkObjectManager::raslogAssert (const string &file, const string 
 
 void WaveFrameworkObjectManager::prepareNodeForHASupportHandler ()
 {
-    ResourceId status = m_pPrismFinalizeWorker->shutdownPrismServices ();
+    ResourceId status = m_pWaveFinalizeWorker->shutdownWaveServices ();
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -11771,7 +11771,7 @@ void WaveFrameworkObjectManager::prepareNodeForHASupportHandler ()
         waveAssert (false, __FILE__, __LINE__);
     }
 
-    status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PREPARE_FOR_HA_BOOT);
+    status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PREPARE_FOR_HA_BOOT);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -12007,7 +12007,7 @@ void WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync (SecondaryN
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_POST_PHASE);
+    status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_HASTANDBY, WAVE_BOOT_PHASE_POST_PHASE);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -12038,7 +12038,7 @@ void WaveFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler (Fr
 
         setWarmHaRecoveryPreparationInProgress (isWarmRecoveryInvolved);
 
-        ResourceId status = m_pPrismFinalizeWorker->shutdownPrismServices (WAVE_SHUTDOWN_SECONDARY_REJOIN);
+        ResourceId status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_REJOIN);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -12046,7 +12046,7 @@ void WaveFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler (Fr
             waveAssert (false, __FILE__, __LINE__);
         }
 
-        status = m_pInitializeWorker->startPrismServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE);
+        status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -12140,7 +12140,7 @@ void WaveFrameworkObjectManager::resetFrameworkConfigurationToDefault ()
 {
     if (NULL == m_pThisLocation)
     {   
-        trace (TRACE_LEVEL_ERROR, "RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep: Location config cannot be null");
+        trace (TRACE_LEVEL_ERROR, "RecoverWaveBootAgent::updateFrameworkConfigurationToDefaultStep: Location config cannot be null");
         waveAssert (false, __FILE__, __LINE__);
     }
 

@@ -4,10 +4,10 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXT_H
-#define PRISMMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXT_H
+#ifndef WAVEMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXT_H
+#define WAVEMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectQueryContextBase.h"
 
 namespace WaveNs
@@ -30,4 +30,4 @@ class WaveManagedObjectSynchronousQueryContext : public WaveManagedObjectQueryCo
 
 }
 
-#endif // PRISMMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXT_H
+#endif // WAVEMANAGEDOBJECTSYNCHRONOUSQUERYCONTEXT_H

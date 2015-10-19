@@ -5,18 +5,18 @@
  ***************************************************************************/
 
 #include "Cluster/ClusterFailoverContext.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Cluster/NodeManagedObject.h"
 #include "Cluster/Local/WaveNode.h"
 
 namespace WaveNs
 {
 
-ClusterFailoverContext::ClusterFailoverContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
-    : PrismSynchronousLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+ClusterFailoverContext::ClusterFailoverContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
+    : WaveSynchronousLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_failoverReason (failoverReason),
       m_failedLocationIds (failedLocationIds),
-      m_pPrismCluster       (NULL),
+      m_pWaveCluster       (NULL),
       m_pNodeManagedObjects (NULL),
       m_isPrimaryChanged    (false),
       m_isClusterExists     (true),
@@ -24,11 +24,11 @@ ClusterFailoverContext::ClusterFailoverContext (WaveMessage *pWaveMessage, WaveE
 {
 }
 
-ClusterFailoverContext::ClusterFailoverContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
-    : PrismSynchronousLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+ClusterFailoverContext::ClusterFailoverContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds)
+    : WaveSynchronousLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_failoverReason (failoverReason),
       m_failedLocationIds (failedLocationIds),
-      m_pPrismCluster       (NULL),
+      m_pWaveCluster       (NULL),
       m_pNodeManagedObjects (NULL),
       m_isPrimaryChanged    (false),
       m_isClusterExists     (true),
@@ -38,10 +38,10 @@ ClusterFailoverContext::ClusterFailoverContext (PrismAsynchronousContext *pPrism
 
 ClusterFailoverContext::~ClusterFailoverContext ()
 {
-    if (NULL != m_pPrismCluster)
+    if (NULL != m_pWaveCluster)
     {
-        delete m_pPrismCluster;
-            m_pPrismCluster = NULL;
+        delete m_pWaveCluster;
+            m_pWaveCluster = NULL;
     }
 
     if (NULL != m_pNodeManagedObjects)
@@ -70,14 +70,14 @@ vector<LocationId> &ClusterFailoverContext::getFailedLocationIds ()
     return (m_failedLocationIds);
 }
 
-PrismCluster *ClusterFailoverContext::getPPrismCluster ()
+WaveCluster *ClusterFailoverContext::getPWaveCluster ()
 {
-    return (m_pPrismCluster);
+    return (m_pWaveCluster);
 }
 
-void ClusterFailoverContext::setPPrismCluster (PrismCluster *pPrismCluster)
+void ClusterFailoverContext::setPWaveCluster (WaveCluster *pWaveCluster)
 {
-    m_pPrismCluster = pPrismCluster;
+    m_pWaveCluster = pWaveCluster;
 }
 
 vector<WaveManagedObject *> *ClusterFailoverContext::getPNodeManagedObjects ()

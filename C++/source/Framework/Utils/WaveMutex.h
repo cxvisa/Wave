@@ -3,8 +3,8 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#ifndef PRISMMUTEX_H
-#define PRISMMUTEX_H
+#ifndef WAVEMUTEX_H
+#define WAVEMUTEX_H
 
 #include "pthread.h"
 
@@ -45,4 +45,4 @@ class WaveMutex
 
 }
 
-#endif //PRISMMUTEX_H
+#endif //WAVEMUTEX_H

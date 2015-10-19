@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-class PrismLoadOperationalDataForManagedObjectObjectManagerMessage;
+class WaveLoadOperationalDataForManagedObjectObjectManagerMessage;
 class LoadOperationalDataContext;
 class WaveManagedObjectLoadOperationalDataContext;
 
@@ -21,7 +21,7 @@ class WaveManagedObjectLoadOperationalDataWorker : public WaveWorker
     private :
         virtual WaveMessage *createMessageInstance                          (const UI32 &operationCode);
 
-                void          loadOperationalDataHandler                     (PrismLoadOperationalDataForManagedObjectObjectManagerMessage *pPrismLoadOperationalDataForManagedObjectObjectManagerMessage);
+                void          loadOperationalDataHandler                     (WaveLoadOperationalDataForManagedObjectObjectManagerMessage *pWaveLoadOperationalDataForManagedObjectObjectManagerMessage);
                 void          loadOperationalDataQueryManagedObjectStep      (LoadOperationalDataContext *pLoadOperationalDataContext);
                 void          loadOperationalDataLoadStep                    (LoadOperationalDataContext *pLoadOperationalDataContext);
                 void          loadOperationalDataLoadCallback                (WaveManagedObjectLoadOperationalDataContext *pWaveManagedObjectLoadOperationalDataContext);

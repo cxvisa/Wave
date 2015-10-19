@@ -26,16 +26,16 @@ FileReplayEndAgent::~FileReplayEndAgent ()
 
 ResourceId FileReplayEndAgent::execute ()
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FileReplayEndAgent::getListOfEnabledServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FileReplayEndAgent::sendFileReplayEndStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileReplayEndAgent::getListOfEnabledServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileReplayEndAgent::sendFileReplayEndStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FileReplayEndAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FileReplayEndAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileReplayEndAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileReplayEndAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    FileReplayEndAgentContext *pFileReplayEndAgentContext = new FileReplayEndAgentContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    FileReplayEndAgentContext *pFileReplayEndAgentContext = new FileReplayEndAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     ResourceId status = pFileReplayEndAgentContext->execute ();
 
@@ -66,7 +66,7 @@ ResourceId FileReplayEndAgent::sendFileReplayEndStep (FileReplayEndAgentContext 
             continue;
         }
 
-        PrismFileReplayEndObjectManagerMessage *prismFileReplayEndObjectManagerMessage = new PrismFileReplayEndObjectManagerMessage (serviceIdsToSendFileReplayEnd[i]);
+        WaveFileReplayEndObjectManagerMessage *prismFileReplayEndObjectManagerMessage = new WaveFileReplayEndObjectManagerMessage (serviceIdsToSendFileReplayEnd[i]);
 
         ResourceId status = sendSynchronously (prismFileReplayEndObjectManagerMessage);
 
@@ -74,7 +74,7 @@ ResourceId FileReplayEndAgent::sendFileReplayEndStep (FileReplayEndAgentContext 
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PrismFileReplayEndAgent::sendFileReplayEndStep: Could not send File Replay End to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendFileReplayEnd[i]));
+            trace (TRACE_LEVEL_FATAL, "WaveFileReplayEndAgent::sendFileReplayEndStep: Could not send File Replay End to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendFileReplayEnd[i]));
             return (status);
         }
         else

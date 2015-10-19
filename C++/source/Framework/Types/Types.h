@@ -12,7 +12,7 @@
 #include <iostream>
 #include <limits.h>
 #include <assert.h>
-#include "Framework/OsLayer/PrismOsLayer.h"
+#include "Framework/OsLayer/WaveOsLayer.h"
 #include "WaveResourceIdEnums.h"
 
 namespace WaveNs

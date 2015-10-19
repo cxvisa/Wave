@@ -26,7 +26,7 @@ class CentralClusterConfigAddNodeWorker : public WaveWorker
         void          addNodeValidateStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          addNodeRequestFrameworkToAddNodeStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          addNodeRequestFrameworkToAddNodeCallBack (FrameworkStatus frameworkStatus, FrameworkObjectManagerAddNodesToClusterMessage *pFrameworkObjectManagerAddNodesToClusterMessage, void *pContext);
-        void          addNodeCommitStep                        (WaveLinearSequencerContext *pPrismLinearSequencerContex);
+        void          addNodeCommitStep                        (WaveLinearSequencerContext *pWaveLinearSequencerContex);
         void          addNodeStartHeartBeatsStep               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
     protected :
     public :

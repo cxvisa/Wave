@@ -125,7 +125,7 @@ void WaveMessagingBrokerConnectionObjectManager::startTimerIfNeeded ()
 
     if (0 < numberOfPendingWaveMessagingBrokerNamesToTryForConnection)
     {
-        ResourceId status = startTimer (m_timerHandle, m_tryIntervalInMilliSeconds, reinterpret_cast<PrismTimerExpirationHandler> (&WaveMessagingBrokerConnectionObjectManager::timerCallback));
+        ResourceId status = startTimer (m_timerHandle, m_tryIntervalInMilliSeconds, reinterpret_cast<WaveTimerExpirationHandler> (&WaveMessagingBrokerConnectionObjectManager::timerCallback));
 
         if (FRAMEWORK_SUCCESS != status)
         {

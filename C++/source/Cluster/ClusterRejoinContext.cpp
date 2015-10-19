@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-ClusterRejoinContext::ClusterRejoinContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+ClusterRejoinContext::ClusterRejoinContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
     m_isReplaceRejoin             (false)
 {

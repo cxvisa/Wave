@@ -8,12 +8,12 @@
 #define TRACETESTOBJECTMANAGER_H
 
 #include "Framework/Trace/Test/TraceTestContext.h"
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 
 namespace WaveNs
 {
 
-class TraceTestObjectManager : public PrismTestObjectManager
+class TraceTestObjectManager : public WaveTestObjectManager
 {
     private :
              TraceTestObjectManager             ();

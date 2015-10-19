@@ -14,7 +14,7 @@
 #include "Framework/Messaging/HaPeer/HaPeerMessageTransportObjectManager.h"
 #include "Framework/Core/WaveFrameworkObjectManagerHaSyncWorker.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/LocationManagement/PrismNodeConnectionInformation.h"
+#include "Framework/LocationManagement/WaveNodeConnectionInformation.h"
 #include "Framework/ObjectModel/ServiceIndependentMessageHandlerMap.h"
 #include "Framework/Messaging/Local/WaveServiceIndependentMessage.h"
 
@@ -22,7 +22,7 @@ namespace WaveNs
 {
 
 HaPeerMessageReceiverThread::HaPeerMessageReceiverThread (ServerStreamingSocket *pServerStreamingSocket)
-    : PrismPosixThread (),
+    : WavePosixThread (),
       m_pServerStreamingSocket (pServerStreamingSocket),
       m_peerServerPort (0),
       m_peerServerMessageVersion (""),
@@ -127,7 +127,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
 
     if (true == isSuccessful)
     {
-        PrismHaNodeConnectionInformation peerServerConnectionInformation;
+        WaveHaNodeConnectionInformation peerServerConnectionInformation;
 
         peerConnectionInformationBuffer.toString (peerServerConnectionInformationString);
         peerServerConnectionInformation.loadFromSerializedData2 (peerServerConnectionInformationString, SERIALIZE_WITH_ATTRIBUTE_ORDER);
@@ -221,7 +221,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                 // this location sent out.
 
                 // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
-                // travels brtween two nodes in a Prism based cluster is a WaveMessage;
+                // travels brtween two nodes in a Wave based cluster is a WaveMessage;
                 // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
                 //                 WaveMessage.
 
@@ -418,11 +418,11 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
 
 bool HaPeerMessageReceiverThread::authorizeClient ()
 {
-    // Try to read the Prism connection Pass Phrase.  If the connected client does not supply the
+    // Try to read the Wave connection Pass Phrase.  If the connected client does not supply the
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful              = false;
-    string          prismHaPassPhrase           = FrameworkToolKit::getPrismHaConnectionPassPhrase ();
+    string          prismHaPassPhrase           = FrameworkToolKit::getWaveHaConnectionPassPhrase ();
     FixedSizeBuffer passphraseFixedSizeBuffer (prismHaPassPhrase.size ());
 
     isSuccessful = (*m_pServerStreamingSocket) >> (passphraseFixedSizeBuffer);

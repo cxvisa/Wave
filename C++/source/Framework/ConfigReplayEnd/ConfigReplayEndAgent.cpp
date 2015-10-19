@@ -26,16 +26,16 @@ ConfigReplayEndAgent::~ConfigReplayEndAgent ()
 
 ResourceId ConfigReplayEndAgent::execute ()
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::getListOfEnabledServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::sendConfigReplayEndStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::getListOfEnabledServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::sendConfigReplayEndStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ConfigReplayEndAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    ConfigReplayEndAgentContext *pConfigReplayEndAgentContext = new ConfigReplayEndAgentContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    ConfigReplayEndAgentContext *pConfigReplayEndAgentContext = new ConfigReplayEndAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     ResourceId status = pConfigReplayEndAgentContext->execute ();
 
@@ -66,7 +66,7 @@ ResourceId ConfigReplayEndAgent::sendConfigReplayEndStep (ConfigReplayEndAgentCo
             continue;
         }
 
-        PrismConfigReplayEndObjectManagerMessage *prismConfigReplayEndObjectManagerMessage = new PrismConfigReplayEndObjectManagerMessage (serviceIdsToSendConfigReplayEnd[i]);
+        WaveConfigReplayEndObjectManagerMessage *prismConfigReplayEndObjectManagerMessage = new WaveConfigReplayEndObjectManagerMessage (serviceIdsToSendConfigReplayEnd[i]);
 
         ResourceId status = sendSynchronously (prismConfigReplayEndObjectManagerMessage);
 
@@ -74,7 +74,7 @@ ResourceId ConfigReplayEndAgent::sendConfigReplayEndStep (ConfigReplayEndAgentCo
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PrismConfigReplayEndAgent::sendConfigReplayEndStep: Could not send Config Replay End to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendConfigReplayEnd[i]));
+            trace (TRACE_LEVEL_FATAL, "WaveConfigReplayEndAgent::sendConfigReplayEndStep: Could not send Config Replay End to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendConfigReplayEnd[i]));
             return (status);
         }
         else

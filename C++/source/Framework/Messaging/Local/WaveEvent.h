@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMEVENT_H
-#define PRISMEVENT_H
+#ifndef WAVEEVENT_H
+#define WAVEEVENT_H
 
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Utils/WaveMutex.h"
@@ -42,4 +42,4 @@ class WaveEvent : public WaveMessage
 
 }
 
-#endif // PRISMEVENT_H
+#endif // WAVEEVENT_H

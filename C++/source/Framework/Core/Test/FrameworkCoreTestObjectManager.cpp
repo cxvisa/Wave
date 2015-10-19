@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 FrameworkCoreTestObjectManager::FrameworkCoreTestObjectManager ()
-    : PrismTestObjectManager ("Framework Core Test")
+    : WaveTestObjectManager ("Framework Core Test")
 {
 }
 
@@ -42,11 +42,11 @@ WaveServiceId FrameworkCoreTestObjectManager::getWaveServiceId ()
 
 void FrameworkCoreTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkCoreTestObjectManager::frameworkCoreTestFormattedErrorStringValidationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::frameworkCoreTestFormattedErrorStringValidationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

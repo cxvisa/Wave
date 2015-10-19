@@ -51,11 +51,11 @@ WaveMessage *WaveSystemManagementYangInterfacesInitializeWorker::createMessageIn
 }
 void WaveSystemManagementYangInterfacesInitializeWorker::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagementInterfaceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagementInterfaceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -83,11 +83,11 @@ void WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagem
 
 void WaveSystemManagementYangInterfacesInitializeWorker::rebuildYangInterfacesMessageHandler (WaveSystemManagementRebuildYangInterfacesMessage *pWaveSystemManagementRebuildYangInterfacesMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::rebuildSystemManagementInterfaceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::rebuildSystemManagementInterfaceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSystemManagementRebuildYangInterfacesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

@@ -7,14 +7,14 @@
 #ifndef HTTPINTERFACERECEIVERTHREAD_H
 #define HTTPINTERFACERECEIVERTHREAD_H
 
-#include <Framework/MultiThreading/PrismPosixThread.h>
+#include <Framework/MultiThreading/WavePosixThread.h>
 
 namespace WaveNs
 {
 
 class ServerStreamingSocket;
 
-class HttpInterfaceReceiverThread : public PrismPosixThread
+class HttpInterfaceReceiverThread : public WavePosixThread
 {
     private :
         virtual WaveThreadStatus start ();

@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 UnifiedClientGetDataFromClientMessage::UnifiedClientGetDataFromClientMessage ()
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), UNIFIEDCLIENTGETDATA)
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), UNIFIEDCLIENTGETDATA)
 {
     m_commandCode = 0;
     m_commandType = 0;
@@ -24,7 +24,7 @@ UnifiedClientGetDataFromClientMessage::UnifiedClientGetDataFromClientMessage ()
 }
 
 UnifiedClientGetDataFromClientMessage::UnifiedClientGetDataFromClientMessage ( UI32 numberOfRecordsRequested, UI32 commandCode, UI32 commandType )
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), UNIFIEDCLIENTGETDATA),
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), UNIFIEDCLIENTGETDATA),
       m_numberOfRecordsRequested (numberOfRecordsRequested), 
       m_commandCode (commandCode),
       m_commandType (commandType),  

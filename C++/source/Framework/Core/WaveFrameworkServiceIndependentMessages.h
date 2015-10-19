@@ -9,8 +9,8 @@
  *   Date   : 10/22/2012                                           
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKSERVICEINDEPENDENTMESSAGES_H
-#define PRISMFRAMEWORKSERVICEINDEPENDENTMESSAGES_H
+#ifndef WAVEFRAMEWORKSERVICEINDEPENDENTMESSAGES_H
+#define WAVEFRAMEWORKSERVICEINDEPENDENTMESSAGES_H
 
 #include "Framework/Messaging/Local/WaveServiceIndependentMessage.h"
 
@@ -72,4 +72,4 @@ class FrameworkObjectManagerRemoveConfigurationIntentMessage : public WaveServic
 
 }
 
-#endif // PRISMFRAMEWORKSERVICEINDEPENDENTMESSAGES_H
+#endif // WAVEFRAMEWORKSERVICEINDEPENDENTMESSAGES_H

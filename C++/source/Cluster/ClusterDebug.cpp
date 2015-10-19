@@ -277,7 +277,7 @@ UI32 ClusterDebug::shellExecuteAddNodeDebug (UI32 argc, vector<string> argv)
     message.setPrimaryNodeName (FrameworkToolKit::getThisLocationIpAddress ());
     message.setNSecondaryNodes(noNewNode);
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -339,7 +339,7 @@ UI32 ClusterDebug::shellExecuteJoinNodeDebug (UI32 argc, vector<string> argv)
     }
 
     //Dispatched to the FW to forward it to the Global Cluster Service
-    ResourceId status = ShellPrism::shellSendSynchronously (&message);
+    ResourceId status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -387,7 +387,7 @@ UI32 ClusterDebug::shellExecuteRemoveNodeDebug (UI32 argc, vector<string> argv)
 
     message.setNNodesToDelete(noNewNode);
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -402,7 +402,7 @@ UI32 ClusterDebug::shellExecuteRemoveClusterDebug (UI32 argc, vector<string> arg
 {
     ClusterObjectManagerDeleteClusterMessage message;
 
-    ResourceId                               status   = ShellPrism::shellSendSynchronously (&message);
+    ResourceId                               status   = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -536,7 +536,7 @@ UI32 ClusterDebug::shellExecuteGetClusterInfoDebug(UI32 argc, vector<string> arg
 
   //Send the message synchronously
   ClusterConfigObjectManagerGetClusterInfoMessage msg;
-  WaveMessageStatus status = ShellPrism::shellSendSynchronously(&msg);
+  WaveMessageStatus status = ShellWave::shellSendSynchronously(&msg);
 
   //Formatted output if Success
   if(WAVE_MESSAGE_SUCCESS == status) 
@@ -622,7 +622,7 @@ UI32 ClusterDebug::shellExecuteMakeThisNodePrincipal(UI32 argc, vector<string> a
 
   FrameworkObjectManagerNewPrincipalEstablishedMessage message(failedIpAddress, failedPort, failedLocation);
 
-  WaveMessageStatus status = ShellPrism::shellSendSynchronously(&message);
+  WaveMessageStatus status = ShellWave::shellSendSynchronously(&message);
 
   if(status!= WAVE_MESSAGE_SUCCESS) 
   {
@@ -654,7 +654,7 @@ UI32 ClusterDebug::shellExecuteNodifySecondaryNodeFailure(UI32 argc, vector<stri
 
   FrameworkObjectManagerSecondaryNodeFailureNotificationMessage message(failedIpAddress, failedPort, failedLocation);
 
-  WaveMessageStatus status = ShellPrism::shellSendSynchronously(&message);
+  WaveMessageStatus status = ShellWave::shellSendSynchronously(&message);
 
   if(status!= WAVE_MESSAGE_SUCCESS) 
   {

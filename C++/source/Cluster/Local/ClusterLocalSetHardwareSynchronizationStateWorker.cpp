@@ -68,13 +68,13 @@ WaveMessage *ClusterLocalSetHardwareSynchronizationStateWorker::createMessageIns
  */
 void ClusterLocalSetHardwareSynchronizationStateWorker::setHardwareSynchronizationStateMessageHandler (ClusterLocalSetHardwareSynchronizationStateMessage *pClusterLocalSetHardwareSynchronizationStateMessage)
 {
-     PrismLinearSequencerStep sequencerSteps[] =
+     WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerStartTransactionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerCommitTransactionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalSetHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-RejoinNodesToClusterContext::RejoinNodesToClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+RejoinNodesToClusterContext::RejoinNodesToClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : DeleteNodesFromClusterContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)
 {
 }

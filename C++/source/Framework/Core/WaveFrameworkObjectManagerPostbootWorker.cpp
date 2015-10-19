@@ -9,7 +9,7 @@
 #include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/Postboot/PrismPostbootAgent.h"
+#include "Framework/Postboot/WavePostbootAgent.h"
 #include "Framework/Utils/TraceUtils.h"
 
 namespace WaveNs
@@ -25,15 +25,15 @@ WaveFrameworkObjectManagerPostbootWorker::~WaveFrameworkObjectManagerPostbootWor
 {
 }
 
-void WaveFrameworkObjectManagerPostbootWorker::postbootMessageHandler (PrismPostbootObjectManagerMessage *pPrismPostbootObjectManagerMessage)
+void WaveFrameworkObjectManagerPostbootWorker::postbootMessageHandler (WavePostbootObjectManagerMessage *pWavePostbootObjectManagerMessage)
 {
     ResourceId  status;
 
-    PrismPostbootAgent  *pPrismPostbootAgent = new PrismPostbootAgent(m_pWaveObjectManager);
+    WavePostbootAgent  *pWavePostbootAgent = new WavePostbootAgent(m_pWaveObjectManager);
 
     updateHardwareSynchronizationState (WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_SYNCHRONIZING, FrameworkToolKit::getThisLocationId ());
 
-    status = pPrismPostbootAgent->execute();
+    status = pWavePostbootAgent->execute();
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
@@ -44,10 +44,10 @@ void WaveFrameworkObjectManagerPostbootWorker::postbootMessageHandler (PrismPost
         updateHardwareSynchronizationState (WAVE_NODE_HARDWARE_SYNCHRONIZATION_STATE_OUT_OF_SYNC, FrameworkToolKit::getThisLocationId ());
     }
 
-    pPrismPostbootObjectManagerMessage->setCompletionStatus (status);
-    reply (pPrismPostbootObjectManagerMessage);
+    pWavePostbootObjectManagerMessage->setCompletionStatus (status);
+    reply (pWavePostbootObjectManagerMessage);
 
-    delete(pPrismPostbootAgent);
+    delete(pWavePostbootAgent);
 }
 
 }

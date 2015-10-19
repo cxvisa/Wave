@@ -24,9 +24,9 @@ extern "C" int waveSystemManagementMain (int argc, char *argv[])
     bool                   isADaemon                            = true;
     FrameworkSequenceType  type                                 = FRAMEWORK_SEQUENCE_TYPE0;
     bool                   isSysLogRequired                     = true;
-    SI32                   port                                 = FrameworkToolKit::getPrismDefaultTcpPort ();
+    SI32                   port                                 = FrameworkToolKit::getWaveDefaultTcpPort ();
     bool                   isDatabaseEnabled                    = false;
-    SI32                   databasePort                         = FrameworkToolKit::getPrismDefaultDatabaseTcpPort ();
+    SI32                   databasePort                         = FrameworkToolKit::getWaveDefaultDatabaseTcpPort ();
     string                 databaseLogFileName                  = DatabaseObjectManager::getDatabaseLogFileName ();
     bool                   isDatabaseLogEnabled                 = true;
     string                 databaseSharedBuffers                = DatabaseObjectManager::getDatabaseSharedBuffers ();
@@ -234,7 +234,7 @@ extern "C" int waveSystemManagementMain (int argc, char *argv[])
 
     MultiDatabaseToolKit::initializeServerConnections (serverConnectionsString);
 
-    initializePrismSocketLayer ();
+    initializeWaveSocketLayer ();
 
     string ipAddress;
 
@@ -297,9 +297,9 @@ extern "C" int waveSystemManagementMain (int argc, char *argv[])
 
     WaveSystemManagement::initialize (waveMainConfiguration);
 
-    WaveFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootWave ();
 
-    WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
+    WaveFrameworkObjectManager::waitForWaveServicesToFinish ();
 
     delete [] pChangeDirectoryToArray;
 

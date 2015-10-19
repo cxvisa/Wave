@@ -32,8 +32,8 @@ namespace WaveNs
 class WaveSystemManagement
 {
     private :
-        static void instantiateNativePrismServices ();
-        static void registerNativeServiceInternal      (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
+        static void instantiateNativeWaveServices ();
+        static void registerNativeServiceInternal      (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase = true, const ResourceId &serviceMode = WAVE_SERVICE_ACTIVE);
 
     protected :
     public :

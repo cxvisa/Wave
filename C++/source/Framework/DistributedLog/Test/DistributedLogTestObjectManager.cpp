@@ -27,7 +27,7 @@ namespace WaveNs
 
 
 DistributedLogTestObjectManager::DistributedLogTestObjectManager ()
-    : PrismTestObjectManager (getServiceName())
+    : WaveTestObjectManager (getServiceName())
 {
     addOperationMap (DISTRIBUTED_LOG_INVOKE_ADD_LOG_API, reinterpret_cast<WaveMessageHandler> (&DistributedLogTestObjectManager::invokeAddLogApiMessageHandler));
 }
@@ -137,28 +137,28 @@ void DistributedLogTestObjectManager::invokeAddLogApiMessageHandler (Distributed
 
 void DistributedLogTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::dumpAndSaveOriginalStatsTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::addMaximumLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::verifyMaximumLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::rotateLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::verifyRotatedLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::decreaseMaxAllowedLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::verifyDecreasedLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::increaseMaxAllowedLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::verifyUnchangedLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::addMaximumLogEntriesUsingSendOneWayApiTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog1UsingSendToWaveClusterTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog2UsingSendToWaveClusterTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog3UsingSendToWaveClusterTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::addManagedObjectLog1UsingSendToWaveClusterTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::restoreMaxAllowedLogEntriesTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedLogTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::dumpAndSaveOriginalStatsTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addMaximumLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::verifyMaximumLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::rotateLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::verifyRotatedLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::queryForCurrentConfigInfoTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::decreaseMaxAllowedLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::verifyDecreasedLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::increaseMaxAllowedLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::verifyUnchangedLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addMaximumLogEntriesUsingSendOneWayApiTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog1UsingSendToWaveClusterTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog2UsingSendToWaveClusterTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog3UsingSendToWaveClusterTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addManagedObjectLog1UsingSendToWaveClusterTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::restoreMaxAllowedLogEntriesTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     DistributedLogTestContext *pDistributedLogTestContext = new DistributedLogTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -779,7 +779,7 @@ void DistributedLogTestObjectManager::addAuditLog1UsingSendToWaveClusterTestStep
     LogType             logType             = DISTRIBUTED_LOG_TYPE_AUDIT_LOG;
     LogDescriptionType  logDescriptionType  = DISTRIBUTED_LOG_SUB_TYPE_SESSION_LOGIN;
     
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
 
     DistributedLogInvokeAddLogApiMessage *pMessage1 = new DistributedLogInvokeAddLogApiMessage ();
     pMessage1->setLogType (logType);
@@ -798,7 +798,7 @@ void DistributedLogTestObjectManager::addAuditLog2UsingSendToWaveClusterTestStep
     LogType             logType             = DISTRIBUTED_LOG_TYPE_AUDIT_LOG;
     LogDescriptionType  logDescriptionType  = DISTRIBUTED_LOG_SUB_TYPE_COMMAND;
     
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
 
     DistributedLogInvokeAddLogApiMessage *pMessage1 = new DistributedLogInvokeAddLogApiMessage ();
     pMessage1->setLogType (logType);
@@ -817,7 +817,7 @@ void DistributedLogTestObjectManager::addAuditLog3UsingSendToWaveClusterTestStep
     LogType             logType             = DISTRIBUTED_LOG_TYPE_AUDIT_LOG;
     LogDescriptionType  logDescriptionType  = DISTRIBUTED_LOG_SUB_TYPE_SESSION_LOGOUT;
     
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
 
     DistributedLogInvokeAddLogApiMessage *pMessage1 = new DistributedLogInvokeAddLogApiMessage ();
     pMessage1->setLogType (logType);
@@ -837,7 +837,7 @@ void DistributedLogTestObjectManager::addManagedObjectLog1UsingSendToWaveCluster
     LogDescriptionType  logDescriptionType  = DISTRIBUTED_LOG_SUB_TYPE_MANAGED_OBJECT_ENTRY;
     ObjectId            configInfoObjectId  = pDistributedLogTestContext->getManagedObjectId ();
     
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&DistributedLogTestObjectManager::addLogUsingSendToWaveClusterTestCallback), pDistributedLogTestContext);
 
     DistributedLogInvokeAddLogApiMessage *pMessage1 = new DistributedLogInvokeAddLogApiMessage ();
     pMessage1->setLogType (logType);

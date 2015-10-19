@@ -4,27 +4,27 @@
  *   Author : Vipool Prajapati                                             *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKOBJECTMANAGERPOSTPERSISTENTBOOTWORKER_H
-#define PRISMFRAMEWORKOBJECTMANAGERPOSTPERSISTENTBOOTWORKER_H
+#ifndef WAVEFRAMEWORKOBJECTMANAGERPOSTPERSISTENTBOOTWORKER_H
+#define WAVEFRAMEWORKOBJECTMANAGERPOSTPERSISTENTBOOTWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Postboot/PrismPostPersistentBootMessages.h"
+#include "Framework/Postboot/WavePostPersistentBootMessages.h"
 
 namespace WaveNs
 {
 
-class PrismPostPersistenceBootMessage;
-class PrismPostBootHardwareSyncMessage;
-class PrismPostPersistentBootWorkerClusterContext;
+class WavePostPersistenceBootMessage;
+class WavePostBootHardwareSyncMessage;
+class WavePostPersistentBootWorkerClusterContext;
 
 class WaveFrameworkObjectManagerPostPersistentBootWorker : public WaveWorker
 {
     private :
-                void          postPersistentBootMessageHandler                      (PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage);
-                void          postPersistentBootServiceAndWaveSlotsMessageHandler   (PrismPostPersistenceBootServiceAndWaveSlotsMessage *pPrismPostPersistenceBootServiceAndWaveSlotsMessage);
+                void          postPersistentBootMessageHandler                      (WavePostPersistenceBootMessage *pWavePostPersistenceBootMessage);
+                void          postPersistentBootServiceAndWaveSlotsMessageHandler   (WavePostPersistenceBootServiceAndWaveSlotsMessage *pWavePostPersistenceBootServiceAndWaveSlotsMessage);
                 ResourceId    copyRunningToStart                                    ();
                 string        createReplayString                                    (const string &path, const string &params, const string &file);
-                void          triggerPostBootPassTable                              (const UI32 &eventId, const UI32 &parameter, PrismPostPersistenceBootMessage *pPrismPostPersistenceBootMessage);
+                void          triggerPostBootPassTable                              (const UI32 &eventId, const UI32 &parameter, WavePostPersistenceBootMessage *pWavePostPersistenceBootMessage);
                 ResourceId    triggerStartupFileReplay                              ();
                 ResourceId    triggerLastConfigReplay                               ();
                 void          resetXPathStringsTimestampsInPersistenceObjectManager ();
@@ -34,8 +34,8 @@ class WaveFrameworkObjectManagerPostPersistentBootWorker : public WaveWorker
     public :
                  WaveFrameworkObjectManagerPostPersistentBootWorker                (WaveObjectManager *pWaveObjectManager);
         virtual ~WaveFrameworkObjectManagerPostPersistentBootWorker                ();
-                ResourceId    triggerPostBootPassTableForAll                        (PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext);  
-                ResourceId    triggerPostBootPassTableForEvent                      (const PrismPostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext);
+                ResourceId    triggerPostBootPassTableForAll                        (WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext);  
+                ResourceId    triggerPostBootPassTableForEvent                      (const WavePostPersistentBootWorkerClusterContext *pPostPersistentBootWorkerClusterContext);
 
     // Now the Data Members
     private :
@@ -45,4 +45,4 @@ class WaveFrameworkObjectManagerPostPersistentBootWorker : public WaveWorker
 
 }
 
-#endif // PRISMFRAMEWORKOBJECTMANAGERPOSTPERSISTENTBOOTWORKER_H
+#endif // WAVEFRAMEWORKOBJECTMANAGERPOSTPERSISTENTBOOTWORKER_H

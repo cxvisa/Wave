@@ -9,7 +9,7 @@
 #include "Framework/ObjectRelationalMapping/OrmRelation.h"
 #include "Framework/ObjectRelationalMapping/OrmComposition.h"
 #include "Framework/Types/Types.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"

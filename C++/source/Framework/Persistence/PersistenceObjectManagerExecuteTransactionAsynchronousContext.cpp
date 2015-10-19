@@ -9,8 +9,8 @@
 namespace WaveNs
 {
     
-PersistenceObjectManagerExecuteTransactionAsynchronousContext::PersistenceObjectManagerExecuteTransactionAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
+PersistenceObjectManagerExecuteTransactionAsynchronousContext::PersistenceObjectManagerExecuteTransactionAsynchronousContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_sql                         (""),
       m_isConfigurationChange       (false),
       m_isConfigurationTimeChange   (false),

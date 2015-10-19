@@ -7,7 +7,7 @@
 #ifndef WAVESENDTOCLUSTERCONTEXT_H
 #define WAVESENDTOCLUSTERCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 #include <vector>
 #include <map>
@@ -42,7 +42,7 @@ class WaveMessage;
 		on partial success as both the features are mutually exclusive.\n
  */
 
-class WaveSendToClusterContext : public PrismAsynchronousContext
+class WaveSendToClusterContext : public WaveAsynchronousContext
 {
     private :
         const   bool                            &getIsSendOneWayToWaveCluster       () const;
@@ -50,7 +50,7 @@ class WaveSendToClusterContext : public PrismAsynchronousContext
 
     protected :
     public :
-                                                 WaveSendToClusterContext           (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                                 WaveSendToClusterContext           (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                                 ~WaveSendToClusterContext           ();
 
                 WaveMessage                    *getPWaveMessageForPhase1          () const;

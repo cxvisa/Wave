@@ -6,7 +6,7 @@
 #include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectModel/WaveElement.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
 
@@ -15,10 +15,10 @@ using namespace std;
 namespace WaveNs
 {
 
-WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                              = pWaveMessage;
-    m_pPrismAsynchronousContext                  = NULL;
+    m_pWaveAsynchronousContext                  = NULL;
     m_pWaveElement                              = pWaveElement;
     m_pSteps                                     = NULL;
     m_numberOfSteps                              = numberOfSteps;
@@ -37,12 +37,12 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessag
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Wave Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
         waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
-    m_pSteps = new PrismLinearSequencerStep[m_numberOfSteps];
+    m_pSteps = new WaveLinearSequencerStep[m_numberOfSteps];
 
     if (NULL == m_pSteps)
     {
@@ -61,10 +61,10 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessag
     return;
 }
 
-WaveLinearSequencerContext::WaveLinearSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+WaveLinearSequencerContext::WaveLinearSequencerContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
 {
     m_pWaveMessage                              = NULL;
-    m_pPrismAsynchronousContext                  = pPrismAsynchronousContext;
+    m_pWaveAsynchronousContext                  = pWaveAsynchronousContext;
     m_pWaveElement                              = pWaveElement;
     m_pSteps                                     = NULL;
     m_numberOfSteps                              = numberOfSteps;
@@ -83,12 +83,12 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (PrismAsynchronousContext
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Wave Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
         waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
-    m_pSteps = new PrismLinearSequencerStep[m_numberOfSteps];
+    m_pSteps = new WaveLinearSequencerStep[m_numberOfSteps];
 
     if (NULL == m_pSteps)
     {
@@ -110,7 +110,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (PrismAsynchronousContext
 WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequencerContext &prismLinearSequencerContext)
 {
     m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
-    m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
+    m_pWaveAsynchronousContext                  = prismLinearSequencerContext.m_pWaveAsynchronousContext;
     m_pWaveElement                              = prismLinearSequencerContext.m_pWaveElement;
     m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
     m_numberOfSteps                              = prismLinearSequencerContext.m_numberOfSteps;
@@ -130,12 +130,12 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequence
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Wave Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
         waveAssert (false, __FILE__, __LINE__);
         return;
     }
 
-    m_pSteps = new PrismLinearSequencerStep[m_numberOfSteps];
+    m_pSteps = new WaveLinearSequencerStep[m_numberOfSteps];
 
     if (NULL == m_pSteps)
     {
@@ -181,7 +181,7 @@ WaveLinearSequencerContext::~WaveLinearSequencerContext ()
 WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLinearSequencerContext &prismLinearSequencerContext)
 {
     m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
-    m_pPrismAsynchronousContext                  = prismLinearSequencerContext.m_pPrismAsynchronousContext;
+    m_pWaveAsynchronousContext                  = prismLinearSequencerContext.m_pWaveAsynchronousContext;
     m_pWaveElement                              = prismLinearSequencerContext.m_pWaveElement;
     m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
     m_numberOfSteps                              = prismLinearSequencerContext.m_numberOfSteps;
@@ -200,12 +200,12 @@ WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLi
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "WaveLinearSequencerContext::operator = : There should be atleast three steps to run a Prism Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::operator = : There should be atleast three steps to run a Wave Linear Sequencer. " << m_numberOfSteps << " Steps were specified." << endl;
         waveAssert (false, __FILE__, __LINE__);
         return (*this);
     }
 
-    m_pSteps = new PrismLinearSequencerStep[m_numberOfSteps];
+    m_pSteps = new WaveLinearSequencerStep[m_numberOfSteps];
 
     if (NULL == m_pSteps)
     {
@@ -362,9 +362,9 @@ void WaveLinearSequencerContext::setPWaveMessage (WaveMessage *pWaveMessage)
     m_pWaveMessage = pWaveMessage;
 }
 
-PrismAsynchronousContext *WaveLinearSequencerContext::getPPrismAsynchronousContext ()
+WaveAsynchronousContext *WaveLinearSequencerContext::getPWaveAsynchronousContext ()
 {
-    return (m_pPrismAsynchronousContext);
+    return (m_pWaveAsynchronousContext);
 }
 
 WaveLinearSequencerContext &WaveLinearSequencerContext::operator ++ ()

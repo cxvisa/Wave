@@ -7,18 +7,18 @@
 #ifndef LOCKMANAGEMENTMESSAGINGCONTEXT_h
 #define LOCKMANAGEMENTMESSAGINGCONTEXT_h
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "LockManagement/LockManagedObject.h"
 
 namespace WaveNs
 {
 
-class LockManagementMessagingContext : public PrismSynchronousLinearSequencerContext
+class LockManagementMessagingContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                    LockManagementMessagingContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                    LockManagementMessagingContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                    ~LockManagementMessagingContext ();
        LocationId                   getLocationId () const;
        const string&                getServiceString () const;

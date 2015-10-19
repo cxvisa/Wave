@@ -18,7 +18,7 @@ namespace WaveNs
 {
 
 class PersistenceLocalObjectManagerSetStartupFileMessage;
-class PersistenceLocalObjectManagerSavePrismConfigurationMessage;
+class PersistenceLocalObjectManagerSaveWaveConfigurationMessage;
 class PersistenceLocalObjectManagerCopySchemaMessage;
 class PersistenceLocalObjectManagerCopyDefaultClusterMessage;
 class PersistenceLocalObjectManagerSetConfigurationValidMessage;
@@ -39,7 +39,7 @@ class PersistenceLocalObjectManager : public WaveLocalObjectManager
                                                 PersistenceLocalObjectManager                   ();
                 void                            setStartupFileMessageHandler                    (PersistenceLocalObjectManagerSetStartupFileMessage *pMessage);
                 void                            copyDefaultClusterMessageHandler                (PersistenceLocalObjectManagerCopyDefaultClusterMessage *pMessage);
-                void                            savePrismConfigurationMessageHandler            (PersistenceLocalObjectManagerSavePrismConfigurationMessage *pMessage);
+                void                            saveWaveConfigurationMessageHandler            (PersistenceLocalObjectManagerSaveWaveConfigurationMessage *pMessage);
                 void                            copySchemaMessageHandler                        (PersistenceLocalObjectManagerCopySchemaMessage *pPersistenceLocalObjectManagerCopySchemaMessage);
                 void                            setConfigurationValidMessageHandler             (PersistenceLocalObjectManagerSetConfigurationValidMessage *pPersistenceLocalObjectManagerSetConfigurationValidMessage);
 

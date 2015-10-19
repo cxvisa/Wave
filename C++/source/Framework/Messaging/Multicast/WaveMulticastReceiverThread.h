@@ -7,12 +7,12 @@
 #ifndef WAVEMULTICASTRECEIVERTHREAD_H
 #define WAVEMULTICASTRECEIVERTHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 
 namespace WaveNs
 {
 
-class WaveMulticastReceiverThread : public PrismPosixThread
+class WaveMulticastReceiverThread : public WavePosixThread
 {
     private :
                                  WaveMulticastReceiverThread ();

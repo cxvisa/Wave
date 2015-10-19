@@ -10,7 +10,7 @@
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForShutdownPhases.h"
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Cluster/Local/ClusterLocalSetThisNodeIpAddressWorker.h"
 #include "Cluster/Local/ClusterLocalReportPrimaryNodeChangedWorker.h"
 #include "Cluster/Local/ClusterLocalReportRemovedNodeFromClusterWorker.h"
@@ -43,7 +43,7 @@ vector<SI32>        ClusterLocalObjectManager::m_pendingPortsToBeAddedToControll
 TimerHandle         ClusterLocalObjectManager::m_controllerClusterFormationDampeningTimerHandle = 0;
 
 ClusterLocalObjectManager::ClusterLocalObjectManager ()
-    : WaveLocalObjectManager (getPrismServiceName ())
+    : WaveLocalObjectManager (getWaveServiceName ())
 {
     associateWithVirtualWaveObjectManager (CentralClusterConfigObjectManager::getInstance ());
 
@@ -203,7 +203,7 @@ WaveServiceId ClusterLocalObjectManager:: getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-string ClusterLocalObjectManager::getPrismServiceName ()
+string ClusterLocalObjectManager::getWaveServiceName ()
 {
     return ("Cluster Local");
 }
@@ -421,7 +421,7 @@ void ClusterLocalObjectManager::shutdown (WaveAsynchronousContextForShutDownPhas
     pWaveAsynchronousContextForShutDownPhases->callback ();
 }
 
-void ClusterLocalObjectManager::backendSyncUp (PrismAsynchronousContext *pPrismAsynchronousContext)
+void ClusterLocalObjectManager::backendSyncUp (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, string("ClusterLocalObjectManager::backendSyncUp : Entering..."));
 
@@ -457,8 +457,8 @@ void ClusterLocalObjectManager::backendSyncUp (PrismAsynchronousContext *pPrismA
 
     delete pThisWaveNode;
 
-    pPrismAsynchronousContext->setCompletionStatus (backendSyncUpStatus);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (backendSyncUpStatus);
+    pWaveAsynchronousContext->callback ();
 }
 
 void ClusterLocalObjectManager::setThisWaveNodeObjectId (const ObjectId &thisWaveNodeObjectId)
@@ -914,7 +914,7 @@ void ClusterLocalObjectManager::clientReportingToControllerMessageHandler (Clust
             deleteTimer (m_controllerClusterFormationDampeningTimerHandle);
         }
 
-        status = startTimer (m_controllerClusterFormationDampeningTimerHandle, 30000, reinterpret_cast<PrismTimerExpirationHandler> (&ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback), NULL);
+        status = startTimer (m_controllerClusterFormationDampeningTimerHandle, 30000, reinterpret_cast<WaveTimerExpirationHandler> (&ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback), NULL);
 
         if (FRAMEWORK_SUCCESS != status)
         {
@@ -956,13 +956,13 @@ void ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback
         {
             // Query DB is cluster exists or not
 
-            UI32 numberOfPrismCluster;
+            UI32 numberOfWaveCluster;
 
-            ResourceId status = querySynchronouslyForCount ("PrismCluster", numberOfPrismCluster, "wavecurrent");
+            ResourceId status = querySynchronouslyForCount ("WaveCluster", numberOfWaveCluster, "wavecurrent");
 
             waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 
-            if (0 == numberOfPrismCluster)
+            if (0 == numberOfWaveCluster)
             {
                 ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage = new  ClusterObjectManagerCreateClusterMessage (ipAddresses, ports);
 
@@ -970,7 +970,7 @@ void ClusterLocalObjectManager::controllerClusterFormationDampeningTimerCallback
 
                 waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
             }
-            else if (1 == numberOfPrismCluster)
+            else if (1 == numberOfWaveCluster)
             {
                 ClusterObjectManagerAddNodeMessage *pClusterObjectManagerAddNodeMessage = new ClusterObjectManagerAddNodeMessage (ipAddresses, ports);
 

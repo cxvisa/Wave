@@ -4,16 +4,16 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef RECOVERPRISMBOOTAGENT_H
-#define RECOVERPRISMBOOTAGENT_H
+#ifndef RECOVERWAVEBOOTAGENT_H
+#define RECOVERWAVEBOOTAGENT_H
 
-#include "Framework/Boot/FirstTimePrismBootAgent.h"
+#include "Framework/Boot/FirstTimeWaveBootAgent.h"
 #include "Framework/Database/DatabaseObjectManagerShutdownMessage.h"
 
 namespace WaveNs
 {
 
-class RecoverPrismBootAgent : public FirstTimePrismBootAgent
+class RecoverWaveBootAgent : public FirstTimeWaveBootAgent
 {
     private :
 
@@ -23,12 +23,12 @@ class RecoverPrismBootAgent : public FirstTimePrismBootAgent
 
     protected :
     public :
-                 RecoverPrismBootAgent   (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual ~RecoverPrismBootAgent   ();
+                 RecoverWaveBootAgent   (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual ~RecoverWaveBootAgent   ();
 
         virtual ResourceId  execute                              (const WaveBootPhase &waveBootPhase);
-                ResourceId  shutdownDatabaseStep                 (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  updateFrameworkConfigurationToDefaultStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                ResourceId  shutdownDatabaseStep                 (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  updateFrameworkConfigurationToDefaultStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
     // Now the data members
 
@@ -40,4 +40,4 @@ class RecoverPrismBootAgent : public FirstTimePrismBootAgent
 
 }
 
-#endif // RECOVERPRISMBOOTAGENT_H
+#endif // RECOVERWAVEBOOTAGENT_H

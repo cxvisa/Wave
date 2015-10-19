@@ -78,9 +78,9 @@ class TimerData
                 timeval                         m_periodicInterval;
                 timeval                         m_expirationTime;
                 UI32                            m_timerId;
-                PrismTimerExpirationHandler     m_pPrismTimerExpirationCallback;
-                void                           *m_pPrismTimerExpirationContext;
-                WaveElement                   *m_pPrismTimerSender;
+                WaveTimerExpirationHandler     m_pWaveTimerExpirationCallback;
+                void                           *m_pWaveTimerExpirationContext;
+                WaveElement                   *m_pWaveTimerSender;
                 WaveServiceId                  m_serviceId;
 };
 

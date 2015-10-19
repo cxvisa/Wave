@@ -103,7 +103,7 @@ WaveServiceId DistributedDebugGlobalObjectManager::getWaveServiceId ()
  * 
  * @return string
  */
-string DistributedDebugGlobalObjectManager::getPrismServiceName()
+string DistributedDebugGlobalObjectManager::getWaveServiceName()
 {
    return ("Distributed Debug Global Service");
 }
@@ -188,7 +188,7 @@ void DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep (WaveLin
     RunDebugScriptOnClusterMemberMessage*  pRunDebugScriptOnClusterMemberMessage = new  RunDebugScriptOnClusterMemberMessage(pRunDebugScriptMessage->isScriptNos());
     pRunDebugScriptOnClusterMemberMessage->setScriptString(pRunDebugScriptMessage->getScriptString ());
 
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback),pRunDebugScriptMessageHandlerContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesCallback),pRunDebugScriptMessageHandlerContext);
     
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pRunDebugScriptOnClusterMemberMessage);
     pWaveSendToClusterContext->setPartialSuccessFlag(true);
@@ -265,11 +265,11 @@ void  DistributedDebugGlobalObjectManager::runDebugScriptMessageHandler  (RunDeb
 
     trace(TRACE_LEVEL_DEBUG,"DistributedDebugGlobalObjectManager::runDebugScriptMessageHandler:Entering:" );
 
-   PrismLinearSequencerStep sequencerSteps[] =
+   WaveLinearSequencerStep sequencerSteps[] =
     {
-	reinterpret_cast<PrismLinearSequencerStep> (&DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep), 
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerFailedStep)
+	reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep), 
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new WaveLinearSequencerContext (pRunDebugScriptMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

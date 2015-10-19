@@ -23,7 +23,7 @@ namespace WaveNs
 {
 
 HttpInterfaceReceiverThread::HttpInterfaceReceiverThread (ServerStreamingSocket *pServerStreamingSocket)
-    : PrismPosixThread         (),
+    : WavePosixThread         (),
       m_pServerStreamingSocket (pServerStreamingSocket)
 {
 }

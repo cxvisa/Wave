@@ -34,7 +34,7 @@ public:
 
 	        static  string          getClassName ();
                 static  WaveServiceId  getWaveServiceId ();
-                static  string          getPrismServiceName ();                
+                static  string          getWaveServiceName ();                
                 static  DistributedDebugGlobalObjectManager *getInstance ();
 
                 void  runDebugScriptMessageHandler  (RunDebugScriptMessage* pRunDebugScriptMessage);

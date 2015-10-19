@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 class WaveObjectManager;
-class PrismAsynchronousContext;
+class WaveAsynchronousContext;
 class WaveLinearSequencerContext;
 
 class DatabaseObjectManagerInitializeWorker : public WaveWorker

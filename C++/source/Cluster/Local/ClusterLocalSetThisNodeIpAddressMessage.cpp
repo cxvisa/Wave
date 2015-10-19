@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 ClusterLocalSetThisNodeIpAddressMessage::ClusterLocalSetThisNodeIpAddressMessage ()
-    : ManagementInterfaceMessage (ClusterLocalObjectManager::getPrismServiceName (), CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS),
+    : ManagementInterfaceMessage (ClusterLocalObjectManager::getWaveServiceName (), CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS),
       m_ipAddress                ("")
 {
 }
 
 ClusterLocalSetThisNodeIpAddressMessage::ClusterLocalSetThisNodeIpAddressMessage (const string &ipAddress)
-    : ManagementInterfaceMessage (ClusterLocalObjectManager::getPrismServiceName (), CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS),
+    : ManagementInterfaceMessage (ClusterLocalObjectManager::getWaveServiceName (), CLUSTER_LOCAL_SET_THIS_NODE_IP_ADDRESS),
       m_ipAddress                (ipAddress)
 {
 }

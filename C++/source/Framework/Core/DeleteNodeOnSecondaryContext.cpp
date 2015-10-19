@@ -12,14 +12,14 @@
 namespace WaveNs
 {
 
-DeleteNodeOnSecondaryContext::DeleteNodeOnSecondaryContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+DeleteNodeOnSecondaryContext::DeleteNodeOnSecondaryContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_IsStartServiceIsRequired (true)
 {
 }
 
-DeleteNodeOnSecondaryContext::DeleteNodeOnSecondaryContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+DeleteNodeOnSecondaryContext::DeleteNodeOnSecondaryContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : WaveLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_IsStartServiceIsRequired (true)
 {
 }

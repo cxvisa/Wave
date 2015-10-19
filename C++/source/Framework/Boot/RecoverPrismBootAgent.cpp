@@ -4,8 +4,8 @@
  *   Author : Mithun B S                                                   *
  ***************************************************************************/
 
-#include "Framework/Boot/RecoverPrismBootAgent.h"
-#include "Framework/Boot/FirstTimePrismBootAgent.h"
+#include "Framework/Boot/RecoverWaveBootAgent.h"
+#include "Framework/Boot/FirstTimeWaveBootAgent.h"
 #include "Framework/Timer/TimerSignalObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
@@ -14,69 +14,69 @@
 namespace WaveNs
 {
 
-RecoverPrismBootAgent::RecoverPrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
-    : FirstTimePrismBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
+RecoverWaveBootAgent::RecoverWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
+    : FirstTimeWaveBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
       m_waveBootPhase (WAVE_BOOT_PHASE_PRE_PHASE)
 {
 }
 
-RecoverPrismBootAgent::~RecoverPrismBootAgent ()
+RecoverWaveBootAgent::~RecoverWaveBootAgent ()
 {
 }
 
-ResourceId RecoverPrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
+ResourceId RecoverWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 {
     m_waveBootPhase = waveBootPhase;
 
     if (WAVE_BOOT_PHASE_PRE_PHASE == waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::shutdownDatabaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::shutdownDatabaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::updateFrameworkConfigurationToDefaultStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::installPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::installWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_PHASE_POST_PHASE == waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::installLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::bootLocalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::installLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::bootLocalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::installGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::bootGlobalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::installGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::bootGlobalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::savePrismConfigurationStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::saveWaveConfigurationStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&RecoverPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
@@ -84,7 +84,7 @@ ResourceId RecoverPrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId RecoverPrismBootAgent::shutdownDatabaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId RecoverWaveBootAgent::shutdownDatabaseStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     bool                                        isShutdownOnReboot  = false;
     DatabaseObjectManagerShutdownMessage       *pMessage            = new DatabaseObjectManagerShutdownMessage (isShutdownOnReboot);
@@ -93,7 +93,7 @@ ResourceId RecoverPrismBootAgent::shutdownDatabaseStep (PrismSynchronousLinearSe
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_FATAL, string ("RecoverPrismBootAgent::shutdownDatabaseStep : Could not send a message to stop Database Server: Status : ") + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_FATAL, string ("RecoverWaveBootAgent::shutdownDatabaseStep : Could not send a message to stop Database Server: Status : ") + FrameworkToolKit::localize (status));
         return (status);
     }
 
@@ -101,7 +101,7 @@ ResourceId RecoverPrismBootAgent::shutdownDatabaseStep (PrismSynchronousLinearSe
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_FATAL, string ("RecoverPrismBootAgent::shutdownDatabaseStep : Could not stop Database Server: Status : ") + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_FATAL, string ("RecoverWaveBootAgent::shutdownDatabaseStep : Could not stop Database Server: Status : ") + FrameworkToolKit::localize (status));
         return (status);
     }
     else
@@ -112,20 +112,20 @@ ResourceId RecoverPrismBootAgent::shutdownDatabaseStep (PrismSynchronousLinearSe
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId RecoverWaveBootAgent::updateFrameworkConfigurationToDefaultStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_INFO, "RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep: Reverting the cfg to default values as we go back to First Time boot.");
+    trace (TRACE_LEVEL_INFO, "RecoverWaveBootAgent::updateFrameworkConfigurationToDefaultStep: Reverting the cfg to default values as we go back to First Time boot.");
 
     WaveFrameworkObjectManager *pTemp         = WaveFrameworkObjectManager::getInstance ();
     pTemp->resetFrameworkConfigurationToDefault ();
 
-    trace (TRACE_LEVEL_INFO, "RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep: saving default configuration.");
-    FrameworkToolKit::savePrismConfiguration ();
+    trace (TRACE_LEVEL_INFO, "RecoverWaveBootAgent::updateFrameworkConfigurationToDefaultStep: saving default configuration.");
+    FrameworkToolKit::saveWaveConfiguration ();
 
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
+bool RecoverWaveBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     if ((TimerSignalObjectManager::getWaveServiceId               ()) == waveServiceId ||
         ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
@@ -138,7 +138,7 @@ bool RecoverPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const Wa
     }
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &waveServiceId)
+bool RecoverWaveBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId &waveServiceId)
 {
     if ((TimerSignalObjectManager::getWaveServiceId               ()) == waveServiceId ||
         ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))
@@ -151,7 +151,7 @@ bool RecoverPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId 
     }
 }
 
-bool RecoverPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
+bool RecoverWaveBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     if ((TimerSignalObjectManager::getWaveServiceId               ()) == waveServiceId ||
         ((true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) && (WAVE_BOOT_PHASE_PRE_PHASE == m_waveBootPhase)))

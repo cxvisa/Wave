@@ -32,7 +32,7 @@ class WaveManagedObjectUpdateWorker : public WaveWorker
         void        updateUpdateManagedObjectStep                   (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext);
         void        updatePostUpdateManagedObjectStep               (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext);
         void        updatePreUpdateHardwareStep                     (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext);
-        void        updatePreUpdateHardwareStepCallback             (PrismAsynchronousContext *pPrismAsynchronousContext);
+        void        updatePreUpdateHardwareStepCallback             (WaveAsynchronousContext *pWaveAsynchronousContext);
         void        updateUpdateHardwareStep                        (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext);
         void        updateUpdateHardwareStepCallBack                (GetHardwareConfigurationDetailsForUpdateContext *pGetHardwareConfigurationDetailsForUpdateContext);
         void        updatePostUpdateHardwareStep                     (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext);

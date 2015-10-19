@@ -4,11 +4,11 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMWORKER_H
-#define PRISMWORKER_H
+#ifndef WAVEWORKER_H
+#define WAVEWORKER_H
 
 #include "Framework/ObjectModel/WaveElement.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
@@ -48,7 +48,7 @@ class WaveWorker : public WaveElement
         virtual void hainstall                          (WaveAsynchronousContextForBootPhases                   *pWaveAsynchronousContextForBootPhases);
         virtual void haboot                             (WaveAsynchronousContextForBootPhases                   *pWaveAsynchronousContextForBootPhases);
         virtual void postboot                           (WaveAsynchronousContextForPostbootPhase                *pWaveAsynchronousContextForPostbootPhase);
-        virtual void heartBeatFailure                   (PrismAsynchronousContext                               *pPrismAsynchronousContext);
+        virtual void heartBeatFailure                   (WaveAsynchronousContext                               *pWaveAsynchronousContext);
         virtual void externalStateSynchronization       (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization);
         virtual void configReplayEnd                    (WaveAsynchronousContextForConfigReplayEnd              *pWaveAsynchronousContextForConfigReplayEnd);
         virtual void fileReplayEnd                      (WaveAsynchronousContextForFileReplayEnd                *pWaveAsynchronousContextForFileReplayEnd);
@@ -60,7 +60,7 @@ class WaveWorker : public WaveElement
         virtual void disable                            (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
         virtual void uninitialize                       (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
         virtual void destruct                           (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
-        virtual void backendSyncUp                      (PrismAsynchronousContext                               *pPrismAsynchronousContext);
+        virtual void backendSyncUp                      (WaveAsynchronousContext                               *pWaveAsynchronousContext);
 
         virtual void failover                           (FailoverAsynchronousContext                            *pFailoverAsynchronousContext);
 
@@ -92,8 +92,8 @@ class WaveWorker : public WaveElement
                 void                          addServiceIndependentOperationMap         (UI32 operationCode, WaveServiceIndependentMessageHandler pWaveServiceIndependentMessageHandler);
                 void                          addServiceIndependentOperationMap         (UI32 operationCode, ManagementInterfaceServiceIndependentMessageHandler pManagementInterfaceServiceIndependentMessageHandler);
                 void                          removeServiceIndependentOperationMap      (UI32 operationCode);
-        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
-        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
+        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
+        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
         virtual ResourceId                    deleteTimer                               (TimerHandle timerHandle);
 
         virtual void                          holdMessages                              ();
@@ -222,11 +222,11 @@ class WaveWorker : public WaveElement
     public :
 
     friend class WaveObjectManager;
-    friend class PrismPostbootWorker;
-    friend class PrismShutdownWorker;
+    friend class WavePostbootWorker;
+    friend class WaveShutdownWorker;
     friend class WaveDebugInformationWorker;
 };
 
 }
 
-#endif //PRISMWORKER_H
+#endif //WAVEWORKER_H

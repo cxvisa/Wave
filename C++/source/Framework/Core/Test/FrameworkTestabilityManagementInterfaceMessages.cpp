@@ -24,7 +24,7 @@ static SI8  s_largeClientInputBuffer1Char = 'J';
 #endif
 
 FrameworkTestabilityManagementInterfaceMessage1::FrameworkTestabilityManagementInterfaceMessage1 ()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE1)
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE1)
 {
 }
 
@@ -38,7 +38,7 @@ void FrameworkTestabilityManagementInterfaceMessage1::setupAttributesForSerializ
 }
 
 FrameworkTestabilityManagementInterfaceMessage2::FrameworkTestabilityManagementInterfaceMessage2 ()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE2)
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE2)
 {
 }
 
@@ -52,7 +52,7 @@ void FrameworkTestabilityManagementInterfaceMessage2::setupAttributesForSerializ
 }
 
 FrameworkTestabilityManagementInterfaceMessage3::FrameworkTestabilityManagementInterfaceMessage3 ()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE3)
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE3)
 {
 }
 
@@ -66,7 +66,7 @@ void FrameworkTestabilityManagementInterfaceMessage3::setupAttributesForSerializ
 }
 
 FrameworkTestabilityManagementInterfaceMessage4::FrameworkTestabilityManagementInterfaceMessage4 ()
-	: ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE4)
+	: ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE4)
 #if 0
 ,
       m_isLargInputBuffer1Set (false),
@@ -232,7 +232,7 @@ ResourceId FrameworkTestabilityManagementInterfaceMessage4::getRequestedCompleti
 #endif
 
 FrameworkTestabilityManagementInterfaceMessageLeakMessage::FrameworkTestabilityManagementInterfaceMessageLeakMessage ()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_MEMORY_LEAKS),
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_MEMORY_LEAKS),
       m_waveServiceId           (0)
 {
 }
@@ -293,7 +293,7 @@ WaveServiceId FrameworkTestabilityManagementInterfaceMessageLeakMessage::getWave
 }
 
 FrameworkTestabilityManagementInterfaceObjectLeakMessage::FrameworkTestabilityManagementInterfaceObjectLeakMessage ()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_OBJECT_LEAKS),
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_MESSAGE_FOR_OBJECT_LEAKS),
       m_waveServiceId           (0)
 {
 }
@@ -340,7 +340,7 @@ WaveServiceId FrameworkTestabilityManagementInterfaceObjectLeakMessage::getWaveS
 }
 
 FrameworkTestabilityManagementInterfaceTrackLeaksWithBtMessage::FrameworkTestabilityManagementInterfaceTrackLeaksWithBtMessage()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_TRACK_LEAKS_WITH_BT),
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_TRACK_LEAKS_WITH_BT),
       m_leakType       (OBJECT_LEAK),
       m_btTrackerState (false)
 {
@@ -378,7 +378,7 @@ bool FrameworkTestabilityManagementInterfaceTrackLeaksWithBtMessage::getBtTracke
 }
 
 FrameworkTestabilityManagementInterfaceFileServiceUsageMessage::FrameworkTestabilityManagementInterfaceFileServiceUsageMessage()
-    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_FILE_SERVICE_USAGE), m_useFileServiceForFileTransfer (true)
+    : ManagementInterfaceMessage (FrameworkTestability1ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_MANAGEMENT_INTERFACE_FILE_SERVICE_USAGE), m_useFileServiceForFileTransfer (true)
 {
 }
 

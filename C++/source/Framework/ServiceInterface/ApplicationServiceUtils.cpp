@@ -140,9 +140,9 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
     return (status);
 }
 
-void ApplicationServiceUtils::replyToApplicationService (void *pOutputPayLoad, const UI32 outputPayLoadLength, void *pPrismContext)
+void ApplicationServiceUtils::replyToApplicationService (void *pOutputPayLoad, const UI32 outputPayLoadLength, void *pWaveContext)
 {
-    ApplicationServiceMessageHandlerContext *pApplicationServiceMessageHandlerContext = reinterpret_cast<ApplicationServiceMessageHandlerContext *> (pPrismContext);
+    ApplicationServiceMessageHandlerContext *pApplicationServiceMessageHandlerContext = reinterpret_cast<ApplicationServiceMessageHandlerContext *> (pWaveContext);
 
     waveAssert (NULL != pApplicationServiceMessageHandlerContext, __FILE__, __LINE__);
 

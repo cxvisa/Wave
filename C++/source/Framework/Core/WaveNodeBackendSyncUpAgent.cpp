@@ -27,22 +27,22 @@ WaveNodeBackendSyncUpAgent::~WaveNodeBackendSyncUpAgent ()
 
 ResourceId WaveNodeBackendSyncUpAgent::execute ()
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+    ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
     return (status);
 }
 
-ResourceId WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToSend;
     UI32                    i                    = 0;

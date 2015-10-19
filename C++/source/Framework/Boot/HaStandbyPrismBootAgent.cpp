@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/Boot/HaStandbyPrismBootAgent.h"
+#include "Framework/Boot/HaStandbyWaveBootAgent.h"
 #include "Framework/Core/WaveFrameworkConfiguration.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Database/DatabaseObjectManager.h"
@@ -19,107 +19,107 @@
 namespace WaveNs
 {
 
-HaStandbyPrismBootAgent::HaStandbyPrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
-    : PrismBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
+HaStandbyWaveBootAgent::HaStandbyWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
+    : WaveBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
       m_waveBootPhase (WAVE_BOOT_PHASE_ALL_PHASES)
 {
 }
 
-HaStandbyPrismBootAgent::~HaStandbyPrismBootAgent ()
+HaStandbyWaveBootAgent::~HaStandbyWaveBootAgent ()
 {
 }
 
-ResourceId HaStandbyPrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
+ResourceId HaStandbyWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 {
     m_waveBootPhase = waveBootPhase;
 
     if (WAVE_BOOT_PHASE_ALL_PHASES == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::upgradeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::bootLocalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::upgradeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::bootLocalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::upgradeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::bootGlobalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::upgradeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::bootGlobalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::updateDatabaseForeignKeyConstraintsStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
     
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_PHASE_PRE_PHASE == waveBootPhase)
     {
-        trace (TRACE_LEVEL_DEBUG, "HaStandbyPrismBootAgent::execute : Pre Phase.");
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        trace (TRACE_LEVEL_DEBUG, "HaStandbyWaveBootAgent::execute : Pre Phase.");
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-//            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::resetLocationRole),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep),
+//            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::resetLocationRole),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::haInstallWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::haBootWaveServicesDuringPrePhaseStep),
 
          // This should happen only after suceesful schema conversion. Schema conversion on standby is attempted after this step. Hence, commenting. 
-         //   reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::updateDatabaseForeignKeyConstraintsStep),
+         //   reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_PHASE_POST_PHASE == waveBootPhase)
     {
-        trace (TRACE_LEVEL_DEBUG, "HaStandbyPrismBootAgent::execute : Post Phase.");
+        trace (TRACE_LEVEL_DEBUG, "HaStandbyWaveBootAgent::execute : Post Phase.");
 
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::upgradeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::haBootLocalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::upgradeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::haBootLocalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::upgradeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::upgradeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::haBootGlobalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::updateDatabaseForeignKeyConstraintsStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HaStandbyPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
         return (status);
     }
     else
@@ -129,17 +129,17 @@ ResourceId HaStandbyPrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
 
 }
 
-bool HaStandbyPrismBootAgent::isAPersistentBoot ()
+bool HaStandbyWaveBootAgent::isAPersistentBoot ()
 {
     return (false);
 }
 
-WaveBootReason HaStandbyPrismBootAgent::getReason () const
+WaveBootReason HaStandbyWaveBootAgent::getReason () const
 {
     return (WAVE_BOOT_HASTANDBY_BOOT);
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
+bool HaStandbyWaveBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -152,7 +152,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceI
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
+bool HaStandbyWaveBootAgent::isToBeExcludedFromInstallDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     if ((waveServiceId == (DatabaseObjectManager::getWaveServiceId ())) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -165,7 +165,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const Wav
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
+bool HaStandbyWaveBootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -178,7 +178,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &wa
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
+bool HaStandbyWaveBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -191,7 +191,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const 
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
+bool HaStandbyWaveBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -204,12 +204,12 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServi
     }
 }
 
-bool HaStandbyPrismBootAgent::isToBeExcludedFromCurrentBootPhase (const WaveServiceId &waveServiceId)
+bool HaStandbyWaveBootAgent::isToBeExcludedFromCurrentBootPhase (const WaveServiceId &waveServiceId)
 {
     return (false);
 }
 
-ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::haInstallWaveServicesDuringPrePhaseStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
@@ -233,13 +233,13 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep (Pr
             continue;
         }
 
-        PrismHaInstallObjectManagerMessage prismHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+        WaveHaInstallObjectManagerMessage prismHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
         ResourceId status = sendSynchronously (&prismHaInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("HaStandbyPrismBootAgent::installPrismServicesDuringPrePhaseStep : Could not send a message to Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("HaStandbyWaveBootAgent::installWaveServicesDuringPrePhaseStep : Could not send a message to Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
             return (status);
         }
@@ -248,7 +248,7 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep (Pr
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("HaStandbyPrismBootAgent::installPrismServicesDuringPrePhaseStep : Could not Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("HaStandbyWaveBootAgent::installWaveServicesDuringPrePhaseStep : Could not Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
             return (status);
         }
@@ -261,7 +261,7 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesDuringPrePhaseStep (Pr
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::haInstallWaveServicesStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToInstall;
     UI32                   i                       = 0;
@@ -280,13 +280,13 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesStep (PrismSynchronous
             }
         }
 
-        PrismHaInstallObjectManagerMessage prismHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+        WaveHaInstallObjectManagerMessage prismHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
         ResourceId status = sendSynchronously (&prismHaInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("PrismBootAgent::hainstallPrismServicesStep : Could not send a message to Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("WaveBootAgent::hainstallWaveServicesStep : Could not send a message to Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
             return (status);
         }
 
@@ -294,7 +294,7 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesStep (PrismSynchronous
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("PrismBootAgent::installPrismServicesStep : Could not Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("WaveBootAgent::installWaveServicesStep : Could not Install a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToInstall[i]) + ", Status : " + FrameworkToolKit::localize (status));
             return (status);
         }
         else
@@ -306,7 +306,7 @@ ResourceId HaStandbyPrismBootAgent::haInstallPrismServicesStep (PrismSynchronous
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId HaStandbyPrismBootAgent::haBootLocalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::haBootLocalWaveServicesStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
@@ -324,13 +324,13 @@ ResourceId HaStandbyPrismBootAgent::haBootLocalPrismServicesStep (PrismSynchrono
                 continue;
             }
 
-            PrismHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+            WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
             ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_FATAL, string ("HaStandbyPrismBootAgent::bootLocalPrismServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_FATAL, string ("HaStandbyWaveBootAgent::bootLocalWaveServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
                 return (status);
             }
 
@@ -338,7 +338,7 @@ ResourceId HaStandbyPrismBootAgent::haBootLocalPrismServicesStep (PrismSynchrono
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_FATAL, string ("HaStandbyPrismBootAgent::bootLocalPrismServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_FATAL, string ("HaStandbyWaveBootAgent::bootLocalWaveServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
                 return (status);
             }
             else
@@ -352,7 +352,7 @@ ResourceId HaStandbyPrismBootAgent::haBootLocalPrismServicesStep (PrismSynchrono
 }
 
 
-ResourceId HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::haBootGlobalWaveServicesStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
@@ -370,13 +370,13 @@ ResourceId HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep (PrismSynchron
                 continue;
             }
 
-            PrismHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+            WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
             ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_FATAL, string ("HaStandyPrismBootAgent::habootGlobalPrismServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById(serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_FATAL, string ("HaStandyWaveBootAgent::habootGlobalWaveServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById(serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
                 return (status);
             }
 
@@ -384,7 +384,7 @@ ResourceId HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep (PrismSynchron
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_FATAL, string ("HaStandyPrismBootAgent::habootGlobalPrismServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_FATAL, string ("HaStandyWaveBootAgent::habootGlobalWaveServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
                 return (status);
             }
             else
@@ -397,7 +397,7 @@ ResourceId HaStandbyPrismBootAgent::haBootGlobalPrismServicesStep (PrismSynchron
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId HaStandbyPrismBootAgent::haBootPrismServicesStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::haBootWaveServicesStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
@@ -426,13 +426,13 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesStep (PrismSynchronousLin
             continue;
         }
 
-        PrismHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+        WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
         ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("haStandbyPrismBootAgent::bootPrismServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("haStandbyWaveBootAgent::bootWaveServicesStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
             return (status);
         }
 
@@ -440,7 +440,7 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesStep (PrismSynchronousLin
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("haStandbyPrismBootAgent::bootPrismServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("haStandbyWaveBootAgent::bootWaveServicesStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
             return (status);
         }
         else
@@ -452,7 +452,7 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesStep (PrismSynchronousLin
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::haBootWaveServicesDuringPrePhaseStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     vector<WaveServiceId> serviceIdsToBoot;
     UI32                   i                       = 0;
@@ -476,13 +476,13 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep (Prism
             continue;
         }
 
-        PrismHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+        WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
         ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("HaStansbyPrismBootAgent::bootPrismServicesDuringPrePhaseStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("HaStansbyWaveBootAgent::bootWaveServicesDuringPrePhaseStep : Could not send a message to Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
             return (status);
         }
@@ -491,7 +491,7 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep (Prism
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, string ("HaStansbyPrismBootAgent::bootPrismServicesDuringPrePhaseStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, string ("HaStansbyWaveBootAgent::bootWaveServicesDuringPrePhaseStep : Could not Boot a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
             return (status);
         }
@@ -504,7 +504,7 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep (Prism
     return (WAVE_MESSAGE_SUCCESS);
 }
                  
-ResourceId HaStandbyPrismBootAgent::resetLocationRole (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId HaStandbyWaveBootAgent::resetLocationRole (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     LocationBase *pThisLocation = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
 

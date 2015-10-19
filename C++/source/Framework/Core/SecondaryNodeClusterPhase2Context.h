@@ -8,7 +8,7 @@
 #define SECONDARYNODECLUSTERPHASE2CONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Core/SecondaryNodeClusterContext.h"
 
 namespace WaveNs
@@ -19,8 +19,8 @@ class SecondaryNodeClusterPhase2Context: public SecondaryNodeClusterContext
     private :
     protected :
     public :
-                 SecondaryNodeClusterPhase2Context (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true);
-                 SecondaryNodeClusterPhase2Context (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true);
+                 SecondaryNodeClusterPhase2Context (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true);
+                 SecondaryNodeClusterPhase2Context (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, bool resetSecondaryNodeClusterCreationFlag = true);
         virtual ~SecondaryNodeClusterPhase2Context ();
 
     // Now the data members

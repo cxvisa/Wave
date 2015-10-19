@@ -17,8 +17,8 @@ class DeleteNodesFromClusterContext : public CreateClusterWithNodesContext
     private :
     protected :
     public :
-                            DeleteNodesFromClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                            DeleteNodesFromClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DeleteNodesFromClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                            DeleteNodesFromClusterContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual            ~DeleteNodesFromClusterContext ();
                 void        addLocationId                 (const LocationId &locationId);
                 void        removeLocationId              (const LocationId &locationId);

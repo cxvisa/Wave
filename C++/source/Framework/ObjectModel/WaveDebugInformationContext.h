@@ -18,7 +18,7 @@ class WaveDebugInformationContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                            WaveDebugInformationContext             (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                                            WaveDebugInformationContext             (WaveMessage* pWaveMessage, WaveElement* pWaveElement, WaveLinearSequencerStep* pSteps, UI32 numberOfSteps);
         virtual                            ~WaveDebugInformationContext             ();
 
                 void                        setDebugInformation                     (const string &debugInformation);  

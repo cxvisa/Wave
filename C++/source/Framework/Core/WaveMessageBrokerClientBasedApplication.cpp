@@ -23,9 +23,9 @@ extern "C" int waveMessageBrokerClientMain (int argc, char *argv[], bool wait)
     bool                   isADaemon                                    = false;
     FrameworkSequenceType  type                                         = FRAMEWORK_SEQUENCE_TYPE0;
     bool                   isSysLogRequired                             = true;
-    SI32                   port                                         = FrameworkToolKit::getPrismDefaultTcpPort ();
+    SI32                   port                                         = FrameworkToolKit::getWaveDefaultTcpPort ();
     bool                   isDatabaseEnabled                            = false;
-    SI32                   databasePort                                 = FrameworkToolKit::getPrismDefaultDatabaseTcpPort ();
+    SI32                   databasePort                                 = FrameworkToolKit::getWaveDefaultDatabaseTcpPort ();
     string                 databaseLogFileName                          = DatabaseObjectManager::getDatabaseLogFileName ();
     bool                   isDatabaseLogEnabled                         = true;
     bool                   isAbruptReboot                               = false;
@@ -297,7 +297,7 @@ extern "C" int waveMessageBrokerClientMain (int argc, char *argv[], bool wait)
     FrameworkToolKit::setMessageBrokerPort (messageBrokerPort);
     FrameworkToolKit::setMessageBrokerClientPort (messageBrokerClientPort);
 
-    initializePrismSocketLayer ();
+    initializeWaveSocketLayer ();
 
     string ipAddress;
 
@@ -362,14 +362,14 @@ extern "C" int waveMessageBrokerClientMain (int argc, char *argv[], bool wait)
 
     WaveMessageBrokerClient::initialize (waveMainConfiguration);
 
-    WaveFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootWave ();
 
     WaveFrameworkObjectManager::acquireBootSynchronizationMutex ();
     WaveFrameworkObjectManager::releaseBootSynchronizationMutex ();
 
     if (true == wait)
     {
-        WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
+        WaveFrameworkObjectManager::waitForWaveServicesToFinish ();
     }
 
     delete [] pChangeDirectoryToArray;

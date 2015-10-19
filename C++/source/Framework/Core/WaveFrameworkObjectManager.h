@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKOBJECTMANAGER_H
-#define PRISMFRAMEWORKOBJECTMANAGER_H
+#ifndef WAVEFRAMEWORKOBJECTMANAGER_H
+#define WAVEFRAMEWORKOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 #include "Framework/Core/FrameworkSequenceGeneratorFactory.h"
@@ -19,16 +19,16 @@ namespace WaveNs
 class WaveFrameworkObjectManagerInitializeWorker;
 class WaveFrameworkConfigurationWorker;
 class WaveLinearSequencerContext;
-class PrismInitializeObjectManagerMessage;
+class WaveInitializeObjectManagerMessage;
 class LocationBase;
-class PrismCreateClusterWithNodesMessage;
-class PrismConfigureClusterSecondaryMessage;
-class PrismConfigureClusterSecondaryHaPeerMessage;
-class PrismConfigureClusterSecondaryPhase1Message;
-class PrismConfigureClusterSecondaryHaPeerPhase1Message;
-class PrismConfigureClusterSecondaryPhase2Message;
-class PrismConfigureClusterSecondaryPhase3Message;
-class PrismConfigureClusterSecondaryHaPeerPhase3Message;
+class WaveCreateClusterWithNodesMessage;
+class WaveConfigureClusterSecondaryMessage;
+class WaveConfigureClusterSecondaryHaPeerMessage;
+class WaveConfigureClusterSecondaryPhase1Message;
+class WaveConfigureClusterSecondaryHaPeerPhase1Message;
+class WaveConfigureClusterSecondaryPhase2Message;
+class WaveConfigureClusterSecondaryPhase3Message;
+class WaveConfigureClusterSecondaryHaPeerPhase3Message;
 class CreateClusterWithNodesContext;
 class FrameworkObjectManagerAddNodesToClusterMessage;
 class FrameworkObjectManagerDeleteNodesFromClusterMessage;
@@ -37,7 +37,7 @@ class AddNodesToClusterContext;
 class DeleteNodesFromClusterContext;
 class DeleteNodeOnSecondaryContext;
 class FrameworkObjectManagerUnconfigureClusterSecondaryMessage;
-class PrismConfigureClusterSecondaryMessage;
+class WaveConfigureClusterSecondaryMessage;
 class FrameworkObjectManagerRejoinNodesToClusterMessage;
 class FrameworkObjectManagerRejoinClusterSecondaryMessage;
 class FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage;
@@ -45,7 +45,7 @@ class RejoinNodesToClusterContext;
 class DestroyClusterContext;
 class FrameworkObjectManagerDetachFromClusterMessage;
 class FrameworkObjectManagerLostHeartBeatMessage;
-class PrismFinalizeWorker;
+class WaveFinalizeWorker;
 class HeartBeatLostContext;
 class DestroyClusterAsynchronousContext;
 class DetachFromClusterAsynchronousContext;
@@ -69,11 +69,11 @@ class WaveAsynchronousContextForBootPhases;
 class WaveFrameworkObjectManagerPostbootWorker;
 class WaveFrameworkObjectManagerPostPersistentBootWorker;
 class WaveFrameworkObjectManagerHaSyncWorker;
-class PrismRejoinClusterSecondaryPhase1Message;
-class PrismRejoinClusterSecondaryHaPeerPhase1Message;
-class PrismRejoinClusterSecondaryPhase2Message;
-class PrismRejoinClusterSecondaryPhase3Message;
-class PrismRejoinClusterSecondaryHaPeerPhase3Message;
+class WaveRejoinClusterSecondaryPhase1Message;
+class WaveRejoinClusterSecondaryHaPeerPhase1Message;
+class WaveRejoinClusterSecondaryPhase2Message;
+class WaveRejoinClusterSecondaryPhase3Message;
+class WaveRejoinClusterSecondaryHaPeerPhase3Message;
 class FrameworkObjectManagerStartExternalStateSynchronizationMessage;
 class FrameworkObjectManagerStartSlotFailoverMessage;
 class FrameworkObjectManagerNewPrincipalEstablishedMessage;
@@ -126,7 +126,7 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          createDummySlot                                                  (const UI32 slotNumber);
                 bool          isServiceToBeExcludedInClusterCommunications                     (const WaveServiceId &waveServiceId);
 
-                void          createClusterWithNodesMessageHandler                             (PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage);
+                void          createClusterWithNodesMessageHandler                             (WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage);
                 void          createClusterWithNodesValidateStep                               (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          createClusterWithNodesCollectValidationDataStep                  (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          createClusterWithNodesValidateLocationRoleStep                   (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
@@ -136,14 +136,14 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          createClusterWithNodesPausePersistenceStep                       (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          backUpDatabaseAfterSendingClusterPhase0Message                   ();
                 void          createClusterWithNodesConfigureNewKnownLocationsStep             (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
-                void          createClusterWithNodesConfigureNewKnownLocationsCallback         (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage, void *pContext);
+                void          createClusterWithNodesConfigureNewKnownLocationsCallback         (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage, void *pContext);
                 void          resumeDatabase                                                   ();
                 void          createClusterWithNodesConfigureNewKnownLocationsPhase1Step       (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
-                void          createClusterWithNodesConfigureNewKnownLocationsPhase1Callback   (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message, void *pContext);
+                void          createClusterWithNodesConfigureNewKnownLocationsPhase1Callback   (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryPhase1Message *pWaveConfigureClusterSecondaryPhase1Message, void *pContext);
                 void          createClusterWithNodesConfigureNewKnownLocationsPhase2Step       (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
-                void          createClusterWithNodesConfigureNewKnownLocationsPhase2Callback   (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryPhase2Message *pPrismConfigureClusterSecondaryPhase2Message, void *pContext);
+                void          createClusterWithNodesConfigureNewKnownLocationsPhase2Callback   (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryPhase2Message *pWaveConfigureClusterSecondaryPhase2Message, void *pContext);
                 void          createClusterWithNodesConfigureNewKnownLocationsPhase3Step       (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
-                void          createClusterWithNodesConfigureNewKnownLocationsPhase3Callback   (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message, void *pContext);
+                void          createClusterWithNodesConfigureNewKnownLocationsPhase3Callback   (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryPhase3Message *pWaveConfigureClusterSecondaryPhase3Message, void *pContext);
                 void          failoverforNodesFailedInPhase2                                   (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          failoverforNodesFailedInPhase2Callback                           (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext);
                 void          failoverforNodesFailedInPhase3Callback                           (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext);
@@ -154,11 +154,11 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          sendReplyBackToClusterGlobalService                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          startHeartBeatToSecondaryNodes                                   (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
                 void          broadcastNewNodesAddedEventOnPrimaryStep                         (CreateClusterWithNodesContext *pCreateClusterWithNodesContext);
-                void          configureSecondaryNodeMessageHandler                             (PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage);
-                void          configureSecondaryNodeHaPeerMessageHandler                       (PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage);
+                void          configureSecondaryNodeMessageHandler                             (WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage);
+                void          configureSecondaryNodeHaPeerMessageHandler                       (WaveConfigureClusterSecondaryHaPeerMessage *pWaveConfigureClusterSecondaryHaPeerMessage);
                 void          rollbackNodeIfRequiredStep                                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          prepareNodeForAddNodeIfRequired                                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
-                void          prepareSecondaryNodeForAddNodeIfRequiredCallback                 (PrismAsynchronousContext *pPrismAsynchronousContext);
+                void          prepareSecondaryNodeForAddNodeIfRequiredCallback                 (WaveAsynchronousContext *pWaveAsynchronousContext);
                 void          preparePrimaryNodeForAddNodeIfRequiredCallBack                   (DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext);
                 void          configureSecondaryNodeValidateDefaultConfigurationStep           (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          configureSecondaryNodeValidateStep                               (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
@@ -184,24 +184,24 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
 
                 void          checkHaPeerSyncStatusStep                                        (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          checkHaPeerSyncPostPhaseStep                                     (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
-                void          configureClusterSecondaryHaPeerMessageCallback                   (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryHaPeerMessage *pPrismConfigureClusterSecondaryHaPeerMessage, void *pContext);
+                void          configureClusterSecondaryHaPeerMessageCallback                   (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerMessage *pWaveConfigureClusterSecondaryHaPeerMessage, void *pContext);
                 void          configureSecondaryHaPeerPrePhaseStep                             (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
-                void          configureSecondaryHaPeerPrePhaseCallback                         (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryHaPeerPhase1Message *pPrismConfigureClusterSecondaryHaPeerPhase1Message, void *pContext);
+                void          configureSecondaryHaPeerPrePhaseCallback                         (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerPhase1Message *pWaveConfigureClusterSecondaryHaPeerPhase1Message, void *pContext);
                 void          configureSecondaryHaPeerPostPhaseStep                            (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
-                void          configureSecondaryHaPeerPostPhaseCallback                        (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryHaPeerPhase3Message *pPrismConfigureClusterSecondaryHaPeerPhase3Message, void *pContext);
-                void          configureSecondaryNodePhase1MessageHandler                       (PrismConfigureClusterSecondaryPhase1Message *pPrismConfigureClusterSecondaryPhase1Message);
-                void          configureSecondaryNodeHaPeerPhase1MessageHandler                 (PrismConfigureClusterSecondaryHaPeerPhase1Message *pPrismConfigureClusterSecondaryHaPeerPhase1Message);
+                void          configureSecondaryHaPeerPostPhaseCallback                        (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerPhase3Message *pWaveConfigureClusterSecondaryHaPeerPhase3Message, void *pContext);
+                void          configureSecondaryNodePhase1MessageHandler                       (WaveConfigureClusterSecondaryPhase1Message *pWaveConfigureClusterSecondaryPhase1Message);
+                void          configureSecondaryNodeHaPeerPhase1MessageHandler                 (WaveConfigureClusterSecondaryHaPeerPhase1Message *pWaveConfigureClusterSecondaryHaPeerPhase1Message);
                 void          updateLocationRoleStepInPhase1                                   (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
 
-                void          configureSecondaryNodePhase2MessageHandler                       (PrismConfigureClusterSecondaryPhase2Message *pPrismConfigureClusterSecondaryPhase2Message);
+                void          configureSecondaryNodePhase2MessageHandler                       (WaveConfigureClusterSecondaryPhase2Message *pWaveConfigureClusterSecondaryPhase2Message);
                 void          updateLocationRoleStepInPhase2                                   (SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context);
                 void          configureSecondaryNodePhase2BootServicesPostPhaseStep            (SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context);
                 void          configureSecondaryNodePhase2ReplaceNodeIfNeededStep              (SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context);
                 void          configureSecondaryNodePhase2ConfigureThisLocationStep            (SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context);
                 void          configureSecondaryNodePhase3SendStartHearBeat                    (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
                 void          configureSecondaryNodePhase3ExecutePostBootStep                  (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
-                void          configureSecondaryNodePhase3MessageHandler                       (PrismConfigureClusterSecondaryPhase3Message *pPrismConfigureClusterSecondaryPhase3Message);
-                void          configureSecondaryNodeHaPeerPhase3MessageHandler                 (PrismConfigureClusterSecondaryHaPeerPhase3Message *pPrismConfigureClusterSecondaryHaPeerPhase3Message);
+                void          configureSecondaryNodePhase3MessageHandler                       (WaveConfigureClusterSecondaryPhase3Message *pWaveConfigureClusterSecondaryPhase3Message);
+                void          configureSecondaryNodeHaPeerPhase3MessageHandler                 (WaveConfigureClusterSecondaryHaPeerPhase3Message *pWaveConfigureClusterSecondaryHaPeerPhase3Message);
                 void          updateLocationRoleStepInPhase3                                   (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
                 void          updateLocationRoleStepPhase3Complete                             (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
                 void          configureSecondaryNodePhase3BootServicesAfterPostPhaseStep       (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
@@ -221,7 +221,7 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          addNodesToClusterAddKnownLocationsStep                           (AddNodesToClusterContext *pAddNodesToClusterContext);
                 void          addNodesToClusterConnectToNewKnownLocationsStep                  (AddNodesToClusterContext *pAddNodesToClusterContext);
                 void          addNodesToClusterConfigureNewKnownLocationsStep                  (AddNodesToClusterContext *pAddNodesToClusterContext);
-                void          addNodesToClusterConfigureNewKnownLocationsCallback              (FrameworkStatus frameworkStatus, PrismConfigureClusterSecondaryMessage *pPrismConfigureClusterSecondaryMessage, void *pContext);
+                void          addNodesToClusterConfigureNewKnownLocationsCallback              (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage, void *pContext);
 
                 void          deleteNodesFromClusterMessageHandler                             (FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage);
                 void          deleteNodesFromClusterValidateStep                               (DeleteNodesFromClusterContext *pDeleteNodesFromClusterContext);
@@ -265,22 +265,22 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          rejoinNodesToClusterRejoinClusterSecondariesStep                 (RejoinNodesToClusterContext *pRejoinNodesToClusterContext);
                 void          rejoinNodesToClusterRejoinClusterSecondaryCallback               (FrameworkStatus frameworkStatus, FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage, void *pContext);
                 void          rejoinNodesToClusterRejoinClusterSecondariesPhase1Step           (RejoinNodesToClusterContext *pRejoinNodesToClusterContext);
-                void          rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback   (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message, void *pContext);
+                void          rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback   (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryPhase1Message *pWaveRejoinClusterSecondaryPhase1Message, void *pContext);
                 void          rejoinNodesToClusterRejoinClusterSecondariesPhase2Step           (RejoinNodesToClusterContext *pRejoinNodesToClusterContext);
-                void          rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback   (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message, void *pContext);
+                void          rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback   (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryPhase2Message *pWaveRejoinClusterSecondaryPhase2Message, void *pContext);
                 void          failoverforNodesFailedInRejoinPhase2                             (RejoinNodesToClusterContext *pRejoinNodesToClusterContext);
                 void          failoverforNodesFailedInRejoinPhase2Callback                     (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext);
                 void          rejoinNodesToClusterRejoinClusterSecondariesPhase3Step           (RejoinNodesToClusterContext *pRejoinNodesToClusterContext);
-                void          rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback   (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message, void *pContext);
+                void          rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback   (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryPhase3Message *pWaveRejoinClusterSecondaryPhase3Message, void *pContext);
                 void          failoverforNodesFailedInRejoinPhase3Callback                     (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext);
 //Methods on the Secondary for handling Rejoin
                 void          rejoinClusterSecondaryMessageHandler                             (FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage);
                 void          rejoinClusterSecondaryHaPeerMessageHandler                       (FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage *pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage);
                 void          rejoinClusterSecondaryHaPeerMessageCallback                      (FrameworkStatus frameworkStatus, FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage *pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, void *pContext);
                 void          rejoinSecondaryHaPeerPrePhaseStep                                (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
-                void          rejoinSecondaryHaPeerPrePhaseCallback                            (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryHaPeerPhase1Message *pPrismRejoinClusterSecondaryHaPeerPhase1Message, void *pContext);
+                void          rejoinSecondaryHaPeerPrePhaseCallback                            (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryHaPeerPhase1Message *pWaveRejoinClusterSecondaryHaPeerPhase1Message, void *pContext);
                 void          rejoinSecondaryHaPeerPostPhaseStep                               (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
-                void          rejoinSecondaryHaPeerPostPhaseCallback                           (FrameworkStatus frameworkStatus, PrismRejoinClusterSecondaryHaPeerPhase3Message *pPrismRejoinClusterSecondaryHaPeerPhase3Message, void *pContext);
+                void          rejoinSecondaryHaPeerPostPhaseCallback                           (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryHaPeerPhase3Message *pWaveRejoinClusterSecondaryHaPeerPhase3Message, void *pContext);
                 void          rejoinSecondaryNodeValidateStep                                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          rejoinSecondaryNodeValidateVersionStep                           (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          rejoinSecondaryNodeValidateServicesStep                          (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
@@ -290,11 +290,11 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          rejoinSecondaryNodeConfigureThisLocationStep                     (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          rejoinSecondaryNodeBootServicesPrePhaseStep                      (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          rejoinSecondaryNodeSetLocationRoleOnStandbyStep                  (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
-                void          rejoinClusterSecondaryPhase1MessageHandler                       (PrismRejoinClusterSecondaryPhase1Message *pPrismRejoinClusterSecondaryPhase1Message);
-                void          rejoinClusterSecondaryHaPeerPhase1MessageHandler                 (PrismRejoinClusterSecondaryHaPeerPhase1Message *pPrismRejoinClusterSecondaryHaPeerPhase1Message);
-                void          rejoinClusterSecondaryPhase2MessageHandler                       (PrismRejoinClusterSecondaryPhase2Message *pPrismRejoinClusterSecondaryPhase2Message);
-                void          rejoinClusterSecondaryPhase3MessageHandler                       (PrismRejoinClusterSecondaryPhase3Message *pPrismRejoinClusterSecondaryPhase3Message);
-                void          rejoinClusterSecondaryHaPeerPhase3MessageHandler                 (PrismRejoinClusterSecondaryHaPeerPhase3Message *pPrismRejoinClusterSecondaryHaPeerPhase3Message);
+                void          rejoinClusterSecondaryPhase1MessageHandler                       (WaveRejoinClusterSecondaryPhase1Message *pWaveRejoinClusterSecondaryPhase1Message);
+                void          rejoinClusterSecondaryHaPeerPhase1MessageHandler                 (WaveRejoinClusterSecondaryHaPeerPhase1Message *pWaveRejoinClusterSecondaryHaPeerPhase1Message);
+                void          rejoinClusterSecondaryPhase2MessageHandler                       (WaveRejoinClusterSecondaryPhase2Message *pWaveRejoinClusterSecondaryPhase2Message);
+                void          rejoinClusterSecondaryPhase3MessageHandler                       (WaveRejoinClusterSecondaryPhase3Message *pWaveRejoinClusterSecondaryPhase3Message);
+                void          rejoinClusterSecondaryHaPeerPhase3MessageHandler                 (WaveRejoinClusterSecondaryHaPeerPhase3Message *pWaveRejoinClusterSecondaryHaPeerPhase3Message);
                 void          updateLocationRoleStepInRejoinPhase1                             (SecondaryNodeClusterContext *pSecondaryNodeClusterContext);
                 void          updateLocationRoleStepInRejoinPhase2                             (SecondaryNodeClusterPhase2Context *pSecondaryNodeClusterPhase2Context);
                 void          updateLocationRoleStepInRejoinPhase3                             (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
@@ -339,7 +339,7 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void          primaryChangedPhase3MessageHandler                               (FrameworkObjectManagerPrimaryChangedPhase3Message *pFrameworkObjectManagerPrimaryChangedPhase3Message);
                 void          primaryChangedHaPeerPhase3MessageHandler                         (FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message);
                 void          prepareStandbyAfterClusterPhaseSync                              (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context);
-                void          savePrismConfigurationStep                                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void          saveWaveConfigurationStep                                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          resetNodeForClusterMergeHandler                                  (FrameworkObjectManagerResetNodeToUnconfirmRole *pFrameworkObjectManagerResetNodeToUnconfirmRole);
                 void          stopHeartBeatToNode                                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void          disconnectFromAllNodes                                           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
@@ -462,13 +462,13 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
 
     protected :
         WaveFrameworkConfigurationWorker   *getPConfigurationWorker                               ();
-        PrismFinalizeWorker                 *getPFinalizeWorker                                    ();
+        WaveFinalizeWorker                 *getPFinalizeWorker                                    ();
         WaveFrameworkObjectManagerInitializeWorker *getPInitializeWorker                          ();
     public :
         static  WaveFrameworkObjectManager *getInstance                                           ();
         static  string                       getServiceName                                        ();
         static  WaveServiceId               getWaveServiceId                                     ();
-        static  void                         bootPrism                                             ();
+        static  void                         bootWave                                             ();
                 void                         configureThisLocationAsLocation                       (SI32 port);
                 bool                         addSubLocation                                        (LocationId locationId, string &ipAddress, SI32 port);
                 void                         configureThisLocationAsSubLocation                    (LocationId parentLocationId, string &parentIpAddress, SI32 parentPort, LocationId locationId, string &ipAddress, SI32 port);
@@ -480,8 +480,8 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 void                         removeKnownLocation                                   (const LocationId &locationId);
                 ResourceId                   connectToLocation                                     (const string &ipAddress, const SI32 &port);
                 ResourceId                   upgradeDatabase                                       ();
-                void                         startThePrismServices                                 ();
-        static  void                         waitForPrismServicesToFinish                          ();
+                void                         startTheWaveServices                                 ();
+        static  void                         waitForWaveServicesToFinish                          ();
         static  void                         setFrameworkSequenceType                              (FrameworkSequenceType frameworkSequenceType);
         static  bool                         getIsInstantiated                                     ();
         static  FrameworkSequenceGenerator  &getCurrentFrameworkSequenceGenerator                  ();
@@ -494,7 +494,7 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
         static  string                       getGlobalConfigurationTempFileName                    ();
         static  string                       getLockFileForConfigurationFile                       ();
                 ResourceId                   saveConfiguration                                     (const bool &syncToStandby);
-                ResourceId                   changePrismConfigurationValidity                      (const bool &validity ); 
+                ResourceId                   changeWaveConfigurationValidity                      (const bool &validity ); 
         static  void                         configureAsLocation                                   (SI32 port);
         static  void                         configureAsSubLocation                                (LocationId parentLocationId, string &parentIpAddress, SI32 parentPort, LocationId locationId, string &ipAddress, SI32 port);
                 void                         resetLocationToPrimary                                ();
@@ -603,7 +603,7 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
         static void                          removeWaveThreadId                                   (const WaveThreadId &prismThreadId);
         static void                          getAllWaveThreads                                    (map<WaveThreadId, WaveThreadId> &prismThreadsMap);
         static void                          deleteAllWaveThreads                                 ();
-                bool                         getPrismConfigurationValidity                         ();
+                bool                         getWaveConfigurationValidity                         ();
                ClientStreamingSocket*        getClientStreamingSocketForRemoteLocation             (LocationId locationId);
         static  SI32                         getLocationPort                                       ();
                 void                         resetFrameworkConfigurationToDefault                  ();
@@ -611,7 +611,7 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
 
     private :
                WaveFrameworkObjectManagerInitializeWorker     *m_pInitializeWorker;
-               PrismFinalizeWorker                             *m_pPrismFinalizeWorker;
+               WaveFinalizeWorker                             *m_pWaveFinalizeWorker;
                WaveFrameworkConfigurationWorker               *m_pConfigurationWorker;
                WaveFrameworkFailoverWorker                    *m_pWaveFrameworkFailoverWorker;
                WaveFrameworkObjectManagerServiceControlWorker *m_pWaveFrameworkObjectManagerServiceControlWorker;
@@ -710,13 +710,13 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
     friend class WaveObjectManager;
     friend class FrameworkToolKit;
     friend class WaveFrameworkObjectManagerInitializeWorker;
-    friend class PersistentPrismBootAgent;
-    friend class HaStandbyPrismBootAgent;
-    friend class PersistentWithDefaultPrismBootAgent;
+    friend class PersistentWaveBootAgent;
+    friend class HaStandbyWaveBootAgent;
+    friend class PersistentWithDefaultWaveBootAgent;
     friend class PersistentWithDefaultForHABootAgent;
-    friend class PrismFailoverAgent;
-    friend class PrismPostbootAgent;
-    friend class RecoverPrismBootAgent;
+    friend class WaveFailoverAgent;
+    friend class WavePostbootAgent;
+    friend class RecoverWaveBootAgent;
     friend class WaveFrameworkObjectManagerPostPersistentBootWorker;
     friend class WaveFrameworkObjectManagerHaSyncWorker;
     friend class QueryUtils;
@@ -731,4 +731,4 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
 
 }
 
-#endif //PRISMFRAMEWORKOBJECTMANAGER_H
+#endif //WAVEFRAMEWORKOBJECTMANAGER_H

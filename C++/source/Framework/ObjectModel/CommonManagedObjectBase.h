@@ -9,7 +9,7 @@
 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include <string>
 
 namespace WaveNs
@@ -23,7 +23,7 @@ class CommonManagedObjectBase
         virtual void                          setupAttributesForCreate                  ();
 
     public :
-                                              CommonManagedObjectBase                         (PrismPersistableObject *pPrismPersistableObject);
+                                              CommonManagedObjectBase                         (WavePersistableObject *pWavePersistableObject);
         virtual                              ~CommonManagedObjectBase                         ();
         void                                  addPersistableAttributeForCommonBase            (Attribute *pAttribute);
         void                                  addPersistableAttributeForCommonBaseCreate      (Attribute *pAttribute);
@@ -33,7 +33,7 @@ class CommonManagedObjectBase
     private :
     protected :
     public :
-                PrismPersistableObject       *m_pPrismPersistableObject;
+                WavePersistableObject       *m_pWavePersistableObject;
 
     private :
     protected :

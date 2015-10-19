@@ -13,7 +13,7 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "ManagementInterface/WaveManagementServerInformation.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 
 namespace WaveNs
 {
@@ -91,7 +91,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
 
                 bool isSuccessful = false;
 
-                isSuccessful = (*m_pClientStreamingSocket) << FrameworkToolKit::getPrismConnectionPassPhrase ();
+                isSuccessful = (*m_pClientStreamingSocket) << FrameworkToolKit::getWaveConnectionPassPhrase ();
 
                 if (true != isSuccessful)
                 {
@@ -104,7 +104,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
 
                 WaveManagementServerInformation waveManagementServerInformation (serverIpAddressFromClientPerspective, FrameworkToolKit::getManagementInterfaceReceiverPort ());
 
-                waveManagementServerInformation.setMessageVersion (PrismVersion::getVersionString());
+                waveManagementServerInformation.setMessageVersion (WaveVersion::getVersionString());
                 waveManagementServerInformation.setServerUniqueIdentifierFromServerPerspective (serverUniqueIdentifierFromServerPerspective);
 
                 //isSuccessful = (*m_pClientStreamingSocket) << (&waveManagementServerInformation);

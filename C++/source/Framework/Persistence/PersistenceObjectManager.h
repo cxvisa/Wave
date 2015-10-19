@@ -18,7 +18,7 @@ namespace WaveNs
 class PersistenceObjectManagerExecuteTransactionMessage;
 class PersistenceObjectManagerCopySchemaMessage;
 class PersistenceObjectManagerCopyFileMessage;
-class PrismAsynchronousContext;
+class WaveAsynchronousContext;
 class DatabaseObjectManagerExecuteTransactionMessage;
 class DatabaseObjectManagerExecuteCopySchemaMessage;
 class PersistenceLocalObjectManagerSetStartupFileMessage;
@@ -115,21 +115,21 @@ class PersistenceObjectManager : public WaveObjectManager
                 void                        copySchemaSendRequestToAllLocationsForPreparePhaseStep                  (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
                 void                        copySchemaSendRequestCallback                                           (FrameworkStatus frameworkStatus, DatabaseObjectManagerExecuteCopySchemaMessage *pDatabaseObjectManagerExecuteCopySchemaMessage, void *pContext);
                 void                        copySchemaSendRequestToAllLocationsForPreparePhaseCallback2             (FrameworkStatus frameworkStatus, DatabaseObjectManagerExecuteCopySchemaMessage *pDatabaseObjectManagerExecuteCopySchemaMessage, void *pContext);
-                void                        savePrismConfiguration                                                  (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
+                void                        saveWaveConfiguration                                                  (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
 
                 void                        copyFileMessageHandler                                                  (PersistenceObjectManagerCopyFileMessage *pPersistenceObjectManagerCopySchemaMessage);
                 void                        copyFileSendRequestToAllLocationsForPreparePhaseStep                    (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
                 void                        copyFileRequestCallback                                                 (FrameworkStatus frameworkStatus, PersistenceLocalObjectManagerSetStartupFileMessage *pPersistenceLocalObjectManagerSetStartupFileMessage, void *pContext);
                 void                        copyFileSendRequestToAllLocationsForPreparePhaseCallback2               (WaveSendToClusterContext *pWaveSendToClusterContext);
-                void                        savePrismConfigurationAtAllLocationsStep                                (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
-                void                        savePrismConfigurationAtAllLocationsCallback                            (WaveSendToClusterContext *pWaveSendToClusterContext);
+                void                        saveWaveConfigurationAtAllLocationsStep                                (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
+                void                        saveWaveConfigurationAtAllLocationsCallback                            (WaveSendToClusterContext *pWaveSendToClusterContext);
 
         //static  void                      setSchemaDropRequiredDuringBoot                                            (const bool &schemaDropRequiredDuringBoot);
                 void                        compareDBMessageHandler                                                 (PersistenceObjectManagerCompareDBMessage *pPersistenceObjectManagerCompareDBMessage);        
                 void                        sendGetCksumMessageRequestToAllLocationsStep                            (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext);
                 void                        sendGetCksumMessageRequestToAllLocationsStepCallback                    (WaveSendToClusterContext *pWaveSendToClusterContext);
         inline  string                      getIPAndPortForLocationId                                               (LocationId location);                       
-        static  string                      getPrismServiceName                                                     ();
+        static  string                      getWaveServiceName                                                     ();
                 void                        restoreDataBase                                                         ();
                 void                        printOrmMessageHandler                                                  (PersistenceObjectManagerPrintOrmMessage *pPersistenceObjectManagerPrintOrmMessage);
 

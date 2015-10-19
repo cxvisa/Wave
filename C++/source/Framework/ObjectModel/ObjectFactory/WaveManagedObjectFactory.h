@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMMANAGEDOBJECTFACTORY_H
-#define PRISMMANAGEDOBJECTFACTORY_H
+#ifndef WAVEMANAGEDOBJECTFACTORY_H
+#define WAVEMANAGEDOBJECTFACTORY_H
 
 #include "Framework/Types/Types.h"
 
@@ -36,4 +36,4 @@ class WaveManagedObjectFactory
 
 }
 
-#endif // PRISMMANAGEDOBJECTFACTORY_H
+#endif // WAVEMANAGEDOBJECTFACTORY_H

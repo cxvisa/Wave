@@ -11,7 +11,7 @@
 #include "Cluster/ClusterTypes.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -51,14 +51,14 @@ void CentralClusterConfigAddNodeWorker::addNodeMessageHandler (ClusterObjectMana
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigAddNodeWorker::addNodeMessaheHandler : Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeCommitStep),
-//        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeCommitStep),
+//        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerAddNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
@@ -85,7 +85,7 @@ void CentralClusterConfigAddNodeWorker::addNodeValidateStep (WaveLinearSequencer
 
     // Check if cluster is already created and reject if it is not created
 
-    vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
     
     waveAssert (NULL != pResults, __FILE__, __LINE__);
 
@@ -286,28 +286,28 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
     UI32                                      newNodePort;
     ResourceId                                newNodeStatus;
     UI32                                      noNewNode                     = pClusterObjectManagerAddNodeMessage->getNSecondaryNodes ();
-    PrismCluster                             *pPrismCluster;
+    WaveCluster                             *pWaveCluster;
     UI32                                      i;    
     ResourceId                                status                        = WAVE_MESSAGE_SUCCESS; 
 
-    vector<WaveManagedObject *>              *pPrismClusterResults          = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *>              *pWaveClusterResults          = querySynchronously (WaveCluster::getClassName ());
     
-    if (NULL == pPrismClusterResults)
+    if (NULL == pWaveClusterResults)
     {
-        trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeCommitStep : PrismCluster Query Returns NULL");
+        trace (TRACE_LEVEL_FATAL, "CentralClusterConfigAddNodeWorker::addNodeCommitStep : WaveCluster Query Returns NULL");
         waveAssert (false, __FILE__, __LINE__);
-        WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
+        WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pWaveClusterResults);
         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
 
-    UI32                                      numberOfResults               = pPrismClusterResults->size ();
+    UI32                                      numberOfResults               = pWaveClusterResults->size ();
   
     if (1 < numberOfResults)
     {
         trace (TRACE_LEVEL_FATAL, string ("CentralClusterConfigAddNodeWorker::AddNodeValidateStep : There can only be one cluster in the system.          Some thing went wrong.  We obtained ") + numberOfResults + string (" of clusters"));
         waveAssert (false, __FILE__, __LINE__);
-        WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
+        WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pWaveClusterResults);
         pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_ERROR);
         return;
     }
@@ -320,7 +320,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
         return;
     }
 
-    pPrismCluster = (reinterpret_cast<PrismCluster *> ((*pPrismClusterResults)[0]));
+    pWaveCluster = (reinterpret_cast<WaveCluster *> ((*pWaveClusterResults)[0]));
 
     startTransaction();
 
@@ -349,8 +349,8 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
             WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
 	    waveAssert( NULL != pWaveNode, __FILE__, __LINE__);
    
-            updateWaveManagedObject (pPrismCluster); 
-            pPrismCluster->addSecondaryNode (pWaveNode->getObjectId ());
+            updateWaveManagedObject (pWaveCluster); 
+            pWaveCluster->addSecondaryNode (pWaveNode->getObjectId ());
             waveNodeVectors.push_back(pResults);
         }
     }
@@ -377,7 +377,7 @@ void CentralClusterConfigAddNodeWorker::addNodeCommitStep (WaveLinearSequencerCo
     }
 
     
-    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pPrismClusterResults);
+    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(pWaveClusterResults);
     pWaveLinearSequencerContext->executeNextStep (status);
 }
 

@@ -9,7 +9,7 @@
 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/Types/DateTime.h"
 #include "Framework/ObjectModel/WaveManagedObjectAsynchronousPluginContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectDeleteContext.h"
@@ -32,7 +32,7 @@ class WaveCustomCliDisplayConfigurationContext;
 class WaveObjectManagerCommitTransactionContext;
 class CliBlockContext;
 
-class WaveManagedObject : virtual public WaveElement, virtual public PrismPersistableObject
+class WaveManagedObject : virtual public WaveElement, virtual public WavePersistableObject
 {
     private :
                 void       setPCurrentOwnerWaveObjectManager           (WaveObjectManager *pCurrentOwnerWaveObjectManager);
@@ -59,8 +59,8 @@ class WaveManagedObject : virtual public WaveElement, virtual public PrismPersis
         virtual void                          tracePrintf                               (TraceLevel traceLevel, const char * const pFormat, ...);
         virtual void                          waveAssert                               (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
                 void                          addOperationMap                           (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, WaveElement *pWaveElement = NULL);
-        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
-        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
+        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
+        virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
         virtual ResourceId                    deleteTimer                               (TimerHandle timerHandle);
 
         virtual void                          holdMessages                              ();
@@ -193,13 +193,13 @@ class WaveManagedObject : virtual public WaveElement, virtual public PrismPersis
 
                 bool                          isHierarchyDeletableForOperation              (const WaveManagedObjectOperation &operation);
 
-        virtual void                          createPostUpdateForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                          createPostUpdateForInputWaveManagedObject     (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                          preUpdateHardwareStepForInputWaveManagedObject    (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                          preUpdateHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                          preCreateHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                          preDeleteHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext);
-                void                          sendToClusterLocation                              (PrismAsynchronousContext *pPrismAsynchronousContext, WaveMessage *pMessage, bool isPartialSuccessFlag, vector<LocationId> locationIds);
+        virtual void                          createPostUpdateForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                          createPostUpdateForInputWaveManagedObject     (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                          preUpdateHardwareStepForInputWaveManagedObject    (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                          preUpdateHardwareStepForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                          preCreateHardwareStepForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                          preDeleteHardwareStepForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext);
+                void                          sendToClusterLocation                              (WaveAsynchronousContext *pWaveAsynchronousContext, WaveMessage *pMessage, bool isPartialSuccessFlag, vector<LocationId> locationIds);
         virtual bool                          getPluginDetailsForDistribution                    (ObjectId &newOperateOnWaveManagedObjectId, WaveServiceId &waveServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag);
                 void                          getPluginDetailsForDistributionCallback            (WaveSendToClusterContext *pWaveSendToClusterContext);
 

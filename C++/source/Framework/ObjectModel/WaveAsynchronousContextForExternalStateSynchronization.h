@@ -7,17 +7,17 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFOREXTERNALSTATESYNCHRONIZATION_H
 #define WAVEASYNCHRONOUSCONTEXTFOREXTERNALSTATESYNCHRONIZATION_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForExternalStateSynchronization: public PrismAsynchronousContext
+class WaveAsynchronousContextForExternalStateSynchronization: public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                WaveAsynchronousContextForExternalStateSynchronization (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForExternalStateSynchronization (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForExternalStateSynchronization ();
 
                 UI32            getFssStageNumber                                      () const;

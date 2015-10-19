@@ -7,7 +7,7 @@
 #include "Framework/Persistence/PersistenceLocalObjectManager.h"
 #include "Framework/Persistence/PersistenceObjectManagerTypes.h"
 #include "Framework/Persistence/PersistenceLocalObjectManagerSetStartupFileMessage.h"
-#include "Framework/Persistence/PersistenceLocalObjectManagerSavePrismConfigurationMessage.h"
+#include "Framework/Persistence/PersistenceLocalObjectManagerSaveWaveConfigurationMessage.h"
 #include "Framework/Persistence/PersistenceLocalObjectManagerCopySchemaMessage.h"
 #include "Framework/Persistence/PersistenceLocalObjectManagerCopyDefaultClusterMessage.h"
 #include "Framework/Database/DatabaseObjectManagerExecuteCopySchemaMessage.h"
@@ -52,7 +52,7 @@ PersistenceLocalObjectManager::PersistenceLocalObjectManager ()
 {
     addOperationMap (PERSISTENCE_SET_STARTUP_FILE,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::setStartupFileMessageHandler));
     addOperationMap (PERSISTENCE_COPY_DEFAULT_CLUSTER,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::copyDefaultClusterMessageHandler));
-    addOperationMap (PERSISTENCE_SAVE_PRISM_CONFIGURATION,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::savePrismConfigurationMessageHandler));
+    addOperationMap (PERSISTENCE_SAVE_WAVE_CONFIGURATION,   reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::saveWaveConfigurationMessageHandler));
     addOperationMap (PERSISTENCE_COPY_SCHEMA, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::copySchemaMessageHandler));
     addOperationMap (PERSISTENCE_SET_CONFIGURATION_VALID, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::setConfigurationValidMessageHandler));
     addOperationMap (PERSISTENCE_DEBUG_SCHEMA_CHANGE, reinterpret_cast<WaveMessageHandler> (&PersistenceLocalObjectManager::debugSchemaChangeMessageHandler));
@@ -109,8 +109,8 @@ WaveMessage *PersistenceLocalObjectManager::createMessageInstance (const UI32 &o
             pWaveMessage = new PersistenceLocalObjectManagerSetStartupFileMessage ();
             break;
 
-        case PERSISTENCE_SAVE_PRISM_CONFIGURATION :
-            pWaveMessage = new PersistenceLocalObjectManagerSavePrismConfigurationMessage ();
+        case PERSISTENCE_SAVE_WAVE_CONFIGURATION :
+            pWaveMessage = new PersistenceLocalObjectManagerSaveWaveConfigurationMessage ();
             break;
 
         case PERSISTENCE_COPY_SCHEMA :
@@ -199,7 +199,7 @@ void PersistenceLocalObjectManager::copyDefaultClusterMessageHandler( Persistenc
         string defaultFileName = FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + "defaultconfig.vcs";
         FrameworkToolKit::setStartupFileName( defaultFileName );
 
-        status = FrameworkToolKit::changePrismConfigurationValidity ( false );
+        status = FrameworkToolKit::changeWaveConfigurationValidity ( false );
         if ( status != WAVE_MESSAGE_SUCCESS )
         {
             trace (TRACE_LEVEL_FATAL, string("PersistenceLocalObjectManager::copyDefaultClusterMessageHandler : Removing Cfg File failed"));
@@ -272,10 +272,10 @@ void PersistenceLocalObjectManager::setStartupFileMessageHandler (PersistenceLoc
     // Setting of regular file is a local operation only. Hence, save the prism configuration
     if (WAVE_PERSISTENCE_REGULAR_FILE == pMessage->getStartupFileType ())
     {
-        status = FrameworkToolKit::savePrismConfiguration (false);
+        status = FrameworkToolKit::saveWaveConfiguration (false);
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_INFO, string ("PersistenceLocalObjectManager::setStartupFileMessageHandler : savePrismConfiguration status  : ") + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_INFO, string ("PersistenceLocalObjectManager::setStartupFileMessageHandler : saveWaveConfiguration status  : ") + FrameworkToolKit::localize (status));
         }
     }
 
@@ -283,14 +283,14 @@ void PersistenceLocalObjectManager::setStartupFileMessageHandler (PersistenceLoc
     reply (pMessage);
 }
 
-void PersistenceLocalObjectManager::savePrismConfigurationMessageHandler (PersistenceLocalObjectManagerSavePrismConfigurationMessage *pMessage)
+void PersistenceLocalObjectManager::saveWaveConfigurationMessageHandler (PersistenceLocalObjectManagerSaveWaveConfigurationMessage *pMessage)
 {
     ResourceId  status = WAVE_MESSAGE_ERROR;
 
     // Indicate whether to use this startup schema on next reboot
     FrameworkToolKit::setIsStartupValid (pMessage->getIsStartupValid ());
 
-    status = FrameworkToolKit::savePrismConfiguration (false);
+    status = FrameworkToolKit::saveWaveConfiguration (false);
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
@@ -298,7 +298,7 @@ void PersistenceLocalObjectManager::savePrismConfigurationMessageHandler (Persis
     }
     else
     {
-        trace (TRACE_LEVEL_WARN, string ("PersistenceLocalObjectManager::savePrismConfigurationMessageHandler : savePrismConfiguration status  : ") + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_WARN, string ("PersistenceLocalObjectManager::saveWaveConfigurationMessageHandler : saveWaveConfiguration status  : ") + FrameworkToolKit::localize (status));
     }
 
     pMessage->setCompletionStatus (status);
@@ -328,7 +328,7 @@ void PersistenceLocalObjectManager::copySchemaMessageHandler (PersistenceLocalOb
         else
         {
             FrameworkToolKit::setIsStartupValid (true);
-            status = FrameworkToolKit::savePrismConfiguration (false);
+            status = FrameworkToolKit::saveWaveConfiguration (false);
         }
     }
     delete pDatabaseObjectManagerExecuteCopySchemaMessage;
@@ -342,7 +342,7 @@ void PersistenceLocalObjectManager::setConfigurationValidMessageHandler( Persist
 
     ResourceId  status = WAVE_MESSAGE_SUCCESS;
     bool validity = pPersistenceLocalObjectManagerSetConfigurationValidMessage->getConfigurationValidity ();
-    status = FrameworkToolKit::changePrismConfigurationValidity( validity);
+    status = FrameworkToolKit::changeWaveConfigurationValidity( validity);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
         trace (TRACE_LEVEL_ERROR, string ("PersistenceLocalObjectManager::setConfigurationValidMessageHandler : Changing prismConfiguration validity failed with status : ") + FrameworkToolKit::localize (status));
@@ -497,12 +497,12 @@ void PersistenceLocalObjectManager::executeTransactionMessageHandler (Persistenc
             return;
         }
 
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&PersistenceLocalObjectManager::sendTransactionToDatabase),
-            reinterpret_cast<PrismLinearSequencerStep> (&PersistenceLocalObjectManager::handleTransactionResult),
-            reinterpret_cast<PrismLinearSequencerStep> (&PersistenceLocalObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&PersistenceLocalObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::sendTransactionToDatabase),
+            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::handleTransactionResult),
+            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::prismLinearSequencerFailedStep),
         };
 
         PersistenceLocalExecuteTransactionContext *pPersistenceLocalExecuteTransactionContext = new PersistenceLocalExecuteTransactionContext (pPersistenceLocalObjectManagerExecuteTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

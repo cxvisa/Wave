@@ -137,12 +137,12 @@ void WaveWorker::postboot (WaveAsynchronousContextForPostbootPhase *pWaveAsynchr
     pWaveAsynchronousContextForPostbootPhase->callback ();
 }
 
-void WaveWorker::heartBeatFailure (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveWorker::heartBeatFailure (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveWorker::heartBeatFailure : Entering ...");
 
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 }
 
 void WaveWorker::externalStateSynchronization (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization)
@@ -235,12 +235,12 @@ void WaveWorker::destruct (WaveAsynchronousContextForShutDownPhases *pWaveAsynch
     pWaveAsynchronousContextForShutDownPhases->callback ();
 }
 
-void WaveWorker::backendSyncUp (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveWorker::backendSyncUp (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveWorker::backendSyncUp : Entering ...");
 
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 }
 
 WaveMessageStatus WaveWorker::send  (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId, WaveElement *pWaveMessageSender)
@@ -360,14 +360,14 @@ void WaveWorker::removeServiceIndependentOperationMap (UI32 operationCode)
     m_pWaveObjectManager->removeServiceIndependentOperationMap (operationCode);
 }
 
-ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
+ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
 {
-    return (m_pWaveObjectManager->startTimer (timerHandle, startInterval, periodicInterval, pPrismTimerExpirationCallback, pPrismTimerExpirationContext, pPrismTimerSender != NULL ? pPrismTimerSender : this));
+    return (m_pWaveObjectManager->startTimer (timerHandle, startInterval, periodicInterval, pWaveTimerExpirationCallback, pWaveTimerExpirationContext, pWaveTimerSender != NULL ? pWaveTimerSender : this));
 }
 
-ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
+ResourceId WaveWorker::startTimer (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
 {
-    return (m_pWaveObjectManager->startTimer (timerHandle, timeInMilliSeconds, pPrismTimerExpirationCallback, pPrismTimerExpirationContext, pPrismTimerSender != NULL ? pPrismTimerSender : this));
+    return (m_pWaveObjectManager->startTimer (timerHandle, timeInMilliSeconds, pWaveTimerExpirationCallback, pWaveTimerExpirationContext, pWaveTimerSender != NULL ? pWaveTimerSender : this));
 }
 
 ResourceId WaveWorker::deleteTimer (TimerHandle timerHandle)
@@ -430,12 +430,12 @@ UI32 WaveWorker::getNumberOfPendingHighPriorityMessages ()
     return (m_pWaveObjectManager->getNumberOfPendingHighPriorityMessages ());
 }
 /*
-void WaveWorker::failover (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> failedLocationIds, PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveWorker::failover (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> failedLocationIds, WaveAsynchronousContext *pWaveAsynchronousContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveWorker::failover : Entering ...");
 
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 }
 */
 void WaveWorker::failover (FailoverAsynchronousContext *pFailoverAsynchronousContext)

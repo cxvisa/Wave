@@ -67,7 +67,7 @@ UI32 HeartBeatDebug::shellExecuteStartHeartBeat (UI32 argc, vector<string> argv)
     pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
     pMessage->setHeartBeatInterval (heartBeatInterval);
     pMessage->setHeartBeatFailureThreshold (maxLostHeartbeat);
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
     delete (pMessage);
 
     return SHELL_OK;
@@ -87,7 +87,7 @@ UI32 HeartBeatDebug::shellExecuteStopHeartBeat (UI32 argc, vector<string> argv)
     pMessage = new StopHeartBeatMessage ();
     pMessage->setDstIpAddress (argv [1]);
     pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
     delete (pMessage);
 
     return SHELL_OK;
@@ -107,7 +107,7 @@ UI32 HeartBeatDebug::shellExecutePauseHeartBeat (UI32 argc, vector<string> argv)
     pMessage = new PauseHeartBeatMessage ();
     pMessage->setDstIpAddress (argv [1]);
     pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
     delete (pMessage);
 
     return SHELL_OK;
@@ -127,7 +127,7 @@ UI32 HeartBeatDebug::shellExecuteResumeHeartBeat (UI32 argc, vector<string> argv
     pMessage = new ResumeHeartBeatMessage ();
     pMessage->setDstIpAddress (argv [1]);
     pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
     delete (pMessage);
 
     return SHELL_OK;
@@ -164,7 +164,7 @@ UI32 HeartBeatDebug::shellExecuteConfigHeartBeat (UI32 argc, vector<string> argv
     pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
     pMessage->setHeartBeatInterval (heartBeatInterval);
     pMessage->setHeartBeatFailureThreshold (maxLostHeartbeat);
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
     delete (pMessage);
 
     return SHELL_OK;
@@ -184,7 +184,7 @@ UI32 HeartBeatDebug::shellExecuteShowStatHeartBeat (UI32 argc, vector<string> ar
     {
         pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
     }
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
     delete (pMessage);
 
     return SHELL_OK;
@@ -206,7 +206,7 @@ UI32 HeartBeatDebug::shellExecuteGetStatHeartBeat (UI32 argc, vector<string> arg
     {
         pMessage->setDstPortNumber (atoi (argv [2].c_str ()));
     }
-    ShellPrism::shellSendSynchronously (pMessage);
+    ShellWave::shellSendSynchronously (pMessage);
 
 #if 0    
     for (i = 0; i < pMessage->m_heartBeatStat.size (); i++)

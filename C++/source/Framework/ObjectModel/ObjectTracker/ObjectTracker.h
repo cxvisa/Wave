@@ -8,7 +8,7 @@
 #define OBJECTTRACKER_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/Utils/WaveMutex.h"
 
 #include <map>

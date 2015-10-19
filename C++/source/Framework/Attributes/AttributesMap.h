@@ -21,7 +21,7 @@ namespace WaveNs
 
 class OrmTable;
 class WaveManagedObject;
-class PrismPersistableObject;
+class WavePersistableObject;
 class WaveManagedObjectOperation;
 
 class AttributesMap
@@ -63,7 +63,7 @@ class AttributesMap
         Attribute         *getAttributeByUserTag                 (const UI32 &attributeUserTag);
         void               setUserTagForAttribute                (const string &attributeName, const UI32 &attributeUserTag);
 
-        void               updateOrmRelations                    (const PrismPersistableObject *pPrismPersistableObject);
+        void               updateOrmRelations                    (const WavePersistableObject *pWavePersistableObject);
         WaveManagedObject *getComposedManagedObject              (const ObjectId &childObjectId);
 
         void               getShowDump                           (string &showDump, const WaveManagedObjectShowType &showType = WAVE_MANAGED_OBJECT_SHOW_ALL);
@@ -83,7 +83,7 @@ class AttributesMap
 
         void               getJsonObjectData                     (const vector<string> &attributeNamesForJson,      const vector<string> &jsonHeaderNames, const string &managedObjectClassNameForJson, string         &jsonObjectData);
 
-        void               updateKeyString                       (const PrismPersistableObject *pPrismPersistableObject);
+        void               updateKeyString                       (const WavePersistableObject *pWavePersistableObject);
         void               getAllAttributeNames                  (vector<string> &allAttributeNames) const;
 
         void               getOidsOfOneToOneCompositions                    (vector<ObjectId> &vectorOfCompositionOids);

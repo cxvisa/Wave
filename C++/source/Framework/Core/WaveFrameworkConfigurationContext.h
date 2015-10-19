@@ -4,10 +4,10 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKCONFIGURATIONCONTEXT_H
-#define PRISMFRAMEWORKCONFIGURATIONCONTEXT_H
+#ifndef WAVEFRAMEWORKCONFIGURATIONCONTEXT_H
+#define WAVEFRAMEWORKCONFIGURATIONCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Framework/Core/WaveFrameworkConfiguration.h"
 #include <string>
 
@@ -16,12 +16,12 @@ using namespace std;
 namespace WaveNs
 {
 
-class WaveFrameworkConfigurationContext : public PrismSynchronousLinearSequencerContext
+class WaveFrameworkConfigurationContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                     WaveFrameworkConfigurationContext     (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &waveFrameworkConfigurationFileName);
+                                     WaveFrameworkConfigurationContext     (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &waveFrameworkConfigurationFileName);
                                     ~WaveFrameworkConfigurationContext     ();
 
         string                      &getWaveFrameworkConfigurationFileName ();
@@ -42,4 +42,4 @@ class WaveFrameworkConfigurationContext : public PrismSynchronousLinearSequencer
 
 }
 
-#endif // PRISMFRAMEWORKCONFIGURATIONCONTEXT_H
+#endif // WAVEFRAMEWORKCONFIGURATIONCONTEXT_H

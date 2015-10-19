@@ -7,17 +7,17 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFORBOOTPHASES_H
 #define WAVEASYNCHRONOUSCONTEXTFORBOOTPHASES_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForBootPhases : public PrismAsynchronousContext
+class WaveAsynchronousContextForBootPhases : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                WaveAsynchronousContextForBootPhases (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForBootPhases (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForBootPhases ();
 
                 WaveBootReason  getBootReason                        () const;

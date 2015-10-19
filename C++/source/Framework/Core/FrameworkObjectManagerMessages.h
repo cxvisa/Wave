@@ -26,17 +26,17 @@ typedef enum
     VALIDATION_RESULTS_BUFFER_TAG = 1001
 } BufferTagsForFrameworkClusterMessages;
 
-class PrismCreateClusterWithNodesMessage : public WaveMessage
+class WaveCreateClusterWithNodesMessage : public WaveMessage
 {
     private :
         bool isNewNodeIpAddressExists (const string &newNodeIpAddress, const SI32 &newNodePort);
 
     protected :
-        PrismCreateClusterWithNodesMessage (WaveServiceId serviceCode, UI32 operationCode);
+        WaveCreateClusterWithNodesMessage (WaveServiceId serviceCode, UI32 operationCode);
 
     public :
-                            PrismCreateClusterWithNodesMessage ();
-        virtual            ~PrismCreateClusterWithNodesMessage ();
+                            WaveCreateClusterWithNodesMessage ();
+        virtual            ~WaveCreateClusterWithNodesMessage ();
                 void        addNewNodeIpAddressAndPort         (const string &newNodeIpAddress, const SI32 &newNodePort);
                 UI32        getNumberOfNewNodes                ();
                 string      getNodeAt                          (UI32 i);
@@ -70,19 +70,19 @@ class PrismCreateClusterWithNodesMessage : public WaveMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryMessage : public WaveMessage
+class WaveConfigureClusterSecondaryMessage : public WaveMessage
 {
     private :
     protected :
-                     PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode);
-                     PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
+                     WaveConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode);
+                     WaveConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryWaveVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
         virtual void setupAttributesForSerialization       ();
 
     public :
-                            PrismConfigureClusterSecondaryMessage ();
-                            PrismConfigureClusterSecondaryMessage (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
-        virtual            ~PrismConfigureClusterSecondaryMessage ();
-                string      getClusterPrimaryPrismVersion         ();
+                            WaveConfigureClusterSecondaryMessage ();
+                            WaveConfigureClusterSecondaryMessage (const string &clusterPrimaryWaveVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
+        virtual            ~WaveConfigureClusterSecondaryMessage ();
+                string      getClusterPrimaryWaveVersion         ();
                 string      getClusterPrimaryIpAddress            ();
                 SI32        getClusterPrimaryPort                 ();
                 LocationId  getClusterPrimaryLocationId           ();
@@ -101,7 +101,7 @@ class PrismConfigureClusterSecondaryMessage : public WaveMessage
     // Now the data members
 
     private :
-        string     m_clusterPrimaryPrismVersion;
+        string     m_clusterPrimaryWaveVersion;
         string     m_clusterPrimaryIpAddress;
         SI32       m_clusterPrimaryPort;
         LocationId m_clusterPrimaryLocationId;
@@ -121,15 +121,15 @@ class PrismConfigureClusterSecondaryMessage : public WaveMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryHaPeerMessage : public PrismConfigureClusterSecondaryMessage
+class WaveConfigureClusterSecondaryHaPeerMessage : public WaveConfigureClusterSecondaryMessage
 {
     private :
     protected :
      virtual void setupAttributesForSerialization ();
 
     public :
-                  PrismConfigureClusterSecondaryHaPeerMessage ();
-     virtual     ~PrismConfigureClusterSecondaryHaPeerMessage ();
+                  WaveConfigureClusterSecondaryHaPeerMessage ();
+     virtual     ~WaveConfigureClusterSecondaryHaPeerMessage ();
 
     // Now the data members
 
@@ -138,16 +138,16 @@ class PrismConfigureClusterSecondaryHaPeerMessage : public PrismConfigureCluster
     public :
 };
 
-class PrismConfigureClusterSecondaryPhase1Message : public WaveMessage
+class WaveConfigureClusterSecondaryPhase1Message : public WaveMessage
 {
     private :
     protected :
-                  PrismConfigureClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
+                  WaveConfigureClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization ();
 
     public :
-                  PrismConfigureClusterSecondaryPhase1Message ();
-     virtual     ~PrismConfigureClusterSecondaryPhase1Message ();
+                  WaveConfigureClusterSecondaryPhase1Message ();
+     virtual     ~WaveConfigureClusterSecondaryPhase1Message ();
 
      static UI32  getDatabaseBackupBufferTag                  ();
 
@@ -161,15 +161,15 @@ class PrismConfigureClusterSecondaryPhase1Message : public WaveMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryHaPeerPhase1Message : public PrismConfigureClusterSecondaryPhase1Message
+class WaveConfigureClusterSecondaryHaPeerPhase1Message : public WaveConfigureClusterSecondaryPhase1Message
 {
     private :
     protected :
      virtual void setupAttributesForSerialization                   ();
 
     public :
-                  PrismConfigureClusterSecondaryHaPeerPhase1Message ();
-     virtual     ~PrismConfigureClusterSecondaryHaPeerPhase1Message ();
+                  WaveConfigureClusterSecondaryHaPeerPhase1Message ();
+     virtual     ~WaveConfigureClusterSecondaryHaPeerPhase1Message ();
 
     // Now the data members
 
@@ -178,15 +178,15 @@ class PrismConfigureClusterSecondaryHaPeerPhase1Message : public PrismConfigureC
     public :
 };
 
-class PrismConfigureClusterSecondaryPhase2Message : public WaveMessage
+class WaveConfigureClusterSecondaryPhase2Message : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
 
     protected :
     public :
-                 PrismConfigureClusterSecondaryPhase2Message ();
-        virtual ~PrismConfigureClusterSecondaryPhase2Message ();
+                 WaveConfigureClusterSecondaryPhase2Message ();
+        virtual ~WaveConfigureClusterSecondaryPhase2Message ();
 
     // Now the data members
 
@@ -195,16 +195,16 @@ class PrismConfigureClusterSecondaryPhase2Message : public WaveMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryPhase3Message : public WaveMessage
+class WaveConfigureClusterSecondaryPhase3Message : public WaveMessage
 {
     private :
     protected :
-                  PrismConfigureClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
+                  WaveConfigureClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization ();
 
     public :
-                  PrismConfigureClusterSecondaryPhase3Message ();
-        virtual  ~PrismConfigureClusterSecondaryPhase3Message ();
+                  WaveConfigureClusterSecondaryPhase3Message ();
+        virtual  ~WaveConfigureClusterSecondaryPhase3Message ();
 
     // Now the data members
 
@@ -213,15 +213,15 @@ class PrismConfigureClusterSecondaryPhase3Message : public WaveMessage
     public :
 };
 
-class PrismConfigureClusterSecondaryHaPeerPhase3Message : public PrismConfigureClusterSecondaryPhase3Message
+class WaveConfigureClusterSecondaryHaPeerPhase3Message : public WaveConfigureClusterSecondaryPhase3Message
 {
     private :
     protected :
      virtual void setupAttributesForSerialization  ();
 
     public :
-                  PrismConfigureClusterSecondaryHaPeerPhase3Message ();
-     virtual     ~PrismConfigureClusterSecondaryHaPeerPhase3Message ();
+                  WaveConfigureClusterSecondaryHaPeerPhase3Message ();
+     virtual     ~WaveConfigureClusterSecondaryHaPeerPhase3Message ();
 
     // Now the data members
 
@@ -230,16 +230,16 @@ class PrismConfigureClusterSecondaryHaPeerPhase3Message : public PrismConfigureC
     public :
 };
 
-class PrismRejoinClusterSecondaryPhase1Message : public PrismConfigureClusterSecondaryPhase1Message
+class WaveRejoinClusterSecondaryPhase1Message : public WaveConfigureClusterSecondaryPhase1Message
 {
     private :
     protected :
-                  PrismRejoinClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
+                  WaveRejoinClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization          ();
 
     public :
-                  PrismRejoinClusterSecondaryPhase1Message ();
-     virtual     ~PrismRejoinClusterSecondaryPhase1Message ();
+                  WaveRejoinClusterSecondaryPhase1Message ();
+     virtual     ~WaveRejoinClusterSecondaryPhase1Message ();
 
     // Now the data members
 
@@ -248,15 +248,15 @@ class PrismRejoinClusterSecondaryPhase1Message : public PrismConfigureClusterSec
     public :
 };
 
-class PrismRejoinClusterSecondaryHaPeerPhase1Message : public PrismRejoinClusterSecondaryPhase1Message
+class WaveRejoinClusterSecondaryHaPeerPhase1Message : public WaveRejoinClusterSecondaryPhase1Message
 {
     private :
     protected :
         virtual void setupAttributesForSerialization ();
 
     public :
-                     PrismRejoinClusterSecondaryHaPeerPhase1Message ();
-        virtual     ~PrismRejoinClusterSecondaryHaPeerPhase1Message ();
+                     WaveRejoinClusterSecondaryHaPeerPhase1Message ();
+        virtual     ~WaveRejoinClusterSecondaryHaPeerPhase1Message ();
 
     // Now the data members
 
@@ -265,18 +265,18 @@ class PrismRejoinClusterSecondaryHaPeerPhase1Message : public PrismRejoinCluster
     public :
 };
 
-//class: PrismRejoinClusterSecondaryPhase2Message
+//class: WaveRejoinClusterSecondaryPhase2Message
 //Description: This class is used to send a message to
 //the secondaries to start phase 2 processing
-class PrismRejoinClusterSecondaryPhase2Message : public WaveMessage
+class WaveRejoinClusterSecondaryPhase2Message : public WaveMessage
 {
     private :
         virtual void setupAttributesForSerialization ();
 
     protected :
     public :
-                 PrismRejoinClusterSecondaryPhase2Message ();
-        virtual ~PrismRejoinClusterSecondaryPhase2Message ();
+                 WaveRejoinClusterSecondaryPhase2Message ();
+        virtual ~WaveRejoinClusterSecondaryPhase2Message ();
 
         bool    getIsReplaceRejoin ();
         void    setIsReplaceRejoin (const bool &isReplace);
@@ -292,19 +292,19 @@ class PrismRejoinClusterSecondaryPhase2Message : public WaveMessage
     public :
 };
 
-//class: PrismRejoinClusterSecondaryPhase3Message
+//class: WaveRejoinClusterSecondaryPhase3Message
 //Description: This class is used to send a message to
 //the secondaries to start phase 3 processing
-class PrismRejoinClusterSecondaryPhase3Message : public WaveMessage
+class WaveRejoinClusterSecondaryPhase3Message : public WaveMessage
 {
     private :
     protected :
-                  PrismRejoinClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
+                  WaveRejoinClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode);
      virtual void setupAttributesForSerialization ();
 
     public :
-                  PrismRejoinClusterSecondaryPhase3Message ();
-     virtual     ~PrismRejoinClusterSecondaryPhase3Message ();
+                  WaveRejoinClusterSecondaryPhase3Message ();
+     virtual     ~WaveRejoinClusterSecondaryPhase3Message ();
 
     // Now the data members
 
@@ -313,15 +313,15 @@ class PrismRejoinClusterSecondaryPhase3Message : public WaveMessage
     public :
 };
 
-class PrismRejoinClusterSecondaryHaPeerPhase3Message : public PrismRejoinClusterSecondaryPhase3Message
+class WaveRejoinClusterSecondaryHaPeerPhase3Message : public WaveRejoinClusterSecondaryPhase3Message
 {
     private :
     protected :
         virtual void setupAttributesForSerialization ();
 
     public :
-                 PrismRejoinClusterSecondaryHaPeerPhase3Message ();
-        virtual ~PrismRejoinClusterSecondaryHaPeerPhase3Message ();
+                 WaveRejoinClusterSecondaryHaPeerPhase3Message ();
+        virtual ~WaveRejoinClusterSecondaryHaPeerPhase3Message ();
 
     // Now the data members
 
@@ -368,7 +368,7 @@ class FrameworkObjectManagerUpdateListOfSecondariesMessage : public WaveMessage
     public :
 };
 
-class FrameworkObjectManagerAddNodesToClusterMessage : public PrismCreateClusterWithNodesMessage
+class FrameworkObjectManagerAddNodesToClusterMessage : public WaveCreateClusterWithNodesMessage
 {
     private :
     protected :
@@ -383,7 +383,7 @@ class FrameworkObjectManagerAddNodesToClusterMessage : public PrismCreateCluster
     public :
 };
 
-class FrameworkObjectManagerDeleteNodesFromClusterMessage : public PrismCreateClusterWithNodesMessage
+class FrameworkObjectManagerDeleteNodesFromClusterMessage : public WaveCreateClusterWithNodesMessage
 {
     private :
     protected :
@@ -484,7 +484,7 @@ class FrameworkObjectManagerRejoinNodesToClusterMessage : public FrameworkObject
     public :
 };
 
-class FrameworkObjectManagerRejoinClusterSecondaryMessage : public PrismConfigureClusterSecondaryMessage
+class FrameworkObjectManagerRejoinClusterSecondaryMessage : public WaveConfigureClusterSecondaryMessage
 {
     private :
     protected :
@@ -493,7 +493,7 @@ class FrameworkObjectManagerRejoinClusterSecondaryMessage : public PrismConfigur
     public :
                         FrameworkObjectManagerRejoinClusterSecondaryMessage     ();
                         FrameworkObjectManagerRejoinClusterSecondaryMessage     (WaveServiceId serviceCode, UI32 operationCode);
-                        FrameworkObjectManagerRejoinClusterSecondaryMessage     (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
+                        FrameworkObjectManagerRejoinClusterSecondaryMessage     (const string &clusterPrimaryWaveVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId);
         virtual        ~FrameworkObjectManagerRejoinClusterSecondaryMessage    ();
 
         bool            getIsReplaceRejoin                                      ();
@@ -1016,7 +1016,7 @@ class FrameworkObjectManagerInitHaIpAddressMessage : public WaveMessage
     SI32 m_localHaIpPort;
 };
 
-class PrismHaSyncConfigureStandbyMessage : public WaveMessage
+class WaveHaSyncConfigureStandbyMessage : public WaveMessage
 {
     private :
     protected :
@@ -1024,10 +1024,10 @@ class PrismHaSyncConfigureStandbyMessage : public WaveMessage
         virtual void setupAttributesForSerializationInAttributeOrderFormat  ();
 
     public :
-                            PrismHaSyncConfigureStandbyMessage ();
-                            PrismHaSyncConfigureStandbyMessage (const string &activePrismVersion, const LocationRole &activeLocationRole);
-        virtual            ~PrismHaSyncConfigureStandbyMessage ();
-                string      getActivePrismVersion              ();
+                            WaveHaSyncConfigureStandbyMessage ();
+                            WaveHaSyncConfigureStandbyMessage (const string &activeWaveVersion, const LocationRole &activeLocationRole);
+        virtual            ~WaveHaSyncConfigureStandbyMessage ();
+                string      getActiveWaveVersion              ();
                 LocationRole getActiveLocationRole             ();
                 void        setValidationDetails                  (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage = false);
                 void        getValidationDetails                  (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser = false);
@@ -1038,7 +1038,7 @@ class PrismHaSyncConfigureStandbyMessage : public WaveMessage
     // Now the data members
 
     private :
-        string              m_activePrismVersion;
+        string              m_activeWaveVersion;
         UI32                m_activeLocationRole;
     protected :
     public :

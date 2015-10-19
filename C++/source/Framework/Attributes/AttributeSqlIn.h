@@ -44,10 +44,10 @@ class AttributeSqlIn : public Attribute
         virtual void                        loadFromPostgresQueryResult             (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
         virtual void                        loadFromPostgresAuxilliaryQueryResult   (map<string, PGresult *> &auxilliaryResultsMap, const ObjectId &parentObjectId, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
 
-        virtual void                        updateOrmRelations                      (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void                        updateOrmRelations                      (const WavePersistableObject *pWavePersistableObject);
         virtual WaveManagedObject          *getComposedManagedObject                (const ObjectId &childObjectId);
         virtual bool                        isDeletableForOperation                 (const WaveManagedObjectOperation &operation);
-        virtual void                        updateKeyString                         (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void                        updateKeyString                         (const WavePersistableObject *pWavePersistableObject);
         virtual void                        getRestRowData                          (string &restRowData);
         static  map<string, string>         getSupportedConversions                 ();
         virtual void                        setDefaultValue                         ();

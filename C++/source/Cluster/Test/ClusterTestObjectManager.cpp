@@ -21,7 +21,7 @@ static  vector <string>        *commandBuffers = NULL;
 static  vector <string>        *resultBuffers = NULL;
 
 ClusterTestObjectManager::ClusterTestObjectManager ()
-    : PrismTestObjectManager ("Cluster Test")
+    : WaveTestObjectManager ("Cluster Test")
 {
 }
 
@@ -49,21 +49,21 @@ WaveServiceId ClusterTestObjectManager::getWaveServiceId ()
 
 void ClusterTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-//        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::ClusterShowStatStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::initData),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::registerCallBacks),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::CreateDeleteClusterStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::clusterCreateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdOneWayStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdMulticastStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdMulticastOneWayStep),
-//        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::AddDeleteNodeStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::clusterDeleteStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterTestObjectManager::prismLinearSequencerFailedStep),
+//        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::ClusterShowStatStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::initData),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::registerCallBacks),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::CreateDeleteClusterStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::clusterCreateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdOneWayStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdMulticastStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdMulticastOneWayStep),
+//        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::AddDeleteNodeStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::clusterDeleteStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     ClusterTestContext *pClusterTestContext = new ClusterTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -519,9 +519,9 @@ void ClusterTestObjectManager::AddDeleteNodeStep (ClusterTestContext *pClusterTe
 
     for (i = 0; i < m_regressionInput.size (); i++)
     {
-        pCreateMessage->setSecondaryNodeNameAndPort (m_regressionInput[i], FrameworkToolKit::getPrismDefaultTcpPort ());
-        pAddNodeMessage->setSecondaryNodeNameAndPort (m_regressionInput[i], FrameworkToolKit::getPrismDefaultTcpPort ());
-        pDeleteNodeMessage->setSecondaryNodeNameAndPort (m_regressionInput[i], FrameworkToolKit::getPrismDefaultTcpPort ());
+        pCreateMessage->setSecondaryNodeNameAndPort (m_regressionInput[i], FrameworkToolKit::getWaveDefaultTcpPort ());
+        pAddNodeMessage->setSecondaryNodeNameAndPort (m_regressionInput[i], FrameworkToolKit::getWaveDefaultTcpPort ());
+        pDeleteNodeMessage->setSecondaryNodeNameAndPort (m_regressionInput[i], FrameworkToolKit::getWaveDefaultTcpPort ());
     }
 
 

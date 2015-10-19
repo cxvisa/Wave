@@ -8,7 +8,7 @@
 #define SECONDARYNODECLUSTERCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
@@ -18,8 +18,8 @@ class SecondaryNodeClusterContext: public WaveLinearSequencerContext
     private :
     protected :
     public :
-                    SecondaryNodeClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
-                    SecondaryNodeClusterContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
+                    SecondaryNodeClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
+                    SecondaryNodeClusterContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag = true, bool clusterHaSyncInProgressFlag = false);
         virtual    ~SecondaryNodeClusterContext ();
 
         bool        getClusterHaSyncInProgress  () const;

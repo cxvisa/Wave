@@ -127,7 +127,7 @@ void WaveServiceMap::getListOfServiceIds (vector<WaveServiceId> &serviceIds)
     return;
 }
 
-string WaveServiceMap::getPrismServiceNameForServiceId (const WaveServiceId &id)
+string WaveServiceMap::getWaveServiceNameForServiceId (const WaveServiceId &id)
 {
     m_mutex.lock ();
 

@@ -8,7 +8,7 @@
 #define SHELLOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
-#include "Shell/ShellPrism.h"
+#include "Shell/ShellWave.h"
 #include <iostream>
 #include <fstream>
 
@@ -42,7 +42,7 @@ class ShellObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
     private :
     protected :
     public :
-        ShellPrism *m_pPrismShell;
+        ShellWave *m_pWaveShell;
         ifstream    m_inputSource;
 };
 

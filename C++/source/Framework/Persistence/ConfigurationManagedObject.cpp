@@ -13,7 +13,7 @@ namespace WaveNs
 
 ConfigurationManagedObject::ConfigurationManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (ConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (ConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager)
 {
     setEmptyNeededOnPersistentBoot (false);
@@ -88,7 +88,7 @@ void ConfigurationManagedObject::resetConfigurationManagedObject ()
 
 XPathStringManagedObject::XPathStringManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement                      (pWaveObjectManager),
-      PrismPersistableObject            (XPathStringManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject            (XPathStringManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject                 (pWaveObjectManager)
 {
     setEmptyNeededOnPersistentBoot (true);

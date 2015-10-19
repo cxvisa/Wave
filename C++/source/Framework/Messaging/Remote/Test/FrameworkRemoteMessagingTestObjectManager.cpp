@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 FrameworkRemoteMessagingTestObjectManager::FrameworkRemoteMessagingTestObjectManager ()
-    : PrismTestObjectManager ("Framework Remote Messaging Test")
+    : WaveTestObjectManager ("Framework Remote Messaging Test")
 {
 }
 
@@ -53,43 +53,43 @@ void FrameworkRemoteMessagingTestObjectManager::testRequestHandler (RegressionTe
         m_regressionInput.push_back(numberOfMessages);
     }
     
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::selectARemoteLocationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::simpleOneWayMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::simpleSynchronousMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::synchronousMessageWithBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::selectARemoteLocationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::simpleOneWayMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::simpleSynchronousMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::synchronousMessageWithBuffersTestStep),
 
 
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::synchronousMessageWithLargeBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::synchronousMessageAttributeTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::messageCloningTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSuccessTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureButPhase2MessageSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSuccessTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailWithFlagTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailButPhase2MessageWithFlagSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailWithFlagTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailButPhase2MessageWithFlagSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnectButPhase2MessageAndFlagSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessFlagSetAndMessage1TestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessAndFailingOverFlagSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSuccessTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPartialSuccessAndFailingOverFlagSetTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLocationsSetByUserStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveCluster),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticast),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::synchronousMessageWithLargeBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::synchronousMessageAttributeTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::messageCloningTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSuccessTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSucesssButPhase2MessageSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureButPhase2MessageSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSuccessTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailWithFlagTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailButPhase2MessageWithFlagSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailWithFlagTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailButPhase2MessageWithFlagSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnectButPhase2MessageAndFlagSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessFlagSetAndMessage1TestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessAndFailingOverFlagSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSuccessTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPartialSuccessAndFailingOverFlagSetTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLocationsSetByUserStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveCluster),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticast),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -150,7 +150,7 @@ void FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -231,7 +231,7 @@ void FrameworkRemoteMessagingTestObjectManager::simpleOneWayMessageTestStep (Fra
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }
@@ -324,7 +324,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTe
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithBuffersTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -479,7 +479,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuff
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageWithLargeBuffersTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -608,7 +608,7 @@ void FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -789,7 +789,7 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningTestStep (Framewor
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::asynchronousMessageAttributeTest : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -840,7 +840,7 @@ void FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestSte
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkRemoteMessagingTestObjectManager::messageCloningWithBuffersTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
         }
         else
         {
@@ -857,7 +857,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster with Buffers Async All Success Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSuccessTestCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSuccessTestCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
@@ -886,7 +886,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage32 = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSucesssButPhase2MessageSetTestCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllSucesssButPhase2MessageSetTestCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
@@ -920,7 +920,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster with Buffers Async All Failure Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureTestCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureTestCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (1);
@@ -954,7 +954,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1Al
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage32 = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureButPhase2MessageSetTestCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1AllFailureButPhase2MessageSetTestCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (1);
@@ -993,7 +993,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster with Buffers Async All few success, Disconnect and failed with noRollBack flag set Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailWithFlagTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailWithFlagTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
@@ -1043,7 +1043,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDis
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage32 = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailButPhase2MessageWithFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewSuccessDisconnectnFailButPhase2MessageWithFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
@@ -1098,7 +1098,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster with Buffers Async few failed and other Disconnected with noRollBack flag set Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailWithFlagTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailWithFlagTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (4);
@@ -1133,7 +1133,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnect
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage32 = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailButPhase2MessageWithFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1FewDisconnectAndFailButPhase2MessageWithFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (4);
@@ -1174,7 +1174,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster with Buffers Async Some Success Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSuccessTestCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSuccessTestCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (2);
@@ -1212,7 +1212,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1So
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage32 = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSucesssButPhase2MessageSetTestCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithBuffersPhase1SomeSucesssButPhase2MessageSetTestCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (2);
@@ -1257,7 +1257,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnec
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage32 = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnectButPhase2MessageAndFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterPhase1SomeDisconnectButPhase2MessageAndFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (5);
@@ -1298,7 +1298,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessF
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster With Partial Success Flag and Message 1 Set Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessFlagSetAndMessage1TestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessFlagSetAndMessage1TestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (2);
@@ -1333,7 +1333,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessA
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster With Partial Success And Failing Over Flag Set Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessAndFailingOverFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterWithPartialSuccessAndFailingOverFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
@@ -1380,7 +1380,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSucc
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster For Surrogate All Success Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSuccessTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateAllSuccessTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
@@ -1409,7 +1409,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPar
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster For Surrogate With Partial Success And Failing Over Flag Set Test.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPartialSuccessAndFailingOverFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithPartialSuccessAndFailingOverFlagSetTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (3);
@@ -1457,7 +1457,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLoc
     trace (TRACE_LEVEL_INFO, "Starting Send To Cluster For Surrogate With Locations For phase1 by User.");
 
     FrameworkTestabilityMessage3 *pFrameworkTestabilityMessage3  = new FrameworkTestabilityMessage3 ();
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLocationsSetByUserStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendToClusterForSurrogateWithLocationsSetByUserStepCallback), pFrameworkLocalMessagingTestContext);
 
     pFrameworkTestabilityMessage3->setupInputBuffer1 ();
     pFrameworkTestabilityMessage3->setCompletionStatusType (0);
@@ -1521,7 +1521,7 @@ void FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStep 
 {
     trace (TRACE_LEVEL_INFO, "Starting Send One Way To Wave Cluster Test.");
 
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStepCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStepCallback), pFrameworkLocalMessagingTestContext);
 
     FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
     pMessage->setMessage ("This is a send one way to wave cluster test message");
@@ -1558,7 +1558,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
     pFrameworkLocalMessagingTestContext->setNumberOfMessagesToSend (numberOfMessagesToSend);
 
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveClusterCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveClusterCallback), pFrameworkLocalMessagingTestContext);
 
     FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
@@ -1591,7 +1591,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
     if (false == pFrameworkLocalMessagingTestContext->areAllMessagesSent ())
     {
-        WaveSendToClusterContext     *pNewWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveClusterCallback), pFrameworkLocalMessagingTestContext);
+        WaveSendToClusterContext     *pNewWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveClusterCallback), pFrameworkLocalMessagingTestContext);
 
         FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
@@ -1626,7 +1626,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
     pFrameworkLocalMessagingTestContext->resetNumberOfMessagesSend ();
 
-    WaveSendMulticastContext *pWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticastCallback), pFrameworkLocalMessagingTestContext);
+    WaveSendMulticastContext *pWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticastCallback), pFrameworkLocalMessagingTestContext);
 
     FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 
@@ -1653,7 +1653,7 @@ void FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasur
 
     if (false == pFrameworkLocalMessagingTestContext->areAllMessagesSent ())
     {
-        WaveSendMulticastContext *pNewWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticastCallback), pFrameworkLocalMessagingTestContext);
+        WaveSendMulticastContext *pNewWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticastCallback), pFrameworkLocalMessagingTestContext);
 
         FrameworkTestabilityMessage1 *pMessage = new FrameworkTestabilityMessage1 ();
 

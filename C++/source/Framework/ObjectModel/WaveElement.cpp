@@ -6,7 +6,7 @@
 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManagerCommitTransactionContext.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -22,7 +22,7 @@ WaveElement::WaveElement (WaveObjectManager *pWaveObjectManager)
     {
         // THIS MUST NEVER HAPPEN
         // We cannot use trace or waveAssert here since they are abstract virtual here
-        cerr << "Prismelement::Prismelement : You cannot create a WaveElement with NULL WaveObjectManager." << endl;
+        cerr << "Waveelement::Waveelement : You cannot create a WaveElement with NULL WaveObjectManager." << endl;
         assert (0);
     }
 }
@@ -32,7 +32,7 @@ WaveElement::WaveElement (const WaveElement &prismElement)
 // FIXME : sagar : Once we the cluster service fixes the NodeManagedObject copying by value into its vectors, enable the fatal statements below.
 
 #if 0
-    WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::WaveElement : Copy Constructing a Prism Element does not make sense and hence not allowed.");
+    WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::WaveElement : Copy Constructing a Wave Element does not make sense and hence not allowed.");
     WaveNs::waveAssert (false, __FILE__, __LINE__);
 #else
     m_pWaveObjectManager = prismElement.m_pWaveObjectManager;
@@ -45,7 +45,7 @@ WaveElement::~WaveElement ()
 
 WaveElement &WaveElement::operator = (const WaveElement &prismElement)
 {
-    WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::operator = : Assigning to a Prism Element does not make sense and hence not allowed.");
+    WaveNs::trace (TRACE_LEVEL_FATAL, "WaveElement::operator = : Assigning to a Wave Element does not make sense and hence not allowed.");
     WaveNs::waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
@@ -61,7 +61,7 @@ void WaveElement::prismLinearSequencerSucceededStep (WaveLinearSequencerContext 
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerSucceededStep : Entering ...");
 
     WaveMessage             *pWaveMessage             = pWaveLinearSequencerContext->getPWaveMessage ();
-    PrismAsynchronousContext *pPrismAsynchronousContext = pWaveLinearSequencerContext->getPPrismAsynchronousContext ();
+    WaveAsynchronousContext *pWaveAsynchronousContext = pWaveLinearSequencerContext->getPWaveAsynchronousContext ();
 
     if (true == (pWaveLinearSequencerContext->getIsHoldAllRequested ()))
     {
@@ -93,10 +93,10 @@ void WaveElement::prismLinearSequencerSucceededStep (WaveLinearSequencerContext 
         pWaveMessage->setCompletionStatus (status);
         reply (pWaveMessage);
     }
-    else if (NULL != pPrismAsynchronousContext)
+    else if (NULL != pWaveAsynchronousContext)
     {
-        pPrismAsynchronousContext->setCompletionStatus (status);
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (status);
+        pWaveAsynchronousContext->callback ();
     }
 
     delete pWaveLinearSequencerContext;
@@ -107,7 +107,7 @@ void WaveElement::prismLinearSequencerFailedStep (WaveLinearSequencerContext *pW
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerFailedStep : Entering ...");
 
     WaveMessage             *pWaveMessage             = pWaveLinearSequencerContext->getPWaveMessage ();
-    PrismAsynchronousContext *pPrismAsynchronousContext = pWaveLinearSequencerContext->getPPrismAsynchronousContext ();
+    WaveAsynchronousContext *pWaveAsynchronousContext = pWaveLinearSequencerContext->getPWaveAsynchronousContext ();
 
     if (true == (pWaveLinearSequencerContext->getIsHoldAllRequested ()))
     {
@@ -125,10 +125,10 @@ void WaveElement::prismLinearSequencerFailedStep (WaveLinearSequencerContext *pW
         pWaveMessage->setCompletionStatus (pWaveLinearSequencerContext->getCompletionStatus ());
         reply (pWaveMessage);
     }
-    else if (NULL != pPrismAsynchronousContext)
+    else if (NULL != pWaveAsynchronousContext)
     {
-        pPrismAsynchronousContext->setCompletionStatus (pWaveLinearSequencerContext->getCompletionStatus ());
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (pWaveLinearSequencerContext->getCompletionStatus ());
+        pWaveAsynchronousContext->callback ();
     }
 
     delete pWaveLinearSequencerContext;
@@ -176,21 +176,21 @@ void WaveElement::prismLinearSequencerCommitTransactionStep (WaveLinearSequencer
  * the transaction will be commited to preserve the semantics, even though if there is
  * no db update by the step and then the reply will happen as usual.
  */
-ResourceId WaveElement::prismSynchronousLinearSequencerSucceededStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerSucceededStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismSynchronousLinearSequencerSucceededStep : Entering ...");
 
-    WaveMessage             *pWaveMessage             = pPrismSynchronousLinearSequencerContext->getPWaveMessage ();
-    PrismAsynchronousContext *pPrismAsynchronousContext = pPrismSynchronousLinearSequencerContext->getPPrismAsynchronousContext ();
-    ResourceId                completionStatus          = pPrismSynchronousLinearSequencerContext->getCompletionStatus ();
+    WaveMessage             *pWaveMessage             = pWaveSynchronousLinearSequencerContext->getPWaveMessage ();
+    WaveAsynchronousContext *pWaveAsynchronousContext = pWaveSynchronousLinearSequencerContext->getPWaveAsynchronousContext ();
+    ResourceId                completionStatus          = pWaveSynchronousLinearSequencerContext->getCompletionStatus ();
 
-    if (true == (pPrismSynchronousLinearSequencerContext->getIsTransactionStartedByMe ()))
+    if (true == (pWaveSynchronousLinearSequencerContext->getIsTransactionStartedByMe ()))
     {
-        pPrismSynchronousLinearSequencerContext->setIsTransactionStartedByMe (false);
+        pWaveSynchronousLinearSequencerContext->setIsTransactionStartedByMe (false);
 
         // commit the transaction to preserve the semantics of the WAVE_SEQUENCER_SKIP_TO_SUCCESS_STEP return code and if
         // the transaction has no data to be committed, framework will immediately return without having to go to DB.
-        WaveObjectManagerCommitTransactionContext commitTransactionContext (pPrismSynchronousLinearSequencerContext);
+        WaveObjectManagerCommitTransactionContext commitTransactionContext (pWaveSynchronousLinearSequencerContext);
 
         ResourceId status = commitTransaction (&commitTransactionContext);
 
@@ -205,27 +205,27 @@ ResourceId WaveElement::prismSynchronousLinearSequencerSucceededStep (PrismSynch
         pWaveMessage->setCompletionStatus (completionStatus);
         reply (pWaveMessage);
     }
-    else if (NULL != pPrismAsynchronousContext)
+    else if (NULL != pWaveAsynchronousContext)
     {
-        pPrismAsynchronousContext->setCompletionStatus (completionStatus);
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (completionStatus);
+        pWaveAsynchronousContext->callback ();
     }
 
-    delete pPrismSynchronousLinearSequencerContext;
+    delete pWaveSynchronousLinearSequencerContext;
     return (completionStatus);
 }
 
-ResourceId WaveElement::prismSynchronousLinearSequencerFailedStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerFailedStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismSynchronousLinearSequencerFailedStep : Entering ...");
 
-    WaveMessage             *pWaveMessage             = pPrismSynchronousLinearSequencerContext->getPWaveMessage ();
-    PrismAsynchronousContext *pPrismAsynchronousContext = pPrismSynchronousLinearSequencerContext->getPPrismAsynchronousContext ();
-    ResourceId                completionStatus          = pPrismSynchronousLinearSequencerContext->getCompletionStatus ();
+    WaveMessage             *pWaveMessage             = pWaveSynchronousLinearSequencerContext->getPWaveMessage ();
+    WaveAsynchronousContext *pWaveAsynchronousContext = pWaveSynchronousLinearSequencerContext->getPWaveAsynchronousContext ();
+    ResourceId                completionStatus          = pWaveSynchronousLinearSequencerContext->getCompletionStatus ();
 
-    if (true == (pPrismSynchronousLinearSequencerContext->getIsTransactionStartedByMe ()))
+    if (true == (pWaveSynchronousLinearSequencerContext->getIsTransactionStartedByMe ()))
     {
-        pPrismSynchronousLinearSequencerContext->setIsTransactionStartedByMe (false);
+        pWaveSynchronousLinearSequencerContext->setIsTransactionStartedByMe (false);
         rollbackTransaction ();
     }
 
@@ -234,23 +234,23 @@ ResourceId WaveElement::prismSynchronousLinearSequencerFailedStep (PrismSynchron
         pWaveMessage->setCompletionStatus (completionStatus);
         reply (pWaveMessage);
     }
-    else if (NULL != pPrismAsynchronousContext)
+    else if (NULL != pWaveAsynchronousContext)
     {
-        pPrismAsynchronousContext->setCompletionStatus (completionStatus);
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (completionStatus);
+        pWaveAsynchronousContext->callback ();
     }
 
-    delete pPrismSynchronousLinearSequencerContext;
+    delete pWaveSynchronousLinearSequencerContext;
     return (completionStatus);
 }
 
-ResourceId WaveElement::prismSynchronousLinearSequencerStartTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerStartTransactionStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerStartTransactionStep : Entering ...");
 
     if (false == (isTransactionInProgress ()))
     {
-        pPrismSynchronousLinearSequencerContext->setIsTransactionStartedByMe (true);
+        pWaveSynchronousLinearSequencerContext->setIsTransactionStartedByMe (true);
 
         startTransaction ();
     }
@@ -258,17 +258,17 @@ ResourceId WaveElement::prismSynchronousLinearSequencerStartTransactionStep (Pri
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId WaveElement::prismSynchronousLinearSequencerCommitTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId WaveElement::prismSynchronousLinearSequencerCommitTransactionStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveElement::prismLinearSequencerCommitTransactionStep : Entering ...");
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    if (true == (pPrismSynchronousLinearSequencerContext->getIsTransactionStartedByMe ()))
+    if (true == (pWaveSynchronousLinearSequencerContext->getIsTransactionStartedByMe ()))
     {
-        pPrismSynchronousLinearSequencerContext->setIsTransactionStartedByMe (false);
+        pWaveSynchronousLinearSequencerContext->setIsTransactionStartedByMe (false);
 
-        WaveObjectManagerCommitTransactionContext commitTransactionContext (pPrismSynchronousLinearSequencerContext);
+        WaveObjectManagerCommitTransactionContext commitTransactionContext (pWaveSynchronousLinearSequencerContext);
 
         status = commitTransaction (&commitTransactionContext);
 

@@ -29,16 +29,16 @@ HeartBeatFailureAgent::~HeartBeatFailureAgent ()
 
 ResourceId HeartBeatFailureAgent::execute ()
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::getListOfEnabledServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::sendHeartBeatFailureStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::getListOfEnabledServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::sendHeartBeatFailureStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext = new HeartBeatFailureAgentContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext = new HeartBeatFailureAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     ResourceId status = pHeartBeatFailureAgentContext->execute ();
 
@@ -62,7 +62,7 @@ ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgen
 
     numberOfServices = serviceIdsToSendHeartBeatFailure.size ();
 
-    trace (TRACE_LEVEL_INFO, "PrismHeartbeatFailureAgent::sendHeartBeatFailureStep: Initiate heartbeat failure for all services.");
+    trace (TRACE_LEVEL_INFO, "WaveHeartbeatFailureAgent::sendHeartBeatFailureStep: Initiate heartbeat failure for all services.");
 
     for (i = 0; i < numberOfServices; i++)
     {
@@ -71,13 +71,13 @@ ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgen
             continue;
         }
 
-        PrismHeartbeatFailureObjectManagerMessage *prismHeartbeatFailureObjectManagerMessage = new PrismHeartbeatFailureObjectManagerMessage (serviceIdsToSendHeartBeatFailure[i], m_ipAddress, m_portNumber);
+        WaveHeartbeatFailureObjectManagerMessage *prismHeartbeatFailureObjectManagerMessage = new WaveHeartbeatFailureObjectManagerMessage (serviceIdsToSendHeartBeatFailure[i], m_ipAddress, m_portNumber);
 
         ResourceId status = sendOneWay (prismHeartbeatFailureObjectManagerMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PrismHeartbeatFailureAgent::sendHeartBeatFailureStep: Could not send Heartbeat Failure to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendHeartBeatFailure[i]));
+            trace (TRACE_LEVEL_FATAL, "WaveHeartbeatFailureAgent::sendHeartBeatFailureStep: Could not send Heartbeat Failure to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendHeartBeatFailure[i]));
             return (status);
         }
         else
@@ -86,7 +86,7 @@ ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgen
         }
     }
 
-    trace (TRACE_LEVEL_INFO, "PrismHeartbeatFailureAgent::sendHeartBeatFailureStep: Finish heartbeat failure for all services.");
+    trace (TRACE_LEVEL_INFO, "WaveHeartbeatFailureAgent::sendHeartBeatFailureStep: Finish heartbeat failure for all services.");
     return (WAVE_MESSAGE_SUCCESS);
 }
 

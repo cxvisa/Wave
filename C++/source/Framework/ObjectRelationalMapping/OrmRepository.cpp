@@ -10,7 +10,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/WaveMutex.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Attributes/AttributeSI64.h"
@@ -2149,7 +2149,7 @@ void OrmRepository::buildAttributeTypeToSqlTypeMap ()
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_UI32"] = "integer";
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_TYPE"] = "integer";
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_PRIORITY"] = "integer";
-    m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_PRISM_SERVICE_ID"] = "integer";
+    m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_WAVE_SERVICE_ID"] = "integer";
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_SERIALIZABLE_OBJECT_TYPE"] = "integer";
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_LOCATIONID"] = "integer";
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_UI32_VECTOR"] = "varchar";
@@ -2230,7 +2230,7 @@ void OrmRepository::buildAttributeSupportedConversionsMap ()
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_UI32"] = AttributeUI32::getSupportedConversions ();
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_TYPE"] = AttributeUI32::getSupportedConversions ();
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_PRIORITY"] = AttributeUI32::getSupportedConversions ();
-    m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_PRISM_SERVICE_ID"] = AttributeUI32::getSupportedConversions ();
+    m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_WAVE_SERVICE_ID"] = AttributeUI32::getSupportedConversions ();
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_SERIALIZABLE_OBJECT_TYPE"] = AttributeUI32::getSupportedConversions ();
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_LOCATIONID"] = AttributeUI32::getSupportedConversions ();
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_UI32_VECTOR"] = AttributeUI32Vector::getSupportedConversions ();

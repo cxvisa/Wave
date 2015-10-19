@@ -5,8 +5,8 @@
  *            Vipool Prajapati                                             *
  ***************************************************************************/
 
-#ifndef PRISMMANAGEDOBJECTQUERYCONTEXTBASE_H
-#define PRISMMANAGEDOBJECTQUERYCONTEXTBASE_H
+#ifndef WAVEMANAGEDOBJECTQUERYCONTEXTBASE_H
+#define WAVEMANAGEDOBJECTQUERYCONTEXTBASE_H
 
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/Attributes/Attributes.h"
@@ -157,4 +157,4 @@ class WaveManagedObjectQueryContextBase
 
 }
 
-#endif // PRISMMANAGEDOBJECTQUERYCONTEXTBASE_H
+#endif // WAVEMANAGEDOBJECTQUERYCONTEXTBASE_H

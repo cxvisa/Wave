@@ -7,13 +7,13 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/Location.h"
 #include "Framework/LocationManagement/SubLocation.h"
-#include "Framework/LocationManagement/PrismNodeConnectionInformation.h"
+#include "Framework/LocationManagement/WaveNodeConnectionInformation.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Messaging/Remote/InterLocationMessageReceiverObjectManager.h"
 #include <time.h>
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 
 namespace WaveNs
 {
@@ -458,16 +458,16 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
 
                         bool isSuccessful = false;
 
-                        isSuccessful = (*pClientSocket) << FrameworkToolKit::getPrismConnectionPassPhrase ();
+                        isSuccessful = (*pClientSocket) << FrameworkToolKit::getWaveConnectionPassPhrase ();
 
                         if (true != isSuccessful)
                         {
                             waveAssert (false, __FILE__, __LINE__);
                         }
 
-                        // now create the Prism Node Connection Information object and post it to the remote location.
+                        // now create the Wave Node Connection Information object and post it to the remote location.
 
-                        PrismNodeConnectionInformation thisServerConnectionInformation (m_ipAddress, m_port, locationId, PrismVersion::getVersionString ());
+                        WaveNodeConnectionInformation thisServerConnectionInformation (m_ipAddress, m_port, locationId, WaveVersion::getVersionString ());
 
                         //isSuccessful = (*pClientSocket) << (&thisServerConnectionInformation);
 
@@ -1028,25 +1028,25 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
 
                         bool isSuccessful = false;
 
-                        isSuccessful = (*pClientSocket) << FrameworkToolKit::getPrismHaConnectionPassPhrase ();
+                        isSuccessful = (*pClientSocket) << FrameworkToolKit::getWaveHaConnectionPassPhrase ();
 
                         if (true != isSuccessful)
                         {
                             waveAssert (false, __FILE__, __LINE__);
                         }
 
-                        // now create the Prism Node Connection Information object and post it to the remote location.
+                        // now create the Wave Node Connection Information object and post it to the remote location.
 
                         // TBD - get local slot IP address for HA Peer.
-                        PrismHaNodeConnectionInformation thisServerConnectionInformation (m_ipAddressForHaInterface, m_portForHaPeer, 0, PrismVersion::getVersionString());
-                        //PrismNodeConnectionInformation thisServerConnectionInformation (m_ipAddress, m_portForHaPeer);
+                        WaveHaNodeConnectionInformation thisServerConnectionInformation (m_ipAddressForHaInterface, m_portForHaPeer, 0, WaveVersion::getVersionString());
+                        //WaveNodeConnectionInformation thisServerConnectionInformation (m_ipAddress, m_portForHaPeer);
 
                         //isSuccessful = (*pClientSocket) << (&thisServerConnectionInformation);
 
-                        //Currently, PrismNodeConnectionInformation must be sent in pre-leo format only. This can be removed in Leo++ as it will not need to support Hydra builds.
+                        //Currently, WaveNodeConnectionInformation must be sent in pre-leo format only. This can be removed in Leo++ as it will not need to support Hydra builds.
 
                         string serializedData;
-                        //thisServerConnectionInformation.serialize2 (serializedData, "0.0.0"); //PrismVersion::getVersionString(), true);
+                        //thisServerConnectionInformation.serialize2 (serializedData, "0.0.0"); //WaveVersion::getVersionString(), true);
                         thisServerConnectionInformation.serialize2 (serializedData, SERIALIZE_WITH_ATTRIBUTE_ORDER); 
 
                         UI32 size = serializedData.size();

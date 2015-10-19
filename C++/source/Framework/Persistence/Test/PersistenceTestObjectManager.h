@@ -7,7 +7,7 @@
 #ifndef PERSISTENCETESTOBJECTMANAGER_H
 #define PERSISTENCETESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 #include "Framework/Core/Test/FrameworkTestabilityMessages.h"
 
 namespace WaveNs
@@ -16,7 +16,7 @@ namespace WaveNs
 class WaveLinearSequencerContext;
 class RegressionTestMessage;
 
-class PersistenceTestObjectManager : PrismTestObjectManager
+class PersistenceTestObjectManager : WaveTestObjectManager
 {
     private :
                      PersistenceTestObjectManager           ();

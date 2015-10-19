@@ -11,7 +11,7 @@ namespace WaveNs
 
 WaveManagedView::WaveManagedView (WaveObjectManager *pWaveObjectManager)
     : WaveElement           (pWaveObjectManager),
-      PrismPersistableObject (WaveManagedView::getClassName ()),
+      WavePersistableObject (WaveManagedView::getClassName ()),
       WaveManagedObject      (pWaveObjectManager)
 {   
 }

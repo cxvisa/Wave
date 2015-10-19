@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-class PrismAsynchronousContext;
+class WaveAsynchronousContext;
 class FrameworkTestabilityMessage8;
 class FrameworkTestabilityMessage9;
 class FrameworkTestabilityMessage10;
@@ -165,7 +165,7 @@ class FrameworkTestability4ObjectManager: public WaveLocalObjectManager
 
         static  FrameworkTestability4ObjectManager *getInstance         ();
         static  WaveServiceId                      getWaveServiceId   ();
-        static  string                              getPrismServiceName ();
+        static  string                              getWaveServiceName ();
 
 
     // Now the data members

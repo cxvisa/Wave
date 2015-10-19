@@ -10,7 +10,7 @@
 #include "Cluster/ClusterTypes.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -96,13 +96,13 @@ void CentralClusterConfigGetDebugInfoWorker::getDebugInfoHandler(ClusterConfigOb
 							    *pClusterObjectManagerGetClusterInfoMsg)
 {
   trace(TRACE_LEVEL_DEBUG,"getDebugInfoHandler Called");
-  PrismLinearSequencerStep sequencerSteps[] = 
+  WaveLinearSequencerStep sequencerSteps[] = 
   {
 
-      reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep),
-      reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep),
-      reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::prismLinearSequencerSucceededStep),
-      reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::prismLinearSequencerFailedStep)
+      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep),
+      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep),
+      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::prismLinearSequencerSucceededStep),
+      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::prismLinearSequencerFailedStep)
   };
 
   //Note that this is freed in SequencerSucceeded step inside the framework code
@@ -137,7 +137,7 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(WaveLinear
 
      //pointer to the cluster MO. Note that this vector will have only one element 
      //because the node is part of only one cluster.
-     vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
+     vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
      waveAssert (NULL != pResults, __FILE__, __LINE__);
      if (NULL == pResults)
      {         
@@ -170,35 +170,35 @@ void CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep(WaveLinear
      }
 
      //Pointer to cluster MO
-     PrismCluster* pPrismCluster = (dynamic_cast<PrismCluster *> ((*pResults)[0]));
+     WaveCluster* pWaveCluster = (dynamic_cast<WaveCluster *> ((*pResults)[0]));
 
-     waveAssert(NULL != pPrismCluster,__FILE__,__LINE__);
+     waveAssert(NULL != pWaveCluster,__FILE__,__LINE__);
 
      //Cluster related info
      pClusterObjectManagerGetClusterInfoMsg->setClusterCreated(true);
 
      //IP
-     string nodeIpAddress   = pPrismCluster->getPrimaryIpAddress();
+     string nodeIpAddress   = pWaveCluster->getPrimaryIpAddress();
      pClusterObjectManagerGetClusterInfoMsg->setPrimaryNodeIpAddress(nodeIpAddress);
 
      //Port
-     UI32 nodePort = pPrismCluster->getPrimaryPort();
+     UI32 nodePort = pWaveCluster->getPrimaryPort();
      pClusterObjectManagerGetClusterInfoMsg->setPrimaryNodePort(nodePort);
 
      //LocationId
-     LocationId nodeLocationId = pPrismCluster->getPrimaryLocationId();
+     LocationId nodeLocationId = pWaveCluster->getPrimaryLocationId();
      pClusterObjectManagerGetClusterInfoMsg->setPrimaryNodeLocationId(nodeLocationId);
 
      //Generic Status
      pClusterObjectManagerGetClusterInfoMsg->setPrimaryNodeGenericStatus
-	 (pPrismCluster->getGenericStatus());
+	 (pWaveCluster->getGenericStatus());
 
      //Specific Status
      pClusterObjectManagerGetClusterInfoMsg->setPrimaryNodeSpecificStatus
-	 (pPrismCluster->getSpecificStatus());
+	 (pWaveCluster->getSpecificStatus());
 
      //Number of secondary nodes
-     UI32 numSecondaryNodes = pPrismCluster->getSecondaryNodes().size();
+     UI32 numSecondaryNodes = pWaveCluster->getSecondaryNodes().size();
      pClusterObjectManagerGetClusterInfoMsg->setNSecondaryNodes(numSecondaryNodes);
 
      tracePrintf (TRACE_LEVEL_DEVEL, 
@@ -241,7 +241,7 @@ void CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep(WaveLinea
      waveAssert (NULL != pResults, __FILE__, __LINE__);
      UI32 nNodes = pResults->size();
 
-     //Check if the number of secondary nodes from the Cluster MO pPrismCluster
+     //Check if the number of secondary nodes from the Cluster MO pWaveCluster
      //matches the number of secondary wave nodes obtained directly from the 
      // dataabse.If not bail out.
 

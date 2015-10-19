@@ -18,8 +18,8 @@ class DestroyClusterContext : public DeleteNodesFromClusterContext
     private :
     protected :
     public :
-                                                      DestroyClusterContext            (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                                      DestroyClusterContext            (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      DestroyClusterContext            (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      DestroyClusterContext            (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                      ~DestroyClusterContext            ();
 
                 LocationRole                          getThisLocationRoleBeforeDestroy () const;

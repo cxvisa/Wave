@@ -7,18 +7,18 @@
 #ifndef MULTIPARTITIONSEQUENCERCONTEXT_H
 #define MULTIPARTITIONSEQUENCERCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Cluster/MultiPartition/Global/WavePartitionManagedObject.h"
 
 namespace WaveNs
 {
 
-class MultiPartitionSynchronousLinearSequencerContext : public PrismSynchronousLinearSequencerContext
+class MultiPartitionSynchronousLinearSequencerContext : public WaveSynchronousLinearSequencerContext
 {
     private:
     protected:
     public:
-                 MultiPartitionSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                 MultiPartitionSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~MultiPartitionSynchronousLinearSequencerContext (void); 
 
         void     setWavePartitionManagedObject(WavePartitionManagedObject *pObject);

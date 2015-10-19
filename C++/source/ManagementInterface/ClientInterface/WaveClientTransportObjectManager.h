@@ -73,7 +73,7 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
 
 
         WaveServiceId              getWaveServiceIdForServiceName                 (const UI32 &serverId, const string &serviceName);
-        string                      getPrismServiceNameForServiceId                 (const UI32 &serverId, const WaveServiceId &serviceId);
+        string                      getWaveServiceNameForServiceId                 (const UI32 &serverId, const WaveServiceId &serviceId);
         void                        addServerId                                     (const UI32 &serverId);
         void                        removeServerId                                  (const UI32 &serverId);
         bool                        validateIfInTheMiddleOfConnectingToServer       (const UI32 &serverId);

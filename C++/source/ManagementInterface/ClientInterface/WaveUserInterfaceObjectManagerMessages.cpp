@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 WaveUpdateClientStatusMessage::WaveUpdateClientStatusMessage()
-: ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), WAVE_UPDATE_CLIENT_STATUS),
+: ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), WAVE_UPDATE_CLIENT_STATUS),
   m_terminalMonitorStatus (false)
 {
 }
 
 WaveUpdateClientStatusMessage::WaveUpdateClientStatusMessage( const bool terminalMonitorStatus)
-: ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), WAVE_UPDATE_CLIENT_STATUS),
+: ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), WAVE_UPDATE_CLIENT_STATUS),
   m_terminalMonitorStatus (terminalMonitorStatus)
 {
 }

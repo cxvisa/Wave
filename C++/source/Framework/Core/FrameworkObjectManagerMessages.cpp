@@ -15,25 +15,25 @@
 namespace WaveNs
 {
 
-PrismCreateClusterWithNodesMessage::PrismCreateClusterWithNodesMessage (WaveServiceId serviceCode, UI32 operationCode)
+WaveCreateClusterWithNodesMessage::WaveCreateClusterWithNodesMessage (WaveServiceId serviceCode, UI32 operationCode)
     : WaveMessage (serviceCode, operationCode),
       m_currentValidtionResultsBufferTag (0),
       m_isAddNodeForSpecialCase (false)
 {
 }
 
-PrismCreateClusterWithNodesMessage::PrismCreateClusterWithNodesMessage ()
+WaveCreateClusterWithNodesMessage::WaveCreateClusterWithNodesMessage ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CREATE_CLUSTER_WITH_NODES),
       m_currentValidtionResultsBufferTag (0),
       m_isAddNodeForSpecialCase (false)
 {
 }
 
-PrismCreateClusterWithNodesMessage::~PrismCreateClusterWithNodesMessage ()
+WaveCreateClusterWithNodesMessage::~WaveCreateClusterWithNodesMessage ()
 {
 }
 
-bool PrismCreateClusterWithNodesMessage::isNewNodeIpAddressExists (const string &newNodeIpAddress, const SI32 &newNodePort)
+bool WaveCreateClusterWithNodesMessage::isNewNodeIpAddressExists (const string &newNodeIpAddress, const SI32 &newNodePort)
 {
     bool exists              = false;
     UI32 numberOfIpAddresses = m_newNodesIpAddresses.size ();
@@ -51,7 +51,7 @@ bool PrismCreateClusterWithNodesMessage::isNewNodeIpAddressExists (const string 
     return (exists);
 }
 
-void PrismCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort (const string &newNodeIpAddress, const SI32 &newNodePort)
+void WaveCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort (const string &newNodeIpAddress, const SI32 &newNodePort)
 {
     if (false == (isNewNodeIpAddressExists (newNodeIpAddress, newNodePort)))
     {
@@ -62,17 +62,17 @@ void PrismCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort (const strin
     {
         // Adding duplicate ip addresses.
 
-        trace (TRACE_LEVEL_FATAL, "PrismCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort : Adding duplicate IP Address and Port.");
+        trace (TRACE_LEVEL_FATAL, "WaveCreateClusterWithNodesMessage::addNewNodeIpAddressAndPort : Adding duplicate IP Address and Port.");
         waveAssert (false, __FILE__, __LINE__);
     }
 }
 
-UI32 PrismCreateClusterWithNodesMessage::getNumberOfNewNodes ()
+UI32 WaveCreateClusterWithNodesMessage::getNumberOfNewNodes ()
 {
     return (m_newNodesIpAddresses.size ());
 }
 
-string PrismCreateClusterWithNodesMessage::getNodeAt (UI32 i)
+string WaveCreateClusterWithNodesMessage::getNodeAt (UI32 i)
 {
     if (i < (m_newNodesIpAddresses.size ()))
     {
@@ -82,14 +82,14 @@ string PrismCreateClusterWithNodesMessage::getNodeAt (UI32 i)
     {
         // index out of range.
 
-        trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::getNodeAt : Index out of range, i = ") + i + string (" , Max Allowed = ") + m_newNodesIpAddresses.size ());
+        trace (TRACE_LEVEL_FATAL, string ("WaveCreateClusterWithNodesMessage::getNodeAt : Index out of range, i = ") + i + string (" , Max Allowed = ") + m_newNodesIpAddresses.size ());
         waveAssert (false, __FILE__, __LINE__);
 
         return (string (""));
     }
 }
 
-SI32 PrismCreateClusterWithNodesMessage::getNodePortAt (UI32 i)
+SI32 WaveCreateClusterWithNodesMessage::getNodePortAt (UI32 i)
 {
     if (i < (m_newNodesPorts.size ()))
     {
@@ -99,14 +99,14 @@ SI32 PrismCreateClusterWithNodesMessage::getNodePortAt (UI32 i)
     {
         // index out of range.
 
-        trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::getNodePortAt : Index out of range, i = ") + i + string (" , Max Allowed = ") + m_newNodesPorts.size ());
+        trace (TRACE_LEVEL_FATAL, string ("WaveCreateClusterWithNodesMessage::getNodePortAt : Index out of range, i = ") + i + string (" , Max Allowed = ") + m_newNodesPorts.size ());
         waveAssert (false, __FILE__, __LINE__);
 
         return (0);
     }
 }
 
-void PrismCreateClusterWithNodesMessage::setNewNodeStatus (const string &newNodeIpAddress, const SI32 &newNodePort, ResourceId status)
+void WaveCreateClusterWithNodesMessage::setNewNodeStatus (const string &newNodeIpAddress, const SI32 &newNodePort, ResourceId status)
 {
     string                            uniqueTag = newNodeIpAddress + "#" + newNodePort;
     map<string, ResourceId>::iterator element   = m_newNodesStatus.find (uniqueTag);
@@ -118,12 +118,12 @@ void PrismCreateClusterWithNodesMessage::setNewNodeStatus (const string &newNode
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::setNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is already set.");
+        trace (TRACE_LEVEL_FATAL, string ("WaveCreateClusterWithNodesMessage::setNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is already set.");
         waveAssert (false, __FILE__, __LINE__);
     }
 }
 
-void PrismCreateClusterWithNodesMessage::updateNewNodeStatus (const string &newNodeIpAddress, const SI32 &newNodePort, ResourceId status)
+void WaveCreateClusterWithNodesMessage::updateNewNodeStatus (const string &newNodeIpAddress, const SI32 &newNodePort, ResourceId status)
 {
     string                            uniqueTag = newNodeIpAddress + "#" + newNodePort;
     map<string, ResourceId>::iterator element   = m_newNodesStatus.find (uniqueTag);
@@ -135,12 +135,12 @@ void PrismCreateClusterWithNodesMessage::updateNewNodeStatus (const string &newN
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::updateNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is not previously set.");
+        trace (TRACE_LEVEL_FATAL, string ("WaveCreateClusterWithNodesMessage::updateNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is not previously set.");
         waveAssert (false, __FILE__, __LINE__);
     }
 }
 
-ResourceId PrismCreateClusterWithNodesMessage::getNewNodeStatus (const string &newNodeIpAddress, const SI32 &newNodePort)
+ResourceId WaveCreateClusterWithNodesMessage::getNewNodeStatus (const string &newNodeIpAddress, const SI32 &newNodePort)
 {
     string                            uniqueTag = newNodeIpAddress + "#" + newNodePort;
     map<string, ResourceId>::iterator element   = m_newNodesStatus.find (uniqueTag);
@@ -152,13 +152,13 @@ ResourceId PrismCreateClusterWithNodesMessage::getNewNodeStatus (const string &n
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, string ("PrismCreateClusterWithNodesMessage::getNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is not set.");
+        trace (TRACE_LEVEL_FATAL, string ("WaveCreateClusterWithNodesMessage::getNewNodeStatus : This node (") + newNodeIpAddress + ":" + newNodePort + ") status is not set.");
         waveAssert (false, __FILE__, __LINE__);
         return (WAVE_MESSAGE_ERROR);
     }
 }
 
-bool PrismCreateClusterWithNodesMessage::isNewNodeStatusSet (const string &newNodeIpAddress, const SI32 &newNodePort)
+bool WaveCreateClusterWithNodesMessage::isNewNodeStatusSet (const string &newNodeIpAddress, const SI32 &newNodePort)
 {
     string                            uniqueTag = newNodeIpAddress + "#" + newNodePort;
     map<string, ResourceId>::iterator element   = m_newNodesStatus.find (uniqueTag);
@@ -174,12 +174,12 @@ bool PrismCreateClusterWithNodesMessage::isNewNodeStatusSet (const string &newNo
     }
 }
 
-void PrismCreateClusterWithNodesMessage::setValidationDetails (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
+void WaveCreateClusterWithNodesMessage::setValidationDetails (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
 {
     addBuffer (VALIDATION_DETAILS_BUFFER_TAG, bufferSize, pBuffer, transferBufferOwnershipToMessage);
 }
 
-void PrismCreateClusterWithNodesMessage::getValidationDetails (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
+void WaveCreateClusterWithNodesMessage::getValidationDetails (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
 {
     if (true == transferBufferOwnershipToUser)
     {
@@ -191,7 +191,7 @@ void PrismCreateClusterWithNodesMessage::getValidationDetails (UI32 &bufferSize,
     }
 }
 
-void PrismCreateClusterWithNodesMessage::setValidationResults (const string &newNodeIpAddress, const SI32 &newNodePort, const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
+void WaveCreateClusterWithNodesMessage::setValidationResults (const string &newNodeIpAddress, const SI32 &newNodePort, const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
 {
     UI32   bufferTag = VALIDATION_RESULTS_BUFFER_TAG + m_currentValidtionResultsBufferTag;
     string uniqueTag = newNodeIpAddress + "#" + newNodePort;
@@ -204,7 +204,7 @@ void PrismCreateClusterWithNodesMessage::setValidationResults (const string &new
     m_currentValidtionResultsBufferTag++;
 }
 
-void PrismCreateClusterWithNodesMessage::getValidationResults (const string &newNodeIpAddress, const SI32 &newNodePort, UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
+void WaveCreateClusterWithNodesMessage::getValidationResults (const string &newNodeIpAddress, const SI32 &newNodePort, UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
 {
     string                      uniqueTag = newNodeIpAddress + "#" + newNodePort;
     map<string, UI32>::iterator element   = m_newNodeValidationResults.find (uniqueTag);
@@ -234,27 +234,27 @@ void PrismCreateClusterWithNodesMessage::getValidationResults (const string &new
     }
 }
 
-void PrismCreateClusterWithNodesMessage::setIsAddNodeForSpecialCaseFlag (const bool &isAddNodeForSpecialCase)
+void WaveCreateClusterWithNodesMessage::setIsAddNodeForSpecialCaseFlag (const bool &isAddNodeForSpecialCase)
 {
     m_isAddNodeForSpecialCase = isAddNodeForSpecialCase;
 }
 
-bool PrismCreateClusterWithNodesMessage::getIsAddNodeForSpecialCaseFlag () const
+bool WaveCreateClusterWithNodesMessage::getIsAddNodeForSpecialCaseFlag () const
 {
     return (m_isAddNodeForSpecialCase);
 }
 
-void PrismCreateClusterWithNodesMessage::setFilenamesToSync ( const vector<string> &filenamesToSync )
+void WaveCreateClusterWithNodesMessage::setFilenamesToSync ( const vector<string> &filenamesToSync )
 {   
     m_filenamesToSync = filenamesToSync;
 }
 
-void PrismCreateClusterWithNodesMessage::getFilenamesToSync ( vector<string> &filenamesToSync )
+void WaveCreateClusterWithNodesMessage::getFilenamesToSync ( vector<string> &filenamesToSync )
 {   
     filenamesToSync = m_filenamesToSync;
 }
 
-PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage ()
+WaveConfigureClusterSecondaryMessage::WaveConfigureClusterSecondaryMessage ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY),
       m_clusterPrimaryPort (0),
       m_clusterPrimaryLocationId (0),
@@ -264,7 +264,7 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage ()
 {
 }
 
-PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode)
+WaveConfigureClusterSecondaryMessage::WaveConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode)
     : WaveMessage (serviceCode, operationCode),
       m_clusterPrimaryPort (0),
       m_clusterPrimaryLocationId (0),
@@ -274,9 +274,9 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (Wa
 {
 }
 
-PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
+WaveConfigureClusterSecondaryMessage::WaveConfigureClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode, const string &clusterPrimaryWaveVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
     : WaveMessage (serviceCode, operationCode),
-      m_clusterPrimaryPrismVersion (clusterPrimaryPrismVersion),
+      m_clusterPrimaryWaveVersion (clusterPrimaryWaveVersion),
       m_clusterPrimaryIpAddress (clusterPrimaryIpAddress),
       m_clusterPrimaryPort (clusterPrimaryPort),
       m_clusterPrimaryLocationId (clusterPrimaryLocationId),
@@ -287,9 +287,9 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (Wa
 {
 }
 
-PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
+WaveConfigureClusterSecondaryMessage::WaveConfigureClusterSecondaryMessage (const string &clusterPrimaryWaveVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY),
-      m_clusterPrimaryPrismVersion (clusterPrimaryPrismVersion),
+      m_clusterPrimaryWaveVersion (clusterPrimaryWaveVersion),
       m_clusterPrimaryIpAddress (clusterPrimaryIpAddress),
       m_clusterPrimaryPort (clusterPrimaryPort),
       m_clusterPrimaryLocationId (clusterPrimaryLocationId),
@@ -300,50 +300,50 @@ PrismConfigureClusterSecondaryMessage::PrismConfigureClusterSecondaryMessage (co
 {
 }
 
-PrismConfigureClusterSecondaryMessage::~PrismConfigureClusterSecondaryMessage ()
+WaveConfigureClusterSecondaryMessage::~WaveConfigureClusterSecondaryMessage ()
 {
 }
 
-string PrismConfigureClusterSecondaryMessage::getClusterPrimaryPrismVersion ()
+string WaveConfigureClusterSecondaryMessage::getClusterPrimaryWaveVersion ()
 {
-    return (m_clusterPrimaryPrismVersion);
+    return (m_clusterPrimaryWaveVersion);
 }
 
-string PrismConfigureClusterSecondaryMessage::getClusterPrimaryIpAddress ()
+string WaveConfigureClusterSecondaryMessage::getClusterPrimaryIpAddress ()
 {
     return (m_clusterPrimaryIpAddress);
 }
 
-SI32 PrismConfigureClusterSecondaryMessage::getClusterPrimaryPort ()
+SI32 WaveConfigureClusterSecondaryMessage::getClusterPrimaryPort ()
 {
     return (m_clusterPrimaryPort);
 }
 
-LocationId PrismConfigureClusterSecondaryMessage::getClusterPrimaryLocationId ()
+LocationId WaveConfigureClusterSecondaryMessage::getClusterPrimaryLocationId ()
 {
     return (m_clusterPrimaryLocationId);
 }
 
-string PrismConfigureClusterSecondaryMessage::getIpAddress ()
+string WaveConfigureClusterSecondaryMessage::getIpAddress ()
 {
     return (m_ipAddress);
 }
 
-SI32 PrismConfigureClusterSecondaryMessage::getPort ()
+SI32 WaveConfigureClusterSecondaryMessage::getPort ()
 {
     return (m_port);
 }
 
-LocationId PrismConfigureClusterSecondaryMessage::getLocationId ()
+LocationId WaveConfigureClusterSecondaryMessage::getLocationId ()
 {
     return (m_locationId);
 }
 
-void PrismConfigureClusterSecondaryMessage::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
-     addSerializableAttribute (new AttributeString     (&m_clusterPrimaryPrismVersion,          "clusterPrimaryPrismVersion"));
+     addSerializableAttribute (new AttributeString     (&m_clusterPrimaryWaveVersion,          "clusterPrimaryWaveVersion"));
      addSerializableAttribute (new AttributeString     (&m_clusterPrimaryIpAddress,             "clusterPrimaryIpAddress"));
      addSerializableAttribute (new AttributeSI32       (&m_clusterPrimaryPort,                  "clusterPrimaryPort"));
      addSerializableAttribute (new AttributeLocationId (&m_clusterPrimaryLocationId,            "clusterPrimaryLocationId"));
@@ -360,7 +360,7 @@ void PrismConfigureClusterSecondaryMessage::setupAttributesForSerialization ()
 
 }
 
-void  PrismConfigureClusterSecondaryMessage::getSchemaChangeVectors (vector<string>   & managedObjectNamesForSchemaChange,vector<string>   & fieldNamesStringsForSchemaChange,vector<string> & fieldNamesTypesForSchemaChange,vector<UI32>   & classIds,vector<UI32> & parentTableIds)
+void  WaveConfigureClusterSecondaryMessage::getSchemaChangeVectors (vector<string>   & managedObjectNamesForSchemaChange,vector<string>   & fieldNamesStringsForSchemaChange,vector<string> & fieldNamesTypesForSchemaChange,vector<UI32>   & classIds,vector<UI32> & parentTableIds)
 {
      managedObjectNamesForSchemaChange = m_managedObjectNamesForSchemaChange;
      fieldNamesStringsForSchemaChange = m_fieldNamesStringsForSchemaChange;
@@ -370,7 +370,7 @@ void  PrismConfigureClusterSecondaryMessage::getSchemaChangeVectors (vector<stri
 }
 
 
-void  PrismConfigureClusterSecondaryMessage::setSchemaChangeVectors ()
+void  WaveConfigureClusterSecondaryMessage::setSchemaChangeVectors ()
 {
      vector<string>  managedObjectNamesForSchemaChange;
      vector<string>  fieldNamesStringsForSchemaChange;
@@ -388,12 +388,12 @@ void  PrismConfigureClusterSecondaryMessage::setSchemaChangeVectors ()
      m_parentTableIds = parentTableIds;
 }
 
-void PrismConfigureClusterSecondaryMessage::setValidationDetails (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
+void WaveConfigureClusterSecondaryMessage::setValidationDetails (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
 {
     addBuffer (VALIDATION_DETAILS_BUFFER_TAG, bufferSize, pBuffer, transferBufferOwnershipToMessage);
 }
 
-void PrismConfigureClusterSecondaryMessage::getValidationDetails (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
+void WaveConfigureClusterSecondaryMessage::getValidationDetails (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
 {
     if (true == transferBufferOwnershipToUser)
     {
@@ -405,12 +405,12 @@ void PrismConfigureClusterSecondaryMessage::getValidationDetails (UI32 &bufferSi
     }
 }
 
-void PrismConfigureClusterSecondaryMessage::setValidationResults (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
+void WaveConfigureClusterSecondaryMessage::setValidationResults (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
 {
     addBuffer (VALIDATION_RESULTS_BUFFER_TAG, bufferSize, pBuffer, transferBufferOwnershipToMessage);
 }
 
-void PrismConfigureClusterSecondaryMessage::getValidationResults (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
+void WaveConfigureClusterSecondaryMessage::getValidationResults (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
 {
     if (true == transferBufferOwnershipToUser)
     {
@@ -422,161 +422,161 @@ void PrismConfigureClusterSecondaryMessage::getValidationResults (UI32 &bufferSi
     }
 }
 
-void PrismConfigureClusterSecondaryMessage::setIsAddNodeForSpecialCaseFlag (const bool &isAddNodeForSpecialCase)
+void WaveConfigureClusterSecondaryMessage::setIsAddNodeForSpecialCaseFlag (const bool &isAddNodeForSpecialCase)
 {
     m_isAddNodeForSpecialCase = isAddNodeForSpecialCase;
 }
 
-bool PrismConfigureClusterSecondaryMessage::getIsAddNodeForSpecialCaseFlag () const
+bool WaveConfigureClusterSecondaryMessage::getIsAddNodeForSpecialCaseFlag () const
 {
     return (m_isAddNodeForSpecialCase);
 }
 
-PrismConfigureClusterSecondaryHaPeerMessage::PrismConfigureClusterSecondaryHaPeerMessage ()
-    : PrismConfigureClusterSecondaryMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER)
+WaveConfigureClusterSecondaryHaPeerMessage::WaveConfigureClusterSecondaryHaPeerMessage ()
+    : WaveConfigureClusterSecondaryMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER)
 {
 }
 
-PrismConfigureClusterSecondaryHaPeerMessage::~PrismConfigureClusterSecondaryHaPeerMessage ()
+WaveConfigureClusterSecondaryHaPeerMessage::~WaveConfigureClusterSecondaryHaPeerMessage ()
 {
 }
 
-void PrismConfigureClusterSecondaryHaPeerMessage::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryHaPeerMessage::setupAttributesForSerialization ()
 {
-    PrismConfigureClusterSecondaryMessage::setupAttributesForSerialization ();
+    WaveConfigureClusterSecondaryMessage::setupAttributesForSerialization ();
 }
 
-PrismConfigureClusterSecondaryPhase1Message::PrismConfigureClusterSecondaryPhase1Message ()
+WaveConfigureClusterSecondaryPhase1Message::WaveConfigureClusterSecondaryPhase1Message ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_1)
 {
 }
 
-PrismConfigureClusterSecondaryPhase1Message::PrismConfigureClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
+WaveConfigureClusterSecondaryPhase1Message::WaveConfigureClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
     : WaveMessage (serviceCode, operationCode)
 {
 }
 
-PrismConfigureClusterSecondaryPhase1Message::~PrismConfigureClusterSecondaryPhase1Message ()
+WaveConfigureClusterSecondaryPhase1Message::~WaveConfigureClusterSecondaryPhase1Message ()
 {
 }
 
-void PrismConfigureClusterSecondaryPhase1Message::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryPhase1Message::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
      addSerializableAttribute (new AttributeString (&m_filenameToSync, "filenameToSync"));
 }
 
-UI32 PrismConfigureClusterSecondaryPhase1Message::getDatabaseBackupBufferTag ()
+UI32 WaveConfigureClusterSecondaryPhase1Message::getDatabaseBackupBufferTag ()
 {
     return (UINT_MAX);
 }
 
-void PrismConfigureClusterSecondaryPhase1Message::setFilenameToSync ( const string &filenameToSync )
+void WaveConfigureClusterSecondaryPhase1Message::setFilenameToSync ( const string &filenameToSync )
 {   
     m_filenameToSync = filenameToSync;
 }
 
-void PrismConfigureClusterSecondaryPhase1Message::getFilenameToSync ( string &filenameToSync )
+void WaveConfigureClusterSecondaryPhase1Message::getFilenameToSync ( string &filenameToSync )
 {   
     filenameToSync = m_filenameToSync;
 }
 
-PrismConfigureClusterSecondaryHaPeerPhase1Message::PrismConfigureClusterSecondaryHaPeerPhase1Message ()
-    : PrismConfigureClusterSecondaryPhase1Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
+WaveConfigureClusterSecondaryHaPeerPhase1Message::WaveConfigureClusterSecondaryHaPeerPhase1Message ()
+    : WaveConfigureClusterSecondaryPhase1Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
 {
 }
 
-PrismConfigureClusterSecondaryHaPeerPhase1Message::~PrismConfigureClusterSecondaryHaPeerPhase1Message ()
+WaveConfigureClusterSecondaryHaPeerPhase1Message::~WaveConfigureClusterSecondaryHaPeerPhase1Message ()
 {
 }
 
-void PrismConfigureClusterSecondaryHaPeerPhase1Message::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryHaPeerPhase1Message::setupAttributesForSerialization ()
 {
-    PrismConfigureClusterSecondaryPhase1Message::setupAttributesForSerialization ();
+    WaveConfigureClusterSecondaryPhase1Message::setupAttributesForSerialization ();
 }
 
-PrismConfigureClusterSecondaryPhase2Message::PrismConfigureClusterSecondaryPhase2Message ()
+WaveConfigureClusterSecondaryPhase2Message::WaveConfigureClusterSecondaryPhase2Message ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_2)
 {
 }
 
-PrismConfigureClusterSecondaryPhase2Message::~PrismConfigureClusterSecondaryPhase2Message ()
+WaveConfigureClusterSecondaryPhase2Message::~WaveConfigureClusterSecondaryPhase2Message ()
 {
 }
 
-void PrismConfigureClusterSecondaryPhase2Message::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryPhase2Message::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 }
 
-PrismConfigureClusterSecondaryPhase3Message::PrismConfigureClusterSecondaryPhase3Message ()
+WaveConfigureClusterSecondaryPhase3Message::WaveConfigureClusterSecondaryPhase3Message ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_PHASE_3)
 {
 }
 
-PrismConfigureClusterSecondaryPhase3Message::PrismConfigureClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
+WaveConfigureClusterSecondaryPhase3Message::WaveConfigureClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
     : WaveMessage (serviceCode, operationCode)
 {
 }
 
-PrismConfigureClusterSecondaryPhase3Message::~PrismConfigureClusterSecondaryPhase3Message ()
+WaveConfigureClusterSecondaryPhase3Message::~WaveConfigureClusterSecondaryPhase3Message ()
 {
 }
 
-void PrismConfigureClusterSecondaryPhase3Message::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryPhase3Message::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 }
 
-PrismConfigureClusterSecondaryHaPeerPhase3Message::PrismConfigureClusterSecondaryHaPeerPhase3Message ()
-    : PrismConfigureClusterSecondaryPhase3Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
+WaveConfigureClusterSecondaryHaPeerPhase3Message::WaveConfigureClusterSecondaryHaPeerPhase3Message ()
+    : WaveConfigureClusterSecondaryPhase3Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_CONFIGURE_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
 {
 }
 
-PrismConfigureClusterSecondaryHaPeerPhase3Message::~PrismConfigureClusterSecondaryHaPeerPhase3Message ()
+WaveConfigureClusterSecondaryHaPeerPhase3Message::~WaveConfigureClusterSecondaryHaPeerPhase3Message ()
 {
 }
 
-void PrismConfigureClusterSecondaryHaPeerPhase3Message::setupAttributesForSerialization ()
+void WaveConfigureClusterSecondaryHaPeerPhase3Message::setupAttributesForSerialization ()
 {
-    PrismConfigureClusterSecondaryPhase3Message::setupAttributesForSerialization ();
+    WaveConfigureClusterSecondaryPhase3Message::setupAttributesForSerialization ();
 }
 
-PrismRejoinClusterSecondaryPhase1Message::PrismRejoinClusterSecondaryPhase1Message ()
-    : PrismConfigureClusterSecondaryPhase1Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1)
-{
-}
-
-PrismRejoinClusterSecondaryPhase1Message::PrismRejoinClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismConfigureClusterSecondaryPhase1Message (serviceCode, operationCode)
+WaveRejoinClusterSecondaryPhase1Message::WaveRejoinClusterSecondaryPhase1Message ()
+    : WaveConfigureClusterSecondaryPhase1Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_1)
 {
 }
 
-PrismRejoinClusterSecondaryPhase1Message::~PrismRejoinClusterSecondaryPhase1Message ()
+WaveRejoinClusterSecondaryPhase1Message::WaveRejoinClusterSecondaryPhase1Message (WaveServiceId serviceCode, UI32 operationCode)
+    : WaveConfigureClusterSecondaryPhase1Message (serviceCode, operationCode)
 {
 }
 
-void PrismRejoinClusterSecondaryPhase1Message::setupAttributesForSerialization ()
-{
-    PrismConfigureClusterSecondaryPhase1Message::setupAttributesForSerialization ();
-}
-
-PrismRejoinClusterSecondaryHaPeerPhase1Message::PrismRejoinClusterSecondaryHaPeerPhase1Message ()
-    : PrismRejoinClusterSecondaryPhase1Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
+WaveRejoinClusterSecondaryPhase1Message::~WaveRejoinClusterSecondaryPhase1Message ()
 {
 }
 
-PrismRejoinClusterSecondaryHaPeerPhase1Message::~PrismRejoinClusterSecondaryHaPeerPhase1Message ()
+void WaveRejoinClusterSecondaryPhase1Message::setupAttributesForSerialization ()
+{
+    WaveConfigureClusterSecondaryPhase1Message::setupAttributesForSerialization ();
+}
+
+WaveRejoinClusterSecondaryHaPeerPhase1Message::WaveRejoinClusterSecondaryHaPeerPhase1Message ()
+    : WaveRejoinClusterSecondaryPhase1Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_1)
 {
 }
 
-void PrismRejoinClusterSecondaryHaPeerPhase1Message::setupAttributesForSerialization ()
+WaveRejoinClusterSecondaryHaPeerPhase1Message::~WaveRejoinClusterSecondaryHaPeerPhase1Message ()
 {
-    PrismRejoinClusterSecondaryPhase1Message::setupAttributesForSerialization ();
+}
+
+void WaveRejoinClusterSecondaryHaPeerPhase1Message::setupAttributesForSerialization ()
+{
+    WaveRejoinClusterSecondaryPhase1Message::setupAttributesForSerialization ();
 }
 
 /// Name
-/// PrismRejoinClusterSecondaryPhase2Message
+/// WaveRejoinClusterSecondaryPhase2Message
 /// Description
 /// Constructor
 /// Input
@@ -585,7 +585,7 @@ void PrismRejoinClusterSecondaryHaPeerPhase1Message::setupAttributesForSerializa
 /// none
 /// Return
 /// none
-PrismRejoinClusterSecondaryPhase2Message::PrismRejoinClusterSecondaryPhase2Message ()
+WaveRejoinClusterSecondaryPhase2Message::WaveRejoinClusterSecondaryPhase2Message ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_2),
       m_isReplaceRejoin (false),
       m_replacedNodeLocationId (0)
@@ -593,7 +593,7 @@ PrismRejoinClusterSecondaryPhase2Message::PrismRejoinClusterSecondaryPhase2Messa
 }
 
 /// Name
-/// ~PrismRejoinClusterSecondaryPhase2Message
+/// ~WaveRejoinClusterSecondaryPhase2Message
 /// Description
 /// Destructor
 /// Input
@@ -602,7 +602,7 @@ PrismRejoinClusterSecondaryPhase2Message::PrismRejoinClusterSecondaryPhase2Messa
 /// none
 /// Return
 /// none
-PrismRejoinClusterSecondaryPhase2Message::~PrismRejoinClusterSecondaryPhase2Message ()
+WaveRejoinClusterSecondaryPhase2Message::~WaveRejoinClusterSecondaryPhase2Message ()
 {
 }
 /// Name
@@ -618,24 +618,24 @@ PrismRejoinClusterSecondaryPhase2Message::~PrismRejoinClusterSecondaryPhase2Mess
 /// Return
 /// none
 
-void PrismRejoinClusterSecondaryPhase2Message::setupAttributesForSerialization ()
+void WaveRejoinClusterSecondaryPhase2Message::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
      addSerializableAttribute (new AttributeBool (&m_isReplaceRejoin, "isReplaceRejoin"));
 }
 
-bool PrismRejoinClusterSecondaryPhase2Message::getIsReplaceRejoin ()
+bool WaveRejoinClusterSecondaryPhase2Message::getIsReplaceRejoin ()
 {
     return (m_isReplaceRejoin);
 }
 
-void PrismRejoinClusterSecondaryPhase2Message::setIsReplaceRejoin (const bool &isReplaceRejoin)
+void WaveRejoinClusterSecondaryPhase2Message::setIsReplaceRejoin (const bool &isReplaceRejoin)
 {
     m_isReplaceRejoin = isReplaceRejoin;
 }
 
 /// Name
-/// PrismRejoinClusterSecondaryPhase3Message
+/// WaveRejoinClusterSecondaryPhase3Message
 /// Description
 /// Constructor
 /// Input
@@ -644,18 +644,18 @@ void PrismRejoinClusterSecondaryPhase2Message::setIsReplaceRejoin (const bool &i
 /// none
 /// Return
 /// none
-PrismRejoinClusterSecondaryPhase3Message::PrismRejoinClusterSecondaryPhase3Message ()
+WaveRejoinClusterSecondaryPhase3Message::WaveRejoinClusterSecondaryPhase3Message ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_PHASE_3)
 {
 }
 
-PrismRejoinClusterSecondaryPhase3Message::PrismRejoinClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
+WaveRejoinClusterSecondaryPhase3Message::WaveRejoinClusterSecondaryPhase3Message (WaveServiceId serviceCode, UI32 operationCode)
     : WaveMessage (serviceCode, operationCode)
 {
 }
 
 /// Name
-/// ~PrismRejoinClusterSecondaryPhase3Message
+/// ~WaveRejoinClusterSecondaryPhase3Message
 /// Description
 /// Destructor
 /// Input
@@ -664,7 +664,7 @@ PrismRejoinClusterSecondaryPhase3Message::PrismRejoinClusterSecondaryPhase3Messa
 /// none
 /// Return
 /// none
-PrismRejoinClusterSecondaryPhase3Message::~PrismRejoinClusterSecondaryPhase3Message ()
+WaveRejoinClusterSecondaryPhase3Message::~WaveRejoinClusterSecondaryPhase3Message ()
 {
 }
 /// Name
@@ -680,23 +680,23 @@ PrismRejoinClusterSecondaryPhase3Message::~PrismRejoinClusterSecondaryPhase3Mess
 /// Return
 /// none
 
-void PrismRejoinClusterSecondaryPhase3Message::setupAttributesForSerialization ()
+void WaveRejoinClusterSecondaryPhase3Message::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 }
 
-PrismRejoinClusterSecondaryHaPeerPhase3Message::PrismRejoinClusterSecondaryHaPeerPhase3Message ()
-    : PrismRejoinClusterSecondaryPhase3Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
+WaveRejoinClusterSecondaryHaPeerPhase3Message::WaveRejoinClusterSecondaryHaPeerPhase3Message ()
+    : WaveRejoinClusterSecondaryPhase3Message (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY_HA_PEER_PHASE_3)
 {
 }
 
-PrismRejoinClusterSecondaryHaPeerPhase3Message::~PrismRejoinClusterSecondaryHaPeerPhase3Message ()
+WaveRejoinClusterSecondaryHaPeerPhase3Message::~WaveRejoinClusterSecondaryHaPeerPhase3Message ()
 {
 }
 
-void PrismRejoinClusterSecondaryHaPeerPhase3Message::setupAttributesForSerialization ()
+void WaveRejoinClusterSecondaryHaPeerPhase3Message::setupAttributesForSerialization ()
 {
-    PrismRejoinClusterSecondaryPhase3Message::setupAttributesForSerialization ();
+    WaveRejoinClusterSecondaryPhase3Message::setupAttributesForSerialization ();
 }
 
 FrameworkObjectManagerUpdateListOfSecondariesMessage::FrameworkObjectManagerUpdateListOfSecondariesMessage ()
@@ -809,7 +809,7 @@ void FrameworkObjectManagerUpdateListOfSecondariesMessage::setConnectedLocationI
 }
 
 FrameworkObjectManagerAddNodesToClusterMessage::FrameworkObjectManagerAddNodesToClusterMessage ()
-    : PrismCreateClusterWithNodesMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_ADD_NODES_TO_CLUSTER)
+    : WaveCreateClusterWithNodesMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_ADD_NODES_TO_CLUSTER)
 {
 }
 
@@ -818,13 +818,13 @@ FrameworkObjectManagerAddNodesToClusterMessage::~FrameworkObjectManagerAddNodesT
 }
 
 FrameworkObjectManagerDeleteNodesFromClusterMessage::FrameworkObjectManagerDeleteNodesFromClusterMessage (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismCreateClusterWithNodesMessage (serviceCode, operationCode),
+    : WaveCreateClusterWithNodesMessage (serviceCode, operationCode),
       m_isDisconnected(false)
 {
 }
 
 FrameworkObjectManagerDeleteNodesFromClusterMessage::FrameworkObjectManagerDeleteNodesFromClusterMessage ()
-    : PrismCreateClusterWithNodesMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DELETE_NODES_FROM_CLUSTER),
+    : WaveCreateClusterWithNodesMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_DELETE_NODES_FROM_CLUSTER),
       m_isDisconnected(false)
 {
 }
@@ -845,12 +845,12 @@ UI32 FrameworkObjectManagerDeleteNodesFromClusterMessage::getNumberOfNodes ()
 
 string FrameworkObjectManagerDeleteNodesFromClusterMessage::getNodeAt (UI32 i)
 {
-    return (PrismCreateClusterWithNodesMessage::getNodeAt (i));
+    return (WaveCreateClusterWithNodesMessage::getNodeAt (i));
 }
 
 SI32 FrameworkObjectManagerDeleteNodesFromClusterMessage::getNodePortAt (UI32 i)
 {
-    return (PrismCreateClusterWithNodesMessage::getNodePortAt (i));
+    return (WaveCreateClusterWithNodesMessage::getNodePortAt (i));
 }
 
 void FrameworkObjectManagerDeleteNodesFromClusterMessage::setNodeStatus (const string &nodeIpAddress, const SI32 &nodePort, ResourceId status)
@@ -1009,19 +1009,19 @@ LocationId FrameworkObjectManagerRejoinNodesToClusterMessage::getNodeLocationId 
 }
 
 FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage ()
-    : PrismConfigureClusterSecondaryMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY),
+    : WaveConfigureClusterSecondaryMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY),
       m_isReplaceRejoin (false)
 {
 }
 
 FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage (WaveServiceId serviceCode, UI32 operationCode)
-    : PrismConfigureClusterSecondaryMessage (serviceCode, operationCode),
+    : WaveConfigureClusterSecondaryMessage (serviceCode, operationCode),
       m_isReplaceRejoin (false)
 {
 }
 
-FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage (const string &clusterPrimaryPrismVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
-    : PrismConfigureClusterSecondaryMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY, clusterPrimaryPrismVersion, clusterPrimaryIpAddress, clusterPrimaryPort, clusterPrimaryLocationId, ipAddress, port, locationId),
+FrameworkObjectManagerRejoinClusterSecondaryMessage::FrameworkObjectManagerRejoinClusterSecondaryMessage (const string &clusterPrimaryWaveVersion, const string &clusterPrimaryIpAddress, const SI32 &clusterPrimaryPort, const LocationId &clusterPrimaryLocationId, const string &ipAddress, const SI32 &port, const LocationId &locationId)
+    : WaveConfigureClusterSecondaryMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_REJOIN_CLUSTER_SECONDARY, clusterPrimaryWaveVersion, clusterPrimaryIpAddress, clusterPrimaryPort, clusterPrimaryLocationId, ipAddress, port, locationId),
     m_isReplaceRejoin (false)
 {
 }
@@ -1042,7 +1042,7 @@ void FrameworkObjectManagerRejoinClusterSecondaryMessage::setIsReplaceRejoin (co
 
 void FrameworkObjectManagerRejoinClusterSecondaryMessage::setupAttributesForSerialization ()
 {
-    PrismConfigureClusterSecondaryMessage::setupAttributesForSerialization ();
+    WaveConfigureClusterSecondaryMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeBool         (&m_isReplaceRejoin,       "isReplaceRejoin"));
      addSerializableAttribute (new AttributeUI64Vector   (&m_configurationNumber,   "configurationNumber"));
@@ -1787,60 +1787,60 @@ void FrameworkObjectManagerInitHaIpAddressMessage::setupAttributesForSerializati
      addSerializableAttribute (new AttributeSI32 (&m_localHaIpPort,         "localHaIpPort"));
 }
 
-PrismHaSyncConfigureStandbyMessage::PrismHaSyncConfigureStandbyMessage ()
+WaveHaSyncConfigureStandbyMessage::WaveHaSyncConfigureStandbyMessage ()
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY),
-    m_activePrismVersion (""),
+    m_activeWaveVersion (""),
     m_activeLocationRole (LOCATION_STAND_ALONE)
 {
 }
 
-PrismHaSyncConfigureStandbyMessage::PrismHaSyncConfigureStandbyMessage (const string &activePrismVersion, const LocationRole &activeLocationRole)
+WaveHaSyncConfigureStandbyMessage::WaveHaSyncConfigureStandbyMessage (const string &activeWaveVersion, const LocationRole &activeLocationRole)
     : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_HA_SYNC_CONFIGURE_STANDBY),
-      m_activePrismVersion (activePrismVersion),
+      m_activeWaveVersion (activeWaveVersion),
       m_activeLocationRole (activeLocationRole)
 {
 }
 
-PrismHaSyncConfigureStandbyMessage::~PrismHaSyncConfigureStandbyMessage ()
+WaveHaSyncConfigureStandbyMessage::~WaveHaSyncConfigureStandbyMessage ()
 {
 }
 
-void PrismHaSyncConfigureStandbyMessage::setupAttributesForSerialization ()
+void WaveHaSyncConfigureStandbyMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
-    addSerializableAttribute (new AttributeString (&m_activePrismVersion,   "activePrismVersion"));
+    addSerializableAttribute (new AttributeString (&m_activeWaveVersion,   "activeWaveVersion"));
     addSerializableAttribute (new AttributeUI32   (&m_activeLocationRole,   "activeLocationRole"));
 }
 
-void PrismHaSyncConfigureStandbyMessage::setupAttributesForSerializationInAttributeOrderFormat ()
+void WaveHaSyncConfigureStandbyMessage::setupAttributesForSerializationInAttributeOrderFormat ()
 {
     WaveMessage::setupAttributesForSerializationInAttributeOrderFormat ();
 
-    addAttributeNameForOrderToNameMapping ("activePrismVersion");
+    addAttributeNameForOrderToNameMapping ("activeWaveVersion");
     addAttributeNameForOrderToNameMapping ("activeLocationRole");
 }
 
-string PrismHaSyncConfigureStandbyMessage::getActivePrismVersion ()
+string WaveHaSyncConfigureStandbyMessage::getActiveWaveVersion ()
 {
-    return (m_activePrismVersion);
+    return (m_activeWaveVersion);
 }
 
-LocationRole PrismHaSyncConfigureStandbyMessage::getActiveLocationRole ()
+LocationRole WaveHaSyncConfigureStandbyMessage::getActiveLocationRole ()
 {
     return ((LocationRole)(m_activeLocationRole));
 }
 
-UI32 PrismHaSyncConfigureStandbyMessage::getDatabaseBackupBufferTag ()
+UI32 WaveHaSyncConfigureStandbyMessage::getDatabaseBackupBufferTag ()
 {
     return (UINT_MAX);
 }
 
-void PrismHaSyncConfigureStandbyMessage::setValidationDetails (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
+void WaveHaSyncConfigureStandbyMessage::setValidationDetails (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
 {
     addBuffer (VALIDATION_DETAILS_BUFFER_TAG, bufferSize, pBuffer, transferBufferOwnershipToMessage);
 }
 
-void PrismHaSyncConfigureStandbyMessage::getValidationDetails (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
+void WaveHaSyncConfigureStandbyMessage::getValidationDetails (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
 {
     if (true == transferBufferOwnershipToUser)
     {
@@ -1852,12 +1852,12 @@ void PrismHaSyncConfigureStandbyMessage::getValidationDetails (UI32 &bufferSize,
     }
 }
 
-void PrismHaSyncConfigureStandbyMessage::setValidationResults (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
+void WaveHaSyncConfigureStandbyMessage::setValidationResults (const UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToMessage)
 {
     addBuffer (VALIDATION_RESULTS_BUFFER_TAG, bufferSize, pBuffer, transferBufferOwnershipToMessage);
 }
 
-void PrismHaSyncConfigureStandbyMessage::getValidationResults (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
+void WaveHaSyncConfigureStandbyMessage::getValidationResults (UI32 &bufferSize, void *&pBuffer, bool transferBufferOwnershipToUser)
 {
     if (true == transferBufferOwnershipToUser)
     {

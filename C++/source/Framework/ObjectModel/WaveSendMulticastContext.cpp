@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-WaveSendMulticastContext::WaveSendMulticastContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
+WaveSendMulticastContext::WaveSendMulticastContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_pWaveMessage (NULL),
       m_multicastStatus (WAVE_MESSAGE_SUCCESS)
 {

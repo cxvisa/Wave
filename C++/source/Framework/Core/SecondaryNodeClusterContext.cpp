@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-SecondaryNodeClusterContext::SecondaryNodeClusterContext(WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag, bool clusterHaSyncInProgressFlag)
+SecondaryNodeClusterContext::SecondaryNodeClusterContext(WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag, bool clusterHaSyncInProgressFlag)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_isDBEmptyRequired (true),
       m_clusterPrimaryPort (0),
@@ -29,8 +29,8 @@ SecondaryNodeClusterContext::SecondaryNodeClusterContext(WaveMessage *pWaveMessa
     m_clusterHaSyncInProgressFlag = clusterHaSyncInProgressFlag;
 }
 
-SecondaryNodeClusterContext::SecondaryNodeClusterContext(PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag, bool clusterHaSyncInProgressFlag)
-    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+SecondaryNodeClusterContext::SecondaryNodeClusterContext(WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, bool setSecondaryNodeClusterCreationFlag, bool clusterHaSyncInProgressFlag)
+    : WaveLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_isDBEmptyRequired (true),
       m_clusterPrimaryPort (0),
       m_clusterPrimaryLocationId (0)

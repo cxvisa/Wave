@@ -23,7 +23,7 @@
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectRelationalMapping/OrmTable.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Persistence/PersistenceLocalObjectManagerSavePrismConfigurationMessage.h"
+#include "Framework/Persistence/PersistenceLocalObjectManagerSaveWaveConfigurationMessage.h"
 #include "Framework/Persistence/PersistenceObjectManagerTypes.h"
 #include "Framework/Persistence/PersistenceLocalObjectManager.h"
 #include "Framework/Core/WaveFrameworkConfiguration.h"
@@ -37,7 +37,7 @@ namespace WaveNs
 class OrmTable;
 class OrmRepository;
 class WaveManagedObject;
-class PrismPersistableObject;
+class WavePersistableObject;
 class WaveObjectManager;
 
 /*
@@ -332,10 +332,10 @@ public :
     static  UI32                                getMaxClassID                                       ();
     static  UI32                                getClassIDForManagedObject                          (string &moName);
     static  bool                                removeOldManagedObjects                             (string &moName);
-            bool                                loadPrismConfiguration                              ();
-            bool                                savePrismConfiguration                              ();
-            bool                                backupPrismConfiguration                            ();
-            bool                                restorePrismConfiguration                           ();
+            bool                                loadWaveConfiguration                              ();
+            bool                                saveWaveConfiguration                              ();
+            bool                                backupWaveConfiguration                            ();
+            bool                                restoreWaveConfiguration                           ();
             void                                createLockFileForConfigurationFile                  ();
             void                                removeLockFileForConfigurationFile                  ();
             ResourceId                          configurationWithFlock                              (const UI32 &operationType);

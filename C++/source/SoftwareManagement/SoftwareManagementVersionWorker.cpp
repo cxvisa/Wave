@@ -9,7 +9,7 @@
 #include "SoftwareManagement/SoftwareManagementTypes.h"
 #include "SoftwareManagement/SoftwareManagementGetVersionMessage.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 #include "Shell/ShellDebug.h"
 #include "ManagementInterface/ClientInterface/WaveClientSynchronousConnection.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -50,11 +50,11 @@ WaveMessage *SoftwareManagementVersionWorker::createMessageInstance (const UI32 
 
 void SoftwareManagementVersionWorker::softwareManagementGetVersionMessageHandler (SoftwareManagementGetVersionMessage *pSoftwareManagementGetVersionMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementVersionWorker::getVersionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementVersionWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementVersionWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::getVersionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pSoftwareManagementGetVersionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -67,8 +67,8 @@ void SoftwareManagementVersionWorker::getVersionStep (WaveLinearSequencerContext
     trace (TRACE_LEVEL_DEVEL, "SoftwareManagementVersionWorker::getVersionStep : Entering ...");
 
           SoftwareManagementGetVersionMessage *pSoftwareManagementGetVersionMessage = reinterpret_cast<SoftwareManagementGetVersionMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
-    const PrismVersion                        *pPrismVersion                        = PrismVersion::getInstance ();
-    const string                               version                              = pPrismVersion->getMajor () + "." + pPrismVersion->getMinor () + "." + pPrismVersion->getPatch () + "." + pPrismVersion->getRevision () + "-" + pPrismVersion->getBuildType () + "." + pPrismVersion->getBuildNumber ();
+    const WaveVersion                        *pWaveVersion                        = WaveVersion::getInstance ();
+    const string                               version                              = pWaveVersion->getMajor () + "." + pWaveVersion->getMinor () + "." + pWaveVersion->getPatch () + "." + pWaveVersion->getRevision () + "-" + pWaveVersion->getBuildType () + "." + pWaveVersion->getBuildNumber ();
 
     pSoftwareManagementGetVersionMessage->setVersion (version);
 

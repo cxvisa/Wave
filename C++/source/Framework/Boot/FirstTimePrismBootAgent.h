@@ -4,33 +4,33 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef FIRSTTIMEPRISMBOOTAGENT_H
-#define FIRSTTIMEPRISMBOOTAGENT_H
+#ifndef FIRSTTIMEWAVEBOOTAGENT_H
+#define FIRSTTIMEWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 
-class FirstTimePrismBootAgent : public PrismBootAgent
+class FirstTimeWaveBootAgent : public WaveBootAgent
 {
     private :
         virtual WaveBootReason getReason () const;
 
     protected :
     public :
-                 FirstTimePrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual ~FirstTimePrismBootAgent ();
+                 FirstTimeWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual ~FirstTimeWaveBootAgent ();
         virtual  ResourceId  execute      (const WaveBootPhase &waveBootPhase);
 
     // Now the data members
 
     private :
     protected :
-                 ResourceId savePrismConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                 ResourceId saveWaveConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
     public :
 };
 
 }
 
-#endif // FIRSTTIMEPRISMBOOTAGENT_H
+#endif // FIRSTTIMEWAVEBOOTAGENT_H

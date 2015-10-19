@@ -38,9 +38,9 @@ static string s_waveClientProfileFileDirectory       ("");
 namespace WaveNs
 {
 
-vector<NativePrismServiceInstantiator>         WaveClient::m_nativePrismServiceInstantiators;
-vector<bool>                                   WaveClient::m_nativePrismServiceInstantiatorIsForNormalPhase;
-vector<NativeMultiplePrismServiceInstantiator> WaveClient::m_nativeMultiplePrismServiceInstantiators;
+vector<NativeWaveServiceInstantiator>         WaveClient::m_nativeWaveServiceInstantiators;
+vector<bool>                                   WaveClient::m_nativeWaveServiceInstantiatorIsForNormalPhase;
+vector<NativeMultipleWaveServiceInstantiator> WaveClient::m_nativeMultipleWaveServiceInstantiators;
 UpdateClientStatusFunctionPtr                  WaveClient::m_updateClientStatusFunctionPtr = NULL;
 WaveMutex                                     WaveClient::m_updateClientStatusFunctionPtrMutex;  
 
@@ -95,23 +95,23 @@ void WaveClient::initialize (const WaveClientConfiguration &waveClientConfigurat
 
     if (true == waveClientConfiguration.getNeedShell ())
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ShellObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ShellObjectManager::getInstance));
 
         FrameworkToolKit::registerDebugShellEntries ();
         WaveSourceGeneratorBase::registerDebugShellEntries ();
         WaveClientReceiverObjectManager::registerDebugShellEntries ();
     }
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveUserInterfaceObjectManager::getInstance));
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveClientTransportObjectManager::getInstance));
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveClientReceiverObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveUserInterfaceObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveClientTransportObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveClientReceiverObjectManager::getInstance));
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerObjectManager::getInstance));
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerSignalObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerSignalObjectManager::getInstance));
 
     // Instantiate Native WaveClient Services here
 
-    instantiateNativePrismServices ();
+    instantiateNativeWaveServices ();
 
     // Start the ObjectManager s corresponding to Application Services
 
@@ -227,44 +227,44 @@ SI32 WaveClient::updateClientStatusFunction( ManagementInterfaceMessage *pManage
     return (status);
 }
 
-void WaveClient::registerNativeService (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase)
+void WaveClient::registerNativeService (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase)
 {
-    m_nativePrismServiceInstantiators.push_back                (pNativePrismServiceInstantiator);
-    m_nativePrismServiceInstantiatorIsForNormalPhase.push_back (isForNormalPhase);
+    m_nativeWaveServiceInstantiators.push_back                (pNativeWaveServiceInstantiator);
+    m_nativeWaveServiceInstantiatorIsForNormalPhase.push_back (isForNormalPhase);
 }
 
-void WaveClient::registerNativeServiceInternal (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase)
+void WaveClient::registerNativeServiceInternal (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase)
 {
-    m_nativePrismServiceInstantiators.insert                (m_nativePrismServiceInstantiators.begin (), pNativePrismServiceInstantiator);
-    m_nativePrismServiceInstantiatorIsForNormalPhase.insert (m_nativePrismServiceInstantiatorIsForNormalPhase.begin (), isForNormalPhase);
+    m_nativeWaveServiceInstantiators.insert                (m_nativeWaveServiceInstantiators.begin (), pNativeWaveServiceInstantiator);
+    m_nativeWaveServiceInstantiatorIsForNormalPhase.insert (m_nativeWaveServiceInstantiatorIsForNormalPhase.begin (), isForNormalPhase);
 }
 
-void WaveClient::registerNativeService (NativeMultiplePrismServiceInstantiator pNativeMultiplePrismServiceInstantiator)
+void WaveClient::registerNativeService (NativeMultipleWaveServiceInstantiator pNativeMultipleWaveServiceInstantiator)
 {
-    m_nativeMultiplePrismServiceInstantiators.push_back (pNativeMultiplePrismServiceInstantiator);
+    m_nativeMultipleWaveServiceInstantiators.push_back (pNativeMultipleWaveServiceInstantiator);
 }
 
-void WaveClient::instantiateNativePrismServices ()
+void WaveClient::instantiateNativeWaveServices ()
 {
     FrameworkSequenceGenerator &frameworkSequenceGenerator                       = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    UI32                        numberOfNativePrismServciesToInstantiate         = m_nativePrismServiceInstantiators.size ();
-    UI32                        numberOfNativeMultiplePrismServciesToInstantiate = m_nativeMultiplePrismServiceInstantiators.size ();
+    UI32                        numberOfNativeWaveServciesToInstantiate         = m_nativeWaveServiceInstantiators.size ();
+    UI32                        numberOfNativeMultipleWaveServciesToInstantiate = m_nativeMultipleWaveServiceInstantiators.size ();
     UI32                        i                                                = 0;
     UI32                        j                                                = 0;
     WaveObjectManager         *pWaveObjectManager                              = NULL;
 
-    for (i = 0; i < numberOfNativePrismServciesToInstantiate; i++)
+    for (i = 0; i < numberOfNativeWaveServciesToInstantiate; i++)
     {
-        pWaveObjectManager = (*(m_nativePrismServiceInstantiators[i])) ();
+        pWaveObjectManager = (*(m_nativeWaveServiceInstantiators[i])) ();
 
         waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-        frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
+        frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativeWaveServiceInstantiatorIsForNormalPhase[i]);
     }
 
-    for (i = 0; i < numberOfNativeMultiplePrismServciesToInstantiate; i++)
+    for (i = 0; i < numberOfNativeMultipleWaveServciesToInstantiate; i++)
     {
-        vector<WaveObjectManager *> objectManagers         = (*(m_nativeMultiplePrismServiceInstantiators[i])) ();
+        vector<WaveObjectManager *> objectManagers         = (*(m_nativeMultipleWaveServiceInstantiators[i])) ();
         UI32                         numberOfObjectManagers = objectManagers.size ();
 
         for (j = 0; j < numberOfObjectManagers; j++)
@@ -277,17 +277,17 @@ void WaveClient::instantiateNativePrismServices ()
         }
     }
 
-    trace (TRACE_LEVEL_DEBUG, string ("Instantiated ") + numberOfNativePrismServciesToInstantiate + " Native WaveClient Services");
+    trace (TRACE_LEVEL_DEBUG, string ("Instantiated ") + numberOfNativeWaveServciesToInstantiate + " Native WaveClient Services");
 }
 
 }
 
-extern "C" void setWaveClientTraceFileDirectory (const char *pPrismTraceFileDirectory)
+extern "C" void setWaveClientTraceFileDirectory (const char *pWaveTraceFileDirectory)
 {
-    s_waveClientTraceFileDirectory = pPrismTraceFileDirectory;
+    s_waveClientTraceFileDirectory = pWaveTraceFileDirectory;
 }
 
-extern "C" void setWaveClientConfigurationFileDirectory (const char *pPrismConfigurationFileDirectory)
+extern "C" void setWaveClientConfigurationFileDirectory (const char *pWaveConfigurationFileDirectory)
 {
-    s_waveClientConfigurationFileDirectory = pPrismConfigurationFileDirectory;
+    s_waveClientConfigurationFileDirectory = pWaveConfigurationFileDirectory;
 }

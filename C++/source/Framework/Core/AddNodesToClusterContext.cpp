@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-AddNodesToClusterContext::AddNodesToClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+AddNodesToClusterContext::AddNodesToClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : CreateClusterWithNodesContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)
 {
 }

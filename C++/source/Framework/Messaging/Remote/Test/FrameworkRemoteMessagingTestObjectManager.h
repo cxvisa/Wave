@@ -7,7 +7,7 @@
 #ifndef FRAMEWORKREMOTEMESSAGINGTESTOBJECTMANAGER_H
 #define FRAMEWORKREMOTEMESSAGINGTESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 
 namespace WaveNs
 {
@@ -19,7 +19,7 @@ class FrameworkLocalMessagingTestContext;
 class WaveSendToClusterContext;
 class WaveSendMulticastContext;
 
-class FrameworkRemoteMessagingTestObjectManager : public PrismTestObjectManager
+class FrameworkRemoteMessagingTestObjectManager : public WaveTestObjectManager
 {
     private :
         FrameworkRemoteMessagingTestObjectManager ();

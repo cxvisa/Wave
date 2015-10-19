@@ -6,7 +6,7 @@
 
 #include "SoftwareManagement/SoftwareManagementObjectManager.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "SoftwareManagement/SoftwareManagementVersionWorker.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
@@ -55,11 +55,11 @@ string SoftwareManagementObjectManager::getClassName ()
 
 void SoftwareManagementObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementObjectManager::displayVersionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&SoftwareManagementObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementObjectManager::displayVersionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -71,11 +71,11 @@ void SoftwareManagementObjectManager::displayVersionStep (WaveLinearSequencerCon
 {
     trace (TRACE_LEVEL_DEVEL, "SoftwareManagementObjectManager::displayVersionStep : Entering ...");
 
-    const PrismVersion *pPrismVersion = PrismVersion::getInstance ();
+    const WaveVersion *pWaveVersion = WaveVersion::getInstance ();
 
-    trace (TRACE_LEVEL_INFO, "Prism Version : " + pPrismVersion->getMajor () + "." + pPrismVersion->getMinor () + "." + pPrismVersion->getPatch () + "." + pPrismVersion->getRevision () + "-" + pPrismVersion->getBuildType () + "." + pPrismVersion->getBuildNumber ());
-    trace (TRACE_LEVEL_INFO, "Prism Build   : " + pPrismVersion->getUser () + "@" + pPrismVersion->getHost () + "." + pPrismVersion->getDomain ());
-    trace (TRACE_LEVEL_INFO, "Prism Date    : " + pPrismVersion->getDate ());
+    trace (TRACE_LEVEL_INFO, "Wave Version : " + pWaveVersion->getMajor () + "." + pWaveVersion->getMinor () + "." + pWaveVersion->getPatch () + "." + pWaveVersion->getRevision () + "-" + pWaveVersion->getBuildType () + "." + pWaveVersion->getBuildNumber ());
+    trace (TRACE_LEVEL_INFO, "Wave Build   : " + pWaveVersion->getUser () + "@" + pWaveVersion->getHost () + "." + pWaveVersion->getDomain ());
+    trace (TRACE_LEVEL_INFO, "Wave Date    : " + pWaveVersion->getDate ());
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }

@@ -7,7 +7,7 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFORUPGRADEPHASE_H
 #define WAVEASYNCHRONOUSCONTEXTFORUPGRADEPHASE_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/ObjectRelationalMapping/OMSpecificSchemaChangeInfoForUpgrade.h"
 
@@ -39,7 +39,7 @@ class WaveAsynchronousContextForUpgradePhase : public WaveAsynchronousContextFor
     private :
     protected :
     public :
-                                WaveAsynchronousContextForUpgradePhase  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForUpgradePhase  (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForUpgradePhase  ();
         
 /*

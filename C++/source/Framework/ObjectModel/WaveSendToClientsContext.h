@@ -7,7 +7,7 @@
 #ifndef WAVESENDTOCLIENTSCONTEXT_H
 #define WAVESENDTOCLIENTSCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 #include <vector>
 #include <map>
@@ -19,12 +19,12 @@ namespace WaveNs
 
 class WaveMessage;
 
-class WaveSendToClientsContext : public PrismAsynchronousContext
+class WaveSendToClientsContext : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                                 WaveSendToClientsContext           (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL, const string &clientName = "", bool isSubInstanceToBeIncluded = false);
+                                                 WaveSendToClientsContext           (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL, const string &clientName = "", bool isSubInstanceToBeIncluded = false);
         virtual                                 ~WaveSendToClientsContext           ();
 
                 ManagementInterfaceMessage      *getPManagementInterfaceMessageForPhase1          () const;

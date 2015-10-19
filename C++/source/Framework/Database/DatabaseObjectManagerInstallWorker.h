@@ -5,12 +5,12 @@
  ***************************************************************************/
 
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class PrismAsynchronousContext;
+class WaveAsynchronousContext;
 class WaveLinearSequencerContext;
 
 class DatabaseObjectManagerInstallWorker : public WaveWorker
@@ -21,7 +21,7 @@ class DatabaseObjectManagerInstallWorker : public WaveWorker
         void  installDatabaseStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void  installBootDatabaseStep        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void  installShutdownDatabaseStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void  installCreatePrismDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void  installCreateWaveDatabaseStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :
     public :

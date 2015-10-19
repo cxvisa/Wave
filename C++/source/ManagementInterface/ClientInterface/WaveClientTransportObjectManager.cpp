@@ -160,11 +160,11 @@ WaveServiceId WaveClientTransportObjectManager:: getWaveServiceId ()
 
 void WaveClientTransportObjectManager::managementInterfaceMessageHandler (ManagementInterfaceMessage *pManagementInterfaceMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -582,9 +582,9 @@ WaveServiceId WaveClientTransportObjectManager::getWaveServiceIdForServiceName (
     return (m_serversMap.getWaveServiceIdForServiceName (serverId, serviceName));
 }
 
-string WaveClientTransportObjectManager::getPrismServiceNameForServiceId (const UI32 &serverId, const WaveServiceId &serviceId)
+string WaveClientTransportObjectManager::getWaveServiceNameForServiceId (const UI32 &serverId, const WaveServiceId &serviceId)
 {
-    return (m_serversMap.getPrismServiceNameForServiceId (serverId, serviceId));
+    return (m_serversMap.getWaveServiceNameForServiceId (serverId, serviceId));
 }
 
 UI32 WaveClientTransportObjectManager::getServerIdIfKnown (const string &serverIpAddress, const SI32 &serverPort)

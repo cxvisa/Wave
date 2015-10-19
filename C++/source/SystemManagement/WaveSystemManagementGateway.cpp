@@ -11,7 +11,7 @@
 #include "SystemManagement/WaveSystemManagementTypes.h"
 #include "Modeling/YANG/ObjectModel/YangElement.h"
 #include "Modeling/YANG/ObjectModel/YangList.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "SystemManagement/WaveSystemManagementObjectManager.h"
@@ -450,7 +450,7 @@ UI32 WaveSystemManagementGatewayWorker::doesManagedObjectForKeyExist (const stri
             continue;
         }
 
-        AttributeType type = PrismPersistableObject::getTypeFromUserTag (keyAttributeMoNames[i], keyAttributeUserTags[i]);
+        AttributeType type = WavePersistableObject::getTypeFromUserTag (keyAttributeMoNames[i], keyAttributeUserTags[i]);
         // FIXME: We are supporting only Attribute String as the key .. This is only for POC and will be changed to support all data types later on
         if (type == AttributeType::AttributeTypeString)
         {

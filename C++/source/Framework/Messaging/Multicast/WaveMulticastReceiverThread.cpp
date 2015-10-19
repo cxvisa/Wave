@@ -10,7 +10,7 @@ namespace WaveNs
 {
 
 WaveMulticastReceiverThread::WaveMulticastReceiverThread ()
-     : PrismPosixThread ()
+     : WavePosixThread ()
 {
 }
 

@@ -12,7 +12,7 @@ namespace WaveNs
 
 LockManagedObject::LockManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (LockManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (LockManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_locationId (0),
       m_serviceId (0)
@@ -21,7 +21,7 @@ LockManagedObject::LockManagedObject (WaveObjectManager *pWaveObjectManager)
 
 LockManagedObject::LockManagedObject (WaveObjectManager *pWaveObjectManager, const LocationId &locationId, const string &serviceString, const WaveServiceId &serviceId)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (LockManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (LockManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_locationId (locationId),
       m_serviceString (serviceString),

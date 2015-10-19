@@ -22,7 +22,7 @@ static UI32 s_largeClientInputBuffer1Size = 5 * 1024 * 1024; // 5 MB.
 static SI8  s_largeClientInputBuffer1Char = 'J';
 
 ManagementInterfaceClientTestMessage1::ManagementInterfaceClientTestMessage1 ()
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE1)
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE1)
 {
 }
 
@@ -36,7 +36,7 @@ void ManagementInterfaceClientTestMessage1::setupAttributesForSerialization ()
 }
 
 ManagementInterfaceClientTestMessage2::ManagementInterfaceClientTestMessage2 ()
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE2)
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE2)
 {
 }
 
@@ -50,7 +50,7 @@ void ManagementInterfaceClientTestMessage2::setupAttributesForSerialization ()
 }
 
 ManagementInterfaceClientTestMessage3::ManagementInterfaceClientTestMessage3 ()
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE3)
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE3)
 {
 }
 
@@ -64,7 +64,7 @@ void ManagementInterfaceClientTestMessage3::setupAttributesForSerialization ()
 }
 
 ManagementInterfaceClientTestMessage4::ManagementInterfaceClientTestMessage4 ()
-	: ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE4),
+	: ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), MANAGEMENT_INTERFACE_CLIENT_TEST_MESSAGE4),
    m_isLargInputBuffer1Set (false),
       m_completionStatusType  (0)
 {

@@ -1,5 +1,5 @@
-./Framework/Core/PrismBasedApplicationWithSas
-./Framework/Core/SasPrism
+./Framework/Core/WaveBasedApplicationWithSas
+./Framework/Core/SasWave
 ./SacGateway/SasVolumeServiceGroup
 ./SacGateway/SasSacInterfaceObjectManager
 ./SacGateway/SasCopyServiceGroup

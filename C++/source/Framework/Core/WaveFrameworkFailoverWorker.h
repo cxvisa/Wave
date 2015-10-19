@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKFAILOVERWORKER_H
-#define PRISMFRAMEWORKFAILOVERWORKER_H
+#ifndef WAVEFRAMEWORKFAILOVERWORKER_H
+#define WAVEFRAMEWORKFAILOVERWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
 
@@ -14,7 +14,7 @@ namespace WaveNs
 
 class WaveFrameworkFailoverWorkerContext;
 class WaveFrameworkFailoverWorkerSequencerContext;
-class PrismFailoverAgentContext;
+class WaveFailoverAgentContext;
 
 class WaveFrameworkFailoverWorker : public WaveWorker
 {
@@ -27,7 +27,7 @@ class WaveFrameworkFailoverWorker : public WaveWorker
                 void  executeFailover                         (WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext);
                 void  executeFailoverSelectFailoverAgentStep  (WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext);
                 void  executeFailoverRunFailoverAgentStep     (WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext);
-                void  executeFailoverRunFailoverAgentStepCallback (PrismFailoverAgentContext *pPrismFailoverAgentContext);
+                void  executeFailoverRunFailoverAgentStepCallback (WaveFailoverAgentContext *pWaveFailoverAgentContext);
                 void  executeFailoverDestroyFailoverAgentStep (WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext);
                 void  executeFailoverCompleteEventStep        (WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext);
 
@@ -40,4 +40,4 @@ class WaveFrameworkFailoverWorker : public WaveWorker
 
 }
 
-#endif // PRISMFRAMEWORKFAILOVERWORKER_H
+#endif // WAVEFRAMEWORKFAILOVERWORKER_H

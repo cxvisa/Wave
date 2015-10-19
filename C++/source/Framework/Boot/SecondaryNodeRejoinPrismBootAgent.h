@@ -4,22 +4,22 @@
  *   Author : Aashish Akhouri                                    *
  ***************************************************************************/
 
-#ifndef SECONDARYNODEREJOINPRISMBOOTAGENT_H
-#define SECONDARYNODEREJOINPRISMBOOTAGENT_H
+#ifndef SECONDARYNODEREJOINWAVEBOOTAGENT_H
+#define SECONDARYNODEREJOINWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 ///Class:
-///SecondaryNodeRejoinPrismBootAgent
+///SecondaryNodeRejoinWaveBootAgent
 /// 
 ///Description:
 /// This Class serves as the boot agent for rebooting of services
 /// during processing of phase1 and phase2 rejoin messages on the 
 /// secondary.
 
-class SecondaryNodeRejoinPrismBootAgent : public PrismBootAgent
+class SecondaryNodeRejoinWaveBootAgent : public WaveBootAgent
 {
     private :
 	//Rejoin Boot is always persistent
@@ -37,8 +37,8 @@ class SecondaryNodeRejoinPrismBootAgent : public PrismBootAgent
 
     protected :
     public :
-                            SecondaryNodeRejoinPrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual            ~SecondaryNodeRejoinPrismBootAgent ();
+                            SecondaryNodeRejoinWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual            ~SecondaryNodeRejoinWaveBootAgent ();
 
 	//This method implements the pre and the post boot phase
 	//It calls the steps alreday implemented in the base class
@@ -52,4 +52,4 @@ class SecondaryNodeRejoinPrismBootAgent : public PrismBootAgent
 
 }
 
-#endif // SECONDARYNODEREJOINPRISMBOOTAGENT_H
+#endif // SECONDARYNODEREJOINWAVEBOOTAGENT_H

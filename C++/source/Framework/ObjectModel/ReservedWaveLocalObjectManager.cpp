@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 ReservedWaveLocalObjectManager::ReservedWaveLocalObjectManager ()
-    : WaveLocalObjectManager (getPrismServiceName ())
+    : WaveLocalObjectManager (getWaveServiceName ())
 {
 }
 
@@ -33,7 +33,7 @@ WaveServiceId ReservedWaveLocalObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-string ReservedWaveLocalObjectManager::getPrismServiceName ()
+string ReservedWaveLocalObjectManager::getWaveServiceName ()
 {
     return ("_Reserved For Wave Internal Purposes_");
 }

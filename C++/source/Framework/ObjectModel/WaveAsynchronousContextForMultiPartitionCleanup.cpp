@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForMultiPartitionCleanup::WaveAsynchronousContextForMultiPartitionCleanup (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext  (pCaller, pCallback, pCallerContext),
+WaveAsynchronousContextForMultiPartitionCleanup::WaveAsynchronousContextForMultiPartitionCleanup (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext  (pCaller, pCallback, pCallerContext),
       m_isPartialCleanup        (false),
       m_partialCleanupTag       (FRAMEWORK_ERROR)
 {

@@ -48,7 +48,7 @@ WaveMessage *WaveFrameworkObjectManagerServiceControlWorker::createMessageInstan
 void WaveFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHandler (FrameworkObjectManagerServiceControlListMessage *pFrameworkObjectManagerServiceControlListMessage)
 {
     vector<WaveServiceId> waveServiceIds;
-    UI32                   numberOfPrismServices;
+    UI32                   numberOfWaveServices;
     UI32                   i;
     WaveServiceId         serviceId              = 0;
     string                 serviceName;
@@ -60,9 +60,9 @@ void WaveFrameworkObjectManagerServiceControlWorker::serviceControlListMessageHa
     UI32                   j                      = 0;
 
     WaveThread::getListOfServiceIds (waveServiceIds);
-    numberOfPrismServices = waveServiceIds.size ();
+    numberOfWaveServices = waveServiceIds.size ();
 
-    for (i = 0; i < numberOfPrismServices; i++)
+    for (i = 0; i < numberOfWaveServices; i++)
     {
         serviceId         = waveServiceIds[i];
         serviceName       = FrameworkToolKit::getServiceNameById (serviceId);
@@ -91,7 +91,7 @@ void WaveFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessag
 
           WaveServiceId                           waveServiceId                          = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getWaveServiceId ();
           vector<UI32>                             cpuAffinityVector                       = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getCpuAffinityVector ();
-          PrismSetCpuAffinityObjectManagerMessage  prismSetCpuAffinityObjectManagerMessage   (waveServiceId);
+          WaveSetCpuAffinityObjectManagerMessage  prismSetCpuAffinityObjectManagerMessage   (waveServiceId);
           ResourceId                               status                                  = WAVE_MESSAGE_SUCCESS;
     const WaveServiceId                           thisServiceId                           = getServiceId ();
 

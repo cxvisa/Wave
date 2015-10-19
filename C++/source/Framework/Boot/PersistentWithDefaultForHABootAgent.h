@@ -7,12 +7,12 @@
 #ifndef PERSISTENTWITHDEFAULTFORHABOOTAGENT_H
 #define PERSISTENTWITHDEFAULTFORHABOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 
-class PersistentWithDefaultForHABootAgent : public PrismBootAgent
+class PersistentWithDefaultForHABootAgent : public WaveBootAgent
 {
     private :
         virtual bool           isAPersistentBoot ();
@@ -24,8 +24,8 @@ class PersistentWithDefaultForHABootAgent : public PrismBootAgent
         virtual            ~PersistentWithDefaultForHABootAgent                        ();
         virtual ResourceId  execute                                                    (const WaveBootPhase &waveBootPhase);
 
-                ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  connectToKnownLocationsStep                                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  connectToKnownLocationsStep                                (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
         virtual bool        isToBeExcludedFromInstallDuringPrePhase                    (const WaveServiceId &waveServiceId);
         virtual bool        isToBeExcludedFromInstall                                  (const WaveServiceId &waveServiceId);
         virtual bool        isToBeExcludedFromInitializeDuringPrePhase                 (const WaveServiceId &waveServiceId);

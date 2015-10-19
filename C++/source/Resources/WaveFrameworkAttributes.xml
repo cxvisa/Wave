@@ -7,7 +7,7 @@
           <Resource Name = "WAVE_ATTRIBUTE_TYPE_UI32"                    >UI32</Resource>
           <Resource Name = "WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_TYPE"       >Wave Message Type</Resource>
           <Resource Name = "WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_PRIORITY"   >Wave Message Priority</Resource>
-          <Resource Name = "WAVE_ATTRIBUTE_TYPE_PRISM_SERVICE_ID"        >Prism Service Id</Resource>
+          <Resource Name = "WAVE_ATTRIBUTE_TYPE_WAVE_SERVICE_ID"        >Wave Service Id</Resource>
           <Resource Name = "WAVE_ATTRIBUTE_TYPE_SERIALIZABLE_OBJECT_TYPE">Serializable Object Type</Resource>
           <Resource Name = "WAVE_ATTRIBUTE_TYPE_LOCATIONID"              >LocationId</Resource>
           <Resource Name = "WAVE_ATTRIBUTE_TYPE_UI32_VECTOR"             >UI32 Vector</Resource>

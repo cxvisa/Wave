@@ -117,9 +117,9 @@ void TimerWorker::addTimer (TimerObjectManagerAddTimerMessage *pMessage)
 
     // Set call back infomation to sent timer expiration message when the timer expires.
 
-    pTimerInfo->m_pPrismTimerExpirationCallback = pMessage->getTimerExpirationCallback ();
-    pTimerInfo->m_pPrismTimerExpirationContext  = pMessage->getTimerExpirationContext ();
-    pTimerInfo->m_pPrismTimerSender             = pMessage->getTimerSender ();
+    pTimerInfo->m_pWaveTimerExpirationCallback = pMessage->getTimerExpirationCallback ();
+    pTimerInfo->m_pWaveTimerExpirationContext  = pMessage->getTimerExpirationContext ();
+    pTimerInfo->m_pWaveTimerSender             = pMessage->getTimerSender ();
     pTimerInfo->m_serviceId                     = pMessage->getSenderServiceCode ();
 
     // Put the timer in the timer list.
@@ -311,10 +311,10 @@ int  TimerWorker::restartTimer ()
     {
         // Send expiration message for the expired timer.
 
-        PrismTimerExpiredObjectManagerMessage     *pPrismTimerExpiredObjectManagerMessage = new PrismTimerExpiredObjectManagerMessage (m_timerList[0]->m_serviceId, m_timerList[0]->m_timerId, m_timerList[0]->m_pPrismTimerExpirationCallback, m_timerList[0]->m_pPrismTimerExpirationContext, m_timerList[0]->m_pPrismTimerSender);
-        waveAssert (NULL != pPrismTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
+        WaveTimerExpiredObjectManagerMessage     *pWaveTimerExpiredObjectManagerMessage = new WaveTimerExpiredObjectManagerMessage (m_timerList[0]->m_serviceId, m_timerList[0]->m_timerId, m_timerList[0]->m_pWaveTimerExpirationCallback, m_timerList[0]->m_pWaveTimerExpirationContext, m_timerList[0]->m_pWaveTimerSender);
+        waveAssert (NULL != pWaveTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
 
-        timerSendOneWay (pPrismTimerExpiredObjectManagerMessage);
+        timerSendOneWay (pWaveTimerExpiredObjectManagerMessage);
 
         // Calculate Max Delay. This is used only for statistic.
 
@@ -787,9 +787,9 @@ TimerData::TimerData ()
     m_expirationTime.tv_usec = 0;
     m_periodicInterval.tv_sec = 0;
     m_periodicInterval.tv_usec = 0;
-    m_pPrismTimerExpirationCallback = NULL;
-    m_pPrismTimerExpirationContext = NULL;
-    m_pPrismTimerSender = NULL;
+    m_pWaveTimerExpirationCallback = NULL;
+    m_pWaveTimerExpirationContext = NULL;
+    m_pWaveTimerSender = NULL;
     m_serviceId  = 0;
     m_timerId    = 0;
 }

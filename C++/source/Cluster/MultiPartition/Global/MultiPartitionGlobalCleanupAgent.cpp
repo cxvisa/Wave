@@ -51,18 +51,18 @@ ResourceId MultiPartitionGlobalCleanupAgent::getPartialCleanupTag ()
 
 ResourceId MultiPartitionGlobalCleanupAgent::execute ()
 {
-    trace (TRACE_LEVEL_INFO, "PrismMultiPartitionGlobalCleanupAgent::execute: called.");
+    trace (TRACE_LEVEL_INFO, "WaveMultiPartitionGlobalCleanupAgent::execute: called.");
 
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    MultiPartitionGlobalCleanupAgentContext *pMultiPartitionGlobalCleanupAgentContext = new MultiPartitionGlobalCleanupAgentContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    MultiPartitionGlobalCleanupAgentContext *pMultiPartitionGlobalCleanupAgentContext = new MultiPartitionGlobalCleanupAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     ResourceId status = pMultiPartitionGlobalCleanupAgentContext->execute ();
 
@@ -71,7 +71,7 @@ ResourceId MultiPartitionGlobalCleanupAgent::execute ()
 
 ResourceId MultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep (MultiPartitionGlobalCleanupAgentContext *pMultiPartitionGlobalCleanupAgentContext)
 {
-    trace (TRACE_LEVEL_INFO, "PrismMultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep: called.");
+    trace (TRACE_LEVEL_INFO, "WaveMultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep: called.");
     vector<WaveServiceId> &enabledServices = pMultiPartitionGlobalCleanupAgentContext->getEnabledServices ();
 
     WaveObjectManager::getListOfEnabledServices (enabledServices);
@@ -85,11 +85,11 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
     UI32                   i                                        = 0;
     UI32                   numberOfServices                         = serviceIdsToSendMultiPartitionCleanup.size();
 
-    trace (TRACE_LEVEL_INFO, string ("PrismMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: called. Total Services = [ ") + (serviceIdsToSendMultiPartitionCleanup.size())+ string("]"));
+    trace (TRACE_LEVEL_INFO, string ("WaveMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: called. Total Services = [ ") + (serviceIdsToSendMultiPartitionCleanup.size())+ string("]"));
 
     for (i = 0; i < numberOfServices; i++)
     {
-        trace (TRACE_LEVEL_SUCCESS, "PrismMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: send PartitionCleanup to service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
+        trace (TRACE_LEVEL_SUCCESS, "WaveMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: send PartitionCleanup to service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
 
         if (false == (requiresMultiPartitionGlobalCleanupNotification(serviceIdsToSendMultiPartitionCleanup[i])))
         {
@@ -104,7 +104,7 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
 
         ObjectId ownerPartitionManagedObjectId = getOwnerPartitionManagedObjectId ();
 
-        PrismMultiPartitionCleanupObjectManagerMessage *prismMultiPartitionCleanupObjectManagerMessage = new PrismMultiPartitionCleanupObjectManagerMessage (serviceIdsToSendMultiPartitionCleanup[i], m_partitionName, ownerPartitionManagedObjectId );
+        WaveMultiPartitionCleanupObjectManagerMessage *prismMultiPartitionCleanupObjectManagerMessage = new WaveMultiPartitionCleanupObjectManagerMessage (serviceIdsToSendMultiPartitionCleanup[i], m_partitionName, ownerPartitionManagedObjectId );
 
         if (true == getIsPartialCleanup ())
         {
@@ -116,7 +116,7 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PrismMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: Could not send PartitionCleanup to service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
+            trace (TRACE_LEVEL_FATAL, "WaveMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: Could not send PartitionCleanup to service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
 
             delete prismMultiPartitionCleanupObjectManagerMessage;
 
@@ -128,12 +128,12 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_FATAL, "PrismMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_FATAL, "WaveMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
                 waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
-                trace (TRACE_LEVEL_INFO, "PrismMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep : Successfully sent MultiPartitionCleanup to Service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
+                trace (TRACE_LEVEL_INFO, "WaveMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep : Successfully sent MultiPartitionCleanup to Service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
             }
         }
 

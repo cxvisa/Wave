@@ -8,7 +8,7 @@
 #define PERSISTENCEEXECUTETRANSACTIONCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Types/Types.h"
 #include "Framework/Persistence/ConfigurationManagedObject.h"
 #include <vector>
@@ -26,8 +26,8 @@ class PersistenceExecuteTransactionContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                                      PersistenceExecuteTransactionContext        (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &sql);
-                                                      //PersistenceExecuteTransactionContext        (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      PersistenceExecuteTransactionContext        (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps, const string &sql);
+                                                      //PersistenceExecuteTransactionContext        (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
 
         virtual                                ~PersistenceExecuteTransactionContext        ();
 

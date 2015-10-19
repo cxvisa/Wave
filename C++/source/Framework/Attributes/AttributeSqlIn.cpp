@@ -219,7 +219,7 @@ void AttributeSqlIn::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult
     waveAssert (false, __FILE__, __LINE__);
 }
 
-void AttributeSqlIn::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+void AttributeSqlIn::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
     waveAssert (false, __FILE__, __LINE__);
@@ -241,7 +241,7 @@ bool AttributeSqlIn::isDeletableForOperation (const WaveManagedObjectOperation &
     return (false);
 }
 
-void AttributeSqlIn::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+void AttributeSqlIn::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
     trace (TRACE_LEVEL_FATAL, string ("AttributeSqlIn:: : This attribute is only for the SQL IN condition and does not make sense to invoke this method."));
     waveAssert (false, __FILE__, __LINE__);

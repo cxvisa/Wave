@@ -15,13 +15,13 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerPrintOrmMessage::PersistenceObjectManagerPrintOrmMessage ()
-    : ManagementInterfaceMessage (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_PRINT_ORM),
+    : ManagementInterfaceMessage (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_PRINT_ORM),
     m_ormInfo   ("")
 {
 }
 
 PersistenceObjectManagerPrintOrmMessage::PersistenceObjectManagerPrintOrmMessage (const vector<string> &arguments)
-    : ManagementInterfaceMessage (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_PRINT_ORM),
+    : ManagementInterfaceMessage (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_PRINT_ORM),
     m_ormArgs   (arguments),
     m_ormInfo   ("")
 {

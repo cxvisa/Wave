@@ -13,7 +13,7 @@ namespace WaveNs
 
 NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager)
 {
     setGenericStatus (WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
@@ -34,7 +34,7 @@ NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, str
 */
 NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, LocationId locationId, string nodeName, UI32 nodePort)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_locationId (locationId),
       m_nodeName (nodeName),
@@ -45,7 +45,7 @@ NodeManagedObject::NodeManagedObject (WaveObjectManager *pWaveObjectManager, Loc
 
 NodeManagedObject::NodeManagedObject (const NodeManagedObject &rhs)
     : WaveElement (rhs.m_pWaveObjectManager),
-      PrismPersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (NodeManagedObject::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (rhs.m_pWaveObjectManager)
 {
     setGenericStatus (rhs.getGenericStatus ());

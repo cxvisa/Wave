@@ -20,13 +20,13 @@ using namespace std;
 namespace WaveNs
 {
 
-class ShellPrism : public ShellBase
+class ShellWave : public ShellBase
 {
     private :
     protected :
     public :
-                                    ShellPrism                          (WaveObjectManager *pWaveObjectManager);
-                                   ~ShellPrism                          ();
+                                    ShellWave                          (WaveObjectManager *pWaveObjectManager);
+                                   ~ShellWave                          ();
         static  UI32                shellExecuteRegressionService       (UI32 argc, vector<string> argv);
         static  UI32                shellExecuteTraceService            (UI32 argc, vector<string> argv);
         static  UI32                shellExecuteDebugService            (UI32 argc, vector<string> argv);
@@ -36,13 +36,13 @@ class ShellPrism : public ShellBase
         static  UI32                shellExecuteQuit                    (UI32 argc, vector<string> argv);
         static  UI32                shellExecuteHelp                    (UI32 argc, vector<string> argv);
 
-        static  void                usageShellPrismRegressionService    ();
-        static  void                usageShellPrismTraceService         ();
-        static  void                usageShellPrismDebugService         ();
-    	static  void                usageShellPrismClusterService       ();
-    	static  void                usageShellPrismWyserService         ();
-        static  void                usageShellPrismLoadScript           ();
-        static  void                usageShellPrismHelp                 ();
+        static  void                usageShellWaveRegressionService    ();
+        static  void                usageShellWaveTraceService         ();
+        static  void                usageShellWaveDebugService         ();
+    	static  void                usageShellWaveClusterService       ();
+    	static  void                usageShellWaveWyserService         ();
+        static  void                usageShellWaveLoadScript           ();
+        static  void                usageShellWaveHelp                 ();
         static  WaveMessageStatus   shellSendSynchronously              (WaveMessage *pWaveMessage);
         static  void                shellTrace                          (TraceLevel traceLevel, const string &stringToTrace);
                 ShellRegression    *getRegressionShell                  ();

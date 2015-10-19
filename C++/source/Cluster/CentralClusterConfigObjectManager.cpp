@@ -13,7 +13,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Cluster/NodeManagedObject.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Cluster/ClusterDeleteContext.h"
@@ -36,13 +36,13 @@ CentralClusterConfigObjectManager::CentralClusterConfigObjectManager ()
       m_cluster (this)
 {
     NodeManagedObject nodeManagedObject (this);
-    PrismCluster      prismCluster      (this);
+    WaveCluster      prismCluster      (this);
 
     nodeManagedObject.setupOrm ();
     addManagedClass (NodeManagedObject::getClassName ());
 
     prismCluster.setupOrm ();
-    addManagedClass (PrismCluster::getClassName ());
+    addManagedClass (WaveCluster::getClassName ());
 
 //    addOperationMap (CLUSTER_CREATE_CLUSTER,                    reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::createClusterConfig));
 //    addOperationMap (CLUSTER_DELETE_CLUSTER,                    reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::deleteCluster));
@@ -180,9 +180,9 @@ WaveManagedObject *CentralClusterConfigObjectManager::createManagedObjectInstanc
     {
         pWaveManagedObject = new NodeManagedObject (this);
     }
-    else if ((PrismCluster::getClassName ()) == managedClassName)
+    else if ((WaveCluster::getClassName ()) == managedClassName)
     {
-        pWaveManagedObject = new PrismCluster (this);
+        pWaveManagedObject = new WaveCluster (this);
     }
     else
     {
@@ -243,16 +243,16 @@ void CentralClusterConfigObjectManager::install (WaveAsynchronousContextForBootP
 
 void CentralClusterConfigObjectManager::boot (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootStep),
 
 #if 0
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigObjectManager::bootQueryNodesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigObjectManager::bootStartHeartBeatsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::bootQueryNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::bootStartHeartBeatsStep),
 #endif
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::prismLinearSequencerFailedStep)
     };
 
     ClusterBootContext *pClusterBootContext = new ClusterBootContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -265,11 +265,11 @@ void CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootSt
 {
     trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootStep : Entering ...");
 
-    PrismAsynchronousContext             *pPrismAsynchronousContext             = pClusterBootContext->getPPrismAsynchronousContext ();
+    WaveAsynchronousContext             *pWaveAsynchronousContext             = pClusterBootContext->getPWaveAsynchronousContext ();
     LocationRole                          locationRole                          = FrameworkToolKit::getThisLocationRole ();
-    vector<WaveManagedObject *>          *pResults                              = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *>          *pResults                              = querySynchronously (WaveCluster::getClassName ());
 
-    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = dynamic_cast<WaveAsynchronousContextForBootPhases *> (pPrismAsynchronousContext);
+    WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases = dynamic_cast<WaveAsynchronousContextForBootPhases *> (pWaveAsynchronousContext);
     waveAssert (NULL != pWaveAsynchronousContextForBootPhases, __FILE__, __LINE__);
 
     WaveBootReason                        bootReason                            = pWaveAsynchronousContextForBootPhases->getBootReason ();
@@ -307,7 +307,7 @@ void CentralClusterConfigObjectManager::bootHandleSecondaryNodeUnconfigureBootSt
             else
             {
 
-               pClusterBootContext->setPPrismCluster (reinterpret_cast<PrismCluster *> ((*pResults)[0]));
+               pClusterBootContext->setPWaveCluster (reinterpret_cast<WaveCluster *> ((*pResults)[0]));
             }
         }
         else
@@ -327,19 +327,19 @@ void CentralClusterConfigObjectManager::bootQueryNodesStep (ClusterBootContext *
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigObjectManager::bootQueryNodesStep : Entering ...");
 
-    PrismCluster                 *pPrismCluster          = pClusterBootContext->getPPrismCluster ();
+    WaveCluster                 *pWaveCluster          = pClusterBootContext->getPWaveCluster ();
     vector<ObjectId>              secondaryNodes;
     UI32                          numberOfSecondaryNodes = 0;
     vector<WaveManagedObject *> *pSecondaryNodeResults  = NULL;
     UI32                          numberOfResults        = 0;
 
-    if (NULL == pPrismCluster)
+    if (NULL == pWaveCluster)
     {
         pClusterBootContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         return;
     }
 
-    secondaryNodes         = pPrismCluster->getSecondaryNodes ();
+    secondaryNodes         = pWaveCluster->getSecondaryNodes ();
     numberOfSecondaryNodes = secondaryNodes.size ();
 
     pSecondaryNodeResults = querySynchronously (WaveNode::getClassName (), secondaryNodes);
@@ -463,35 +463,35 @@ void CentralClusterConfigObjectManager::failover (FailoverAsynchronousContext *p
     FrameworkObjectManagerFailoverReason    failoverReason                      = pFailoverAsynchronousContext->getfailoverReason ();
     vector<LocationId>                      failedLocationIds                   = pFailoverAsynchronousContext->getfailedLocationIds ();
 
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryPrismClusterStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryWaveClusterStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
 #if 0
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverStartHeartBeatsIfPrimaryChangedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverStartHeartBeatsIfPrimaryChangedStep),
 #endif
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerFailedStep)
     };
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerUncontrolledSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerUncontrolledSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryPrismClusterStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNodeObjectsStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryWaveClusterStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNodeObjectsStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
 #if 0
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverStartHeartBeatsIfUncontrolledPrimaryChangedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverStartHeartBeatsIfUncontrolledPrimaryChangedStep),
 #endif
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerFailedStep)
     };
 
     ClusterFailoverContext *pClusterFailoverContext;
@@ -511,11 +511,11 @@ void CentralClusterConfigObjectManager::failover (FailoverAsynchronousContext *p
     pFailoverAsynchronousContext->callback ();
 }
 
-ResourceId CentralClusterConfigObjectManager::failoverQueryPrismClusterStep (ClusterFailoverContext *pClusterFailoverContext)
+ResourceId CentralClusterConfigObjectManager::failoverQueryWaveClusterStep (ClusterFailoverContext *pClusterFailoverContext)
 {
-    trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigObjectManager::failoverQueryPrismClusterStep : Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigObjectManager::failoverQueryWaveClusterStep : Entering ...");
 
-    vector<WaveManagedObject *> *pResults       = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *> *pResults       = querySynchronously (WaveCluster::getClassName ());
     ResourceId                   status         = WAVE_MESSAGE_ERROR;
 
     if (NULL != pResults)
@@ -524,19 +524,19 @@ ResourceId CentralClusterConfigObjectManager::failoverQueryPrismClusterStep (Clu
 
         if (0 == numberOfResults)
         {
-            trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::failoverQueryPrismClusterStep : There is no cluster created. Cluster is Deleted");
+            trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::failoverQueryWaveClusterStep : There is no cluster created. Cluster is Deleted");
             pClusterFailoverContext->setIsClusterExists(false);
             
             status = WAVE_MESSAGE_SUCCESS;
         }
         else if (1 == numberOfResults)
         {
-            pClusterFailoverContext->setPPrismCluster (reinterpret_cast<PrismCluster *> ((*pResults)[0]));
+            pClusterFailoverContext->setPWaveCluster (reinterpret_cast<WaveCluster *> ((*pResults)[0]));
             status = WAVE_MESSAGE_SUCCESS;
         }
         else
         {
-            trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::failoverQueryPrismClusterStep : There can be only one cluster.");
+            trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::failoverQueryWaveClusterStep : There can be only one cluster.");
             waveAssert (false, __FILE__, __LINE__);
             status = WAVE_MESSAGE_ERROR;
         }
@@ -546,7 +546,7 @@ ResourceId CentralClusterConfigObjectManager::failoverQueryPrismClusterStep (Clu
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::failoverQueryPrismClusterStep : Could not query for clusters in the system");
+        trace (TRACE_LEVEL_FATAL, "CentralClusterConfigObjectManager::failoverQueryWaveClusterStep : Could not query for clusters in the system");
         waveAssert (false, __FILE__, __LINE__);
         status = WAVE_MESSAGE_ERROR;
     }
@@ -558,11 +558,11 @@ ResourceId CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedS
 {
     if (pClusterFailoverContext->getIsClusterExists ())
     {
-        PrismCluster *pPrismCluster = pClusterFailoverContext->getPPrismCluster ();
+        WaveCluster *pWaveCluster = pClusterFailoverContext->getPWaveCluster ();
 
-        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveCluster, __FILE__, __LINE__);
 
-        const LocationId previousClusterPrimaryLocationId = pPrismCluster->getPrimaryLocationId ();
+        const LocationId previousClusterPrimaryLocationId = pWaveCluster->getPrimaryLocationId ();
         const LocationId thisLocationId                   = FrameworkToolKit::getThisLocationId ();
 
         if (previousClusterPrimaryLocationId != thisLocationId)
@@ -595,19 +595,19 @@ ResourceId CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsSte
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep (ClusterFailoverContext *pClusterFailoverContext)
+ResourceId CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep (ClusterFailoverContext *pClusterFailoverContext)
 {
     if (pClusterFailoverContext->getIsClusterExists ())
     {
-        PrismCluster *pPrismCluster         = pClusterFailoverContext->getPPrismCluster ();
+        WaveCluster *pWaveCluster         = pClusterFailoverContext->getPWaveCluster ();
 
-        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveCluster, __FILE__, __LINE__);
 
         if (LOCATION_STAND_ALONE == FrameworkToolKit::getThisLocationRole())
         {
-            delete pPrismCluster;
-            pPrismCluster = NULL;
-            pClusterFailoverContext->setPPrismCluster (NULL);                    
+            delete pWaveCluster;
+            pWaveCluster = NULL;
+            pClusterFailoverContext->setPWaveCluster (NULL);                    
             pClusterFailoverContext->setIsClusterExists(false);
 
             return (WAVE_MESSAGE_SUCCESS);
@@ -622,10 +622,10 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep (Cl
         UI32          i                     = 0; 
         bool          isClusterDegraded     = false;
 
-        trace (TRACE_LEVEL_INFO, string("CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep : Primary Changed:") + isPrimaryChanged + string(" port: ") + primaryPort);
+        trace (TRACE_LEVEL_INFO, string("CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep : Primary Changed:") + isPrimaryChanged + string(" port: ") + primaryPort);
 
 
-        updateWaveManagedObject (pPrismCluster);
+        updateWaveManagedObject (pWaveCluster);
 
         // Update the status of the cluster to degraded if any node in the
         // cluster is disconnected, otherwise to good.
@@ -644,20 +644,20 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep (Cl
 
         if (true == isClusterDegraded) 
         {
-            pPrismCluster->setGenericStatus (WAVE_MANAGED_OBJECT_GENERIC_STATUS_DEGRADED);
-            trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep : Updating cluster status to degraded as node in the cluster: " + pWaveNode->getIpAddress ()  + string (" is disconnected"));
+            pWaveCluster->setGenericStatus (WAVE_MANAGED_OBJECT_GENERIC_STATUS_DEGRADED);
+            trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep : Updating cluster status to degraded as node in the cluster: " + pWaveNode->getIpAddress ()  + string (" is disconnected"));
         }
         else 
         {
-            pPrismCluster->setGenericStatus (WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
-            trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::failoverUpdatePrismClusterStep : Updating cluster status to good as all nodes in the cluster are connected");
+            pWaveCluster->setGenericStatus (WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
+            trace (TRACE_LEVEL_INFO, "CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep : Updating cluster status to good as all nodes in the cluster are connected");
         } 
 
         if (true == isPrimaryChanged)
         {
-            pPrismCluster->setPrimaryLocationId (primaryLocationId);
-            pPrismCluster->setPrimaryIpAddress  (primaryIpAddress);
-            pPrismCluster->setPrimaryPort       (primaryPort);
+            pWaveCluster->setPrimaryLocationId (primaryLocationId);
+            pWaveCluster->setPrimaryIpAddress  (primaryIpAddress);
+            pWaveCluster->setPrimaryPort       (primaryPort);
         }
     }
 
@@ -676,12 +676,12 @@ ResourceId CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNode
 
     if (pClusterFailoverContext->getIsClusterExists ())
     {
-        PrismCluster       *pPrismCluster          = pClusterFailoverContext->getPPrismCluster ();
+        WaveCluster       *pWaveCluster          = pClusterFailoverContext->getPWaveCluster ();
 
-        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveCluster, __FILE__, __LINE__);
         waveAssert (NULL != pNodes,        __FILE__, __LINE__);
 
-        trace (TRACE_LEVEL_INFO, string("failoverUncontrolledUpdateWaveNodeObjectsStep : Primary ") + pPrismCluster->getPrimaryLocationId() + string(" Node ") + pPrismCluster->getPrimaryPort());
+        trace (TRACE_LEVEL_INFO, string("failoverUncontrolledUpdateWaveNodeObjectsStep : Primary ") + pWaveCluster->getPrimaryLocationId() + string(" Node ") + pWaveCluster->getPrimaryPort());
 
 
         for (i = 0; i < (pNodes->size ()); i++)
@@ -729,15 +729,15 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep 
 
     if (pClusterFailoverContext->getIsClusterExists ())
     {
-        PrismCluster       *pPrismCluster          = pClusterFailoverContext->getPPrismCluster ();
+        WaveCluster       *pWaveCluster          = pClusterFailoverContext->getPWaveCluster ();
 
-        waveAssert (NULL != pPrismCluster, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveCluster, __FILE__, __LINE__);
         waveAssert (NULL != pNodes,        __FILE__, __LINE__);
 
  
         if (LOCATION_STAND_ALONE != FrameworkToolKit::getThisLocationRole())
         {
-            updateWaveManagedObject (pPrismCluster);
+            updateWaveManagedObject (pWaveCluster);
         }
 
         for (i = 0; i < (pNodes->size ()); i++)
@@ -751,7 +751,7 @@ ResourceId CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep 
             {
                 if (LOCATION_STAND_ALONE != FrameworkToolKit::getThisLocationRole())
                 {
-                    pPrismCluster->removeSecondaryNode (pWaveNode->getObjectId()); 
+                    pWaveCluster->removeSecondaryNode (pWaveNode->getObjectId()); 
                 }
 
                 delete pWaveNode;
@@ -804,10 +804,10 @@ ResourceId CentralClusterConfigObjectManager::failoverStartHeartBeatsIfPrimaryCh
             return (WAVE_MESSAGE_SUCCESS);
         }
 
-        PrismCluster                 *pPrismCluster         = pClusterFailoverContext->getPPrismCluster ();
+        WaveCluster                 *pWaveCluster         = pClusterFailoverContext->getPWaveCluster ();
         vector<WaveManagedObject *> *pSecondaryNodeResults = pClusterFailoverContext->getPNodeManagedObjects ();
 
-        waveAssert (NULL != pPrismCluster,         __FILE__, __LINE__);
+        waveAssert (NULL != pWaveCluster,         __FILE__, __LINE__);
         waveAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
 
         string                        secondaryNodeName;
@@ -924,10 +924,10 @@ ResourceId CentralClusterConfigObjectManager::failoverStartHeartBeatsIfUncontrol
             return (WAVE_MESSAGE_SUCCESS);
         }
 
-        PrismCluster                 *pPrismCluster         = pClusterFailoverContext->getPPrismCluster ();
+        WaveCluster                 *pWaveCluster         = pClusterFailoverContext->getPWaveCluster ();
         vector<WaveManagedObject *> *pSecondaryNodeResults = pClusterFailoverContext->getPNodeManagedObjects ();
 
-        waveAssert (NULL != pPrismCluster,         __FILE__, __LINE__);
+        waveAssert (NULL != pWaveCluster,         __FILE__, __LINE__);
         waveAssert (NULL != pSecondaryNodeResults, __FILE__, __LINE__);
 
         UI32                          numberOfSecondaryNodes = 0;
@@ -1135,7 +1135,7 @@ UI32 CentralClusterConfigObjectManager::preCreateClusterUpdateConfig (ClusterObj
 
 UI32 CentralClusterConfigObjectManager::informFrameworkForClusterCreation (ClusterObjectManagerCreateClusterMessage *pMessage)
 {
-    PrismCreateClusterWithNodesMessage     *pCreateClusterMessage = new PrismCreateClusterWithNodesMessage ();
+    WaveCreateClusterWithNodesMessage     *pCreateClusterMessage = new WaveCreateClusterWithNodesMessage ();
     UI32                                    index;
     UI32                                    status;
 
@@ -1154,7 +1154,7 @@ UI32 CentralClusterConfigObjectManager::informFrameworkForClusterCreation (Clust
     return (status);
 }
 
-void CentralClusterConfigObjectManager::processFrameworkCreateClusterReply (FrameworkStatus frameworkStatus, PrismCreateClusterWithNodesMessage *pCreateClusterMessage, void *pContext)
+void CentralClusterConfigObjectManager::processFrameworkCreateClusterReply (FrameworkStatus frameworkStatus, WaveCreateClusterWithNodesMessage *pCreateClusterMessage, void *pContext)
 {
     ClusterObjectManagerCreateClusterMessage *pMessage =  (ClusterObjectManagerCreateClusterMessage *) pContext;
     UI32                                      status;
@@ -1219,7 +1219,7 @@ void CentralClusterConfigObjectManager::processFrameworkCreateClusterReply (Fram
     return;
 }
 
-UI32 CentralClusterConfigObjectManager::postCreateClusterUpdateConfig (ClusterObjectManagerCreateClusterMessage *pMessage, PrismCreateClusterWithNodesMessage *pCreateClusterMessage)
+UI32 CentralClusterConfigObjectManager::postCreateClusterUpdateConfig (ClusterObjectManagerCreateClusterMessage *pMessage, WaveCreateClusterWithNodesMessage *pCreateClusterMessage)
 {
     UI32                                    status;
     UI32                                    index = 0;
@@ -1267,7 +1267,7 @@ UI32 CentralClusterConfigObjectManager::postCreateClusterUpdateConfig (ClusterOb
     return  (status);
 }
 
-void CentralClusterConfigObjectManager::replyToCreateClusterMessage (ClusterObjectManagerCreateClusterMessage *pMessage, PrismCreateClusterWithNodesMessage *pCreateClusterMessage)
+void CentralClusterConfigObjectManager::replyToCreateClusterMessage (ClusterObjectManagerCreateClusterMessage *pMessage, WaveCreateClusterWithNodesMessage *pCreateClusterMessage)
 {
     UI32     index;
 

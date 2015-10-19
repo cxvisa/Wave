@@ -21,8 +21,8 @@ ShellRegression::ShellRegression (WaveObjectManager *pWaveObjectManager)
     : ShellBase (pWaveObjectManager, string("Regression")),
       m_nServices (0)
 {
-    addShellCommandHandler (ShellCommandHandler (string("trace"),       1,  (ShellCmdFunction) (&ShellPrism::shellExecuteTraceService),             1, (ShellUsageFunction) (&ShellPrism::usageShellPrismTraceService)));
-    addShellCommandHandler (ShellCommandHandler (string("debug"),       1,  (ShellCmdFunction) (&ShellPrism::shellExecuteDebugService),             1, (ShellUsageFunction) (&ShellPrism::usageShellPrismDebugService)));
+    addShellCommandHandler (ShellCommandHandler (string("trace"),       1,  (ShellCmdFunction) (&ShellWave::shellExecuteTraceService),             1, (ShellUsageFunction) (&ShellWave::usageShellWaveTraceService)));
+    addShellCommandHandler (ShellCommandHandler (string("debug"),       1,  (ShellCmdFunction) (&ShellWave::shellExecuteDebugService),             1, (ShellUsageFunction) (&ShellWave::usageShellWaveDebugService)));
 
     addShellCommandHandler (ShellCommandHandler (string("list"),        1,  (ShellCmdFunction) (&ShellRegression::shellExecuteListServices),        1, (ShellUsageFunction) (&ShellRegression::usageShellRegressionList)));
     addShellCommandHandler (ShellCommandHandler (string("setstate"),    3,  (ShellCmdFunction) (&ShellRegression::shellExecuteSetServiceState),     4, (ShellUsageFunction) (&ShellRegression::usageShellRegressionSetState)));
@@ -43,7 +43,7 @@ ShellRegression::~ShellRegression ()
 
 UI32 ShellRegression::shellExecuteListServices (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->listServices (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->listServices (argc, argv));
 }
 
 UI32 ShellRegression::listServices (UI32 argc, vector<string> argv)
@@ -57,18 +57,18 @@ UI32 ShellRegression::listServices (UI32 argc, vector<string> argv)
     string                                                  serviceName;
     WaveMessageStatus                                      status = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteListServices : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteListServices : Entering ...");
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "Failed to send GetTestService message");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, "Failed to send GetTestService message");
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "Failed to get service list. Status: " + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, "Failed to get service list. Status: " + message.getCompletionStatus ());
         }
         else
         {
@@ -96,19 +96,19 @@ void ShellRegression::shellGetServicesList (void)
     UI32                        index;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellGetServicesList : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellGetServicesList : Entering ...");
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "Failed to send GetTestService message");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, "Failed to send GetTestService message");
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to get service list. Status: ") + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to get service list. Status: ") + message.getCompletionStatus ());
         }
         else
         {
@@ -125,7 +125,7 @@ void ShellRegression::shellGetServicesList (void)
 
 UI32 ShellRegression::shellExecuteSetServiceState (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->setServiceState (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->setServiceState (argc, argv));
 }
 
 UI32 ShellRegression::setServiceState (UI32 argc, vector<string> argv)
@@ -135,12 +135,12 @@ UI32 ShellRegression::setServiceState (UI32 argc, vector<string> argv)
     UI32                        serviceIndex;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteSetServiceState : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteSetServiceState : Entering ...");
 
     serviceIndex    =  atoi(argv[1].c_str ());
     if (serviceIndex > m_nServices)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
         return SHELL_OK;
     }
 
@@ -158,27 +158,27 @@ UI32 ShellRegression::setServiceState (UI32 argc, vector<string> argv)
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "invalid state: state should be enable/disable");
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, "invalid state: state should be enable/disable");
             return SHELL_OK;
         }
     }
 
     RegressionTestObjectManagerSetTestServiceStateMessage message (id, state);
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to send message to set state for service ") + serviceIndex);
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to send message to set state for service ") + serviceIndex);
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set service state. status: ") + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set service state. status: ") + message.getCompletionStatus ());
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set service state for service ") + serviceIndex);
+            ShellWave::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set service state for service ") + serviceIndex);
         }
     }
     return SHELL_OK;
@@ -186,7 +186,7 @@ UI32 ShellRegression::setServiceState (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecuteSetAllServicesState (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->setAllServicesState (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->setAllServicesState (argc, argv));
 }
 
 UI32 ShellRegression::setAllServicesState (UI32 argc, vector<string> argv)
@@ -196,7 +196,7 @@ UI32 ShellRegression::setAllServicesState (UI32 argc, vector<string> argv)
     UI32                        serviceIndex;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteSetAllServicesState : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteSetAllServicesState : Entering ...");
 
     if ("enable" == argv[1])
     {
@@ -210,7 +210,7 @@ UI32 ShellRegression::setAllServicesState (UI32 argc, vector<string> argv)
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "invalid state: state should be enable/disable");
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, "invalid state: state should be enable/disable");
             return SHELL_OK;
         }
     }
@@ -219,21 +219,21 @@ UI32 ShellRegression::setAllServicesState (UI32 argc, vector<string> argv)
     {
         id  =   m_serviceMap [serviceIndex];
         RegressionTestObjectManagerSetTestServiceStateMessage message (id, state);
-        status = ShellPrism::shellSendSynchronously (&message);
+        status = ShellWave::shellSendSynchronously (&message);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to send message to set state for service ") + serviceIndex);
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to send message to set state for service ") + serviceIndex);
         }
         else
         {
             if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
             {
-                ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set state (service, status): ") + serviceIndex + message.getCompletionStatus ());
+                ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set state (service, status): ") + serviceIndex + message.getCompletionStatus ());
             }
             else
             {
-                ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set state for service ") + serviceIndex);
+                ShellWave::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set state for service ") + serviceIndex);
             }
         }
     }
@@ -243,7 +243,7 @@ UI32 ShellRegression::setAllServicesState (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecuteRunTestService  (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->runTestService (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->runTestService (argc, argv));
 }
 
 
@@ -254,18 +254,18 @@ UI32 ShellRegression::runTestService (UI32 argc, vector<string> argv)
     UI32                        nTimes = 1;
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::shellExecuteRunTestService : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::shellExecuteRunTestService : Entering ...");
 
     if (0 == m_nServices)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id - No Services Exist for testing ...");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id - No Services Exist for testing ...");
         return SHELL_OK;
     }
 
     serviceIndex    =  atoi(argv[1].c_str ());
     if (serviceIndex > m_nServices)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
         return SHELL_OK;
     }
 
@@ -277,21 +277,21 @@ UI32 ShellRegression::runTestService (UI32 argc, vector<string> argv)
     cout << "ID: " << id << " nTimes: " << nTimes << endl;
 
     RegressionTestObjectManagerRunTestForAServiceMessage message (id, nTimes);
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to send message to run test for a service ") + serviceIndex);
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to send message to run test for a service ") + serviceIndex);
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to run service test. status: ") + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to run service test. status: ") + message.getCompletionStatus ());
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to run service test ") + serviceIndex);
+            ShellWave::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to run service test ") + serviceIndex);
         }
     }
     return SHELL_OK;
@@ -299,19 +299,19 @@ UI32 ShellRegression::runTestService (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecuteSetDefaultState (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->setDefaultState (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->setDefaultState (argc, argv));
 }
 
 UI32 ShellRegression::setDefaultState (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteSetDefaultState : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteSetDefaultState : Entering ...");
 
     return SHELL_OK;
 }
 
 UI32 ShellRegression::shellExecuteStartRegression (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->startRegression (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->startRegression (argc, argv));
 }
 
 
@@ -325,25 +325,25 @@ UI32 ShellRegression::startRegression (UI32 argc, vector<string> argv)
         nTimes  =   atoi(argv[1].c_str ());
     }
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteStartRegression : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteStartRegression : Entering ...");
 
     RegressionTestObjectManagerStartRegressionMessage           message (nTimes);
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "Failed to send startRegession message ");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, "Failed to send startRegession message ");
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Regession test failed: Status: ") + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Regession test failed: Status: ") + message.getCompletionStatus ());
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "Regession test successed");
+            ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "Regession test successed");
         }
     }
 
@@ -353,13 +353,13 @@ UI32 ShellRegression::startRegression (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecutePrepareRegression (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->prepareRegression (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->prepareRegression (argc, argv));
 }
 
 
 UI32 ShellRegression::prepareRegression (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::shellExecuteStartRegression : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::shellExecuteStartRegression : Entering ...");
 
     WaveMessageStatus            status = WAVE_MESSAGE_ERROR;
     WaveServiceId                id;
@@ -369,7 +369,7 @@ UI32 ShellRegression::prepareRegression (UI32 argc, vector<string> argv)
     serviceIndex    =  atoi(argv[1].c_str ());
     if (serviceIndex > m_nServices)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
         return SHELL_OK;
     }
 
@@ -384,21 +384,21 @@ UI32 ShellRegression::prepareRegression (UI32 argc, vector<string> argv)
         message.addInputString (argv[argIndex]);
     }
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "Failed to send prepareRegession message ");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, "Failed to send prepareRegession message ");
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Prepare Regession failed: Status: ") + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Prepare Regession failed: Status: ") + message.getCompletionStatus ());
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "Prepare Regession successed");
+            ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "Prepare Regession successed");
         }
     }
 
@@ -408,12 +408,12 @@ UI32 ShellRegression::prepareRegression (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecutePrepareRegression2 (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->prepareRegression2 (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->prepareRegression2 (argc, argv));
 }
 
 UI32 ShellRegression::prepareRegression2 (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::prepareRegression2 : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_INFO, "ShellRegression::prepareRegression2 : Entering ...");
 
     WaveMessageStatus           status = WAVE_MESSAGE_ERROR;
     WaveServiceId              id;
@@ -423,7 +423,7 @@ UI32 ShellRegression::prepareRegression2 (UI32 argc, vector<string> argv)
     serviceIndex    =  atoi(argv[1].c_str ());
     if (serviceIndex > m_nServices)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
         return SHELL_OK;
     }
 
@@ -436,21 +436,21 @@ UI32 ShellRegression::prepareRegression2 (UI32 argc, vector<string> argv)
         message.addInputString (argv[argIndex]);
     }
 
-    status = ShellPrism::shellSendSynchronously (&message);
+    status = ShellWave::shellSendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, "Failed to send prepareRegession2 message ");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, "Failed to send prepareRegession2 message ");
     }
     else
     {
         if (WAVE_MESSAGE_SUCCESS != message.getCompletionStatus ())
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Prepare Regession 2 failed: Status: ") + message.getCompletionStatus ());
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Prepare Regession 2 failed: Status: ") + message.getCompletionStatus ());
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "Prepare Regession 2 succeeded");
+            ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "Prepare Regession 2 succeeded");
         }
     }
 
@@ -460,13 +460,13 @@ UI32 ShellRegression::prepareRegression2 (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecuteHelpRegression (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->helpRegression (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->helpRegression (argc, argv));
 }
 
 
 UI32 ShellRegression::helpRegression (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteHelpRegression : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellRegression::shellExecuteHelpRegression : Entering ...");
 
     usageShellRegressionHelp ();
 
@@ -475,7 +475,7 @@ UI32 ShellRegression::helpRegression (UI32 argc, vector<string> argv)
 
 UI32 ShellRegression::shellExecuteQuitRegression (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getRegressionShell ()->quitRegression (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getRegressionShell ()->quitRegression (argc, argv));
 }
 
 

@@ -18,8 +18,8 @@ class DetachFromClusterContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                                      DetachFromClusterContext         (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                                      DetachFromClusterContext         (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      DetachFromClusterContext         (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      DetachFromClusterContext         (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                      ~DetachFromClusterContext         ();
 
                 LocationRole                          getThisLocationRoleBeforeDetach  () const;

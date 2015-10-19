@@ -24,7 +24,7 @@ namespace WaveNs
 {
 
 CommandLineInterfaceReceiverControlThread::CommandLineInterfaceReceiverControlThread (CommandLineInterfaceReceiverObjectManager *pCommandLineInterfaceReceiverObjectManager, ServerStreamingSocket *pServerStreamingSocket)
-    : PrismPosixThread                             (),
+    : WavePosixThread                             (),
       WaveWorker                                   (pCommandLineInterfaceReceiverObjectManager),
       m_pServerStreamingSocket                     (pServerStreamingSocket),
       m_transferredSocketcontrol                   (false),
@@ -116,7 +116,7 @@ WaveThreadStatus CommandLineInterfaceReceiverControlThread::start()
 
 bool CommandLineInterfaceReceiverControlThread::authorize ()
 {
-    // Try to read the Prism connection Pass Phrase.  If the connected client does not supply the
+    // Try to read the Wave connection Pass Phrase.  If the connected client does not supply the
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful          = false;

@@ -21,7 +21,7 @@ class WaveManagedObjectDeleteContext : public WaveManagedObjectUpdateContext
     private :
     protected :
     public :
-                    WaveManagedObjectDeleteContext              (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps);
+                    WaveManagedObjectDeleteContext              (WaveMessage* pWaveMessage, WaveElement* pWaveElement, WaveLinearSequencerStep* pSteps, UI32 numberOfSteps);
         virtual    ~WaveManagedObjectDeleteContext              ();
 
         bool        isNeedToDeleteManagedObject                 () const;

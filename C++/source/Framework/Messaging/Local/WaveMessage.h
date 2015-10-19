@@ -4,15 +4,15 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMMESSAGE_H
-#define PRISMMESSAGE_H
+#ifndef WAVEMESSAGE_H
+#define WAVEMESSAGE_H
 
 #include "Framework/Types/Types.h"
 #include <map>
 #include <vector>
 #include "Framework/ObjectModel/SerializableObject.h"
 #include "Framework/ObjectModel/WaveClientSessionContext.h"
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 
 using namespace std;
 
@@ -294,4 +294,4 @@ class WaveMessage : virtual public SerializableObject
 
 }
 
-#endif //PRISMMESSAGE_H
+#endif //WAVEMESSAGE_H

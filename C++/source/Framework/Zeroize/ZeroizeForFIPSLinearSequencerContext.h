@@ -8,7 +8,7 @@
 #define ZEROIZEFORFIPSLINEARSEQUENCERCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
@@ -17,7 +17,7 @@ class ZeroizeForFIPSLinearSequencerContext : public WaveLinearSequencerContext
 {
     protected:
     public:
-        ZeroizeForFIPSLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+        ZeroizeForFIPSLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         ~ZeroizeForFIPSLinearSequencerContext (); 
 
         

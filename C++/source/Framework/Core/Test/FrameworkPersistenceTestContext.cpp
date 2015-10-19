@@ -5,12 +5,12 @@
  ***************************************************************************/
 
 #include "Framework/Core/Test/FrameworkPersistenceTestContext.h"
-#include "Framework/Core/Test/PrismTestManagedObject1.h"
-#include "Framework/Core/Test/PrismTestManagedObject2.h"
-#include "Framework/Core/Test/PrismTestManagedObject3.h"
-#include "Framework/Core/Test/PrismTestManagedObject4.h"
-#include "Framework/Core/Test/PrismTestManagedObject5.h"
-#include "Framework/Core/Test/PrismTestManagedObject5.h"
+#include "Framework/Core/Test/WaveTestManagedObject1.h"
+#include "Framework/Core/Test/WaveTestManagedObject2.h"
+#include "Framework/Core/Test/WaveTestManagedObject3.h"
+#include "Framework/Core/Test/WaveTestManagedObject4.h"
+#include "Framework/Core/Test/WaveTestManagedObject5.h"
+#include "Framework/Core/Test/WaveTestManagedObject5.h"
 #include "Framework/Core/Test/WaveTestManagedObject6.h"
 #include "Framework/Core/Test/WaveTestManagedObject7.h"
 #include "Framework/Core/Test/WaveTestManagedObject10.h"
@@ -20,7 +20,7 @@
 namespace WaveNs
 {
 
-FrameworkPersistenceTestContext::FrameworkPersistenceTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+FrameworkPersistenceTestContext::FrameworkPersistenceTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_numberOfObjectsToBeCreated (0),
       m_numberOfObjectsForPartialQuery (0),
@@ -41,52 +41,52 @@ FrameworkPersistenceTestContext::~FrameworkPersistenceTestContext ()
     m_createdObjects.clear ();
 }
 
-vector<PrismTestManagedObject1 *> &FrameworkPersistenceTestContext::getCreatedObjects ()
+vector<WaveTestManagedObject1 *> &FrameworkPersistenceTestContext::getCreatedObjects ()
 {
     return (m_createdObjects);
 }
 
-map<ObjectId, PrismTestManagedObject1 *> &FrameworkPersistenceTestContext::getCreatedObjectsMap ()
+map<ObjectId, WaveTestManagedObject1 *> &FrameworkPersistenceTestContext::getCreatedObjectsMap ()
 {
     return (m_createdObjectsMap);
 }
 
-vector<PrismTestManagedObject2 *> &FrameworkPersistenceTestContext::getCreatedObjects2 ()
+vector<WaveTestManagedObject2 *> &FrameworkPersistenceTestContext::getCreatedObjects2 ()
 {
     return (m_createdObjects2);
 }
 
-map<ObjectId, PrismTestManagedObject2 *> &FrameworkPersistenceTestContext::getCreatedObjects2Map ()
+map<ObjectId, WaveTestManagedObject2 *> &FrameworkPersistenceTestContext::getCreatedObjects2Map ()
 {
     return (m_createdObjects2Map);
 }
 
-vector<PrismTestManagedObject3 *> &FrameworkPersistenceTestContext::getCreatedObjects3 ()
+vector<WaveTestManagedObject3 *> &FrameworkPersistenceTestContext::getCreatedObjects3 ()
 {
     return (m_createdObjects3);
 }
 
-map<ObjectId, PrismTestManagedObject3 *> &FrameworkPersistenceTestContext::getCreatedObjects3Map ()
+map<ObjectId, WaveTestManagedObject3 *> &FrameworkPersistenceTestContext::getCreatedObjects3Map ()
 {
     return (m_createdObjects3Map);
 }
 
-vector<PrismTestManagedObject4 *> &FrameworkPersistenceTestContext::getCreatedObjects4 ()
+vector<WaveTestManagedObject4 *> &FrameworkPersistenceTestContext::getCreatedObjects4 ()
 {
     return (m_createdObjects4);
 }
 
-map<ObjectId, PrismTestManagedObject4 *> &FrameworkPersistenceTestContext::getCreatedObjects4Map ()
+map<ObjectId, WaveTestManagedObject4 *> &FrameworkPersistenceTestContext::getCreatedObjects4Map ()
 {
     return (m_createdObjects4Map);
 }
 
-vector<PrismTestManagedObject5 *> &FrameworkPersistenceTestContext::getCreatedObjects5 ()
+vector<WaveTestManagedObject5 *> &FrameworkPersistenceTestContext::getCreatedObjects5 ()
 {
     return (m_createdObjects5);
 }
 
-map<ObjectId, PrismTestManagedObject5 *> &FrameworkPersistenceTestContext::getCreatedObjects5Map ()
+map<ObjectId, WaveTestManagedObject5 *> &FrameworkPersistenceTestContext::getCreatedObjects5Map ()
 {
     return (m_createdObjects5Map);
 }

@@ -20,14 +20,14 @@
 #include "Framework/Database/DatabaseObjectManagerRestoreMessage.h"
 #include "Framework/Persistence/PersistenceLocalObjectManager.h"
 #include "Framework/Persistence/PersistenceLocalObjectManagerSetStartupFileMessage.h"
-#include "Framework/Persistence/PersistenceLocalObjectManagerSavePrismConfigurationMessage.h"
+#include "Framework/Persistence/PersistenceLocalObjectManagerSaveWaveConfigurationMessage.h"
 #include "Framework/Persistence/PersistenceLocalObjectManagerCopyDefaultClusterMessage.h"
 #include "Framework/Persistence/PersistenceLocalObjectManagerExecuteTransactionMessage.h"
 #include "Framework/Persistence/PersistenceObjectManagerCompareDBMessage.h"
 #include "Framework/Persistence/MoSchemaInfoManagedObject.h"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfoRepository.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Shell/ShellDebug.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Database/DatabaseObjectManagerGetLatestInstanceIdForTableMessage.h"
@@ -70,7 +70,7 @@ void PersistenceObjectManager::setSchemaDropRequiredDuringBoot (const bool &sche
 }*/
 
 PersistenceObjectManager::PersistenceObjectManager ()
-    : WaveObjectManager (getPrismServiceName ()),
+    : WaveObjectManager (getWaveServiceName ()),
       m_pConfigurationManagedObject (NULL),
       m_delayedCommitTransactions   ("")
 {
@@ -130,7 +130,7 @@ WaveServiceId PersistenceObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-string PersistenceObjectManager::getPrismServiceName ()
+string PersistenceObjectManager::getWaveServiceName ()
 {
     return ("Persistence");
 }
@@ -250,7 +250,7 @@ void PersistenceObjectManager::initialize (WaveAsynchronousContextForBootPhases 
 
     // At this point indicate that ORM is enabled.
 
-    PrismPersistableObject::setIsObjectRelationalMappingEnabled (true);
+    WavePersistableObject::setIsObjectRelationalMappingEnabled (true);
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -446,7 +446,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
             {
 
                 //Save the configuration here as we have removed the cfg file before deleting tables from previous ORM schema.
-                FrameworkToolKit::savePrismConfiguration();
+                FrameworkToolKit::saveWaveConfiguration();
 
                 pWaveAsynchronousContextForBootPhases->setCompletionStatus (status);
                 pWaveAsynchronousContextForBootPhases->callback ();
@@ -485,7 +485,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
             {
 
                 //Save the configuration here as we have removed the cfg file before deleting tables from previous ORM schema.
-                FrameworkToolKit::savePrismConfiguration();
+                FrameworkToolKit::saveWaveConfiguration();
 
                 pWaveAsynchronousContextForBootPhases->setCompletionStatus (status);
                 pWaveAsynchronousContextForBootPhases->callback ();
@@ -541,7 +541,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
         {
 
             //Save the configuration here as we have removed the cfg file before deleting tables from previous ORM schema.
-            //FrameworkToolKit::savePrismConfiguration();
+            //FrameworkToolKit::saveWaveConfiguration();
             
             pWaveAsynchronousContextForBootPhases->setCompletionStatus (status);
             pWaveAsynchronousContextForBootPhases->callback ();
@@ -549,7 +549,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
         }
 
         //Save the configuration here as we have removed the cfg file before deleting tables from previous ORM schema.
-        //FrameworkToolKit::savePrismConfiguration();
+        //FrameworkToolKit::saveWaveConfiguration();
 
         s_schemaCreationRequiredDuringBoot = false;
     }
@@ -874,14 +874,14 @@ ResourceId PersistenceObjectManager::copySchemaLocal (const string &sourceSchema
 
 void PersistenceObjectManager::executeTransactionMessageHandler (PersistenceObjectManagerExecuteTransactionMessage *pPersistenceObjectManagerExecuteTransactionMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPreparePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCommittRollbackPhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::executePushWaveConfigurationToFileOnAllLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::executePushWaveConfigurationToKernelOnAllLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPreparePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCommittRollbackPhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executePushWaveConfigurationToFileOnAllLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executePushWaveConfigurationToKernelOnAllLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = new PersistenceExecuteTransactionContext (pPersistenceObjectManagerExecuteTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), pPersistenceObjectManagerExecuteTransactionMessage->getSql ());
@@ -974,7 +974,7 @@ void PersistenceObjectManager::executePushWaveConfigurationToKernelOnAllLocation
 
     PersistenceLocalObjectManagerPushConfigToKernelMessaage *pPushConfigToKernelMessage = new PersistenceLocalObjectManagerPushConfigToKernelMessaage (serializedConfigs);
 
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::pushConfigToKernelMessageCallback), pPersistenceExecuteTransactionContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::pushConfigToKernelMessageCallback), pPersistenceExecuteTransactionContext);
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pPushConfigToKernelMessage);
 
@@ -1208,7 +1208,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPre
         pPersistenceLocalObjectManagerExecuteTransactionMessage->setIsConfigurationChange (pPersistenceExecuteTransactionContext->getIsConfigurationChange ());
         pPersistenceLocalObjectManagerExecuteTransactionMessage->setIsConfigurationTimeChange (pPersistenceExecuteTransactionContext->getIsConfigurationTimeChange ());
 
-        WaveSendMulticastContext *pWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPreparePhaseCallback2), pPersistenceExecuteTransactionContext);
+        WaveSendMulticastContext *pWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPreparePhaseCallback2), pPersistenceExecuteTransactionContext);
 
         pWaveSendMulticastContext->setWaveMessage (pPersistenceLocalObjectManagerExecuteTransactionMessage);
         pWaveSendMulticastContext->setAllLocationsToSent (currentLocations);
@@ -1359,7 +1359,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCom
         m_anyConfiguraitonChangeTrackingNumber++;
         m_anyConfiguraitonChangeTrackingNumberMutex.unlock ();
 
-        WaveSendMulticastContext *pWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCommittCallback), pPersistenceExecuteTransactionContext);
+        WaveSendMulticastContext *pWaveSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCommittCallback), pPersistenceExecuteTransactionContext);
 
         pWaveSendMulticastContext->setWaveMessage (pPersistenceLocalObjectManagerExecuteTransactionMessage);
         pWaveSendMulticastContext->setAllLocationsToSent (currentLocations);
@@ -1418,7 +1418,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCom
         {
             ++(*pPersistenceExecuteTransactionContext);
 
-            WaveSendMulticastContext *pRollbackPreparedSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForRollbackCallback), pPersistenceExecuteTransactionContext);
+            WaveSendMulticastContext *pRollbackPreparedSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForRollbackCallback), pPersistenceExecuteTransactionContext);
 
             PersistenceLocalObjectManagerExecuteTransactionMessage *pPersistenceLocalObjectManagerExecuteTransactionMessage = new PersistenceLocalObjectManagerExecuteTransactionMessage (rollbackPreparedSql, currentTransactionId);
             pPersistenceLocalObjectManagerExecuteTransactionMessage->setIsRollback (true);
@@ -1435,7 +1435,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCom
         {
             ++(*pPersistenceExecuteTransactionContext);
 
-            WaveSendMulticastContext *pRollbackSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForRollbackCallback), pPersistenceExecuteTransactionContext);
+            WaveSendMulticastContext *pRollbackSendMulticastContext = new WaveSendMulticastContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForRollbackCallback), pPersistenceExecuteTransactionContext);
 
             PersistenceLocalObjectManagerExecuteTransactionMessage *pPersistenceLocalObjectManagerExecuteTransactionMessage = new PersistenceLocalObjectManagerExecuteTransactionMessage (rollbackSql, currentTransactionId);
             pPersistenceLocalObjectManagerExecuteTransactionMessage->setIsRollback (true);
@@ -1505,24 +1505,24 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForRol
     pPersistenceExecuteTransactionContext->executeNextStep (WAVE_COMMIT_TRANSACTION_FAILED);
 }
 
-void PersistenceObjectManager::savePrismConfigurationAtAllLocationsStep (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext)
+void PersistenceObjectManager::saveWaveConfigurationAtAllLocationsStep (PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext)
 {
-    PersistenceLocalObjectManagerSavePrismConfigurationMessage  *pSavePrismConfigurationMessage = new PersistenceLocalObjectManagerSavePrismConfigurationMessage (pPersistenceExecuteTransactionContext->getIsStartupValid ());
+    PersistenceLocalObjectManagerSaveWaveConfigurationMessage  *pSaveWaveConfigurationMessage = new PersistenceLocalObjectManagerSaveWaveConfigurationMessage (pPersistenceExecuteTransactionContext->getIsStartupValid ());
 
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::savePrismConfigurationAtAllLocationsCallback), pPersistenceExecuteTransactionContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::saveWaveConfigurationAtAllLocationsCallback), pPersistenceExecuteTransactionContext);
 
-    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pSavePrismConfigurationMessage);
+    pWaveSendToClusterContext->setPWaveMessageForPhase1 (pSaveWaveConfigurationMessage);
        
-    trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::savePrismConfigurationAtAllLocationsStep : sending to cluster");
+    trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::saveWaveConfigurationAtAllLocationsStep : sending to cluster");
     sendToWaveCluster (pWaveSendToClusterContext);
 }
 
-void PersistenceObjectManager::savePrismConfigurationAtAllLocationsCallback (WaveSendToClusterContext *pWaveSendToClusterContext)
+void PersistenceObjectManager::saveWaveConfigurationAtAllLocationsCallback (WaveSendToClusterContext *pWaveSendToClusterContext)
 {
     ResourceId                          sendToClusterCompletionStatus       = pWaveSendToClusterContext->getCompletionStatus ();
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = reinterpret_cast<PersistenceExecuteTransactionContext *> (pWaveSendToClusterContext->getPCallerContext ());
 
-    trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::savePrismConfigurationAtAllLocationsCallback : status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
+    trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::saveWaveConfigurationAtAllLocationsCallback : status " + FrameworkToolKit::localize (sendToClusterCompletionStatus));
 
     waveAssert (NULL != pPersistenceExecuteTransactionContext, __FILE__, __LINE__);
 
@@ -1538,12 +1538,12 @@ void PersistenceObjectManager::savePrismConfigurationAtAllLocationsCallback (Wav
 
 void PersistenceObjectManager::copyFileMessageHandler (PersistenceObjectManagerCopyFileMessage *pPersistenceObjectManagerCopyFileMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::savePrismConfigurationAtAllLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::saveWaveConfigurationAtAllLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = new PersistenceExecuteTransactionContext (pPersistenceObjectManagerCopyFileMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), "");
@@ -1593,7 +1593,7 @@ void PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseS
     {
         PersistenceLocalObjectManagerCopyDefaultClusterMessage  *pCopyDefaultClusterMessage = new PersistenceLocalObjectManagerCopyDefaultClusterMessage ();
 
-        WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseCallback2), pPersistenceExecuteTransactionContext);
+        WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseCallback2), pPersistenceExecuteTransactionContext);
 
         pWaveSendToClusterContext->setPWaveMessageForPhase1 (pCopyDefaultClusterMessage);
 
@@ -1664,11 +1664,11 @@ void PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseC
 void PersistenceObjectManager::compareDBMessageHandler (PersistenceObjectManagerCompareDBMessage *pPersistenceObjectManagerCompareDBMessage)
 {
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = new PersistenceExecuteTransactionContext (pPersistenceObjectManagerCompareDBMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), "");
@@ -1691,7 +1691,7 @@ void PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStep (Per
     }
 
     DatabaseObjectManagerCalculateDbCksumMessage *pCalculateDbCksumMessage  = new DatabaseObjectManagerCalculateDbCksumMessage ();
-    WaveSendToClusterContext                     *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStepCallback), pPersistenceExecuteTransactionContext);
+    WaveSendToClusterContext                     *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStepCallback), pPersistenceExecuteTransactionContext);
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pCalculateDbCksumMessage);
 
@@ -1964,12 +1964,12 @@ string PersistenceObjectManager::getSqlToUpdateXPathStringObjects (const vector<
 
 void PersistenceObjectManager::addXPathStringsMessageHandler (PersistenceObjectManagerAddXPathStringsMessage *pPersistenceObjectManagerAddXPathStringsMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::createXPathStringManagedObjectsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::createXPathStringManagedObjectsStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerAddXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2104,12 +2104,12 @@ void PersistenceObjectManager::xPathStringManagedObjectsCommitCallback (Framewor
 
 void PersistenceObjectManager::deleteXPathStringsMessageHandler (PersistenceObjectManagerDeleteXPathStringsMessage *pPersistenceObjectManagerDeleteXPathStringsMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::deleteXPathStringManagedObjectsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::deleteXPathStringManagedObjectsStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerDeleteXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2182,12 +2182,12 @@ void PersistenceObjectManager::deleteXPathStringManagedObjectsStep (WaveLinearSe
 // Cache is used. So, any cache flush/repopulate issues will get reflected in getLastUpdateTimestampsForXPathStrings output.
 void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsMessageHandler (PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage *pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2254,12 +2254,12 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep (WaveL
 
 void PersistenceObjectManager::resetXPathStringsTimestampsMessageHandler (PersistenceObjectManagerResetXPathStringsTimestampsMessage *pPersistenceObjectManagerResetXPathStringsTimestampsMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::resetXPathStringsTimestampsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::resetXPathStringsTimestampsStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerResetXPathStringsTimestampsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2517,11 +2517,11 @@ void PersistenceObjectManager::getAllClassNamesMessageStaticHandler (Persistence
 
 void PersistenceObjectManager::addDelayedTransactionMessageHandler (PersistenceObjectManagerAddDelayedTransactionMessage *pPersistenceObjectManagerAddDelayedTransactionMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::addDelayedTransactionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::addDelayedTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerAddDelayedTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

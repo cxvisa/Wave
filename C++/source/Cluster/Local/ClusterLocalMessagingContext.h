@@ -8,19 +8,19 @@
 #ifndef CLUSTERLOCALMESSAGINGCONTEXT_H
 #define CLUSTERLOCALMESSAGINGCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Cluster/Local/WaveSlotLocalManagedObject.h"
 #include "Cluster/Local/WaveNode.h"
 
 namespace WaveNs
 {
 
-class ClusterLocalMessagingContext : public PrismSynchronousLinearSequencerContext
+class ClusterLocalMessagingContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                    ClusterLocalMessagingContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                    ClusterLocalMessagingContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                    ~ClusterLocalMessagingContext ();
 								   
   	   WaveSlotLocalManagedObject *getWaveSlotManagedObjectPointer ();

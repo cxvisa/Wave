@@ -17,7 +17,7 @@ class RejoinNodesToClusterContext : public DeleteNodesFromClusterContext
     private :
     protected :
     public :
-                 RejoinNodesToClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                 RejoinNodesToClusterContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~RejoinNodesToClusterContext ();
 
     // Now the data members

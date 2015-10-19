@@ -17,7 +17,7 @@ class FrameworkLocalMessagingTestContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                    FrameworkLocalMessagingTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                    FrameworkLocalMessagingTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
                    ~FrameworkLocalMessagingTestContext ();
 
         LocationId  getRemoteLocationId                ();

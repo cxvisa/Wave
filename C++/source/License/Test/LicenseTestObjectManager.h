@@ -7,12 +7,12 @@
 #ifndef LICENSETESTOBJECTMANAGER_H
 #define LICENSETESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 
 namespace WaveNs
 {
 
-class LicenseTestObjectManager : public PrismTestObjectManager
+class LicenseTestObjectManager : public WaveTestObjectManager
 {
     private :
         LicenseTestObjectManager ();

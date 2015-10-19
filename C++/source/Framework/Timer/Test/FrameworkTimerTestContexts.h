@@ -18,7 +18,7 @@ class FrameworkTimerTestContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-            FrameworkTimerTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+            FrameworkTimerTestContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
            ~FrameworkTimerTestContext ();
 
         UI32  getNumberOfFailures                ();

@@ -18,8 +18,8 @@ namespace WaveNs
 ShellTrace::ShellTrace (WaveObjectManager *pWaveObjectManager)
     :ShellBase (pWaveObjectManager, string("Trace")), m_nServices (0)
     {
-    addShellCommandHandler (ShellCommandHandler (string("regression"), 1, (ShellCmdFunction) (&ShellPrism::shellExecuteRegressionService),       1, (ShellUsageFunction) (&ShellPrism::usageShellPrismRegressionService)));
-    addShellCommandHandler (ShellCommandHandler (string("debug"),      1, (ShellCmdFunction) (&ShellPrism::shellExecuteDebugService),             1, (ShellUsageFunction) (&ShellPrism::usageShellPrismDebugService)));
+    addShellCommandHandler (ShellCommandHandler (string("regression"), 1, (ShellCmdFunction) (&ShellWave::shellExecuteRegressionService),       1, (ShellUsageFunction) (&ShellWave::usageShellWaveRegressionService)));
+    addShellCommandHandler (ShellCommandHandler (string("debug"),      1, (ShellCmdFunction) (&ShellWave::shellExecuteDebugService),             1, (ShellUsageFunction) (&ShellWave::usageShellWaveDebugService)));
     addShellCommandHandler (ShellCommandHandler (string("list"),       1, (ShellCmdFunction) (&ShellTrace::shellExecuteListServices),             1, (ShellUsageFunction) (&ShellTrace::usageShellTraceList)));
     addShellCommandHandler (ShellCommandHandler (string("setlevel"),   3, (ShellCmdFunction) (&ShellTrace::shellExecuteSetTraceLevel),            4, (ShellUsageFunction) (&ShellTrace::usageShellTraceSetLevel)));
     addShellCommandHandler (ShellCommandHandler (string("setall"),     2, (ShellCmdFunction) (&ShellTrace::shellExecuteSetAllServicesTraceLevel), 4, (ShellUsageFunction) (&ShellTrace::usageShellTraceSetAllServicesTraceLevel)));
@@ -36,7 +36,7 @@ ShellTrace::~ShellTrace ()
 
 UI32 ShellTrace::shellExecuteListServices (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->listServices (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->listServices (argc, argv));
 }
 
 UI32 ShellTrace::listServices (UI32 argc, vector<string> argv)
@@ -48,7 +48,7 @@ UI32 ShellTrace::listServices (UI32 argc, vector<string> argv)
     string                serviceName;
     string                traceLevelName;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteListServices : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteListServices : Entering ...");
 
     TraceObjectManager::getClientsInformationDirectly (traceClientIdsVector, traceLevelsVector);
 
@@ -76,7 +76,7 @@ void ShellTrace::shellGetServicesList (void)
     vector<TraceLevel>    traceLevelsVector;
     UI32                  index;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellGetServicesList : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellGetServicesList : Entering ...");
 
     TraceObjectManager::getClientsInformationDirectly (traceClientIdsVector, traceLevelsVector);
 
@@ -91,7 +91,7 @@ void ShellTrace::shellGetServicesList (void)
 
 UI32 ShellTrace::shellExecuteSetTraceLevel (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->setServiceLevel (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->setServiceLevel (argc, argv));
 }
 
 UI32 ShellTrace::setServiceLevel (UI32 argc, vector<string> argv)
@@ -101,12 +101,12 @@ UI32 ShellTrace::setServiceLevel (UI32 argc, vector<string> argv)
     UI32          serviceIndex;
     ResourceId    status        = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteSetTraceLevel : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteSetTraceLevel : Entering ...");
 
     serviceIndex    =  atoi (argv[1].c_str ());
     if (serviceIndex > m_nServices)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR,  "invalid service id");
         return SHELL_OK;
     }
 
@@ -118,11 +118,11 @@ UI32 ShellTrace::setServiceLevel (UI32 argc, vector<string> argv)
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set service level. status: ") + status);
+        ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set service level. status: ") + status);
     }
     else
     {
-        ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set service level for service ") + serviceIndex);
+        ShellWave::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set service level for service ") + serviceIndex);
     }
 
     return SHELL_OK;
@@ -130,7 +130,7 @@ UI32 ShellTrace::setServiceLevel (UI32 argc, vector<string> argv)
 
 UI32 ShellTrace::shellExecuteSetAllServicesTraceLevel (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->setAllServicesLevel (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->setAllServicesLevel (argc, argv));
 }
 
 UI32 ShellTrace::setAllServicesLevel (UI32 argc, vector<string> argv)
@@ -140,7 +140,7 @@ UI32 ShellTrace::setAllServicesLevel (UI32 argc, vector<string> argv)
     UI32          serviceIndex;
     ResourceId    status        = WAVE_MESSAGE_ERROR;
 
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteSetAllServicesTraceLevel : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteSetAllServicesTraceLevel : Entering ...");
 
     traceLevel =  (TraceLevel) atoi (argv[1].c_str ());
 
@@ -151,11 +151,11 @@ UI32 ShellTrace::setAllServicesLevel (UI32 argc, vector<string> argv)
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set level (service, status): ") + serviceIndex + status);
+            ShellWave::shellTrace (TRACE_LEVEL_ERROR, string ("Failed to set level (service, status): ") + serviceIndex + status);
         }
         else
         {
-            ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set level for service ") + serviceIndex);
+            ShellWave::shellTrace (TRACE_LEVEL_DEVEL, string ("Succeeded to set level for service ") + serviceIndex);
         }
 
     }
@@ -166,26 +166,26 @@ UI32 ShellTrace::setAllServicesLevel (UI32 argc, vector<string> argv)
 
 UI32 ShellTrace::shellExecuteSetDefaultLevels (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->setDefaultLevels (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->setDefaultLevels (argc, argv));
 }
 
 
 UI32 ShellTrace::setDefaultLevels (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteSetDefaultLevels : Not Supported yet ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteSetDefaultLevels : Not Supported yet ...");
 
     return SHELL_OK;
 }
 
 UI32 ShellTrace::shellExecuteHelpTrace (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->helpTrace (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->helpTrace (argc, argv));
 }
 
 
 UI32 ShellTrace::helpTrace (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteHelpTrace : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellTrace::shellExecuteHelpTrace : Entering ...");
 
     usageShellTraceHelp ();
 
@@ -194,7 +194,7 @@ UI32 ShellTrace::helpTrace (UI32 argc, vector<string> argv)
 
 UI32 ShellTrace::shellExecuteQuitTrace (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->quitTrace (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->quitTrace (argc, argv));
 }
 
 
@@ -207,7 +207,7 @@ UI32 ShellTrace::quitTrace (UI32 argc, vector<string> argv)
 
 UI32 ShellTrace::shellExecuteLegend (UI32 argc, vector<string> argv)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->getTraceShell ()->legend (argc, argv));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->getTraceShell ()->legend (argc, argv));
 }
 
 UI32 ShellTrace::legend (UI32 argc, vector<string> argv)

@@ -8,7 +8,7 @@
 #define TIMERTESTOBJECTMANAGER_H
 
 #include "Framework/Timer/Test/FrameworkTimerTestContexts.h"
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 #include "Framework/Timer/TimerMessages.h"
 #include <time.h>
 
@@ -18,7 +18,7 @@ namespace WaveNs
 #define                 MAX_TEST_PERIODIC_TIMERS                1000
 class TimerTestData;
 
-class TimerTestObjectManager : public PrismTestObjectManager
+class TimerTestObjectManager : public WaveTestObjectManager
 {
     private :
                                 TimerTestObjectManager          ();

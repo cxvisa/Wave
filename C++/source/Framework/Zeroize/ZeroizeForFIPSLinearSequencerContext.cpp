@@ -15,7 +15,7 @@ namespace WaveNs
     (
         WaveMessage                *pWaveMessage, 
         WaveElement                *pWaveElement, 
-        PrismLinearSequencerStep    *pSteps, 
+        WaveLinearSequencerStep    *pSteps, 
         UI32                        numberOfSteps
 
     ): WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)

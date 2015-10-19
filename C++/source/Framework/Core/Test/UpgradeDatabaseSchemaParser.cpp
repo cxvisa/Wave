@@ -1245,7 +1245,7 @@ void UpgradeDatabaseSchemaParser::getSql(string& sql)
     if ( m_isInitialized )
     {
         clearMoSchemaInfoVectors();
-        //loadPrismConfiguration();
+        //loadWaveConfiguration();
         loadCurrentSchemaInfoObjects ();
 
         string generateSqlStatement;
@@ -1261,7 +1261,7 @@ void UpgradeDatabaseSchemaParser::getSql(string& sql)
         }
         sql += generateSqlStatement;
         printDifferencesInVectors();
-        //savePrismConfiguration();
+        //saveWaveConfiguration();
     }
 
 }
@@ -1653,7 +1653,7 @@ ResourceId UpgradeDatabaseSchemaParser::configurationWithFlock (const UI32 &oper
 }
 
 
-bool UpgradeDatabaseSchemaParser::savePrismConfiguration()
+bool UpgradeDatabaseSchemaParser::saveWaveConfiguration()
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     if ( true ==  FrameworkToolKit::isNodeZeroized ())
@@ -1736,7 +1736,7 @@ void UpgradeDatabaseSchemaParser::generateSqlToPopulateUpgradeTable(string & sql
     trace (TRACE_LEVEL_DEBUG, string ("SQL to populate upgradeMO: ") + sqlForUpgradeTablePopulation);
 }
 
-bool UpgradeDatabaseSchemaParser::backupPrismConfiguration()
+bool UpgradeDatabaseSchemaParser::backupWaveConfiguration()
 {
     createLockFileForConfigurationFile();
     ResourceId status = configurationWithFlock (BACKUP_CONFIGURATION);
@@ -1748,7 +1748,7 @@ bool UpgradeDatabaseSchemaParser::backupPrismConfiguration()
     return (false);
 }
 
-bool UpgradeDatabaseSchemaParser::restorePrismConfiguration()
+bool UpgradeDatabaseSchemaParser::restoreWaveConfiguration()
 {
     createLockFileForConfigurationFile();
     ResourceId status = configurationWithFlock (RESTORE_CONFIGURATION);
@@ -1762,7 +1762,7 @@ bool UpgradeDatabaseSchemaParser::restorePrismConfiguration()
 }
 
 /*Load the configuration vectors*/
-bool UpgradeDatabaseSchemaParser::loadPrismConfiguration()
+bool UpgradeDatabaseSchemaParser::loadWaveConfiguration()
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
     if (WAVE_MGMT_INTF_ROLE_SERVER != (FrameworkToolKit::getManagementInterfaceRole ()))

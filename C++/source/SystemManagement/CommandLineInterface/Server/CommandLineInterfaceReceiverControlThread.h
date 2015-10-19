@@ -7,7 +7,7 @@
 #ifndef COMMANDLINEINTERFACERECEIVERCONTROLTHREAD_H
 #define COMMANDLINEINTERFACERECEIVERCONTROLTHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 
 namespace WaveNs
@@ -17,7 +17,7 @@ class ServerStreamingSocket;
 class CommandLineInterfaceReceiverObjectManager;
 class CommandLineInterfaceReceiverWorkerThread;
 
-class CommandLineInterfaceReceiverControlThread : public PrismPosixThread, WaveWorker
+class CommandLineInterfaceReceiverControlThread : public WavePosixThread, WaveWorker
 {
     private :
         virtual WaveThreadStatus start     ();

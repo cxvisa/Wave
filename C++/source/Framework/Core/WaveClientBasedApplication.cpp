@@ -20,9 +20,9 @@ extern "C" int waveClientMain (int argc, char *argv[], bool wait)
     bool                  isADaemon            = true;
     FrameworkSequenceType type                 = FRAMEWORK_SEQUENCE_TYPE0;
     bool                  isSysLogRequired     = true;
-    SI32                  port                 = FrameworkToolKit::getPrismDefaultTcpPort ();
+    SI32                  port                 = FrameworkToolKit::getWaveDefaultTcpPort ();
     bool                  isDatabaseEnabled    = false;
-    SI32                  databasePort         = FrameworkToolKit::getPrismDefaultDatabaseTcpPort ();
+    SI32                  databasePort         = FrameworkToolKit::getWaveDefaultDatabaseTcpPort ();
     SI32                  managementClientPort = FrameworkToolKit::getManagementInterfaceClientReceiverPort ();
 
     if (argc >= 2)
@@ -87,7 +87,7 @@ extern "C" int waveClientMain (int argc, char *argv[], bool wait)
     FrameworkToolKit::setManagementInterfaceClientReceiverPort (managementClientPort);
 
 
-    initializePrismSocketLayer ();
+    initializeWaveSocketLayer ();
 
 #if 0
     char hostName[257];
@@ -125,14 +125,14 @@ extern "C" int waveClientMain (int argc, char *argv[], bool wait)
 
     WaveClient::initialize (waveClientConfiguration);
 
-    WaveFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootWave ();
 
     WaveFrameworkObjectManager::acquireBootSynchronizationMutex ();
     WaveFrameworkObjectManager::releaseBootSynchronizationMutex ();
 
     if (true == wait)
     {
-        WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
+        WaveFrameworkObjectManager::waitForWaveServicesToFinish ();
     }
 
     return EXIT_SUCCESS;

@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForExternalStateSynchronization::WaveAsynchronousContextForExternalStateSynchronization (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
+WaveAsynchronousContextForExternalStateSynchronization::WaveAsynchronousContextForExternalStateSynchronization (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_fssStageNumber (0),
       m_serviceType (0)
 {

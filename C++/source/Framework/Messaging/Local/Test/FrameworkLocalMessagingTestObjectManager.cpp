@@ -10,13 +10,13 @@
 #include "Framework/Messaging/Local/Test/FrameworkTestabilityEvents.h"
 #include "Framework/Core/Test/FrameworkTestability1ObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
-#include "Framework/ServiceInterface/Test/PrismNativeTest1ServiceMessages.h"
+#include "Framework/ServiceInterface/Test/WaveNativeTest1ServiceMessages.h"
 
 namespace WaveNs
 {
 
 FrameworkLocalMessagingTestObjectManager::FrameworkLocalMessagingTestObjectManager ()
-    : PrismTestObjectManager ("Framework Local Messaging Test")
+    : WaveTestObjectManager ("Framework Local Messaging Test")
 {
     addEventType (FRAMEWORK_MESSAGING_LOCAL_TEST_EVENT1);
 }
@@ -45,17 +45,17 @@ WaveServiceId FrameworkLocalMessagingTestObjectManager::getWaveServiceId ()
 
 void FrameworkLocalMessagingTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleOneWayMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleSynchronousMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleEventTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleOneWayMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleSynchronousMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleEventTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -91,7 +91,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -162,7 +162,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleOneWayMessageTestStep (Fram
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_ERROR, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }
@@ -189,7 +189,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleSynchronousMessageTestStep 
     for (i = 0; i < numberOfMessagesToSend; i++)
     {
         FrameworkTestabilityMessage1 message;
-        //PrismNativeTest1ServiceMessage1 message;
+        //WaveNativeTest1ServiceMessage1 message;
 
         status = sendSynchronously (&message);
 
@@ -257,7 +257,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -377,7 +377,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestS
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else
@@ -449,7 +449,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestSt
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pFrameworkLocalMessagingTestContext->incrementNumberOfFailures ();
-            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
         else

@@ -21,7 +21,7 @@ class ClusterConfigObjectManagerGetClusterInfoMessage;
 /// This Class is a worker in the CentralClusterConfigObjectManager
 /// that handles the GetClusterInfoMsg.It receives the message and 
 /// packs the Principal and Secondary Node information obtained 
-/// from PrismCluster and WaveNode objects
+/// from WaveCluster and WaveNode objects
 
 class  CentralClusterConfigGetDebugInfoWorker: public WaveWorker
 {

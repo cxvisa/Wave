@@ -16,8 +16,8 @@ namespace WaveNs
 ShellWyser::ShellWyser (WaveObjectManager *pWaveObjectManager)
     :ShellBase (pWaveObjectManager, string("Wyser"))
 {
-    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellPrism::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellPrism::usageShellPrismRegressionService)));
-    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellPrism::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellPrism::usageShellPrismTraceService)));
+    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellWave::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellWave::usageShellWaveRegressionService)));
+    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellWave::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellWave::usageShellWaveTraceService)));
     addShellCommandHandler (ShellCommandHandler (string("help"),       1,  (ShellCmdFunction) (&ShellWyser::shellExecuteHelpWyser),         1, (ShellUsageFunction) (&ShellWyser::usageShellWyserHelp)));
     addShellCommandHandler (ShellCommandHandler (string("quit"),       1,  (ShellCmdFunction) (&ShellWyser::shellExecuteQuitWyser),         1, (ShellUsageFunction) (&ShellWyser::usageShellWyserQuit)));
 }
@@ -28,7 +28,7 @@ ShellWyser::~ShellWyser ()
 
 UI32 ShellWyser::shellExecuteHelpWyser (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellWyser::shellExecuteHelpWyser : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellWyser::shellExecuteHelpWyser : Entering ...");
 
     usageShellWyserHelp ();
 
@@ -58,7 +58,7 @@ void ShellWyser::registerWyserFunction (ShellCmdFunction wyserFunction, const ch
     static  WaveMutex mutex;
 
     mutex.lock();
-    ((ShellObjectManager::getInstance ())->m_pPrismShell->getWyserShell ())->addShellCommandHandler (ShellCommandHandler (string(cliName), 1,  wyserFunction, strlen (cliName), NULL));
+    ((ShellObjectManager::getInstance ())->m_pWaveShell->getWyserShell ())->addShellCommandHandler (ShellCommandHandler (string(cliName), 1,  wyserFunction, strlen (cliName), NULL));
     mutex.unlock();
 }
 

@@ -7,18 +7,18 @@
 #ifndef DETACHFROMCLUSTERASYNCHRONOUSCONTEXT_H
 #define DETACHFROMCLUSTERASYNCHRONOUSCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "FrameworkObjectManagerTypes.h"
 
 namespace WaveNs
 {
 
-class DetachFromClusterAsynchronousContext : public PrismAsynchronousContext
+class DetachFromClusterAsynchronousContext : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                                      DetachFromClusterAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                                                      DetachFromClusterAsynchronousContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext);
         virtual                                      ~DetachFromClusterAsynchronousContext ();
 
                 FrameworkObjectManagerFailoverReason  getReasonForDetachingFromCluster     () const;

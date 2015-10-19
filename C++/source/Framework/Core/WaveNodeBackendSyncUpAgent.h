@@ -23,7 +23,7 @@ class WaveNodeBackendSyncUpAgent: protected WaveWorker
         virtual            ~WaveNodeBackendSyncUpAgent           ();
         virtual ResourceId  execute                              ();
 
-                ResourceId  sendBackendSyncUpStep                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                ResourceId  sendBackendSyncUpStep                (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
                 bool        requiresBackendSyncUpNotification    (const WaveServiceId &waveServiceId);
 

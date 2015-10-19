@@ -7,7 +7,7 @@
 #ifndef CLUSTERFAILOVERCONTEXT_H
 #define CLUSTERFAILOVERCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 
 #include <vector>
 
@@ -16,25 +16,25 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismCluster;
+class WaveCluster;
 class NodeManagedObject;
 class WaveManagedObject;
 class WaveNode;
 
-class ClusterFailoverContext : public PrismSynchronousLinearSequencerContext
+class ClusterFailoverContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                                      ClusterFailoverContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds);
-                                                      ClusterFailoverContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds);
+                                                      ClusterFailoverContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds);
+                                                      ClusterFailoverContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps, const FrameworkObjectManagerFailoverReason &failoverReason, const vector<LocationId> &failedLocationIds);
         virtual                                      ~ClusterFailoverContext ();
 
                 FrameworkObjectManagerFailoverReason  getFailoverReason      () const;
                 vector<LocationId>                   &getFailedLocationIds   ();
 
-                PrismCluster                         *getPPrismCluster       ();
-                void                                  setPPrismCluster       (PrismCluster *pPrismCluster);
+                WaveCluster                         *getPWaveCluster       ();
+                void                                  setPWaveCluster       (WaveCluster *pWaveCluster);
 
                 vector<WaveManagedObject *>          *getPNodeManagedObjects ();
                 void                                  setPNodeManagedObjects (vector<WaveManagedObject *> *pNodeManagedObjects);
@@ -54,7 +54,7 @@ class ClusterFailoverContext : public PrismSynchronousLinearSequencerContext
         FrameworkObjectManagerFailoverReason  m_failoverReason;
         vector<LocationId>                    m_failedLocationIds;
 
-        PrismCluster                         *m_pPrismCluster;
+        WaveCluster                         *m_pWaveCluster;
         vector<WaveManagedObject *>          *m_pNodeManagedObjects;
         bool                                  m_isPrimaryChanged;
         bool                                  m_isClusterExists;

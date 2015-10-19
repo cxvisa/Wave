@@ -23,7 +23,7 @@ namespace WaveNs
 {
 
 PersistentWithDefaultForHABootAgent::PersistentWithDefaultForHABootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
-    : PrismBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator)
+    : WaveBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator)
 {
 }
 
@@ -33,41 +33,41 @@ PersistentWithDefaultForHABootAgent::~PersistentWithDefaultForHABootAgent ()
 
 ResourceId PersistentWithDefaultForHABootAgent::execute (const WaveBootPhase &waveBootPhase)
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::initializePrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::enablePrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installPrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootPrismServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::initializeWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::enableWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootWaveServicesDuringPrePhaseStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::initializeLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::enableLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::listenForEventsLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootLocalPrismServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::initializeLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::enableLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::listenForEventsLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootLocalWaveServicesStep),
 
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::initializeGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::enableGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::listenForEventsGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootGlobalPrismServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::initializeGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::enableGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::listenForEventsGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootGlobalWaveServicesStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+    ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
     return (status);
 }
 
-ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     string                      prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     WaveFrameworkConfiguration waveFrameworkConfiguration;
@@ -120,7 +120,7 @@ ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFrom
     return (status);
 }
 
-ResourceId PersistentWithDefaultForHABootAgent::connectToKnownLocationsStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWithDefaultForHABootAgent::connectToKnownLocationsStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     LocationBase       *pThisLocation                = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
     vector<LocationId>  knownRemoteLocations;

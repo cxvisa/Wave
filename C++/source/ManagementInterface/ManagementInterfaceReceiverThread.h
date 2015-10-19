@@ -7,7 +7,7 @@
 #ifndef MANAGEMENTINTERFACERECEIVERTHREAD_H
 #define MANAGEMENTINTERFACERECEIVERTHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/WaveMutex.h"
 #include <string>
@@ -17,7 +17,7 @@ namespace WaveNs
 
 class ServerStreamingSocket;
 
-class ManagementInterfaceReceiverThread : public PrismPosixThread
+class ManagementInterfaceReceiverThread : public WavePosixThread
 {
     private :
         bool authorizeClient ();

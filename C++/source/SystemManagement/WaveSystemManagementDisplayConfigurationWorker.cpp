@@ -57,12 +57,12 @@ WaveMessage *WaveSystemManagementDisplayConfigurationWorker::createMessageInstan
 
 void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathHandler (WaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage *pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathComputeYangDisplayConfigurationContextStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathComputeYangDisplayConfigurationContextStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerFailedStep),
     };
 
     DisplayCurrentConfigurationContext *pDisplayCurrentConfigurationContext = new DisplayCurrentConfigurationContext (pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -91,7 +91,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
         YangDisplayConfigurationContext *pYangDisplayConfigurationContext = new YangDisplayConfigurationContext ();
         FILE                            *pFile                            = NULL;
         string                           managedObjectClassName           = WaveConfigurationSegmentMap::getManagedObjectClassNameByConfigurationSegmentName (pYangElement->getConfigurationSegmentName ());
-        WaveManagedObjectQueryContext   *pWaveManagedObjectQueryContext   = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<PrismAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
+        WaveManagedObjectQueryContext   *pWaveManagedObjectQueryContext   = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<WaveAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
         vector<YangElement *>            yangElements;
 
         yangElements.push_back (pYangElement);
@@ -191,7 +191,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 
                 string managedObjectClassName         = WaveConfigurationSegmentMap::getManagedObjectClassNameByConfigurationSegmentName (pYangElement->getConfigurationSegmentName ());
 
-                pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<PrismAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
+                pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<WaveAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
 
                 waveAssert (NULL != pWaveManagedObjectQueryContext, __FILE__, __LINE__);
 
@@ -207,12 +207,12 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
 
 void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameHandler (WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage *pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameComputeYangDisplayConfigurationContextStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameComputeYangDisplayConfigurationContextStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerFailedStep),
     };
 
     DisplayCurrentConfigurationContext *pDisplayCurrentConfigurationContext = new DisplayCurrentConfigurationContext (pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -242,7 +242,7 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
         YangDisplayConfigurationContext *pYangDisplayConfigurationContext = new YangDisplayConfigurationContext ();
         FILE                            *pFile                            = NULL;
         string                           managedObjectClassName           = WaveConfigurationSegmentMap::getManagedObjectClassNameByConfigurationSegmentName (pYangElement->getConfigurationSegmentName ());
-        WaveManagedObjectQueryContext   *pWaveManagedObjectQueryContext   = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<PrismAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
+        WaveManagedObjectQueryContext   *pWaveManagedObjectQueryContext   = new WaveManagedObjectQueryContext (managedObjectClassName, this, reinterpret_cast<WaveAsynchronousCallback> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationCallback), pDisplayCurrentConfigurationContext);
 
         pYangElement->debugPrint ();
 

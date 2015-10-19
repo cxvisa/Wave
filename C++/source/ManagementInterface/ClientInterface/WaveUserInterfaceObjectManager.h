@@ -41,7 +41,7 @@ class WaveUserInterfaceObjectManager : public WaveObjectManager
 
         static  WaveUserInterfaceObjectManager                   *getInstance                                        ();
         static  WaveServiceId                                    getWaveServiceId                                  ();
-        static  string                                            getPrismServiceName                                ();
+        static  string                                            getWaveServiceName                                ();
 
         static  void                                              setManagementInterfaceMessageHandlerForClient      (ManagementInterfaceMessageHandlerForClient managementInterfaceMessageHandlerForClient);
         static  void                                              setClientHandlerToLoadOutputForCStructure       (ManagementClientInterfaceToLoadCStructureOutput managementInterfaceMessageHandlerForClient);

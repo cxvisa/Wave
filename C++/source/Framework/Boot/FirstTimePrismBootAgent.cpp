@@ -4,78 +4,78 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/Boot/FirstTimePrismBootAgent.h"
+#include "Framework/Boot/FirstTimeWaveBootAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 
 namespace WaveNs
 {
 
-FirstTimePrismBootAgent::FirstTimePrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
-    : PrismBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator)
+FirstTimeWaveBootAgent::FirstTimeWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
+    : WaveBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator)
 {
 }
 
-FirstTimePrismBootAgent::~FirstTimePrismBootAgent ()
+FirstTimeWaveBootAgent::~FirstTimeWaveBootAgent ()
 {
 }
 
-WaveBootReason FirstTimePrismBootAgent::getReason () const
+WaveBootReason FirstTimeWaveBootAgent::getReason () const
 {
     return (WAVE_BOOT_FIRST_TIME_BOOT);
 }
 
-ResourceId FirstTimePrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
+ResourceId FirstTimeWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::installPrismServicesDuringPrePhaseStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::installWaveServicesDuringPrePhaseStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::initializeLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::enableLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::listenForEventsLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::installLocalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::bootLocalPrismServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::initializeLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::enableLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::listenForEventsLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::installLocalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::bootLocalWaveServicesStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::initializeGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::enableGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::listenForEventsGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::installGlobalPrismServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::bootGlobalPrismServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::initializeGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::enableGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::installGlobalWaveServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::bootGlobalWaveServicesStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::savePrismConfigurationStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::saveWaveConfigurationStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&FirstTimePrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+    ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
     return (status);
 }
 
-ResourceId FirstTimePrismBootAgent::savePrismConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId FirstTimeWaveBootAgent::saveWaveConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     if (WAVE_MGMT_INTF_ROLE_SERVER != (FrameworkToolKit::getManagementInterfaceRole ()))
     {
         return (WAVE_MESSAGE_SUCCESS);
     }
 
-    trace (TRACE_LEVEL_INFO,   "FirstTimePrismBootAgent::savePrismConfigurationStep : replay file name " + FrameworkToolKit::getStartupFileName ());
+    trace (TRACE_LEVEL_INFO,   "FirstTimeWaveBootAgent::saveWaveConfigurationStep : replay file name " + FrameworkToolKit::getStartupFileName ());
 
     FrameworkToolKit::setStartupFileType (WAVE_PERSISTENCE_REGULAR_FILE);
     FrameworkToolKit::setIsStartupValid (false);
 
-    ResourceId status = FrameworkToolKit::savePrismConfiguration ();
+    ResourceId status = FrameworkToolKit::saveWaveConfiguration ();
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_ERROR,   "FirstTimePrismBootAgent::savePrismConfigurationStep : Could not save configuration");
+        trace (TRACE_LEVEL_ERROR,   "FirstTimeWaveBootAgent::saveWaveConfigurationStep : Could not save configuration");
     }
 
     return (status);

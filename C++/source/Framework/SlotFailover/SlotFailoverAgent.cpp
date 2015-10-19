@@ -27,16 +27,16 @@ SlotFailoverAgent::~SlotFailoverAgent ()
 
 ResourceId SlotFailoverAgent::execute ()
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SlotFailoverAgent::getListOfEnabledServicesStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SlotFailoverAgent::sendSlotFailoverStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::getListOfEnabledServicesStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::sendSlotFailoverStep),
 
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SlotFailoverAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SlotFailoverAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::prismSynchronousLinearSequencerFailedStep)
     };
 
-    SlotFailoverAgentContext *pSlotFailoverAgentContext = new SlotFailoverAgentContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    SlotFailoverAgentContext *pSlotFailoverAgentContext = new SlotFailoverAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     ResourceId status = pSlotFailoverAgentContext->execute ();
 
@@ -67,13 +67,13 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
             continue;
         }
 
-        PrismSlotFailoverObjectManagerMessage *prismSlotFailoverObjectManagerMessage = new PrismSlotFailoverObjectManagerMessage (serviceIdsToSendSlotFailover[i], m_slotNumber);
+        WaveSlotFailoverObjectManagerMessage *prismSlotFailoverObjectManagerMessage = new WaveSlotFailoverObjectManagerMessage (serviceIdsToSendSlotFailover[i], m_slotNumber);
 
         ResourceId status = sendSynchronously (prismSlotFailoverObjectManagerMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PrismSlotFailoverAgent::sendSlotFailoverStep: Could not send SlotFailover to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendSlotFailover[i]));
+            trace (TRACE_LEVEL_FATAL, "WaveSlotFailoverAgent::sendSlotFailoverStep: Could not send SlotFailover to a service : " + FrameworkToolKit::getServiceNameById (serviceIdsToSendSlotFailover[i]));
             return (status);
         }
         else
@@ -82,12 +82,12 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_FATAL, "PrismSlotFailoverAgent::sendSlotFailoverStep: Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_FATAL, "WaveSlotFailoverAgent::sendSlotFailoverStep: Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
                 waveAssert (false, __FILE__, __LINE__);
             }
             else
             {
-                trace (TRACE_LEVEL_INFO, "PrismSlotFailoverAgent::sendSlotFailoverStep : Successfully sent SlotFailover " + FrameworkToolKit::getServiceNameById (serviceIdsToSendSlotFailover[i]));
+                trace (TRACE_LEVEL_INFO, "WaveSlotFailoverAgent::sendSlotFailoverStep : Successfully sent SlotFailover " + FrameworkToolKit::getServiceNameById (serviceIdsToSendSlotFailover[i]));
             }
         }
 

@@ -118,8 +118,8 @@ class LocationBase
     public :
 
     friend class WaveFrameworkObjectManager;
-    friend class PersistentPrismBootAgent;
-    friend class PersistentWithDefaultPrismBootAgent;
+    friend class PersistentWaveBootAgent;
+    friend class PersistentWithDefaultWaveBootAgent;
     friend class PersistentWithDefaultForHABootAgent;
     friend class WaveFrameworkObjectManagerHaSyncWorker;
     friend class WaveFrameworkConfigurationWorker;

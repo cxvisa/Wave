@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMLOCALOBJECTMANAGER_H
-#define PRISMLOCALOBJECTMANAGER_H
+#ifndef WAVELOCALOBJECTMANAGER_H
+#define WAVELOCALOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveObjectManager.h"
 
@@ -32,4 +32,4 @@ class WaveLocalObjectManager : public WaveObjectManager
 
 }
 
-#endif // PRISMLOCALOBJECTMANAGER_H
+#endif // WAVELOCALOBJECTMANAGER_H

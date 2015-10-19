@@ -17,7 +17,7 @@ namespace WaveNs
 {
 
 WaveMessagingBrokerClientTestObjectManager::WaveMessagingBrokerClientTestObjectManager ()
-    : PrismTestObjectManager (getServiceName ())
+    : WaveTestObjectManager (getServiceName ())
 {
     WaveBrokerPublishMessageFactory::registerWaveBrokerPublishMessageInstantiator ("WaveBrokerPublishTest1Message", &WaveBrokerPublishTest1Message::createMessageInstance);
 }
@@ -47,13 +47,13 @@ WaveServiceId WaveMessagingBrokerClientTestObjectManager::getWaveServiceId ()
 
 void WaveMessagingBrokerClientTestObjectManager::testRequestHandler (RegressionTestMessage *pRegressionTestMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerConnectTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerSubscribeMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageTestStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerConnectTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerSubscribeMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageTestStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

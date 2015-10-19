@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/ObjectModel/CommonManagedObjectBase.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/Utils/TraceUtils.h"
 
 using namespace std;
@@ -13,8 +13,8 @@ using namespace std;
 namespace WaveNs
 {
 
-CommonManagedObjectBase::CommonManagedObjectBase (PrismPersistableObject *pPrismPersistableObject)
-    : m_pPrismPersistableObject (pPrismPersistableObject)
+CommonManagedObjectBase::CommonManagedObjectBase (WavePersistableObject *pWavePersistableObject)
+    : m_pWavePersistableObject (pWavePersistableObject)
 {
     // Do not request for tracking if the Wave Managed Object is being instantiated because of query
 #if 0
@@ -50,12 +50,12 @@ void CommonManagedObjectBase::setupAttributesForPersistence ()
 //#if 0
 void CommonManagedObjectBase::addPersistableAttributeForCommonBase(Attribute *pAttribute)
 {
-    m_pPrismPersistableObject->addPersistableAttribute(pAttribute);
+    m_pWavePersistableObject->addPersistableAttribute(pAttribute);
 }
 
 void CommonManagedObjectBase::addPersistableAttributeForCommonBaseCreate(Attribute *pAttribute)
 {
-    m_pPrismPersistableObject->addPersistableAttributeForCreate(pAttribute);
+    m_pWavePersistableObject->addPersistableAttributeForCreate(pAttribute);
 }
 //#endif
 

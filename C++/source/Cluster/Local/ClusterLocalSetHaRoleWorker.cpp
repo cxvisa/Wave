@@ -14,7 +14,7 @@
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Cluster/Local/WaveHaNode.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Attributes/AttributeEnum.h"
 
@@ -68,12 +68,12 @@ ClusterLocalSetHaRoleWorker::~ClusterLocalSetHaRoleWorker ()
 
 void ClusterLocalSetHaRoleWorker::setHaRoleMessageHandler (ClusterLocalSetHaRoleMessage *pClusterLocalSetHaRoleMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::prismLinearSequencerFailedStep)
     };
 
     //Note: Memory is freed inside the framework in the Succeeeded or Failure step

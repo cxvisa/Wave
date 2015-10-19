@@ -7,7 +7,7 @@
 #ifndef MULTIPARTITIONLOCALOBJECTMANAGER_H
 #define MULTIPARTITIONLOCALOBJECTMANAGER_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
 #include "Cluster/MultiPartition/Global/MultiPartitionMessages.h"
@@ -26,8 +26,8 @@ namespace WaveNs
                void               tenancyDeleteMessageHandler                 (MultiPartitionDeletePartitionMessage *pMultiPartitionDeletePartitionMessage);
                         
                // More private methods.
-               ResourceId         validateInputs                              (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-               ResourceId         processPartitionObjectCleanup                 (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+               ResourceId         validateInputs                              (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+               ResourceId         processPartitionObjectCleanup                 (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
         protected:
         public:

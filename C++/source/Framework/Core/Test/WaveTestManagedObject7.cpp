@@ -12,7 +12,7 @@ namespace WaveNs
 
 WaveTestManagedObject7::WaveTestManagedObject7 (WaveObjectManager *pWaveObjectManager)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (WaveTestManagedObject7::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (WaveTestManagedObject7::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_integer7        (0)
 {
@@ -34,7 +34,7 @@ void WaveTestManagedObject7::setupAttributesForPersistence ()
     addPersistableAttribute (new AttributeUI32                                                    (&m_integer7,     "integer7"));
     addPersistableAttribute (new AttributeString                                                  (&m_message7,     "message7"));
     addPersistableAttribute (new AttributeObjectId                                                (&m_objectId7,    "objectId7"));
-    addPersistableAttribute (new AttributeManagedObjectVectorComposition<PrismTestManagedObject1> (&m_composition7, "composition7", getClassName (), getObjectId (), PrismTestManagedObject1::getClassName ()));
+    addPersistableAttribute (new AttributeManagedObjectVectorComposition<WaveTestManagedObject1> (&m_composition7, "composition7", getClassName (), getObjectId (), WaveTestManagedObject1::getClassName ()));
 }
 
 void WaveTestManagedObject7::setupAttributesForCreate ()
@@ -44,7 +44,7 @@ void WaveTestManagedObject7::setupAttributesForCreate ()
     addPersistableAttributeForCreate (new AttributeUI32                                                    (&m_integer7,     "integer7"));
     addPersistableAttributeForCreate (new AttributeString                                                  (&m_message7,     "message7"));
     addPersistableAttributeForCreate (new AttributeObjectId                                                (&m_objectId7,    "objectId7"));
-    addPersistableAttributeForCreate (new AttributeManagedObjectVectorComposition<PrismTestManagedObject1> (&m_composition7, "composition7", getClassName (), getObjectId (), PrismTestManagedObject1::getClassName ()));
+    addPersistableAttributeForCreate (new AttributeManagedObjectVectorComposition<WaveTestManagedObject1> (&m_composition7, "composition7", getClassName (), getObjectId (), WaveTestManagedObject1::getClassName ()));
 }
 
 void WaveTestManagedObject7::setInteger7 (const UI32 &integer7)
@@ -62,7 +62,7 @@ void WaveTestManagedObject7::setObjectId7 (const ObjectId &objectId7)
     m_objectId7 = objectId7;
 }
 
-void WaveTestManagedObject7::setComposition7 (const vector<WaveManagedObjectPointer<PrismTestManagedObject1> > &composition7)
+void WaveTestManagedObject7::setComposition7 (const vector<WaveManagedObjectPointer<WaveTestManagedObject1> > &composition7)
 {
     m_composition7 = composition7;
 }
@@ -82,7 +82,7 @@ ObjectId WaveTestManagedObject7::getObjectId7 () const
     return (m_objectId7);
 }
 
-vector<WaveManagedObjectPointer<PrismTestManagedObject1> > WaveTestManagedObject7::getComposition7 () const
+vector<WaveManagedObjectPointer<WaveTestManagedObject1> > WaveTestManagedObject7::getComposition7 () const
 {
     return (m_composition7);
 }
@@ -109,13 +109,13 @@ bool WaveTestManagedObject7::operator == (const WaveTestManagedObject7 &rhs) con
         return (false);
     }
 
-          map<ObjectId, WaveManagedObjectPointer<PrismTestManagedObject1> > mapForThis;
-          map<ObjectId, WaveManagedObjectPointer<PrismTestManagedObject1> > mapForRhs;
+          map<ObjectId, WaveManagedObjectPointer<WaveTestManagedObject1> > mapForThis;
+          map<ObjectId, WaveManagedObjectPointer<WaveTestManagedObject1> > mapForRhs;
     const UI32                                                              thisSize      = m_composition7.size ();
     const UI32                                                              rhsSize       = rhs.m_composition7.size ();
           UI32                                                              i             = 0;
           ObjectId                                                          tempObjectId;
-          WaveManagedObjectPointer<PrismTestManagedObject1>                 temp;
+          WaveManagedObjectPointer<WaveTestManagedObject1>                 temp;
 
     if (thisSize != rhsSize)
     {

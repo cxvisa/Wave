@@ -19,11 +19,11 @@ namespace WaveNs
 {
 
 class WaveLinearSequencerContext;
-class PrismTestManagedObject1;
-class PrismTestManagedObject2;
-class PrismTestManagedObject3;
-class PrismTestManagedObject4;
-class PrismTestManagedObject5;
+class WaveTestManagedObject1;
+class WaveTestManagedObject2;
+class WaveTestManagedObject3;
+class WaveTestManagedObject4;
+class WaveTestManagedObject5;
 class WaveTestManagedObject6;
 class WaveTestManagedObject7;
 class WaveTestManagedObject10;
@@ -35,19 +35,19 @@ class FrameworkPersistenceTestContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                                      FrameworkPersistenceTestContext  (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      FrameworkPersistenceTestContext  (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                      ~FrameworkPersistenceTestContext  ();
 
-            vector<PrismTestManagedObject1 *>        &getCreatedObjects                 ();
-            map<ObjectId, PrismTestManagedObject1 *> &getCreatedObjectsMap              ();
-            vector<PrismTestManagedObject2 *>        &getCreatedObjects2                ();
-            map<ObjectId, PrismTestManagedObject2 *> &getCreatedObjects2Map             ();
-            vector<PrismTestManagedObject3 *>        &getCreatedObjects3                ();
-            map<ObjectId, PrismTestManagedObject3 *> &getCreatedObjects3Map             ();
-            vector<PrismTestManagedObject4 *>        &getCreatedObjects4                ();
-            map<ObjectId, PrismTestManagedObject4 *> &getCreatedObjects4Map             ();
-            vector<PrismTestManagedObject5 *>        &getCreatedObjects5                ();
-            map<ObjectId, PrismTestManagedObject5 *> &getCreatedObjects5Map             ();
+            vector<WaveTestManagedObject1 *>        &getCreatedObjects                 ();
+            map<ObjectId, WaveTestManagedObject1 *> &getCreatedObjectsMap              ();
+            vector<WaveTestManagedObject2 *>        &getCreatedObjects2                ();
+            map<ObjectId, WaveTestManagedObject2 *> &getCreatedObjects2Map             ();
+            vector<WaveTestManagedObject3 *>        &getCreatedObjects3                ();
+            map<ObjectId, WaveTestManagedObject3 *> &getCreatedObjects3Map             ();
+            vector<WaveTestManagedObject4 *>        &getCreatedObjects4                ();
+            map<ObjectId, WaveTestManagedObject4 *> &getCreatedObjects4Map             ();
+            vector<WaveTestManagedObject5 *>        &getCreatedObjects5                ();
+            map<ObjectId, WaveTestManagedObject5 *> &getCreatedObjects5Map             ();
             vector<WaveTestManagedObject6 *>         &getCreatedObjects6                ();
             map<ObjectId, WaveTestManagedObject6 *>  &getCreatedObjects6Map             ();
             vector<WaveTestManagedObject7 *>         &getCreatedObjects7                ();
@@ -71,16 +71,16 @@ class FrameworkPersistenceTestContext : public WaveLinearSequencerContext
     // Now the data members
 
     private :
-        vector<PrismTestManagedObject1 *>        m_createdObjects;
-        map<ObjectId, PrismTestManagedObject1 *> m_createdObjectsMap;
-        vector<PrismTestManagedObject2 *>        m_createdObjects2;
-        map<ObjectId, PrismTestManagedObject2 *> m_createdObjects2Map;
-        vector<PrismTestManagedObject3 *>        m_createdObjects3;
-        map<ObjectId, PrismTestManagedObject3 *> m_createdObjects3Map;
-        vector<PrismTestManagedObject4 *>        m_createdObjects4;
-        map<ObjectId, PrismTestManagedObject4 *> m_createdObjects4Map;
-        vector<PrismTestManagedObject5 *>        m_createdObjects5;
-        map<ObjectId, PrismTestManagedObject5 *> m_createdObjects5Map;
+        vector<WaveTestManagedObject1 *>        m_createdObjects;
+        map<ObjectId, WaveTestManagedObject1 *> m_createdObjectsMap;
+        vector<WaveTestManagedObject2 *>        m_createdObjects2;
+        map<ObjectId, WaveTestManagedObject2 *> m_createdObjects2Map;
+        vector<WaveTestManagedObject3 *>        m_createdObjects3;
+        map<ObjectId, WaveTestManagedObject3 *> m_createdObjects3Map;
+        vector<WaveTestManagedObject4 *>        m_createdObjects4;
+        map<ObjectId, WaveTestManagedObject4 *> m_createdObjects4Map;
+        vector<WaveTestManagedObject5 *>        m_createdObjects5;
+        map<ObjectId, WaveTestManagedObject5 *> m_createdObjects5Map;
         vector<WaveTestManagedObject6 *>         m_createdObjects6;
         map<ObjectId, WaveTestManagedObject6 *>  m_createdObjects6Map;
         vector<WaveTestManagedObject7 *>         m_createdObjects7;

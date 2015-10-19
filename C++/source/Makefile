@@ -78,7 +78,7 @@ OBJS := $(subst ./,,$(SRCS:.cpp=.o))
 # put WaveResourceIds.o first - this is the longest compile
 # parallel makes happen to be fastest when long jobs are listed first
 DYN_OBJS := WaveResourceIds.o
-DYN_OBJS += PrismVersion.o
+DYN_OBJS += WaveVersion.o
 
 
 ################################################################################
@@ -95,7 +95,7 @@ $(BUILD_DIR_OBJ)/Framework/Profiling/WaveProfiler.o: CXXFLAGS := $(filter-out -p
 # the strange variable name $(@D)/.
 # is to avoid parallelism bugs in the recursive makes
 # see the manual for explanation
-$(BUILD_DIR_DYNAMIC_SRC)/PrismVersion.cpp: phony | $$($$(@D)/.)
+$(BUILD_DIR_DYNAMIC_SRC)/WaveVersion.cpp: phony | $$($$(@D)/.)
 	$(MAKE) -C Version -f Makefile.version $(@D)/.=
 
 
@@ -119,7 +119,7 @@ include commonMakefileEnd
 
 LIB.SO.MAJOR := $(LIB.SO).$(WAVE_VERSION_MAJOR)
 #backwards compatibility
-buildversion: $(BUILD_DIR_OBJ)/Version/PrismVersion.o
+buildversion: $(BUILD_DIR_OBJ)/Version/WaveVersion.o
 buildresources: $(BUILD_DIR_OBJ)/Resources/WaveResourceIds.o
 
 ################################################################################

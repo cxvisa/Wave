@@ -26,12 +26,12 @@ WaveSystemManagementGetYangUserInterfaceWorker::~WaveSystemManagementGetYangUser
 
 void WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceMessageHandler (WaveSystemManagementGetYangUserInterfaceMessage *pWaveSystemManagementGetYangUserInterfaceMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateYangUserInterfaceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceApplyAAAOnYangUserInterfaceStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceCreateYangUserInterfaceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::getYangUserInterfaceApplyAAAOnYangUserInterfaceStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementGetYangUserInterfaceWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSystemManagementGetYangUserInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

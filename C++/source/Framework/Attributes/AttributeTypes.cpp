@@ -14,7 +14,7 @@ namespace WaveNs
 AttributeType AttributeType::AttributeTypeUI32                   (1,  WAVE_ATTRIBUTE_TYPE_UI32);
 AttributeType AttributeType::AttributeTypeWaveMessageType        (1,  WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_TYPE);
 AttributeType AttributeType::AttributeTypeWaveMessagePriority    (1,  WAVE_ATTRIBUTE_TYPE_WAVE_MESSAGE_PRIORITY);
-AttributeType AttributeType::AttributeTypeWaveServiceId         (1,  WAVE_ATTRIBUTE_TYPE_PRISM_SERVICE_ID);
+AttributeType AttributeType::AttributeTypeWaveServiceId         (1,  WAVE_ATTRIBUTE_TYPE_WAVE_SERVICE_ID);
 AttributeType AttributeType::AttributeTypeSerializableObjectType (1,  WAVE_ATTRIBUTE_TYPE_SERIALIZABLE_OBJECT_TYPE);
 AttributeType AttributeType::AttributeTypeLocationId             (1,  WAVE_ATTRIBUTE_TYPE_LOCATIONID);
 AttributeType AttributeType::AttributeTypeUI32Vector             (2,  WAVE_ATTRIBUTE_TYPE_UI32_VECTOR);

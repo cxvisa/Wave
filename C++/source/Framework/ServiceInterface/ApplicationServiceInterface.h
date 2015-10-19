@@ -8,7 +8,7 @@
 #define APPLICATIONSERVICEINTERFACE_H
 
 // Name:
-//     PrismApplicationServiceMessageHandler
+//     WaveApplicationServiceMessageHandler
 //
 // Description:
 //     Data type for a function pointer which can be set as a message Handler.  When a Service receives a message, depending on the opcode
@@ -22,20 +22,20 @@
 //           message, then the user needs to copy the contents into memory that is owned by the user.
 //       payLoadLength:
 //           Length of the pay load given by the sender.
-//       pPrismContext:
-//           Prism Context.  This context must be used when replying to the message.  Please refre to the replyToApplicationService API call.
+//       pWaveContext:
+//           Wave Context.  This context must be used when replying to the message.  Please refre to the replyToApplicationService API call.
 //
 // Return Value:
 //     None
 
-typedef void (*PrismApplicationServiceMessageHandler) (void *pPayLoad, const unsigned int payLoadLength, void *pPrismContext);
+typedef void (*WaveApplicationServiceMessageHandler) (void *pPayLoad, const unsigned int payLoadLength, void *pWaveContext);
 
 // Name:
-//    PrismApplicationServiceCallback
+//    WaveApplicationServiceCallback
 //
 // Description:
-//     Data type for a function pointer that can be set as a Callback function when a message is sent out to an Prism application Service.
-//     Anytime when a message is sent to a Prism Appliction Service using the send family of API calls, there will be a callback that gets
+//     Data type for a function pointer that can be set as a Callback function when a message is sent out to an Wave application Service.
+//     Anytime when a message is sent to a Wave Appliction Service using the send family of API calls, there will be a callback that gets
 //     executed upon the arrival of a reply to the originally sent message.  However, there is an exception.  Synchronously sent messages
 //     do not result in callbacks.  The API call corresponding to sending synchronous messages does not require a callback to be specified.
 //
@@ -47,14 +47,14 @@ typedef void (*PrismApplicationServiceMessageHandler) (void *pPayLoad, const uns
 //     outputPayLoadLength:
 //         Length of the output pay load sent by the receiver of the message.
 //     pApplicationServiceContext:
-//         This is the context specified by the sender Prism Application Service when it sent a message using one of the send family of
+//         This is the context specified by the sender Wave Application Service when it sent a message using one of the send family of
 //         asynchronous API calls.  The framework guarantees that the context is not modified by the framework in any way after it is received
 //         in a send family of API calls and before it is given back to the sender via callback execution.
 //
 // Return Value:
 //     None
 
-typedef void (*PrismApplicationServiceCallback) (void *pOutputPayLoad, const unsigned int outputPayLoadLength, void *pApplicationServiceContext);
+typedef void (*WaveApplicationServiceCallback) (void *pOutputPayLoad, const unsigned int outputPayLoadLength, void *pApplicationServiceContext);
 
 #ifdef __cplusplus
 extern "C"
@@ -65,9 +65,9 @@ extern "C"
 //     registerNewApplicationService
 //
 // Description:
-//     A function to register a new Prism Application Global Service.  This tells Prism that a global Application Service must be created when the Prism
-//     initializes.  When Prism is initialized, Prism create one thread per each of the Services that it knows to create.
-//     For a detailed discussion on Prism Global and Local services, please refer to Prism Functional Specification.
+//     A function to register a new Wave Application Global Service.  This tells Wave that a global Application Service must be created when the Wave
+//     initializes.  When Wave is initialized, Wave create one thread per each of the Services that it knows to create.
+//     For a detailed discussion on Wave Global and Local services, please refer to Wave Functional Specification.
 //
 // Parameters:
 //     pApplicationServiceName:
@@ -84,9 +84,9 @@ unsigned int registerNewApplicationService (const char *pApplicationServiceName)
 //     registerNewApplicationLocalService
 //
 // Description:
-//     A function to register a new Prism Application Local Service.  This tells Prism that a local Application Service must be created when the Prism
-//     initializes.  When Prism is initialized, Prism create one thread per each of the Services that it knows to create.
-//     For a detailed discussion on Prism Global and Local services, please refer to Prism Functional Specification.
+//     A function to register a new Wave Application Local Service.  This tells Wave that a local Application Service must be created when the Wave
+//     initializes.  When Wave is initialized, Wave create one thread per each of the Services that it knows to create.
+//     For a detailed discussion on Wave Global and Local services, please refer to Wave Functional Specification.
 //
 // Parameters:
 //     pApplicationServiceName:
@@ -103,29 +103,29 @@ unsigned int registerNewApplicationLocalService (const char *pApplicationLocalSe
 //     addMessageHandler
 //
 // Description:
-//     A function to setup a mesage handler that needs to be invoked by a Prism Application Service when a message with corresponding opcode
+//     A function to setup a mesage handler that needs to be invoked by a Wave Application Service when a message with corresponding opcode
 //     arrives.
 //
 // Parameters:
 //     applicationServiceId:
-//         The Prism Application Service Id of the Service that is interested in receiveing the message.  Typically this id is returned to the
+//         The Wave Application Service Id of the Service that is interested in receiveing the message.  Typically this id is returned to the
 //         user during the registration of the Application Service.
 //     operationCode:
 //         The operation code identifying the particular operation (or message) processed by the Application Service.
 //     pHandler:
 //         Pointer to the function that needs to executed when the message with this opcode arrives at this Application Service.
-//         Please refer to description of PrismApplicationServiceMessageHandler for more details.
+//         Please refer to description of WaveApplicationServiceMessageHandler for more details.
 //
 // Return Value:
 //     None
 
-void addMessageHandler (const unsigned int applicationServiceId, const unsigned int operationCode, PrismApplicationServiceMessageHandler pHandler);
+void addMessageHandler (const unsigned int applicationServiceId, const unsigned int operationCode, WaveApplicationServiceMessageHandler pHandler);
 
 // Name:
 //     sendToApplicationService
 //
 // Description:
-//     A function to send a Request (message) to a Prism Application Service.   When a reply arrives for this request the callback that
+//     A function to send a Request (message) to a Wave Application Service.   When a reply arrives for this request the callback that
 //     gets registered as part of this function call will be executed.  IF a NULL callback is specified no callback will be executed.
 //     The requestor Service can send any input parameters in payload.  It is assumed that the Sender and the receiver agree upon the
 //     input format.  The payload will be given to the receiver via a call to the corresponding message handler that is registred by the
@@ -142,8 +142,8 @@ void addMessageHandler (const unsigned int applicationServiceId, const unsigned 
 //
 // Parameters:
 //     sendingApplicationServiceWaveServiceId:
-//         The Prism Application Service Id of the sender service.  This is different from the Priam Service Id itself.  This value is typically
-//         returned to the user during the Application registration.  Framework internal.ly maps this to the corresponding Prism Service Id
+//         The Wave Application Service Id of the sender service.  This is different from the Priam Service Id itself.  This value is typically
+//         returned to the user during the Application registration.  Framework internal.ly maps this to the corresponding Wave Service Id
 //         before routing the message.
 //     pPayLoad:
 //         The input payload to be sent to the receiver.  This can be deleted/altered after the function call returns.  The framework makes a
@@ -151,10 +151,10 @@ void addMessageHandler (const unsigned int applicationServiceId, const unsigned 
 //     payLoadLength:
 //         Length of the input payload.
 //     receivingApplicationServiceWaveServiceId:
-//         Receiving Prism Application Service Id.  This is similar to sendingApplicationServiceWaveServiceId.
+//         Receiving Wave Application Service Id.  This is similar to sendingApplicationServiceWaveServiceId.
 //     prismLocationId:
 //         The Location Id of the node to which the request (message) has to be sent.
-//     pPrismApplicationServiceCallback:
+//     pWaveApplicationServiceCallback:
 //         Pointer to a function that can be used as a callback.  If the Callback is NULL, then no callback function will be executed upon the
 //         reply arrival.
 //     pApplicationContext:
@@ -169,14 +169,14 @@ unsigned int sendToApplicationService (const unsigned int                       
                                        const unsigned int                              payLoadLength,
                                        const unsigned int                              receivingApplicationServiceWaveServiceId,
                                        const unsigned int                              prismLocationId,
-                                                      PrismApplicationServiceCallback  pPrismApplicationServiceCallback,
+                                                      WaveApplicationServiceCallback  pWaveApplicationServiceCallback,
                                                       void                            *pApplicationContext);
 
 // Name:
 //   replyToApplicationService
 //
 // Description:
-//     A function to send response to a message that was received by the Prism Application Service.  Every message sender excepts to receive
+//     A function to send response to a message that was received by the Wave Application Service.  Every message sender excepts to receive
 //     a response to the message that was send except in the case of sending message one way or sending with no callback.  The receiver of the
 //     message must reply to the message after processing the message.  The reply must happen irrespective of how the message was sent (even  if
 //     it is send with one way or no callback).  This simplifies receiver's responsibility.
@@ -194,13 +194,13 @@ unsigned int sendToApplicationService (const unsigned int                       
 //         of this buffer during the call.  The responsibility of the original buffer remins with the user.
 //     outputPayLoadLength:
 //         Length of the output payload.
-//     pPrismContext:
-//         The Prism context that was given as part of the corresponding message handler.  This must not have been altered.
+//     pWaveContext:
+//         The Wave context that was given as part of the corresponding message handler.  This must not have been altered.
 //
 // Return Value:
 //     None
 
-void replyToApplicationService (void *pOutputPayLoad, const unsigned int outputPayLoadLength, void *pPrismContext);
+void replyToApplicationService (void *pOutputPayLoad, const unsigned int outputPayLoadLength, void *pWaveContext);
 
 #ifdef __cplusplus
 }

@@ -21,12 +21,12 @@ class TimerObjectManagerAddTimerMessage : public WaveMessage
     public :
         virtual                            ~TimerObjectManagerAddTimerMessage   ();
                                             TimerObjectManagerAddTimerMessage   ();
-                                            TimerObjectManagerAddTimerMessage   (timeval &startInterval, timeval &periodicInterval, timeval &startTime, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender);
+                                            TimerObjectManagerAddTimerMessage   (timeval &startInterval, timeval &periodicInterval, timeval &startTime, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender);
                 TimerHandle                 getTimerId                          ();
                 timeval                     getStartInterval                    ();
                 timeval                     getPeriodicInterval                 ();
                 timeval                     getStartTime                        ();
-                PrismTimerExpirationHandler getTimerExpirationCallback          ();
+                WaveTimerExpirationHandler getTimerExpirationCallback          ();
                 void                       *getTimerExpirationContext           ();
                 WaveElement               *getTimerSender                      ();
                 void                        setTimerId                          (TimerHandle timerId);
@@ -38,9 +38,9 @@ class TimerObjectManagerAddTimerMessage : public WaveMessage
         timeval                     m_periodicInterval;
         timeval                     m_startTime;
         TimerHandle                 m_timerId;
-        PrismTimerExpirationHandler m_pPrismTimerExpirationCallback;
-        void                       *m_pPrismTimerExpirationContext;
-        WaveElement               *m_pPrismTimerSender;
+        WaveTimerExpirationHandler m_pWaveTimerExpirationCallback;
+        void                       *m_pWaveTimerExpirationContext;
+        WaveElement               *m_pWaveTimerSender;
     protected :
     public :
 };

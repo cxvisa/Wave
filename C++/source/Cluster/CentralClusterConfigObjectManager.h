@@ -47,10 +47,10 @@ class CentralClusterConfigObjectManager : public WaveObjectManager
                  void                bootStartHeartBeatsStep                     (ClusterBootContext *pClusterBootContext);
 
                  void                failover                                    (FailoverAsynchronousContext *pFailoverAsynchronousContext);
-                 ResourceId          failoverQueryPrismClusterStep               (ClusterFailoverContext *pClusterFailoverContext);
+                 ResourceId          failoverQueryWaveClusterStep               (ClusterFailoverContext *pClusterFailoverContext);
                  ResourceId          failoverDetermineIfPrimaryChangedStep       (ClusterFailoverContext *pClusterFailoverContext);
                  ResourceId          failoverQueryAllWaveNodeObjectsStep         (ClusterFailoverContext *pClusterFailoverContext);
-                 ResourceId          failoverUpdatePrismClusterStep              (ClusterFailoverContext *pClusterFailoverContext);
+                 ResourceId          failoverUpdateWaveClusterStep              (ClusterFailoverContext *pClusterFailoverContext);
                  ResourceId          failoverUpdateWaveNodeObjectsStep           (ClusterFailoverContext *pClusterFailoverContext);
                  ResourceId          failoverStartHeartBeatsIfPrimaryChangedStep (ClusterFailoverContext *pClusterFailoverContext);
                  ResourceId          failoverStartHeartBeatsIfUncontrolledPrimaryChangedStep (ClusterFailoverContext *pClusterFailoverContext);
@@ -75,12 +75,12 @@ class CentralClusterConfigObjectManager : public WaveObjectManager
                 UI32                               validateClusterCreation            (ClusterObjectManagerCreateClusterMessage *pMessage);
                 UI32                               preCreateClusterUpdateConfig       (ClusterObjectManagerCreateClusterMessage *pMessage);
                 UI32                               informFrameworkForClusterCreation  (ClusterObjectManagerCreateClusterMessage *pMessage);
-                UI32                               postCreateClusterUpdateConfig      (ClusterObjectManagerCreateClusterMessage *pMessage, PrismCreateClusterWithNodesMessage *pCreateClusterMessage);
-                void                               replyToCreateClusterMessage        (ClusterObjectManagerCreateClusterMessage *pMessage, PrismCreateClusterWithNodesMessage *pCreateClusterMessage);
+                UI32                               postCreateClusterUpdateConfig      (ClusterObjectManagerCreateClusterMessage *pMessage, WaveCreateClusterWithNodesMessage *pCreateClusterMessage);
+                void                               replyToCreateClusterMessage        (ClusterObjectManagerCreateClusterMessage *pMessage, WaveCreateClusterWithNodesMessage *pCreateClusterMessage);
                 UI32                               validateDeleteCluster              (ClusterObjectManagerDeleteClusterMessage *pMessage);
                 UI32                               informFrameworkForDeleteCluster    (ClusterObjectManagerDeleteClusterMessage *pMessage);
                 void                               processFrameworkDeleteClusterReply (FrameworkStatus frameworkStatus, FrameworkObjectManagerDestroyClusterMessage *pFrameworkDestroyClusterMessage, void *pContext);
-                void                               processFrameworkCreateClusterReply (FrameworkStatus frameworkStatus, PrismCreateClusterWithNodesMessage *pCreateClusterMessage, void *pContext);
+                void                               processFrameworkCreateClusterReply (FrameworkStatus frameworkStatus, WaveCreateClusterWithNodesMessage *pCreateClusterMessage, void *pContext);
 
                 void                               joinNode                           (ClusterObjectManagerJoinNodeMessage *pMessage);
                 UI32                               validateJoinNode                   (ClusterObjectManagerJoinNodeMessage *pMessage);

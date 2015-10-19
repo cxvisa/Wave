@@ -146,7 +146,7 @@ ResourceId WaveMessagingBroker::connect (const UI32 &numberOfRetries, const UI32
                 // the header currently contains The pass code for authorization, ipaddress and
                 // the server port for this location so that the remote locations knows how to contact us back.
 
-                isSuccessful = (*m_pClientStreamingSocket) << FrameworkToolKit::getPrismConnectionPassPhraseForMessageBroker ();
+                isSuccessful = (*m_pClientStreamingSocket) << FrameworkToolKit::getWaveConnectionPassPhraseForMessageBroker ();
 
                 if (true != isSuccessful)
                 {

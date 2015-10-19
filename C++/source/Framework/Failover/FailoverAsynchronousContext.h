@@ -7,17 +7,17 @@
 #ifndef FAILOVERASYNCHRONOUSCONTEXT_H
 #define FAILOVERASYNCHRONOUSCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class FailoverAsynchronousContext : public PrismAsynchronousContext
+class FailoverAsynchronousContext : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                        FailoverAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext, FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover);
+                        FailoverAsynchronousContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext, FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover);
         virtual        ~FailoverAsynchronousContext ();
 
         FrameworkObjectManagerFailoverReason    getfailoverReason                       () const;

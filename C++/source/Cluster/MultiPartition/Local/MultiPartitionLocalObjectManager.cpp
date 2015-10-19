@@ -69,34 +69,34 @@ namespace WaveNs
     {
      // Validations and Queries should go here
 
-          PrismSynchronousLinearSequencerStep  sequencerSteps[] =
+          WaveSynchronousLinearSequencerStep  sequencerSteps[] =
           {
-               reinterpret_cast<PrismSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::validateInputs),
-               // reinterpret_cast<PrismSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
-               reinterpret_cast<PrismSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::processPartitionObjectCleanup),
+               reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::validateInputs),
+               // reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+               reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::processPartitionObjectCleanup),
 
-               // reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-               reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
-               reinterpret_cast<PrismSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
+               // reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
+               reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
+               reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
 
           };
 
-          PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (pMultiPartitionDeletePartitionMessage, this,
+          WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (pMultiPartitionDeletePartitionMessage, this,
                                                                                                        sequencerSteps, 
                                                                                                        sizeof (sequencerSteps) /sizeof (sequencerSteps[0]));
 
-          WaveNs::waveAssert (NULL != pPrismSynchronousLinearSequencerContext, __FILE__, __LINE__);
+          WaveNs::waveAssert (NULL != pWaveSynchronousLinearSequencerContext, __FILE__, __LINE__);
         
-          pPrismSynchronousLinearSequencerContext->execute ();
+          pWaveSynchronousLinearSequencerContext->execute ();
      }
 
-     ResourceId   MultiPartitionLocalObjectManager::validateInputs (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext) 
+     ResourceId   MultiPartitionLocalObjectManager::validateInputs (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext) 
      {
          ResourceId status = WAVE_MESSAGE_SUCCESS;
 
          tracePrintf(TRACE_LEVEL_INFO,  "MultiPartitionLocalObjectManager::validateInputs called " );
 
-         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
+         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pWaveSynchronousLinearSequencerContext->getPWaveMessage ());
          WaveNs::waveAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
          
          do {
@@ -117,13 +117,13 @@ namespace WaveNs
          return (status);     
      }
 
-     ResourceId   MultiPartitionLocalObjectManager::processPartitionObjectCleanup (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext) 
+     ResourceId   MultiPartitionLocalObjectManager::processPartitionObjectCleanup (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext) 
      {
          ResourceId status = WAVE_MESSAGE_SUCCESS;
 
          tracePrintf(TRACE_LEVEL_INFO,  "MultiPartitionLocalObjectManager::processPartitionObjectCleanup  called. " );
 
-         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pPrismSynchronousLinearSequencerContext->getPWaveMessage ());
+         MultiPartitionDeleteLocalPartitionMessage   *pDeleteMTMessage = reinterpret_cast<MultiPartitionDeleteLocalPartitionMessage *> (pWaveSynchronousLinearSequencerContext->getPWaveMessage ());
          WaveNs::waveAssert (NULL != pDeleteMTMessage, __FILE__, __LINE__);
 
          UI32 senderServiceId   = pDeleteMTMessage->getSenderServiceId ();

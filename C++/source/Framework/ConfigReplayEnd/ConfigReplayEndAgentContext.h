@@ -7,7 +7,7 @@
 #ifndef CONFIGREPLAYENDAGENTCONTEXT_H
 #define CONFIGREPLAYENDAGENTCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include <vector>
 
 using namespace std;
@@ -15,12 +15,12 @@ using namespace std;
 namespace WaveNs
 {
 
-class ConfigReplayEndAgentContext : public PrismSynchronousLinearSequencerContext
+class ConfigReplayEndAgentContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                        ConfigReplayEndAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        ConfigReplayEndAgentContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~ConfigReplayEndAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

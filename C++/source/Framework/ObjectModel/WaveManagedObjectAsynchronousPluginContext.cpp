@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-WaveManagedObjectAsynchronousPluginContext::WaveManagedObjectAsynchronousPluginContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext)
+WaveManagedObjectAsynchronousPluginContext::WaveManagedObjectAsynchronousPluginContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext)
 {
 }
 
@@ -97,7 +97,7 @@ void WaveManagedObjectAsynchronousPluginContext::getParentManagedObjectNames ( v
 }
 
 
-UpdateNewAttributeInManagedObjectContext::UpdateNewAttributeInManagedObjectContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+UpdateNewAttributeInManagedObjectContext::UpdateNewAttributeInManagedObjectContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
     : WaveManagedObjectAsynchronousPluginContext (pCaller, pCallback, pCallerContext)
 {
 }
@@ -116,7 +116,7 @@ void UpdateNewAttributeInManagedObjectContext::addNewAttributeName (const string
     m_newAttributeNames.push_back (attributeName);
 }
 
-GetHardwareConfigurationDetailsContext::GetHardwareConfigurationDetailsContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+GetHardwareConfigurationDetailsContext::GetHardwareConfigurationDetailsContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
     : WaveManagedObjectAsynchronousPluginContext (pCaller, pCallback, pCallerContext),
       m_isUpdateBackend (false),
       m_clientName (""),
@@ -124,7 +124,7 @@ GetHardwareConfigurationDetailsContext::GetHardwareConfigurationDetailsContext (
 {
 }
 
-GetHardwareConfigurationDetailsContext::GetHardwareConfigurationDetailsContext (WaveManagedObject *pOperateOnWaveManagedObject , WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+GetHardwareConfigurationDetailsContext::GetHardwareConfigurationDetailsContext (WaveManagedObject *pOperateOnWaveManagedObject , WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
     : WaveManagedObjectAsynchronousPluginContext (pCaller, pCallback, pCallerContext),
     m_isUpdateBackend (false),
     m_clientName (""),
@@ -236,7 +236,7 @@ void GetHardwareConfigurationDetailsContext::setPOperateOnWaveManagedObject (Wav
 }
 
 
-IsAssociatedManagedObjectToBeCreatedContext::IsAssociatedManagedObjectToBeCreatedContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+IsAssociatedManagedObjectToBeCreatedContext::IsAssociatedManagedObjectToBeCreatedContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
     : WaveManagedObjectAsynchronousPluginContext (pCaller, pCallback, pCallerContext)
 {
 }
@@ -310,19 +310,19 @@ void IsAssociatedManagedObjectToBeCreatedContext::setIsAssociatedMOToBeCreated (
 
 }
 
-GetHardwareConfigurationDetailsForPostbootContext::GetHardwareConfigurationDetailsForPostbootContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+GetHardwareConfigurationDetailsForPostbootContext::GetHardwareConfigurationDetailsForPostbootContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
     : GetHardwareConfigurationDetailsContext(pCaller, pCallback, pCallerContext)
 {   
 }
 
-GetHardwareConfigurationDetailsForPostbootContext::GetHardwareConfigurationDetailsForPostbootContext (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext) : GetHardwareConfigurationDetailsContext(pCaller, pCallback, pCallerContext)
+GetHardwareConfigurationDetailsForPostbootContext::GetHardwareConfigurationDetailsForPostbootContext (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext) : GetHardwareConfigurationDetailsContext(pCaller, pCallback, pCallerContext)
 {
     m_passName = passName;
     m_pWaveManagedObjects = pWaveManagedObjects;    
     setManagedObjectName ( managedObjectName );
 }
 
-GetHardwareConfigurationDetailsForPostbootContext::GetHardwareConfigurationDetailsForPostbootContext (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, const map<UI32, bool> &groupCodeChoiceFlag,  map<UI32, map<UI32, vector<UI32> > > &choiceCaseGroup, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext) : GetHardwareConfigurationDetailsContext(pCaller, pCallback, pCallerContext)
+GetHardwareConfigurationDetailsForPostbootContext::GetHardwareConfigurationDetailsForPostbootContext (string managedObjectName, string passName, vector<WaveManagedObject *> *pWaveManagedObjects, const map<UI32, bool> &groupCodeChoiceFlag,  map<UI32, map<UI32, vector<UI32> > > &choiceCaseGroup, WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext) : GetHardwareConfigurationDetailsContext(pCaller, pCallback, pCallerContext)
 {
     m_passName = passName;
     m_pWaveManagedObjects = pWaveManagedObjects;

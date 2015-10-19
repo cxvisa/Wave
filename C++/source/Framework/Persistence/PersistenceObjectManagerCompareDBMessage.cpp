@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerCompareDBMessage::PersistenceObjectManagerCompareDBMessage ()
-    : ManagementInterfaceMessage (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBNJECT_MANAGER_COMPARE_DB)
+    : ManagementInterfaceMessage (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBNJECT_MANAGER_COMPARE_DB)
 {
 }
 

@@ -11,7 +11,7 @@
 namespace WaveNs
 {
 
-WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveMessage* pWaveMessage, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
+WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveMessage* pWaveMessage, WaveElement* pWaveElement, WaveLinearSequencerStep* pSteps, UI32 numberOfSteps)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
       m_pInputWaveManagedObject        (NULL),
       m_pOperateOnWaveManagedObject    (NULL),
@@ -21,8 +21,8 @@ WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveMessage* pWa
 {
 }
 
-WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement* pWaveElement, PrismLinearSequencerStep* pSteps, UI32 numberOfSteps)
-    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+WaveManagedObjectUpdateContext::WaveManagedObjectUpdateContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement* pWaveElement, WaveLinearSequencerStep* pSteps, UI32 numberOfSteps)
+    : WaveLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_pInputWaveManagedObject        (NULL),
       m_pOperateOnWaveManagedObject    (NULL),
       m_childUserTag                   (0),
@@ -49,12 +49,12 @@ WaveManagedObjectUpdateContext::~WaveManagedObjectUpdateContext ()
 
     for (UI32 i = 0; i < numberOfSynchronousContext; i++)
     {
-        PrismAsynchronousContext *pPrismAsynchronousContext = m_prismAsynchronousContext [i];
+        WaveAsynchronousContext *pWaveAsynchronousContext = m_prismAsynchronousContext [i];
 
-        if (NULL != pPrismAsynchronousContext)
+        if (NULL != pWaveAsynchronousContext)
         {
-            delete pPrismAsynchronousContext;
-            pPrismAsynchronousContext = NULL;
+            delete pWaveAsynchronousContext;
+            pWaveAsynchronousContext = NULL;
         }
     }
 
@@ -174,7 +174,7 @@ void WaveManagedObjectUpdateContext::setErrorInCreatingMO (const ResourceId &err
     m_errorInCreatingMO = errorInCreatingMO;
 }
 
-void WaveManagedObjectUpdateContext::addAysnchronousContextForGarbageCollection   (PrismAsynchronousContext *prismAsynchronousContext)
+void WaveManagedObjectUpdateContext::addAysnchronousContextForGarbageCollection   (WaveAsynchronousContext *prismAsynchronousContext)
 {
     m_prismAsynchronousContext.push_back (prismAsynchronousContext);
 }
@@ -183,11 +183,11 @@ void WaveManagedObjectUpdateContext::addManagedObjectForGarbageCollection (WaveM
 {
     waveAssert (NULL != pWaveManagedObjectForGarbageCollection, __FILE__, __LINE__);
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = getPPrismAsynchronousContext ();
+    WaveAsynchronousContext *pWaveAsynchronousContext = getPWaveAsynchronousContext ();
 
-    if (NULL != pPrismAsynchronousContext)
+    if (NULL != pWaveAsynchronousContext)
     {
-        pPrismAsynchronousContext->addManagedObjectForGarbageCollection (pWaveManagedObjectForGarbageCollection);
+        pWaveAsynchronousContext->addManagedObjectForGarbageCollection (pWaveManagedObjectForGarbageCollection);
     }
     else
     {

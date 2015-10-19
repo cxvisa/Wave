@@ -3,16 +3,16 @@ TOPDIR := ../../../../../..
 include ../Makefile.versioninfo
 include ../Makefile.tools
 
-PRISM_VERSION := $(BUILD_DIR_DYNAMIC_SRC)/PrismVersion.cpp
+WAVE_VERSION := $(BUILD_DIR_DYNAMIC_SRC)/WaveVersion.cpp
 
 .PHONY: all
-all: $(PRISM_VERSION)
+all: $(WAVE_VERSION)
 
 .SECONDEXPANSION:
 
 MKFS := $(MAKEFILE_LIST)
-$(PRISM_VERSION): PrismVersion.h PrismVersion.cpp.template $(MKFS) | $(BUILD_DIR_DYNAMIC_SRC)/.
-	sed "s/WAVE_VERSION_MAJOR/$(WAVE_VERSION_MAJOR)/g" PrismVersion.cpp.template | \
+$(WAVE_VERSION): WaveVersion.h WaveVersion.cpp.template $(MKFS) | $(BUILD_DIR_DYNAMIC_SRC)/.
+	sed "s/WAVE_VERSION_MAJOR/$(WAVE_VERSION_MAJOR)/g" WaveVersion.cpp.template | \
 	sed "s/WAVE_VERSION_MINOR/$(WAVE_VERSION_MINOR)/g"                           | \
 	sed "s/WAVE_VERSION_PATCH/$(WAVE_VERSION_PATCH)/g"                           | \
 	sed "s/WAVE_VERSION_REVISION/$(WAVE_VERSION_REVISION)/g"                     | \

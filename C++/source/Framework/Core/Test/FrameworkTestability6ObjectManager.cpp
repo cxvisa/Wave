@@ -8,7 +8,7 @@
 #include "Framework/Core/Test/FrameworkTestability6ObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Core/Test/Upgrade/UpgradeTestManagedObject1.h"
 #include "Framework/Core/Test/Upgrade/UpgradeTestManagedObject2.h"
 #include "Framework/Core/Test/Upgrade/UpgradeTestManagedObject3.h"
@@ -48,7 +48,7 @@ namespace WaveNs
 {
 
 FrameworkTestability6ObjectManager::FrameworkTestability6ObjectManager ()
-        : PrismTestObjectManager (getPrismServiceName ())
+        : WaveTestObjectManager (getWaveServiceName ())
 {
     UpgradeTestManagedObject1 upgradeTestManagedObject1 (this);
     UpgradeTestManagedObject2 upgradeTestManagedObject2 (this);
@@ -99,7 +99,7 @@ WaveServiceId FrameworkTestability6ObjectManager::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-string FrameworkTestability6ObjectManager::getPrismServiceName ()
+string FrameworkTestability6ObjectManager::getWaveServiceName ()
 {
     return ("Framework Testability 6");
 }
@@ -179,264 +179,264 @@ WaveManagedObject *FrameworkTestability6ObjectManager::createManagedObjectInstan
 void FrameworkTestability6ObjectManager::testRequestHandler(RegressionTestMessage *pMessage)
 {
 
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
 /*          
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeRangeTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeRangeTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeDerivationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeDerivationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToOneCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToOneCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
             */
 
             /*
                 Tests the HA DB sync APIs
                 Commented for now. Will be uncommented after all APIs are done.
             
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::validateGetDatabaseSchemaStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::validateGetDatabaseSchemaStep),
             */
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::validatePrepareStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::validatePrepareStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleTransactionTestStep),
             
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::backupDatabaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::instrumentTheDatabaseStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::restoreDatabaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::backupDatabaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::instrumentTheDatabaseStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::restoreDatabaseStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllObjectsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllObjectsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerFailedStep)
         };
 
         UpgradePersistenceTestContext *pUpgradePersistenceTestContext = new UpgradePersistenceTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -447,232 +447,232 @@ void FrameworkTestability6ObjectManager::testRequestHandler(RegressionTestMessag
 
 void FrameworkTestability6ObjectManager::frameworkTestabilityMessage11RequestHandler (FrameworkTestabilityMessage11 *pFrameworkTestabilityMessage11)
 {
-        PrismLinearSequencerStep sequencerSteps[] =
+        WaveLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeRangeTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByAttributeRangeTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjectsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleSynchronousQueryByObjectIdTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToAssociationUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects2TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeDerivationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeDerivationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects3TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleDerivationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyAssociationTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyAssociationTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects4TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationSynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationSynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyMultipleAssociationsInHierarchyTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects5TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryByObjectIdsTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchySynchronousQueryByObjectIdsTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToOneCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToOneCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects6TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionUpdateTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionUpdateTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyCompositionTransactionTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::largeOneToManyCompositionTransactionTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
 
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<PrismLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerFailedStep)
         };
 
         UpgradePersistenceTestContext *pUpgradePersistenceTestContext = new UpgradePersistenceTestContext (pFrameworkTestabilityMessage11, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -723,7 +723,7 @@ void FrameworkTestability6ObjectManager::simpleTransactionTestStep (UpgradePersi
 void FrameworkTestability6ObjectManager::simpleQueryTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple Query Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects ()).size ());
 
@@ -802,7 +802,7 @@ void FrameworkTestability6ObjectManager::simpleQueryTestCallback (WaveManagedObj
 void FrameworkTestability6ObjectManager::simpleQueryByObjectIdsTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple Query By ObjectIds Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
 
     // Now add the ObjectIds to the context so that the query gets only the requested objects.
 
@@ -827,7 +827,7 @@ void FrameworkTestability6ObjectManager::simpleQueryByAttributeTestStep (Upgrade
 
     FrameworkTestabilityMessage11   *pFrameworkTestabilityMessage11   = reinterpret_cast<FrameworkTestabilityMessage11 *> (pUpgradePersistenceTestContext->getPWaveMessage ());
     UI32                            numberOfObjectsToCreate      = pFrameworkTestabilityMessage11->getNumberOfObjectsToBeCreated ();
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject1::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleQueryTestCallback), pUpgradePersistenceTestContext);
 
     if (0 < numberOfObjectsToCreate)
     {
@@ -1364,7 +1364,7 @@ void FrameworkTestability6ObjectManager::simpleOneToAssociationTransactionTestSt
 void FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple One-One Association Query Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject2::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject2::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects2 ()).size ());
 
@@ -1445,7 +1445,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryByObjectI
 {
     trace (TRACE_LEVEL_INFO, "Simple One-One Association Query By ObjectIds Test ...");
 
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject2::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject2::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToOneAssociationQueryTestCallback), pUpgradePersistenceTestContext);
 
     // Now add the ObjectIds to the context so that the query gets only the requested objects.
 
@@ -1842,7 +1842,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationTransactionTestStep (Up
 void FrameworkTestability6ObjectManager::simpleDerivationQueryTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple Derivation Query Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject3::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject3::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects3 ()).size ());
 
@@ -1929,7 +1929,7 @@ void FrameworkTestability6ObjectManager::simpleDerivationQueryByObjectIdsTestSte
 {
     trace (TRACE_LEVEL_INFO, "Simple Derivation Query By ObjectIds Test ...");
 
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject3::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject3::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleDerivationQueryTestCallback), pUpgradePersistenceTestContext);
 
     // Now add the ObjectIds to the context so that the query gets only the requested objects.
 
@@ -2270,7 +2270,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationTransactionTe
 void FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple One-Many Association Query Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject4::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject4::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects4 ()).size ());
 
@@ -2357,7 +2357,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryByObject
 {
     trace (TRACE_LEVEL_INFO, "Simple One-Many Association Query By ObjectIds Test ...");
 
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject4::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject4::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyAssociationQueryTestCallback), pUpgradePersistenceTestContext);
 
     // Now add the ObjectIds to the context so that the query gets only the requested objects.
 
@@ -2776,7 +2776,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Muiltiple Associations In Hierarchy Query Test ...");
 
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject5::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject5::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects5 ()).size ());
 
@@ -2863,7 +2863,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHi
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Muiltiple Associations In Hierarchy Query By ObjectIds Test ...");
 
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject5::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject5::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyMultipleAssociationsInHierarchyQueryTestCallback), pUpgradePersistenceTestContext);
 
     // Now add the ObjectIds to the context so that the query gets only the requested objects.
 
@@ -3198,7 +3198,7 @@ void FrameworkTestability6ObjectManager::simpleOneToOneCompositionTransactionTes
 void FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-One Composition Query Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject6::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject6::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToOneCompositionQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects6 ()).size ());
 
@@ -3479,7 +3479,7 @@ void FrameworkTestability6ObjectManager::simpleOneToManyCompositionTransactionTe
 void FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep (UpgradePersistenceTestContext *pUpgradePersistenceTestContext)
 {
     trace (TRACE_LEVEL_INFO, "Simple One-To-Many Composition Query Test ...");
-    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject7::getClassName (), this, reinterpret_cast<PrismAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCallback), pUpgradePersistenceTestContext);
+    WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext = new WaveManagedObjectQueryContext (UpgradeTestManagedObject7::getClassName (), this, reinterpret_cast<WaveAsynchronousCallback> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestCallback), pUpgradePersistenceTestContext);
 
     pUpgradePersistenceTestContext->setNumberOfExpectedResults ((pUpgradePersistenceTestContext->getCreatedObjects7 ()).size ());
 
@@ -3733,8 +3733,8 @@ void FrameworkTestability6ObjectManager::validateGetDatabaseSchemaStep(UpgradePe
     DatabaseSchema dbSchemaBeforeModify, dbSchemaAfterDeleteMO, dbSchemaAfterRestore, dbSchemaAfterModifyMO, dbSchemaAfterDBConversion;
     OrmToolKit::getDatabaseSchema(dbSchemaBeforeModify);
 
-    string sqlToDeleteAnMOFromUpgradeTable        = string ("DELETE FROM " + OrmRepository::getWaveCurrentSchema () + "." + upgradeMOName + " WHERE classname = 'PrismTestManagedObject5';\n"
-                                                        + "DELETE FROM " + OrmRepository::getWaveStartSchema () + "." + upgradeMOName + " WHERE classname = 'PrismTestManagedObject5';\n");
+    string sqlToDeleteAnMOFromUpgradeTable        = string ("DELETE FROM " + OrmRepository::getWaveCurrentSchema () + "." + upgradeMOName + " WHERE classname = 'WaveTestManagedObject5';\n"
+                                                        + "DELETE FROM " + OrmRepository::getWaveStartSchema () + "." + upgradeMOName + " WHERE classname = 'WaveTestManagedObject5';\n");
 
     bool st = backupAndAlterUpgradeMo (sqlToDeleteAnMOFromUpgradeTable);
     if (false == st)
@@ -3777,11 +3777,11 @@ void FrameworkTestability6ObjectManager::validateGetDatabaseSchemaStep(UpgradePe
 
     string sqlToAddFieldInMOInUpgradeTable = string (
                       "UPDATE " + OrmRepository::getWaveCurrentSchema () + "." + upgradeMOName
-    + " SET fieldnames = concat(fieldnames,'11#newColumnId'), fieldtypes = concat(fieldtypes, '24#WAVE_ATTRIBUTE_TYPE_UI32'), expandedfieldtypes = concat(expandedfieldtypes, '36#WAVE_ATTRIBUTE_TYPE_UI32|integer|0|0')  WHERE classname = 'PrismTestManagedObject5';\n"
+    + " SET fieldnames = concat(fieldnames,'11#newColumnId'), fieldtypes = concat(fieldtypes, '24#WAVE_ATTRIBUTE_TYPE_UI32'), expandedfieldtypes = concat(expandedfieldtypes, '36#WAVE_ATTRIBUTE_TYPE_UI32|integer|0|0')  WHERE classname = 'WaveTestManagedObject5';\n"
                     + " UPDATE " + OrmRepository::getWaveStartSchema () + "." + upgradeMOName
-    + " SET fieldnames = concat(fieldnames,'11#newColumnId'), fieldtypes = concat(fieldtypes, '24#WAVE_ATTRIBUTE_TYPE_UI32'), expandedfieldtypes = concat(expandedfieldtypes, '36#WAVE_ATTRIBUTE_TYPE_UI32|integer|0|0')  WHERE classname = 'PrismTestManagedObject5';\n"
-                    + " ALTER TABLE " + OrmRepository::getWaveCurrentSchema () + ".PrismTestManagedObject5 ADD COLUMN newColumnId integer;\n" 
-                    + " ALTER TABLE " + OrmRepository::getWaveStartSchema () + ".PrismTestManagedObject5 ADD COLUMN newColumnId integer;"); 
+    + " SET fieldnames = concat(fieldnames,'11#newColumnId'), fieldtypes = concat(fieldtypes, '24#WAVE_ATTRIBUTE_TYPE_UI32'), expandedfieldtypes = concat(expandedfieldtypes, '36#WAVE_ATTRIBUTE_TYPE_UI32|integer|0|0')  WHERE classname = 'WaveTestManagedObject5';\n"
+                    + " ALTER TABLE " + OrmRepository::getWaveCurrentSchema () + ".WaveTestManagedObject5 ADD COLUMN newColumnId integer;\n" 
+                    + " ALTER TABLE " + OrmRepository::getWaveStartSchema () + ".WaveTestManagedObject5 ADD COLUMN newColumnId integer;"); 
 
     st = backupAndAlterUpgradeMo (sqlToAddFieldInMOInUpgradeTable);
     if (false == st)
@@ -3897,7 +3897,7 @@ void FrameworkTestability6ObjectManager::instrumentTheDatabaseStep(UpgradePersis
 
         if ( getTestParameterValue("instrumentcfg" ) == "true" )
         {
-            //m_pUpgradeDatabaseSchemaParser->savePrismConfiguration();
+            //m_pUpgradeDatabaseSchemaParser->saveWaveConfiguration();
             bool st = populateSchemaUpgradeTableInDb ();
             if (false == st) 
             {
@@ -4052,7 +4052,7 @@ void  FrameworkTestability6ObjectManager::pausePersistence()
 
     trace (TRACE_LEVEL_DEVEL, "FrameworkTestability6ObjectManager::pausePersistence : Starting ...");
 
-    PrismPauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
+    WavePauseObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -4121,7 +4121,7 @@ void  FrameworkTestability6ObjectManager::resumePersistence()
 {
      trace (TRACE_LEVEL_DEVEL, "FrameworkTestability6ObjectManager::resumePersistence : Starting ...");
 
-    PrismResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
+    WaveResumeObjectManagerMessage message (PersistenceObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -4177,7 +4177,7 @@ void FrameworkTestability6ObjectManager::resumeDatabase ()
 {
     trace (TRACE_LEVEL_DEVEL, "FrameworkTestability6ObjectManager::resumeDatabase : Starting ...");
 
-    PrismResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
+    WaveResumeObjectManagerMessage message (DatabaseObjectManager::getWaveServiceId ());
     ResourceId                      status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -4203,7 +4203,7 @@ void FrameworkTestability6ObjectManager::resumeDatabase ()
 
 void  FrameworkTestability6ObjectManager::backupConfigurationFile()
 {
-    bool status = m_pUpgradeDatabaseSchemaParser->backupPrismConfiguration();
+    bool status = m_pUpgradeDatabaseSchemaParser->backupWaveConfiguration();
     if ( status != true )
     {
         trace (TRACE_LEVEL_FATAL, string( "FrameworkTestability6ObjectManager::backupConfigurationFile : operation failed"));
@@ -4215,7 +4215,7 @@ void  FrameworkTestability6ObjectManager::backupConfigurationFile()
 
 void FrameworkTestability6ObjectManager::restoreConfigurationFile()
 {
-    bool status = m_pUpgradeDatabaseSchemaParser->restorePrismConfiguration();
+    bool status = m_pUpgradeDatabaseSchemaParser->restoreWaveConfiguration();
     if ( status != true )
     {
         trace (TRACE_LEVEL_FATAL, string( "FrameworkTestability6ObjectManager::restoreConfigurationFile restore of configuration file failed"));

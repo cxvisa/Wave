@@ -29,7 +29,7 @@ namespace WaveNs
 
 class OrmTable;
 class WaveManagedObject;
-class PrismPersistableObject;
+class WavePersistableObject;
 class WaveObjectManager;
 class WaveManagedObjectOperation;
 
@@ -80,11 +80,11 @@ class Attribute
 
         virtual Attribute         *clone                                 ()                                                                                           = 0;
 
-        virtual void               updateOrmRelations                    (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void               updateOrmRelations                    (const WavePersistableObject *pWavePersistableObject);
         virtual WaveManagedObject *getComposedManagedObject              (const ObjectId &childObjectId);
         virtual vector<WaveManagedObject *> *getComposedManagedObject    ( );
         virtual bool               isDeletableForOperation               (const WaveManagedObjectOperation &operation);
-        virtual void               updateKeyString                       (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void               updateKeyString                       (const WavePersistableObject *pWavePersistableObject);
 
         virtual void               getRestRowData                        (string &restRowData);
         virtual bool               isCurrentValueSameAsDefault           () const = 0;

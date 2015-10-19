@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 TraceTestObjectManager::TraceTestObjectManager ()
-    : PrismTestObjectManager ("Trace Test")
+    : WaveTestObjectManager ("Trace Test")
 {
 }
 
@@ -41,22 +41,22 @@ WaveServiceId TraceTestObjectManager::getWaveServiceId ()
 
 void TraceTestObjectManager::testRequestHandler (RegressionTestMessage *pRegressionTestMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::getTraceClientTraceLevelStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::setTraceClientTraceLevelStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::resetTraceClientTraceLevelStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&TraceTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::getTraceClientTraceLevelStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::setTraceClientTraceLevelStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::resetTraceClientTraceLevelStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     TraceTestContext *pTraceTestContext = new TraceTestContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

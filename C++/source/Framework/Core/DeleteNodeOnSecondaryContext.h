@@ -8,7 +8,7 @@
 #define DELETENODEONSECONDARYCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include <vector>
 #include <map>
 
@@ -23,8 +23,8 @@ class DeleteNodeOnSecondaryContext : public WaveLinearSequencerContext
 
     protected :
     public :
-                                DeleteNodeOnSecondaryContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                DeleteNodeOnSecondaryContext   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                DeleteNodeOnSecondaryContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                DeleteNodeOnSecondaryContext   (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~DeleteNodeOnSecondaryContext   ();
 
         void                    addKnownLocationId             (const LocationId &locationId);

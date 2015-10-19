@@ -7,17 +7,17 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFORMULTIPARTITIONCLEANUP_H
 #define WAVEASYNCHRONOUSCONTEXTFORMULTIPARTITIONCLEANUP_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForMultiPartitionCleanup : public PrismAsynchronousContext
+class WaveAsynchronousContextForMultiPartitionCleanup : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                        WaveAsynchronousContextForMultiPartitionCleanup (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                        WaveAsynchronousContextForMultiPartitionCleanup (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual        ~WaveAsynchronousContextForMultiPartitionCleanup ();
 
         string          getPartitionName                                 () const;

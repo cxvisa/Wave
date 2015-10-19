@@ -41,11 +41,11 @@ WaveCommandLineInterface::WaveCommandLineInterface (const string &serverIpAddres
 
     m_pCurrentModeCommandLineInterfacEntry = &m_commandLineinterfaceEntries;
 
-    initializePrismSocketLayer ();
+    initializeWaveSocketLayer ();
 
     string                ipAddress = FrameworkToolKit::getAPublicIpAddressForThisMachine ();
     FrameworkSequenceType type      = FRAMEWORK_SEQUENCE_TYPE0;
-    SI32                  port      = FrameworkToolKit::getPrismDefaultTcpPort ();
+    SI32                  port      = FrameworkToolKit::getWaveDefaultTcpPort ();
 
     WaveFrameworkObjectManager::setIpAddressForThisLocation (ipAddress);
 

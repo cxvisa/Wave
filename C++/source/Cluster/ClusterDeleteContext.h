@@ -16,7 +16,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class PrismCluster;
+class WaveCluster;
 class WaveManagedObject;
 
 class ClusterDeleteContext : public WaveLinearSequencerContext
@@ -24,19 +24,19 @@ class ClusterDeleteContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                     ClusterDeleteContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                     ClusterDeleteContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                     ClusterDeleteContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                     ClusterDeleteContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                     ~ClusterDeleteContext ();
 
-        PrismCluster                *getPPrismCluster     () const;
-        void                         setPPrismCluster     (PrismCluster *pPrismCluster);
+        WaveCluster                *getPWaveCluster     () const;
+        void                         setPWaveCluster     (WaveCluster *pWaveCluster);
         vector<WaveManagedObject *> *getPSecondaryNodes   () const;
         void                         setPSecondaryNodes   (vector<WaveManagedObject *> *pSecondaryNodes);
 
     // Now the data members
 
     private :
-        PrismCluster                 *m_pPrismCluster;
+        WaveCluster                 *m_pWaveCluster;
         vector<WaveManagedObject *>  *m_pSecondaryNodes;
 
     protected :

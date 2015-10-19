@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-const string UnixDomainStreamingSocket::serverPathPrefix = "/tmp/PRISM.";
+const string UnixDomainStreamingSocket::serverPathPrefix = "/tmp/WAVE.";
 
 UnixDomainStreamingSocket::UnixDomainStreamingSocket (const SI32 maximumNumberOfConnections)
     : StreamingSocketBase (maximumNumberOfConnections)

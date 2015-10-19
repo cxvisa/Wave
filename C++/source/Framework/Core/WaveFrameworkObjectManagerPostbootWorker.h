@@ -4,20 +4,20 @@
  *   Author : Amit Agrawal                                                 *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKOBJECTMANAGERPOSTBOOTWORKER_H
-#define PRISMFRAMEWORKOBJECTMANAGERPOSTBOOTWORKER_H
+#ifndef WAVEFRAMEWORKOBJECTMANAGERPOSTBOOTWORKER_H
+#define WAVEFRAMEWORKOBJECTMANAGERPOSTBOOTWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
 
 namespace WaveNs
 {
 
-class PrismPostbootObjectManagerMessage;
+class WavePostbootObjectManagerMessage;
 
 class WaveFrameworkObjectManagerPostbootWorker : public WaveWorker
 {
     private :
-                void          postbootMessageHandler    (PrismPostbootObjectManagerMessage *pPrismPostbootObjectManagerMessage);
+                void          postbootMessageHandler    (WavePostbootObjectManagerMessage *pWavePostbootObjectManagerMessage);
 
     protected :
     public :
@@ -32,4 +32,4 @@ class WaveFrameworkObjectManagerPostbootWorker : public WaveWorker
 
 }
 
-#endif // PRISMFRAMEWORKOBJECTMANAGERPOSTBOOTWORKER_H
+#endif // WAVEFRAMEWORKOBJECTMANAGERPOSTBOOTWORKER_H

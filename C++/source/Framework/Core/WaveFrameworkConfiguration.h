@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKCONFIGURATION_H
-#define PRISMFRAMEWORKCONFIGURATION_H
+#ifndef WAVEFRAMEWORKCONFIGURATION_H
+#define WAVEFRAMEWORKCONFIGURATION_H
 
 #include "Framework/ObjectModel/SerializableObject.h"
 #include "Framework/LocationManagement/LocationBase.h"
@@ -105,12 +105,12 @@ class WaveFrameworkConfiguration : virtual public SerializableObject
     protected :
     public :
 
-    friend class PersistentPrismBootAgent;
-    friend class PersistentWithDefaultPrismBootAgent;
+    friend class PersistentWaveBootAgent;
+    friend class PersistentWithDefaultWaveBootAgent;
     friend class PersistentWithDefaultForHABootAgent;
     friend class WaveFrameworkObjectManagerHaSyncWorker;
 };
 
 }
 
-#endif // PRISMFRAMEWORKCONFIGURATION_H
+#endif // WAVEFRAMEWORKCONFIGURATION_H

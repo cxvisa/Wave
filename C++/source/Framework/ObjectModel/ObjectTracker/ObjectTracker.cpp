@@ -136,7 +136,7 @@ void ObjectTracker::getObjects (const WaveServiceId &waveServiceId, vector<strin
 
     if (NULL == pWaveThread)
     {
-        tracePrintf (TRACE_LEVEL_ERROR, true, false, "ObjectTracker::getMessages : Could not find a Prism Thread that corresponds to Prism Service ID : %u", waveServiceId);
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "ObjectTracker::getMessages : Could not find a Wave Thread that corresponds to Wave Service ID : %u", waveServiceId);
 
         m_objectTrackerMutex.unlock ();
         return;

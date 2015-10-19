@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-WaveFrameworkFailoverWorkerContext::WaveFrameworkFailoverWorkerContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
+WaveFrameworkFailoverWorkerContext::WaveFrameworkFailoverWorkerContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_thisLocationRole       (LOCATION_STAND_ALONE),
       m_failoverReason         (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED),
       m_serviceToBeIgnored     (0),

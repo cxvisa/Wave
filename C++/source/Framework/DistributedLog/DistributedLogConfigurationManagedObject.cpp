@@ -12,7 +12,7 @@ namespace WaveNs
 
 DistributedLogConfigurationManagedObject::DistributedLogConfigurationManagedObject (DistributedLogObjectManager *pDistributedLogObjectManager)
     : WaveElement           (pDistributedLogObjectManager),
-      PrismPersistableObject (DistributedLogConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName()),
+      WavePersistableObject (DistributedLogConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName()),
       WaveManagedObject      (pDistributedLogObjectManager),
       m_maxLogEntries        (10000),
       m_firstLogId           (0),
@@ -22,7 +22,7 @@ DistributedLogConfigurationManagedObject::DistributedLogConfigurationManagedObje
 
 DistributedLogConfigurationManagedObject::DistributedLogConfigurationManagedObject (DistributedLogObjectManager *pDistributedLogObjectManager, const string &name)
     : WaveElement           (pDistributedLogObjectManager),
-      PrismPersistableObject (DistributedLogConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName()),
+      WavePersistableObject (DistributedLogConfigurationManagedObject::getClassName (), WaveManagedObject::getClassName()),
       WaveManagedObject      (pDistributedLogObjectManager),
       m_maxLogEntries        (10000),
       m_firstLogId           (0),

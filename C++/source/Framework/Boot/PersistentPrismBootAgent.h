@@ -4,15 +4,15 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PERSISTENTPRISMBOOTAGENT_H
-#define PERSISTENTPRISMBOOTAGENT_H
+#ifndef PERSISTENTWAVEBOOTAGENT_H
+#define PERSISTENTWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 
-class PersistentPrismBootAgent : public PrismBootAgent
+class PersistentWaveBootAgent : public WaveBootAgent
 {
     private :
         virtual bool           isAPersistentBoot                                          ();
@@ -30,15 +30,15 @@ class PersistentPrismBootAgent : public PrismBootAgent
 
     protected :
     public :
-                            PersistentPrismBootAgent                                   (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual            ~PersistentPrismBootAgent                                   ();
+                            PersistentWaveBootAgent                                   (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual            ~PersistentWaveBootAgent                                   ();
         virtual ResourceId  execute                                                    (const WaveBootPhase &waveBootPhase);
 
-                ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  connectToKnownLocationsStep                                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  rollBackDataBase                                           (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  resetLocationRole                                          (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  disconnectFromAllConnectedLocations                        (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  connectToKnownLocationsStep                                (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  rollBackDataBase                                           (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  resetLocationRole                                          (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  disconnectFromAllConnectedLocations                        (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
     // Now the data members
 
@@ -52,4 +52,4 @@ class PersistentPrismBootAgent : public PrismBootAgent
 
 }
 
-#endif // PERSISTENTPRISMBOOTAGENT_H
+#endif // PERSISTENTWAVEBOOTAGENT_H

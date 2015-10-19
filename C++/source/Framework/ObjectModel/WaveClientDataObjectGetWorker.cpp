@@ -118,11 +118,11 @@ void WaveClientDataObjectGetWorker::getDataFromClientHandlerForSendToClient (Wav
 
 void WaveClientDataObjectGetWorker::getDataFromClientHandlerForSendToCluster (WaveObjectManagerGetDataFromClientMessage *pWaveObjectManagerGetDataFromClientMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerGetDataFromClientMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -180,7 +180,7 @@ void WaveClientDataObjectGetWorker::sendMessageToAllNodesStep ( WaveLinearSequen
         */ 
         //Testing End
 
-    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback), pWaveLinearSequencerContext);
+    WaveSendToClusterContext *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStepCallback), pWaveLinearSequencerContext);
         
     pWaveSendToClusterContext->setPWaveMessageForPhase1(pMessageToAllNodes);
 

@@ -18,7 +18,7 @@
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugInfrastructureMessages.h"
 #include "Framework/DistributedDebugInfrastructure/DistributedDebugLocalObjectManager.h" 
 #include "Framework/ObjectModel/WaveElement.h"
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Framework/Utils/WaveCondition.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -121,7 +121,7 @@ WaveMessage *DistributedDebugLocalObjectManager::createMessageInstance (const UI
  * 
  * @param pRunDebugScriptMessageHandlerContext
  */
-void DistributedDebugLocalObjectManager::executeScriptStep (PrismSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext )
+void DistributedDebugLocalObjectManager::executeScriptStep (WaveSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext )
 {
 
    RunDebugScriptOnClusterMemberMessage*  pRunDebugScriptOnClusterMemberMessage = static_cast<RunDebugScriptOnClusterMemberMessage* > (pRunDebugScriptMessageHandlerContext->getPWaveMessage());
@@ -186,14 +186,14 @@ void  DistributedDebugLocalObjectManager::runDebugScriptOnClusterMemberMessageHa
 {
 
     
-    PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&DistributedDebugLocalObjectManager::executeScriptStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedDebugLocalObjectManager::executeScriptStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
     };
 
-    PrismSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new PrismSynchronousLinearSequencerContext (pRunDebugScriptOnClusterMemberMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new WaveSynchronousLinearSequencerContext (pRunDebugScriptOnClusterMemberMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pRunDebugScriptMessageHandlerContext->execute ();
 

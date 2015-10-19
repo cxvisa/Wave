@@ -30,9 +30,9 @@ class WaveManagedObjectCreateWorker : public WaveWorker
         void                createPreUpdateManagedObjectStep                (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);
         void                createUpdateManagedObjectStep                   (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);
         void                createPostUpdateManagedObjectStep               (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);
-        void                createPostUpdateManagedObjectCallBack           (PrismAsynchronousContext *pPrismAsynchronousContext);
+        void                createPostUpdateManagedObjectCallBack           (WaveAsynchronousContext *pWaveAsynchronousContext);
         void                createPreUpdateHardwareStep                     (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);
-        void                createPreUpdateHardwareStepCallback             (PrismAsynchronousContext *pPrismAsynchronousContext);
+        void                createPreUpdateHardwareStepCallback             (WaveAsynchronousContext *pWaveAsynchronousContext);
         void                createUpdateHardwareStep                        (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);
         void                createUpdateHardwareStepCallBack                (GetHardwareConfigurationDetailsForCreateContext *pGetHardwareConfigurationDetailsForCreateContext);
         void                createPostUpdateHardwareStep                    (WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext);

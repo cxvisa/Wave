@@ -10,7 +10,7 @@
 namespace WaveNs
 {
 
-HeartBeatLostContext::HeartBeatLostContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+HeartBeatLostContext::HeartBeatLostContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)
 {
 }

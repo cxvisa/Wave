@@ -4,8 +4,8 @@
  *   Author : cgangwar                                                     *
  ***************************************************************************/
 
-#ifndef PRISMLINEARSEQUENCERCONTEXTFORSHUTDOWNPHASE_H
-#define PRISMLINEARSEQUENCERCONTEXTFORSHUTDOWNPHASE_H
+#ifndef WAVELINEARSEQUENCERCONTEXTFORSHUTDOWNPHASE_H
+#define WAVELINEARSEQUENCERCONTEXTFORSHUTDOWNPHASE_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
 #include <map>
@@ -19,7 +19,7 @@ class WaveLinearSequencerContextForShutdownPhase : public WaveLinearSequencerCon
     private:
     protected:
     public:
-                      WaveLinearSequencerContextForShutdownPhase(PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                      WaveLinearSequencerContextForShutdownPhase(WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual      ~WaveLinearSequencerContextForShutdownPhase();
 
                 void  setBackendMap(const map<string,UnifiedClientBackendDetails*>  &backendMap);  

@@ -10,7 +10,7 @@
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Cluster/Local/WaveNode.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Cluster/Local/HeartBeat/HeartBeatMessages.h"
 #include "Cluster/Local/ClusterLocalSetThisNodeIpAddressMessage.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
@@ -49,15 +49,15 @@ WaveMessage *CentralClusterConfigCreateClusterWorker::createMessageInstance (con
 
 void CentralClusterConfigCreateClusterWorker::createClusterMessageHandler (ClusterObjectManagerCreateClusterMessage *pClusterObjectManagerCreateClusterMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterResetThisNodeIpAddressIfRequiredStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterCommitStep),
-//        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterResetThisNodeIpAddressIfRequiredStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterCommitStep),
+//        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerCreateClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -88,7 +88,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterValidateStep (WaveLin
 
     // Check if cluster is already created and reject if it is already created.
 
-    vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
 
     waveAssert (NULL != pResults, __FILE__, __LINE__);
 
@@ -293,7 +293,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
     string                                    secondaryNode;
     UI32                                      secondaryNodePort;
     UI32                                      numberOfNewSecondaryNodes                 = pClusterObjectManagerCreateClusterMessage->getNSecondaryNodes ();
-    PrismCreateClusterWithNodesMessage       *pPrismCreateClusterWithNodesMessage       = new PrismCreateClusterWithNodesMessage ();
+    WaveCreateClusterWithNodesMessage       *pWaveCreateClusterWithNodesMessage       = new WaveCreateClusterWithNodesMessage ();
     ResourceId                                status                                    = WAVE_MESSAGE_SUCCESS;
 
     /* Inform framework that we got a request to create a cluster. */
@@ -305,12 +305,12 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
         secondaryNode     = pClusterObjectManagerCreateClusterMessage->getSecondaryNodeName (i);
         secondaryNodePort = pClusterObjectManagerCreateClusterMessage->getSecondaryNodePort (i);
 
-        pPrismCreateClusterWithNodesMessage->addNewNodeIpAddressAndPort (secondaryNode, secondaryNodePort);
+        pWaveCreateClusterWithNodesMessage->addNewNodeIpAddressAndPort (secondaryNode, secondaryNodePort);
     }
     
-    pPrismCreateClusterWithNodesMessage->setIsAddNodeForSpecialCaseFlag (pClusterObjectManagerCreateClusterMessage->getIsAddNodeForSpecialCaseFlag ());
+    pWaveCreateClusterWithNodesMessage->setIsAddNodeForSpecialCaseFlag (pClusterObjectManagerCreateClusterMessage->getIsAddNodeForSpecialCaseFlag ());
 
-    status = send (pPrismCreateClusterWithNodesMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback), pWaveLinearSequencerContext);
+    status = send (pWaveCreateClusterWithNodesMessage, reinterpret_cast<WaveMessageResponseHandler> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback), pWaveLinearSequencerContext);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -320,7 +320,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
     }
 }
 
-void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback (FrameworkStatus frameworkStatus, PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage, void *pContext)
+void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback (FrameworkStatus frameworkStatus, WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage, void *pContext)
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterCallback : Entering ...");
 
@@ -339,7 +339,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
     }
     else
     {
-        completionStatus = pPrismCreateClusterWithNodesMessage->getCompletionStatus();
+        completionStatus = pWaveCreateClusterWithNodesMessage->getCompletionStatus();
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
@@ -356,7 +356,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
             secondaryNode     = pClusterObjectManagerCreateClusterMessage->getSecondaryNodeName (i);
             secondaryNodePort = pClusterObjectManagerCreateClusterMessage->getSecondaryNodePort (i);
 
-            pClusterObjectManagerCreateClusterMessage->setNodeStaus (secondaryNode, secondaryNodePort, pPrismCreateClusterWithNodesMessage->getNewNodeStatus (secondaryNode, secondaryNodePort));
+            pClusterObjectManagerCreateClusterMessage->setNodeStaus (secondaryNode, secondaryNodePort, pWaveCreateClusterWithNodesMessage->getNewNodeStatus (secondaryNode, secondaryNodePort));
         }
     }
     else
@@ -366,11 +366,11 @@ void CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCre
             secondaryNode     = pClusterObjectManagerCreateClusterMessage->getSecondaryNodeName (i);
             secondaryNodePort = pClusterObjectManagerCreateClusterMessage->getSecondaryNodePort (i);
 
-            pClusterObjectManagerCreateClusterMessage->setNodeStaus (secondaryNode, secondaryNodePort, pPrismCreateClusterWithNodesMessage->getNewNodeStatus (secondaryNode, secondaryNodePort));
+            pClusterObjectManagerCreateClusterMessage->setNodeStaus (secondaryNode, secondaryNodePort, pWaveCreateClusterWithNodesMessage->getNewNodeStatus (secondaryNode, secondaryNodePort));
         }
     }
 
-    delete (pPrismCreateClusterWithNodesMessage);
+    delete (pWaveCreateClusterWithNodesMessage);
 
     pWaveLinearSequencerContext->executeNextStep (status);
 }
@@ -392,12 +392,12 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (WaveLinea
 
     startTransaction ();
 
-    PrismCluster *pPrismCluster = new PrismCluster (getPWaveObjectManager ());
+    WaveCluster *pWaveCluster = new WaveCluster (getPWaveObjectManager ());
 
-    pPrismCluster->setGenericStatus     (WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
-    pPrismCluster->setPrimaryLocationId (primaryLocationId);
-    pPrismCluster->setPrimaryIpAddress  (primaryIpAddress);
-    pPrismCluster->setPrimaryPort       (primaryPort);
+    pWaveCluster->setGenericStatus     (WAVE_MANAGED_OBJECT_GENERIC_STATUS_GOOD);
+    pWaveCluster->setPrimaryLocationId (primaryLocationId);
+    pWaveCluster->setPrimaryIpAddress  (primaryIpAddress);
+    pWaveCluster->setPrimaryPort       (primaryPort);
 
     vector<vector <WaveManagedObject *> *>                        waveNodeVectors;
     for (i = 0; i < numberOfNewSecondaryNodes; i++)
@@ -424,7 +424,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (WaveLinea
             WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
 	    waveAssert (NULL != pWaveNode, __FILE__, __LINE__);
             waveNodeVectors.push_back(pResults);
-            pPrismCluster->addSecondaryNode (pWaveNode->getObjectId ());
+            pWaveCluster->addSecondaryNode (pWaveNode->getObjectId ());
         }
     }
 
@@ -466,7 +466,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterCommitStep (WaveLinea
 	WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector(waveNodeVectors[i]);
     }
 
-    delete pPrismCluster;
+    delete pWaveCluster;
 
     pWaveLinearSequencerContext->executeNextStep (status);
 }

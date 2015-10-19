@@ -9,7 +9,7 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForPostbootPhase::WaveAsynchronousContextForPostbootPhase (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
+WaveAsynchronousContextForPostbootPhase::WaveAsynchronousContextForPostbootPhase (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
     : WaveAsynchronousContextForBootPhases (pCaller, pCallback, pCallerContext),
       m_passNum                (0)
 {

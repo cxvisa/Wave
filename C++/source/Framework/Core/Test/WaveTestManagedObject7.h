@@ -8,7 +8,7 @@
 #define WAVETESTMANAGEDOBJECT7_H
 
 #include "Framework/ObjectModel/WaveManagedObjectPointer.cpp"
-#include "Framework/Core/Test/PrismTestManagedObject1.h"
+#include "Framework/Core/Test/WaveTestManagedObject1.h"
 
 namespace WaveNs
 {
@@ -30,12 +30,12 @@ class WaveTestManagedObject7 : public WaveManagedObject
                 void                                                        setInteger7              (const UI32 &integer7);
                 void                                                        setMessage7              (const string &message7);
                 void                                                        setObjectId7             (const ObjectId &objectId7);
-                void                                                        setComposition7          (const vector<WaveManagedObjectPointer<PrismTestManagedObject1> > &composition7);
+                void                                                        setComposition7          (const vector<WaveManagedObjectPointer<WaveTestManagedObject1> > &composition7);
 
                 UI32                                                        getInteger7              () const;
                 string                                                      getMessage7              () const;
                 ObjectId                                                    getObjectId7             () const;
-                vector<WaveManagedObjectPointer<PrismTestManagedObject1> >  getComposition7          () const;
+                vector<WaveManagedObjectPointer<WaveTestManagedObject1> >  getComposition7          () const;
 
         virtual bool                                                        operator ==              (const WaveTestManagedObject7 &rhs) const;
         virtual bool                                                        operator !=              (const WaveTestManagedObject7 &rhs) const;
@@ -47,7 +47,7 @@ class WaveTestManagedObject7 : public WaveManagedObject
         string                                                     m_message7;
         ObjectId                                                   m_objectId7;
 
-        vector<WaveManagedObjectPointer<PrismTestManagedObject1> > m_composition7;
+        vector<WaveManagedObjectPointer<WaveTestManagedObject1> > m_composition7;
 
     protected :
     public :

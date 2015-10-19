@@ -16,8 +16,8 @@ namespace WaveNs
 ShellDebug::ShellDebug (WaveObjectManager *pWaveObjectManager)
     :ShellBase (pWaveObjectManager, string("Debug"))
 {
-    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellPrism::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellPrism::usageShellPrismRegressionService)));
-    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellPrism::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellPrism::usageShellPrismTraceService)));
+    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellWave::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellWave::usageShellWaveRegressionService)));
+    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellWave::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellWave::usageShellWaveTraceService)));
     addShellCommandHandler (ShellCommandHandler (string("help"),       1,  (ShellCmdFunction) (&ShellDebug::shellExecuteHelpDebug),         1, (ShellUsageFunction) (&ShellDebug::usageShellDebugHelp)));
     addShellCommandHandler (ShellCommandHandler (string("quit"),       1,  (ShellCmdFunction) (&ShellDebug::shellExecuteQuitDebug),         1, (ShellUsageFunction) (&ShellDebug::usageShellDebugQuit)));
 }
@@ -28,7 +28,7 @@ ShellDebug::~ShellDebug ()
 
 UI32 ShellDebug::shellExecuteHelpDebug (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellDebug::shellExecuteHelpDebug : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellDebug::shellExecuteHelpDebug : Entering ...");
 
     usageShellDebugHelp ();
 
@@ -56,7 +56,7 @@ void ShellDebug::registerDebugFunction (ShellCmdFunction debugFunction, const ch
     static  WaveMutex mutex;
 
     mutex.lock();
-    ((ShellObjectManager::getInstance ())->m_pPrismShell->getDebugShell ())->addShellCommandHandler (ShellCommandHandler (string(debugName), 1,  debugFunction, strlen (debugName), NULL));
+    ((ShellObjectManager::getInstance ())->m_pWaveShell->getDebugShell ())->addShellCommandHandler (ShellCommandHandler (string(debugName), 1,  debugFunction, strlen (debugName), NULL));
     mutex.unlock();
 }
 

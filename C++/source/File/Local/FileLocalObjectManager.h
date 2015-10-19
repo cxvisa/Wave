@@ -15,7 +15,7 @@
 #include "File/Local/FileTransferHandshakeMessage.h"
 #include "File/Local/FileTransferManagedObject.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 
 using namespace WaveNs;
 
@@ -64,11 +64,11 @@ namespace WaveNs
                ResourceId         sendFileToHaPeer                            (const string &fthandle, const string &sourceFileName, const string &destinationFileName, const UI32 &fileSize);
 
                void               PushFileToHaPeerMessageHandler              (PushFileToHaPeerMessage *pPushFileToHaPeerMessage);
-               ResourceId         pushFileToHaPeerValidateReceiptStep         (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-               ResourceId         pushFileToHaPeerReceiveFileStep             (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+               ResourceId         pushFileToHaPeerValidateReceiptStep         (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+               ResourceId         pushFileToHaPeerReceiveFileStep             (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
                void               FilePushFileToHaPeerMessageHandler          (FilePushFileToHaPeerMessage *pFilePushFileToHaPeerMessage);
-               ResourceId         pushFileToHaPeerValidateStep                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-               ResourceId         pushFileToHaPeerSendFileStep                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+               ResourceId         pushFileToHaPeerValidateStep                (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+               ResourceId         pushFileToHaPeerSendFileStep                (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
                void               FileDeleteRequestFromServiceHandler         (FileDeleteRequestMessage *pFileDeleteRequestMessage);
                void               DeleteValidateStep                          ( WaveLinearSequencerContext *pWaveLinearSequencerContext ); 

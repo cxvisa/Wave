@@ -3,8 +3,8 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#ifndef PRISMCONDITION_H
-#define PRISMCONDITION_H
+#ifndef WAVECONDITION_H
+#define WAVECONDITION_H
 
 #include <pthread.h>
 #include "WaveMutex.h"
@@ -44,4 +44,4 @@ class WaveCondition
 
 }
 
-#endif //PRISMCONDITION_H
+#endif //WAVECONDITION_H

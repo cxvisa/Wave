@@ -7,8 +7,8 @@
 #ifndef LOADOPERATIONALDATASYNCHRONOUSCONTEXT_H
 #define LOADOPERATIONALDATASYNCHRONOUSCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 
 #include <vector>
@@ -18,13 +18,13 @@ using namespace std;
 namespace WaveNs
 {
 
-class LoadOperationalDataSynchronousContext : public PrismSynchronousLinearSequencerContext
+class LoadOperationalDataSynchronousContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                           LoadOperationalDataSynchronousContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                           LoadOperationalDataSynchronousContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           LoadOperationalDataSynchronousContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                           LoadOperationalDataSynchronousContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                           ~LoadOperationalDataSynchronousContext ();
 
         ObjectId           getWaveManagedObjectId                () const;

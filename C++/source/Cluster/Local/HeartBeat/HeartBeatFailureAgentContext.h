@@ -7,7 +7,7 @@
 #ifndef HEARTBEATFAILUREAGENTCONTEXT_H
 #define HEARTBEATFAILUREAGENTCONTEXT_H
 
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include <vector>
 
 using namespace std;
@@ -15,12 +15,12 @@ using namespace std;
 namespace WaveNs
 {
 
-class HeartBeatFailureAgentContext : public PrismSynchronousLinearSequencerContext
+class HeartBeatFailureAgentContext : public WaveSynchronousLinearSequencerContext
 {
     private :
     protected :
     public :
-                                        HeartBeatFailureAgentContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                        HeartBeatFailureAgentContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                        ~HeartBeatFailureAgentContext ();
 
                 vector<WaveServiceId> &getEnabledServices        ();

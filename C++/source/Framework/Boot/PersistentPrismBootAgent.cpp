@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/Boot/PersistentPrismBootAgent.h"
+#include "Framework/Boot/PersistentWaveBootAgent.h"
 #include "Framework/Core/WaveFrameworkConfiguration.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
@@ -20,7 +20,7 @@
 #include "Cluster/Local/WaveNode.h"
 #include <vector>
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/Persistence/PersistenceObjectManagerUpdateInstanceIdMesssage.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
@@ -30,61 +30,61 @@ using namespace std;
 namespace WaveNs
 {
 
-PersistentPrismBootAgent::PersistentPrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
-    : PrismBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
+PersistentWaveBootAgent::PersistentWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
+    : WaveBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
       m_isRollBackDataBaseValid (false),
       m_isRollCfgFileIsValid (true),
       m_waveBootPhase (WAVE_BOOT_PHASE_ALL_PHASES)
 {
 }
 
-PersistentPrismBootAgent::~PersistentPrismBootAgent ()
+PersistentWaveBootAgent::~PersistentWaveBootAgent ()
 {
 }
 
-ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
+ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 {
     m_waveBootPhase = waveBootPhase;
 
     if (WAVE_BOOT_PHASE_ALL_PHASES == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::upgradePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::upgradeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::rollBackDataBase),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::rollBackDataBase),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::databaseSanityCheckStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::databaseSanityCheckStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::upgradeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootLocalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::upgradeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootLocalWaveServicesStep),
 
-            //reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::connectToKnownLocationsStep),
+            //reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::connectToKnownLocationsStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::upgradeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::upgradeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::updateDatabaseForeignKeyConstraintsStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
     
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
         
         // Cleanup Upgrade data structures after Persistent boot 
 
@@ -107,154 +107,154 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
     }
     else if (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::resetLocationRole),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::rollBackDataBase),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::resetLocationRole),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::rollBackDataBase),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::rollBackDataBase),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::backendSyncUpStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::rollBackDataBase),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::resetLocationRole),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::disconnectFromAllConnectedLocations),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::rollBackDataBase),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootLocalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::resetLocationRole),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::disconnectFromAllConnectedLocations),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::rollBackDataBase),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootLocalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::backendSyncUpStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
     
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::resetLocationRole),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::disconnectFromAllConnectedLocations),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::resetLocationRole),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::disconnectFromAllConnectedLocations),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::rollBackDataBase),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootLocalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::rollBackDataBase),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootLocalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::backendSyncUpStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     
     }
     else if (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase)
     {
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::resetLocationRole),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::disconnectFromAllConnectedLocations),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::resetLocationRole),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::disconnectFromAllConnectedLocations),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::initializeGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::enableGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::listenForEventsGlobalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::bootGlobalPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::initializeGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&PersistentPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
@@ -265,14 +265,14 @@ ResourceId PersistentPrismBootAgent::execute (const WaveBootPhase &waveBootPhase
 
 }
 
-ResourceId PersistentPrismBootAgent::disconnectFromAllConnectedLocations (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWaveBootAgent::disconnectFromAllConnectedLocations (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     (WaveFrameworkObjectManager::getInstance())->disconnectFromAllKnownLocations ();
 
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId PersistentPrismBootAgent::resetLocationRole (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWaveBootAgent::resetLocationRole (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     LocationBase *pThisLocation = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
 
@@ -327,7 +327,7 @@ ResourceId PersistentPrismBootAgent::resetLocationRole (PrismSynchronousLinearSe
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     string                      prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     WaveFrameworkConfiguration waveFrameworkConfiguration;
@@ -337,7 +337,7 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : How can this be.  We detected that there was a configuration file.  And now it is not available???");
+        trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : How can this be.  We detected that there was a configuration file.  And now it is not available???");
         waveAssert (false, __FILE__, __LINE__);
 
         status = WAVE_MESSAGE_ERROR;
@@ -358,7 +358,7 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
 
         if (LOCATION_STAND_ALONE == (pThisLocation->getLocationRole ()))
         {
-            trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_STAND_ALONE));
+            trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_STAND_ALONE));
 
             pThisLocation->setClusterPrimaryLocationId (waveFrameworkConfiguration.m_clusterPrimaryLocationId);
             pThisLocation->setClusterPrimaryPort       (waveFrameworkConfiguration.m_clusterPrimaryPort);
@@ -383,13 +383,13 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
             }
             else if (LOCATION_PRIMARY == (pThisLocation->getLocationRole ()))
             {
-                trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Re-Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_PRIMARY_UNCONFIRMED));
+                trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Re-Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_PRIMARY_UNCONFIRMED));
 
                 pThisLocation->setLocationRole (LOCATION_PRIMARY_UNCONFIRMED);
             }
             else if (LOCATION_SECONDARY == (pThisLocation->getLocationRole ()))
             {
-                trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Re-Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_SECONDARY_UNCONFIRMED));
+                trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Re-Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_SECONDARY_UNCONFIRMED));
 
                 pThisLocation->setLocationRole (LOCATION_SECONDARY_UNCONFIRMED);
             }
@@ -412,7 +412,7 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
             }
             else if ((LOCATION_SECONDARY_REJOIN_PHASE_0 == pThisLocation->getLocationRole ()) || (LOCATION_SECONDARY_REJOIN_PHASE_1 == pThisLocation->getLocationRole ()) || (LOCATION_SECONDARY_REJOIN_PHASE_2 == pThisLocation->getLocationRole ()) || (LOCATION_SECONDARY_REJOIN_PHASE_3 == pThisLocation->getLocationRole ()))
             {
-               trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Handling Reboot in the middle of Rejoin Phase , Re-Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_SECONDARY_UNCONFIRMED));
+               trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep : Handling Reboot in the middle of Rejoin Phase , Re-Setting Location Role To : " + FrameworkToolKit::localize (LOCATION_SECONDARY_UNCONFIRMED));
 
                 m_isRollBackDataBaseValid = true;
 
@@ -455,7 +455,7 @@ ResourceId PersistentPrismBootAgent::createFrameworkConfigurationFromPersistedCo
     return (status);
 }
 
-ResourceId PersistentPrismBootAgent::connectToKnownLocationsStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWaveBootAgent::connectToKnownLocationsStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
     LocationBase       *pThisLocation                = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
     vector<LocationId>  knownRemoteLocations;
@@ -478,16 +478,16 @@ ResourceId PersistentPrismBootAgent::connectToKnownLocationsStep (PrismSynchrono
             ipAddress = FrameworkToolKit::getIpAddressForLocationId (knownRemoteLocations[i]);
             port      = FrameworkToolKit::getPortForLocationId (knownRemoteLocations[i]);
 
-            trace (TRACE_LEVEL_ERROR, string ("PersistentPrismBootAgent::connectToKnownLocationsStep : Failed to connect to ") + ipAddress + ":" + port + ".");
+            trace (TRACE_LEVEL_ERROR, string ("PersistentWaveBootAgent::connectToKnownLocationsStep : Failed to connect to ") + ipAddress + ":" + port + ".");
         }
     }
 
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
+ResourceId PersistentWaveBootAgent::rollBackDataBase (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
-    trace (TRACE_LEVEL_INFO, string("PersistentPrismBootAgent::rollBackDataBase: m_isRollBackDataBaseValid = ") + m_isRollBackDataBaseValid);
+    trace (TRACE_LEVEL_INFO, string("PersistentWaveBootAgent::rollBackDataBase: m_isRollBackDataBaseValid = ") + m_isRollBackDataBaseValid);
     if (false == m_isRollBackDataBaseValid)
     {
         return (WAVE_MESSAGE_SUCCESS);
@@ -499,13 +499,13 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
     vector<string>  output;
     SI32            cmdStatus                    = 0;
 
-    trace (TRACE_LEVEL_WARN, string ("PersistentPrismBootAgent::rollBackDataBase: deleting file ") + prismConfigurationfileName);
+    trace (TRACE_LEVEL_WARN, string ("PersistentWaveBootAgent::rollBackDataBase: deleting file ") + prismConfigurationfileName);
 
     cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + prismConfigurationfileName).c_str(), output);
 
     if ( cmdStatus != 0 )
     {        
-        trace (TRACE_LEVEL_ERROR, string("PersistentPrismBootAgent::rollBackDataBase: Cmd to delete file ")+ prismConfigurationfileName + string(" failed with error message : ") + output[0]);
+        trace (TRACE_LEVEL_ERROR, string("PersistentWaveBootAgent::rollBackDataBase: Cmd to delete file ")+ prismConfigurationfileName + string(" failed with error message : ") + output[0]);
     }
 
     cleanPreparedTransactions ();
@@ -514,7 +514,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
 
     if ( (WAVE_MESSAGE_SUCCESS == FrameworkToolKit::isConnectedToHaPeerLocation ()) && (true == FrameworkToolKit::getIsLiveSyncEnabled ()) )
     {
-        trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::rollBackDatabase: Rollback database on standby is triggered");
+        trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::rollBackDatabase: Rollback database on standby is triggered");
 
         FrameworkObjectManagerRollbackStandbyOnActiveRollbackMessage rollbackStandbyOnActiveRollbackMessage;
         ResourceId                                                   status = WAVE_MESSAGE_SUCCESS;
@@ -523,7 +523,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_ERROR, "PersistentPrismBootAgent::rollBackDataBase: Unable to perform rollback on STANDBY. Status: " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_ERROR, "PersistentWaveBootAgent::rollBackDataBase: Unable to perform rollback on STANDBY. Status: " + FrameworkToolKit::localize (status));
             FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
         }
         else
@@ -532,11 +532,11 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
 
             if (WAVE_MESSAGE_SUCCESS == status)
             {
-                trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::rollBackDataBase: Succeeded in performing rollback on STANDBY.");
+                trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::rollBackDataBase: Succeeded in performing rollback on STANDBY.");
             }
             else
             {
-                trace (TRACE_LEVEL_ERROR, "PersistentPrismBootAgent::rollBackDataBase: Failed to perform rollback on STANDBY. Status: " + FrameworkToolKit::localize (status));
+                trace (TRACE_LEVEL_ERROR, "PersistentWaveBootAgent::rollBackDataBase: Failed to perform rollback on STANDBY. Status: " + FrameworkToolKit::localize (status));
                 FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_FAILED);
             }
         }
@@ -544,12 +544,12 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
     else if ((FrameworkToolKit::getSyncState () == IN_SYNC) && (false == FrameworkToolKit::getIsLiveSyncEnabled ()))
     {
         // DB previously in sync from sync dump. but live transaction sync not supported. So set out of sync and notify on sync update fail
-        trace (TRACE_LEVEL_WARN, "PersistentPrismBootAgent::rollBackDataBase: Live sync disabled. Notify sync update failure on first update after sync dump.");
+        trace (TRACE_LEVEL_WARN, "PersistentWaveBootAgent::rollBackDataBase: Live sync disabled. Notify sync update failure on first update after sync dump.");
         FrameworkToolKit::notifySyncUpdateFailure(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_NOT_SUPPORTED);
     }
     else
     {
-        trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::rollBackDatabase: Rollback db on standby will not be initiated as Peer is disconnected.");
+        trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::rollBackDatabase: Rollback db on standby will not be initiated as Peer is disconnected.");
     }
 
     if (true == m_isRollCfgFileIsValid)
@@ -561,7 +561,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
         m_isRollCfgFileIsValid = true;
     }
 
-    FrameworkToolKit::savePrismConfiguration (true);
+    FrameworkToolKit::saveWaveConfiguration (true);
 
     PersistenceObjectManagerUpdateInstanceIdMesssage message;
 
@@ -569,7 +569,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::rollBackDataBase : Could not send message to update instance Id.  Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::rollBackDataBase : Could not send message to update instance Id.  Status : " + FrameworkToolKit::localize (status));
         waveAssert (false, __FILE__, __LINE__);
     }
     else
@@ -578,7 +578,7 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::rollBackDataBase : Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::rollBackDataBase : Not able to update Instance Id  Completion Status : " + FrameworkToolKit::localize (status));
             waveAssert (false, __FILE__, __LINE__);
         }
     }
@@ -586,9 +586,9 @@ ResourceId PersistentPrismBootAgent::rollBackDataBase (PrismSynchronousLinearSeq
     return (WAVE_MESSAGE_SUCCESS);
 }
 
-void PersistentPrismBootAgent::cleanPreparedTransactions ()
+void PersistentWaveBootAgent::cleanPreparedTransactions ()
 {
-    trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::cleanPreparedTransactions: Entering ...");
+    trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::cleanPreparedTransactions: Entering ...");
 
     DatabaseObjectManagerCleanPreparedTransactionsMessage databaseObjectManagerCleanPreparedTransactionsMessage;
     ResourceId                                            cleanPreparedTransactionsStatus                        = WAVE_MESSAGE_SUCCESS;
@@ -597,7 +597,7 @@ void PersistentPrismBootAgent::cleanPreparedTransactions ()
 
     if (WAVE_MESSAGE_SUCCESS != cleanPreparedTransactionsStatus)
     {
-        trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::cleanPreparedTransactions: Could not send message to Clean Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
+        trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::cleanPreparedTransactions: Could not send message to Clean Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
         waveAssert (false, __FILE__, __LINE__);
     }
     else
@@ -606,25 +606,25 @@ void PersistentPrismBootAgent::cleanPreparedTransactions ()
 
         if (WAVE_MESSAGE_SUCCESS == cleanPreparedTransactionsStatus)
         {
-            trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::cleanPreparedTransactions: Succeeded in cleaning previously Prepared Transactions.");
+            trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::cleanPreparedTransactions: Succeeded in cleaning previously Prepared Transactions.");
         }
         else
         {
-            trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::cleanPreparedTransactions: Failed to clean previously Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
+            trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::cleanPreparedTransactions: Failed to clean previously Prepared Transactions. Status : " + FrameworkToolKit::localize (cleanPreparedTransactionsStatus));
             waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
 
-void PersistentPrismBootAgent::emptyDatabaseToRollBack ()
+void PersistentWaveBootAgent::emptyDatabaseToRollBack ()
 {
-    trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::emptyDatabaseToRollBack Entering ...");
+    trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::emptyDatabaseToRollBack Entering ...");
 
     DatabaseObjectManagerEmptyMessage message;
     ResourceId                        status  = sendSynchronously (&message);
 
     if (WAVE_MESSAGE_SUCCESS != status)
-    {         trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::emptyDatabaseToRollBack : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
+    {         trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::emptyDatabaseToRollBack : Could not send message to empty database.  Status : " + FrameworkToolKit::localize (status));
         waveAssert (false, __FILE__, __LINE__);
     }
     else
@@ -633,15 +633,15 @@ void PersistentPrismBootAgent::emptyDatabaseToRollBack ()
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::emptyDatabaseToRollBack : Message to empty database failed.  Completion Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::emptyDatabaseToRollBack : Message to empty database failed.  Completion Status : " + FrameworkToolKit::localize (status));
             waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
 
-void PersistentPrismBootAgent::reloadPreviousDataBase ()
+void PersistentWaveBootAgent::reloadPreviousDataBase ()
 {
-    trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::reloadPreviousDataBase Entering....");
+    trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::reloadPreviousDataBase Entering....");
 
     string backupFileName = string (FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + FrameworkToolKit::getDatabaseBackupFileName2 ());
 
@@ -652,7 +652,7 @@ void PersistentPrismBootAgent::reloadPreviousDataBase ()
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::reloadPreviousDataBase : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::reloadPreviousDataBase : Could not send message to restore database.  Status : " + FrameworkToolKit::localize (status));
         waveAssert (false, __FILE__, __LINE__);
     }
     else
@@ -661,13 +661,13 @@ void PersistentPrismBootAgent::reloadPreviousDataBase ()
 
         if (WAVE_MESSAGE_ERROR_DB_RESTORE_FAILED == status)
         {
-            trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::reloadPreviousDataBase : Not Able to Restore DB from Backed Up File. Completion Status : " + FrameworkToolKit::localize (status));
-            trace (TRACE_LEVEL_FATAL, "PersistentPrismBootAgent::reloadPreviousDataBase : Going For Extreme Recovery By going to default/startup configuration");
+            trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::reloadPreviousDataBase : Not Able to Restore DB from Backed Up File. Completion Status : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_FATAL, "PersistentWaveBootAgent::reloadPreviousDataBase : Going For Extreme Recovery By going to default/startup configuration");
 
-            status = FrameworkToolKit::changePrismConfigurationValidity ( false );
+            status = FrameworkToolKit::changeWaveConfigurationValidity ( false );
             if ( status != WAVE_MESSAGE_SUCCESS  )
             {
-                trace (TRACE_LEVEL_FATAL, ("PersistentPrismBootAgent::reloadPreviousDataBase : Removing CFG file failed in extreme Recoverycase "));
+                trace (TRACE_LEVEL_FATAL, ("PersistentWaveBootAgent::reloadPreviousDataBase : Removing CFG file failed in extreme Recoverycase "));
             }
             system ("/sbin/reboot -f");
 
@@ -679,22 +679,22 @@ void PersistentPrismBootAgent::reloadPreviousDataBase ()
         }
         else
         {
-            trace (TRACE_LEVEL_INFO, "PersistentPrismBootAgent::reloadPreviousDataBase : SUCCESSFULLY rollback to the last known valid previous DB configuration.");
+            trace (TRACE_LEVEL_INFO, "PersistentWaveBootAgent::reloadPreviousDataBase : SUCCESSFULLY rollback to the last known valid previous DB configuration.");
         }
     }
 }
 
-bool PersistentPrismBootAgent::isAPersistentBoot ()
+bool PersistentWaveBootAgent::isAPersistentBoot ()
 {
     return (true);
 }
 
-WaveBootReason PersistentPrismBootAgent::getReason () const
+WaveBootReason PersistentWaveBootAgent::getReason () const
 {
     return (WAVE_BOOT_PERSISTENT_BOOT);
 }
 
-bool PersistentPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
+bool PersistentWaveBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase) || (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase))
     {
@@ -713,7 +713,7 @@ bool PersistentPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveService
     }
 }
 
-bool PersistentPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
+bool PersistentWaveBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase) || (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase))
     {
@@ -732,7 +732,7 @@ bool PersistentPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const
     }
 }
 
-bool PersistentPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
+bool PersistentWaveBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_RESET_NODE_TO_UNCONFIRM_ROLE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase) || (WAVE_BOOT_PREPARE_FOR_HA_FAILOVER_PHASE == m_waveBootPhase))
     {
@@ -751,7 +751,7 @@ bool PersistentPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServ
     }
 }
 
-bool PersistentPrismBootAgent::getRollBackFlag () const
+bool PersistentWaveBootAgent::getRollBackFlag () const
 {
     if ((WAVE_BOOT_ROLL_BACK_BOOT_PHASE == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2 == m_waveBootPhase) || (WAVE_BOOT_ROLL_BACK_BOOT_PHASE_BEFORE_PHASE_0 == m_waveBootPhase))
     {

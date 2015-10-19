@@ -18,7 +18,7 @@
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Shell/ShellObjectManager.h"
 #include "Shell/ShellDebug.h"
-#include "Shell/ShellPrism.h"
+#include "Shell/ShellWave.h"
 #include "ManagementInterface/ClientInterface/ManagementInterfaceClientListMessage.h"
 
 
@@ -192,11 +192,11 @@ void ManagementInterfaceObjectManager::managementInterfaceMessageHandler (Manage
 {
     m_pInputMessage = NULL;
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -206,11 +206,11 @@ void ManagementInterfaceObjectManager::managementInterfaceMessageHandler (Manage
 
 void ManagementInterfaceObjectManager::managementInterfaceClientListHandler (ManagementInterfaceClientListMessage *pManagementInterfaceClientListMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::getClientsInformation),
-        reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::getClientsInformation),
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
     };
  
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceClientListMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -308,7 +308,7 @@ void ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientSte
         {
            TimerHandle timerHandle;
  
-            ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds, reinterpret_cast<PrismTimerExpirationHandler> (&ManagementInterfaceObjectManager::sendTimerExpiredCallback), reinterpret_cast<void *> (messageId));
+            ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds, reinterpret_cast<WaveTimerExpirationHandler> (&ManagementInterfaceObjectManager::sendTimerExpiredCallback), reinterpret_cast<void *> (messageId));
  
             if (FRAMEWORK_SUCCESS != timeStatus)
             {
@@ -721,7 +721,7 @@ void ManagementInterfaceObjectManager::removeInstanceClient (UI32 argc, vector<s
 
     FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage.setClientIpAddress (argv[1]);
 
-    status = ShellPrism::shellSendSynchronously (&FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage);
+    status = ShellWave::shellSendSynchronously (&FrameworkObjectManagerDisconnectFromAllInstanceClientsMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {

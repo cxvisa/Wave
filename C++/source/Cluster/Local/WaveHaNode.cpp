@@ -12,7 +12,7 @@ namespace WaveNs
 
 WaveHaNode::WaveHaNode (WaveObjectManager *pWaveObjectManager)
     : WaveElement               (pWaveObjectManager),
-      PrismPersistableObject     (WaveHaNode::getClassName (), WaveLocalManagedObject::getClassName ()),
+      WavePersistableObject     (WaveHaNode::getClassName (), WaveLocalManagedObject::getClassName ()),
       WaveManagedObject          (pWaveObjectManager),
       WaveLocalManagedObjectBase (this),
       WaveLocalManagedObject     (pWaveObjectManager)
@@ -24,7 +24,7 @@ WaveHaNode::WaveHaNode (WaveObjectManager *pWaveObjectManager)
 
 WaveHaNode::WaveHaNode (WaveObjectManager *pWaveObjectManager, const WaveHaNodeRole &role, const string &internalIpAddress, const string &serialNumber)
     : WaveElement               (pWaveObjectManager),
-      PrismPersistableObject     (WaveHaNode::getClassName (), WaveLocalManagedObject::getClassName ()),
+      WavePersistableObject     (WaveHaNode::getClassName (), WaveLocalManagedObject::getClassName ()),
       WaveManagedObject          (pWaveObjectManager),
       WaveLocalManagedObjectBase (this),
       WaveLocalManagedObject     (pWaveObjectManager),
@@ -39,7 +39,7 @@ WaveHaNode::WaveHaNode (WaveObjectManager *pWaveObjectManager, const WaveHaNodeR
 
 WaveHaNode::WaveHaNode (WaveObjectManager *pWaveObjectManager, const WaveHaNodeRole &role)
     : WaveElement               (pWaveObjectManager),
-      PrismPersistableObject     (WaveHaNode::getClassName (), WaveLocalManagedObject::getClassName ()),
+      WavePersistableObject     (WaveHaNode::getClassName (), WaveLocalManagedObject::getClassName ()),
       WaveManagedObject          (pWaveObjectManager),
       WaveLocalManagedObjectBase (this),
       WaveLocalManagedObject     (pWaveObjectManager),

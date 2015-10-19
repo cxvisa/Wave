@@ -7,7 +7,7 @@
 #ifndef DISTRIBUTEDLOGTESTOBJECTMANAGER_H
 #define DISTRIBUTEDLOGTESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 
 namespace WaveNs
 {
@@ -15,7 +15,7 @@ namespace WaveNs
 class DistributedLogInvokeAddLogApiMessage;
 class DistributedLogTestContext;
 
-class DistributedLogTestObjectManager : public PrismTestObjectManager
+class DistributedLogTestObjectManager : public WaveTestObjectManager
 {
     private :
         virtual WaveMessage                       *createMessageInstance                                   (const UI32 &operationCode);

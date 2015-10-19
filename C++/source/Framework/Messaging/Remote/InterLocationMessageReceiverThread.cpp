@@ -14,7 +14,7 @@
 #include "Framework/Messaging/Remote/InterLocationMessageTransportObjectManager.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/LocationManagement/PrismNodeConnectionInformation.h"
+#include "Framework/LocationManagement/WaveNodeConnectionInformation.h"
 #include "Framework/Messaging/Remote/InterLocationTypes.h"
 #include "Framework/Messaging/Remote/InterLocationMulticastMessage.h"
 #include "Framework/ObjectModel/ServiceIndependentMessageHandlerMap.h"
@@ -24,7 +24,7 @@ namespace WaveNs
 {
 
 InterLocationMessageReceiverThread::InterLocationMessageReceiverThread (ServerStreamingSocket *pServerStreamingSocket)
-    : PrismPosixThread (),
+    : WavePosixThread (),
       m_pServerStreamingSocket (pServerStreamingSocket),
       m_peerServerPort (0),
       m_peerServerMessageVersion (""),
@@ -167,7 +167,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
     if (true == isSuccessful)
     {
-        PrismNodeConnectionInformation peerServerConnectionInformation;
+        WaveNodeConnectionInformation peerServerConnectionInformation;
 
         peerConnectionInformationBuffer.toString (peerServerConnectionInformationString);
         peerServerConnectionInformation.loadFromSerializedData2 (peerServerConnectionInformationString, SERIALIZE_WITH_ATTRIBUTE_NAME);
@@ -280,7 +280,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                 // this location sent out.
 
                 // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
-                // travels brtween two nodes in a Prism based cluster is a WaveMessage;
+                // travels brtween two nodes in a Wave based cluster is a WaveMessage;
                 // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
                 //                 WaveMessage.
 
@@ -552,11 +552,11 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
 bool InterLocationMessageReceiverThread::authorizeClient ()
 {
-    // Try to read the Prism connection Pass Phrase.  If the connected client does not supply the
+    // Try to read the Wave connection Pass Phrase.  If the connected client does not supply the
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful              = false;
-    string          prismPassPhrase           = FrameworkToolKit::getPrismConnectionPassPhrase ();
+    string          prismPassPhrase           = FrameworkToolKit::getWaveConnectionPassPhrase ();
     FixedSizeBuffer passphraseFixedSizeBuffer (prismPassPhrase.size ());
 
     isSuccessful = (*m_pServerStreamingSocket) >> (passphraseFixedSizeBuffer);

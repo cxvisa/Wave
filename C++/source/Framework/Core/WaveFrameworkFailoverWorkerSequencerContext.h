@@ -4,22 +4,22 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
-#define PRISMFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
+#ifndef WAVEFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
+#define WAVEFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
 
 namespace WaveNs
 {
 
-class PrismFailoverAgent;
+class WaveFailoverAgent;
 
 class WaveFrameworkFailoverWorkerSequencerContext : public WaveLinearSequencerContext
 {
     private :
     protected :
     public :
-                                                      WaveFrameworkFailoverWorkerSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                                      WaveFrameworkFailoverWorkerSequencerContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                                      ~WaveFrameworkFailoverWorkerSequencerContext ();
 
                 LocationRole                          getThisLocationRole                          () const;
@@ -30,8 +30,8 @@ class WaveFrameworkFailoverWorkerSequencerContext : public WaveLinearSequencerCo
                 LocationId                            getFailedLocationAtIndex                     (const UI32 &index) const;
                 void                                  addFailedLocationId                          (const LocationId &locationId);
 
-                PrismFailoverAgent                   *getPPrismFailoverAgent                       () const;
-                void                                  setPPrismFailoverAgent                       (PrismFailoverAgent *pPrismFailoverAgent);
+                WaveFailoverAgent                   *getPWaveFailoverAgent                       () const;
+                void                                  setPWaveFailoverAgent                       (WaveFailoverAgent *pWaveFailoverAgent);
 
                 void                                  setServiceToBeIgnored                        (const WaveServiceId &serviceToBeIgnored);
                 WaveServiceId                        getServiceToBeIgnored                        () const;
@@ -43,7 +43,7 @@ class WaveFrameworkFailoverWorkerSequencerContext : public WaveLinearSequencerCo
         FrameworkObjectManagerFailoverReason  m_failoverReason;
         vector<LocationId>                    m_failedLocationIds;
 
-        PrismFailoverAgent                   *m_pPrismFailoverAgent;
+        WaveFailoverAgent                   *m_pWaveFailoverAgent;
 
         WaveServiceId                        m_serviceToBeIgnored;
 
@@ -53,4 +53,4 @@ class WaveFrameworkFailoverWorkerSequencerContext : public WaveLinearSequencerCo
 
 }
 
-#endif // PRISMFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H
+#endif // WAVEFRAMEWORKFAILOVERWORKERSEQUENCERCONTEXT_H

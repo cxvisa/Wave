@@ -12,7 +12,7 @@ namespace WaveNs
 
     HeartBeatConfigLocalManagedObject::HeartBeatConfigLocalManagedObject (HeartBeatObjectManager *pHeartBeatObjectManager)
         : WaveElement  (pHeartBeatObjectManager),
-        PrismPersistableObject (HeartBeatConfigLocalManagedObject::getClassName (), WaveLocalManagedObject::getClassName ()),
+        WavePersistableObject (HeartBeatConfigLocalManagedObject::getClassName (), WaveLocalManagedObject::getClassName ()),
         WaveManagedObject (pHeartBeatObjectManager),
         WaveLocalManagedObjectBase (this),
         WaveLocalManagedObject (pHeartBeatObjectManager),
@@ -23,7 +23,7 @@ namespace WaveNs
 
     HeartBeatConfigLocalManagedObject::HeartBeatConfigLocalManagedObject (HeartBeatObjectManager *pHeartBeatObjectManager,const UI32 &defaultHeartBeatInterval,const UI32 &defaultHeartBeatFailureThreshold)
         : WaveElement  (pHeartBeatObjectManager),
-        PrismPersistableObject (HeartBeatConfigLocalManagedObject::getClassName (), WaveLocalManagedObject::getClassName ()),
+        WavePersistableObject (HeartBeatConfigLocalManagedObject::getClassName (), WaveLocalManagedObject::getClassName ()),
         WaveManagedObject (pHeartBeatObjectManager),
         WaveLocalManagedObjectBase (this),
         WaveLocalManagedObject (pHeartBeatObjectManager),

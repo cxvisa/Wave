@@ -8,7 +8,7 @@
 #define HASYNCWORKERSEQUENCERCONTEXT_H
 
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 using namespace std;
 
@@ -20,8 +20,8 @@ class StartHaSyncDumpContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                StartHaSyncDumpContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                StartHaSyncDumpContext   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                StartHaSyncDumpContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                StartHaSyncDumpContext   (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~StartHaSyncDumpContext   ();
     // Now the data members
 
@@ -75,8 +75,8 @@ class ReceiveHaSyncDumpContext : public WaveLinearSequencerContext
     private :
     protected :
     public :
-                                ReceiveHaSyncDumpContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                ReceiveHaSyncDumpContext   (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                ReceiveHaSyncDumpContext   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                ReceiveHaSyncDumpContext   (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~ReceiveHaSyncDumpContext   ();
         void                    setIsDbSyncRequired             (const bool &isDbSyncRequired);
         bool                    getIsDbSyncRequired             ();
@@ -101,4 +101,4 @@ class ReceiveHaSyncDumpContext : public WaveLinearSequencerContext
 
 }
 
-#endif // PRISMFRAMEWORKOBJECTMANAGERHASYNCWORKERSEQUENCERCONTEXT_H 
+#endif // WAVEFRAMEWORKOBJECTMANAGERHASYNCWORKERSEQUENCERCONTEXT_H 

@@ -13,7 +13,7 @@ namespace WaveNs
 {   
 
 ClusterLocalReportToControllerAsClientMessage::ClusterLocalReportToControllerAsClientMessage ()
-    : ManagementInterfaceMessage (ClusterLocalObjectManager::getPrismServiceName (), CLUSTER_LOCAL_REPORT_AS_CLIENT_MESSAGE)
+    : ManagementInterfaceMessage (ClusterLocalObjectManager::getWaveServiceName (), CLUSTER_LOCAL_REPORT_AS_CLIENT_MESSAGE)
 {
     m_controllerPort = 0;
     m_controllerClientPort     = 0;

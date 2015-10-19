@@ -4,22 +4,22 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKFAILOVERWORKERCONTEXT_H
-#define PRISMFRAMEWORKFAILOVERWORKERCONTEXT_H
+#ifndef WAVEFRAMEWORKFAILOVERWORKERCONTEXT_H
+#define WAVEFRAMEWORKFAILOVERWORKERCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
 #include <vector>
 
 namespace WaveNs
 {
 
-class WaveFrameworkFailoverWorkerContext : public PrismAsynchronousContext
+class WaveFrameworkFailoverWorkerContext : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                                      WaveFrameworkFailoverWorkerContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                                      WaveFrameworkFailoverWorkerContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                                      ~WaveFrameworkFailoverWorkerContext ();
 
                 LocationRole                          getThisLocationRole                 () const;
@@ -52,4 +52,4 @@ class WaveFrameworkFailoverWorkerContext : public PrismAsynchronousContext
 
 }
 
-#endif // PRISMFRAMEWORKFAILOVERWORKERCONTEXT_H
+#endif // WAVEFRAMEWORKFAILOVERWORKERCONTEXT_H

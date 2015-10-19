@@ -18,7 +18,7 @@ namespace WaveNs
 
 
 FileLocalMessagingTestObjectManager::FileLocalMessagingTestObjectManager ()
-    : PrismTestObjectManager (getServiceName ())
+    : WaveTestObjectManager (getServiceName ())
 {
     addOperationMap (FILE_LOCAL_TEST_COPY_FILE_WAVE_CLIENT_MESSAGE,reinterpret_cast<WaveMessageHandler> (&FileLocalMessagingTestObjectManager::copyFileWaveClientMessageHandler));
     addOperationMap (FILE_LOCAL_TEST_COPY_FILE_TO_HA_PEER_WAVE_CLIENT_MESSAGE, reinterpret_cast<WaveMessageHandler> (&FileLocalMessagingTestObjectManager::copyFileToHaPeerWaveClientMessageHandler));
@@ -73,24 +73,24 @@ WaveMessage *FileLocalMessagingTestObjectManager::createMessageInstance(const UI
 }
 void FileLocalMessagingTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
         // Tests expected to fail.
         // If these tests return correct error code, they are considered as passed test cases.
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilenameTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilesizeTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simplePushFileWithInvalidLocationIdTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLocationIdTest),
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilenameTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilesizeTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simplePushFileWithInvalidLocationIdTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLocationIdTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest),
         //Test ASyncAbort
         //Test SyncAbort        
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest),
-        //reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest),
+        //reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDatatoAllGoodLocationIdTest),
 
         // TODO:Add more tests here for other messages, and messages expected to succeed for correct inputs.
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::CleanupTempTestFiles),
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::CleanupTempTestFiles),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -225,7 +225,7 @@ void FileLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLoc
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                pWaveLinearSequencerContext->incrementNumberOfFailures ();
-               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleASyncPushFileWith1KDatatoGoodLocationIdTest : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
                delete pMessage;
           }
           else
@@ -294,7 +294,7 @@ void FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLoca
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                trace (TRACE_LEVEL_DEBUG, string ("FSVCLocalMessagingTestOMgr::simpleSyncPushFileWith1KDatatoGoodLocationIdTest: Sending a message to [") +         
-                                                                                WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
+                                                                                WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
           }
           trace (TRACE_LEVEL_INFO, string("FileLocalMessagingTestObjectManager::simpleSyncPushFileWith1KDatatoGoodLocationIdTest: After doing the sendSynchronous call and before deleting the PushFileMessage object....\n"));
           delete pMessage;
@@ -330,7 +330,7 @@ void    FileLocalMessagingTestObjectManager::ASynchronousDistributeFileWith1MBDa
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                pWaveLinearSequencerContext->incrementNumberOfFailures ();
-               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+               trace (TRACE_LEVEL_DEBUG, string ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
                delete pMessage;
           }
           else
@@ -397,7 +397,7 @@ void FileLocalMessagingTestObjectManager::SynchronousDistributeFileWith1MBDatato
           if (WAVE_MESSAGE_SUCCESS != status)
           {
                trace (TRACE_LEVEL_DEBUG, string ("FSVCLocalMessagingTestOMgr::DistributeFileWith1MBDatatoAllGoodLocationIdTest : Sending a message to [") +         
-                                                                                WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
+                                                                                WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed, Error [" + FrameworkToolKit::localize(status) + "]\n");
           }
           delete pMessage;
           pMessage = NULL;

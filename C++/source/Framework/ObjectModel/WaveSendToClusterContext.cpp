@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-WaveSendToClusterContext::WaveSendToClusterContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
+WaveSendToClusterContext::WaveSendToClusterContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_pWaveMessageForPhase1                  (NULL),
       m_pWaveMessageForPhase2                  (NULL),
       m_timeoutForPhase1                        (0),

@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMLOCALOBJECTMANAGERFORUSERSPECIFICTASKS_H
-#define PRISMLOCALOBJECTMANAGERFORUSERSPECIFICTASKS_H
+#ifndef WAVELOCALOBJECTMANAGERFORUSERSPECIFICTASKS_H
+#define WAVELOCALOBJECTMANAGERFORUSERSPECIFICTASKS_H
 
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 
@@ -33,4 +33,4 @@ class WaveLocalObjectManagerForUserSpecificTasks : public WaveLocalObjectManager
 
 }
 
-#endif // PRISMLOCALOBJECTMANAGERFORUSERSPECIFICTASKS_H
+#endif // WAVELOCALOBJECTMANAGERFORUSERSPECIFICTASKS_H

@@ -28,14 +28,14 @@ DatabaseObjectManagerBootWorker::~DatabaseObjectManagerBootWorker ()
 
 void DatabaseObjectManagerBootWorker::boot (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

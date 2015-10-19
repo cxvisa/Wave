@@ -12,8 +12,8 @@
 namespace WaveNs
 {
 
-WaveLinearSequencerContextForShutdownPhase::WaveLinearSequencerContextForShutdownPhase(PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : WaveLinearSequencerContext (pPrismAsynchronousContext,pWaveElement,pSteps,numberOfSteps)
+WaveLinearSequencerContextForShutdownPhase::WaveLinearSequencerContextForShutdownPhase(WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : WaveLinearSequencerContext (pWaveAsynchronousContext,pWaveElement,pSteps,numberOfSteps)
 {
 }
 

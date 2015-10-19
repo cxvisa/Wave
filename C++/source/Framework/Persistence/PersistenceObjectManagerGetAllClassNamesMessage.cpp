@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerGetAllClassNamesMessage::PersistenceObjectManagerGetAllClassNamesMessage ()
-    : ManagementInterfaceMessage (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_GET_ALL_CLASS_NAMES)
+    : ManagementInterfaceMessage (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_GET_ALL_CLASS_NAMES)
 {
 }
 

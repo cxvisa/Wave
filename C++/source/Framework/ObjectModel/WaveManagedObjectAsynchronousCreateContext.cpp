@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-WaveManagedObjectAsynchronousCreateContext::WaveManagedObjectAsynchronousCreateContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext)
+WaveManagedObjectAsynchronousCreateContext::WaveManagedObjectAsynchronousCreateContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext)
 {
 }
 

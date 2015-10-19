@@ -224,7 +224,7 @@ void Attribute::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult *> &
 {
 }
 
-void Attribute::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+void Attribute::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
 }
 
@@ -251,7 +251,7 @@ bool Attribute::isDeletableForOperation (const WaveManagedObjectOperation &opera
 	return true;
 }
 
-void Attribute::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+void Attribute::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
 }
 

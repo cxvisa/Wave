@@ -23,7 +23,7 @@ namespace WaveNs
 {
 
 WaveMessagingBrokerClientReceiverThread::WaveMessagingBrokerClientReceiverThread (ServerStreamingSocket *pServerStreamingSocket)
-     : PrismPosixThread         (),
+     : WavePosixThread         (),
        m_pServerStreamingSocket (pServerStreamingSocket),
        m_peerServerPort         (0)
 {
@@ -199,7 +199,7 @@ WaveThreadStatus WaveMessagingBrokerClientReceiverThread::start ()
                 // this location sent out.
 
                 // We can safely cast from SerializableObject pointer to WaveMessage pointer since we know that only object that
-                // travels between two nodes in a Prism based cluster is a WaveMessage;
+                // travels between two nodes in a Wave based cluster is a WaveMessage;
                 // FIXME : sagar : enforce that the object type that was returned is indeed a WaveMessage or a specialization of
                 //                 WaveMessage.
 
@@ -339,11 +339,11 @@ WaveThreadStatus WaveMessagingBrokerClientReceiverThread::start ()
 
 bool WaveMessagingBrokerClientReceiverThread::authorizeClient ()
 {
-    // Try to read the Prism connection Pass Phrase.  If the connected client does not supply the
+    // Try to read the Wave connection Pass Phrase.  If the connected client does not supply the
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful              = false;
-    string          prismPassPhrase           = FrameworkToolKit::getPrismConnectionPassPhraseForMessageBroker ();
+    string          prismPassPhrase           = FrameworkToolKit::getWaveConnectionPassPhraseForMessageBroker ();
     FixedSizeBuffer passphraseFixedSizeBuffer (prismPassPhrase.size ());
 
     isSuccessful = (*m_pServerStreamingSocket) >> (passphraseFixedSizeBuffer);

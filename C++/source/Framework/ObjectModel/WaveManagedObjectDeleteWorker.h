@@ -35,7 +35,7 @@ class WaveManagedObjectDeleteWorker : public WaveWorker
         void            deleteDeleteManagedObjectStep                   (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);
         void            deletePostDeleteManagedObjectStep               (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);
         void            deletePreUpdateHardwareStep                     (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);
-        void            deletePreUpdateHardwareStepCallback             (PrismAsynchronousContext *pPrismAsynchronousContext);
+        void            deletePreUpdateHardwareStepCallback             (WaveAsynchronousContext *pWaveAsynchronousContext);
         void            deleteUpdateHardwareStep                        (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);
         void            deleteUpdateHardwareStepCallBack                (GetHardwareConfigurationDetailsForDeleteContext *pGetHardwareConfigurationDetailsForDeleteContext);
         void            deletePostUpdateHardwareStep                    (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext);

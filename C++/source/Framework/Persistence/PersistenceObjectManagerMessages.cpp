@@ -12,13 +12,13 @@ namespace WaveNs
 {
 
 PersistenceObjectManagerAddXPathStringsMessage::PersistenceObjectManagerAddXPathStringsMessage (const vector<string> &xPathStrings)
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_ADD_XPATH_STRINGS_MESSAGE),
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_ADD_XPATH_STRINGS_MESSAGE),
       m_xPathStrings                        (xPathStrings)
 {
 }
 
 PersistenceObjectManagerAddXPathStringsMessage::PersistenceObjectManagerAddXPathStringsMessage ()
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_ADD_XPATH_STRINGS_MESSAGE)
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_ADD_XPATH_STRINGS_MESSAGE)
 {
 }
 
@@ -47,13 +47,13 @@ void PersistenceObjectManagerAddXPathStringsMessage::setXPathStrings (const vect
 
 
 PersistenceObjectManagerDeleteXPathStringsMessage::PersistenceObjectManagerDeleteXPathStringsMessage (const vector<string> &xPathStrings)
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_DELETE_XPATH_STRINGS_MESSAGE),
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_DELETE_XPATH_STRINGS_MESSAGE),
       m_xPathStrings                        (xPathStrings)
 {
 }
 
 PersistenceObjectManagerDeleteXPathStringsMessage::PersistenceObjectManagerDeleteXPathStringsMessage ()
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_DELETE_XPATH_STRINGS_MESSAGE)
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_DELETE_XPATH_STRINGS_MESSAGE)
 {
 }
 
@@ -84,13 +84,13 @@ void PersistenceObjectManagerDeleteXPathStringsMessage::setXPathStrings (const v
 // This message will typically come from any node, and will be serviced by PersistenceObjectManager.
 
 PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage::PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage (const vector<string> &xPathStrings)
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_GET_LAST_UPDATE_TIMESTAMPS_FOR_XPATH_STRINGS_MESSAGE),
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_GET_LAST_UPDATE_TIMESTAMPS_FOR_XPATH_STRINGS_MESSAGE),
       m_xPathStrings                        (xPathStrings)
 {
 }
 
 PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage::PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage ()
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_GET_LAST_UPDATE_TIMESTAMPS_FOR_XPATH_STRINGS_MESSAGE)
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_GET_LAST_UPDATE_TIMESTAMPS_FOR_XPATH_STRINGS_MESSAGE)
 {
 }
 
@@ -130,7 +130,7 @@ void PersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage::setL
 
 
 PersistenceObjectManagerResetXPathStringsTimestampsMessage::PersistenceObjectManagerResetXPathStringsTimestampsMessage ()
-    : ManagementInterfaceMessage            (PersistenceObjectManager::getPrismServiceName (), PERSISTENCE_OBJECT_MANAGER_RESET_XPATH_STRINGS_TIMESTAMPS)
+    : ManagementInterfaceMessage            (PersistenceObjectManager::getWaveServiceName (), PERSISTENCE_OBJECT_MANAGER_RESET_XPATH_STRINGS_TIMESTAMPS)
 {
 }
 

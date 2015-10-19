@@ -27,11 +27,11 @@ DatabaseObjectManagerInitializeWorker::~DatabaseObjectManagerInitializeWorker ()
 
 void DatabaseObjectManagerInitializeWorker::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::initializeCreateObjectRelationalMappingStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::initializeCreateObjectRelationalMappingStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -44,18 +44,18 @@ void DatabaseObjectManagerInitializeWorker::initializeCreateObjectRelationalMapp
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
-void DatabaseObjectManagerInitializeWorker::zeroize (WaveAsynchronousContextForShutDownPhases *pPrismAsynchronousContext)
+void DatabaseObjectManagerInitializeWorker::zeroize (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContext)
 {
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
     };
 
-    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPrismAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pWaveLinearSequencerContext->start ();
 }

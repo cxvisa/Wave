@@ -66,7 +66,7 @@ void DatabaseObjectManagerRestoreWorker::restoreMessageHandler (DatabaseObjectMa
 
     if (pDatabaseObjectManagerRestoreMessage->getSaveConfiguration ())
     {
-        ResourceId configSaveStatus = FrameworkToolKit::savePrismConfiguration ();
+        ResourceId configSaveStatus = FrameworkToolKit::saveWaveConfiguration ();
 
         if (WAVE_MESSAGE_SUCCESS != configSaveStatus)
         {   
@@ -84,7 +84,7 @@ void DatabaseObjectManagerRestoreWorker::restoreMessageHandler (DatabaseObjectMa
     {
         FrameworkToolKit::setIsDbRestoreIncomplete (false);
 
-        ResourceId configSaveStatus = FrameworkToolKit::savePrismConfiguration ();
+        ResourceId configSaveStatus = FrameworkToolKit::saveWaveConfiguration ();
 
         if (WAVE_MESSAGE_SUCCESS != configSaveStatus)
         {   

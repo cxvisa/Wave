@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 class WaveManagedObject;
-class PrismPersistableObject;
+class WavePersistableObject;
 class WaveObjectManager;
 class WaveManagedObjectOperation;
 
@@ -54,11 +54,11 @@ template<class T> class AttributeManagedObjectVectorComposition : public Attribu
         virtual void                                     loadFromPostgresQueryResult             (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
         virtual void                                     loadFromPostgresAuxilliaryQueryResult   (map<string, PGresult *> &auxilliaryResultsMap, const ObjectId &parentObjectId, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
 
-        virtual void                                     updateOrmRelations                      (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void                                     updateOrmRelations                      (const WavePersistableObject *pWavePersistableObject);
         virtual WaveManagedObject                       *getComposedManagedObject                (const ObjectId &childObjectId);
         virtual vector<WaveManagedObject *>             *getComposedManagedObject                ( );
         virtual bool                                     isDeletableForOperation                 (const WaveManagedObjectOperation &operation);
-        virtual void                                     updateKeyString                         (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void                                     updateKeyString                         (const WavePersistableObject *pWavePersistableObject);
         virtual void                                     getRestRowData                          (string &restRowData);
         virtual void                                     setDefaultValue                         ();
         virtual void                                     getCValue                               (WaveCValue *pCValue);

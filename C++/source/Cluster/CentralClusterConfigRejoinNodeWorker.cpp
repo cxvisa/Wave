@@ -14,7 +14,7 @@
 #include "Cluster/ClusterRejoinContext.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -97,16 +97,16 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeMessageHandler (ClusterObje
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigRejoinNodeWorker::rejoinNodeMessageHandler : Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNodeStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeRequestFrameworkToRejoinNodeStep),
 #if 0
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep),
 #endif
-//        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::prismLinearSequencerFailedStep)
+//        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::prismLinearSequencerFailedStep)
     };
 
     //Note that this is freed in SequencerSucceeded step inside the framework code
@@ -138,7 +138,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep (ClusterRejoin
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigRejoinNodeWorker::rejoinNodeValidateStep : starting ...");
 
     // Check if cluster is already created and reject if it is not created
-    vector<WaveManagedObject *> *pResults = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
     
     //Check whether Cluster MO obtained from DB
     if (NULL == pResults)
@@ -398,7 +398,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
     trace(TRACE_LEVEL_DEVEL,"CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep: Entering..");
     startTransaction();
 
-    vector<WaveManagedObject *>  *pResultsCluster = querySynchronously (PrismCluster::getClassName ());
+    vector<WaveManagedObject *>  *pResultsCluster = querySynchronously (WaveCluster::getClassName ());
 
     waveAssert (NULL != pResultsCluster, __FILE__, __LINE__);
 
@@ -427,7 +427,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
     waveAssert(NULL != pClusterObjectManagerRejoinNodeMessage, __FILE__, __LINE__);
 
     UI32 noNewNode = pClusterObjectManagerRejoinNodeMessage->getNNodes ();
-    PrismCluster* pPrismCluster = (static_cast<PrismCluster *> ((*pResultsCluster)[0]));
+    WaveCluster* pWaveCluster = (static_cast<WaveCluster *> ((*pResultsCluster)[0]));
 
     
     vector<vector<WaveManagedObject *> *>  waveNodeVectors;
@@ -450,7 +450,7 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep (ClusterRejoinCo
 	    //No static cast through virtual base
             WaveNode *pWaveNode = dynamic_cast<WaveNode *> ((*pResults)[0]);
             waveAssert(NULL != pWaveNode, __FILE__, __LINE__);
-            updateWaveManagedObject (pPrismCluster);
+            updateWaveManagedObject (pWaveCluster);
             waveNodeVectors.push_back (pResults);
     }
 

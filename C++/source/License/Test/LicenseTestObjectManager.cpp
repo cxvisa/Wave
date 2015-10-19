@@ -11,7 +11,7 @@ namespace WaveNs
 {
 
 LicenseTestObjectManager::LicenseTestObjectManager ()
-    : PrismTestObjectManager ("License Test")
+    : WaveTestObjectManager ("License Test")
 {
 }
 

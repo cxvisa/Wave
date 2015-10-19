@@ -60,7 +60,7 @@ class WaveCliDebugShell : public WaveCliShell
         void       resetDebugInformationHelp                                (void);
         ResourceId runDebugScript                                           (const vector<string> &arguments);
 		void       runDebugScriptHelp                                       (void);
-        ResourceId setPrismConfigurationValid                               (const vector<string> &arguments);
+        ResourceId setWaveConfigurationValid                               (const vector<string> &arguments);
 
         // Copy a file from this node to specified other nodes in the cluster.
         ResourceId copyFile                                                 (const vector<string> &arguments);

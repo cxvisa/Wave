@@ -31,7 +31,7 @@ WaveMessage *WaveManagedObjectLoadOperationalDataWorker::createMessageInstance (
     switch (operationCode)
     {
         case WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT :
-            pWaveMessage = new PrismLoadOperationalDataForManagedObjectObjectManagerMessage;
+            pWaveMessage = new WaveLoadOperationalDataForManagedObjectObjectManagerMessage;
             break;
 
         default :
@@ -41,23 +41,23 @@ WaveMessage *WaveManagedObjectLoadOperationalDataWorker::createMessageInstance (
     return (pWaveMessage);
 }
 
-void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataHandler (PrismLoadOperationalDataForManagedObjectObjectManagerMessage *pPrismLoadOperationalDataForManagedObjectObjectManagerMessage)
+void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataHandler (WaveLoadOperationalDataForManagedObjectObjectManagerMessage *pWaveLoadOperationalDataForManagedObjectObjectManagerMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataQueryManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerStartTransactionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataUpdateWaveManagedObjectStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerCommitTransactionStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataQueryManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataUpdateWaveManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerFailedStep),
     };
 
-    LoadOperationalDataContext *pLoadOperationalDataContext = new LoadOperationalDataContext (pPrismLoadOperationalDataForManagedObjectObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    LoadOperationalDataContext *pLoadOperationalDataContext = new LoadOperationalDataContext (pWaveLoadOperationalDataForManagedObjectObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pLoadOperationalDataContext->setWaveManagedObjectId   (pPrismLoadOperationalDataForManagedObjectObjectManagerMessage->getObjectId              ());
-    pLoadOperationalDataContext->setOperationalDataFields (pPrismLoadOperationalDataForManagedObjectObjectManagerMessage->getOperationalDataFields ());
+    pLoadOperationalDataContext->setWaveManagedObjectId   (pWaveLoadOperationalDataForManagedObjectObjectManagerMessage->getObjectId              ());
+    pLoadOperationalDataContext->setOperationalDataFields (pWaveLoadOperationalDataForManagedObjectObjectManagerMessage->getOperationalDataFields ());
 
     pLoadOperationalDataContext->holdAll ();
     pLoadOperationalDataContext->start ();
@@ -124,7 +124,7 @@ void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadStep (Lo
 
     waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
         
-    WaveManagedObjectLoadOperationalDataContext *pWaveManagedObjectLoadOperationalDataContext = new WaveManagedObjectLoadOperationalDataContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadCallback), pLoadOperationalDataContext);
+    WaveManagedObjectLoadOperationalDataContext *pWaveManagedObjectLoadOperationalDataContext = new WaveManagedObjectLoadOperationalDataContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadCallback), pLoadOperationalDataContext);
 
     waveAssert (NULL != pWaveManagedObjectLoadOperationalDataContext, __FILE__, __LINE__);
 

@@ -330,7 +330,7 @@ const SI32 FrameworkToolKit::getClusterPrimaryPort ()
 
 const string FrameworkToolKit::getServiceNameById (const WaveServiceId &id)
 {
-    return (WaveThread::getPrismServiceNameForServiceId (id));
+    return (WaveThread::getWaveServiceNameForServiceId (id));
 }
 
 const WaveServiceId FrameworkToolKit::getServiceIdByName (const string &serviceName)
@@ -742,7 +742,7 @@ void FrameworkToolKit::registerDebugShellEntries ()
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printNumberOfCpus),                    "ncpu");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugResourceId),                      "localize");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugAllResourceEnums),                "localizeallresourceenums");
-    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugSavePrismConfiguration),          "saveprismconfig");
+    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugSaveWaveConfiguration),          "saveprismconfig");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printServices),                        "printservices");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printServices),                        "ps");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printRemoteLocations),                 "printremotelocations");
@@ -759,17 +759,17 @@ void FrameworkToolKit::registerDebugShellEntries ()
     addDebugFunction ((ShellCmdFunction) (&RedundancyOptimizerBase::optimizePathDebugShellEntree), "reduce");
 }
 
-const SI32 FrameworkToolKit::getPrismDefaultTcpPort ()
+const SI32 FrameworkToolKit::getWaveDefaultTcpPort ()
 {
     return (3016);
 }
 
-const SI32 FrameworkToolKit::getPrismDefaultDatabaseTcpPort ()
+const SI32 FrameworkToolKit::getWaveDefaultDatabaseTcpPort ()
 {
     return (9013);
 }
 
-const ResourceId FrameworkToolKit::savePrismConfiguration (const bool &syncToStandby)
+const ResourceId FrameworkToolKit::saveWaveConfiguration (const bool &syncToStandby)
 {
     WaveFrameworkObjectManager *pTemp = NULL;
 
@@ -790,7 +790,7 @@ const ResourceId FrameworkToolKit::savePrismConfiguration (const bool &syncToSta
     }
 }
 
-const ResourceId FrameworkToolKit::getPrismConfigurationValidity (bool &validity)
+const ResourceId FrameworkToolKit::getWaveConfigurationValidity (bool &validity)
 {
 
     WaveFrameworkObjectManager *pTemp = NULL;
@@ -802,7 +802,7 @@ const ResourceId FrameworkToolKit::getPrismConfigurationValidity (bool &validity
 
     if (NULL != pTemp)
     {
-        validity = pTemp->getPrismConfigurationValidity ();
+        validity = pTemp->getWaveConfigurationValidity ();
         return FRAMEWORK_SUCCESS;
     }
     else
@@ -812,7 +812,7 @@ const ResourceId FrameworkToolKit::getPrismConfigurationValidity (bool &validity
     }
 }
 
-const ResourceId FrameworkToolKit::changePrismConfigurationValidity( const bool &validity )
+const ResourceId FrameworkToolKit::changeWaveConfigurationValidity( const bool &validity )
 {
     WaveFrameworkObjectManager *pTemp = NULL;
 
@@ -823,7 +823,7 @@ const ResourceId FrameworkToolKit::changePrismConfigurationValidity( const bool 
 
     if (NULL != pTemp)
     {
-        return (pTemp->changePrismConfigurationValidity ( validity) );
+        return (pTemp->changeWaveConfigurationValidity ( validity) );
     }
     else
     {
@@ -833,9 +833,9 @@ const ResourceId FrameworkToolKit::changePrismConfigurationValidity( const bool 
 }
 
 
-ResourceId FrameworkToolKit::debugSavePrismConfiguration (UI32 argc, vector<string> argv)
+ResourceId FrameworkToolKit::debugSaveWaveConfiguration (UI32 argc, vector<string> argv)
 {
-    return (savePrismConfiguration ());
+    return (saveWaveConfiguration ());
 }
 
 const bool FrameworkToolKit::isALocalService (const WaveServiceId &waveServiceId)
@@ -856,13 +856,13 @@ const bool FrameworkToolKit::isStandAloneLocation ()
 ResourceId FrameworkToolKit::printServices (UI32 argc, vector<string> argv)
 {
     vector<WaveServiceId> waveServiceIds;
-    UI32                   numberOfPrismServices;
+    UI32                   numberOfWaveServices;
     UI32                   i;
 
     WaveThread::getListOfServiceIds (waveServiceIds);
-    numberOfPrismServices = waveServiceIds.size ();
+    numberOfWaveServices = waveServiceIds.size ();
 
-    for (i = 0; i < numberOfPrismServices; i++)
+    for (i = 0; i < numberOfWaveServices; i++)
     {
         printf ("%5u:%50s:%10s:%10s\n", waveServiceIds[i], (FrameworkToolKit::getServiceNameById (waveServiceIds[i])).c_str (), WaveObjectManager::isServiceEnabled (waveServiceIds[i]) ? "Enabled" : "Disabled", isALocalService(waveServiceIds[i]) ? "Local" : "Global");
     }
@@ -919,7 +919,7 @@ ResourceId FrameworkToolKit::debugMessageLeak (UI32 argc, vector<string> argv)
 {
     if (argc < 2)
     {
-        tracePrintf (TRACE_LEVEL_ERROR, "FrameworkToolKit::debugMessageLeak : Please specify a Prism Service Id");
+        tracePrintf (TRACE_LEVEL_ERROR, "FrameworkToolKit::debugMessageLeak : Please specify a Wave Service Id");
     }
     else
     {
@@ -965,7 +965,7 @@ ResourceId FrameworkToolKit::debugObjectLeak (UI32 argc, vector<string> argv)
 {
     if (argc < 2)
     {
-        tracePrintf (TRACE_LEVEL_ERROR, "FrameworkToolKit::debugObjectLeak : Please specify a Prism Service Id");
+        tracePrintf (TRACE_LEVEL_ERROR, "FrameworkToolKit::debugObjectLeak : Please specify a Wave Service Id");
     }
     else
     {
@@ -1109,12 +1109,12 @@ ResourceId FrameworkToolKit::debugTokenizeConsideringStringQuotes (UI32 argc, ve
     return (0);
 }
 
-string FrameworkToolKit::getPrismConnectionPassPhrase ()
+string FrameworkToolKit::getWaveConnectionPassPhrase ()
 {
     return (string ("PmrsiisrmPHello8PmrsiisrmPHello9"));
 }
 
-string FrameworkToolKit::getPrismHaConnectionPassPhrase ()
+string FrameworkToolKit::getWaveHaConnectionPassPhrase ()
 {
     return (string ("PmrsiisrmPHello3PmrsiisrmPHello3"));
 }
@@ -1141,17 +1141,17 @@ void FrameworkToolKit::setManagementInterfaceClientReceiverPort (const SI32 &man
 
 const string FrameworkToolKit::getDatabaseBackupFileName ()
 {
-    return ("PrismDatabase.pgd");
+    return ("WaveDatabase.pgd");
 }
 
 const string FrameworkToolKit::getDatabaseBackupFileName2 ()
 {
-    return ("PrismDatabase.previous.pgd");
+    return ("WaveDatabase.previous.pgd");
 }
 
 const string FrameworkToolKit::getDatabaseBackupFileName3 ()
 {
-    return ("PrismDatabase.primary.backup.pgd");
+    return ("WaveDatabase.primary.backup.pgd");
 }
 
 const string FrameworkToolKit::getDatabaseBackupFileForFwdl ()
@@ -1250,13 +1250,13 @@ const string FrameworkToolKit::getUniqueString (const string &ipAddress, const U
 
 void FrameworkToolKit::getServices (vector<string> &serviceNames, vector<UI32> &serviceIds)
 {
-    UI32                   numberOfPrismServices;
+    UI32                   numberOfWaveServices;
     UI32                   i;
 
     WaveThread::getListOfServiceIds (serviceIds);
-    numberOfPrismServices = serviceIds.size ();
+    numberOfWaveServices = serviceIds.size ();
 
-    for (i = 0; i < numberOfPrismServices; i++)
+    for (i = 0; i < numberOfWaveServices; i++)
     {
         serviceNames.push_back (FrameworkToolKit::getServiceNameById (serviceIds[i]));
     }
@@ -2930,7 +2930,7 @@ void FrameworkToolKit::setMessageBrokerClientPort (const SI32 &messageBrokerClie
     s_messageBrokerClientPort = messageBrokerClientPort;
 }
 
-string FrameworkToolKit::getPrismConnectionPassPhraseForMessageBroker ()
+string FrameworkToolKit::getWaveConnectionPassPhraseForMessageBroker ()
 {
     return (string ("PmrsiisrmPHello1PmrsiisrmPHello1"));
 }

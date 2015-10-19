@@ -7,18 +7,18 @@
 #ifndef DESTROYCLUSTERASYNCHRONOUSCONTEXT_H
 #define DESTROYCLUSTERASYNCHRONOUSCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
 
 namespace WaveNs
 {
 
-class DestroyClusterAsynchronousContext : public PrismAsynchronousContext
+class DestroyClusterAsynchronousContext : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                                      DestroyClusterAsynchronousContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                                                      DestroyClusterAsynchronousContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext);
         virtual                                      ~DestroyClusterAsynchronousContext ();
 
                 FrameworkObjectManagerFailoverReason  getReasonForDestroyingCluster     () const;

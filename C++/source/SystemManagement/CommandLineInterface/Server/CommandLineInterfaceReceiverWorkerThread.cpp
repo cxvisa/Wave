@@ -27,7 +27,7 @@ namespace WaveNs
 {
 
 CommandLineInterfaceReceiverWorkerThread::CommandLineInterfaceReceiverWorkerThread (CommandLineInterfaceReceiverObjectManager *pCommandLineInterfaceReceiverObjectManager, ServerStreamingSocket *pServerStreamingSocket)
-    : PrismPosixThread                             (),
+    : WavePosixThread                             (),
       WaveWorker                                   (pCommandLineInterfaceReceiverObjectManager),
       m_pCommandLineInterfaceReceiverObjectManager (pCommandLineInterfaceReceiverObjectManager),
       m_pServerStreamingSocket                     (pServerStreamingSocket),

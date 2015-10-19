@@ -17,7 +17,7 @@ namespace WaveNs
 class WaveObjectManager;
 class WaveMessage;
 
-typedef PrismApplicationServiceCallback ApplicationServiceCallback;
+typedef WaveApplicationServiceCallback ApplicationServiceCallback;
 
 class ApplicationServiceSendContext
 {
@@ -47,7 +47,7 @@ class ApplicationServiceUtils
     public :
         static WaveServiceId getWaveServiceIdForApplicationServiceId (const UI32 &applicationServiceId);
         static ResourceId     sendToApplicationService                 (const WaveServiceId &sendingApplicationServiceWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &waveServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext);
-        static void           replyToApplicationService                (void *pOutputPayLoad, const UI32 outputPayLoadLength, void *pPrismContext);
+        static void           replyToApplicationService                (void *pOutputPayLoad, const UI32 outputPayLoadLength, void *pWaveContext);
 
     // Now the data members
 

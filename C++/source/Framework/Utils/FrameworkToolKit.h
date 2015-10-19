@@ -29,7 +29,7 @@ class FrameworkToolKit
         static UI32       printNumberOfCpus                     (UI32 argc, vector<string> argv);
         static UI32       debugResourceId                       (UI32 argc, vector<string> argv);
         static UI32       debugAllResourceEnums                 (UI32 argc, vector<string> argv);
-        static ResourceId debugSavePrismConfiguration           (UI32 argc, vector<string> argv);
+        static ResourceId debugSaveWaveConfiguration           (UI32 argc, vector<string> argv);
         static ResourceId printServices                         (UI32 argc, vector<string> argv);
         static ResourceId printRemoteLocations                  (UI32 argc, vector<string> argv);
         static ResourceId assertTest                            (UI32 argc, vector<string> argv);
@@ -49,10 +49,10 @@ class FrameworkToolKit
 
     protected :
     public :
-        static       string                      getPrismConnectionPassPhrase               ();
-        static       string                      getPrismHaConnectionPassPhrase             ();
-        static const SI32                        getPrismDefaultTcpPort                     ();
-        static const SI32                        getPrismDefaultDatabaseTcpPort             ();
+        static       string                      getWaveConnectionPassPhrase               ();
+        static       string                      getWaveHaConnectionPassPhrase             ();
+        static const SI32                        getWaveDefaultTcpPort                     ();
+        static const SI32                        getWaveDefaultDatabaseTcpPort             ();
         static const bool                        getIsRunningAsADaemon                      ();
         static const bool                        isFrameworkReadyToBoot                     ();
         static const string                      getAPublicIpAddressForThisMachine          ();
@@ -93,9 +93,9 @@ class FrameworkToolKit
         static const string                      localizeToSourceCodeEnum                   (ResourceId resourceId);
         static       void                        getResourceIdsForResourceEnum              (const ResourceEnum &resourceEnum, vector<ResourceId> &resourcesVector);
         static const ResourceId                  localizeToSourceCodeResourceId             (const string &sourceCodeEnum);
-        static const ResourceId                  savePrismConfiguration                     (const bool &syncToStandby = false);
-        static const ResourceId                  getPrismConfigurationValidity              (bool &validity);
-        static const ResourceId                  changePrismConfigurationValidity           (const bool &validity);
+        static const ResourceId                  saveWaveConfiguration                     (const bool &syncToStandby = false);
+        static const ResourceId                  getWaveConfigurationValidity              (bool &validity);
+        static const ResourceId                  changeWaveConfigurationValidity           (const bool &validity);
         static const bool                        isALocalService                            (const WaveServiceId &waveServiceId);
         static const bool                        isPrimaryLocation                          ();
         static const bool                        isStandAloneLocation                       ();
@@ -278,7 +278,7 @@ class FrameworkToolKit
         static      SI32                         getMessageBrokerClientPort                 ();
         static      void                         setMessageBrokerClientPort                 (const SI32 &messageBrokerPort);
 
-        static       string                      getPrismConnectionPassPhraseForMessageBroker ();
+        static       string                      getWaveConnectionPassPhraseForMessageBroker ();
 
        // Now the data members
 

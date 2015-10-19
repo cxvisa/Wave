@@ -23,9 +23,9 @@ extern "C" int prismMain (int argc, char *argv[])
     bool                   isADaemon                                    = true;
     FrameworkSequenceType  type                                         = FRAMEWORK_SEQUENCE_TYPE0;
     bool                   isSysLogRequired                             = true;
-    SI32                   port                                         = FrameworkToolKit::getPrismDefaultTcpPort ();
+    SI32                   port                                         = FrameworkToolKit::getWaveDefaultTcpPort ();
     bool                   isDatabaseEnabled                            = false;
-    SI32                   databasePort                                 = FrameworkToolKit::getPrismDefaultDatabaseTcpPort ();
+    SI32                   databasePort                                 = FrameworkToolKit::getWaveDefaultDatabaseTcpPort ();
     string                 databaseLogFileName                          = DatabaseObjectManager::getDatabaseLogFileName ();
     bool                   isDatabaseLogEnabled                         = true;
     bool                   isAbruptReboot                               = false;
@@ -276,7 +276,7 @@ extern "C" int prismMain (int argc, char *argv[])
 
     ConfigFileManagementToolKit::setConfigFileManagementScriptsDirectory (configFileManagementScriptsDirectory);
     
-    initializePrismSocketLayer ();
+    initializeWaveSocketLayer ();
 
     string ipAddress;
 
@@ -341,9 +341,9 @@ extern "C" int prismMain (int argc, char *argv[])
 
     Wave::initialize (waveMainConfiguration);
 
-    WaveFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootWave ();
 
-    WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
+    WaveFrameworkObjectManager::waitForWaveServicesToFinish ();
 
     delete [] pChangeDirectoryToArray;
 

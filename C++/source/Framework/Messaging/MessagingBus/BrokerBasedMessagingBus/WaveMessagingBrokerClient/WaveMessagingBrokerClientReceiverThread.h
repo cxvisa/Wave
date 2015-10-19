@@ -7,7 +7,7 @@
 #ifndef WAVEMESSAGINGBROKERCLIENTRECEIVERTHREAD_H
 #define WAVEMESSAGINGBROKERCLIENTRECEIVERTHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/Utils/WaveMutex.h"
 
 namespace WaveNs
@@ -17,7 +17,7 @@ class ServerStreamingSocket;
 class WaveBrokerBasedMessage;
 class WaveBrokerPublishMessage;
 
-class WaveMessagingBrokerClientReceiverThread : public PrismPosixThread
+class WaveMessagingBrokerClientReceiverThread : public WavePosixThread
 {
     private :
                                  WaveMessagingBrokerClientReceiverThread (ServerStreamingSocket *pServerStreamingSocket);

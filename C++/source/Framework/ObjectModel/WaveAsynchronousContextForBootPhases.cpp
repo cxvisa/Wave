@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForBootPhases::WaveAsynchronousContextForBootPhases (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext),
+WaveAsynchronousContextForBootPhases::WaveAsynchronousContextForBootPhases (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext),
       m_bootReason             (WAVE_BOOT_FIRST_TIME_BOOT),
       m_rollBackFlag           (false)
 {

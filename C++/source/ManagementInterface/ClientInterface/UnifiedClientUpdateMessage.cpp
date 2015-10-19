@@ -18,21 +18,21 @@ namespace WaveNs
 {
 
 UnifiedClientUpdateMessage::UnifiedClientUpdateMessage ()
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), UNIFIEDCLIENTUPDATE),
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), UNIFIEDCLIENTUPDATE),
       m_warningResourceId (0),
       m_isConfigReplayInProgress (false)
 
 {
 }
 UnifiedClientUpdateMessage::UnifiedClientUpdateMessage (const UI32 opCode)
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), opCode),
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), opCode),
       m_warningResourceId (0),
       m_isConfigReplayInProgress (false)
 {
 }
 
 UnifiedClientUpdateMessage::UnifiedClientUpdateMessage (const WaveManagedObjectAsynchronousPluginContext *pWaveManagedObjectAsynchronousPluginContext)
-   : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), UNIFIEDCLIENTUPDATE),
+   : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), UNIFIEDCLIENTUPDATE),
      m_warningResourceId (0),
      m_isConfigReplayInProgress (false)
 {
@@ -40,7 +40,7 @@ UnifiedClientUpdateMessage::UnifiedClientUpdateMessage (const WaveManagedObjectA
 }
 
 UnifiedClientUpdateMessage::UnifiedClientUpdateMessage (const UI32 opCode, const WaveManagedObjectAsynchronousPluginContext *pWaveManagedObjectAsynchronousPluginContext) 
-   : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), opCode),
+   : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), opCode),
      m_warningResourceId (0),
      m_isConfigReplayInProgress (false)
 {

@@ -4,10 +4,10 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMTHREAD_H
-#define PRISMTHREAD_H
+#ifndef WAVETHREAD_H
+#define WAVETHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/MultiThreading/WaveMessageQueue.cpp"
 #include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/WaveCondition.h"
@@ -25,7 +25,7 @@ typedef enum
     WAVE_THREAD_MESSAGE_QUEUE_NO_MESSAGES_TO_PROCESS
 } WaveThreadMessageQueueStatus;
 
-class WaveThread : public PrismPosixThread
+class WaveThread : public WavePosixThread
 {
     private :
         WaveMessage       *getNextMessageToProcess                                ();
@@ -79,7 +79,7 @@ class WaveThread : public PrismPosixThread
         static WaveThread       *getWaveThreadForServiceId              (WaveServiceId id);
         static vector<UI32>       getCpuAffinityVectorForServiceId        (WaveServiceId id);
         static WaveThreadId      getSelf                                 ();
-        static string             getPrismServiceNameForServiceId         (const WaveServiceId &id);
+        static string             getWaveServiceNameForServiceId         (const WaveServiceId &id);
         static WaveServiceId     getWaveServiceIdForServiceName         (const string &prismServiceName);
         static WaveThread       *getWaveThreadForMessageRemoteTransport ();
         static WaveThread       *getWaveThreadForMessageHaPeerTransport ();
@@ -143,4 +143,4 @@ class WaveThread : public PrismPosixThread
 
 }
 
-#endif //PRISMTHREAD_H
+#endif //WAVETHREAD_H

@@ -649,7 +649,7 @@ ResourceId DatabaseObjectManager::createNewWaveDatabase ()
 
     prismSleep (20);
     // start the database
-    WaveNs::trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManager::createNewWaveDatabase : Booting the database to create Prism Database...");
+    WaveNs::trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManager::createNewWaveDatabase : Booting the database to create Wave Database...");
 
 
     UI8     retries       = 30;
@@ -685,7 +685,7 @@ ResourceId DatabaseObjectManager::createNewWaveDatabase ()
     prismSleep (10);
 
     // create a database    
-    WaveNs::trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManager::createNewWaveDatabase : Creating Prism Database...");
+    WaveNs::trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManager::createNewWaveDatabase : Creating Wave Database...");
 
     commandString.clear ();    
     commandString = string ("createdb ") + getDatabaseName () + " -p " + getDatabasePort ();

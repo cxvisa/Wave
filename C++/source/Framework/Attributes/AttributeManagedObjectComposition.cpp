@@ -18,7 +18,7 @@
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/ObjectModel/WaveManagedObjectOperation.h"
 
 namespace WaveNs
@@ -367,13 +367,13 @@ template<class T> void AttributeManagedObjectComposition<T>::loadFromPostgresQue
     }
 }
 
-template<class T> void AttributeManagedObjectComposition<T>::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+template<class T> void AttributeManagedObjectComposition<T>::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
     T *pT = (*m_pData).operator -> ();
 
     if (NULL != pT)
     {
-        (*m_pData)->setOwnerManagedObjectId (pPrismPersistableObject->getObjectId ());
+        (*m_pData)->setOwnerManagedObjectId (pWavePersistableObject->getObjectId ());
     }
 }
 
@@ -406,13 +406,13 @@ template<class T> bool AttributeManagedObjectComposition<T>::isDeletableForOpera
     return ((*m_pData)->isHierarchyDeletableForOperation (operation));
 }
 
-template<class T> void AttributeManagedObjectComposition<T>::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+template<class T> void AttributeManagedObjectComposition<T>::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
     T *pT = (*m_pData).operator -> ();
 
     if (NULL != pT)
     {
-        (*m_pData)->prependOwnerKeyString (pPrismPersistableObject->getKeyString ());
+        (*m_pData)->prependOwnerKeyString (pWavePersistableObject->getKeyString ());
     }
 }
 

@@ -7,7 +7,7 @@
 #ifndef HAPEERMESSAGERECEIVERTHREAD_H
 #define HAPEERMESSAGERECEIVERTHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/WaveMutex.h"
 #include <string>
@@ -17,7 +17,7 @@ namespace WaveNs
 
 class ServerStreamingSocket;
 
-class HaPeerMessageReceiverThread : public PrismPosixThread
+class HaPeerMessageReceiverThread : public WavePosixThread
 {
     private :
         bool authorizeClient ();

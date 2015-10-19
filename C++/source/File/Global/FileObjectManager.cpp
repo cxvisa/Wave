@@ -84,10 +84,10 @@ WaveServiceId  FileObjectManager::getWaveServiceId()
           pWaveAsynchronousContextForShutDownPhases->callback ();
     }
 
-  void FileObjectManager::shutdown (PrismAsynchronousContext *pPrismAsynchronousContext)
+  void FileObjectManager::shutdown (WaveAsynchronousContext *pWaveAsynchronousContext)
   {
-          pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-          pPrismAsynchronousContext->callback ();
+          pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+          pWaveAsynchronousContext->callback ();
           // TODO: Do any further cleanup here.
   }
 
@@ -152,11 +152,11 @@ void FileObjectManager::failover (FailoverAsynchronousContext *pFailoverAsynchro
 
     FileAbortFileTransferMessage  *pAbortFTMessage = new FileAbortFileTransferMessage (failedLocationIds);
     WaveNs::waveAssert (NULL != pAbortFTMessage, __FILE__, __LINE__);
-    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback> (&FileObjectManager::TriggerFailOverCallback), pFailoverAsynchronousContext);
+    WaveSendToClusterContext     *pWaveSendToClusterContext      = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback> (&FileObjectManager::TriggerFailOverCallback), pFailoverAsynchronousContext);
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pAbortFTMessage);
        
-    trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::savePrismConfigurationAtAllLocationsStep : sending to cluster");
+    trace (TRACE_LEVEL_DEBUG, "PersistenceObjectManager::saveWaveConfigurationAtAllLocationsStep : sending to cluster");
     sendToWaveCluster (pWaveSendToClusterContext);
           
 }

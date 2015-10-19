@@ -7,12 +7,12 @@
 #ifndef FRAMEWORKCORETESTOBJECTMANAGER_H
 #define FRAMEWORKCORETESTOBJECTMANAGER_H
 
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 
 namespace WaveNs
 {
 extern vector<SI64> vectorSI64;
-class FrameworkCoreTestObjectManager : public PrismTestObjectManager
+class FrameworkCoreTestObjectManager : public WaveTestObjectManager
 {
     private :
                  FrameworkCoreTestObjectManager ();

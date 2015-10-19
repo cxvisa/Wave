@@ -238,11 +238,11 @@ ResourceId ConfigFileManagementToolKit::copyRunningToStartupFile ()
     {
         FrameworkToolKit::setStartupFileName (startupConfigFileName);
         FrameworkToolKit::setStartupFileType (WAVE_PERSISTENCE_REGULAR_FILE);
-        status = FrameworkToolKit::savePrismConfiguration (false);
+        status = FrameworkToolKit::saveWaveConfiguration (false);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-             WaveNs::trace (TRACE_LEVEL_WARN, "VcsCopyToStartupWorker::copyStartupToStartupFileStep: savePrismConfiguration failed.");
+             WaveNs::trace (TRACE_LEVEL_WARN, "VcsCopyToStartupWorker::copyStartupToStartupFileStep: saveWaveConfiguration failed.");
         }
     }
 

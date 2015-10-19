@@ -20,14 +20,14 @@ using namespace std;
 namespace WaveNs
 {
 
-typedef        WaveObjectManager *  (* NativePrismServiceInstantiator) ();
-typedef vector<WaveObjectManager *> (* NativeMultiplePrismServiceInstantiator) ();
+typedef        WaveObjectManager *  (* NativeWaveServiceInstantiator) ();
+typedef vector<WaveObjectManager *> (* NativeMultipleWaveServiceInstantiator) ();
 typedef        SI32                 (* UpdateClientStatusFunctionPtr)( ManagementInterfaceMessage *pManagementInterfaceMessage );
 
 class WaveClient
 {
     private :
-        static void   instantiateNativePrismServices ();
+        static void   instantiateNativeWaveServices ();
 
     protected :
     public :
@@ -36,18 +36,18 @@ class WaveClient
         static string getConfigurationFileDirectory     ();
         static string getProfileFileDirectory           ();
 
-        static void   registerNativeService             (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase = true);
-        static void   registerNativeServiceInternal     (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase = true);
-        static void   registerNativeService             (NativeMultiplePrismServiceInstantiator pNativeMultiplePrismServiceInstantiator);
+        static void   registerNativeService             (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase = true);
+        static void   registerNativeServiceInternal     (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase = true);
+        static void   registerNativeService             (NativeMultipleWaveServiceInstantiator pNativeMultipleWaveServiceInstantiator);
         static void   registerUpdateClientStatusFunction(UpdateClientStatusFunctionPtr pUpdateClientStatusFunctionPtr);
         static SI32   updateClientStatusFunction        (ManagementInterfaceMessage *pManagementInterfaceMessage);
 
     // Now the data members
 
     private :
-        static vector<NativePrismServiceInstantiator>         m_nativePrismServiceInstantiators;
-        static vector<bool>                                   m_nativePrismServiceInstantiatorIsForNormalPhase;
-        static vector<NativeMultiplePrismServiceInstantiator> m_nativeMultiplePrismServiceInstantiators;
+        static vector<NativeWaveServiceInstantiator>         m_nativeWaveServiceInstantiators;
+        static vector<bool>                                   m_nativeWaveServiceInstantiatorIsForNormalPhase;
+        static vector<NativeMultipleWaveServiceInstantiator> m_nativeMultipleWaveServiceInstantiators;
         static UpdateClientStatusFunctionPtr                  m_updateClientStatusFunctionPtr;
         static WaveMutex                                     m_updateClientStatusFunctionPtrMutex;
 

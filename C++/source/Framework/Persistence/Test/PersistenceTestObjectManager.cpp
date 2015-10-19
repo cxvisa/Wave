@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 PersistenceTestObjectManager::PersistenceTestObjectManager ()
-    : PrismTestObjectManager ("Persistence Test")
+    : WaveTestObjectManager ("Persistence Test")
 {
 }
 
@@ -40,12 +40,12 @@ WaveServiceId PersistenceTestObjectManager::getWaveServiceId ()
 
 void PersistenceTestObjectManager::testRequestHandler (RegressionTestMessage *pRegressionTestMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceTestObjectManager::simpleTransactionForObjectCreationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceTestObjectManager::nestedTransactionForObjectCreationStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::simpleTransactionForObjectCreationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::nestedTransactionForObjectCreationStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -148,7 +148,7 @@ void PersistenceTestObjectManager::nestedTransactionForObjectCreationStep (WaveL
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_DEBUG, string ("PersistenceTestObjectManager::nestedTransactionForObjectCreationStep : Sending a message to [") + WaveThread::getPrismServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
+            trace (TRACE_LEVEL_DEBUG, string ("PersistenceTestObjectManager::nestedTransactionForObjectCreationStep : Sending a message to [") + WaveThread::getWaveServiceNameForServiceId (pMessage->getSenderServiceCode ()) + " service] failed.");
             delete pMessage;
         }
     }

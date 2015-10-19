@@ -22,63 +22,63 @@ static const UI32 s_bufferTagForValidationResults = 1;
 static const UI32 s_bufferTagForHaSyncValidationDetails = 0;
 static const UI32 s_bufferTagForHaSyncValidationResults = 1;
 
-PrismInitializeObjectManagerMessage::PrismInitializeObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
+WaveInitializeObjectManagerMessage::WaveInitializeObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_INITIALIZE),
       m_reason     (reason)
 {
 }
 
-WaveBootReason PrismInitializeObjectManagerMessage::getReason () const
+WaveBootReason WaveInitializeObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-PrismInstallObjectManagerMessage::PrismInstallObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
+WaveInstallObjectManagerMessage::WaveInstallObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_INSTALL),
       m_reason     (reason)
 {
 }
 
-WaveBootReason PrismInstallObjectManagerMessage::getReason () const
+WaveBootReason WaveInstallObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-PrismEnableObjectManagerMessage::PrismEnableObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
+WaveEnableObjectManagerMessage::WaveEnableObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
 : WaveMessage (id, WAVE_OBJECT_MANAGER_ENABLE),
       m_reason     (reason)
 {
 }
 
-WaveBootReason PrismEnableObjectManagerMessage::getReason () const
+WaveBootReason WaveEnableObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-PrismUpgradeObjectManagerMessage::PrismUpgradeObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
+WaveUpgradeObjectManagerMessage::WaveUpgradeObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_UPGRADE),
       m_reason     (reason)
 {
 }
 
-WaveBootReason PrismUpgradeObjectManagerMessage::getReason () const
+WaveBootReason WaveUpgradeObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-PrismBootObjectManagerMessage::PrismBootObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason, const bool &rollBackFlag)
+WaveBootObjectManagerMessage::WaveBootObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason, const bool &rollBackFlag)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_BOOT),
       m_reason     (reason),
       m_rollBackFlag (rollBackFlag)
 {
 }
 
-bool PrismBootObjectManagerMessage::getRollBackFlag () const
+bool WaveBootObjectManagerMessage::getRollBackFlag () const
 {
     return (m_rollBackFlag);
 }
 
-PrismPostbootObjectManagerMessage::PrismPostbootObjectManagerMessage (WaveServiceId id, SI8 passNum, string passName, UI32 slotNum, UI32 recoveryType)
+WavePostbootObjectManagerMessage::WavePostbootObjectManagerMessage (WaveServiceId id, SI8 passNum, string passName, UI32 slotNum, UI32 recoveryType)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_POSTBOOT),
       m_passNum    (passNum),
       m_passName   (passName),
@@ -87,29 +87,29 @@ PrismPostbootObjectManagerMessage::PrismPostbootObjectManagerMessage (WaveServic
 {
 }
 
-PrismHaInstallObjectManagerMessage::PrismHaInstallObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
+WaveHaInstallObjectManagerMessage::WaveHaInstallObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_HAINSTALL),
       m_reason     (reason)
 {
 }
 
-WaveBootReason PrismHaInstallObjectManagerMessage::getReason () const
+WaveBootReason WaveHaInstallObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-PrismHaBootObjectManagerMessage::PrismHaBootObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
+WaveHaBootObjectManagerMessage::WaveHaBootObjectManagerMessage (WaveServiceId id, const WaveBootReason &reason)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_HABOOT),
       m_reason     (reason)
 {
 }
 
-WaveBootReason PrismHaBootObjectManagerMessage::getReason () const
+WaveBootReason WaveHaBootObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-void PrismPostbootObjectManagerMessage::setupAttributesForSerialization ()
+void WavePostbootObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
@@ -119,105 +119,105 @@ void PrismPostbootObjectManagerMessage::setupAttributesForSerialization ()
      addSerializableAttribute (new AttributeUI32     (&m_recoveryType,  "recoveryType"));
 }
 
-SI8 PrismPostbootObjectManagerMessage::getPassNum () const
+SI8 WavePostbootObjectManagerMessage::getPassNum () const
 {
     return (m_passNum);
 }
 
-string PrismPostbootObjectManagerMessage::getPassName () const
+string WavePostbootObjectManagerMessage::getPassName () const
 {
     return (m_passName);
 }
 
-UI32 PrismPostbootObjectManagerMessage::getSlotNum () const
+UI32 WavePostbootObjectManagerMessage::getSlotNum () const
 {
     return (m_slotNum);
 }
 
-UI32 PrismPostbootObjectManagerMessage::getRecoveryType () const
+UI32 WavePostbootObjectManagerMessage::getRecoveryType () const
 {
     return (m_recoveryType);
 }
 
-WaveBootReason PrismBootObjectManagerMessage::getReason () const
+WaveBootReason WaveBootObjectManagerMessage::getReason () const
 {
     return (m_reason);
 }
 
-PrismShutdownObjectManagerMessage::PrismShutdownObjectManagerMessage (WaveServiceId id)
+WaveShutdownObjectManagerMessage::WaveShutdownObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_SHUTDOWN)
 {
 }
 
-PrismDisableObjectManagerMessage::PrismDisableObjectManagerMessage (WaveServiceId id)
+WaveDisableObjectManagerMessage::WaveDisableObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_DISABLE)
 {
 }
 
-PrismUninstallObjectManagerMessage::PrismUninstallObjectManagerMessage (WaveServiceId id)
+WaveUninstallObjectManagerMessage::WaveUninstallObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_UNINSTALL)
 {
 }
 
-PrismUninitializeObjectManagerMessage::PrismUninitializeObjectManagerMessage (WaveServiceId id)
+WaveUninitializeObjectManagerMessage::WaveUninitializeObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_UNINITIALIZE)
 {
 }
 
-PrismDestructObjectManagerMessage::PrismDestructObjectManagerMessage (WaveServiceId id)
+WaveDestructObjectManagerMessage::WaveDestructObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_DESTRUCT)
 {
 }
 
-PrismPingObjectManagerMessage::PrismPingObjectManagerMessage (WaveServiceId id)
+WavePingObjectManagerMessage::WavePingObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_PING)
 {
     setPriority (WAVE_MESSAGE_PRIORITY_HIGH);
 }
 
-PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage (WaveServiceId id, TimerHandle timerId, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
+WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage (WaveServiceId id, TimerHandle timerId, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_TIMER_EXPIRED)
 {
     m_timerId                       =   timerId;
-    m_pPrismTimerExpirationCallback =   pPrismTimerExpirationCallback;
-    m_pPrismTimerExpirationContext  =   pPrismTimerExpirationContext;
-    m_pPrismTimerSender             =   pPrismTimerSender;
+    m_pWaveTimerExpirationCallback =   pWaveTimerExpirationCallback;
+    m_pWaveTimerExpirationContext  =   pWaveTimerExpirationContext;
+    m_pWaveTimerSender             =   pWaveTimerSender;
 
 }
 
-PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage (const PrismTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
+WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage (const WaveTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
     : WaveMessage (0, WAVE_OBJECT_MANAGER_TIMER_EXPIRED)
 {
-    trace (TRACE_LEVEL_FATAL, "PrismTimerExpiredObjectManagerMessage::PrismTimerExpiredObjectManagerMessage : Copy constructing PrismTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
+    trace (TRACE_LEVEL_FATAL, "WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage : Copy constructing WaveTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
 }
 
-PrismTimerExpiredObjectManagerMessage &PrismTimerExpiredObjectManagerMessage::operator = (const PrismTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
+WaveTimerExpiredObjectManagerMessage &WaveTimerExpiredObjectManagerMessage::operator = (const WaveTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
 {
-    trace (TRACE_LEVEL_FATAL, "PrismTimerExpiredObjectManagerMessage::operator = : Assigning to a PrismTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
+    trace (TRACE_LEVEL_FATAL, "WaveTimerExpiredObjectManagerMessage::operator = : Assigning to a WaveTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
 
     return (*this);
 }
 
-PrismTimerExpirationHandler PrismTimerExpiredObjectManagerMessage::getTimerExpirationCallback ()
+WaveTimerExpirationHandler WaveTimerExpiredObjectManagerMessage::getTimerExpirationCallback ()
 {
-    return  m_pPrismTimerExpirationCallback;
+    return  m_pWaveTimerExpirationCallback;
 }
 
-void *PrismTimerExpiredObjectManagerMessage::getTimerExpirationContext ()
+void *WaveTimerExpiredObjectManagerMessage::getTimerExpirationContext ()
 {
-    return  m_pPrismTimerExpirationContext;
+    return  m_pWaveTimerExpirationContext;
 }
 
-TimerHandle PrismTimerExpiredObjectManagerMessage::getTimerId ()
+TimerHandle WaveTimerExpiredObjectManagerMessage::getTimerId ()
 {
     return  m_timerId;
 }
 
-WaveElement *PrismTimerExpiredObjectManagerMessage::getTimerSender ()
+WaveElement *WaveTimerExpiredObjectManagerMessage::getTimerSender ()
 {
-    return  m_pPrismTimerSender;
+    return  m_pWaveTimerSender;
 }
 
 WaveObjectManagerDatabaseSanityCheckMessage::WaveObjectManagerDatabaseSanityCheckMessage (WaveServiceId id, const WaveBootReason &bootReason)
@@ -472,69 +472,69 @@ void  WaveObjectManagerRegisterEventListenerMessage::setListenerLocationId (cons
     m_listenerLocationId = listenerLocationId;
 }
 
-PrismFailoverObjectManagerMessage::PrismFailoverObjectManagerMessage (WaveServiceId id, const FrameworkObjectManagerFailoverReason &failoverReason, const bool isPrincipalChangedWithThisFailover)
+WaveFailoverObjectManagerMessage::WaveFailoverObjectManagerMessage (WaveServiceId id, const FrameworkObjectManagerFailoverReason &failoverReason, const bool isPrincipalChangedWithThisFailover)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_FAILOVER),
       m_failoverReason (failoverReason),
       m_isPrincipalChangedWithThisFailover (isPrincipalChangedWithThisFailover)
 {
 }
 
-PrismFailoverObjectManagerMessage::~PrismFailoverObjectManagerMessage ()
+WaveFailoverObjectManagerMessage::~WaveFailoverObjectManagerMessage ()
 {
 }
 
-FrameworkObjectManagerFailoverReason PrismFailoverObjectManagerMessage::getFailoverReason () const
+FrameworkObjectManagerFailoverReason WaveFailoverObjectManagerMessage::getFailoverReason () const
 {
     return (m_failoverReason);
 }
 
-vector<LocationId> &PrismFailoverObjectManagerMessage::getFailedLocationIds ()
+vector<LocationId> &WaveFailoverObjectManagerMessage::getFailedLocationIds ()
 {
     return (m_failedLocationIds);
 }
 
-bool PrismFailoverObjectManagerMessage::getIsPrincipalChangedWithThisFailover () const
+bool WaveFailoverObjectManagerMessage::getIsPrincipalChangedWithThisFailover () const
 {
     return (m_isPrincipalChangedWithThisFailover);
 }
 
-PrismPauseObjectManagerMessage::PrismPauseObjectManagerMessage (WaveServiceId id)
+WavePauseObjectManagerMessage::WavePauseObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_PAUSE)
 {
 }
 
-PrismResumeObjectManagerMessage::PrismResumeObjectManagerMessage (WaveServiceId id)
+WaveResumeObjectManagerMessage::WaveResumeObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_RESUME)
 {
 }
 
-PrismSetCpuAffinityObjectManagerMessage::PrismSetCpuAffinityObjectManagerMessage (WaveServiceId id)
+WaveSetCpuAffinityObjectManagerMessage::WaveSetCpuAffinityObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_SET_CPU_AFFINITY)
 {
 }
 
-vector<UI32> PrismSetCpuAffinityObjectManagerMessage::getCpuAffinityVector () const
+vector<UI32> WaveSetCpuAffinityObjectManagerMessage::getCpuAffinityVector () const
 {
     return (m_cpuAffinityVector);
 }
 
-void PrismSetCpuAffinityObjectManagerMessage::setCpuAffinityVector (const vector<UI32> &cpuAffinityVector)
+void WaveSetCpuAffinityObjectManagerMessage::setCpuAffinityVector (const vector<UI32> &cpuAffinityVector)
 {
     m_cpuAffinityVector = cpuAffinityVector;
 }
 
-PrismListenForEventsObjectManagerMessage::PrismListenForEventsObjectManagerMessage (WaveServiceId id)
+WaveListenForEventsObjectManagerMessage::WaveListenForEventsObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_LISTEN_FOR_EVENTS)
 {
 }
 
-PrismLoadOperationalDataForManagedObjectObjectManagerMessage::PrismLoadOperationalDataForManagedObjectObjectManagerMessage ()
+WaveLoadOperationalDataForManagedObjectObjectManagerMessage::WaveLoadOperationalDataForManagedObjectObjectManagerMessage ()
     : WaveMessage            (0, WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT)
 {
     setIsConfigurationChange (false);
 }
 
-PrismLoadOperationalDataForManagedObjectObjectManagerMessage::PrismLoadOperationalDataForManagedObjectObjectManagerMessage (WaveServiceId id, ObjectId objectId, const vector<string> &operationalDataFields)
+WaveLoadOperationalDataForManagedObjectObjectManagerMessage::WaveLoadOperationalDataForManagedObjectObjectManagerMessage (WaveServiceId id, ObjectId objectId, const vector<string> &operationalDataFields)
     : WaveMessage            (id, WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT),
       m_objectId              (objectId),
       m_operationalDataFields (operationalDataFields)
@@ -542,7 +542,7 @@ PrismLoadOperationalDataForManagedObjectObjectManagerMessage::PrismLoadOperation
     setIsConfigurationChange (false);
 }
 
-void PrismLoadOperationalDataForManagedObjectObjectManagerMessage::setupAttributesForSerialization ()
+void WaveLoadOperationalDataForManagedObjectObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
@@ -550,24 +550,24 @@ void PrismLoadOperationalDataForManagedObjectObjectManagerMessage::setupAttribut
      addSerializableAttribute (new AttributeStringVector (&m_operationalDataFields, "operationalDataFields"));
 }
 
-ObjectId PrismLoadOperationalDataForManagedObjectObjectManagerMessage::getObjectId () const
+ObjectId WaveLoadOperationalDataForManagedObjectObjectManagerMessage::getObjectId () const
 {
     return (m_objectId);
 }
 
-vector<string> PrismLoadOperationalDataForManagedObjectObjectManagerMessage::getOperationalDataFields () const
+vector<string> WaveLoadOperationalDataForManagedObjectObjectManagerMessage::getOperationalDataFields () const
 {
     return (m_operationalDataFields);
 }
 
-PrismHeartbeatFailureObjectManagerMessage::PrismHeartbeatFailureObjectManagerMessage (WaveServiceId id, IpV4Address ipAddress, UI16 portNumber)
+WaveHeartbeatFailureObjectManagerMessage::WaveHeartbeatFailureObjectManagerMessage (WaveServiceId id, IpV4Address ipAddress, UI16 portNumber)
 	: WaveMessage            (id, WAVE_OBJECT_MANAGER_HEARTBEAT_FAILURE),
 	  m_ipAddress             (ipAddress),
 	  m_portNumber            (portNumber)
 {
 }
 
-void PrismHeartbeatFailureObjectManagerMessage::setupAttributesForSerialization ()
+void WaveHeartbeatFailureObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
@@ -575,24 +575,24 @@ void PrismHeartbeatFailureObjectManagerMessage::setupAttributesForSerialization 
      addSerializableAttribute (new AttributeUI16         (&m_portNumber, "portNumber"));
 }
 
-IpV4Address PrismHeartbeatFailureObjectManagerMessage::getIpAddress() const
+IpV4Address WaveHeartbeatFailureObjectManagerMessage::getIpAddress() const
 {
     return (m_ipAddress);
 }
 
-UI16 PrismHeartbeatFailureObjectManagerMessage::getPortNumber() const
+UI16 WaveHeartbeatFailureObjectManagerMessage::getPortNumber() const
 {
     return (m_portNumber);
 }
 
-PrismExternalStateSynchronizationObjectManagerMessage::PrismExternalStateSynchronizationObjectManagerMessage (WaveServiceId id, UI32 fssStageNumber, ResourceId serviceType)
+WaveExternalStateSynchronizationObjectManagerMessage::WaveExternalStateSynchronizationObjectManagerMessage (WaveServiceId id, UI32 fssStageNumber, ResourceId serviceType)
 	: WaveMessage            (id, WAVE_OBJECT_MANAGER_EXTERNAL_STATE_SYNCHRONIZATION),
 	  m_fssStageNumber        (fssStageNumber),
       m_serviceType           (serviceType)
 {
 }
 
-void PrismExternalStateSynchronizationObjectManagerMessage::setupAttributesForSerialization ()
+void WaveExternalStateSynchronizationObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
@@ -600,55 +600,55 @@ void PrismExternalStateSynchronizationObjectManagerMessage::setupAttributesForSe
      addSerializableAttribute (new AttributeResourceId   (&m_serviceType,       "serviceType"));
 }
 
-UI32 PrismExternalStateSynchronizationObjectManagerMessage::getFssStageNumber() const
+UI32 WaveExternalStateSynchronizationObjectManagerMessage::getFssStageNumber() const
 {
     return (m_fssStageNumber);
 }
 
-ResourceId PrismExternalStateSynchronizationObjectManagerMessage::getServiceType() const
+ResourceId WaveExternalStateSynchronizationObjectManagerMessage::getServiceType() const
 {
     return (m_serviceType);
 }
 
-PrismConfigReplayEndObjectManagerMessage::PrismConfigReplayEndObjectManagerMessage (WaveServiceId id)
+WaveConfigReplayEndObjectManagerMessage::WaveConfigReplayEndObjectManagerMessage (WaveServiceId id)
 	: WaveMessage            (id, WAVE_OBJECT_MANAGER_CONFIG_REPLAY_END)
 {
 }
 
-void PrismConfigReplayEndObjectManagerMessage::setupAttributesForSerialization ()
+void WaveConfigReplayEndObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 }
 
-PrismFileReplayEndObjectManagerMessage::PrismFileReplayEndObjectManagerMessage (WaveServiceId id)
+WaveFileReplayEndObjectManagerMessage::WaveFileReplayEndObjectManagerMessage (WaveServiceId id)
 	: WaveMessage            (id, WAVE_OBJECT_MANAGER_FILE_REPLAY_END)
 {
 }
 
-void PrismFileReplayEndObjectManagerMessage::setupAttributesForSerialization ()
+void WaveFileReplayEndObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 }
 
-PrismSlotFailoverObjectManagerMessage::PrismSlotFailoverObjectManagerMessage (WaveServiceId id, UI32 slotNumber)
+WaveSlotFailoverObjectManagerMessage::WaveSlotFailoverObjectManagerMessage (WaveServiceId id, UI32 slotNumber)
 	: WaveMessage            (id, WAVE_OBJECT_MANAGER_SLOT_FAILOVER),
     m_slotNumber (slotNumber)
 {
 }
 
-void PrismSlotFailoverObjectManagerMessage::setupAttributesForSerialization ()
+void WaveSlotFailoverObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
      addSerializableAttribute (new AttributeUI32         (&m_slotNumber, "slotNumber"));
 }
 
-UI32 PrismSlotFailoverObjectManagerMessage::getSlotNumber() const
+UI32 WaveSlotFailoverObjectManagerMessage::getSlotNumber() const
 {
     return (m_slotNumber);
 }
 
-PrismMultiPartitionCleanupObjectManagerMessage::PrismMultiPartitionCleanupObjectManagerMessage (WaveServiceId id, string &partitionName, ObjectId &ownerPartitionManagedObjectId)
+WaveMultiPartitionCleanupObjectManagerMessage::WaveMultiPartitionCleanupObjectManagerMessage (WaveServiceId id, string &partitionName, ObjectId &ownerPartitionManagedObjectId)
     : WaveMessage          (id, WAVE_OBJECT_MANAGER_PARTITION_CLEANUP),
       m_partitionName          (partitionName),
       m_ownerPartitionManagedObjectId (ownerPartitionManagedObjectId),
@@ -657,12 +657,12 @@ PrismMultiPartitionCleanupObjectManagerMessage::PrismMultiPartitionCleanupObject
 {
 }
 
-ObjectId PrismMultiPartitionCleanupObjectManagerMessage::getOwnerPartitionManagedObjectId () const
+ObjectId WaveMultiPartitionCleanupObjectManagerMessage::getOwnerPartitionManagedObjectId () const
 {
     return (m_ownerPartitionManagedObjectId);
 }
 
-void PrismMultiPartitionCleanupObjectManagerMessage::setupAttributesForSerialization ()
+void WaveMultiPartitionCleanupObjectManagerMessage::setupAttributesForSerialization ()
 {
     WaveMessage::setupAttributesForSerialization ();
 
@@ -671,24 +671,24 @@ void PrismMultiPartitionCleanupObjectManagerMessage::setupAttributesForSerializa
      addSerializableAttribute (new AttributeResourceId   (&m_partialCleanupTag, "partialCleanupTag"));
 }
 
-string PrismMultiPartitionCleanupObjectManagerMessage::getPartitionName () const
+string WaveMultiPartitionCleanupObjectManagerMessage::getPartitionName () const
 {
     return (m_partitionName);
 }
 
-bool PrismMultiPartitionCleanupObjectManagerMessage::getIsPartialCleanup () const
+bool WaveMultiPartitionCleanupObjectManagerMessage::getIsPartialCleanup () const
 {
     return m_isPartialCleanup;
 }
 
-void PrismMultiPartitionCleanupObjectManagerMessage::setPartialCleanupTag (const ResourceId &partialCleanupTag)
+void WaveMultiPartitionCleanupObjectManagerMessage::setPartialCleanupTag (const ResourceId &partialCleanupTag)
 {
     m_isPartialCleanup  = true;
 
     m_partialCleanupTag = partialCleanupTag;
 }
 
-ResourceId PrismMultiPartitionCleanupObjectManagerMessage::getPartialCleanupTag ()
+ResourceId WaveMultiPartitionCleanupObjectManagerMessage::getPartialCleanupTag ()
 {
     waveAssert (true == m_isPartialCleanup, __FILE__, __LINE__);
 
@@ -1046,7 +1046,7 @@ void WaveObjectManagerCreateWaveManagedObjectMessage::setObjectId (const WaveNs:
     m_objectId = objectId;
 }
 
-PrismZeroizeObjectManagerMessage::PrismZeroizeObjectManagerMessage (WaveServiceId id)
+WaveZeroizeObjectManagerMessage::WaveZeroizeObjectManagerMessage (WaveServiceId id)
     : WaveMessage (id, WAVE_OBJECT_MANAGER_FIPS_ZEROIZE)
 {
 }

@@ -11,7 +11,7 @@ namespace WaveNs
 
 UpgradeTestManagedObject8::UpgradeTestManagedObject8 (WaveObjectManager *pWaveObjectManager)
         : WaveElement (pWaveObjectManager),
-        PrismPersistableObject (UpgradeTestManagedObject8::getClassName (), WaveManagedObject::getClassName ()),
+        WavePersistableObject (UpgradeTestManagedObject8::getClassName (), WaveManagedObject::getClassName ()),
         WaveManagedObject (pWaveObjectManager),
         m_integer8        (0)
 {

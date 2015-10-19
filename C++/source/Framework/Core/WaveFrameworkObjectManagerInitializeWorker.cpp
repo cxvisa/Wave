@@ -5,14 +5,14 @@
 
 #include "Framework/Core/WaveFrameworkObjectManagerInitializeWorker.h"
 #include "Framework/Core/WaveFrameworkInitializeWorkerStartServicesContext.h"
-#include "Framework/Boot/FirstTimePrismBootAgent.h"
-#include "Framework/Boot/RecoverPrismBootAgent.h"
-#include "Framework/Boot/PersistentPrismBootAgent.h"
-#include "Framework/Boot/PersistentWithDefaultPrismBootAgent.h"
-#include "Framework/Boot/SecondaryNodeConfigurePrismBootAgent.h"
-#include "Framework/Boot/SecondaryNodeUnconfigurePrismBootAgent.h"
-#include "Framework/Boot/SecondaryNodeRejoinPrismBootAgent.h"
-#include "Framework/Boot/HaStandbyPrismBootAgent.h"
+#include "Framework/Boot/FirstTimeWaveBootAgent.h"
+#include "Framework/Boot/RecoverWaveBootAgent.h"
+#include "Framework/Boot/PersistentWaveBootAgent.h"
+#include "Framework/Boot/PersistentWithDefaultWaveBootAgent.h"
+#include "Framework/Boot/SecondaryNodeConfigureWaveBootAgent.h"
+#include "Framework/Boot/SecondaryNodeUnconfigureWaveBootAgent.h"
+#include "Framework/Boot/SecondaryNodeRejoinWaveBootAgent.h"
+#include "Framework/Boot/HaStandbyWaveBootAgent.h"
 #include "Framework/Boot/PersistentWithDefaultForHABootAgent.h"
 #include "Framework/Core/FrameworkSequenceGenerator.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
@@ -32,7 +32,7 @@
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfoRepository.h"
 #include "Framework/Core/Wave.h"
 #include "Framework/Persistence/PersistenceToolKit.h"
-#include "Framework/Shutdown/PrismShutdownAgent.h"
+#include "Framework/Shutdown/WaveShutdownAgent.h"
 
 namespace WaveNs
 {
@@ -44,7 +44,7 @@ WaveMutex WaveFrameworkObjectManagerInitializeWorker::m_initialSchemaInfoObjectS
 
 WaveFrameworkObjectManagerInitializeWorker::WaveFrameworkObjectManagerInitializeWorker (WaveObjectManager *pWaveObjectManager)
     : WaveWorker            (pWaveObjectManager),
-      m_pPrismBootAgent     (NULL)
+      m_pWaveBootAgent     (NULL)
 {
     addEventType (BOOT_COMPLETE_FOR_THIS_LOCATION);
     addEventType (FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT);
@@ -69,25 +69,25 @@ WaveFrameworkObjectManagerInitializeWorker::~WaveFrameworkObjectManagerInitializ
 {
 }
 
-ResourceId WaveFrameworkObjectManagerInitializeWorker::startPrismServices (const PrismBootMode &prismBootMode, const WaveBootPhase &waveBootPhase)
+ResourceId WaveFrameworkObjectManagerInitializeWorker::startWaveServices (const WaveBootMode &prismBootMode, const WaveBootPhase &waveBootPhase)
 {
-    trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::startPrismServices : Entering ...");
+    trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::startWaveServices : Entering ...");
 
-    PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::informServicesToInitializeBeforeBootComplete),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::declareBootCompleteStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::prismSynchronousLinearSequencerFailedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::informServicesToInitializeBeforeBootComplete),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::declareBootCompleteStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::prismSynchronousLinearSequencerFailedStep),
     };
 
-    WaveFrameworkInitializeWorkerStartServicesContext *pWaveFrameworkInitializeWorkerStartServicesContext = new WaveFrameworkInitializeWorkerStartServicesContext (reinterpret_cast<PrismAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+    WaveFrameworkInitializeWorkerStartServicesContext *pWaveFrameworkInitializeWorkerStartServicesContext = new WaveFrameworkInitializeWorkerStartServicesContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pWaveFrameworkInitializeWorkerStartServicesContext->setPrismBootMode (prismBootMode);
+    pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (prismBootMode);
     pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootPhase (waveBootPhase);
 
     ResourceId status = pWaveFrameworkInitializeWorkerStartServicesContext->execute ();
@@ -102,7 +102,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::startPrismServices (const
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManagerInitializeWorker::startPrismServices : Prism failed to come up.  Exiting ...");
+        trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManagerInitializeWorker::startWaveServices : Wave failed to come up.  Exiting ...");
 //        waveAssert (false, __FILE__, __LINE__);
     }
 
@@ -246,7 +246,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep : Entering ...");
 
-    if (WAVE_BOOT_UNKNOWN != (pWaveFrameworkInitializeWorkerStartServicesContext->getPrismBootMode ()))
+    if (WAVE_BOOT_UNKNOWN != (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ()))
     {
         return (WAVE_MESSAGE_SUCCESS);
     }
@@ -270,13 +270,13 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
         }
     }
 
-    ResourceId status = pWaveFrameworkConfigurationWorker->loadPrismConfiguration ((WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ());
+    ResourceId status = pWaveFrameworkConfigurationWorker->loadWaveConfiguration ((WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ());
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        pWaveFrameworkInitializeWorkerStartServicesContext->setPrismBootMode (WAVE_BOOT_FIRST_TIME);
+        pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (WAVE_BOOT_FIRST_TIME);
 
-        trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep : The Prism Framework Configuration file does not exist.  We will treat this as a first time boot for Prism.");
+        trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep : The Wave Framework Configuration file does not exist.  We will treat this as a first time boot for Wave.");
 
         pOrmRepository->buildMoSchemaRepository ();
     }
@@ -299,16 +299,16 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
                  (startupFileType == WAVE_PERSISTENCE_REGULAR_FILE)) &&
                  (waveFrameworkConfiguration.getIsStartupValid() == false))
             {
-                pWaveFrameworkInitializeWorkerStartServicesContext->setPrismBootMode (WAVE_BOOT_PERSISTENT_WITH_DEFAULT);
+                pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (WAVE_BOOT_PERSISTENT_WITH_DEFAULT);
             }
             else
             {
-                pWaveFrameworkInitializeWorkerStartServicesContext->setPrismBootMode (WAVE_BOOT_PERSISTENT);
+                pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (WAVE_BOOT_PERSISTENT);
             }
         }
         else
         {
-            pWaveFrameworkInitializeWorkerStartServicesContext->setPrismBootMode (WAVE_BOOT_PERSISTENT);
+            pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (WAVE_BOOT_PERSISTENT);
         }
 
         if (true ==  FrameworkToolKit::getDetectSchemaChange ())
@@ -371,7 +371,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
 
             if ((databaseSchemaUpgradeStatus != FRAMEWORK_SUCCESS) && (WAVE_SCHEMA_UPGRADE_NOT_REQUIRED != databaseSchemaUpgradeStatus))
             {
-                pWaveFrameworkInitializeWorkerStartServicesContext->setPrismBootMode (WAVE_BOOT_FIRST_TIME);
+                pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (WAVE_BOOT_FIRST_TIME);
                 pWaveFrameworkInitializeWorkerStartServicesContext->setSchemaChangedOnFwdl (true);
 
                 if (FRAMEWORK_STATUS_SCHEMA_UPGRADE_FOR_FW_DOWNGRADE_NOT_SUPPORTED == databaseSchemaUpgradeStatus)
@@ -405,7 +405,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
                 }
             }
 
-            if (WAVE_BOOT_PERSISTENT != pWaveFrameworkInitializeWorkerStartServicesContext->getPrismBootMode ())
+            if (WAVE_BOOT_PERSISTENT != pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ())
             {
                 trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep : shutting down the database");
                 if (NULL != dbObject)
@@ -432,51 +432,51 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep (Wav
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Entering ...");
 
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    PrismBootMode               prismBootMode              = pWaveFrameworkInitializeWorkerStartServicesContext->getPrismBootMode ();
+    WaveBootMode               prismBootMode              = pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ();
 
     trace (TRACE_LEVEL_INFO, string ("Boot Mode is ") + prismBootMode);
 
     if (WAVE_BOOT_FIRST_TIME == prismBootMode)
     {
-        m_pPrismBootAgent = new FirstTimePrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new FirstTimeWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_PERSISTENT == prismBootMode)
     {
-        m_pPrismBootAgent = new PersistentPrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new PersistentWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_PERSISTENT_WITH_DEFAULT == prismBootMode)
     {
-        m_pPrismBootAgent = new PersistentWithDefaultPrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new PersistentWithDefaultWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_SECONDARY_CONFIGURE == prismBootMode)
     {
-        m_pPrismBootAgent = new SecondaryNodeConfigurePrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new SecondaryNodeConfigureWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_SECONDARY_UNCONFIGURE == prismBootMode)
     {
-        m_pPrismBootAgent = new SecondaryNodeUnconfigurePrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new SecondaryNodeUnconfigureWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_SECONDARY_REJOIN == prismBootMode)
     {
-        m_pPrismBootAgent = new SecondaryNodeRejoinPrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new SecondaryNodeRejoinWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_HASTANDBY == prismBootMode)
     {
-        m_pPrismBootAgent = new HaStandbyPrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new HaStandbyWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else if (WAVE_BOOT_PREPARE_FOR_HA_BOOT == prismBootMode)
     {
-        m_pPrismBootAgent = new PersistentWithDefaultForHABootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        m_pWaveBootAgent = new PersistentWithDefaultForHABootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, string ("WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Unknown Prism Boot Mode : ") + (UI32) prismBootMode);
+        trace (TRACE_LEVEL_FATAL, string ("WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Unknown Wave Boot Mode : ") + (UI32) prismBootMode);
         waveAssert (false, __FILE__, __LINE__);
     }
 
-    waveAssert (NULL != m_pPrismBootAgent, __FILE__, __LINE__);
+    waveAssert (NULL != m_pWaveBootAgent, __FILE__, __LINE__);
 
-    if (NULL == m_pPrismBootAgent)
+    if (NULL == m_pWaveBootAgent)
     {
         return (WAVE_MESSAGE_ERROR);
     }
@@ -489,11 +489,11 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep (Wave
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep : Entering ...");
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
 
-    //return (m_pPrismBootAgent->execute (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ()));
-    ResourceId status = m_pPrismBootAgent->execute (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ());
+    //return (m_pWaveBootAgent->execute (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ()));
+    ResourceId status = m_pWaveBootAgent->execute (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ());
     if (WAVE_MESSAGE_ERROR_DATABASE_INCONSISTENT == status)
     {
-        PrismShutdownAgent *pShutdownAgent = new PrismShutdownAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+        WaveShutdownAgent *pShutdownAgent = new WaveShutdownAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
         status = pShutdownAgent->execute ();
         delete pShutdownAgent;
         if (status != WAVE_MESSAGE_SUCCESS)
@@ -504,9 +504,9 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep (Wave
         else
         {
             trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep : Boot Mode is ") + WAVE_BOOT_FIRST_TIME);
-            delete m_pPrismBootAgent;
-            m_pPrismBootAgent = new RecoverPrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
-            status = m_pPrismBootAgent->execute (WAVE_BOOT_PHASE_PRE_PHASE);
+            delete m_pWaveBootAgent;
+            m_pWaveBootAgent = new RecoverWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+            status = m_pWaveBootAgent->execute (WAVE_BOOT_PHASE_PRE_PHASE);
             if (status != WAVE_MESSAGE_SUCCESS)
             {
                 trace(TRACE_LEVEL_FATAL,"WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep: Shutting down all services failed\n");
@@ -514,9 +514,9 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep (Wave
             }
             else
             {
-                delete m_pPrismBootAgent;
-                m_pPrismBootAgent = new RecoverPrismBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
-                return (m_pPrismBootAgent->execute (WAVE_BOOT_PHASE_POST_PHASE));
+                delete m_pWaveBootAgent;
+                m_pWaveBootAgent = new RecoverWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+                return (m_pWaveBootAgent->execute (WAVE_BOOT_PHASE_POST_PHASE));
             }
         }
     }
@@ -530,12 +530,12 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::destroyABootAgentStep (Wa
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::destroyABootAgentStep : Entering ...");
 
-    if (NULL != m_pPrismBootAgent)
+    if (NULL != m_pWaveBootAgent)
     {
-        delete m_pPrismBootAgent;
+        delete m_pWaveBootAgent;
     }
 
-    m_pPrismBootAgent =  NULL;
+    m_pWaveBootAgent =  NULL;
 
     return (WAVE_MESSAGE_SUCCESS);
 }
@@ -562,7 +562,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep (Wa
         }
 
         // 2. save prism configuration
-        FrameworkToolKit::savePrismConfiguration ();
+        FrameworkToolKit::saveWaveConfiguration ();
 
         if (true == (DatabaseObjectManager::getIsDatabaseEnabled ()))
         {
@@ -606,8 +606,8 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::informServicesToInitializ
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::informServicesToInitializeBeforeBootComplete : Entering ...");
 
-    if ((WAVE_BOOT_PERSISTENT == pWaveFrameworkInitializeWorkerStartServicesContext->getPrismBootMode ())
-       || ((WAVE_BOOT_HASTANDBY == pWaveFrameworkInitializeWorkerStartServicesContext->getPrismBootMode ()) && (FrameworkToolKit::isPrimaryLocation () || (LOCATION_STAND_ALONE == FrameworkToolKit::getThisLocationRole ()))))
+    if ((WAVE_BOOT_PERSISTENT == pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ())
+       || ((WAVE_BOOT_HASTANDBY == pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ()) && (FrameworkToolKit::isPrimaryLocation () || (LOCATION_STAND_ALONE == FrameworkToolKit::getThisLocationRole ()))))
     {
         PersistenceObjectManagerInitializeBeforeBootCompleteMessage pPersistenceObjectManagerInitializeBeforeBootCompleteMessage;
 
@@ -643,7 +643,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::declareBootCompleteStep (
 
         broadcast (pBootCompleteForThisLocationEvent);
     }
-    else if ((WAVE_BOOT_HASTANDBY == pWaveFrameworkInitializeWorkerStartServicesContext->getPrismBootMode ()) && (WAVE_BOOT_PHASE_PRE_PHASE != pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ()))
+    else if ((WAVE_BOOT_HASTANDBY == pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ()) && (WAVE_BOOT_PHASE_PRE_PHASE != pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ()))
     {
         // Need to broadcast HaBootComplete on standby only when the DB is not EMPTY and atleast Framework services are UP.
         HaBootCompleteForThisLocationEvent *pHaBootCompleteForThisLocationEvent = new HaBootCompleteForThisLocationEvent ();

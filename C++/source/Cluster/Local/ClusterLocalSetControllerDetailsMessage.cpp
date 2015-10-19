@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 ClusterLocalSetControllerDetailsMessage::ClusterLocalSetControllerDetailsMessage ()
-    : ManagementInterfaceMessage (ClusterLocalObjectManager::getPrismServiceName (), CLUSTER_LOCAL_SET_CONTROLLER_DETAILS_MESSAGE)
+    : ManagementInterfaceMessage (ClusterLocalObjectManager::getWaveServiceName (), CLUSTER_LOCAL_SET_CONTROLLER_DETAILS_MESSAGE)
 {
     m_controllerPort = 0;
 }

@@ -12,7 +12,7 @@ namespace WaveNs
 {
 
 FrameworkTestability4ObjectManagerGetManagedObjects::FrameworkTestability4ObjectManagerGetManagedObjects()
-    : ManagementInterfaceMessage (FrameworkTestability4ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS),
+    : ManagementInterfaceMessage (FrameworkTestability4ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS),
       m_managedObjectClassName   (""),
       m_schemaName               ("WaveCurrent"),
       m_numberOfManagedObjects   (0),
@@ -21,7 +21,7 @@ FrameworkTestability4ObjectManagerGetManagedObjects::FrameworkTestability4Object
 }
 
 FrameworkTestability4ObjectManagerGetManagedObjects::FrameworkTestability4ObjectManagerGetManagedObjects(const string &managedObjectClassName, const string &schemaName)
-    : ManagementInterfaceMessage (FrameworkTestability4ObjectManager::getPrismServiceName (), FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS),
+    : ManagementInterfaceMessage (FrameworkTestability4ObjectManager::getWaveServiceName (), FRAMEWORK_TESTABILITY_4_GET_MANAGED_OBJECTS),
       m_managedObjectClassName   (managedObjectClassName),
       m_schemaName               (schemaName),
       m_numberOfManagedObjects   (0),

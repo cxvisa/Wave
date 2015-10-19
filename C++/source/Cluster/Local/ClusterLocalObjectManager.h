@@ -22,7 +22,7 @@ namespace WaveNs
 
 class WaveAsynchronousContextForBootPhases;
 class WaveAsynchronousContextForShutDownPhases;
-class PrismSynchronousLinearSequencerContext;
+class WaveSynchronousLinearSequencerContext;
 class ClusterLocalSetThisNodeIpAddressWorker;
 class ClusterLocalReportPrimaryNodeChangedWorker;
 class ClusterLocalReportRemovedNodeFromClusterWorker;
@@ -48,7 +48,7 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
         void               boot                                             (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
         void               shutdown                                         (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
-        void               backendSyncUp                                    (PrismAsynchronousContext *pPrismAsynchronousContext);
+        void               backendSyncUp                                    (WaveAsynchronousContext *pWaveAsynchronousContext);
 
         void               setThisWaveNodeObjectId                          (const ObjectId &thisWaveNodeObjectId);
 
@@ -76,7 +76,7 @@ class ClusterLocalObjectManager : public WaveLocalObjectManager
 
         static  ClusterLocalObjectManager *getInstance                      ();
         static  WaveServiceId             getWaveServiceId                ();
-        static  string                     getPrismServiceName              ();
+        static  string                     getWaveServiceName              ();
 
         static  bool                       getIsInstantiated                ();
 

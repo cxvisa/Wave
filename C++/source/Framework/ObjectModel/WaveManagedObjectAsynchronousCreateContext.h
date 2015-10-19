@@ -7,18 +7,18 @@
 #ifndef WAVEMANAGEDOBJECTASYNCHRONOUSCREATECONTEXT_H
 #define WAVEMANAGEDOBJECTASYNCHRONOUSCREATECONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveManagedObjectAsynchronousCreateContext : public PrismAsynchronousContext
+class WaveManagedObjectAsynchronousCreateContext : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
 
-                            WaveManagedObjectAsynchronousCreateContext  (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext);
+                            WaveManagedObjectAsynchronousCreateContext  (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext);
         virtual            ~WaveManagedObjectAsynchronousCreateContext  ();
 
         vector<string>      getAttributeNames                           () const;

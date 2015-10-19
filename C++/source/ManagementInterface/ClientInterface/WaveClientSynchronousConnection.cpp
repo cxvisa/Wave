@@ -281,7 +281,7 @@ WaveMessageStatus WaveClientSynchronousConnection::sendToWaveServer (ManagementI
 
 string WaveClientSynchronousConnection::getServiceNameById (const WaveServiceId &waveServiceId) const
 {
-    return ((WaveClientTransportObjectManager::getInstance ())->getPrismServiceNameForServiceId (getWaveServerId (), waveServiceId));
+    return ((WaveClientTransportObjectManager::getInstance ())->getWaveServiceNameForServiceId (getWaveServerId (), waveServiceId));
 }
 
 WaveServiceId WaveClientSynchronousConnection::getServiceIdByName (const string &prismServiceName) const
@@ -1614,7 +1614,7 @@ ResourceId WaveClientSynchronousConnection::resetDebugInformation (const string 
 
     return (clientStatus);
 }
-ResourceId  WaveClientSynchronousConnection::setPrismConfigurationValid (const bool &validity, const string schemaFile)
+ResourceId  WaveClientSynchronousConnection::setWaveConfigurationValid (const bool &validity, const string schemaFile)
 {
     WaveMessageStatus  status           = WAVE_MESSAGE_SUCCESS;
     ResourceId         completionStatus = WAVE_MESSAGE_SUCCESS;
@@ -1628,7 +1628,7 @@ ResourceId  WaveClientSynchronousConnection::setPrismConfigurationValid (const b
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_ERROR, "WaveClientSynchronousConnection::setPrismConfigurationValid : Sending message failed : " + FrameworkToolKit::localize (status));
+            trace (TRACE_LEVEL_ERROR, "WaveClientSynchronousConnection::setWaveConfigurationValid : Sending message failed : " + FrameworkToolKit::localize (status));
             clientStatus = status;
         }
         else
@@ -1638,7 +1638,7 @@ ResourceId  WaveClientSynchronousConnection::setPrismConfigurationValid (const b
             if (WAVE_MESSAGE_SUCCESS != completionStatus)
             {
                 clientStatus = completionStatus;
-                trace (TRACE_LEVEL_DEBUG, "WaveClientSynchronousConnection::setPrismConfigurationValid : Message Processing Failed: " + FrameworkToolKit::localize (clientStatus));
+                trace (TRACE_LEVEL_DEBUG, "WaveClientSynchronousConnection::setWaveConfigurationValid : Message Processing Failed: " + FrameworkToolKit::localize (clientStatus));
             }
             else
             {

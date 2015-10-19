@@ -1165,7 +1165,7 @@ void WaveMessage::addClusterStatusPropagation (WaveSendToClusterContext *pWaveSe
 
     if ((true == partialSuccessFlag) || (WAVE_MESSAGE_ERROR_FAILED_ON_SOME_NODES == overAllCompletionStatus) || (WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES == overAllCompletionStatus))
     {
-        // Propagate sendToWaveCluster status on this Prism Message for an all error case, partial error case (when partial success is not used), and partial success case.
+        // Propagate sendToWaveCluster status on this Wave Message for an all error case, partial error case (when partial success is not used), and partial success case.
         // Phase2 Rollback cases are currently not supported.
 
         vector<LocationId>  locationsSentForPhase1 = pWaveSendToClusterContext->getLocationsToSendToForPhase1 ();

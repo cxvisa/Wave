@@ -4,8 +4,8 @@
  *   Author : Vipool Prajapati                                             *
  ***************************************************************************/
 
-#ifndef PERSISTENCELOCALOBJECTMANAGERSAVEPRISMCONFIGURATIONMESSAGE_H
-#define PERSISTENCELOCALOBJECTMANAGERSAVEPRISMCONFIGURATIONMESSAGE_H
+#ifndef PERSISTENCELOCALOBJECTMANAGERSAVEWAVECONFIGURATIONMESSAGE_H
+#define PERSISTENCELOCALOBJECTMANAGERSAVEWAVECONFIGURATIONMESSAGE_H
 
 #include "Framework/Messaging/Local/WaveMessage.h"
 
@@ -16,16 +16,16 @@ using namespace std;
 namespace WaveNs
 {
 
-class PersistenceLocalObjectManagerSavePrismConfigurationMessage : public WaveMessage
+class PersistenceLocalObjectManagerSaveWaveConfigurationMessage : public WaveMessage
 {
     private :
         void setupAttributesForSerialization ();
 
     protected :
     public :
-                        PersistenceLocalObjectManagerSavePrismConfigurationMessage  ();
-                        PersistenceLocalObjectManagerSavePrismConfigurationMessage  (const bool &isStartupValid);
-        virtual        ~PersistenceLocalObjectManagerSavePrismConfigurationMessage  ();
+                        PersistenceLocalObjectManagerSaveWaveConfigurationMessage  ();
+                        PersistenceLocalObjectManagerSaveWaveConfigurationMessage  (const bool &isStartupValid);
+        virtual        ~PersistenceLocalObjectManagerSaveWaveConfigurationMessage  ();
 
                 bool    getIsStartupValid                                  () const;
                 void    setIsStartupValid                                  (const bool &isStartupValid);
@@ -41,4 +41,4 @@ class PersistenceLocalObjectManagerSavePrismConfigurationMessage : public WaveMe
 
 }
 
-#endif // PERSISTENCELOCALOBJECTMANAGERSAVEPRISMCONFIGURATIONMESSAGE_H
+#endif // PERSISTENCELOCALOBJECTMANAGERSAVEWAVECONFIGURATIONMESSAGE_H

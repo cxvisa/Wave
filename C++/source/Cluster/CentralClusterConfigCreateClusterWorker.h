@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 class ClusterObjectManagerCreateClusterMessage;
-class PrismCreateClusterWithNodesMessage;
+class WaveCreateClusterWithNodesMessage;
 
 class CentralClusterConfigCreateClusterWorker : public WaveWorker
 {
@@ -26,7 +26,7 @@ class CentralClusterConfigCreateClusterWorker : public WaveWorker
         void          createClusterValidateStep                            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          createClusterResetThisNodeIpAddressIfRequiredStep    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          createClusterRequestFrameworkToCreateClusterStep     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void          createClusterRequestFrameworkToCreateClusterCallback (FrameworkStatus frameworkStatus, PrismCreateClusterWithNodesMessage *pPrismCreateClusterWithNodesMessage, void *pContext);
+        void          createClusterRequestFrameworkToCreateClusterCallback (FrameworkStatus frameworkStatus, WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage, void *pContext);
         void          createClusterCommitStep                              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void          createClusterStartHeartBeatsStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 

@@ -73,24 +73,24 @@ template<class T> UI32 WaveMessageQueue<T>::removeTimerExpirationsForTimer (cons
 
     std::deque<WaveMessage *>::iterator   element                                = m_messageQueue.begin ();
     std::deque<WaveMessage *>::iterator   end                                    = m_messageQueue.end ();
-    PrismTimerExpiredObjectManagerMessage *pPrismTimerExpiredObjectManagerMessage = NULL;
+    WaveTimerExpiredObjectManagerMessage *pWaveTimerExpiredObjectManagerMessage = NULL;
     std::deque<WaveMessage *>             tempMessageQueue;
     UI32                                   numberOfExpirationsEncountered         = 0;
 
     while (element != end)
     {
-        pPrismTimerExpiredObjectManagerMessage = dynamic_cast<PrismTimerExpiredObjectManagerMessage *> (*element);
+        pWaveTimerExpiredObjectManagerMessage = dynamic_cast<WaveTimerExpiredObjectManagerMessage *> (*element);
 
-        waveAssert (NULL != pPrismTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
+        waveAssert (NULL != pWaveTimerExpiredObjectManagerMessage, __FILE__, __LINE__);
 
-        if ((pPrismTimerExpiredObjectManagerMessage->getTimerId ()) == timerHandle)
+        if ((pWaveTimerExpiredObjectManagerMessage->getTimerId ()) == timerHandle)
         {
             numberOfExpirationsEncountered++;
-            delete pPrismTimerExpiredObjectManagerMessage;
+            delete pWaveTimerExpiredObjectManagerMessage;
         }
         else
         {
-            tempMessageQueue.push_back (pPrismTimerExpiredObjectManagerMessage);
+            tempMessageQueue.push_back (pWaveTimerExpiredObjectManagerMessage);
         }
 
         element++;

@@ -4,15 +4,15 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef STANDBYPRISMBOOTAGENT_H
-#define STANDBYPRISMBOOTAGENT_H
+#ifndef STANDBYWAVEBOOTAGENT_H
+#define STANDBYWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 
-class HaStandbyPrismBootAgent : public PrismBootAgent
+class HaStandbyWaveBootAgent : public WaveBootAgent
 {
     private :
         virtual bool           isAPersistentBoot                            ();
@@ -25,17 +25,17 @@ class HaStandbyPrismBootAgent : public PrismBootAgent
         virtual WaveBootReason getReason                                    () const;
 
     protected :
-        ResourceId haInstallPrismServicesDuringPrePhaseStep       (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        ResourceId haInstallPrismServicesStep                     (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        ResourceId haBootPrismServicesDuringPrePhaseStep          (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        ResourceId haBootLocalPrismServicesStep                   (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        ResourceId haBootGlobalPrismServicesStep                  (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        ResourceId haBootPrismServicesStep                        (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-        ResourceId resetLocationRole                              (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+        ResourceId haInstallWaveServicesDuringPrePhaseStep       (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+        ResourceId haInstallWaveServicesStep                     (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+        ResourceId haBootWaveServicesDuringPrePhaseStep          (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+        ResourceId haBootLocalWaveServicesStep                   (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+        ResourceId haBootGlobalWaveServicesStep                  (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+        ResourceId haBootWaveServicesStep                        (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+        ResourceId resetLocationRole                              (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
     public :
-                            HaStandbyPrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual            ~HaStandbyPrismBootAgent ();
+                            HaStandbyWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual            ~HaStandbyWaveBootAgent ();
         virtual ResourceId  execute                              (const WaveBootPhase &waveBootPhase);
 
     // now the data members
@@ -48,4 +48,4 @@ class HaStandbyPrismBootAgent : public PrismBootAgent
 
 }
 
-#endif // STANDBYPRISMBOOTAGENT_H
+#endif // STANDBYWAVEBOOTAGENT_H

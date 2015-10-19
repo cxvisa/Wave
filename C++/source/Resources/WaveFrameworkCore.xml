@@ -160,7 +160,7 @@
         <Resource Name = "WAVE_MANAGED_OBJECT_LISTEN_FOR_DEFAULT">Listen for Wave Managed Object Default</Resource>
     </ResourceEnum>
 
-    <ResourceEnum Name = "PrismSynchronousLinearSequencerContextStatus">
+    <ResourceEnum Name = "WaveSynchronousLinearSequencerContextStatus">
         <Resource Name = "WAVE_SEQUENCER_SKIP_TO_SUCCESS_STEP">Skip to success step</Resource>
     </ResourceEnum>
 </ModuleResources>

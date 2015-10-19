@@ -13,8 +13,8 @@ namespace WaveNs
 TimerObjectManagerAddTimerMessage::TimerObjectManagerAddTimerMessage ()
   : WaveMessage (TimerObjectManager::getWaveServiceId (), TIMER_ADD_TIMER) ,
     m_timerId (0),
-    m_pPrismTimerExpirationCallback (NULL),
-    m_pPrismTimerExpirationContext (NULL)
+    m_pWaveTimerExpirationCallback (NULL),
+    m_pWaveTimerExpirationContext (NULL)
 {
     m_startInterval.tv_sec          = 0; 
     m_startInterval.tv_usec         = 0;
@@ -29,7 +29,7 @@ TimerObjectManagerAddTimerMessage::~TimerObjectManagerAddTimerMessage ()
 }
 
 TimerObjectManagerAddTimerMessage::TimerObjectManagerAddTimerMessage (timeval &startInterval, timeval &periodicInterval, timeval &startTime,
-                        PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
+                        WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
     : WaveMessage (TimerObjectManager::getWaveServiceId (), TIMER_ADD_TIMER)
 {
     m_startInterval.tv_sec          =   startInterval.tv_sec;
@@ -39,9 +39,9 @@ TimerObjectManagerAddTimerMessage::TimerObjectManagerAddTimerMessage (timeval &s
     m_startTime.tv_sec              =   startTime.tv_sec;
     m_startTime.tv_usec             =   startTime.tv_usec;
 
-    m_pPrismTimerExpirationCallback   =   pPrismTimerExpirationCallback;
-    m_pPrismTimerExpirationContext    =   pPrismTimerExpirationContext;
-    m_pPrismTimerSender               =   pPrismTimerSender;
+    m_pWaveTimerExpirationCallback   =   pWaveTimerExpirationCallback;
+    m_pWaveTimerExpirationContext    =   pWaveTimerExpirationContext;
+    m_pWaveTimerSender               =   pWaveTimerSender;
     m_timerId                         =   0; 
 
 }
@@ -66,19 +66,19 @@ timeval TimerObjectManagerAddTimerMessage::getStartTime ()
     return m_startTime;
 }
 
-PrismTimerExpirationHandler TimerObjectManagerAddTimerMessage::getTimerExpirationCallback ()
+WaveTimerExpirationHandler TimerObjectManagerAddTimerMessage::getTimerExpirationCallback ()
 {
-    return m_pPrismTimerExpirationCallback;
+    return m_pWaveTimerExpirationCallback;
 }
 
 void *TimerObjectManagerAddTimerMessage::getTimerExpirationContext ()
 {
-    return m_pPrismTimerExpirationContext;
+    return m_pWaveTimerExpirationContext;
 }
 
 WaveElement *TimerObjectManagerAddTimerMessage::getTimerSender ()
 {
-    return m_pPrismTimerSender;
+    return m_pWaveTimerSender;
 }
 
 void TimerObjectManagerAddTimerMessage::setTimerId (TimerHandle timerId)

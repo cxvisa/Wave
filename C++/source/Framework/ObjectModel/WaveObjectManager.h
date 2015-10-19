@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMOBJECTMANAGER_H
-#define PRISMOBJECTMANAGER_H
+#ifndef WAVEOBJECTMANAGER_H
+#define WAVEOBJECTMANAGER_H
 
 #include "Framework/ObjectModel/WaveElement.h"
 #include "Framework/MultiThreading/WaveThread.h"
@@ -14,7 +14,7 @@
 #include <set>
 #include <string>
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/Utils/DatabaseQueryCursor.h"
 #include "Framework/Messaging/Local/WaveEvent.h"
 #include "Framework/ObjectModel/ObjectId.h"
@@ -33,31 +33,31 @@ namespace WaveNs
 class WaveThread;
 class WaveWorker;
 class WaveEvent;
-class PrismInitializeObjectManagerMessage;
-class PrismListenForEventsObjectManagerMessage;
-class PrismInstallObjectManagerMessage;
-class PrismEnableObjectManagerMessage;
-class PrismBootObjectManagerMessage;
-class PrismUpgradeObjectManagerMessage;
-class PrismHaInstallObjectManagerMessage;
-class PrismHaBootObjectManagerMessage;
-class PrismShutdownObjectManagerMessage;
-class PrismUninstallObjectManagerMessage;
-class PrismDisableObjectManagerMessage;
-class PrismUninitializeObjectManagerMessage;
-class PrismPingObjectManagerMessage;
+class WaveInitializeObjectManagerMessage;
+class WaveListenForEventsObjectManagerMessage;
+class WaveInstallObjectManagerMessage;
+class WaveEnableObjectManagerMessage;
+class WaveBootObjectManagerMessage;
+class WaveUpgradeObjectManagerMessage;
+class WaveHaInstallObjectManagerMessage;
+class WaveHaBootObjectManagerMessage;
+class WaveShutdownObjectManagerMessage;
+class WaveUninstallObjectManagerMessage;
+class WaveDisableObjectManagerMessage;
+class WaveUninitializeObjectManagerMessage;
+class WavePingObjectManagerMessage;
 class WaveLinearSequencerContext;
 class WaveLinearSequencerContextForUpgradePhase;
-class PrismSynchronousLinearSequencerContext;
+class WaveSynchronousLinearSequencerContext;
 class TimerObjectManagerAddTimerMessage;
-class PrismTimerExpiredObjectManagerMessage;
+class WaveTimerExpiredObjectManagerMessage;
 class WaveObjectManagerCollectValidationDataMessage;
 class WaveObjectManagerValidateClusterCreationMessage;
 class WaveObjectManagerSendValidationResultsMessage;
 class DatabaseObjectManagerExecuteQueryMessage;
-class PrismPauseObjectManagerMessage;
-class PrismResumeObjectManagerMessage;
-class PrismSetCpuAffinityObjectManagerMessage;
+class WavePauseObjectManagerMessage;
+class WaveResumeObjectManagerMessage;
+class WaveSetCpuAffinityObjectManagerMessage;
 class WaveAsynchronousContextForBootPhases;
 class WaveAsynchronousContextForPostbootPhase;
 class WaveAsynchronousContextForShutDownPhases;
@@ -67,12 +67,12 @@ class WaveAsynchronousContextForFileReplayEnd;
 class WaveAsynchronousContextForSlotFailover;
 class WaveAsynchronousContextForMultiPartitionCleanup;
 class WaveAsynchronousContextForUpgradePhase;
-class PrismHeartbeatFailureObjectManagerMessage;
-class PrismExternalStateSynchronizationObjectManagerMessage;
-class PrismConfigReplayEndObjectManagerMessage;
-class PrismFileReplayEndObjectManagerMessage;
-class PrismSlotFailoverObjectManagerMessage;
-class PrismMultiPartitionCleanupObjectManagerMessage;
+class WaveHeartbeatFailureObjectManagerMessage;
+class WaveExternalStateSynchronizationObjectManagerMessage;
+class WaveConfigReplayEndObjectManagerMessage;
+class WaveFileReplayEndObjectManagerMessage;
+class WaveSlotFailoverObjectManagerMessage;
+class WaveMultiPartitionCleanupObjectManagerMessage;
 class WaveObjectManagerBackendSyncUpMessage;
 class WaveObjectManagerHaSyncCollectValidationDataMessage;
 class WaveObjectManagerHaSyncValidateDataMessage;
@@ -86,7 +86,7 @@ class WaveManagedObjectSynchronousQueryContextForUpdate;
 class DatabaseQueryCursor;
 
 class WaveManagedObjectLoadOperationalDataWorker;
-class PrismPostbootWorker;
+class WavePostbootWorker;
 class WaveSendToClusterContext;
 class WaveSendToClientsContext;
 
@@ -152,12 +152,12 @@ class WaveObjectManager : public WaveElement
             public :
         };
 
-        class PrismOperationMapContext
+        class WaveOperationMapContext
         {
             private :
             protected :
             public :
-                     PrismOperationMapContext (WaveElement *pWaveElement, WaveMessageHandler pWaveMessageHandler);
+                     WaveOperationMapContext (WaveElement *pWaveElement, WaveMessageHandler pWaveMessageHandler);
                 void executeMessageHandler    (WaveMessage *&pWaveMessage);
 
             // Now the data members
@@ -315,21 +315,21 @@ class WaveObjectManager : public WaveElement
             public :
         };
 
-                void                initializeHandler                            (PrismInitializeObjectManagerMessage *pInitializeMessage);
+                void                initializeHandler                            (WaveInitializeObjectManagerMessage *pInitializeMessage);
                 void                initializeInitializeWorkersStep              (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                initializeInitializeWorkersStepCallback      (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                initializeInitializeSelfStep                 (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                initializeInitializeSelfStepCallback         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                initialize                                   (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-                void                listenForEventsHandler                       (PrismListenForEventsObjectManagerMessage *pListenForEventsMessage);
+                void                listenForEventsHandler                       (WaveListenForEventsObjectManagerMessage *pListenForEventsMessage);
                 void                listenForEventsWorkersStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                listenForEventsWorkersStepCallback           (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                listenForEventsSelfStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                listenForEventsSelfStepCallback              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                listenForEvents                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-                void                installHandler                               (PrismInstallObjectManagerMessage *pInstallMessage);
+                void                installHandler                               (WaveInstallObjectManagerMessage *pInstallMessage);
                 void                installInstallWorkersStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                installInstallWorkersStepCallback            (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                installInstallSelfStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
@@ -339,14 +339,14 @@ class WaveObjectManager : public WaveElement
         static  void                addServiceToEnabledServicesList              (const WaveServiceId &waveServiceId);
         static  void                removeServiceFromEnabledServicesList         (const WaveServiceId &waveServiceId);
 
-                void                enableHandler                                (PrismEnableObjectManagerMessage *pEnableMessage);
+                void                enableHandler                                (WaveEnableObjectManagerMessage *pEnableMessage);
                 void                enableEnableWorkersStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                enableEnableWorkersStepCallback              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                enableEnableSelfStep                         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                enableEnableSelfStepCallback                 (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                enable                                       (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-                void                upgradeHandler                               (PrismUpgradeObjectManagerMessage *pUpgradeMessage);
+                void                upgradeHandler                               (WaveUpgradeObjectManagerMessage *pUpgradeMessage);
                 void                upgradeDefaultValueStep                      (WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase);
                 void                upgradeUpgradeWorkersStep                    (WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase);
                 void                upgradeUpgradeWorkersStepCallback            (WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase);
@@ -354,21 +354,21 @@ class WaveObjectManager : public WaveElement
                 void                upgradeUpgradeSelfStepCallback               (WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase);
         virtual void                upgrade                                      (WaveAsynchronousContextForUpgradePhase *pWaveAsynchronousContextForUpgradePhase);
 
-                void                bootHandler                                  (PrismBootObjectManagerMessage *pBootMessage);
+                void                bootHandler                                  (WaveBootObjectManagerMessage *pBootMessage);
                 void                bootBootWorkersStep                          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                bootBootWorkersStepCallback                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                bootBootSelfStep                             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                bootBootSelfStepCallback                     (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                boot                                         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-                void                hainstallHandler                             (PrismHaInstallObjectManagerMessage *pHaInstallMessage);
+                void                hainstallHandler                             (WaveHaInstallObjectManagerMessage *pHaInstallMessage);
                 void                hainstallInstallWorkersStep                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                hainstallInstallWorkersStepCallback          (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                hainstallInstallSelfStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                hainstallInstallSelfStepCallback             (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void                hainstall                                    (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-                void                habootHandler                                (PrismHaBootObjectManagerMessage *pHaBootMessage);
+                void                habootHandler                                (WaveHaBootObjectManagerMessage *pHaBootMessage);
                 void                habootBootWorkersStep                        (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                habootBootWorkersStepCallback                (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
                 void                habootBootSelfStep                           (WaveLinearSequencerContext *pWaveLinearSequencerContext);
@@ -379,21 +379,21 @@ class WaveObjectManager : public WaveElement
         virtual void                postbootCallback                             (GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext);
         virtual ResourceId          postbootValidateAllOwnedManagedClassNames    (const string passName, vector<string> &managedObjectNamesInPass);
 
-                void                shutdownHandler                              (PrismShutdownObjectManagerMessage *pShutdownMessage);
+                void                shutdownHandler                              (WaveShutdownObjectManagerMessage *pShutdownMessage);
                 void                shutdownShutdownWorkersStep                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                shutdownShutdownWorkersStepCallback          (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
                 void                shutdownShutdownSelfStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                shutdownShutdownSelfStepCallback             (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
         virtual void                shutdown                                     (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
                 void                notifyStep                                   (WaveLinearSequencerContextForShutdownPhase *pWaveLinearSequencerContext);
-                void                uninstallHandler                             (PrismUninstallObjectManagerMessage *pUninstallMessage);
+                void                uninstallHandler                             (WaveUninstallObjectManagerMessage *pUninstallMessage);
                 void                uninstallUninstallWorkersStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                uninstallUninstallWorkersStepCallback        (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
                 void                uninstallUninstallSelfStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                uninstallUninstallSelfStepCallback           (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
         virtual void                uninstall                                    (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
 
-                void                disableHandler                               (PrismDisableObjectManagerMessage *pDisableMessage);
+                void                disableHandler                               (WaveDisableObjectManagerMessage *pDisableMessage);
                 void                disableUnlistenEventsStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                disableDisableWorkersStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                disableDisableWorkersStepCallback            (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
@@ -401,49 +401,49 @@ class WaveObjectManager : public WaveElement
                 void                disableDisableSelfStepCallback               (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
         virtual void                disable                                      (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
 
-                void                uninitializeHandler                          (PrismUninitializeObjectManagerMessage *pUninitializeMessage);
+                void                uninitializeHandler                          (WaveUninitializeObjectManagerMessage *pUninitializeMessage);
                 void                uninitializeUninitializeWorkersStep          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                uninitializeUninitializeWorkersStepCallback  (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
                 void                uninitializeUninitializeSelfStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                uninitializeUninitializeSelfStepCallback     (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
         virtual void                uninitialize                                 (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
 
-                void                destructHandler                              (PrismDestructObjectManagerMessage *pDestructMessage);
+                void                destructHandler                              (WaveDestructObjectManagerMessage *pDestructMessage);
                 void                destructDestructWorkersStep                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                destructDestructWorkersStepCallback          (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
                 void                destructDestructSelfStep                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                destructDestructSelfStepCallback             (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
         virtual void                destruct                                     (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
 
-                void                heartbeatFailureHandler                      (PrismHeartbeatFailureObjectManagerMessage *pHearbeatFailureMessage);
+                void                heartbeatFailureHandler                      (WaveHeartbeatFailureObjectManagerMessage *pHearbeatFailureMessage);
                 void                heartbeatFailureWorkersStep                  (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
-                void                heartbeatFailureWorkersStepCallback          (PrismAsynchronousContext     *pPrismAsynchronousContext);
+                void                heartbeatFailureWorkersStepCallback          (WaveAsynchronousContext     *pWaveAsynchronousContext);
                 void                heartbeatFailureSelfStep                     (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
-                void                heartbeatFailureSelfStepCallback             (PrismAsynchronousContext     *pPrismAsynchronousContext);
-        virtual void                heartbeatFailure                             (PrismAsynchronousContext     *pPrismAsynchronousContext);
+                void                heartbeatFailureSelfStepCallback             (WaveAsynchronousContext     *pWaveAsynchronousContext);
+        virtual void                heartbeatFailure                             (WaveAsynchronousContext     *pWaveAsynchronousContext);
 
-                void                configReplayEndHandler                       (PrismConfigReplayEndObjectManagerMessage *pConfigReplayEndMessage);
+                void                configReplayEndHandler                       (WaveConfigReplayEndObjectManagerMessage *pConfigReplayEndMessage);
                 void                configReplayEndWorkersStep                   (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                configReplayEndWorkersStepCallback           (WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd);
                 void                configReplayEndSelfStep                      (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                configReplayEndSelfStepCallback              (WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd);
         virtual void                configReplayEnd                              (WaveAsynchronousContextForConfigReplayEnd *pWaveAsynchronousContextForConfigReplayEnd);
 
-                void                fileReplayEndHandler                         (PrismFileReplayEndObjectManagerMessage *pFileReplayEndMessage);
+                void                fileReplayEndHandler                         (WaveFileReplayEndObjectManagerMessage *pFileReplayEndMessage);
                 void                fileReplayEndWorkersStep                     (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                fileReplayEndWorkersStepCallback             (WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd);
                 void                fileReplayEndSelfStep                        (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                fileReplayEndSelfStepCallback                (WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd);
         virtual void                fileReplayEnd                                (WaveAsynchronousContextForFileReplayEnd *pWaveAsynchronousContextForFileReplayEnd);
 
-                void                slotFailoverHandler                          (PrismSlotFailoverObjectManagerMessage *pSlotFailoverMessage);
+                void                slotFailoverHandler                          (WaveSlotFailoverObjectManagerMessage *pSlotFailoverMessage);
                 void                slotFailoverWorkersStep                      (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                slotFailoverWorkersStepCallback              (WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover);
                 void                slotFailoverSelfStep                         (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                slotFailoverSelfStepCallback                 (WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover);
         virtual void                slotFailover                                 (WaveAsynchronousContextForSlotFailover *pWaveAsynchronousContextForSlotFailover);
 
-                void                multiPartitionCleanupHandler                   (PrismMultiPartitionCleanupObjectManagerMessage *pMultiPartitionCleanupMessage);
+                void                multiPartitionCleanupHandler                   (WaveMultiPartitionCleanupObjectManagerMessage *pMultiPartitionCleanupMessage);
                 void                multiPartitionCleanupWorkersStep               (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                multiPartitionCleanupWorkersStepCallback       (WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup);
                 void                multiPartitionCleanupSelfStep                  (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
@@ -451,71 +451,71 @@ class WaveObjectManager : public WaveElement
         virtual void                multiPartitionCleanup                          (WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup);
         virtual void                multiPartitionPartialCleanup                   (WaveAsynchronousContextForMultiPartitionCleanup *pWaveAsynchronousContextForMultiPartitionCleanup);
 
-                void                externalStateSynchronizationHandler                      (PrismExternalStateSynchronizationObjectManagerMessage *pExternalStateSynchronizationMessage);
+                void                externalStateSynchronizationHandler                      (WaveExternalStateSynchronizationObjectManagerMessage *pExternalStateSynchronizationMessage);
                 void                externalStateSynchronizationWorkersStep                  (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                externalStateSynchronizationWorkersStepCallback          (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization);
                 void                externalStateSynchronizationSelfStep                     (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
                 void                externalStateSynchronizationSelfStepCallback             (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization);
         virtual void                externalStateSynchronization                             (WaveAsynchronousContextForExternalStateSynchronization *pWaveAsynchronousContextForExternalStateSynchronization);
-                void                backendSyncUpHandler                         (WaveObjectManagerBackendSyncUpMessage *pPrismHeartbeatFailureObjectManagerMessage);
+                void                backendSyncUpHandler                         (WaveObjectManagerBackendSyncUpMessage *pWaveHeartbeatFailureObjectManagerMessage);
                 void                backendSyncUpWorkersStep                     (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
-                void                backendSyncUpWorkersStepCallback             (PrismAsynchronousContext     *pPrismAsynchronousContext);
+                void                backendSyncUpWorkersStepCallback             (WaveAsynchronousContext     *pWaveAsynchronousContext);
                 void                backendSyncUpSelfStep                        (WaveLinearSequencerContext  *pWaveLinearSequencerContext);
-                void                backendSyncUpSelfStepCallback                (PrismAsynchronousContext     *pPrismAsynchronousContext);
-        virtual void                backendSyncUp                                (PrismAsynchronousContext     *pPrismAsynchronousContext);
-                void                pauseHandler                                 (PrismPauseObjectManagerMessage *pPrismPauseObjectManagerMessage);
-                void                resumeHandler                                (PrismResumeObjectManagerMessage *pPrismResumeObjectManagerMessage);
+                void                backendSyncUpSelfStepCallback                (WaveAsynchronousContext     *pWaveAsynchronousContext);
+        virtual void                backendSyncUp                                (WaveAsynchronousContext     *pWaveAsynchronousContext);
+                void                pauseHandler                                 (WavePauseObjectManagerMessage *pWavePauseObjectManagerMessage);
+                void                resumeHandler                                (WaveResumeObjectManagerMessage *pWaveResumeObjectManagerMessage);
 
-                void                pingHandler                                  (PrismPingObjectManagerMessage *pPingMessage);
+                void                pingHandler                                  (WavePingObjectManagerMessage *pPingMessage);
 
-                void                setCpuAffinityHandler                        (PrismSetCpuAffinityObjectManagerMessage *pPrismSetCpuAffinityObjectManagerMessage);
+                void                setCpuAffinityHandler                        (WaveSetCpuAffinityObjectManagerMessage *pWaveSetCpuAffinityObjectManagerMessage);
 
                 void                clusterCreateCollectValidationDataHandler             (WaveObjectManagerCollectValidationDataMessage *pWaveObjectManagerCollectValidationDataMessage);
                 void                clusterCreateCollectValidationDataWorkersStep         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                clusterCreateCollectValidationDataWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                clusterCreateCollectValidationDataWorkersStepCallback (WaveAsynchronousContext *pWaveAsynchronousContext);
                 void                clusterCreateCollectValidationDataSelfStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                clusterCreateCollectValidationDataSelfStepCallback    (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                clusterCreateCollectValidationData                    (WaveObjectManagerCollectValidationDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                clusterCreateCollectValidationDataSelfStepCallback    (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                clusterCreateCollectValidationData                    (WaveObjectManagerCollectValidationDataMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
                 void                clusterCreateValidateHandler                          (WaveObjectManagerValidateClusterCreationMessage *pWaveObjectManagerValidateClusterCreationMessage);
                 void                clusterCreateValidateWorkersStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                clusterCreateValidateWorkersStepCallback              (PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                clusterCreateValidateWorkersStepCallback              (WaveAsynchronousContext *pWaveAsynchronousContext);
                 void                clusterCreateValidateSelfStep                         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                clusterCreateValidateSelfStepCallback                 (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                clusterCreateValidate                                 (WaveObjectManagerValidateClusterCreationMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                clusterCreateValidateSelfStepCallback                 (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                clusterCreateValidate                                 (WaveObjectManagerValidateClusterCreationMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
                 void                clusterCreateSendValidationResultsHandler             (WaveObjectManagerSendValidationResultsMessage *pWaveObjectManagerSendValidationResultsMessage);
                 void                clusterCreateSendValidationResultsWorkersStep         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                clusterCreateSendValidationResultsWorkersStepCallback (PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                clusterCreateSendValidationResultsWorkersStepCallback (WaveAsynchronousContext *pWaveAsynchronousContext);
                 void                clusterCreateSendValidationResultsSelfStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                clusterCreateSendValidationResultsSelfStepCallback    (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                clusterCreateSendValidationResults                    (WaveObjectManagerSendValidationResultsMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                clusterCreateSendValidationResultsSelfStepCallback    (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                clusterCreateSendValidationResults                    (WaveObjectManagerSendValidationResultsMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
-                void                failoverHandler                                       (PrismFailoverObjectManagerMessage *pPrismFailvoerObjectManagerMessage);
+                void                failoverHandler                                       (WaveFailoverObjectManagerMessage *pWaveFailvoerObjectManagerMessage);
                 void                failoverWorkersStep                                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                failoverWorkersStepCallback                           (FailoverAsynchronousContext *pFailoverAsynchronousContext);
                 void                failoverSelfStep                                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                failoverSelfStepCallback                              (FailoverAsynchronousContext *pFailoverAsynchronousContext);
-        // virtual void                failover                                              (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> failedLocationIds, PrismAsynchronousContext *pPrismAsynchronousContext);
+        // virtual void                failover                                              (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> failedLocationIds, WaveAsynchronousContext *pWaveAsynchronousContext);
         virtual void                failover                                              (FailoverAsynchronousContext *pFailoverAsynchronousContext);
 
                 void                haSyncCollectValidationDataHandler                    (WaveObjectManagerHaSyncCollectValidationDataMessage *pWaveObjectManagerHaSyncCollectValidationDataMessage);
                 void                haSyncCollectValidationDataWorkersStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                haSyncCollectValidationDataSelfStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                haSyncCollectValidationDataSelfStepCallback           (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                haSyncCollectValidationData                           (WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                haSyncCollectValidationDataSelfStepCallback           (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                haSyncCollectValidationData                           (WaveObjectManagerHaSyncCollectValidationDataMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
                 void                haSyncValidateDataHandler                             (WaveObjectManagerHaSyncValidateDataMessage *pWaveObjectManagerHaSyncValidateDataMessage);
                 void                haSyncValidateDataWorkersStep                         (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                haSyncValidateDataSelfStep                            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                haSyncValidateDataSelfStepCallback                    (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                haSyncValidateData                                    (WaveObjectManagerHaSyncValidateDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                haSyncValidateDataSelfStepCallback                    (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                haSyncValidateData                                    (WaveObjectManagerHaSyncValidateDataMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
                 void                haSyncSendValidationResultsHandler                    (WaveObjectManagerHaSyncSendValidationResultsMessage *pWaveObjectManagerHaSyncSendValidationResultsMessage);
                 void                haSyncSendValidationResultsWorkersStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                haSyncSendValidationResultsSelfStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                haSyncSendValidationResultsSelfStepCallback           (PrismAsynchronousContext *pPrismAsynchronousContext);
-        virtual void                haSyncSendValidationResults                           (WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                haSyncSendValidationResultsSelfStepCallback           (WaveAsynchronousContext *pWaveAsynchronousContext);
+        virtual void                haSyncSendValidationResults                           (WaveObjectManagerHaSyncSendValidationResultsMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
         virtual void                getDebugInformation                                   (WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation);
         virtual void                resetDebugInformation                                 (WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation);
@@ -612,7 +612,7 @@ class WaveObjectManager : public WaveElement
         virtual void                                             unlistenEvents                               ();
                 void                                             addResponseMap                               (UI32 prismMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
                 WaveMessageResponseContext                     *removeResponseMap                            (UI32 prismMessageId);
-                PrismOperationMapContext                        *getWaveMessageHandler                       (UI32 operationCode, UI32 messageHandlerServiceCode = 0, UI32 thisServiceId = 0);
+                WaveOperationMapContext                        *getWaveMessageHandler                       (UI32 operationCode, UI32 messageHandlerServiceCode = 0, UI32 thisServiceId = 0);
                 WaveEventMapContext                            *getWaveEventHandler                         (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
                 WaveObjectManager::WaveMessageResponseContext *getResponseContext                            (UI32 prismMessageId);
                 void                                             setIsEnabled                                 (bool isEnabled);
@@ -681,9 +681,9 @@ class WaveObjectManager : public WaveElement
         virtual void                                             tracePrintf                                        (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...);
         virtual void                                             tracePrintf                                        (TraceLevel traceLevel, const char * const pFormat, ...);
         virtual void                                             waveAssert                                        (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
-        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
-        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle,UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL);
-        void                                                     timerExpiredHandler                                (PrismTimerExpiredObjectManagerMessage *pTimerExpiredMessage);
+        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
+        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle,UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
+        void                                                     timerExpiredHandler                                (WaveTimerExpiredObjectManagerMessage *pTimerExpiredMessage);
         virtual ResourceId                                       deleteTimer                                        (TimerHandle timerHandle);
         virtual ResourceId                                       deleteAllTimersForService                          ();
 
@@ -804,7 +804,7 @@ class WaveObjectManager : public WaveElement
                 void                                             zeroizeWorkersStepCallback                         (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases) ;
                 void                                             zeroizeSelfStep                                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                                             zeroizeSelfStepCallback                            (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
-                void                                             zeroizeHandler                                     (PrismZeroizeObjectManagerMessage *pMessage);
+                void                                             zeroizeHandler                                     (WaveZeroizeObjectManagerMessage *pMessage);
 
         virtual void                                             zeroize                                            (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
 
@@ -901,7 +901,7 @@ class WaveObjectManager : public WaveElement
     private :
                string                                                               m_name;
                WaveThread                                                         *m_pAssociatedWaveThread;
-               map<UI32, PrismOperationMapContext *>                                m_operationsMap;
+               map<UI32, WaveOperationMapContext *>                                m_operationsMap;
                map<UI32, UI32>                                                      m_supportedEvents;
                map<LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>    m_eventsMap;
                map<UI32, WaveMessageResponseContext *>                             m_responsesMap;
@@ -946,7 +946,7 @@ class WaveObjectManager : public WaveElement
                bool                                                                 m_allowAutomaticallyUnlistenForEvents;
 
                WaveManagedObjectLoadOperationalDataWorker                          *m_pWaveManagedObjectLoadOperationalDataWorker;
-               PrismPostbootWorker                                                 *m_pPrismPostbootWorker;
+               WavePostbootWorker                                                 *m_pWavePostbootWorker;
                WaveMessage                                                        *m_pInputMessage;
 
                vector<MessageHistory *>                                             m_messageHistoryVector;
@@ -1008,7 +1008,7 @@ class WaveObjectManager : public WaveElement
     friend class WaveManagedObjectFactory;
     friend class DatabaseObjectManagerExecuteQueryWorker;
 	friend class DatabaseQueryCursor;
-    friend class PrismPostbootWorker;
+    friend class WavePostbootWorker;
     friend class WaveDebugInformationWorker;
     friend class WaveCliTraceShell;
     friend class ObjectTracker;
@@ -1018,7 +1018,7 @@ class WaveObjectManager : public WaveElement
     friend class WaveManagedObjectUpdateWorker;
     friend class WaveManagedObjectDeleteWorker;
     friend class WaveClientDataObjectGetWorker;
-    friend class PrismSynchronousLinearSequencerContext;
+    friend class WaveSynchronousLinearSequencerContext;
     friend class ManagementInterfaceObjectManager;
     friend class WaveMessageBroker;
     friend class WaveMessageBrokerClient;
@@ -1030,4 +1030,4 @@ class WaveObjectManager : public WaveElement
 
 }
 
-#endif //PRISMOBJECTMANAGER_H
+#endif //WAVEOBJECTMANAGER_H

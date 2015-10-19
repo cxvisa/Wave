@@ -360,7 +360,7 @@ void HeartBeatObjectManager::resumeHeartBeat (ResumeHeartBeatMessage *pMessage)
             if (0 == m_heartBeatNodes [i]->m_timerHandle)
             {
                 // Start the timer only if there is no timer running.
-                startTimer (m_heartBeatNodes [i]->m_timerHandle, m_heartBeatNodes [i]->m_heartBeatInterval, reinterpret_cast<PrismTimerExpirationHandler> (&HeartBeatObjectManager::heartBeatTimerHandler), m_heartBeatNodes[i]);
+                startTimer (m_heartBeatNodes [i]->m_timerHandle, m_heartBeatNodes [i]->m_heartBeatInterval, reinterpret_cast<WaveTimerExpirationHandler> (&HeartBeatObjectManager::heartBeatTimerHandler), m_heartBeatNodes[i]);
             }
             pMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
@@ -565,7 +565,7 @@ void HeartBeatObjectManager::sendHeartBeat (HeartBeatNodeInfo *pHeartBeatInfo)
     // Start timer to send another heartbeat when it expires.
     // We could have used periodic timer.
     trace (TRACE_LEVEL_DEBUG, "HeartBeatObjectManager::sendHeartBeat : Before Start Timer");
-    startTimer (pHeartBeatInfo->m_timerHandle, pHeartBeatInfo->m_heartBeatInterval, reinterpret_cast<PrismTimerExpirationHandler> (&HeartBeatObjectManager::heartBeatTimerHandler), pHeartBeatInfo);
+    startTimer (pHeartBeatInfo->m_timerHandle, pHeartBeatInfo->m_heartBeatInterval, reinterpret_cast<WaveTimerExpirationHandler> (&HeartBeatObjectManager::heartBeatTimerHandler), pHeartBeatInfo);
     trace (TRACE_LEVEL_DEBUG, "HeartBeatObjectManager::sendHeartBeat : After Start Timer");
 
     trace (TRACE_LEVEL_DEBUG, string ("HeartBeatObjectManager::sendHeartBeat: Armed HeartBeat Timer ") + (pHeartBeatInfo->m_ipAddress.toString()) + " port: " + pHeartBeatInfo->m_portNumber + " TimerHandle: " + pHeartBeatInfo->m_timerHandle);
@@ -732,12 +732,12 @@ void HeartBeatObjectManager::disconnectFromNodeMessageHandler(DisconnectFromNode
 
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager:: disconnectFromNodeMessageHandler: Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-    reinterpret_cast<PrismLinearSequencerStep> (&HeartBeatObjectManager::validateDisconnectFromNodeRequest),
-    reinterpret_cast<PrismLinearSequencerStep> (&HeartBeatObjectManager::processDisconnectFromNodeMessage),
-    reinterpret_cast<PrismLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerSucceededStep),
-    reinterpret_cast<PrismLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerFailedStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::validateDisconnectFromNodeRequest),
+    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::processDisconnectFromNodeMessage),
+    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerSucceededStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDisconnectFromNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

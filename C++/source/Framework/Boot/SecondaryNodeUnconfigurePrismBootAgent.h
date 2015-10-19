@@ -4,16 +4,16 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef SECONDARYNODEUNCONFIGUREPRISMBOOTAGENT_H
-#define SECONDARYNODEUNCONFIGUREPRISMBOOTAGENT_H
+#ifndef SECONDARYNODEUNCONFIGUREWAVEBOOTAGENT_H
+#define SECONDARYNODEUNCONFIGUREWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 #include "Framework/Core/FrameworkSequenceGenerator.h"
 
 namespace WaveNs
 {
 
-class SecondaryNodeUnconfigurePrismBootAgent : public PrismBootAgent
+class SecondaryNodeUnconfigureWaveBootAgent : public WaveBootAgent
 {
     private :
         virtual bool            isAPersistentBoot                           ();
@@ -25,8 +25,8 @@ class SecondaryNodeUnconfigurePrismBootAgent : public PrismBootAgent
 
     protected :
     public :
-                                SecondaryNodeUnconfigurePrismBootAgent      (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual                ~SecondaryNodeUnconfigurePrismBootAgent      ();
+                                SecondaryNodeUnconfigureWaveBootAgent      (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual                ~SecondaryNodeUnconfigureWaveBootAgent      ();
         virtual ResourceId      execute                                     (const WaveBootPhase &waveBootPhase);
 
     //Now the data members
@@ -38,4 +38,4 @@ class SecondaryNodeUnconfigurePrismBootAgent : public PrismBootAgent
 
 }
 
-#endif // SECONDARYNODEUNCONFIGUREPRISMBOOTAGENT_H
+#endif // SECONDARYNODEUNCONFIGUREWAVEBOOTAGENT_H

@@ -4,14 +4,14 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMELEMENT_H
-#define PRISMELEMENT_H
+#ifndef WAVEELEMENT_H
+#define WAVEELEMENT_H
 
 #include "Framework/Utils/StringUtils.h"
 //#include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/Trace/TraceMessages.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
-#include "Framework/Utils/PrismSynchronousLinearSequencerContext.h"
+#include "Framework/Utils/WaveSynchronousLinearSequencerContext.h"
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectModel/WaveClientSessionContext.h"
@@ -45,7 +45,7 @@ class WaveBrokerPublishMessage;
 typedef void (WaveElement::* WaveMessageHandler)                  (WaveMessage *pWaveMessage);
 typedef void (WaveElement::* WaveEventHandler)                    (const WaveEvent *&pWaveEvent);
 typedef void (WaveElement::* WaveMessageResponseHandler)          (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
-typedef void (WaveElement::* PrismTimerExpirationHandler)          (TimerHandle timerHandle, void *pContext);
+typedef void (WaveElement::* WaveTimerExpirationHandler)          (TimerHandle timerHandle, void *pContext);
 typedef void (*WaveServiceIndependentMessageHandler)                (WaveServiceIndependentMessage *pWaveServiceIndependentMessage);
 typedef void (*ManagementInterfaceServiceIndependentMessageHandler) (ManagementInterfaceServiceIndependentMessage *pManagementInterfaceServiceIndependentMessage);
 
@@ -77,18 +77,18 @@ class WaveElement
         virtual void                          tracePrintf                                          (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...) = 0;
         virtual void                          tracePrintf                                          (TraceLevel traceLevel, const char * const pFormat, ...) = 0;
         virtual void                          waveAssert                                          (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber) = 0;
-        virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL) = 0;
-        virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext = NULL, WaveElement *pPrismTimerSender = NULL) = 0;
+        virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL) = 0;
+        virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL) = 0;
         virtual ResourceId                    deleteTimer                                          (TimerHandle timerHandle) = 0;
 
                 void                          prismLinearSequencerSucceededStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                          prismLinearSequencerFailedStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                          prismLinearSequencerStartTransactionStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
                 void                          prismLinearSequencerCommitTransactionStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerSucceededStep         (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerFailedStep            (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerStartTransactionStep  (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerCommitTransactionStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                ResourceId                    prismSynchronousLinearSequencerSucceededStep         (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId                    prismSynchronousLinearSequencerFailedStep            (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId                    prismSynchronousLinearSequencerStartTransactionStep  (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId                    prismSynchronousLinearSequencerCommitTransactionStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
 
         virtual void                          holdMessages                                         ()                                                                                    = 0;
@@ -189,9 +189,9 @@ class WaveElement
 
     friend class WaveLinearSequencerContext;
     friend class DatabaseObjectManagerExecuteQueryWorker;
-    friend class PrismSynchronousLinearSequencerContext;
+    friend class WaveSynchronousLinearSequencerContext;
 };
 
 }
 
-#endif //PRISMELEMENT_H
+#endif //WAVEELEMENT_H

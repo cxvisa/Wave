@@ -11,7 +11,7 @@
 #include "Framework/ObjectModel/WaveLocalObjectManager.h"
 #include "Regression/RegressionTestMessage.h"
 #include "Framework/Core/Test/UpgradeDatabaseSchemaParser.h"
-#include "Regression/PrismTestObjectManager.h"
+#include "Regression/WaveTestObjectManager.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -20,7 +20,7 @@
 namespace WaveNs
 {
 
-class PrismAsynchronousContext;
+class WaveAsynchronousContext;
 class FrameworkTestabilityMessage8;
 class FrameworkTestabilityMessage9;
 class FrameworkTestabilityMessage10;
@@ -30,7 +30,7 @@ class FrameworkTestability6ObjectManagerGetManagedObjects;
 class WaveSendToClusterContext;
 class UpgradeDatabaseSchemaParser;
 
-class FrameworkTestability6ObjectManager: public PrismTestObjectManager
+class FrameworkTestability6ObjectManager: public WaveTestObjectManager
 {
 private :
     FrameworkTestability6ObjectManager                          ();
@@ -129,7 +129,7 @@ public :
 
     static  FrameworkTestability6ObjectManager *getInstance      ();
     static  WaveServiceId                      getWaveServiceId    ();
-    static  string                              getPrismServiceName ();
+    static  string                              getWaveServiceName ();
 
 
     // Now the data members

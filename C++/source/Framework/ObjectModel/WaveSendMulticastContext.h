@@ -7,7 +7,7 @@
 #ifndef WAVESENDMULTICASTCONTEXT_H
 #define WAVESENDMULTICASTCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 #include <vector>
 #include <map>
@@ -19,12 +19,12 @@ namespace WaveNs
 
 class WaveMessage;
 
-class WaveSendMulticastContext : public PrismAsynchronousContext
+class WaveSendMulticastContext : public WaveAsynchronousContext
 {
     private:
     protected:
     public:
-                                            WaveSendMulticastContext (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                            WaveSendMulticastContext (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                            ~WaveSendMulticastContext ();
                 void                        setWaveMessage          (WaveMessage *pWaveMessage);
                 WaveMessage*               getWaveMessage          ();

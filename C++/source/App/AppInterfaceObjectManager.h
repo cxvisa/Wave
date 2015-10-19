@@ -87,9 +87,9 @@ class AppInterfaceObjectManager : public WaveLocalObjectManager
                 UI32                       sendRemoteCommandsReply            (void *pContext, UI32 nResults, commandData_t resultList []);
                 void                       processDuplicateCmdsReply          (FrameworkStatus frameworkStatus, AppInterfaceObjectManagerRemoteCommandsMessage *pRemoteCmdMessage, void *pContext);
 
-                void                       clusterCreateCollectValidationData (WaveObjectManagerCollectValidationDataMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
-                void                       clusterCreateValidate              (WaveObjectManagerValidateClusterCreationMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
-                void                       clusterCreateSendValidationResults (WaveObjectManagerSendValidationResultsMessage *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext);
+                void                       clusterCreateCollectValidationData (WaveObjectManagerCollectValidationDataMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
+                void                       clusterCreateValidate              (WaveObjectManagerValidateClusterCreationMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
+                void                       clusterCreateSendValidationResults (WaveObjectManagerSendValidationResultsMessage *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext);
 
                 void                       clusterCollectValidationReply      (void *pContext, UI32 validationStatus, unsigned int validationResultsLen, void *pValidationResultsData);
                 void                       clusterValidationReply             (void *pContext, UI32 validationStatus, unsigned int validationResultDataLen, void *pValidationResultData);
@@ -122,7 +122,7 @@ class MessageAndContext
     private :
     protected :
     public :
-        MessageAndContext       (WaveMessageHandler *pMessage, PrismAsynchronousContext *pPrismAsynchronousContext, unsigned int m_appId);
+        MessageAndContext       (WaveMessageHandler *pMessage, WaveAsynchronousContext *pWaveAsynchronousContext, unsigned int m_appId);
         MessageAndContext       ();
        ~MessageAndContext       ();
 
@@ -131,7 +131,7 @@ class MessageAndContext
     public :
 
         WaveMessageHandler         *m_pMessage;
-        PrismAsynchronousContext    *m_pPrismAsynchronousContext;
+        WaveAsynchronousContext    *m_pWaveAsynchronousContext;
         unsigned int                 m_appId;
 };
 

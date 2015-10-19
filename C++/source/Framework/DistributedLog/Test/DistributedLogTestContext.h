@@ -18,7 +18,7 @@ class DistributedLogTestContext : public WaveLinearSequencerContext
     private:
     protected:
     public:
-                                DistributedLogTestContext       (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                DistributedLogTestContext       (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual                ~DistributedLogTestContext       (); 
 
                 UI64            getOriginalMaxAllowedLogEntries () const;

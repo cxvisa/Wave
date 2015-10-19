@@ -14,7 +14,7 @@
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/WaveNode.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Cluster/Local/HeartBeat/HeartBeatMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -69,12 +69,12 @@ ClusterLocalReportPrimaryNodeChangedWorker::~ClusterLocalReportPrimaryNodeChange
 
 void ClusterLocalReportPrimaryNodeChangedWorker::primaryNodeChangedMessageHandler (ClusterLocalReportPrimaryNodeChangedMessage *pClusterLocalReportPrimaryNodeChangedMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::updateWaveNodeManagedObjectStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::updateWaveNodeManagedObjectStep),
 
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::prismLinearSequencerFailedStep)
     };
 
     //Note: Memory is freed inside the framework in the Succeeeded or Failure step

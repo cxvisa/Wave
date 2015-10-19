@@ -47,7 +47,7 @@ WaveMutex                                                   WaveUserInterfaceObj
 string                                                       WaveUserInterfaceObjectManager::m_ttyName;
 
 WaveUserInterfaceObjectManager::WaveUserInterfaceObjectManager ()
-    : WaveObjectManager (getPrismServiceName ())
+    : WaveObjectManager (getWaveServiceName ())
 {
 	setTraceLevel (TRACE_LEVEL_INFO);
 
@@ -80,7 +80,7 @@ WaveServiceId WaveUserInterfaceObjectManager:: getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-string WaveUserInterfaceObjectManager::getPrismServiceName ()
+string WaveUserInterfaceObjectManager::getWaveServiceName ()
 {
     return ("Wave User Interface");
 }

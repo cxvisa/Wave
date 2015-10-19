@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-WaveAsynchronousContextForFileReplayEnd::WaveAsynchronousContextForFileReplayEnd (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext (pCaller, pCallback, pCallerContext)
+WaveAsynchronousContextForFileReplayEnd::WaveAsynchronousContextForFileReplayEnd (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext (pCaller, pCallback, pCallerContext)
 {
 }
 

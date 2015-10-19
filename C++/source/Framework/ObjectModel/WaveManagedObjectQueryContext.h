@@ -4,21 +4,21 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMMANAGEDOBJECTQUERYCONTEXT_H
-#define PRISMMANAGEDOBJECTQUERYCONTEXT_H
+#ifndef WAVEMANAGEDOBJECTQUERYCONTEXT_H
+#define WAVEMANAGEDOBJECTQUERYCONTEXT_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectQueryContextBase.h"
 
 namespace WaveNs
 {
 
-class WaveManagedObjectQueryContext : public PrismAsynchronousContext, public WaveManagedObjectQueryContextBase
+class WaveManagedObjectQueryContext : public WaveAsynchronousContext, public WaveManagedObjectQueryContextBase
 {
     private :
     protected :
     public :
-         WaveManagedObjectQueryContext (const string &classToQueryFor, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+         WaveManagedObjectQueryContext (const string &classToQueryFor, WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         ~WaveManagedObjectQueryContext ();
 
     // Now the data members
@@ -30,4 +30,4 @@ class WaveManagedObjectQueryContext : public PrismAsynchronousContext, public Wa
 
 }
 
-#endif // PRISMMANAGEDOBJECTQUERYCONTEXT_H
+#endif // WAVEMANAGEDOBJECTQUERYCONTEXT_H

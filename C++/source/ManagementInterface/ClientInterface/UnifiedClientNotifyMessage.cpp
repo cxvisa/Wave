@@ -16,7 +16,7 @@ namespace WaveNs
 {
 	 
 UnifiedClientNotifyMessage::UnifiedClientNotifyMessage ()
-    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getPrismServiceName (), UNIFIEDCLIENTNOTIFY)
+    : ManagementInterfaceMessage (WaveUserInterfaceObjectManager::getWaveServiceName (), UNIFIEDCLIENTNOTIFY)
 {
 }
 

@@ -5,7 +5,7 @@
  ***************************************************************************/
 #include "Shell/ShellObjectManager.h"
 #include "Shell/ShellBase.h"
-#include "Shell/ShellPrism.h"
+#include "Shell/ShellWave.h"
 
 #include <string>
 
@@ -14,17 +14,17 @@ using namespace std;
 namespace WaveNs
 {
 
-ShellPrism::ShellPrism (WaveObjectManager *pWaveObjectManager)
+ShellWave::ShellWave (WaveObjectManager *pWaveObjectManager)
     :ShellBase (pWaveObjectManager, string("Wave"))
 {
-    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellPrism::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellPrism::usageShellPrismRegressionService)));
-    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellPrism::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellPrism::usageShellPrismTraceService)));
-    addShellCommandHandler (ShellCommandHandler (string("debug"),      1,  (ShellCmdFunction) (&ShellPrism::shellExecuteDebugService),      1, (ShellUsageFunction) (&ShellPrism::usageShellPrismDebugService)));
-    addShellCommandHandler (ShellCommandHandler (string("cluster"),    1,  (ShellCmdFunction) (&ShellPrism::shellExecuteClusterService),    1, (ShellUsageFunction) (&ShellPrism::usageShellPrismClusterService)));
-    addShellCommandHandler (ShellCommandHandler (string("wyser"),      1,  (ShellCmdFunction) (&ShellPrism::shellExecuteWyserService),      1, (ShellUsageFunction) (&ShellPrism::usageShellPrismWyserService)));
-    addShellCommandHandler (ShellCommandHandler (string("load"),       2,  (ShellCmdFunction) (&ShellPrism::shellExecuteLoadScript),        1, (ShellUsageFunction) (&ShellPrism::usageShellPrismLoadScript)));
-    addShellCommandHandler (ShellCommandHandler (string("help"),       1,  (ShellCmdFunction) (&ShellPrism::shellExecuteHelp),              1, (ShellUsageFunction) (&ShellPrism::usageShellPrismHelp)));
-    addShellCommandHandler (ShellCommandHandler (string("QUIT"),       1,  (ShellCmdFunction) (&ShellPrism::shellExecuteQuit),              1, NULL));
+    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellWave::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellWave::usageShellWaveRegressionService)));
+    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellWave::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellWave::usageShellWaveTraceService)));
+    addShellCommandHandler (ShellCommandHandler (string("debug"),      1,  (ShellCmdFunction) (&ShellWave::shellExecuteDebugService),      1, (ShellUsageFunction) (&ShellWave::usageShellWaveDebugService)));
+    addShellCommandHandler (ShellCommandHandler (string("cluster"),    1,  (ShellCmdFunction) (&ShellWave::shellExecuteClusterService),    1, (ShellUsageFunction) (&ShellWave::usageShellWaveClusterService)));
+    addShellCommandHandler (ShellCommandHandler (string("wyser"),      1,  (ShellCmdFunction) (&ShellWave::shellExecuteWyserService),      1, (ShellUsageFunction) (&ShellWave::usageShellWaveWyserService)));
+    addShellCommandHandler (ShellCommandHandler (string("load"),       2,  (ShellCmdFunction) (&ShellWave::shellExecuteLoadScript),        1, (ShellUsageFunction) (&ShellWave::usageShellWaveLoadScript)));
+    addShellCommandHandler (ShellCommandHandler (string("help"),       1,  (ShellCmdFunction) (&ShellWave::shellExecuteHelp),              1, (ShellUsageFunction) (&ShellWave::usageShellWaveHelp)));
+    addShellCommandHandler (ShellCommandHandler (string("QUIT"),       1,  (ShellCmdFunction) (&ShellWave::shellExecuteQuit),              1, NULL));
 
     m_pRegressionShell  =   new ShellRegression    (pWaveObjectManager);
     m_pDebugShell       =   new ShellDebug         (pWaveObjectManager);
@@ -34,7 +34,7 @@ ShellPrism::ShellPrism (WaveObjectManager *pWaveObjectManager)
 }
 
 
-ShellPrism::~ShellPrism ()
+ShellWave::~ShellWave ()
 {
 
     if (NULL != m_pRegressionShell)
@@ -63,144 +63,144 @@ ShellPrism::~ShellPrism ()
     }
 }
 
-ShellRegression *ShellPrism::getRegressionShell ()
+ShellRegression *ShellWave::getRegressionShell ()
 {
     return (m_pRegressionShell);
 }
 
-ShellDebug *ShellPrism::getDebugShell ()
+ShellDebug *ShellWave::getDebugShell ()
 {
     return (m_pDebugShell);
 }
 
-ShellTrace *ShellPrism::getTraceShell ()
+ShellTrace *ShellWave::getTraceShell ()
 {
     return (m_pTraceShell);
 }
 
-ShellCluster *ShellPrism::getClusterShell()
+ShellCluster *ShellWave::getClusterShell()
 {
     return (m_pClusterShell);
 }
 
-ShellWyser *ShellPrism::getWyserShell()
+ShellWyser *ShellWave::getWyserShell()
 {
     return (m_pWyserShell);
 }
 
-UI32 ShellPrism::shellExecuteRegressionService (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteRegressionService (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteRegressionService : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteRegressionService : Entering ...");
 
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pRegressionShell->shellGetServicesList ();
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pRegressionShell->shellExecuteHandler ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pRegressionShell->shellGetServicesList ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pRegressionShell->shellExecuteHandler ();
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteTraceService (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteTraceService (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteTraceService : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteTraceService : Entering ...");
 
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pTraceShell->shellGetServicesList ();
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pTraceShell->shellExecuteHandler ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pTraceShell->shellGetServicesList ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pTraceShell->shellExecuteHandler ();
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteDebugService (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteDebugService (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteDebugService : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteDebugService : Entering ...");
 
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pDebugShell->shellExecuteHandler ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pDebugShell->shellExecuteHandler ();
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteClusterService (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteClusterService (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteClusterService : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteClusterService : Entering ...");
 
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pClusterShell->shellExecuteHandler ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pClusterShell->shellExecuteHandler ();
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteWyserService (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteWyserService (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteWyserService : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteWyserService : Entering ...");
 
-    (ShellObjectManager::getInstance ())->m_pPrismShell->m_pWyserShell->shellExecuteHandler ();
+    (ShellObjectManager::getInstance ())->m_pWaveShell->m_pWyserShell->shellExecuteHandler ();
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteLoadScript (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteLoadScript (UI32 argc, vector<string> argv)
 {
     (ShellObjectManager::getInstance ())->m_inputSource.open (argv [1].c_str (), ifstream::in);
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteHelp (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteHelp (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteHelp : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteHelp : Entering ...");
 
-    cout << endl << "Size of Prism Msg: " << sizeof(WaveMessage) << endl;
-    usageShellPrismHelp ();
+    cout << endl << "Size of Wave Msg: " << sizeof(WaveMessage) << endl;
+    usageShellWaveHelp ();
     return SHELL_OK;
 }
 
-UI32 ShellPrism::shellExecuteQuit (UI32 argc, vector<string> argv)
+UI32 ShellWave::shellExecuteQuit (UI32 argc, vector<string> argv)
 {
-    shellTrace (TRACE_LEVEL_DEVEL, "ShellPrism::shellExecuteQuit : Entering ...");
+    shellTrace (TRACE_LEVEL_DEVEL, "ShellWave::shellExecuteQuit : Entering ...");
     exit (0);
 }
 
-void ShellPrism::usageShellPrismRegressionService ()
+void ShellWave::usageShellWaveRegressionService ()
 {
     cout << "regression                 <Start regression shell>" << endl;
 }
 
-void ShellPrism::usageShellPrismTraceService ()
+void ShellWave::usageShellWaveTraceService ()
 {
     cout << "trace                      <Start trace shell>" << endl;
 }
 
-void ShellPrism::usageShellPrismDebugService ()
+void ShellWave::usageShellWaveDebugService ()
 {
     cout << "debug                      <Start debug shell>" << endl;
 }
 
-void ShellPrism::usageShellPrismClusterService ()
+void ShellWave::usageShellWaveClusterService ()
 {
     cout<<"cluster                     <Start cluster shell>"<< endl;
 }
 
-void ShellPrism::usageShellPrismWyserService ()
+void ShellWave::usageShellWaveWyserService ()
 {
     cout<<"wyser                       <Start wyser shell>"<< endl;
 }
 
-void ShellPrism::usageShellPrismLoadScript ()
+void ShellWave::usageShellWaveLoadScript ()
 {
     cout << "load <filename>            <Load Script>" << endl;
 }
 
-void ShellPrism::usageShellPrismHelp ()
+void ShellWave::usageShellWaveHelp ()
 {
-    usageShellPrismRegressionService ();
-    usageShellPrismTraceService ();
-    usageShellPrismDebugService ();
-    usageShellPrismLoadScript ();
-    usageShellPrismClusterService ();
-    usageShellPrismWyserService ();
+    usageShellWaveRegressionService ();
+    usageShellWaveTraceService ();
+    usageShellWaveDebugService ();
+    usageShellWaveLoadScript ();
+    usageShellWaveClusterService ();
+    usageShellWaveWyserService ();
     cout << "help                       <Help for prism shell>" << endl;
 }
 
 
-WaveMessageStatus ShellPrism::shellSendSynchronously (WaveMessage *pWaveMessage)
+WaveMessageStatus ShellWave::shellSendSynchronously (WaveMessage *pWaveMessage)
 {
-    return ((ShellObjectManager::getInstance ())->m_pPrismShell->sendSynchronously (pWaveMessage));
+    return ((ShellObjectManager::getInstance ())->m_pWaveShell->sendSynchronously (pWaveMessage));
 }
 
-void  ShellPrism::shellTrace (TraceLevel shellTraceLevel, const string &stringToTrace)
+void  ShellWave::shellTrace (TraceLevel shellTraceLevel, const string &stringToTrace)
 {
-    return (ShellObjectManager::getInstance ())->m_pPrismShell->trace (shellTraceLevel, stringToTrace);
+    return (ShellObjectManager::getInstance ())->m_pWaveShell->trace (shellTraceLevel, stringToTrace);
 }
 
 }

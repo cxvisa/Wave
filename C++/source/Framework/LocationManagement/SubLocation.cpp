@@ -7,7 +7,7 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/SubLocation.h"
 #include "Framework/LocationManagement/Location.h"
-#include "Framework/LocationManagement/PrismNodeConnectionInformation.h"
+#include "Framework/LocationManagement/WaveNodeConnectionInformation.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -222,16 +222,16 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
 
                         bool isSuccessful = false;
 
-                        isSuccessful = (*pClientSocket) << FrameworkToolKit::getPrismConnectionPassPhrase ();
+                        isSuccessful = (*pClientSocket) << FrameworkToolKit::getWaveConnectionPassPhrase ();
 
                         if (true != isSuccessful)
                         {
                             waveAssert (false, __FILE__, __LINE__);
                         }
 
-                        // now create the Prism Node Connection Information object and post it to the remote location.
+                        // now create the Wave Node Connection Information object and post it to the remote location.
 
-                        PrismNodeConnectionInformation thisServerConnectionInformation (m_ipAddress, m_port);
+                        WaveNodeConnectionInformation thisServerConnectionInformation (m_ipAddress, m_port);
 
                         isSuccessful = (*pClientSocket) << (&thisServerConnectionInformation);
 

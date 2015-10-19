@@ -38,7 +38,7 @@ class ClientStreamingSocket : private StreamingSocket
                       bool                   operator <<           (const string &dataString);
                       bool                   operator <<           (const FixedSizeBuffer &fixedsizeBuffer);
                       bool                   operator <<           (SerializableObject *pSerializableObject);
-                      bool                   operator <<           (WaveMessage *pPrismMessge);
+                      bool                   operator <<           (WaveMessage *pWaveMessge);
                       bool                   operator <<           (WaveBrokerBasedMessage *pWaveBrokerBasedMessage);
                       bool                   operator <<           (WaveBrokerBasedMessagePayload *pWaveBrokerBasedMessagePayload);
                       bool                   operator >>           (string &dataString);

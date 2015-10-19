@@ -14,7 +14,7 @@
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/WaveNode.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Cluster/Local/HeartBeat/HeartBeatMessages.h"
 
@@ -68,11 +68,11 @@ ClusterLocalReportRemovedNodeFromClusterWorker::~ClusterLocalReportRemovedNodeFr
 
 void ClusterLocalReportRemovedNodeFromClusterWorker::nodeRemovedMessageHandler(ClusterLocalReportRemovedNodeFromClusterMessage *pClusterLocalReportRemovedNodeFromClusterMessage)
 {
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::updateWaveNodeManagedObjectStep),     
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::updateWaveNodeManagedObjectStep),     
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::prismLinearSequencerFailedStep)
     };
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalReportRemovedNodeFromClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
    

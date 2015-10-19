@@ -40,7 +40,7 @@ WaveCliDebugShell::WaveCliDebugShell (WaveClientSynchronousConnection &connectio
     addCommandfunction ("zeroize", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::FIPSZeroize),  "Reset Dcmd to factory settings.", NULL);
     addCommandfunction ("getdebuginformation", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::getDebugInformation),  "Get debug information for a service.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliDebugShell::getDebugInformationHelp));
     addCommandfunction ("resetdebuginformation", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::resetDebugInformation),  "Reset debug information for a service.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliDebugShell::resetDebugInformationHelp));
-    addCommandfunction ("setPrismConfigurationValid", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::setPrismConfigurationValid), "Set/Reset the validity of PrismConfiguration.", NULL ); 
+    addCommandfunction ("setWaveConfigurationValid", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::setWaveConfigurationValid), "Set/Reset the validity of WaveConfiguration.", NULL ); 
     addCommandfunction ("runDebugScript", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::runDebugScript),  "Run debug script on all nodes in the cluster.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliDebugShell::runDebugScriptHelp));
     addCommandfunction ("copyFile", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::copyFile),  "Copy a file from this node to specified other nodes in the cluster.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliDebugShell::copyFileHelp));
     addCommandfunction ("copyFileToHaPeer", reinterpret_cast<WaveShellCommandFunction> (&WaveCliDebugShell::copyFileToHaPeer),  "Copy a file from this node to Ha Peer (standby location) if standby is present.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliDebugShell::copyFileToHaPeerHelp));
@@ -635,7 +635,7 @@ void WaveCliDebugShell::resetDebugInformationHelp (void)
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : resetdebuginformation <service id range>");
 }
 
-ResourceId WaveCliDebugShell::setPrismConfigurationValid ( const vector<string> &arguments )
+ResourceId WaveCliDebugShell::setWaveConfigurationValid ( const vector<string> &arguments )
 {
     ResourceId  status = WAVE_MESSAGE_SUCCESS;
 
@@ -644,7 +644,7 @@ ResourceId WaveCliDebugShell::setPrismConfigurationValid ( const vector<string> 
 
     if (1 > arguments.size () || 2 < arguments.size ())
     {   
-        tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : setPrismConfigurationValid <true/false> [schemaFile]");
+        tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : setWaveConfigurationValid <true/false> [schemaFile]");
         return (WAVE_MESSAGE_ERROR);
     }
     else
@@ -659,7 +659,7 @@ ResourceId WaveCliDebugShell::setPrismConfigurationValid ( const vector<string> 
         }
         else
         {   
-            tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : setPrismConfigurationValid <true/false> [schemaFile]");
+            tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : setWaveConfigurationValid <true/false> [schemaFile]");
             return (WAVE_MESSAGE_ERROR);
         }
         if (2 == arguments.size ())
@@ -671,15 +671,15 @@ ResourceId WaveCliDebugShell::setPrismConfigurationValid ( const vector<string> 
 
     WaveClientSynchronousConnection connection = getConnection ();
 
-    status = connection.setPrismConfigurationValid ( validity, schemaFile );
+    status = connection.setWaveConfigurationValid ( validity, schemaFile );
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, "WaveCliDebugShell::setPrismConfigurationValid : Command succeeded");
+        trace (TRACE_LEVEL_INFO, "WaveCliDebugShell::setWaveConfigurationValid : Command succeeded");
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliDebugShell::setPrismConfigurationValid : Command Failed with status  " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliDebugShell::setWaveConfigurationValid : Command Failed with status  " + FrameworkToolKit::localize (status));
     }
 
     return (status);

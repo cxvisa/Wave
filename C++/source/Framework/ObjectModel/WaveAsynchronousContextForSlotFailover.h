@@ -7,17 +7,17 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFORSLOTFAILOVER_H
 #define WAVEASYNCHRONOUSCONTEXTFORSLOTFAILOVER_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForSlotFailover : public PrismAsynchronousContext
+class WaveAsynchronousContextForSlotFailover : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                WaveAsynchronousContextForSlotFailover (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForSlotFailover (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForSlotFailover ();
 
                 UI32            getSlotNumber                          () const;

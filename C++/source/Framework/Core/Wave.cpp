@@ -60,11 +60,11 @@ static string s_waveProfileFileDirectory       ("");
 namespace WaveNs
 {
 
-vector<NativePrismServiceInstantiator>         Wave::m_nativePrismServiceInstantiators;
-vector<bool>                                   Wave::m_nativePrismServiceInstantiatorIsForNormalPhase;
-vector<NativeMultiplePrismServiceInstantiator> Wave::m_nativeMultiplePrismServiceInstantiators;
-vector<NativePrismServiceInstantiator>         Wave::m_nativeApplicationSpecificPrismServiceInstantiators;
-vector<ResourceId>                             Wave::m_nativePrismServiceInstantiationMode;
+vector<NativeWaveServiceInstantiator>         Wave::m_nativeWaveServiceInstantiators;
+vector<bool>                                   Wave::m_nativeWaveServiceInstantiatorIsForNormalPhase;
+vector<NativeMultipleWaveServiceInstantiator> Wave::m_nativeMultipleWaveServiceInstantiators;
+vector<NativeWaveServiceInstantiator>         Wave::m_nativeApplicationSpecificWaveServiceInstantiators;
+vector<ResourceId>                             Wave::m_nativeWaveServiceInstantiationMode;
 bool                                           Wave::m_enablePersistenceSupport;
 bool                                           Wave::m_enableClusteringSupport;
 bool                                           Wave::m_enableBuiltInSelfTestSupport;
@@ -340,7 +340,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     // Add ORM Repository Most Base Classes information from Wave.
 
-    OrmRepository::addMostBaseClass (PrismPersistableObject::getClassName ());
+    OrmRepository::addMostBaseClass (WavePersistableObject::getClassName ());
     OrmRepository::addMostBaseClass (WaveManagedObject::getClassName      ());
     OrmRepository::addMostBaseClass (WaveLocalManagedObject::getClassName ());
 
@@ -352,7 +352,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableShellSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ShellObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ShellObjectManager::getInstance));
     }
 
     FrameworkToolKit::registerDebugShellEntries ();
@@ -372,109 +372,109 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableBuiltInSelfTestSupport)
     {
-		registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkTestability6ObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (DistributedLogTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FileLocalMessagingTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (PersistenceTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ClusterTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TraceTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (LicenseTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkRemoteMessagingTestObjectManager2::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkRemoteMessagingTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkLocalMessagingTestObjectManager2::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkLocalMessagingTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkTestability5ObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkTestability4ObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkTestability3ObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkTestability2ObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkTestability1ObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FrameworkCoreTestObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (RegressionTestObjectManager::getInstance));
+		registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability6ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedLogTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FileLocalMessagingTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PersistenceTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ClusterTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TraceTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LicenseTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkRemoteMessagingTestObjectManager2::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkRemoteMessagingTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkLocalMessagingTestObjectManager2::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkLocalMessagingTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability5ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability4ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability3ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability2ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability1ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkCoreTestObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (RegressionTestObjectManager::getInstance));
     }
 
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (PolicyObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PolicyObjectManager::getInstance));
 
     if (true == m_enableSystemManagementSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (CommandLineInterfaceReceiverObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveSystemManagementObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (CommandLineInterfaceReceiverObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveSystemManagementObjectManager::getInstance));
     }
 
     if (true == m_enablePersistenceSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (MultiPartitionObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (MultiPartitionLocalObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (MultiPartitionObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (MultiPartitionLocalObjectManager::getInstance));
     }
 
     if (true == m_enableClusteringSupport)
     {
-		registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (DistributedDebugGlobalObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (DistributedDebugLocalObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (LockManagementObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (InterLocationMessageReceiverObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (InterLocationMessageTransportObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (CentralClusterConfigObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ClusterLocalObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (LocalClusterConfigObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ClusterInterfaceObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (HeartBeatObjectManager::getInstance));
+		registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedDebugGlobalObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedDebugLocalObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LockManagementObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (InterLocationMessageReceiverObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (InterLocationMessageTransportObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (CentralClusterConfigObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ClusterLocalObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LocalClusterConfigObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ClusterInterfaceObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HeartBeatObjectManager::getInstance));
     }
 
     if (true == m_enableManagementInterfaceSupport)
     {
 
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (HttpInterfaceReceiverObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HttpInterfaceReceiverObjectManager::getInstance));
 
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ManagementInterfaceReceiverObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ManagementInterfaceObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ManagementInterfaceReceiverObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ManagementInterfaceObjectManager::getInstance));
 
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveUserInterfaceObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveClientTransportObjectManager::getInstance));
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveClientReceiverObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveUserInterfaceObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveClientTransportObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveClientReceiverObjectManager::getInstance));
     }
 
     if (true == m_enableFileServiceSupport)
     {
-         registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FileObjectManager::getInstance),false);
-         registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (FileLocalObjectManager::getInstance),false);
+         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FileObjectManager::getInstance),false);
+         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FileLocalObjectManager::getInstance),false);
     }
 
     if (true == m_enableHaPeerSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (HaPeerMessageTransportObjectManager::getInstance),false);
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (HaPeerMessageReceiverObjectManager::getInstance),false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HaPeerMessageTransportObjectManager::getInstance),false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (HaPeerMessageReceiverObjectManager::getInstance),false);
     }
 
     if (true == m_enableTraceSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TraceObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TraceObjectManager::getInstance));
     }
 
     if (true == m_enableSoftwareManagementSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (SoftwareManagementObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (SoftwareManagementObjectManager::getInstance));
     }
 
     if (true == m_enableLicensingSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (LicenseObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LicenseObjectManager::getInstance));
     }
 
     if (true == m_enableDistributedLogSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (DistributedLogObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedLogObjectManager::getInstance));
     }
 
     if (true == m_enablePersistenceSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (PersistenceObjectManager::getInstance), false);
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (PersistenceLocalObjectManager::getInstance), false);
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (DatabaseObjectManager::getInstance), false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PersistenceObjectManager::getInstance), false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PersistenceLocalObjectManager::getInstance), false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DatabaseObjectManager::getInstance), false);
     }
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ReservedWaveLocalObjectManager::getInstance), false);
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ReservedWaveLocalObjectManager::getInstance), false);
 
     // WARNING! WARNING! WARNING!
     // Always keep the Timer Object Manager as the last registered internal native service.
@@ -482,13 +482,13 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableTimerSupport)
     {
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerObjectManager::getInstance), false);
-        registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerSignalObjectManager::getInstance), false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerObjectManager::getInstance), false);
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerSignalObjectManager::getInstance), false);
     }
 
     // Instantiate Native Wave Services here
 
-    instantiateNativePrismServices ();
+    instantiateNativeWaveServices ();
 
     // Start the ObjectManager s corresponding to Application Services
 
@@ -581,30 +581,30 @@ string Wave::getProfileFileDirectory ()
     return (s_waveProfileFileDirectory);
 }
 
-void Wave::registerNativeService (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
+void Wave::registerNativeService (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
 {
-    m_nativePrismServiceInstantiators.push_back                (pNativePrismServiceInstantiator);
-    m_nativePrismServiceInstantiatorIsForNormalPhase.push_back (isForNormalPhase);
-    m_nativePrismServiceInstantiationMode.push_back            (serviceMode);
+    m_nativeWaveServiceInstantiators.push_back                (pNativeWaveServiceInstantiator);
+    m_nativeWaveServiceInstantiatorIsForNormalPhase.push_back (isForNormalPhase);
+    m_nativeWaveServiceInstantiationMode.push_back            (serviceMode);
 }
 
-void Wave::registerApplicationSpecificNativeServices (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
+void Wave::registerApplicationSpecificNativeServices (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
 {
-    m_nativeApplicationSpecificPrismServiceInstantiators.push_back (pNativePrismServiceInstantiator);
+    m_nativeApplicationSpecificWaveServiceInstantiators.push_back (pNativeWaveServiceInstantiator);
 
-    registerNativeService (pNativePrismServiceInstantiator, isForNormalPhase, serviceMode);
+    registerNativeService (pNativeWaveServiceInstantiator, isForNormalPhase, serviceMode);
 }
 
-void Wave::registerNativeServiceInternal (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
+void Wave::registerNativeServiceInternal (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
 {
-    m_nativePrismServiceInstantiators.insert                (m_nativePrismServiceInstantiators.begin (), pNativePrismServiceInstantiator);
-    m_nativePrismServiceInstantiatorIsForNormalPhase.insert (m_nativePrismServiceInstantiatorIsForNormalPhase.begin (), isForNormalPhase);
-    m_nativePrismServiceInstantiationMode.insert            (m_nativePrismServiceInstantiationMode.begin (), serviceMode);
+    m_nativeWaveServiceInstantiators.insert                (m_nativeWaveServiceInstantiators.begin (), pNativeWaveServiceInstantiator);
+    m_nativeWaveServiceInstantiatorIsForNormalPhase.insert (m_nativeWaveServiceInstantiatorIsForNormalPhase.begin (), isForNormalPhase);
+    m_nativeWaveServiceInstantiationMode.insert            (m_nativeWaveServiceInstantiationMode.begin (), serviceMode);
 }
 
-void Wave::registerNativeService (NativeMultiplePrismServiceInstantiator pNativeMultiplePrismServiceInstantiator)
+void Wave::registerNativeService (NativeMultipleWaveServiceInstantiator pNativeMultipleWaveServiceInstantiator)
 {
-    m_nativeMultiplePrismServiceInstantiators.push_back (pNativeMultiplePrismServiceInstantiator);
+    m_nativeMultipleWaveServiceInstantiators.push_back (pNativeMultipleWaveServiceInstantiator);
 }
 
 void Wave::registerPersistencePostBootCheck (PersistencePostBootCheck pPersistencePostBootCheck)
@@ -720,35 +720,35 @@ string Wave::getWaveUserClientParams ()
     return (m_waveUserClientParams);
 }
 
-void Wave::instantiateNativePrismServices ()
+void Wave::instantiateNativeWaveServices ()
 {
     FrameworkSequenceGenerator &frameworkSequenceGenerator                       = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    UI32                        numberOfNativePrismServciesToInstantiate         = m_nativePrismServiceInstantiators.size ();
-    UI32                        numberOfNativeMultiplePrismServciesToInstantiate = m_nativeMultiplePrismServiceInstantiators.size ();
-    UI32                        numberOfNativeApplicationSpecificPrismServices   = m_nativeApplicationSpecificPrismServiceInstantiators.size ();
+    UI32                        numberOfNativeWaveServciesToInstantiate         = m_nativeWaveServiceInstantiators.size ();
+    UI32                        numberOfNativeMultipleWaveServciesToInstantiate = m_nativeMultipleWaveServiceInstantiators.size ();
+    UI32                        numberOfNativeApplicationSpecificWaveServices   = m_nativeApplicationSpecificWaveServiceInstantiators.size ();
     UI32                        i                                                = 0;
     UI32                        j                                                = 0;
     WaveObjectManager         *pWaveObjectManager                              = NULL;
 
-    for (i = 0; i < numberOfNativePrismServciesToInstantiate; i++)
+    for (i = 0; i < numberOfNativeWaveServciesToInstantiate; i++)
     {
 
-        WaveObjectManager::m_waveServiceLaunchMode = (WaveServiceMode) (m_nativePrismServiceInstantiationMode[i]);
+        WaveObjectManager::m_waveServiceLaunchMode = (WaveServiceMode) (m_nativeWaveServiceInstantiationMode[i]);
 
-        pWaveObjectManager = (*(m_nativePrismServiceInstantiators[i])) ();
+        pWaveObjectManager = (*(m_nativeWaveServiceInstantiators[i])) ();
 
         waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-        if (WAVE_SERVICE_ACTIVE == m_nativePrismServiceInstantiationMode[i])
+        if (WAVE_SERVICE_ACTIVE == m_nativeWaveServiceInstantiationMode[i])
         {
-            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
+            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativeWaveServiceInstantiatorIsForNormalPhase[i]);
 
         }
     }
 
-    for (i = 0; i < numberOfNativeMultiplePrismServciesToInstantiate; i++)
+    for (i = 0; i < numberOfNativeMultipleWaveServciesToInstantiate; i++)
     {
-        vector<WaveObjectManager *> objectManagers         = (*(m_nativeMultiplePrismServiceInstantiators[i])) ();
+        vector<WaveObjectManager *> objectManagers         = (*(m_nativeMultipleWaveServiceInstantiators[i])) ();
         UI32                         numberOfObjectManagers = objectManagers.size ();
 
         for (j = 0; j < numberOfObjectManagers; j++)
@@ -761,19 +761,19 @@ void Wave::instantiateNativePrismServices ()
         }
     }
 
-    for (i = 0; i < numberOfNativeApplicationSpecificPrismServices; i++)
+    for (i = 0; i < numberOfNativeApplicationSpecificWaveServices; i++)
     {
 
-        pWaveObjectManager = (*(m_nativeApplicationSpecificPrismServiceInstantiators[i])) ();
+        pWaveObjectManager = (*(m_nativeApplicationSpecificWaveServiceInstantiators[i])) ();
 
         ApplicationSpecificServices *pApplicationSpecificServices = ApplicationSpecificServices::getInstance ();
 
         pApplicationSpecificServices->setWaveServiceId (pWaveObjectManager->getServiceId ());
 
-        trace (TRACE_LEVEL_DEBUG, string ("ApplicationSpecificPrismServices service ID ") + pWaveObjectManager->getServiceId ());
+        trace (TRACE_LEVEL_DEBUG, string ("ApplicationSpecificWaveServices service ID ") + pWaveObjectManager->getServiceId ());
     }
 
-    trace (TRACE_LEVEL_INFO, string ("Instantiated ") + numberOfNativePrismServciesToInstantiate + " Native Wave Services");
+    trace (TRACE_LEVEL_INFO, string ("Instantiated ") + numberOfNativeWaveServciesToInstantiate + " Native Wave Services");
 }
 
 void Wave::waveExit ()
@@ -804,12 +804,12 @@ void Wave::waveExit ()
 
 }
 
-extern "C" void setPrismTraceFileDirectory (const char *pPrismTraceFileDirectory)
+extern "C" void setWaveTraceFileDirectory (const char *pWaveTraceFileDirectory)
 {
-    s_waveTraceFileDirectory = pPrismTraceFileDirectory;
+    s_waveTraceFileDirectory = pWaveTraceFileDirectory;
 }
 
-extern "C" void setPrismConfigurationFileDirectory (const char *pPrismConfigurationFileDirectory)
+extern "C" void setWaveConfigurationFileDirectory (const char *pWaveConfigurationFileDirectory)
 {
-    s_waveConfigurationFileDirectory = pPrismConfigurationFileDirectory;
+    s_waveConfigurationFileDirectory = pWaveConfigurationFileDirectory;
 }

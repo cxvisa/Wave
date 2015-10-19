@@ -10,14 +10,14 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/ObjectRelationalMapping/OrmTable.h"
-#include "Framework/ObjectModel/PrismPersistableObject.h"
+#include "Framework/ObjectModel/WavePersistableObject.h"
 #include "Framework/Attributes/AttributeTypes.h"
 #include "Framework/Attributes/AttributeManagedObjectComposition.cpp"
 #include "Framework/Attributes/AttributeManagedObjectVectorComposition.cpp"
 #include "Framework/Attributes/AttributeSerializableObject.cpp"
 #include "Framework/ObjectModel/SerializableObject.h"
 #include "Framework/Types/BitMap.h"
-#include "Version/PrismVersion.h"
+#include "Version/WaveVersion.h"
 
 
 namespace WaveNs
@@ -841,7 +841,7 @@ void AttributesMap::setUserTagForAttribute (const string &attributeName, const U
     m_attributesByUserTag[attributeUserTag] = pAttribute;
 }
 
-void AttributesMap::updateOrmRelations (const PrismPersistableObject *pPrismPersistableObject)
+void AttributesMap::updateOrmRelations (const WavePersistableObject *pWavePersistableObject)
 {
     map<UI32, Attribute *>::iterator  element         = m_attributes.begin ();
     map<UI32, Attribute *>::iterator  limitingElement = m_attributes.end ();
@@ -853,7 +853,7 @@ void AttributesMap::updateOrmRelations (const PrismPersistableObject *pPrismPers
 
         waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
-        pAttribute->updateOrmRelations (pPrismPersistableObject);
+        pAttribute->updateOrmRelations (pWavePersistableObject);
 
         element++;
     }
@@ -1391,7 +1391,7 @@ void AttributesMap::getJsonObjectData (const vector<string> &attributeNamesForJs
     jsonObjectData += "    }";
 }
 
-void AttributesMap::updateKeyString (const PrismPersistableObject *pPrismPersistableObject)
+void AttributesMap::updateKeyString (const WavePersistableObject *pWavePersistableObject)
 {
     map<UI32, Attribute *>::iterator  element         = m_attributes.begin ();
     map<UI32, Attribute *>::iterator  limitingElement = m_attributes.end ();
@@ -1403,7 +1403,7 @@ void AttributesMap::updateKeyString (const PrismPersistableObject *pPrismPersist
 
         waveAssert (NULL != pAttribute, __FILE__, __LINE__);
 
-        pAttribute->updateKeyString (pPrismPersistableObject);
+        pAttribute->updateKeyString (pWavePersistableObject);
 
         element++;
     }

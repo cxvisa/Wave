@@ -16,7 +16,7 @@ namespace WaveNs
 {
 
 class WaveManagedObject;
-class PrismPersistableObject;
+class WavePersistableObject;
 class WaveObjectManager;
 class WaveManagedObjectOperation;
 
@@ -54,11 +54,11 @@ template<class T> class AttributeManagedObjectComposition : public AttributeMana
 
         virtual void                                  loadFromPostgresQueryResult       (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
 
-        virtual void                                  updateOrmRelations                (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void                                  updateOrmRelations                (const WavePersistableObject *pWavePersistableObject);
         virtual WaveManagedObject                    *getComposedManagedObject          (const ObjectId &childObjectId);
         virtual vector<WaveManagedObject *>          *getComposedManagedObject          ();
         virtual bool                                  isDeletableForOperation           (const WaveManagedObjectOperation &operation);
-        virtual void                                  updateKeyString                   (const PrismPersistableObject *pPrismPersistableObject);
+        virtual void                                  updateKeyString                   (const WavePersistableObject *pWavePersistableObject);
         virtual void                                  setDefaultValue                   ();
         virtual void                                  getCValue                         (WaveCValue *pCValue);
 

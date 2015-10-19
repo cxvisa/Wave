@@ -1,0 +1,105 @@
+/***************************************************************************
+ *   Copyright (C) 2005-2006 Brocade Communications Systems, Inc.          *
+ *   All rights reserved.                                                  *
+ *   Author : Vidyasagara Reddy Guntaka                                    *
+ ***************************************************************************/
+
+#include "Version/WaveVersion.h"
+
+namespace WaveNs
+{
+
+WaveVersion::WaveVersion ()
+    : m_major       ("WAVE_VERSION_MAJOR"),
+      m_minor       ("WAVE_VERSION_MINOR"),
+      m_patch       ("WAVE_VERSION_PATCH"),
+      m_revision    ("WAVE_VERSION_REVISION"),
+      m_buildType   ("WAVE_BUILD_TYPE"),
+      m_buildNumber ("WAVE_BUILD_NUMBER"),
+      m_date        ("WAVE_VERSION_DATE"),
+      m_user        ("WAVE_VERSION_USER"),
+      m_host        ("WAVE_VERSION_HOST"),
+      m_domain      ("WAVE_VERSION_DOMAIN")
+{
+}
+
+WaveVersion::~WaveVersion ()
+{
+}
+
+string WaveVersion::getMajor () const
+{
+    return (m_major);
+}
+
+string WaveVersion::getMinor () const
+{
+    return (m_minor);
+}
+
+string WaveVersion::getPatch () const
+{
+    return (m_patch);
+}
+
+string WaveVersion::getRevision () const
+{
+    return (m_revision);
+}
+
+string WaveVersion::getBuildType () const
+{
+    return (m_buildType);
+}
+
+string WaveVersion::getBuildNumber () const
+{
+    return (m_buildNumber);
+}
+
+string WaveVersion::getDate () const
+{
+    return (m_date);
+}
+
+string WaveVersion::getUser () const
+{
+    return (m_user);
+}
+
+string WaveVersion::getHost () const
+{
+    return (m_host);
+}
+
+string WaveVersion::getDomain () const
+{
+    return (m_domain);
+}
+
+const WaveVersion *WaveVersion::getInstance ()
+{
+    static WaveVersion *pWaveVersion = NULL;
+
+    if (NULL == pWaveVersion)
+    {
+        pWaveVersion = new WaveVersion ();
+    }
+
+    return (pWaveVersion);
+}
+
+string WaveVersion::getVersionString ()
+{
+    const WaveVersion *pWaveVersion       = getInstance ();
+          string        prismVersionString;
+
+    if (NULL != pWaveVersion)
+    {
+        prismVersionString = string ("") + pWaveVersion->getMajor () + "." + pWaveVersion->getMinor () + "." + pWaveVersion->getPatch () + "." + pWaveVersion->getRevision () + "-" + pWaveVersion->getBuildType () + "." + pWaveVersion->getBuildNumber ();
+    }
+
+    return (prismVersionString);
+}
+
+}

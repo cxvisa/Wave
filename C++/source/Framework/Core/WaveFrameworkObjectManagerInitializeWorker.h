@@ -3,13 +3,13 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKOBJECTMANAGERINITIALIZEWORKER_H
-#define PRISMFRAMEWORKOBJECTMANAGERINITIALIZEWORKER_H
+#ifndef WAVEFRAMEWORKOBJECTMANAGERINITIALIZEWORKER_H
+#define WAVEFRAMEWORKOBJECTMANAGERINITIALIZEWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 #include "Framework/Utils/WaveMutex.h"
-#include "Framework/Postboot/PrismPostbootDebug.h"
+#include "Framework/Postboot/WavePostbootDebug.h"
 #include "Framework/ObjectRelationalMapping/DatabaseSchema.h"
 #include "Framework/Core/WaveFrameworkConfiguration.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
@@ -28,7 +28,7 @@ typedef enum
     WAVE_BOOT_SECONDARY_REJOIN,
     WAVE_BOOT_HASTANDBY,
     WAVE_BOOT_PREPARE_FOR_HA_BOOT
-} PrismBootMode;
+} WaveBootMode;
 
 class WaveFrameworkInitializeWorkerStartServicesContext;
 
@@ -53,7 +53,7 @@ class WaveFrameworkObjectManagerInitializeWorker : public WaveWorker
                            WaveFrameworkObjectManagerInitializeWorker (WaveObjectManager *pWaveObjectManager);
                           ~WaveFrameworkObjectManagerInitializeWorker ();
 
-               ResourceId  startPrismServices                          (const PrismBootMode &prismBootMode = WAVE_BOOT_UNKNOWN, const WaveBootPhase &waveBootPhase = WAVE_BOOT_PHASE_ALL_PHASES);
+               ResourceId  startWaveServices                          (const WaveBootMode &prismBootMode = WAVE_BOOT_UNKNOWN, const WaveBootPhase &waveBootPhase = WAVE_BOOT_PHASE_ALL_PHASES);
 
         static bool        getInitialBootCompleted                     ();
         static void        setInitialBootCompleted                     (const bool &initialBootCompleted);
@@ -64,10 +64,10 @@ class WaveFrameworkObjectManagerInitializeWorker : public WaveWorker
     // Now the data members
 
     private :
-               PrismBootAgent      *m_pPrismBootAgent;
+               WaveBootAgent      *m_pWaveBootAgent;
         static bool                 m_initialBootcompleted;
         static WaveMutex           m_initialBootcompletedMutex;
-               PrismPostbootDebug   m_postbootDebug; // to allow invocation of intialize function
+               WavePostbootDebug   m_postbootDebug; // to allow invocation of intialize function
         static bool                 m_initialSchemaInfoObjectSaved;
         static WaveMutex           m_initialSchemaInfoObjectSavedMutex;
 
@@ -79,4 +79,4 @@ class WaveFrameworkObjectManagerInitializeWorker : public WaveWorker
 
 }
 
-#endif //PRISMFRAMEWORKOBJECTMANAGERINITIALIZEWORKER_H
+#endif //WAVEFRAMEWORKOBJECTMANAGERINITIALIZEWORKER_H

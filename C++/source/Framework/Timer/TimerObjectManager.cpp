@@ -44,13 +44,13 @@ WaveServiceId TimerObjectManager::getWaveServiceId ()
 }
 
 
-void TimerObjectManager::disable (PrismAsynchronousContext *pPrismAsynchronousContext)
+void TimerObjectManager::disable (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
 
     trace (TRACE_LEVEL_DEVEL, "TimerObjectManager::disable : Entering ...");
 
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 
     m_pTimerWorker->deleteAllTimers ();
 }

@@ -5,32 +5,32 @@
  ***************************************************************************/
 
 #include "Cluster/ClusterDeleteContext.h"
-#include "Cluster/PrismCluster.h"
+#include "Cluster/WaveCluster.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
 
 namespace WaveNs
 {
 
-ClusterDeleteContext::ClusterDeleteContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
+ClusterDeleteContext::ClusterDeleteContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
-      m_pPrismCluster             (NULL),
+      m_pWaveCluster             (NULL),
       m_pSecondaryNodes           (NULL)
 {
 }
 
-ClusterDeleteContext::ClusterDeleteContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
-      m_pPrismCluster             (NULL),
+ClusterDeleteContext::ClusterDeleteContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : WaveLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+      m_pWaveCluster             (NULL),
       m_pSecondaryNodes           (NULL)
 {
 }
 
 ClusterDeleteContext::~ClusterDeleteContext ()
 {
-    if (NULL != m_pPrismCluster)
+    if (NULL != m_pWaveCluster)
     {
-        delete m_pPrismCluster;
-        m_pPrismCluster = NULL;
+        delete m_pWaveCluster;
+        m_pWaveCluster = NULL;
     }
 
     if (NULL != m_pSecondaryNodes)
@@ -50,14 +50,14 @@ ClusterDeleteContext::~ClusterDeleteContext ()
     }
 }
 
-PrismCluster *ClusterDeleteContext::getPPrismCluster () const
+WaveCluster *ClusterDeleteContext::getPWaveCluster () const
 {
-    return (m_pPrismCluster);
+    return (m_pWaveCluster);
 }
 
-void ClusterDeleteContext::setPPrismCluster (PrismCluster *pPrismCluster)
+void ClusterDeleteContext::setPWaveCluster (WaveCluster *pWaveCluster)
 {
-    m_pPrismCluster = pPrismCluster;
+    m_pWaveCluster = pWaveCluster;
 }
 
 vector<WaveManagedObject *> *ClusterDeleteContext::getPSecondaryNodes () const

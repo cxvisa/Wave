@@ -59,11 +59,11 @@ static string s_waveProfileFileDirectory       ("");
 namespace WaveNs
 {
 
-vector<NativePrismServiceInstantiator>         WaveMessageBroker::m_nativePrismServiceInstantiators;
-vector<bool>                                   WaveMessageBroker::m_nativePrismServiceInstantiatorIsForNormalPhase;
-vector<NativeMultiplePrismServiceInstantiator> WaveMessageBroker::m_nativeMultiplePrismServiceInstantiators;
-vector<NativePrismServiceInstantiator>         WaveMessageBroker::m_nativeApplicationSpecificPrismServiceInstantiators;
-vector<ResourceId>                             WaveMessageBroker::m_nativePrismServiceInstantiationMode;
+vector<NativeWaveServiceInstantiator>         WaveMessageBroker::m_nativeWaveServiceInstantiators;
+vector<bool>                                   WaveMessageBroker::m_nativeWaveServiceInstantiatorIsForNormalPhase;
+vector<NativeMultipleWaveServiceInstantiator> WaveMessageBroker::m_nativeMultipleWaveServiceInstantiators;
+vector<NativeWaveServiceInstantiator>         WaveMessageBroker::m_nativeApplicationSpecificWaveServiceInstantiators;
+vector<ResourceId>                             WaveMessageBroker::m_nativeWaveServiceInstantiationMode;
 bool                                           WaveMessageBroker::m_enablePersistenceSupport;
 bool                                           WaveMessageBroker::m_enableClusteringSupport;
 bool                                           WaveMessageBroker::m_enableBuiltInSelfTestSupport;
@@ -325,7 +325,7 @@ void WaveMessageBroker::initialize (const WaveMainConfiguration &waveMainConfigu
 
     // Add ORM Repository Most Base Classes information from WaveMessageBroker.
 
-    OrmRepository::addMostBaseClass (PrismPersistableObject::getClassName ());
+    OrmRepository::addMostBaseClass (WavePersistableObject::getClassName ());
     OrmRepository::addMostBaseClass (WaveManagedObject::getClassName      ());
     OrmRepository::addMostBaseClass (WaveLocalManagedObject::getClassName ());
 
@@ -335,7 +335,7 @@ void WaveMessageBroker::initialize (const WaveMainConfiguration &waveMainConfigu
 
     // ShellObjectManager must be the next one so that all can register their shells and related shell handlers.
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ShellObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ShellObjectManager::getInstance));
 
     FrameworkToolKit::registerDebugShellEntries ();
     WaveSourceGeneratorBase::registerDebugShellEntries ();
@@ -352,25 +352,25 @@ void WaveMessageBroker::initialize (const WaveMainConfiguration &waveMainConfigu
 
     // Below this one the services are registered in reverse order.  The last one will be on top of the list.
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (WaveMessagingBrokerReceiverObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (WaveMessagingBrokerReceiverObjectManager::getInstance));
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ManagementInterfaceReceiverObjectManager::getInstance));
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ManagementInterfaceObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ManagementInterfaceReceiverObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ManagementInterfaceObjectManager::getInstance));
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TraceObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TraceObjectManager::getInstance));
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (ReservedWaveLocalObjectManager::getInstance), false);
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ReservedWaveLocalObjectManager::getInstance), false);
 
     // WARNING! WARNING! WARNING!
     // Always keep the Timer Object Manager as the last registered internal native service.
     // All services will cancel their timers with the Timer Object Manager during shutdown so this service must be the last to shutdown.
 
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerObjectManager::getInstance), false);
-    registerNativeServiceInternal (reinterpret_cast<NativePrismServiceInstantiator> (TimerSignalObjectManager::getInstance), false);
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerObjectManager::getInstance), false);
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (TimerSignalObjectManager::getInstance), false);
 
     // Instantiate Native WaveMessageBroker Services here
 
-    instantiateNativePrismServices ();
+    instantiateNativeWaveServices ();
 
     // Start the ObjectManager s corresponding to Application Services
 
@@ -463,30 +463,30 @@ string WaveMessageBroker::getProfileFileDirectory ()
     return (s_waveProfileFileDirectory);
 }
 
-void WaveMessageBroker::registerNativeService (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
+void WaveMessageBroker::registerNativeService (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
 {
-    m_nativePrismServiceInstantiators.push_back                (pNativePrismServiceInstantiator);
-    m_nativePrismServiceInstantiatorIsForNormalPhase.push_back (isForNormalPhase);
-    m_nativePrismServiceInstantiationMode.push_back            (serviceMode);
+    m_nativeWaveServiceInstantiators.push_back                (pNativeWaveServiceInstantiator);
+    m_nativeWaveServiceInstantiatorIsForNormalPhase.push_back (isForNormalPhase);
+    m_nativeWaveServiceInstantiationMode.push_back            (serviceMode);
 }
 
-void WaveMessageBroker::registerApplicationSpecificNativeServices (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
+void WaveMessageBroker::registerApplicationSpecificNativeServices (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
 {
-    m_nativeApplicationSpecificPrismServiceInstantiators.push_back (pNativePrismServiceInstantiator);
+    m_nativeApplicationSpecificWaveServiceInstantiators.push_back (pNativeWaveServiceInstantiator);
 
-    registerNativeService (pNativePrismServiceInstantiator, isForNormalPhase, serviceMode);
+    registerNativeService (pNativeWaveServiceInstantiator, isForNormalPhase, serviceMode);
 }
 
-void WaveMessageBroker::registerNativeServiceInternal (NativePrismServiceInstantiator pNativePrismServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
+void WaveMessageBroker::registerNativeServiceInternal (NativeWaveServiceInstantiator pNativeWaveServiceInstantiator, const bool &isForNormalPhase, const ResourceId &serviceMode)
 {
-    m_nativePrismServiceInstantiators.insert                (m_nativePrismServiceInstantiators.begin (), pNativePrismServiceInstantiator);
-    m_nativePrismServiceInstantiatorIsForNormalPhase.insert (m_nativePrismServiceInstantiatorIsForNormalPhase.begin (), isForNormalPhase);
-    m_nativePrismServiceInstantiationMode.insert            (m_nativePrismServiceInstantiationMode.begin (), serviceMode);
+    m_nativeWaveServiceInstantiators.insert                (m_nativeWaveServiceInstantiators.begin (), pNativeWaveServiceInstantiator);
+    m_nativeWaveServiceInstantiatorIsForNormalPhase.insert (m_nativeWaveServiceInstantiatorIsForNormalPhase.begin (), isForNormalPhase);
+    m_nativeWaveServiceInstantiationMode.insert            (m_nativeWaveServiceInstantiationMode.begin (), serviceMode);
 }
 
-void WaveMessageBroker::registerNativeService (NativeMultiplePrismServiceInstantiator pNativeMultiplePrismServiceInstantiator)
+void WaveMessageBroker::registerNativeService (NativeMultipleWaveServiceInstantiator pNativeMultipleWaveServiceInstantiator)
 {
-    m_nativeMultiplePrismServiceInstantiators.push_back (pNativeMultiplePrismServiceInstantiator);
+    m_nativeMultipleWaveServiceInstantiators.push_back (pNativeMultipleWaveServiceInstantiator);
 }
 
 void WaveMessageBroker::registerPersistencePostBootCheck (PersistencePostBootCheck pPersistencePostBootCheck)
@@ -600,35 +600,35 @@ string WaveMessageBroker::getWaveUserClientParams ()
     return (m_waveUserClientParams);
 }
 
-void WaveMessageBroker::instantiateNativePrismServices ()
+void WaveMessageBroker::instantiateNativeWaveServices ()
 {
     FrameworkSequenceGenerator &frameworkSequenceGenerator                       = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    UI32                        numberOfNativePrismServciesToInstantiate         = m_nativePrismServiceInstantiators.size ();
-    UI32                        numberOfNativeMultiplePrismServciesToInstantiate = m_nativeMultiplePrismServiceInstantiators.size ();
-    UI32                        numberOfNativeApplicationSpecificPrismServices   = m_nativeApplicationSpecificPrismServiceInstantiators.size ();
+    UI32                        numberOfNativeWaveServciesToInstantiate         = m_nativeWaveServiceInstantiators.size ();
+    UI32                        numberOfNativeMultipleWaveServciesToInstantiate = m_nativeMultipleWaveServiceInstantiators.size ();
+    UI32                        numberOfNativeApplicationSpecificWaveServices   = m_nativeApplicationSpecificWaveServiceInstantiators.size ();
     UI32                        i                                                = 0;
     UI32                        j                                                = 0;
     WaveObjectManager         *pWaveObjectManager                              = NULL;
 
-    for (i = 0; i < numberOfNativePrismServciesToInstantiate; i++)
+    for (i = 0; i < numberOfNativeWaveServciesToInstantiate; i++)
     {
 
-        WaveObjectManager::m_waveServiceLaunchMode = (WaveServiceMode) (m_nativePrismServiceInstantiationMode[i]);
+        WaveObjectManager::m_waveServiceLaunchMode = (WaveServiceMode) (m_nativeWaveServiceInstantiationMode[i]);
 
-        pWaveObjectManager = (*(m_nativePrismServiceInstantiators[i])) ();
+        pWaveObjectManager = (*(m_nativeWaveServiceInstantiators[i])) ();
 
         waveAssert (NULL != pWaveObjectManager, __FILE__, __LINE__);
 
-        if (WAVE_SERVICE_ACTIVE == m_nativePrismServiceInstantiationMode[i])
+        if (WAVE_SERVICE_ACTIVE == m_nativeWaveServiceInstantiationMode[i])
         {
-            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativePrismServiceInstantiatorIsForNormalPhase[i]);
+            frameworkSequenceGenerator.addWaveServiceIdToAll (pWaveObjectManager->getServiceId (), m_nativeWaveServiceInstantiatorIsForNormalPhase[i]);
 
         }
     }
 
-    for (i = 0; i < numberOfNativeMultiplePrismServciesToInstantiate; i++)
+    for (i = 0; i < numberOfNativeMultipleWaveServciesToInstantiate; i++)
     {
-        vector<WaveObjectManager *> objectManagers         = (*(m_nativeMultiplePrismServiceInstantiators[i])) ();
+        vector<WaveObjectManager *> objectManagers         = (*(m_nativeMultipleWaveServiceInstantiators[i])) ();
         UI32                         numberOfObjectManagers = objectManagers.size ();
 
         for (j = 0; j < numberOfObjectManagers; j++)
@@ -641,19 +641,19 @@ void WaveMessageBroker::instantiateNativePrismServices ()
         }
     }
 
-    for (i = 0; i < numberOfNativeApplicationSpecificPrismServices; i++)
+    for (i = 0; i < numberOfNativeApplicationSpecificWaveServices; i++)
     {
 
-        pWaveObjectManager = (*(m_nativeApplicationSpecificPrismServiceInstantiators[i])) ();
+        pWaveObjectManager = (*(m_nativeApplicationSpecificWaveServiceInstantiators[i])) ();
 
         ApplicationSpecificServices *pApplicationSpecificServices = ApplicationSpecificServices::getInstance ();
 
         pApplicationSpecificServices->setWaveServiceId (pWaveObjectManager->getServiceId ());
 
-        trace (TRACE_LEVEL_DEBUG, string ("ApplicationSpecificPrismServices service ID ") + pWaveObjectManager->getServiceId ());
+        trace (TRACE_LEVEL_DEBUG, string ("ApplicationSpecificWaveServices service ID ") + pWaveObjectManager->getServiceId ());
     }
 
-    trace (TRACE_LEVEL_INFO, string ("Instantiated ") + numberOfNativePrismServciesToInstantiate + " Native WaveMessageBroker Services");
+    trace (TRACE_LEVEL_INFO, string ("Instantiated ") + numberOfNativeWaveServciesToInstantiate + " Native WaveMessageBroker Services");
 }
 
 void WaveMessageBroker::waveExit ()

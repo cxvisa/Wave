@@ -4,7 +4,7 @@
  *   Author : Aashish Akhouri                                    *
  ***************************************************************************/
 
-#include "Framework/Boot/SecondaryNodeRejoinPrismBootAgent.h"
+#include "Framework/Boot/SecondaryNodeRejoinWaveBootAgent.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 #include "Framework/Database/DatabaseObjectManager.h"
@@ -14,7 +14,7 @@
 namespace WaveNs
 {
 /// Name
-/// SecondaryNodeRejoinPrismBootAgent
+/// SecondaryNodeRejoinWaveBootAgent
 /// Description
 /// Constructor
 /// Input
@@ -25,13 +25,13 @@ namespace WaveNs
 /// none
 /// Return
 /// none
-SecondaryNodeRejoinPrismBootAgent::SecondaryNodeRejoinPrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
-    : PrismBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
+SecondaryNodeRejoinWaveBootAgent::SecondaryNodeRejoinWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator)
+    : WaveBootAgent (pWaveObjectManager, currentFrameworkSequenceGenerator),
       m_waveBootPhase (WAVE_BOOT_PHASE_ALL_PHASES)
 {
 }
 /// Name
-/// SecondaryNodeRejoinPrismBootAgent
+/// SecondaryNodeRejoinWaveBootAgent
 /// Description
 /// Destructor
 /// Input
@@ -40,7 +40,7 @@ SecondaryNodeRejoinPrismBootAgent::SecondaryNodeRejoinPrismBootAgent (WaveObject
 /// none
 /// Return
 /// none
-SecondaryNodeRejoinPrismBootAgent::~SecondaryNodeRejoinPrismBootAgent ()
+SecondaryNodeRejoinWaveBootAgent::~SecondaryNodeRejoinWaveBootAgent ()
 {
 }
 /// Name
@@ -54,73 +54,73 @@ SecondaryNodeRejoinPrismBootAgent::~SecondaryNodeRejoinPrismBootAgent ()
 /// none
 /// Return
 /// none
-ResourceId SecondaryNodeRejoinPrismBootAgent::execute (const WaveBootPhase &waveBootPhase)
+ResourceId SecondaryNodeRejoinWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 {
     m_waveBootPhase = waveBootPhase;
 
     if (WAVE_BOOT_PHASE_PRE_PHASE == waveBootPhase)
     {
-        trace (TRACE_LEVEL_DEBUG, "SecondaryNodeRejoinPrismBootAgent::execute : Pre Phase.");
+        trace (TRACE_LEVEL_DEBUG, "SecondaryNodeRejoinWaveBootAgent::execute : Pre Phase.");
 
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::initializePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::enablePrismServicesDuringPrePhaseStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::listenForEventsPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::initializeWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::enableWaveServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::bootPrismServicesDuringPrePhaseStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_PHASE_POST_PHASE == waveBootPhase)
     {
-        trace (TRACE_LEVEL_INFO, "SecondaryNodeRejoinPrismBootAgent::execute : Post Phase.");
+        trace (TRACE_LEVEL_INFO, "SecondaryNodeRejoinWaveBootAgent::execute : Post Phase.");
 
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::enablePrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::listenForEventsPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::enableWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::listenForEventsWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::bootPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::bootWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
     else if (WAVE_BOOT_PHASE_AFTER_POST_PHASE == waveBootPhase)
     {
-        trace (TRACE_LEVEL_INFO, "SecondaryNodeRejoinPrismBootAgent::execute : Phase 3");
-        WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+        trace (TRACE_LEVEL_INFO, "SecondaryNodeRejoinWaveBootAgent::execute : Phase 3");
+        WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
         {
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::initializeLocalPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::enablePrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::listenForEventsPrismServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::initializeLocalWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::enableWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::listenForEventsWaveServicesStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::bootPrismServicesStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::backendSyncUpStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::bootWaveServicesStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<PrismSynchronousLinearSequencerStep> (&SecondaryNodeRejoinPrismBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
         };
 
-        PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext = new PrismSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
+        WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-        ResourceId status = pPrismSynchronousLinearSequencerContext->execute ();
+        ResourceId status = pWaveSynchronousLinearSequencerContext->execute ();
 
         return (status);
     }
@@ -137,7 +137,7 @@ ResourceId SecondaryNodeRejoinPrismBootAgent::execute (const WaveBootPhase &wave
 /// none
 /// Return
 /// bool: 
-bool SecondaryNodeRejoinPrismBootAgent::isAPersistentBoot ()
+bool SecondaryNodeRejoinWaveBootAgent::isAPersistentBoot ()
 {
     return (true);
 }
@@ -152,7 +152,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isAPersistentBoot ()
 /// none
 /// Return
 /// bool:
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
+bool SecondaryNodeRejoinWaveBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -165,7 +165,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePha
     }
 }
 
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
+bool SecondaryNodeRejoinWaveBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -178,7 +178,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const
     }
 }
 
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
+bool SecondaryNodeRejoinWaveBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
     if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
@@ -201,13 +201,13 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedForEnableAndBoot (const Wa
 /// none
 /// Return
 /// bool:Always false
-bool SecondaryNodeRejoinPrismBootAgent::willBeAPrimaryLocation ()
+bool SecondaryNodeRejoinWaveBootAgent::willBeAPrimaryLocation ()
 {
     return (false);
 }
 
 
-bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId waveServiceId)
+bool SecondaryNodeRejoinWaveBootAgent::isToBeExcludedFromCurrentBootPhase (WaveServiceId waveServiceId)
 {
     ApplicationSpecificServices *pApplicationSpecificServices = ApplicationSpecificServices::getInstance ();
 
@@ -238,7 +238,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromCurrentBootPhase (Wave
 /// Return
 /// WaveBootReason: Rejoin of secondary node
 
-WaveBootReason SecondaryNodeRejoinPrismBootAgent::getReason () const
+WaveBootReason SecondaryNodeRejoinWaveBootAgent::getReason () const
 {
     return (WAVE_BOOT_SECONDARY_NODE_REJOIN_BOOT);
 }

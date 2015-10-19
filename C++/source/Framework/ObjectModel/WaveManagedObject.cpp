@@ -41,7 +41,7 @@ namespace WaveNs
 
 WaveManagedObject::WaveManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveElement                     (pWaveObjectManager),
-      PrismPersistableObject           (WaveManagedObject::getClassName (), PrismPersistableObject::getClassName ()),
+      WavePersistableObject           (WaveManagedObject::getClassName (), WavePersistableObject::getClassName ()),
       m_pCurrentOwnerWaveObjectManager (pWaveObjectManager),
       m_isPartitionNameSetByUser(false)
 {
@@ -176,14 +176,14 @@ void WaveManagedObject::addOperationMap (UI32 operationCode, WaveMessageHandler 
     m_pCurrentOwnerWaveObjectManager->addOperationMap (operationCode, pWaveMessageHandler, pWaveElement);
 }
 
-ResourceId WaveManagedObject::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
+ResourceId WaveManagedObject::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
 {
-    return (m_pCurrentOwnerWaveObjectManager->startTimer (timerHandle, startInterval, periodicInterval, pPrismTimerExpirationCallback, pPrismTimerExpirationContext, pPrismTimerSender != NULL ? pPrismTimerSender : this));
+    return (m_pCurrentOwnerWaveObjectManager->startTimer (timerHandle, startInterval, periodicInterval, pWaveTimerExpirationCallback, pWaveTimerExpirationContext, pWaveTimerSender != NULL ? pWaveTimerSender : this));
 }
 
-ResourceId WaveManagedObject::startTimer (TimerHandle &timerHandle, UI32 timeInMilliSeconds, PrismTimerExpirationHandler pPrismTimerExpirationCallback, void *pPrismTimerExpirationContext, WaveElement *pPrismTimerSender)
+ResourceId WaveManagedObject::startTimer (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
 {
-    return (m_pCurrentOwnerWaveObjectManager->startTimer (timerHandle, timeInMilliSeconds, pPrismTimerExpirationCallback, pPrismTimerExpirationContext, pPrismTimerSender != NULL ? pPrismTimerSender : this));
+    return (m_pCurrentOwnerWaveObjectManager->startTimer (timerHandle, timeInMilliSeconds, pWaveTimerExpirationCallback, pWaveTimerExpirationContext, pWaveTimerSender != NULL ? pWaveTimerSender : this));
 }
 
 ResourceId WaveManagedObject::deleteTimer (TimerHandle timerHandle)
@@ -278,7 +278,7 @@ void WaveManagedObject::setSpecificStatus (ResourceId specificStatus)
 
 void WaveManagedObject::setupAttributesForPersistence ()
 {
-    PrismPersistableObject::setupAttributesForPersistence ();
+    WavePersistableObject::setupAttributesForPersistence ();
 
     addPersistableAttribute (new AttributeString     (&m_name,                           "name"));
     addPersistableAttribute (new AttributeResourceId (&m_genericStatus,                  "genericStatus"));
@@ -292,7 +292,7 @@ void WaveManagedObject::setupAttributesForPersistence ()
 
 void WaveManagedObject::setupAttributesForCreate ()
 {
-    PrismPersistableObject::setupAttributesForCreate ();
+    WavePersistableObject::setupAttributesForCreate ();
 
     addPersistableAttributeForCreate (new AttributeString     (&m_name,                           "name"));
     addPersistableAttributeForCreate (new AttributeResourceId (&m_genericStatus,                  "genericStatus"));
@@ -525,12 +525,12 @@ void WaveManagedObject::loadOperationalData (WaveManagedObjectLoadOperationalDat
 
 ResourceId WaveManagedObject::loadOperationalDataSynchronousWrapper (const vector<string> &operationalDataFields, WaveManagedObject ** const pWaveManagedObject)
 {
-    WaveNs::PrismSynchronousLinearSequencerStep sequencerSteps[] =
+    WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveManagedObject::loadOperationalDataSynchronouslyLoadStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveManagedObject::loadOperationalDataSynchronouslyRequeryStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveManagedObject::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<PrismSynchronousLinearSequencerStep> (&WaveManagedObject::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::loadOperationalDataSynchronouslyLoadStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::loadOperationalDataSynchronouslyRequeryStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::prismSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::prismSynchronousLinearSequencerFailedStep)
     };
 
     LoadOperationalDataSynchronousContext *pLoadOperationalDataSynchronousContext = new LoadOperationalDataSynchronousContext (reinterpret_cast<WaveMessage *> (NULL), dynamic_cast<WaveElement *> (this), sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -572,7 +572,7 @@ ResourceId WaveManagedObject::loadOperationalDataSynchronouslyLoadStep (LoadOper
     vector<string>                                                operationalDataFields       = pLoadOperationalDataSynchronousContext->getOperationalDataFields ();
     WaveObjectManager                                            *pWaveObjectManager          = getPWaveObjectManager ();
     WaveServiceId                                                ownerServiceId              = pWaveObjectManager->getServiceId ();
-    PrismLoadOperationalDataForManagedObjectObjectManagerMessage  message                       (ownerServiceId, waveManagedObjectId, operationalDataFields);
+    WaveLoadOperationalDataForManagedObjectObjectManagerMessage  message                       (ownerServiceId, waveManagedObjectId, operationalDataFields);
     ResourceId                                                    status                      = WAVE_MESSAGE_SUCCESS;
     WaveLocalManagedObjectBase                                   *pWaveLocalManagedObjectBase = NULL;
 
@@ -664,12 +664,12 @@ void WaveManagedObject::setOwnerPartitionManagedObjectId (const ObjectId &ownerP
 
 void WaveManagedObject::loadFromPostgresQueryResult (PGresult *pResult, const UI32 &row, const string &schema, const vector<string> &selectFields, const bool loadOneToManyRelationships, const bool loadCompositions)
  {
-    PrismPersistableObject::loadFromPostgresQueryResult (pResult, row, schema, selectFields, m_pCurrentOwnerWaveObjectManager, loadOneToManyRelationships, loadCompositions);
+    WavePersistableObject::loadFromPostgresQueryResult (pResult, row, schema, selectFields, m_pCurrentOwnerWaveObjectManager, loadOneToManyRelationships, loadCompositions);
  }
 
 void WaveManagedObject::loadFromPostgresAuxilliaryQueryResult (map<string, PGresult *> &auxilliaryResultsMap, const string &schema, const vector<string> &selectFields, const bool loadCompositions)
 {
-    PrismPersistableObject::loadFromPostgresAuxilliaryQueryResult (auxilliaryResultsMap, schema, selectFields, m_pCurrentOwnerWaveObjectManager, loadCompositions);
+    WavePersistableObject::loadFromPostgresAuxilliaryQueryResult (auxilliaryResultsMap, schema, selectFields, m_pCurrentOwnerWaveObjectManager, loadCompositions);
 }
 
 void WaveManagedObject::setPCurrentOwnerWaveObjectManager (WaveObjectManager *pCurrentOwnerWaveObjectManager)
@@ -737,27 +737,27 @@ bool WaveManagedObject::isHierarchyDeletableForOperation (const WaveManagedObjec
     if (true == canBeDeletedForOperation (operation))
     {
         /* Check if all the related objects are deletable */
-        return (PrismPersistableObject::isHierarchyDeletableForOperation (operation));
+        return (WavePersistableObject::isHierarchyDeletableForOperation (operation));
     }
 
     return (false);
 }
 
-void WaveManagedObject::createPostUpdateForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObject::createPostUpdateForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 }
 
-void WaveManagedObject::createPostUpdateForInputWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObject::createPostUpdateForInputWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 }
 
-void WaveManagedObject::preCreateHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObject::preCreateHardwareStepForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext =  reinterpret_cast<WaveManagedObjectCreateContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext =  reinterpret_cast<WaveManagedObjectCreateContext *> (pWaveAsynchronousContext->getPCallerContext ());
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectCreateContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
@@ -787,20 +787,20 @@ void WaveManagedObject::preCreateHardwareStepForOperateOnWaveManagedObject (Pris
         pMessage->setManagedObjectClassNameNeedToBeCreated      (pWaveManagedObjectCreateContext->getManagedObjectClassNameNeedToBeCreated ());
         pMessage->setConfigReplayInProgressFlag                 (pWaveManagedObjectCreateContext->getConfigReplayInProgressFlag ());
 
-        sendToClusterLocation(pPrismAsynchronousContext, pMessage, isPartialSuccessFlag, locationIds);
+        sendToClusterLocation(pWaveAsynchronousContext, pMessage, isPartialSuccessFlag, locationIds);
 
     }
     else
     {
-        pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pWaveAsynchronousContext->callback ();
     }
 
 }
 
-void WaveManagedObject::preDeleteHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObject::preDeleteHardwareStepForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext = reinterpret_cast<WaveManagedObjectDeleteContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext = reinterpret_cast<WaveManagedObjectDeleteContext *> (pWaveAsynchronousContext->getPCallerContext ());
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectDeleteContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
@@ -828,18 +828,18 @@ void WaveManagedObject::preDeleteHardwareStepForOperateOnWaveManagedObject (Pris
         pMessage->setIsMO                           (pWaveManagedObjectDeleteContext->isNeedToDeleteManagedObject());
         pMessage->setConfigReplayInProgressFlag     (pWaveManagedObjectDeleteContext->getConfigReplayInProgressFlag ());
 
-        sendToClusterLocation(pPrismAsynchronousContext, pMessage, isPartialSuccessFlag, locationIds);
+        sendToClusterLocation(pWaveAsynchronousContext, pMessage, isPartialSuccessFlag, locationIds);
     }
     else
     {
-        pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pWaveAsynchronousContext->callback ();
     }
 }
 /* Use this function for Delete and Create. It is OK that it uses an UPdate message */
-void WaveManagedObject::preUpdateHardwareStepForOperateOnWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObject::preUpdateHardwareStepForOperateOnWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = reinterpret_cast<WaveManagedObjectUpdateContext *> (pPrismAsynchronousContext->getPCallerContext ());
+    WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = reinterpret_cast<WaveManagedObjectUpdateContext *> (pWaveAsynchronousContext->getPCallerContext ());
     ObjectId                        operateOnWaveManagedObjectId    = pWaveManagedObjectUpdateContext->getOperateOnWaveManagedObjectId ();
     ObjectId                        newOperateOnWaveManagedObjectId;
     vector<LocationId>              locationIds;
@@ -874,18 +874,18 @@ void WaveManagedObject::preUpdateHardwareStepForOperateOnWaveManagedObject (Pris
         pMessage->setNeedSurrogateSupportFlag       (isNeedSurrogateSupportFlag);
         pMessage->setConfigReplayInProgressFlag     (pWaveManagedObjectUpdateContext->getConfigReplayInProgressFlag ());
 
-        sendToClusterLocation(pPrismAsynchronousContext, pMessage, isPartialSuccessFlag, locationIds);
+        sendToClusterLocation(pWaveAsynchronousContext, pMessage, isPartialSuccessFlag, locationIds);
     }
     else
     {
-        pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-        pPrismAsynchronousContext->callback ();
+        pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pWaveAsynchronousContext->callback ();
     }
 }
 
-void WaveManagedObject::sendToClusterLocation(PrismAsynchronousContext *pPrismAsynchronousContext, WaveMessage *pMessage, bool isPartialSuccessFlag, vector<LocationId> locationIds)
+void WaveManagedObject::sendToClusterLocation(WaveAsynchronousContext *pWaveAsynchronousContext, WaveMessage *pMessage, bool isPartialSuccessFlag, vector<LocationId> locationIds)
 {
-    WaveSendToClusterContext  *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<PrismAsynchronousCallback>(&WaveManagedObject::getPluginDetailsForDistributionCallback), pPrismAsynchronousContext);
+    WaveSendToClusterContext  *pWaveSendToClusterContext = new WaveSendToClusterContext (this, reinterpret_cast<WaveAsynchronousCallback>(&WaveManagedObject::getPluginDetailsForDistributionCallback), pWaveAsynchronousContext);
 
     pWaveSendToClusterContext->setPWaveMessageForPhase1 (pMessage);
 
@@ -907,19 +907,19 @@ void WaveManagedObject::sendToClusterLocation(PrismAsynchronousContext *pPrismAs
     sendToWaveCluster (pWaveSendToClusterContext);
 }
 
-void WaveManagedObject::preUpdateHardwareStepForInputWaveManagedObject (PrismAsynchronousContext *pPrismAsynchronousContext)
+void WaveManagedObject::preUpdateHardwareStepForInputWaveManagedObject (WaveAsynchronousContext *pWaveAsynchronousContext)
 {
-    pPrismAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContext->callback ();
 }
 
 void WaveManagedObject::getPluginDetailsForDistributionCallback (WaveSendToClusterContext *pWaveSendToClusterContext)
 {
     ResourceId status = pWaveSendToClusterContext->getCompletionStatus ();
 
-    PrismAsynchronousContext *pPrismAsynchronousContext = reinterpret_cast<PrismAsynchronousContext *>(pWaveSendToClusterContext->getPCallerContext());
+    WaveAsynchronousContext *pWaveAsynchronousContext = reinterpret_cast<WaveAsynchronousContext *>(pWaveSendToClusterContext->getPCallerContext());
 
-    WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = reinterpret_cast<WaveManagedObjectUpdateContext *>(pPrismAsynchronousContext->getPCallerContext());
+    WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = reinterpret_cast<WaveManagedObjectUpdateContext *>(pWaveAsynchronousContext->getPCallerContext());
 
     WaveObjectManagerUpdateWaveManagedObjectMessage *pWaveObjectManagerUpdateWaveManagedObjectMessage = reinterpret_cast<WaveObjectManagerUpdateWaveManagedObjectMessage *>(pWaveManagedObjectUpdateContext->getPWaveMessage());
 
@@ -941,8 +941,8 @@ void WaveManagedObject::getPluginDetailsForDistributionCallback (WaveSendToClust
     delete (pWaveSendToClusterContext->getPWaveMessageForPhase1 ());
     delete (pWaveSendToClusterContext);
 
-    pPrismAsynchronousContext->setCompletionStatus (status);
-    pPrismAsynchronousContext->callback ();
+    pWaveAsynchronousContext->setCompletionStatus (status);
+    pWaveAsynchronousContext->callback ();
 }
 
 bool WaveManagedObject::getPluginDetailsForDistribution (ObjectId &newOperateOnWaveManagedObjectId, WaveServiceId &waveServiceId, vector<LocationId> &locationIds, bool &isNeedSurrogateSupportFlag, bool &isPartialSuccessFlag)
@@ -1137,27 +1137,27 @@ void WaveManagedObject::sendMulticast (WaveSendMulticastContext *pWaveSendMultic
 
 void WaveManagedObject::loadFromPostgresQueryResult2 (PGresult *pResult, const UI32 &row, const string &schema, const vector<string> &selectFields)
 {
-    PrismPersistableObject::loadFromPostgresQueryResult2 (pResult, row, schema, selectFields, m_pCurrentOwnerWaveObjectManager);
+    WavePersistableObject::loadFromPostgresQueryResult2 (pResult, row, schema, selectFields, m_pCurrentOwnerWaveObjectManager);
 }
 
 void WaveManagedObject::getOidsOfOneToOneCompositions (vector<ObjectId> &vectorOfCompositionOids)
 {
-    PrismPersistableObject::getOidsOfOneToOneCompositions (vectorOfCompositionOids);
+    WavePersistableObject::getOidsOfOneToOneCompositions (vectorOfCompositionOids);
 }
 
 void WaveManagedObject::popOneToOneCompositionsFromResults (map<ObjectId, WaveManagedObject*> &oidTopManagedObjectMap, const vector<string> &selectFieldsInManagedObject)
 {
-    PrismPersistableObject::popOneToOneCompositionsFromResults (oidTopManagedObjectMap, selectFieldsInManagedObject);
+    WavePersistableObject::popOneToOneCompositionsFromResults (oidTopManagedObjectMap, selectFieldsInManagedObject);
 }
 
 void WaveManagedObject::storeRelatedObjectIdVectorForAOneToNAssociation (const string &relationName, const ObjectId &parentObjectId, const vector<ObjectId> &vectorOfRelatedObjectIds)
 {
-    PrismPersistableObject::storeRelatedObjectIdVectorForAOneToNAssociation (relationName, parentObjectId, vectorOfRelatedObjectIds);
+    WavePersistableObject::storeRelatedObjectIdVectorForAOneToNAssociation (relationName, parentObjectId, vectorOfRelatedObjectIds);
 }
 
 void WaveManagedObject::storeRelatedObjectVectorForAOneToNComposition (const string &relationName, const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects)
 {
-    PrismPersistableObject::storeRelatedObjectVectorForAOneToNComposition (relationName, parentObjectId, vectorOfRelatedObjects);
+    WavePersistableObject::storeRelatedObjectVectorForAOneToNComposition (relationName, parentObjectId, vectorOfRelatedObjects);
 }
 
 string WaveManagedObject::customConfigurationDisplay (WaveCustomCliDisplayConfigurationContext *waveCustomCliDisplayConfigurationContext)

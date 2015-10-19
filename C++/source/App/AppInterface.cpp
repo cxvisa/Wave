@@ -27,7 +27,7 @@ extern "C" int createClusterWithCallBack (int appId, int nSecondaryNodes, ipStri
     for (i = 0; i < nSecondaryNodes; i++)
     {
         memcpy (nodes [i].nodeName, secondaryNodes [i], strlen (secondaryNodes [i]) + 1);
-        nodes [i].nodePort = FrameworkToolKit::getPrismDefaultTcpPort ();
+        nodes [i].nodePort = FrameworkToolKit::getWaveDefaultTcpPort ();
     }
     int result = (ClusterInterfaceObjectManager::getInstance ())->createCluster (appId, nSecondaryNodes, nodes, createClusterResultCB, pContext);
 
@@ -41,7 +41,7 @@ extern "C" int addNodeToClusterWithCallBack (int appId, ipString ipAddr, addNode
     node_t       node;
 
     memcpy (node.nodeName, ipAddr, strlen (ipAddr) + 1);
-    node.nodePort = FrameworkToolKit::getPrismDefaultTcpPort ();
+    node.nodePort = FrameworkToolKit::getWaveDefaultTcpPort ();
 
     return ((ClusterInterfaceObjectManager::getInstance ())->addNodeToCluster (appId, node, addNodeResultCB, pContext));
 }
@@ -61,7 +61,7 @@ extern "C" int removeNodeFromClusterWithCallBack (int appId, ipString ipAddr, re
     node_t       node;
 
     memcpy (node.nodeName, ipAddr, strlen (ipAddr) + 1);
-    node.nodePort = FrameworkToolKit::getPrismDefaultTcpPort ();
+    node.nodePort = FrameworkToolKit::getWaveDefaultTcpPort ();
 
     return ((ClusterInterfaceObjectManager::getInstance ())->removeNodeFromCluster (appId, node, removeNodeResultCB, pContext));
 }

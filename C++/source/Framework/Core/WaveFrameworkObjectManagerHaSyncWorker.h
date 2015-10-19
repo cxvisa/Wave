@@ -4,8 +4,8 @@
  *   Author : Leifang Hu                                            *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKOBJECTMANAGERHASYNCWORKER_H
-#define PRISMFRAMEWORKOBJECTMANAGERHASYNCWORKER_H
+#ifndef WAVEFRAMEWORKOBJECTMANAGERHASYNCWORKER_H
+#define WAVEFRAMEWORKOBJECTMANAGERHASYNCWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
@@ -41,14 +41,14 @@ class WaveFrameworkObjectManagerHaSyncWorker : public WaveWorker
                 void haSyncCreateDatabaseDumpStep     (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void haSyncGetValidationDetailsStep   (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void haSyncSendDatabaseDumpStep       (StartHaSyncDumpContext *pWaveLinearSequencerContext);
-                void haSyncSendDatabaseDumpCallback   (FrameworkStatus frameworkStatus, PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage, void *pContext);
+                void haSyncSendDatabaseDumpCallback   (FrameworkStatus frameworkStatus, WaveHaSyncConfigureStandbyMessage *pWaveHaSyncConfigureStandbyMessage, void *pContext);
                 bool isServiceToBeExcludedInHaSyncCommunications (const WaveServiceId &waveServiceId);
                 void createDatabaseBackupBuffer       (char * &pDatabaseBackupBuffer, SI32 &sizeOfBackupFile);
                 void resumeDatabase                   ();
                 void haSyncGetValidationResultsStep   (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void setSyncCompletionStatusStep      (StartHaSyncDumpContext *pWaveLinearSequencerContext);
                 void haSyncFailedStep                 (StartHaSyncDumpContext *pWaveLinearSequencerContext);
-                void configureStandbyHandler               (PrismHaSyncConfigureStandbyMessage *pPrismHaSyncConfigureStandbyMessage);
+                void configureStandbyHandler               (WaveHaSyncConfigureStandbyMessage *pWaveHaSyncConfigureStandbyMessage);
                 void removePreviousDatabaseBackupFile      (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                 void configureStandbyValidateVersionStep   (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                 void configureStandbyValidateServicesStep  (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
@@ -58,9 +58,9 @@ class WaveFrameworkObjectManagerHaSyncWorker : public WaveWorker
                 void configureStandbyEmptyDatabaseStep     (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                 void configureStandbyLoadDatabaseFromActiveDatabaseStep (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                 void configureStandbyConvertDatabaseStep   (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
-                void loadPrismConfigurationStep            (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
-                void savePrismConfigurationStep            (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
-                void configureStandbyUpdatePrismConfigurationFileStep (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
+                void loadWaveConfigurationStep            (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
+                void saveWaveConfigurationStep            (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
+                void configureStandbyUpdateWaveConfigurationFileStep (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                 void configureStandbyServicesPostPhaseStep (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                	void configureStandbyUpdateVcsConfigStep   (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
                	void configureStandbyUpdateStartupFileStep (ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext);
@@ -136,4 +136,4 @@ class WaveFrameworkObjectManagerHaSyncWorker : public WaveWorker
 
 }
 
-#endif // PRISMFRAMEWORKOBJECTMANAGERHASYNCWORKER_H
+#endif // WAVEFRAMEWORKOBJECTMANAGERHASYNCWORKER_H

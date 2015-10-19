@@ -4,15 +4,15 @@
  *   Author : Jayanth Venkataraman                                         *
  ***************************************************************************/
 
-#ifndef PERSISTENTWITHDEFAULTPRISMBOOTAGENT_H
-#define PERSISTENTWITHDEFAULTPRISMBOOTAGENT_H
+#ifndef PERSISTENTWITHDEFAULTWAVEBOOTAGENT_H
+#define PERSISTENTWITHDEFAULTWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 
-class PersistentWithDefaultPrismBootAgent : public PrismBootAgent
+class PersistentWithDefaultWaveBootAgent : public WaveBootAgent
 {
     private :
         virtual bool           isAPersistentBoot ();
@@ -20,12 +20,12 @@ class PersistentWithDefaultPrismBootAgent : public PrismBootAgent
 
     protected :
     public :
-                            PersistentWithDefaultPrismBootAgent                        (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual            ~PersistentWithDefaultPrismBootAgent                        ();
+                            PersistentWithDefaultWaveBootAgent                        (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual            ~PersistentWithDefaultWaveBootAgent                        ();
         virtual ResourceId  execute                                                    (const WaveBootPhase &waveBootPhase);
 
-                ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
-                ResourceId  connectToKnownLocationsStep                                (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext);
+                ResourceId  createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId  connectToKnownLocationsStep                                (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
     // Now the data members
 
@@ -36,4 +36,4 @@ class PersistentWithDefaultPrismBootAgent : public PrismBootAgent
 
 }
 
-#endif // PERSISTENTWITHDEFAULTPRISMBOOTAGENT_H
+#endif // PERSISTENTWITHDEFAULTWAVEBOOTAGENT_H

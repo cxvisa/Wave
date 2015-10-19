@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKOBJECTMANAGERSERVICECONTROLWORKER_H
-#define PRISMFRAMEWORKOBJECTMANAGERSERVICECONTROLWORKER_H
+#ifndef WAVEFRAMEWORKOBJECTMANAGERSERVICECONTROLWORKER_H
+#define WAVEFRAMEWORKOBJECTMANAGERSERVICECONTROLWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
 
@@ -37,4 +37,4 @@ class WaveFrameworkObjectManagerServiceControlWorker : public WaveWorker
 
 }
 
-#endif // PRISMFRAMEWORKOBJECTMANAGERSERVICECONTROLWORKER_H
+#endif // WAVEFRAMEWORKOBJECTMANAGERSERVICECONTROLWORKER_H

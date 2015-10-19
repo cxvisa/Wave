@@ -231,7 +231,7 @@ WaveServiceId WaveManagementServerMap::getWaveServiceIdForServiceName (const UI3
     return (serviceId);
 }
 
-string WaveManagementServerMap::getPrismServiceNameForServiceId (const UI32 &serverId, const WaveServiceId &serviceId)
+string WaveManagementServerMap::getWaveServiceNameForServiceId (const UI32 &serverId, const WaveServiceId &serviceId)
 {
     m_managementServersMutex.lock ();
 
@@ -245,7 +245,7 @@ string WaveManagementServerMap::getPrismServiceNameForServiceId (const UI32 &ser
 
         waveAssert (NULL != pTempWaveManagementServer, __FILE__, __LINE__);
 
-        serviceName = pTempWaveManagementServer->getPrismServiceNameForServiceId (serviceId);
+        serviceName = pTempWaveManagementServer->getWaveServiceNameForServiceId (serviceId);
     }
 
     m_managementServersMutex.unlock ();

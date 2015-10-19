@@ -9,8 +9,8 @@
 namespace WaveNs
 {
 
-WaveManagedObjectQueryContext::WaveManagedObjectQueryContext (const string &classToQueryFor, WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext)
-    : PrismAsynchronousContext           (pCaller, pCallback, pCallerContext),
+WaveManagedObjectQueryContext::WaveManagedObjectQueryContext (const string &classToQueryFor, WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext)
+    : WaveAsynchronousContext           (pCaller, pCallback, pCallerContext),
       WaveManagedObjectQueryContextBase (classToQueryFor)
 {
 }

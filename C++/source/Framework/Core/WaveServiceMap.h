@@ -31,7 +31,7 @@ class WaveServiceMap
         void               removeServiceMap                (WaveServiceId id);
         void               getListOfServiceIds             (vector<WaveServiceId> &serviceIds);
         WaveThread       *getWaveThreadForServiceId      (WaveServiceId id);
-        string             getPrismServiceNameForServiceId (const WaveServiceId &id);
+        string             getWaveServiceNameForServiceId (const WaveServiceId &id);
         WaveServiceId     getWaveServiceIdForServiceName (const string &serviceName);
         WaveThreadStatus  joinAllThreads                   ();
 

@@ -21,7 +21,7 @@ static WaveMutex                          s_applicationSpecificServicesMutex;
 
 // Vector for application registered to start with Wave.
 // Application will register using registerApp which should be called before
-// calling PrismMain.
+// calling WaveMain.
 
 static vector <AppDetail *>               s_appsInfo;
 
@@ -56,7 +56,7 @@ bool AppObjectManager::isAnApplicationSpecificService (const WaveServiceId &wave
 }
 
     // NOTE: This class is not a singleton. We will cerate an instance of
-    // this class for each application registered with Prism. The application
+    // this class for each application registered with Wave. The application
     // will be running on this objectManager thread.
 AppObjectManager::AppObjectManager (AppDetail *appDetail, UI32 applicationId, const UI32 &stackSize)
     : WaveLocalObjectManagerForUserSpecificTasks (appDetail->getAppName (), stackSize)
@@ -104,9 +104,9 @@ void AppObjectManager::boot (WaveAsynchronousContextForBootPhases *pWaveAsynchro
     }
 }
 
-    // Register application with Prism. Prism will create objectManager for this
+    // Register application with Wave. Wave will create objectManager for this
     // application and running the application in that thread.
-    // No limit for number of application that can register with Prism.
+    // No limit for number of application that can register with Wave.
     // Two version are provided for this function. with argumentw and without.
 
 SI32 AppObjectManager::registerApp (string appName, applicationMainFunction applicationMain)
@@ -194,7 +194,7 @@ AppObjectManager *AppObjectManager::getAppObjectManager (UI32 appId)
     return (s_appsInfo[appId]->getAppObjectManager ());
 }
 
-    // This is called after creating Prism object managers. This function will create the
+    // This is called after creating Wave object managers. This function will create the
     // object managers for all the application registered with prism.
 
 void AppObjectManager::createAppObjectMangers ()

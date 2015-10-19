@@ -21,7 +21,7 @@ ShellObjectManager::ShellObjectManager ()
 {
     setAllowAutomaticallyUnlistenForEvents (false);
 
-    m_pPrismShell = new ShellPrism (this);
+    m_pWaveShell = new ShellWave (this);
 }
 
 ShellObjectManager *ShellObjectManager::getInstance ()
@@ -39,9 +39,9 @@ ShellObjectManager *ShellObjectManager::getInstance ()
 
 ShellObjectManager::~ShellObjectManager ()
 {
-    if (NULL != m_pPrismShell)
+    if (NULL != m_pWaveShell)
     {
-        delete m_pPrismShell;
+        delete m_pWaveShell;
     }
 }
 
@@ -86,7 +86,7 @@ void ShellObjectManager::bootCompleteForThisLocationEventHandler (const BootComp
     {
         trace (TRACE_LEVEL_INFO, "Now Entering Shell Mode.");
 
-        m_pPrismShell->shellExecuteHandler ();
+        m_pWaveShell->shellExecuteHandler ();
     }
 }
 

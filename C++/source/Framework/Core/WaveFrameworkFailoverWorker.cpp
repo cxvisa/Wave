@@ -8,19 +8,19 @@
 #include "WaveFrameworkFailoverWorkerContext.h"
 #include "Framework/Core/WaveFrameworkFailoverWorkerSequencerContext.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
-#include "Framework/Failover/PrismFailoverAgent.h"
-#include "Framework/Failover/PrismFailoverAgentContext.h"
-#include "Framework/Failover/PrismPrimaryControlledFailoverAgent.h"
-#include "Framework/Failover/PrismPrimaryUncontrolledFailoverAgent.h"
-#include "Framework/Failover/PrismSecondaryControlledFailoverAgent.h"
-#include "Framework/Failover/PrismSecondaryUncontrolledFailoverAgent.h"
+#include "Framework/Failover/WaveFailoverAgent.h"
+#include "Framework/Failover/WaveFailoverAgentContext.h"
+#include "Framework/Failover/WavePrimaryControlledFailoverAgent.h"
+#include "Framework/Failover/WavePrimaryUncontrolledFailoverAgent.h"
+#include "Framework/Failover/WaveSecondaryControlledFailoverAgent.h"
+#include "Framework/Failover/WaveSecondaryUncontrolledFailoverAgent.h"
 #include "Framework/Core/ClusterFailoverCompleteEvent.h"
 
 namespace WaveNs
 {
 
-WaveFrameworkFailoverWorker::WaveFrameworkFailoverWorker (WaveObjectManager *pPrismObjectMnager)
-    : WaveWorker (pPrismObjectMnager)
+WaveFrameworkFailoverWorker::WaveFrameworkFailoverWorker (WaveObjectManager *pWaveObjectMnager)
+    : WaveWorker (pWaveObjectMnager)
 {
 }
 
@@ -32,14 +32,14 @@ void WaveFrameworkFailoverWorker::executeFailover (WaveFrameworkFailoverWorkerCo
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkFailoverWorker::executeFailover : Entering ...");
 
-    PrismLinearSequencerStep sequencerSteps[] =
+    WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverCompleteEventStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverDestroyFailoverAgentStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkFailoverWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<PrismLinearSequencerStep> (&WaveFrameworkFailoverWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverCompleteEventStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverDestroyFailoverAgentStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::prismLinearSequencerFailedStep),
     };
 
     WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext = new WaveFrameworkFailoverWorkerSequencerContext (pWaveFrameworkFailoverWorkerContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -68,7 +68,7 @@ void WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (WaveFr
 
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
     ResourceId                  status                     = WAVE_MESSAGE_SUCCESS;
-    PrismFailoverAgent         *pPrismFailoverAgent        = NULL;
+    WaveFailoverAgent         *pWaveFailoverAgent        = NULL;
 
     if (LOCATION_PRIMARY == (pWaveFrameworkFailoverWorkerSequencerContext->getThisLocationRole ()))
     {
@@ -76,7 +76,7 @@ void WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (WaveFr
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep : Selecting Primary Controlled Failover Agent.");
 
-            pPrismFailoverAgent = new PrismPrimaryControlledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+            pWaveFailoverAgent = new WavePrimaryControlledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
 
             status = WAVE_MESSAGE_SUCCESS;
         }
@@ -84,7 +84,7 @@ void WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (WaveFr
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep : Selecting Primary Uncontrolled Failover Agent.");
 
-            pPrismFailoverAgent = new PrismPrimaryUncontrolledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+            pWaveFailoverAgent = new WavePrimaryUncontrolledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
 
             status = WAVE_MESSAGE_SUCCESS;
         }
@@ -101,15 +101,15 @@ void WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (WaveFr
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep : Selecting Secondary Controlled Failover Agent.");
 
-            pPrismFailoverAgent = new PrismSecondaryControlledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+            pWaveFailoverAgent = new WaveSecondaryControlledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
 
 
-            WaveFrameworkFailoverWorkerContext* pPrismFailoverWorkerContext =  static_cast<WaveFrameworkFailoverWorkerContext* > (pWaveFrameworkFailoverWorkerSequencerContext->getPPrismAsynchronousContext ()); 
+            WaveFrameworkFailoverWorkerContext* pWaveFailoverWorkerContext =  static_cast<WaveFrameworkFailoverWorkerContext* > (pWaveFrameworkFailoverWorkerSequencerContext->getPWaveAsynchronousContext ()); 
 
-            if(pPrismFailoverWorkerContext->isSecondaryControlledFailoverDueToPrimaryRemoval() )
+            if(pWaveFailoverWorkerContext->isSecondaryControlledFailoverDueToPrimaryRemoval() )
             {
-               PrismSecondaryControlledFailoverAgent* pPrismSecondaryControlledFailoverAgent = static_cast<PrismSecondaryControlledFailoverAgent* > (pPrismFailoverAgent);
-               pPrismSecondaryControlledFailoverAgent->setFailoverDueToPrimaryRemoval (); 
+               WaveSecondaryControlledFailoverAgent* pWaveSecondaryControlledFailoverAgent = static_cast<WaveSecondaryControlledFailoverAgent* > (pWaveFailoverAgent);
+               pWaveSecondaryControlledFailoverAgent->setFailoverDueToPrimaryRemoval (); 
             }
              
             status = WAVE_MESSAGE_SUCCESS;
@@ -118,7 +118,7 @@ void WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (WaveFr
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep : Selecting Secondary Uncontrolled Failover Agent.");
 
-            pPrismFailoverAgent = new PrismSecondaryUncontrolledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
+            pWaveFailoverAgent = new WaveSecondaryUncontrolledFailoverAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
 
             status = WAVE_MESSAGE_SUCCESS;
         }
@@ -138,7 +138,7 @@ void WaveFrameworkFailoverWorker::executeFailoverSelectFailoverAgentStep (WaveFr
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        pWaveFrameworkFailoverWorkerSequencerContext->setPPrismFailoverAgent (pPrismFailoverAgent);
+        pWaveFrameworkFailoverWorkerSequencerContext->setPWaveFailoverAgent (pWaveFailoverAgent);
     }
 
     pWaveFrameworkFailoverWorkerSequencerContext->executeNextStep (status);
@@ -148,8 +148,8 @@ void WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep (WaveFrame
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep : Entering ...");
 
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = reinterpret_cast<WaveFrameworkFailoverWorkerContext *> (pWaveFrameworkFailoverWorkerSequencerContext->getPPrismAsynchronousContext ());
-    PrismFailoverAgent                  *pPrismFailoverAgent                  = pWaveFrameworkFailoverWorkerSequencerContext->getPPrismFailoverAgent ();
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = reinterpret_cast<WaveFrameworkFailoverWorkerContext *> (pWaveFrameworkFailoverWorkerSequencerContext->getPWaveAsynchronousContext ());
+    WaveFailoverAgent                  *pWaveFailoverAgent                  = pWaveFrameworkFailoverWorkerSequencerContext->getPWaveFailoverAgent ();
     vector<LocationId>                   failedLocationIds;
     WaveServiceId                       serviceToBeIgnored                   = 0;
 
@@ -158,30 +158,30 @@ void WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep (WaveFrame
     pWaveFrameworkFailoverWorkerContext->getFailedLocationIds (failedLocationIds);
     serviceToBeIgnored = pWaveFrameworkFailoverWorkerSequencerContext->getServiceToBeIgnored ();
 
-    waveAssert (NULL != pPrismFailoverAgent, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveFailoverAgent, __FILE__, __LINE__);
 
-    PrismFailoverAgentContext *pPrismFailoverAgentContext = new PrismFailoverAgentContext (this, reinterpret_cast<PrismAsynchronousCallback> (&WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback), pWaveFrameworkFailoverWorkerSequencerContext);
+    WaveFailoverAgentContext *pWaveFailoverAgentContext = new WaveFailoverAgentContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback), pWaveFrameworkFailoverWorkerSequencerContext);
 
-    pPrismFailoverAgentContext->setFailedLocationIds(failedLocationIds);
-    pPrismFailoverAgentContext->setServiceToBeIgnored(serviceToBeIgnored);
-    pPrismFailoverAgentContext->setIsConfigurationChange (pWaveFrameworkFailoverWorkerContext->getIsConfigurationChange ());
+    pWaveFailoverAgentContext->setFailedLocationIds(failedLocationIds);
+    pWaveFailoverAgentContext->setServiceToBeIgnored(serviceToBeIgnored);
+    pWaveFailoverAgentContext->setIsConfigurationChange (pWaveFrameworkFailoverWorkerContext->getIsConfigurationChange ());
     
-    pPrismFailoverAgent->execute (pPrismFailoverAgentContext);
+    pWaveFailoverAgent->execute (pWaveFailoverAgentContext);
 }
 
-void WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback (PrismFailoverAgentContext *pPrismFailoverAgentContext)
+void WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback (WaveFailoverAgentContext *pWaveFailoverAgentContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStepCallback : Entering ...");
 
-    waveAssert (NULL != pPrismFailoverAgentContext, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveFailoverAgentContext, __FILE__, __LINE__);
 
-    WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext = reinterpret_cast<WaveFrameworkFailoverWorkerSequencerContext *> (pPrismFailoverAgentContext->getPCallerContext ());
+    WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext = reinterpret_cast<WaveFrameworkFailoverWorkerSequencerContext *> (pWaveFailoverAgentContext->getPCallerContext ());
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerSequencerContext, __FILE__, __LINE__);
 
     ResourceId            status                = pWaveFrameworkFailoverWorkerSequencerContext->getCompletionStatus ();
 
-    delete pPrismFailoverAgentContext;
+    delete pWaveFailoverAgentContext;
 
     pWaveFrameworkFailoverWorkerSequencerContext->executeNextStep (status);
 }
@@ -190,12 +190,12 @@ void WaveFrameworkFailoverWorker::executeFailoverDestroyFailoverAgentStep (WaveF
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkFailoverWorker::executeFailoverDestroyFailoverAgentStep : Entering ...");
 
-    PrismFailoverAgent *pPrismFailoverAgent = pWaveFrameworkFailoverWorkerSequencerContext->getPPrismFailoverAgent ();
+    WaveFailoverAgent *pWaveFailoverAgent = pWaveFrameworkFailoverWorkerSequencerContext->getPWaveFailoverAgent ();
 
-    waveAssert (NULL != pPrismFailoverAgent, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveFailoverAgent, __FILE__, __LINE__);
 
-    delete (pPrismFailoverAgent);
-    pWaveFrameworkFailoverWorkerSequencerContext->setPPrismFailoverAgent (NULL);
+    delete (pWaveFailoverAgent);
+    pWaveFrameworkFailoverWorkerSequencerContext->setPWaveFailoverAgent (NULL);
 
     pWaveFrameworkFailoverWorkerSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -204,7 +204,7 @@ void WaveFrameworkFailoverWorker::executeFailoverCompleteEventStep (WaveFramewor
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkFailoverWorker::executeFailoverCompleteEventStep : Entering ...");
 
-    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = reinterpret_cast<WaveFrameworkFailoverWorkerContext *> (pWaveFrameworkFailoverWorkerSequencerContext->getPPrismAsynchronousContext ());    
+    WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = reinterpret_cast<WaveFrameworkFailoverWorkerContext *> (pWaveFrameworkFailoverWorkerSequencerContext->getPWaveAsynchronousContext ());    
     vector<LocationId>                   failedLocationIds;
     FrameworkObjectManagerFailoverReason failoverReason = pWaveFrameworkFailoverWorkerSequencerContext->getFailoverReason ();
     bool                                 isPrincipalChangedWithThisFailover = false;

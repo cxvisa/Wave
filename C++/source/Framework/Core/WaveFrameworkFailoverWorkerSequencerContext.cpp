@@ -5,26 +5,26 @@
  ***************************************************************************/
 
 #include "Framework/Core/WaveFrameworkFailoverWorkerSequencerContext.h"
-#include "Framework/Failover/PrismFailoverAgent.h"
+#include "Framework/Failover/WaveFailoverAgent.h"
 
 namespace WaveNs
 {
 
-WaveFrameworkFailoverWorkerSequencerContext::WaveFrameworkFailoverWorkerSequencerContext (PrismAsynchronousContext *pPrismAsynchronousContext, WaveElement *pWaveElement, PrismLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : WaveLinearSequencerContext (pPrismAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
+WaveFrameworkFailoverWorkerSequencerContext::WaveFrameworkFailoverWorkerSequencerContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
+    : WaveLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
       m_thisLocationRole(LOCATION_STAND_ALONE),
       m_failoverReason      (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED),
-      m_pPrismFailoverAgent (NULL),
+      m_pWaveFailoverAgent (NULL),
       m_serviceToBeIgnored(0)
 {
 }
 
 WaveFrameworkFailoverWorkerSequencerContext::~WaveFrameworkFailoverWorkerSequencerContext ()
 {
-    if (NULL != m_pPrismFailoverAgent)
+    if (NULL != m_pWaveFailoverAgent)
     {
-        delete m_pPrismFailoverAgent;
-        m_pPrismFailoverAgent = NULL;
+        delete m_pWaveFailoverAgent;
+        m_pWaveFailoverAgent = NULL;
     }
 }
 
@@ -63,14 +63,14 @@ void WaveFrameworkFailoverWorkerSequencerContext::addFailedLocationId (const Loc
     m_failedLocationIds.push_back (failedLocationId);
 }
 
-PrismFailoverAgent *WaveFrameworkFailoverWorkerSequencerContext::getPPrismFailoverAgent () const
+WaveFailoverAgent *WaveFrameworkFailoverWorkerSequencerContext::getPWaveFailoverAgent () const
 {
-    return (m_pPrismFailoverAgent);
+    return (m_pWaveFailoverAgent);
 }
 
-void WaveFrameworkFailoverWorkerSequencerContext::setPPrismFailoverAgent (PrismFailoverAgent *pPrismFailoverAgent)
+void WaveFrameworkFailoverWorkerSequencerContext::setPWaveFailoverAgent (WaveFailoverAgent *pWaveFailoverAgent)
 {
-    m_pPrismFailoverAgent = pPrismFailoverAgent;
+    m_pWaveFailoverAgent = pWaveFailoverAgent;
 }
 
 void WaveFrameworkFailoverWorkerSequencerContext::setServiceToBeIgnored (const WaveServiceId &serviceToBeIgnored)

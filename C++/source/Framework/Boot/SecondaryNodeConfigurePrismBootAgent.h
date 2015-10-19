@@ -4,15 +4,15 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef SECONDARYNODECONFIGUREPRISMBOOTAGENT_H
-#define SECONDARYNODECONFIGUREPRISMBOOTAGENT_H
+#ifndef SECONDARYNODECONFIGUREWAVEBOOTAGENT_H
+#define SECONDARYNODECONFIGUREWAVEBOOTAGENT_H
 
-#include "Framework/Boot/PrismBootAgent.h"
+#include "Framework/Boot/WaveBootAgent.h"
 
 namespace WaveNs
 {
 
-class SecondaryNodeConfigurePrismBootAgent : public PrismBootAgent
+class SecondaryNodeConfigureWaveBootAgent : public WaveBootAgent
 {
     private :
         virtual bool           isAPersistentBoot                            ();
@@ -27,8 +27,8 @@ class SecondaryNodeConfigurePrismBootAgent : public PrismBootAgent
 
     protected :
     public :
-                            SecondaryNodeConfigurePrismBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        virtual            ~SecondaryNodeConfigurePrismBootAgent ();
+                            SecondaryNodeConfigureWaveBootAgent (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
+        virtual            ~SecondaryNodeConfigureWaveBootAgent ();
         virtual ResourceId  execute                              (const WaveBootPhase &waveBootPhase);
 
     // now the data members
@@ -41,4 +41,4 @@ class SecondaryNodeConfigurePrismBootAgent : public PrismBootAgent
 
 }
 
-#endif // SECONDARYNODECONFIGUREPRISMBOOTAGENT_H
+#endif // SECONDARYNODECONFIGUREWAVEBOOTAGENT_H

@@ -13,7 +13,7 @@ namespace WaveNs
 
 DistributedLogEntryManagedObject::DistributedLogEntryManagedObject (DistributedLogObjectManager *pDistributedLogObjectManager)
     : WaveElement              (pDistributedLogObjectManager),
-      PrismPersistableObject    (DistributedLogEntryManagedObject::getClassName (), WaveManagedObject::getClassName()),
+      WavePersistableObject    (DistributedLogEntryManagedObject::getClassName (), WaveManagedObject::getClassName()),
       WaveManagedObject         (pDistributedLogObjectManager),
       m_logId                   (0),
       m_logType                 (),
@@ -29,7 +29,7 @@ DistributedLogEntryManagedObject::DistributedLogEntryManagedObject (DistributedL
 
 DistributedLogEntryManagedObject::DistributedLogEntryManagedObject (DistributedLogObjectManager *pDistributedLogObjectManager, const string &name)
     : WaveElement              (pDistributedLogObjectManager),
-      PrismPersistableObject    (DistributedLogEntryManagedObject::getClassName (), WaveManagedObject::getClassName()),
+      WavePersistableObject    (DistributedLogEntryManagedObject::getClassName (), WaveManagedObject::getClassName()),
       WaveManagedObject         (pDistributedLogObjectManager),
       m_logId                   (0),
       m_logType                 (),

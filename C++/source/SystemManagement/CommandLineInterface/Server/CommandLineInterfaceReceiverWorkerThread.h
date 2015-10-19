@@ -7,7 +7,7 @@
 #ifndef COMMANDLINEINTERFACERECEIVERWORKERTHREAD_H
 #define COMMANDLINEINTERFACERECEIVERWORKERTHREAD_H
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/WaveCondition.h"
@@ -29,7 +29,7 @@ class WaveSystemManagementGetYangUserInterfaceMessage;
 class WaveSystemManagementDisplayConfigurationByTargetNodeNameMessage;
 class YangElement;
 
-class CommandLineInterfaceReceiverWorkerThread : public PrismPosixThread, WaveWorker
+class CommandLineInterfaceReceiverWorkerThread : public WavePosixThread, WaveWorker
 {
     private :
 

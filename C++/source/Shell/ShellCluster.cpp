@@ -29,8 +29,8 @@ namespace WaveNs
 ShellCluster::ShellCluster (WaveObjectManager *pWaveObjectManager)
     :ShellBase (pWaveObjectManager, string("Cluster"))
 {
-    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellPrism::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellPrism::usageShellPrismRegressionService)));
-    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellPrism::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellPrism::usageShellPrismTraceService)));
+    addShellCommandHandler (ShellCommandHandler (string("regression"), 1,  (ShellCmdFunction) (&ShellWave::shellExecuteRegressionService), 1, (ShellUsageFunction) (&ShellWave::usageShellWaveRegressionService)));
+    addShellCommandHandler (ShellCommandHandler (string("trace"),      1,  (ShellCmdFunction) (&ShellWave::shellExecuteTraceService),      1, (ShellUsageFunction) (&ShellWave::usageShellWaveTraceService)));
     addShellCommandHandler (ShellCommandHandler (string("help"),       1,  (ShellCmdFunction) (&ShellCluster::shellExecuteHelpCluster),         1, (ShellUsageFunction) (&ShellCluster::usageShellClusterHelp)));
     addShellCommandHandler (ShellCommandHandler (string("quit"),       1,  (ShellCmdFunction) (&ShellCluster::shellExecuteQuitCluster),         1, (ShellUsageFunction) (&ShellCluster::usageShellClusterQuit)));
 }
@@ -66,7 +66,7 @@ ShellCluster::~ShellCluster ()
 
 UI32 ShellCluster::shellExecuteHelpCluster (UI32 argc, vector<string> argv)
 {
-    ShellPrism::shellTrace (TRACE_LEVEL_DEVEL, "ShellCluster::shellExecuteHelpCluster : Entering ...");
+    ShellWave::shellTrace (TRACE_LEVEL_DEVEL, "ShellCluster::shellExecuteHelpCluster : Entering ...");
 
     usageShellClusterHelp ();
 
@@ -135,7 +135,7 @@ void ShellCluster::registerClusterFunction (ShellCmdFunction clusterFunction, co
     static  WaveMutex mutex;
 
     mutex.lock();
-    ((ShellObjectManager::getInstance ())->m_pPrismShell->getClusterShell ())->addShellCommandHandler (ShellCommandHandler (string(cliName), 1,  clusterFunction, strlen (cliName), NULL));
+    ((ShellObjectManager::getInstance ())->m_pWaveShell->getClusterShell ())->addShellCommandHandler (ShellCommandHandler (string(cliName), 1,  clusterFunction, strlen (cliName), NULL));
     mutex.unlock();
 }
 

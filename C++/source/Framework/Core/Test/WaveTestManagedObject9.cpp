@@ -11,7 +11,7 @@ namespace WaveNs
 
 WaveTestManagedObject9::WaveTestManagedObject9 (WaveObjectManager *pWaveObjectManager)
     : WaveElement (pWaveObjectManager),
-      PrismPersistableObject (WaveTestManagedObject9::getClassName (), WaveManagedObject::getClassName ()),
+      WavePersistableObject (WaveTestManagedObject9::getClassName (), WaveManagedObject::getClassName ()),
       WaveManagedObject (pWaveObjectManager),
       m_integer9        (0)
 {

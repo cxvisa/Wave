@@ -7,17 +7,17 @@
 #ifndef WAVEASYNCHRONOUSCONTEXTFORSHUTDOWNPHASES_H
 #define WAVEASYNCHRONOUSCONTEXTFORSHUTDOWNPHASES_H
 
-#include "Framework/Utils/PrismAsynchronousContext.h"
+#include "Framework/Utils/WaveAsynchronousContext.h"
 
 namespace WaveNs
 {
 
-class WaveAsynchronousContextForShutDownPhases : public PrismAsynchronousContext
+class WaveAsynchronousContextForShutDownPhases : public WaveAsynchronousContext
 {
     private :
     protected :
     public :
-                                WaveAsynchronousContextForShutDownPhases (WaveElement *pCaller, PrismAsynchronousCallback pCallback, void *pCallerContext = NULL);
+                                WaveAsynchronousContextForShutDownPhases (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
         virtual                ~WaveAsynchronousContextForShutDownPhases ();
 
                 WaveShutDownReason  getShutDownReason                        () const;

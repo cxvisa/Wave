@@ -4,8 +4,8 @@
  *   Author - Chaitanya Gangwar                                            *
  ***************************************************************************/
 
-#ifndef PRISMFRAMEWORKREPLAYCONFIGMESSAGE_H 
-#define PRISMFRAMEWORKREPLAYCONFIGMESSAGE_H  
+#ifndef WAVEFRAMEWORKREPLAYCONFIGMESSAGE_H 
+#define WAVEFRAMEWORKREPLAYCONFIGMESSAGE_H  
  
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "Framework/ObjectModel/WaveElement.h"
