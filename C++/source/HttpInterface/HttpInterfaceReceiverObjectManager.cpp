@@ -6,7 +6,7 @@
 
 #include "HttpInterface/HttpInterfaceReceiverObjectManager.h"
 #include "HttpInterface/HttpInterfaceReceiverThread.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/ServerStreamingSocket.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/AssertUtils.h"
@@ -117,7 +117,7 @@ void HttpInterfaceReceiverObjectManager::boot (WaveAsynchronousContextForBootPha
 
 void HttpInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (WaveFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

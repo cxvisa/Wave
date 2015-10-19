@@ -20,7 +20,7 @@
 #include "Cluster/Local/ClusterLocalGetObjectIdWorker.h"
 #include "Cluster/CentralClusterConfigObjectManager.h"
 #include "Cluster/Local/WaveHaNode.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/ClusterLocalWaveSlotManagementWorker.h"
 #include "Cluster/Local/WaveSlotLocalManagedObject.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
@@ -266,9 +266,9 @@ WaveMessage *ClusterLocalObjectManager::createMessageInstance (const UI32 &opera
 
 void ClusterLocalObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::nodeAddedEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::phase3StartEventHandler));
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_COMPLETE_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::phase3CompleteEventHandler));
+    listenForEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::nodeAddedEventHandler));
+    listenForEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::phase3StartEventHandler));
+    listenForEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_COMPLETE_EVENT, reinterpret_cast<WaveEventHandler> (&ClusterLocalObjectManager::phase3CompleteEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

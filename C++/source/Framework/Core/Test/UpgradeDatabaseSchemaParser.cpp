@@ -5,8 +5,8 @@
  ***************************************************************************/
 #include "Framework/Core/Test/UpgradeDatabaseSchemaParser.h"
 #include "Framework/Core/Test/FrameworkTestability6ObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
@@ -1541,7 +1541,7 @@ bool UpgradeDatabaseSchemaParser::removeOldManagedObjects(string &moName)
 
 void UpgradeDatabaseSchemaParser::createLockFileForConfigurationFile()
 {
-    string cmdToCreateLockFile = "/bin/touch " + PrismFrameworkObjectManager::getLockFileForConfigurationFile();
+    string cmdToCreateLockFile = "/bin/touch " + WaveFrameworkObjectManager::getLockFileForConfigurationFile();
     vector<string>  output;
     SI32 cmdStatus = 0;
     cmdStatus = FrameworkToolKit::systemCommandOutput ( cmdToCreateLockFile, output );
@@ -1553,7 +1553,7 @@ void UpgradeDatabaseSchemaParser::createLockFileForConfigurationFile()
 
 void UpgradeDatabaseSchemaParser::removeLockFileForConfigurationFile()
 {
-    string          cmdToDeleteCFG  = "/bin/rm -rf " + PrismFrameworkObjectManager::getLockFileForConfigurationFile();
+    string          cmdToDeleteCFG  = "/bin/rm -rf " + WaveFrameworkObjectManager::getLockFileForConfigurationFile();
     vector<string>  output;
     SI32 cmdStatus = FrameworkToolKit::systemCommandOutput (cmdToDeleteCFG, output);
     if ( cmdStatus != 0 )
@@ -1569,7 +1569,7 @@ ResourceId UpgradeDatabaseSchemaParser::configurationWithFlock (const UI32 &oper
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
     FILE *pFile ;
-    string lockFilename = PrismFrameworkObjectManager::getLockFileForConfigurationFile();
+    string lockFilename = WaveFrameworkObjectManager::getLockFileForConfigurationFile();
 
     //Acquire flock for all operation types
     pFile = fopen (lockFilename.c_str(),"w");
@@ -1594,20 +1594,20 @@ ResourceId UpgradeDatabaseSchemaParser::configurationWithFlock (const UI32 &oper
 
         case SAVE_CONFIGURATION :
                                     {
-                                        string   prismFrameworkConfigurationFileName = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-                                        status = m_prismFrameworkConfiguration.saveConfiguration (prismFrameworkConfigurationFileName);
+                                        string   waveFrameworkConfigurationFileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+                                        status = m_waveFrameworkConfiguration.saveConfiguration (waveFrameworkConfigurationFileName);
                                         break;
                                     }
 
         case LOAD_CONFIGURATION :
                                     {
-                                        string   prismFrameworkConfigurationFileName = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-                                        status = m_prismFrameworkConfiguration.loadConfiguration (prismFrameworkConfigurationFileName);
+                                        string   waveFrameworkConfigurationFileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+                                        status = m_waveFrameworkConfiguration.loadConfiguration (waveFrameworkConfigurationFileName);
                                         break;
                                     }
         case BACKUP_CONFIGURATION : {
-                                        string   prismFrameworkConfigurationFileName = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-                                        string cmdToCreateBackup = string("cp -f ") + prismFrameworkConfigurationFileName + " " + prismFrameworkConfigurationFileName + string(".BIST");
+                                        string   waveFrameworkConfigurationFileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+                                        string cmdToCreateBackup = string("cp -f ") + waveFrameworkConfigurationFileName + " " + waveFrameworkConfigurationFileName + string(".BIST");
 
                                         vector<string>  output;
                                         SI32 cmdStatus = 0;
@@ -1623,8 +1623,8 @@ ResourceId UpgradeDatabaseSchemaParser::configurationWithFlock (const UI32 &oper
                                     break;
         case RESTORE_CONFIGURATION : 
                                     {
-                                        string   prismFrameworkConfigurationFileName = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-                                        string cmdToRestoreBackup = string("cp -f ") + prismFrameworkConfigurationFileName + string(".BIST") + string(" ") + prismFrameworkConfigurationFileName;
+                                        string   waveFrameworkConfigurationFileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+                                        string cmdToRestoreBackup = string("cp -f ") + waveFrameworkConfigurationFileName + string(".BIST") + string(" ") + waveFrameworkConfigurationFileName;
                                         vector<string>  output;
                                         SI32 cmdStatus = 0;
                                         cmdStatus = FrameworkToolKit::systemCommandOutput (cmdToRestoreBackup, output);
@@ -1662,8 +1662,8 @@ bool UpgradeDatabaseSchemaParser::savePrismConfiguration()
         return (false);
     }
     createLockFileForConfigurationFile();
-    m_prismFrameworkConfiguration.setSchemaChangeInfo (m_managedObjectNames, m_managedObjectFieldNamesStrings, m_managedObjectFieldTypesStrings, m_classIds, m_parentClassIds, m_userDefinedKeyCombinationsFieldNamesForSchemaChange, m_userDefinedKeyCombinationsFieldTypesForSchemaChange, m_managedObjectFieldExpandedTypesStrings);
-    m_prismFrameworkConfiguration.setIsStartupValid(true);
+    m_waveFrameworkConfiguration.setSchemaChangeInfo (m_managedObjectNames, m_managedObjectFieldNamesStrings, m_managedObjectFieldTypesStrings, m_classIds, m_parentClassIds, m_userDefinedKeyCombinationsFieldNamesForSchemaChange, m_userDefinedKeyCombinationsFieldTypesForSchemaChange, m_managedObjectFieldExpandedTypesStrings);
+    m_waveFrameworkConfiguration.setIsStartupValid(true);
     status = configurationWithFlock (SAVE_CONFIGURATION);
     removeLockFileForConfigurationFile();
     if ( WAVE_MESSAGE_SUCCESS == status )
@@ -1768,8 +1768,8 @@ bool UpgradeDatabaseSchemaParser::loadPrismConfiguration()
     if (WAVE_MGMT_INTF_ROLE_SERVER != (FrameworkToolKit::getManagementInterfaceRole ()))
     {
         // Wave client need not use flock mechanism to change configuration
-        string prismFrameworkConfigurationFileName= (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-        status = m_prismFrameworkConfiguration.loadConfiguration (prismFrameworkConfigurationFileName);
+        string waveFrameworkConfigurationFileName= (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+        status = m_waveFrameworkConfiguration.loadConfiguration (waveFrameworkConfigurationFileName);
     }
     else
     {
@@ -1779,7 +1779,7 @@ bool UpgradeDatabaseSchemaParser::loadPrismConfiguration()
     if ( status ==  WAVE_MESSAGE_SUCCESS )
     {
         /* Get the SchemaInfoVectors for modification*/
-        size_t numElements = m_prismFrameworkConfiguration.getSchemaChangeInfo (m_managedObjectNames, m_managedObjectFieldNamesStrings, m_managedObjectFieldTypesStrings, m_classIds, m_parentClassIds, m_userDefinedKeyCombinationsFieldNamesForSchemaChange, m_userDefinedKeyCombinationsFieldTypesForSchemaChange, m_managedObjectFieldExpandedTypesStrings);
+        size_t numElements = m_waveFrameworkConfiguration.getSchemaChangeInfo (m_managedObjectNames, m_managedObjectFieldNamesStrings, m_managedObjectFieldTypesStrings, m_classIds, m_parentClassIds, m_userDefinedKeyCombinationsFieldNamesForSchemaChange, m_userDefinedKeyCombinationsFieldTypesForSchemaChange, m_managedObjectFieldExpandedTypesStrings);
         trace(TRACE_LEVEL_DEBUG, string ( "Number of Mo in configuration files") + numElements );
 
     } else {
@@ -1920,9 +1920,9 @@ size_t UpgradeDatabaseSchemaParser::getSchemaInfoObjectsFromUpgradeMO (vector<st
         As this function is not needed for core function of BIsT, not making them now.*/
 void UpgradeDatabaseSchemaParser::printDifferencesInVectors()
 {
-    string prismFrameworkConfigurationFileName= (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-    PrismFrameworkConfiguration prismFrameworkConfiguration;
-    prismFrameworkConfiguration.loadConfiguration (prismFrameworkConfigurationFileName);
+    string waveFrameworkConfigurationFileName= (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    WaveFrameworkConfiguration waveFrameworkConfiguration;
+    waveFrameworkConfiguration.loadConfiguration (waveFrameworkConfigurationFileName);
     vector<string>                              managedObjectNames;
     vector<string>                              managedObjectFieldNamesStrings;
     vector<string>                              managedObjectFieldTypesStrings;
@@ -1935,7 +1935,7 @@ void UpgradeDatabaseSchemaParser::printDifferencesInVectors()
     vector<string>                              derivedFromClassNames;
     //vector<pair<string, UI32> >                 tableClassIdTuples;
 
-    //size_t numElements = prismFrameworkConfiguration.getSchemaChangeInfo (managedObjectNames, managedObjectFieldNamesStrings, managedObjectFieldTypesStrings, classIds, parentClassIds, userDefinedKeyCombinationsFieldNames, userDefinedKeyCombinationsFieldTypes, managedObjectFieldExpandedTypesStrings);
+    //size_t numElements = waveFrameworkConfiguration.getSchemaChangeInfo (managedObjectNames, managedObjectFieldNamesStrings, managedObjectFieldTypesStrings, classIds, parentClassIds, userDefinedKeyCombinationsFieldNames, userDefinedKeyCombinationsFieldTypes, managedObjectFieldExpandedTypesStrings);
     size_t numElements = getSchemaInfoObjectsFromUpgradeMO (managedObjectNames, managedObjectFieldNamesStrings, managedObjectFieldTypesStrings, classIds, parentClassIds, userDefinedKeyCombinationsFieldNames, userDefinedKeyCombinationsFieldTypes, managedObjectFieldExpandedTypesStrings, isALocalMOInfo, derivedFromClassNames);
 
 

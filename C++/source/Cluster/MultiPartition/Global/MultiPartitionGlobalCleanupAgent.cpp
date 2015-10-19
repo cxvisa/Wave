@@ -6,10 +6,10 @@
 
 #include "Cluster/MultiPartition/Global/MultiPartitionGlobalCleanupAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Cluster/MultiPartition/Global/MultiPartitionObjectManager.h"
 #include "Cluster/MultiPartition/Global/MultiPartitionGlobalCleanupAgentContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 
@@ -145,12 +145,12 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
 
 bool MultiPartitionGlobalCleanupAgent::requiresMultiPartitionGlobalCleanupNotification (const WaveServiceId &waveServiceId)
 {
-    // 1. Exlude PrismFrameworkObjectManager (in general.)
+    // 1. Exlude WaveFrameworkObjectManager (in general.)
     // 2. Exclude MultiTenencyLocalObjectManager (It is running this Agent)
     // 3. Exclude Local services
     // 4. Exclude User Specific Local services.
 
-    if (((PrismFrameworkObjectManager::getWaveServiceId()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId()) == waveServiceId) ||
         ((MultiPartitionObjectManager::getWaveServiceId ()) == waveServiceId) ||
         (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))

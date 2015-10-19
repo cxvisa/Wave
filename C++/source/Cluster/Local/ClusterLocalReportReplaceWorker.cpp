@@ -12,7 +12,7 @@
 #include "Framework/Utils/WaveLinearSequencerContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Cluster/PrismCluster.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"

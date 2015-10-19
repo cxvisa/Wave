@@ -13,7 +13,7 @@
 #include "Cluster/PrismCluster.h"
 #include "Cluster/Local/HeartBeat/HeartBeatMessages.h"
 #include "Cluster/Local/ClusterLocalSetThisNodeIpAddressMessage.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 
@@ -202,7 +202,7 @@ void CentralClusterConfigCreateClusterWorker::createClusterResetThisNodeIpAddres
 {
     trace (TRACE_LEVEL_DEVEL, "CentralClusterConfigCreateClusterWorker::createClusterResetThisNodeIpAddressIfRequiredStep : Entering ...");
 
-    string     ethernetInterface = PrismFrameworkObjectManager::getEthernetInterfaceForThisLocation ();
+    string     ethernetInterface = WaveFrameworkObjectManager::getEthernetInterfaceForThisLocation ();
     ResourceId status            = WAVE_MESSAGE_SUCCESS;
     string     ipAddress;
 

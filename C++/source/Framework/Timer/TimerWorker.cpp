@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/MultiThreading/WaveThread.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/Timer/TimerObjectManager.h"
 #include "Framework/Timer/TimerWorker.h"
 #include "Framework/Timer/TimerMessages.h"

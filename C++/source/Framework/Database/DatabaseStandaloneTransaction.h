@@ -10,7 +10,7 @@
 #include "Framework/Types/Types.h"
 #include "Framework/Database/DatabaseConnection.h"
 #include "Framework/ObjectRelationalMapping/DatabaseSchema.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
 
 #include <string>
 
@@ -41,7 +41,7 @@ class DatabaseStandaloneTransaction
                void         establishDbConnection           ();
                void         shutdownDatabase                ();
                ResourceId   rollbackDatabase                (); 
-               ResourceId   rollbackConfigFile              (PrismFrameworkConfiguration& prismFrameworkConfiguration);
+               ResourceId   rollbackConfigFile              (WaveFrameworkConfiguration& waveFrameworkConfiguration);
                ResourceId   dropAllDBViews                  ();
 
     // Now the data members

@@ -8,7 +8,7 @@
 #include "Framework/Failover/PrismFailoverAgentContext.h"
 #include "Framework/Failover/PrismFailoverAgentSequencerContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 
 namespace WaveNs
@@ -96,7 +96,7 @@ void PrismSecondaryControlledFailoverAgent::execute (PrismFailoverAgentContext *
 
 bool PrismSecondaryControlledFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
         (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {

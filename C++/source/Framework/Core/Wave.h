@@ -9,7 +9,7 @@
 
 #include "Framework/Types/Types.h"
 
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "License/LicenseObjectManager.h"
 #include "License/Test/LicenseTestObjectManager.h"
 #include "Framework/Trace/TraceObjectManager.h"

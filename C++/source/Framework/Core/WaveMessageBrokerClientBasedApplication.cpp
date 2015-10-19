@@ -332,11 +332,11 @@ extern "C" int waveMessageBrokerClientMain (int argc, char *argv[], bool wait)
         cout << "Starting Services now..." << endl;
     }
 
-    PrismFrameworkObjectManager::setIpAddressForThisLocation         (ipAddress);
-    PrismFrameworkObjectManager::setEthernetInterfaceForThisLocation (ethernetInterface);
+    WaveFrameworkObjectManager::setIpAddressForThisLocation         (ipAddress);
+    WaveFrameworkObjectManager::setEthernetInterfaceForThisLocation (ethernetInterface);
 
-    PrismFrameworkObjectManager::setFrameworkSequenceType            (type);
-    PrismFrameworkObjectManager::configureAsLocation                 (port);
+    WaveFrameworkObjectManager::setFrameworkSequenceType            (type);
+    WaveFrameworkObjectManager::configureAsLocation                 (port);
 
     WaveMainConfiguration waveMainConfiguration;
     vector<string>        yinPaths;
@@ -362,14 +362,14 @@ extern "C" int waveMessageBrokerClientMain (int argc, char *argv[], bool wait)
 
     WaveMessageBrokerClient::initialize (waveMainConfiguration);
 
-    PrismFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootPrism ();
 
-    PrismFrameworkObjectManager::acquireBootSynchronizationMutex ();
-    PrismFrameworkObjectManager::releaseBootSynchronizationMutex ();
+    WaveFrameworkObjectManager::acquireBootSynchronizationMutex ();
+    WaveFrameworkObjectManager::releaseBootSynchronizationMutex ();
 
     if (true == wait)
     {
-        PrismFrameworkObjectManager::waitForPrismServicesToFinish ();
+        WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
     }
 
     delete [] pChangeDirectoryToArray;

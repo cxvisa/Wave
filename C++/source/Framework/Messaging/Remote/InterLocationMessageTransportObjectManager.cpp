@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/Remote/InterLocationMessageTransportObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -248,7 +248,7 @@ WaveThread *InterLocationMessageTransportObjectManager::getWaveThread ()
 
 void InterLocationMessageTransportObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    (PrismFrameworkObjectManager::getInstance ())->initializeClientCommunications ();
+    (WaveFrameworkObjectManager::getInstance ())->initializeClientCommunications ();
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -514,12 +514,12 @@ void InterLocationMessageTransportObjectManager::callbackForSendUsedByReceiverTh
 
     if (true == disconnectFromNodeAfterReply)
     {
-        (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId, true);
+        (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId, true);
     }
 
     if (true == removeKnownLocationAfterReply)
     {
-        (PrismFrameworkObjectManager::getInstance ())->removeKnownLocation  (locationId);
+        (WaveFrameworkObjectManager::getInstance ())->removeKnownLocation  (locationId);
     }
 
     callbackMutex.unlock ();

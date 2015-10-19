@@ -6,8 +6,8 @@
 
 #include "Framework/Failover/PrismFailoverAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 #include "Cluster/CentralClusterConfigObjectManager.h"
 #include "Framework/Failover/PrismFailoverAgentContext.h"
@@ -507,11 +507,11 @@ void PrismFailoverAgent::removeOldPrimaryLocationStep (PrismFailoverAgentSequenc
          //If it is a controlled failover set the flag is the message
          if(FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED == getFailoverReason ()) 
          {
-             PrismFrameworkObjectManager *pPrismFrameworkObjectManager = PrismFrameworkObjectManager::getInstance ();
-             waveAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
+             WaveFrameworkObjectManager *pWaveFrameworkObjectManager = WaveFrameworkObjectManager::getInstance ();
+             waveAssert (NULL != pWaveFrameworkObjectManager, __FILE__, __LINE__);
 
              LocationId oldPrimaryLocationId = pPrismFailoverAgentSequencerContext->getOlderPrimaryLocationId ();
-             pPrismFrameworkObjectManager->removeKnownLocation (oldPrimaryLocationId);
+             pWaveFrameworkObjectManager->removeKnownLocation (oldPrimaryLocationId);
              tracePrintf (TRACE_LEVEL_INFO, "PrismFaioverAgent::removeOldPrimaryLocationStep::Removing the old primary location id %u due to controlled failover", oldPrimaryLocationId);
             
          }
@@ -521,20 +521,20 @@ void PrismFailoverAgent::removeOldPrimaryLocationStep (PrismFailoverAgentSequenc
 void PrismFailoverAgent::resetThisLocationToPrimaryStep (PrismFailoverAgentSequencerContext *pPrismFailoverAgentSequencerContext)
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFailoverAgent::resetThisLocationToPrimaryStep");
-    PrismFrameworkObjectManager *pPrismFrameworkObjectManager = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pWaveFrameworkObjectManager = WaveFrameworkObjectManager::getInstance ();
 
-    waveAssert (NULL != pPrismFrameworkObjectManager, __FILE__, __LINE__);
+    waveAssert (NULL != pWaveFrameworkObjectManager, __FILE__, __LINE__);
 
     
 
-    pPrismFrameworkObjectManager->resetLocationToPrimary ();
+    pWaveFrameworkObjectManager->resetLocationToPrimary ();
 
     pPrismFailoverAgentSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
 bool PrismFailoverAgent::isToBeExcludedForFailover (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
         (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
@@ -649,7 +649,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryStep (PrismFailo
         {
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryStep: Not able to inform secondary location : ") + locationId + string (" Error Code : ") + status);
             pPrismFailoverAgentSequencerContext->setSecondaryNodeStatus (ipAddress, port, status);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
         else
         {
@@ -693,7 +693,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback : Case 1 - Informing ") + ipAddress + " failed : " + completionStatus);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
     }
     else
@@ -705,7 +705,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
             pPrismFailoverAgentSequencerContext->setSecondaryNodeStatus (ipAddress, port, frameworkStatus);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
 
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback : Case 2 - Informing ") + ipAddress + " failed : " + frameworkStatus);
         }
@@ -736,7 +736,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback (Framew
             if (true != (pPrismFailoverAgentSequencerContext->isSecondaryNodeStatusSet (ipAddress1, port1)))
             {
                 pPrismFailoverAgentSequencerContext->setSecondaryNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_FAILOVER_INFORM_SECONDARY_LOCATIONS_TIMED_OUT);
-                (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId1);
+                (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId1);
 
                 trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryCallback : Case 3 - Informing ") + ipAddress1 + " Timeout ");
             }
@@ -838,7 +838,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Step (Pris
         {
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Step: Not able to inform secondary location : ") + locationId + string (" Error Code : ") + status);
             pPrismFailoverAgentSequencerContext->updateSecondaryNodeStatus (ipAddress, port, status);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
         else
         {
@@ -887,7 +887,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback : Case 1 - Informing ") + ipAddress + " failed : " + completionStatus);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
     }
     else
@@ -899,7 +899,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
             pPrismFailoverAgentSequencerContext->updateSecondaryNodeStatus (ipAddress, port, frameworkStatus);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
 
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback : Case 2 - Informing ") + ipAddress + " failed : " + frameworkStatus);
         }
@@ -930,7 +930,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback (
             if (FRAMEWORK_ERROR_FAILOVER_INFORM_SECONDARY_LOCATIONS_PHASE1_UNKNOWN == (pPrismFailoverAgentSequencerContext->getSecondaryNodeStatus (ipAddress1, port1)))
             {
                 pPrismFailoverAgentSequencerContext->updateSecondaryNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_FAILOVER_INFORM_SECONDARY_LOCATIONS_PHASE1_TIMED_OUT);
-                (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId1);
+                (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId1);
 
                 trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase1Callback : Case 3 - Informing ") + ipAddress1 + " Timeout ");
             }
@@ -1020,7 +1020,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Step (Pris
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             pPrismFailoverAgentSequencerContext->updateSecondaryNodeStatus (ipAddress, port, status);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
 
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Step: Not able to inform secondary location : ") + locationId + string (" Error Code : ") + status);
         }
@@ -1067,7 +1067,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback : Case 1 - Informing ") + ipAddress + " failed : " + completionStatus);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
     }
     else
@@ -1079,7 +1079,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
             pPrismFailoverAgentSequencerContext->updateSecondaryNodeStatus (ipAddress, port, frameworkStatus);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
 
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback : Case 2 - Informing ") + ipAddress + " failed : " + frameworkStatus);
         }
@@ -1109,7 +1109,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback (
 
             if (FRAMEWORK_ERROR_FAILOVER_INFORM_SECONDARY_LOCATIONS_PHASE2_UNKNOWN == (pPrismFailoverAgentSequencerContext->getSecondaryNodeStatus (ipAddress1, port1)))
             {
-                (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId1);
+                (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId1);
                 pPrismFailoverAgentSequencerContext->updateSecondaryNodeStatus (ipAddress1, port1, FRAMEWORK_ERROR_FAILOVER_INFORM_SECONDARY_LOCATIONS_PHASE2_TIMED_OUT);
                 trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase2Callback : Case 3 - Informing ") + ipAddress1 + " Timeout ");
             }
@@ -1173,7 +1173,7 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Step (Pris
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_ERROR, string ("PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Step: Not able to inform secondary location : ") + locationId + string (" Error Code : ") + status);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
         else
         {
@@ -1209,14 +1209,14 @@ void PrismFailoverAgent::informSecondaryLocationsToChangePrimaryPhase3Callback (
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
         }
     }
     else
     {
         LocationId  locationId = pWaveMessage->getReceiverLocationId ();
 
-        (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+        (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
     }
 
     if (NULL != pWaveMessage)
@@ -1414,7 +1414,7 @@ void PrismFailoverAgent::startHeartBeatToSecondariesStep(PrismFailoverAgentSeque
         if (locationIterator == connectedLocationIds.end ())
         {
             trace (TRACE_LEVEL_INFO, string ("disconnect from location in failover") + actuallyConnectedLocationIds [location]);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (actuallyConnectedLocationIds [location]);            
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (actuallyConnectedLocationIds [location]);            
         }
     }
 
@@ -1488,7 +1488,7 @@ void PrismFailoverAgent::informSecondaryLocationsToRemoveFailedFromKnownLocation
 
 bool PrismFailoverAgent::isToBeExcluded (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
         (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
@@ -1502,7 +1502,7 @@ bool PrismFailoverAgent::isToBeExcluded (const WaveServiceId &waveServiceId)
 
 bool PrismFailoverAgent::isToBeExcludedDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
         (true == (FrameworkToolKit::isALocalService (waveServiceId))) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {

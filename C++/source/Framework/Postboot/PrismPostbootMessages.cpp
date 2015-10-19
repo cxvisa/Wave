@@ -6,7 +6,7 @@
 
 #include "Framework/Postboot/PrismPostbootMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
 #include "Framework/Utils/TraceUtils.h"
 
@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 ExecutePostbootPassTableMessage::ExecutePostbootPassTableMessage ()
-    : WaveMessage (PrismFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POSTBOOT_PASSES)
+    : WaveMessage (WaveFrameworkObjectManager::getWaveServiceId(), FRAMEWORK_OBJECT_MANAGER_EXECUTE_POSTBOOT_PASSES)
 {
 }
 

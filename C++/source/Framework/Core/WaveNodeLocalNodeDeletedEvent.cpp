@@ -7,13 +7,13 @@
 
 #include "Framework/Core/WaveNodeLocalNodeDeletedEvent.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 WaveNodeLocalNodeDeletedEvent::WaveNodeLocalNodeDeletedEvent ()
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT)
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_LOCAL_NODE_DELETED_EVENT)
 {
 }
 

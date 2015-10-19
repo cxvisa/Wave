@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Core/SecondaryNodeClusterPhase2Context.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Trace/TraceMessages.h"
 
 
@@ -28,8 +28,8 @@ SecondaryNodeClusterPhase2Context::~SecondaryNodeClusterPhase2Context()
 {
     if (m_resetSecondaryNodeClusterCreationFlag)
     {
-        (PrismFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (false);
-        (PrismFrameworkObjectManager::getInstance ())->resumePostponedMessages ();
+        (WaveFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (false);
+        (WaveFrameworkObjectManager::getInstance ())->resumePostponedMessages ();
     }
 }
 

@@ -10,7 +10,7 @@
 #include "Framework/ObjectModel/WaveAsynchronousContextForDebugInformation.h"
 #include "Framework/ObjectModel/WaveObjectManagerStatisticsTracker.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 

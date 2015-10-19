@@ -13,7 +13,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Trace/TraceObjectManager.h"
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceMessage.h"
 #include "SystemManagement/SystemManagementToolKit.h"
@@ -47,16 +47,16 @@ WaveCommandLineInterface::WaveCommandLineInterface (const string &serverIpAddres
     FrameworkSequenceType type      = FRAMEWORK_SEQUENCE_TYPE0;
     SI32                  port      = FrameworkToolKit::getPrismDefaultTcpPort ();
 
-    PrismFrameworkObjectManager::setIpAddressForThisLocation (ipAddress);
+    WaveFrameworkObjectManager::setIpAddressForThisLocation (ipAddress);
 
-    PrismFrameworkObjectManager::setFrameworkSequenceType (type);
-    PrismFrameworkObjectManager::configureAsLocation (port);
+    WaveFrameworkObjectManager::setFrameworkSequenceType (type);
+    WaveFrameworkObjectManager::configureAsLocation (port);
 
     FrameworkToolKit::setManagementInterfaceRole (WAVE_MGMT_INTF_ROLE_CLI);
     FrameworkToolKit::initialize ();
     TraceObjectManager::setIsSysLogRequired (false);
     FrameworkToolKit::setIsRunningAsADaemon (false);
-    PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager::getInstance ();
 
     installSigIntHandlers ();
 

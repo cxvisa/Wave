@@ -13,13 +13,13 @@
 
 #include "Framework/Core/PrimaryChangedEvent.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 PrimaryChangedEvent::PrimaryChangedEvent ()
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT),
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_PRIMARY_CHANGED_EVENT),
       m_newPrimaryLocationId (0)
 {
 }

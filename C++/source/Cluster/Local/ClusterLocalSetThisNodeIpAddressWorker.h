@@ -21,7 +21,7 @@ class ClusterLocalSetThisNodeIpAddressWorker : public WaveWorker
     private :
         void setThisNodeIpAddressMessageHandler                        (ClusterLocalSetThisNodeIpAddressMessage *pClusterLocalSetThisNodeIpAddressMessage);
         void setThisNodeIpAddressValidateStep                          (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-        void setThisNodeIpAddressUpdatePrismFrameworkObjectManagerStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+        void setThisNodeIpAddressUpdateWaveFrameworkObjectManagerStep (WaveLinearSequencerContext *pWaveLinearSequencerContext);
         void setThisNodeIpAddressUpdateThisWaveNodeStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
 
     protected :

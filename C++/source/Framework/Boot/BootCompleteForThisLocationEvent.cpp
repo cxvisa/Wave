@@ -6,13 +6,13 @@
 
 #include "Framework/Boot/BootCompleteForThisLocationEvent.h"
 #include "Framework/Boot/BootTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 BootCompleteForThisLocationEvent::BootCompleteForThisLocationEvent (bool flagSchemaChange)
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION),
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION),
       m_logSchemaChangeFlag (flagSchemaChange)
 {
 }

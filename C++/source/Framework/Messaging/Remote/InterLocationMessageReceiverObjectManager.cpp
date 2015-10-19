@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/Remote/InterLocationMessageReceiverObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Messaging/Remote/InterLocationMessageReceiverThread.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -230,7 +230,7 @@ void InterLocationMessageReceiverObjectManager::boot (WaveAsynchronousContextFor
 {
     InterLocationMessageReceiverThread *pNewInterLocationMessageReceiverThread = NULL;
 
-    (PrismFrameworkObjectManager::getInstance ())->initializeServerCommunications ();
+    (WaveFrameworkObjectManager::getInstance ())->initializeServerCommunications ();
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -246,7 +246,7 @@ void InterLocationMessageReceiverObjectManager::boot (WaveAsynchronousContextFor
 
         trace (TRACE_LEVEL_DEBUG, "InterLocationMessageReceiverObjectManager::initialize : Awaiting NEW Connections...");
 
-        successfullyAcceptedNewConnection = (PrismFrameworkObjectManager::getInstance ())->acceptNewConnection (*pNewServerStreamingSocket);
+        successfullyAcceptedNewConnection = (WaveFrameworkObjectManager::getInstance ())->acceptNewConnection (*pNewServerStreamingSocket);
 
         if (true != successfullyAcceptedNewConnection)
         {

@@ -6,7 +6,7 @@
 
 #include "Framework/ObjectModel/WaveManagedObjectLoadOperationalDataWorker.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/ObjectModel/LoadOperationalDataContext.h"
 #include "Framework/ObjectModel/WaveManagedObjectLoadOperationalDataContext.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"

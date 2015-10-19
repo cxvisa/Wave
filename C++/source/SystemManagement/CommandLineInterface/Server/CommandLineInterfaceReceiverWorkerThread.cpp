@@ -11,7 +11,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FixedSizeBuffer.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/Base64Utils.h"
 #include "Framework/Utils/PamUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"

@@ -53,7 +53,7 @@ class VcsClusterConfiguration : virtual public SerializableObject
     protected :
     public :
 
-    friend class PrismFrameworkObjectManagerHaSyncWorker;
+    friend class WaveFrameworkObjectManagerHaSyncWorker;
 };
 
 }

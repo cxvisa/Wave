@@ -79,8 +79,8 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
     protected :
     public :
         friend class HaPeerMessageReceiverThread;
-        friend class PrismFrameworkObjectManager;
-        friend class PrismFrameworkObjectManagerHaSyncWorker;
+        friend class WaveFrameworkObjectManager;
+        friend class WaveFrameworkObjectManagerHaSyncWorker;
 };
 
 }

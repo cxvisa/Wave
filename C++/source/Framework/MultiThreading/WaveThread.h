@@ -135,7 +135,7 @@ class WaveThread : public PrismPosixThread
     public :
 
         friend class WaveObjectManager;
-        friend class PrismFrameworkObjectManager;
+        friend class WaveFrameworkObjectManager;
         friend class TimerWorker;
         friend class WaveMessageFactory;
         friend class WaveManagedObjectFactory;

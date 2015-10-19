@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "ManagementInterface/ManagementInterfaceReceiverObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/ServerStreamingSocket.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "ManagementInterface/ManagementInterfaceReceiverThread.h"
@@ -266,7 +266,7 @@ void ManagementInterfaceReceiverObjectManager::boot (WaveAsynchronousContextForB
 
 void ManagementInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
-    listenForEvent (PrismFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
+    listenForEvent (WaveFrameworkObjectManager::getWaveServiceId (), BOOT_COMPLETE_FOR_THIS_LOCATION, reinterpret_cast<WaveEventHandler> (&ManagementInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler));
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();

@@ -10,7 +10,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Core/FrameworkSequenceGenerator.h"
 #include "Framework/Core/Wave.h"
@@ -80,7 +80,7 @@ TraceObjectManager::TraceObjectManager ()
     /*
      * zeroize is required for non-Notive service and native services. This initializatin cannot be done globally
      * hence individual OM's should register themselves if they want to implement zeroize.
-    FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
     frameworkSequenceGenerator.addWaveServiceIdToZeroize(getServiceId());
      */
 

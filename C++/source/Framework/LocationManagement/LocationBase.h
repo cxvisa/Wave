@@ -117,12 +117,12 @@ class LocationBase
 
     public :
 
-    friend class PrismFrameworkObjectManager;
+    friend class WaveFrameworkObjectManager;
     friend class PersistentPrismBootAgent;
     friend class PersistentWithDefaultPrismBootAgent;
     friend class PersistentWithDefaultForHABootAgent;
-    friend class PrismFrameworkObjectManagerHaSyncWorker;
-    friend class PrismFrameworkConfigurationWorker;
+    friend class WaveFrameworkObjectManagerHaSyncWorker;
+    friend class WaveFrameworkConfigurationWorker;
 };
 
 }

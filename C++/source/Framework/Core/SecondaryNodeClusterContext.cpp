@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Core/SecondaryNodeClusterContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Trace/TraceMessages.h"
 
 
@@ -23,7 +23,7 @@ SecondaryNodeClusterContext::SecondaryNodeClusterContext(WaveMessage *pWaveMessa
     
     if (m_setSecondaryNodeClusterCreationFlag)
     {
-        (PrismFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (true);
+        (WaveFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (true);
     }
 
     m_clusterHaSyncInProgressFlag = clusterHaSyncInProgressFlag;
@@ -40,7 +40,7 @@ SecondaryNodeClusterContext::SecondaryNodeClusterContext(PrismAsynchronousContex
     
     if (m_setSecondaryNodeClusterCreationFlag)
     {
-        (PrismFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (true);
+        (WaveFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (true);
     }
 
     m_clusterHaSyncInProgressFlag = clusterHaSyncInProgressFlag;

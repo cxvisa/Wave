@@ -28,7 +28,7 @@
 #include "ManagementInterface/ClientInterface/WaveClientReceiverObjectManager.h"
 #include "ManagementInterface/ClientInterface/WaveClientTransportObjectManager.h"
 #include "ManagementInterface/ClientInterface/WaveUserInterfaceObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManagerInitializeWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManagerInitializeWorker.h"
 #include "Cluster/MultiPartition/Global/MultiPartitionObjectManager.h"
 #include "Cluster/MultiPartition/Local/MultiPartitionLocalObjectManager.h"
 
@@ -105,18 +105,18 @@ void WaveSystemManagement::initialize (const WaveMainConfiguration &waveMainConf
 
     // set the Wave Framework configuration file.
 
-    PrismFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg");
-    PrismFrameworkObjectManager::setGlobalConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".global.cfg");
+    WaveFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg");
+    WaveFrameworkObjectManager::setGlobalConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".global.cfg");
 
 #ifdef _X86_COMPILE_
-    PrismFrameworkObjectManager::setLockFileForConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
+    WaveFrameworkObjectManager::setLockFileForConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
 #else
-    PrismFrameworkObjectManager::setLockFileForConfigurationFile ("/tmp/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
+    WaveFrameworkObjectManager::setLockFileForConfigurationFile ("/tmp/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
 #endif
 
     // set the Wave Framework configuration file.
 
-    PrismFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg");
+    WaveFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg");
 
     // Set the trace file name first
 
@@ -156,9 +156,9 @@ void WaveSystemManagement::initialize (const WaveMainConfiguration &waveMainConf
     OrmRepository::addMostBaseClass (WaveManagedObject::getClassName      ());
     OrmRepository::addMostBaseClass (WaveLocalManagedObject::getClassName ());
 
-    // PrismFrameworkObjectManager must be the first one to be created.
+    // WaveFrameworkObjectManager must be the first one to be created.
 
-    PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager::getInstance ();
 
     if (true == (waveMainConfiguration.getIsADaemon ()))
     {

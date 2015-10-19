@@ -5,8 +5,8 @@
  ***************************************************************************/
 
 #include "Framework/Boot/PersistentWithDefaultForHABootAgent.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/LocationBase.h"
 #include "Framework/Utils/StringUtils.h"
@@ -69,11 +69,11 @@ ResourceId PersistentWithDefaultForHABootAgent::execute (const WaveBootPhase &wa
 
 ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    string                      prismConfigurationfileName   = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-    PrismFrameworkConfiguration prismFrameworkConfiguration;
+    string                      prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    WaveFrameworkConfiguration waveFrameworkConfiguration;
     ResourceId                  status                       = WAVE_MESSAGE_ERROR;
 
-    status = prismFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
+    status = waveFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -84,35 +84,35 @@ ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFrom
     }
     else
     {
-        LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
+        LocationBase *pThisLocation = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
 
         waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 
-        FrameworkToolKit::setLastUsedLocationId (prismFrameworkConfiguration.m_lastUsedLocationId);
+        FrameworkToolKit::setLastUsedLocationId (waveFrameworkConfiguration.m_lastUsedLocationId);
 
-        pThisLocation->setLocationRole             (static_cast<LocationRole> (prismFrameworkConfiguration.m_thisLocationRole));
-        pThisLocation->setLocationId               (prismFrameworkConfiguration.m_thisLocationLocationId);
-        pThisLocation->setClusterPrimaryLocationId (prismFrameworkConfiguration.m_clusterPrimaryLocationId);
-        pThisLocation->setClusterPrimaryPort       (prismFrameworkConfiguration.m_clusterPrimaryPort);
+        pThisLocation->setLocationRole             (static_cast<LocationRole> (waveFrameworkConfiguration.m_thisLocationRole));
+        pThisLocation->setLocationId               (waveFrameworkConfiguration.m_thisLocationLocationId);
+        pThisLocation->setClusterPrimaryLocationId (waveFrameworkConfiguration.m_clusterPrimaryLocationId);
+        pThisLocation->setClusterPrimaryPort       (waveFrameworkConfiguration.m_clusterPrimaryPort);
 
-        UI32 numberOfKnownLocations = prismFrameworkConfiguration.m_knownLocationIpAddresses.size ();
+        UI32 numberOfKnownLocations = waveFrameworkConfiguration.m_knownLocationIpAddresses.size ();
         UI32 i                      = 0;
 
         for (i = 0; i < numberOfKnownLocations; i++)
         {
-            pThisLocation->addKnownLocation (prismFrameworkConfiguration.m_knownLocationLocationIds[i], prismFrameworkConfiguration.m_knownLocationIpAddresses[i], prismFrameworkConfiguration.m_knownLocationPorts[i]);
+            pThisLocation->addKnownLocation (waveFrameworkConfiguration.m_knownLocationLocationIds[i], waveFrameworkConfiguration.m_knownLocationIpAddresses[i], waveFrameworkConfiguration.m_knownLocationPorts[i]);
         }
 
-        UI32 numberOfKnownSubLocations = prismFrameworkConfiguration.m_knownSubLocationIpAddresses.size ();
+        UI32 numberOfKnownSubLocations = waveFrameworkConfiguration.m_knownSubLocationIpAddresses.size ();
 
         for (i = 0; i < numberOfKnownSubLocations; i++)
         {
-            pThisLocation->addSubLocation (prismFrameworkConfiguration.m_knownSubLocationLocationIds[i], prismFrameworkConfiguration.m_knownSubLocationIpAddresses[i], prismFrameworkConfiguration.m_knownSubLocationPorts[i]);
+            pThisLocation->addSubLocation (waveFrameworkConfiguration.m_knownSubLocationLocationIds[i], waveFrameworkConfiguration.m_knownSubLocationIpAddresses[i], waveFrameworkConfiguration.m_knownSubLocationPorts[i]);
         }
 
-        (PrismFrameworkObjectManager::getInstance ())->setIsStartupValid (prismFrameworkConfiguration.m_isStartupValid);
-        (PrismFrameworkObjectManager::getInstance ())->setStartupFileType (prismFrameworkConfiguration.m_startupFileType);
-        (PrismFrameworkObjectManager::getInstance ())->setStartupFileName (prismFrameworkConfiguration.m_startupFileName);
+        (WaveFrameworkObjectManager::getInstance ())->setIsStartupValid (waveFrameworkConfiguration.m_isStartupValid);
+        (WaveFrameworkObjectManager::getInstance ())->setStartupFileType (waveFrameworkConfiguration.m_startupFileType);
+        (WaveFrameworkObjectManager::getInstance ())->setStartupFileName (waveFrameworkConfiguration.m_startupFileName);
 
         status = WAVE_MESSAGE_SUCCESS;
     }
@@ -122,7 +122,7 @@ ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFrom
 
 ResourceId PersistentWithDefaultForHABootAgent::connectToKnownLocationsStep (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    LocationBase       *pThisLocation                = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
+    LocationBase       *pThisLocation                = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
     vector<LocationId>  knownRemoteLocations;
     UI32                numberOfKnownRemoteLocations = 0;
     UI32                i                            = 0;
@@ -162,7 +162,7 @@ WaveBootReason PersistentWithDefaultForHABootAgent::getReason () const
 
 bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -175,7 +175,7 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializeDuringPreP
 
 bool PersistentWithDefaultForHABootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -201,7 +201,7 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstallDuringPrePhas
 
 bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -214,7 +214,7 @@ bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInitializePhase (con
 
 bool PersistentWithDefaultForHABootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);

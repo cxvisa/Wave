@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/HaPeer/HaPeerMessageTransportObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManagerHaSyncWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManagerHaSyncWorker.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/MultiThreading/WaveThread.h"

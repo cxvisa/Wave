@@ -272,7 +272,7 @@ class WaveMessage : virtual public SerializableObject
     public :
 
     friend class WaveObjectManager;
-    friend class PrismFrameworkObjectManager;
+    friend class WaveFrameworkObjectManager;
     friend class WaveThread;
     friend class RegressionTestObjectManager; // Delete this line as soon as possible.  Using it for testing in the initial phases ...
     friend class WaveClientTransportObjectManager;

@@ -7,13 +7,13 @@
 
 #include "Framework/Core/WaveNewNodesAddedEvent.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 WaveNewNodesAddedEvent::WaveNewNodesAddedEvent ()
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (),FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT )
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (),FRAMEWORK_OBJECT_MANAGER_BROADCAST_ADDITION_OF_NEW_NODES_EVENT )
 {
 }
 

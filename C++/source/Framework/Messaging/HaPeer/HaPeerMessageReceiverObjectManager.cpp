@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/HaPeer/HaPeerMessageReceiverObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManagerHaSyncWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManagerHaSyncWorker.h"
 #include "Framework/Messaging/HaPeer/HaPeerMessageReceiverThread.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -202,7 +202,7 @@ void HaPeerMessageReceiverObjectManager::boot (WaveAsynchronousContextForBootPha
 {
     HaPeerMessageReceiverThread *pNewHaPeerMessageReceiverThread = NULL;
 
-    (PrismFrameworkObjectManagerHaSyncWorker::getInstance ())->initializeHaPeerServerCommunications ();
+    (WaveFrameworkObjectManagerHaSyncWorker::getInstance ())->initializeHaPeerServerCommunications ();
 
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
@@ -218,7 +218,7 @@ void HaPeerMessageReceiverObjectManager::boot (WaveAsynchronousContextForBootPha
 
         trace (TRACE_LEVEL_DEBUG, "HaPeerMessageReceiverObjectManager::initialize : Awaiting NEW Connections...");
 
-        successfullyAcceptedNewConnection = (PrismFrameworkObjectManagerHaSyncWorker::getInstance ())->acceptHaPeerConnection (*pNewServerStreamingSocket);
+        successfullyAcceptedNewConnection = (WaveFrameworkObjectManagerHaSyncWorker::getInstance ())->acceptHaPeerConnection (*pNewServerStreamingSocket);
 
         if (true != successfullyAcceptedNewConnection)
         {

@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Core/AddNodesToClusterContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {

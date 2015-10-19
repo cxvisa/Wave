@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Boot/SecondaryNodeRejoinPrismBootAgent.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/Core/ApplicationSpecificServices.h"
@@ -154,7 +154,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isAPersistentBoot ()
 /// bool:
 bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -167,7 +167,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializeDuringPrePha
 
 bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -180,7 +180,7 @@ bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedFromInitializePhase (const
 
 bool SecondaryNodeRejoinPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);

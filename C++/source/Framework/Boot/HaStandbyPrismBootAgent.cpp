@@ -5,8 +5,8 @@
  ***************************************************************************/
 
 #include "Framework/Boot/HaStandbyPrismBootAgent.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/LocationBase.h"
@@ -141,7 +141,7 @@ WaveBootReason HaStandbyPrismBootAgent::getReason () const
 
 bool HaStandbyPrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -167,7 +167,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstallDuringPrePhase (const Wav
 
 bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -180,7 +180,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &wa
 
 bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -193,7 +193,7 @@ bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const 
 
 bool HaStandbyPrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -506,7 +506,7 @@ ResourceId HaStandbyPrismBootAgent::haBootPrismServicesDuringPrePhaseStep (Prism
                  
 ResourceId HaStandbyPrismBootAgent::resetLocationRole (PrismSynchronousLinearSequencerContext *pPrismSynchronousLinearSequencerContext)
 {
-    LocationBase *pThisLocation = (PrismFrameworkObjectManager::getInstance ())->getThisLocation ();
+    LocationBase *pThisLocation = (WaveFrameworkObjectManager::getInstance ())->getThisLocation ();
 
     waveAssert (NULL != pThisLocation, __FILE__, __LINE__);
 

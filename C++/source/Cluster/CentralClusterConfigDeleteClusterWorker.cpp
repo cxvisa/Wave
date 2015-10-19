@@ -15,7 +15,7 @@
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
@@ -183,7 +183,7 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep (C
 
             if (false == pMessage->getIsRebootRequired ())
             {
-                (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (secondaryNodeName, (SI32) secondaryNodePort);
+                (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (secondaryNodeName, (SI32) secondaryNodePort);
             }
         }
     }

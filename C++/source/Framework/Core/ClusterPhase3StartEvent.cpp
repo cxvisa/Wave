@@ -7,13 +7,13 @@
 
 #include "Framework/Core/ClusterPhase3StartEvent.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 ClusterPhase3StartEvent::ClusterPhase3StartEvent ()
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT)
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_PHASE3_START_EVENT)
 {
 }
 

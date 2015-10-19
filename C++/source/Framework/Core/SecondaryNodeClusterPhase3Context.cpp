@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Core/SecondaryNodeClusterPhase3Context.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Trace/TraceMessages.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -29,16 +29,16 @@ SecondaryNodeClusterPhase3Context::~SecondaryNodeClusterPhase3Context()
 {
     if (m_resetSecondaryNodeClusterCreationFlag)
     {   
-        (PrismFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (false);
-        if (true == (PrismFrameworkObjectManager::getInstance ())->getNeedNotifyClusterReadyState())
+        (WaveFrameworkObjectManager::getInstance ())->setSecondaryNodeClusterCreationFlag (false);
+        if (true == (WaveFrameworkObjectManager::getInstance ())->getNeedNotifyClusterReadyState())
         {
             trace (TRACE_LEVEL_INFO, "SecondaryNodeClusterPhase3Context::Destructor: Notify on ClusterReady event for secondary join success event");
             bool readyState = true;
-            (PrismFrameworkObjectManager::getInstance ())->notifyClusterReadyState (readyState);
-            (PrismFrameworkObjectManager::getInstance ())->setNeedNotifyClusterReadyState (false);
+            (WaveFrameworkObjectManager::getInstance ())->notifyClusterReadyState (readyState);
+            (WaveFrameworkObjectManager::getInstance ())->setNeedNotifyClusterReadyState (false);
         }
 
-        (PrismFrameworkObjectManager::getInstance ())->resumePostponedMessages ();
+        (WaveFrameworkObjectManager::getInstance ())->resumePostponedMessages ();
     }
 }
 

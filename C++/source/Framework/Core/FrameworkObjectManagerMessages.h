@@ -10,7 +10,7 @@
 #include "Framework/Messaging/Local/WaveMessage.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -1295,19 +1295,19 @@ class FrameworkObjectManagerSyncConfigurationMessage : public WaveMessage
     protected :
     public :
                                      FrameworkObjectManagerSyncConfigurationMessage ();
-                                     FrameworkObjectManagerSyncConfigurationMessage (const string &prismFrameworkConfigurationFileName);
+                                     FrameworkObjectManagerSyncConfigurationMessage (const string &waveFrameworkConfigurationFileName);
                                     ~FrameworkObjectManagerSyncConfigurationMessage ();
 
-        string                       getPrismFrameworkConfigurationFileName () const;
-        void                         setPrismFrameworkConfigurationFileName (const string &prismFrameworkConfigurationFileName);
-        PrismFrameworkConfiguration  getPrismFrameworkConfigurationObject   () const;
-        void                         setPrismFrameworkConfigurationObject   (const PrismFrameworkConfiguration &prismFrameworkConfiguration);
+        string                       getWaveFrameworkConfigurationFileName () const;
+        void                         setWaveFrameworkConfigurationFileName (const string &waveFrameworkConfigurationFileName);
+        WaveFrameworkConfiguration  getWaveFrameworkConfigurationObject   () const;
+        void                         setWaveFrameworkConfigurationObject   (const WaveFrameworkConfiguration &waveFrameworkConfiguration);
 
     // Now the data members
 
     private :
-        string                      m_prismFrameworkConfigurationFileName;
-        PrismFrameworkConfiguration m_prismFrameworkConfigurationObject;
+        string                      m_waveFrameworkConfigurationFileName;
+        WaveFrameworkConfiguration m_waveFrameworkConfigurationObject;
 
     protected :
     public :

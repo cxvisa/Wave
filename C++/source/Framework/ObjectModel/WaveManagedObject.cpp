@@ -10,7 +10,7 @@
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectLoadOperationalDataContext.h"
 #include "Framework/ObjectModel/LoadOperationalDataSynchronousContext.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/ObjectTracker/ObjectTracker.h"
 #include "Framework/Attributes/AttributeResourceId.h"

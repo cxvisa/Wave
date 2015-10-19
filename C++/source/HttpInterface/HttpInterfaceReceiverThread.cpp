@@ -10,7 +10,7 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FixedSizeBuffer.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "HttpInterface/HttpInterfaceMethodWorker.h"
 #include "HttpToolKit.h"
 #include "HttpInterface/HttpInterfaceReceiverObjectManager.h"

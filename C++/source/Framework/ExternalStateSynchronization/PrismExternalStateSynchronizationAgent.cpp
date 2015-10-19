@@ -6,9 +6,9 @@
 
 #include "Framework/ExternalStateSynchronization/PrismExternalStateSynchronizationAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/ExternalStateSynchronization/PrismExternalStateSynchronizationAgentContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 
@@ -89,9 +89,9 @@ ResourceId PrismExternalStateSynchronizationAgent::externalStateSynchronizationS
                 
 bool PrismExternalStateSynchronizationAgent::requiresExternalStateSynchronization (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))) ||
-        (false == PrismFrameworkObjectManager::isExternalStateSynchronizationRequired (waveServiceId)))
+        (false == WaveFrameworkObjectManager::isExternalStateSynchronizationRequired (waveServiceId)))
     {
         return (false);
     }

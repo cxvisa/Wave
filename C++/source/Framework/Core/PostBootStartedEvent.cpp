@@ -10,13 +10,13 @@
 
 #include "Framework/Core/PostBootStartedEvent.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 PostBootStartedEvent::PostBootStartedEvent ()
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
       m_eventId (0),
       m_parameter (0)
 	  
@@ -24,7 +24,7 @@ PostBootStartedEvent::PostBootStartedEvent ()
 }
 
 PostBootStartedEvent::PostBootStartedEvent (const UI32 &eventId, const UI32 &parameter)
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_POST_BOOT_STARTED_EVENT),
      m_eventId (eventId),
      m_parameter (parameter)
 {

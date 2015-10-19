@@ -220,7 +220,7 @@ void AppObjectManager::createAppObjectMangers ()
         appDetail->setAppInterfaceServiceId (appInterfaceObjectManager->getWaveServiceId ());
         appDetail->setAppServiceId (appObjectManager->getServiceId ());
         // Add the created object manager to prism init/boot/... steps
-        FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+        FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
         frameworkSequenceGenerator.addWaveServiceIdToAll        (appObjectManager->getServiceId ());
         frameworkSequenceGenerator.addWaveServiceIdToAll        (appInterfaceObjectManager->getWaveServiceId ());
     }

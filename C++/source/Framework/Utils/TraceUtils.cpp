@@ -5,7 +5,7 @@
 
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "ManagementInterface/ClientInterface/WaveUserInterfaceObjectManager.h"
 
 #include <stdarg.h>
@@ -19,7 +19,7 @@ void trace (TraceLevel traceLevel, const string &stringToTrace)
 
     if ((WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
     {
-        (PrismFrameworkObjectManager::getInstance ())->trace (traceLevel, stringToTrace);
+        (WaveFrameworkObjectManager::getInstance ())->trace (traceLevel, stringToTrace);
     }
     else
     {
@@ -37,7 +37,7 @@ void tracePrintf (TraceLevel traceLevel, const bool &addNewLine, const bool &sup
 
     if ((WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
     {
-        (PrismFrameworkObjectManager::getInstance ())->tracePrintf (traceLevel, addNewLine, suppressPrefix, pFormat, variableArguments);
+        (WaveFrameworkObjectManager::getInstance ())->tracePrintf (traceLevel, addNewLine, suppressPrefix, pFormat, variableArguments);
     }
     else
     {
@@ -57,7 +57,7 @@ void tracePrintf (TraceLevel traceLevel, const char * const pFormat, ...)
 
     if ((WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
     {
-        (PrismFrameworkObjectManager::getInstance ())->tracePrintf (traceLevel, pFormat, variableArguments);
+        (WaveFrameworkObjectManager::getInstance ())->tracePrintf (traceLevel, pFormat, variableArguments);
     }
     else
     {

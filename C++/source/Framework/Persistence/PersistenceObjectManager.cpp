@@ -37,7 +37,7 @@
 #include "Framework/ObjectModel/WaveAsynchronousContextForShutdownPhases.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForDebugInformation.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Persistence/ConfigurationManagedObject.h"
 #include "Framework/Persistence/WaveConfigManagedObject.h"
 #include "Framework/Persistence/PersistenceObjectManagerInitializeBeforeBootCompleteMessage.h"
@@ -555,7 +555,7 @@ void PersistenceObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
     }
     else
     {
-        if ((PrismFrameworkObjectManager::getInstance ())->getStandbySyncState () == IN_SYNC)
+        if ((WaveFrameworkObjectManager::getInstance ())->getStandbySyncState () == IN_SYNC)
         {
                 //  MM over with running DB synced from active MM, running DB will be used
             trace (TRACE_LEVEL_INFO, "PersistenceObjectManager::boot : running DB from HA sync will be used at this MM failover.");
@@ -922,7 +922,7 @@ void PersistenceObjectManager::executePushWaveConfigurationToFileOnAllLocationsS
 
     // get Serialized string of Wave Config Managed objects.
     string serializedConfigs = getWaveConfigSerializedData ();
-    string configurationFileName = PrismFrameworkObjectManager::getGlobalConfigurationFileName ();
+    string configurationFileName = WaveFrameworkObjectManager::getGlobalConfigurationFileName ();
 
     ofstream configurationFileToWrite (configurationFileName.c_str ());
                                         
@@ -945,8 +945,8 @@ void PersistenceObjectManager::executePushWaveConfigurationToFileOnAllLocationsS
     vector<string> destFilenames;
     UI32           fileTransferFlag = FILE_OVERWRITE_DEST_FILE_IF_EXIST | FILE_DEST_PATH_ABSOLUTE | FILE_PUSH_TO_HA_PEER;
     bool           disconnectFromFailedNode = true;
-    sourceFilenames.push_back (PrismFrameworkObjectManager::getGlobalConfigurationFileName ());
-    destFilenames.push_back (PrismFrameworkObjectManager::getGlobalConfigurationFileName ());
+    sourceFilenames.push_back (WaveFrameworkObjectManager::getGlobalConfigurationFileName ());
+    destFilenames.push_back (WaveFrameworkObjectManager::getGlobalConfigurationFileName ());
 
     status = FrameworkToolKit::pushFilesToAllNodes (sourceFilenames, destFilenames, fileTransferFlag, disconnectFromFailedNode);
     if (WAVE_MESSAGE_SUCCESS != status)
@@ -1073,7 +1073,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPre
     {
         if (NULL == m_pConfigurationManagedObject)
         {
-            if (true == (PrismFrameworkObjectManager::getInstance ())->getPrimaryNodeClusterOperationFlag ())
+            if (true == (WaveFrameworkObjectManager::getInstance ())->getPrimaryNodeClusterOperationFlag ())
             {
                 pPersistenceExecuteTransactionContext->executeNextStep (WAVE_MESSAGE_ERROR_CLUSTER_OPERATION_IN_PROGRESS);
                 return;
@@ -1289,7 +1289,7 @@ void PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForPre
                 PersistenceStatisticsTracker::incrementPrepareTransactionsMarkedDisconnectedOnSecondary (pPersistenceExecuteTransactionContext->getSenderServiceCode ());
             }
 
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationIdUsedInTransaction [i]);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationIdUsedInTransaction [i]);
         }
         else
         {

@@ -6,8 +6,8 @@
 
 #include "Framework/Core/WaveNodeBackendSyncUpAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/ApplicationSpecificServices.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
@@ -94,7 +94,7 @@ ResourceId WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep (PrismSynchronousLi
 
 bool WaveNodeBackendSyncUpAgent::requiresBackendSyncUpNotification (const WaveServiceId &waveServiceId)
 {
-    if ((!FrameworkToolKit::isALocalService (waveServiceId)) || ((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
+    if ((!FrameworkToolKit::isALocalService (waveServiceId)) || ((WaveFrameworkObjectManager::getWaveServiceId ()) == waveServiceId) ||
 		 (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId)))
     {
         return (false);

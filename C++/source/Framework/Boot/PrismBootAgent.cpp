@@ -6,15 +6,15 @@
 
 #include "Framework/Boot/PrismBootAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/ObjectRelationalMapping/OrmTable.h"
 #include "Framework/Database/DatabaseObjectManagerExecuteTransactionMessage.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/PrismPersistableObject.h"
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManagerInitializeWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManagerInitializeWorker.h"
 #include "Framework/Core/WaveNodeBackendSyncUpAgent.h"
 
 namespace WaveNs
@@ -1612,7 +1612,7 @@ void PrismBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
     // 1.
     vector<string>  output;
     SI32            cmdStatus                  = 0;
-    const string    prismConfigurationfileName = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    const string    prismConfigurationfileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
 
     trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleUpgradeFailure: deleting file " + prismConfigurationfileName);
 

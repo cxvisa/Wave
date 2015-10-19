@@ -6,7 +6,7 @@
 
 #include "Framework/ObjectModel/PrismPostbootWorker.h"
 #include "Framework/Postboot/PrismPostbootAgent.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForPostbootPhase.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 

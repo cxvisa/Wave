@@ -292,13 +292,13 @@ void WaveMessageBrokerClient::initialize (const WaveMainConfiguration &waveMainC
 
     // set the WaveMessageBrokerClient Framework configuration file.
 
-    PrismFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg");
-    PrismFrameworkObjectManager::setGlobalConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".global.cfg");
+    WaveFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg");
+    WaveFrameworkObjectManager::setGlobalConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".global.cfg");
 
 #ifdef _X86_COMPILE_
-    PrismFrameworkObjectManager::setLockFileForConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
+    WaveFrameworkObjectManager::setLockFileForConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
 #else
-    PrismFrameworkObjectManager::setLockFileForConfigurationFile ("/tmp/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
+    WaveFrameworkObjectManager::setLockFileForConfigurationFile ("/tmp/" + waveMainConfiguration.getApplicationCompactName () + ".cfg.tmp");
 #endif
 
     // Set the trace file name first
@@ -332,9 +332,9 @@ void WaveMessageBrokerClient::initialize (const WaveMainConfiguration &waveMainC
     OrmRepository::addMostBaseClass (WaveManagedObject::getClassName      ());
     OrmRepository::addMostBaseClass (WaveLocalManagedObject::getClassName ());
 
-    // PrismFrameworkObjectManager must be the first one to be created.
+    // WaveFrameworkObjectManager must be the first one to be created.
 
-    PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager::getInstance ();
 
 
     if (true == m_enableShellSupport)
@@ -613,7 +613,7 @@ string WaveMessageBrokerClient::getWaveUserClientParams ()
 
 void WaveMessageBrokerClient::instantiateNativePrismServices ()
 {
-    FrameworkSequenceGenerator &frameworkSequenceGenerator                       = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator                       = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
     UI32                        numberOfNativePrismServciesToInstantiate         = m_nativePrismServiceInstantiators.size ();
     UI32                        numberOfNativeMultiplePrismServciesToInstantiate = m_nativeMultiplePrismServiceInstantiators.size ();
     UI32                        numberOfNativeApplicationSpecificPrismServices   = m_nativeApplicationSpecificPrismServiceInstantiators.size ();
@@ -672,7 +672,7 @@ void WaveMessageBrokerClient::waveExit ()
 #if 0
     map<WaveThreadId, WaveThreadId> mapOfCurrentWaveThreads;
 
-    PrismFrameworkObjectManager::getAllWaveThreads (mapOfCurrentWaveThreads);
+    WaveFrameworkObjectManager::getAllWaveThreads (mapOfCurrentWaveThreads);
 
     map<WaveThreadId, WaveThreadId>::iterator  threadIterator;
 
@@ -688,7 +688,7 @@ void WaveMessageBrokerClient::waveExit ()
         pthread_join (threadIterator->first, &pContext);
     }
 #endif
-    PrismFrameworkObjectManager::deleteAllWaveThreads ();
+    WaveFrameworkObjectManager::deleteAllWaveThreads ();
 
     exit (0);
 }

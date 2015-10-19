@@ -81,15 +81,15 @@ void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep (WaveLinearSeque
     bool removeOnClear = true;
     FrameworkToolKit::secureClearFile(databaseLogFile, removeOnClear);
     FrameworkToolKit::secureClearFile("/mnt" + databaseLogFile, removeOnClear);
-    trace (TRACE_LEVEL_INFO, string ("PrismFrameworkObjectManager::zeroizeDatabaseStep: cleared and deleted databaseLogFiles, [") + databaseLogFile + string ("]"));
+    trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManager::zeroizeDatabaseStep: cleared and deleted databaseLogFiles, [") + databaseLogFile + string ("]"));
 
-    trace (TRACE_LEVEL_INFO,"PrismFrameworkObjectManager::zeroizeDatabaseStep:Deleting database files");
+    trace (TRACE_LEVEL_INFO,"WaveFrameworkObjectManager::zeroizeDatabaseStep:Deleting database files");
     FrameworkToolKit::secureDeleteDir(dbDirPath);
 
-    trace (TRACE_LEVEL_INFO,"PrismFrameworkObjectManager::zeroizeDatabaseStep:Deleting database files from secondary partition");
+    trace (TRACE_LEVEL_INFO,"WaveFrameworkObjectManager::zeroizeDatabaseStep:Deleting database files from secondary partition");
     FrameworkToolKit::secureDeleteDir("/mnt" + dbDirPath );
 
-    trace (TRACE_LEVEL_INFO,"PrismFrameworkObjectManager::zeroizeDatabaseStep:Database Cleanup Complete");
+    trace (TRACE_LEVEL_INFO,"WaveFrameworkObjectManager::zeroizeDatabaseStep:Database Cleanup Complete");
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -112,7 +112,7 @@ void DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep (Wave
     FrameworkToolKit::secureClearFile(dbBackupFile, true);
     FrameworkToolKit::secureClearFile("/mnt" + dbBackupFile, true);
 
-    trace (TRACE_LEVEL_INFO,"PrismFrameworkObjectManager::zeroizeDatabaseBackupFilesStep:Database Backup files Cleanup Complete");
+    trace (TRACE_LEVEL_INFO,"WaveFrameworkObjectManager::zeroizeDatabaseBackupFilesStep:Database Backup files Cleanup Complete");
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 

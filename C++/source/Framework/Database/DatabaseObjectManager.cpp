@@ -30,7 +30,7 @@
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForDebugInformation.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/Wave.h"
 #include "Framework/Database/DatabaseObjectManagerExecuteQueryMessage.h"
 #include "Framework/Database/MultiDatabaseObjectManager.h"
@@ -756,8 +756,8 @@ void DatabaseObjectManager::handleDatabaseCorruption ()
     }
 
     // 3.
-    const string prismConfigurationfileName   = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-    const string prismConfigurationBackupfileName   = (PrismFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ();
+    const string prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    const string prismConfigurationBackupfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ();
 
     WaveNs::trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleDatabaseCorruption: deleting files " + prismConfigurationfileName + " and " + prismConfigurationBackupfileName);
 

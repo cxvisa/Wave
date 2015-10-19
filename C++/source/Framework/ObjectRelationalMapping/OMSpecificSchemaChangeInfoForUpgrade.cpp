@@ -8,7 +8,7 @@
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfoRepository.h"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfo.h"
-#include "Framework/Core/PrismFrameworkObjectManagerInitializeWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManagerInitializeWorker.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
 

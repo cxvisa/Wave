@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Framework/LocationManagement/LocationBase.h"
 #include "Framework/MultiThreading/WaveThread.h"
@@ -136,7 +136,7 @@ const bool FrameworkToolKit::getIsRunningAsADaemon ()
 
 const bool FrameworkToolKit::isFrameworkReadyToBoot ()
 {
-    return (PrismFrameworkObjectManager::getIsFrameworkReadyToBoot ());
+    return (WaveFrameworkObjectManager::getIsFrameworkReadyToBoot ());
 }
 
 void FrameworkToolKit::setIsRunningAsADaemon (const bool &isRunningAsADaemon)
@@ -162,11 +162,11 @@ const string FrameworkToolKit::getIpAddressForInterface (const string &interface
 LocationBase *FrameworkToolKit::getPThisLocation ()
 {
     LocationBase              *pThisLocation = NULL;
-    PrismFrameworkObjectManager *pTemp         = NULL;
+    WaveFrameworkObjectManager *pTemp         = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -202,7 +202,7 @@ const UI32 FrameworkToolKit::getMyLocationId ()
     LocationBase *pThisLocation = getPThisLocation ();
     if (NULL != pThisLocation)
     {
-        locationid = ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationId ());
+        locationid = ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationId ());
     }
     return (locationid);
 }
@@ -255,7 +255,7 @@ const string FrameworkToolKit::getThisLocationIpAddress ()
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getIpAddress ());
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getIpAddress ());
     }
     else
     {
@@ -269,7 +269,7 @@ const SI32 FrameworkToolKit::getThisLocationPort ()
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getPort ());
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getPort ());
     }
     else
     {
@@ -283,7 +283,7 @@ const LocationRole FrameworkToolKit::getThisLocationRole ()
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getRole ());
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getRole ());
     }
     else
     {
@@ -297,7 +297,7 @@ const LocationId FrameworkToolKit::getClusterPrimaryLocationId ()
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getClusterPrimaryLocationId ());
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getClusterPrimaryLocationId ());
     }
     else
     {
@@ -319,7 +319,7 @@ const SI32 FrameworkToolKit::getClusterPrimaryPort ()
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getClusterPrimaryPort ());
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getClusterPrimaryPort ());
     }
     else
     {
@@ -358,7 +358,7 @@ LocationId FrameworkToolKit::getLocationIdForIpAddressAndPort (const string &ipA
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationIdForIpAddressAndPort (ipAddress, port));
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationIdForIpAddressAndPort (ipAddress, port));
     }
     else
     {
@@ -373,7 +373,7 @@ string FrameworkToolKit::getIpAddressForLocationId (const LocationId &locationId
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getIpAddressForLocationId (locationId));
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getIpAddressForLocationId (locationId));
     }
     else
     {
@@ -387,7 +387,7 @@ SI32 FrameworkToolKit::getPortForLocationId (const LocationId &locationId)
 
     if (NULL != pThisLocation)
     {
-        return ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getPortForLocationId (locationId));
+        return ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getPortForLocationId (locationId));
     }
     else
     {
@@ -465,11 +465,11 @@ const bool FrameworkToolKit::isAConnectedLocation (const LocationId &locationId)
 
 void FrameworkToolKit::getKnownRemoteLocations (vector<LocationId> &remoteLocationsVector)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -480,11 +480,11 @@ void FrameworkToolKit::getKnownRemoteLocations (vector<LocationId> &remoteLocati
 
 void FrameworkToolKit::getKnownLocations (vector<LocationId> &knownLocationsVector)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -495,11 +495,11 @@ void FrameworkToolKit::getKnownLocations (vector<LocationId> &knownLocationsVect
 
 void FrameworkToolKit::getConnectedLocations (vector<LocationId> &connectedLocationsVector)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -510,11 +510,11 @@ void FrameworkToolKit::getConnectedLocations (vector<LocationId> &connectedLocat
 
 void FrameworkToolKit::getKnownSubLocations (vector<LocationId> &knownSubLocationsVector)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -530,7 +530,7 @@ const bool FrameworkToolKit::isAnIpAddressForThisMachine (const string &ipAddres
         return (true);
     }
 
-    string interfaceName = PrismFrameworkObjectManager::getEthernetInterfaceForThisLocation();
+    string interfaceName = WaveFrameworkObjectManager::getEthernetInterfaceForThisLocation();
     if ("" == interfaceName)
     {
         trace (TRACE_LEVEL_ERROR, "FrameworkToolKit::isAnIpAddressForThisMachine: No specific Ethernet Interface Assigned");
@@ -771,11 +771,11 @@ const SI32 FrameworkToolKit::getPrismDefaultDatabaseTcpPort ()
 
 const ResourceId FrameworkToolKit::savePrismConfiguration (const bool &syncToStandby)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -793,11 +793,11 @@ const ResourceId FrameworkToolKit::savePrismConfiguration (const bool &syncToSta
 const ResourceId FrameworkToolKit::getPrismConfigurationValidity (bool &validity)
 {
 
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -814,11 +814,11 @@ const ResourceId FrameworkToolKit::getPrismConfigurationValidity (bool &validity
 
 const ResourceId FrameworkToolKit::changePrismConfigurationValidity( const bool &validity )
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -1199,11 +1199,11 @@ ObjectId FrameworkToolKit::createDummySlot (const UI32 slotNumber)
 {
     ObjectId slotObjectId = ObjectId::NullObjectId;
 
-    PrismFrameworkObjectManager *pPrismFrameworkObjectManager = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pWaveFrameworkObjectManager = WaveFrameworkObjectManager::getInstance ();
 
-    if (NULL != pPrismFrameworkObjectManager)
+    if (NULL != pWaveFrameworkObjectManager)
     {
-        pPrismFrameworkObjectManager->createDummySlot (slotNumber);
+        pWaveFrameworkObjectManager->createDummySlot (slotNumber);
 
         //Get the slotObjectId of the dummy slot created
         slotObjectId =  getObjectIdForSlotNumber (slotNumber);
@@ -1429,7 +1429,7 @@ void FrameworkToolKit::setIsAbruptReboot (const bool &isAbruptReboot)
 
 bool FrameworkToolKit::getIsStartupValid ()
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
 
     if (NULL != pTemp)
     {
@@ -1443,7 +1443,7 @@ bool FrameworkToolKit::getIsStartupValid ()
 
 void FrameworkToolKit::setIsStartupValid (const bool &isValid)
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
 
     if (NULL != pTemp)
     {
@@ -1453,7 +1453,7 @@ void FrameworkToolKit::setIsStartupValid (const bool &isValid)
 
 string FrameworkToolKit::getStartupFileName ()
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
 
     if (NULL != pTemp)
     {
@@ -1489,7 +1489,7 @@ bool FrameworkToolKit::isStartupConfigBackupFileExist ()
 
 void FrameworkToolKit::setStartupFileName (const string &startupFileName)
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
 
     if (NULL != pTemp)
     {
@@ -1499,7 +1499,7 @@ void FrameworkToolKit::setStartupFileName (const string &startupFileName)
 
 ResourceId FrameworkToolKit::getStartupFileType ()
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
 
     if (NULL != pTemp)
     {
@@ -1513,7 +1513,7 @@ ResourceId FrameworkToolKit::getStartupFileType ()
 
 void FrameworkToolKit::setStartupFileType (const ResourceId &startupFileType)
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
 
     if (NULL != pTemp)
     {
@@ -1523,12 +1523,12 @@ void FrameworkToolKit::setStartupFileType (const ResourceId &startupFileType)
 
 LocationId FrameworkToolKit::getLastUsedLocationId ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getLastUsedLocationIdInPrismFrameworkObjectManager ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getLastUsedLocationIdInWaveFrameworkObjectManager ());
 }
 
 void FrameworkToolKit::setLastUsedLocationId (const LocationId &locationId)
 {
-    (PrismFrameworkObjectManager::getInstance ())->setLastUsedLocationIdInPrismFrameworkObjectManager (locationId);
+    (WaveFrameworkObjectManager::getInstance ())->setLastUsedLocationIdInWaveFrameworkObjectManager (locationId);
 }
 
 SI32 FrameworkToolKit::systemCommandOutput (const string &command, vector<string> &output)
@@ -1558,7 +1558,7 @@ SI32 FrameworkToolKit::systemCommandOutput (const string &command, vector<string
 
 const bool FrameworkToolKit::getSecondaryClusterFormationFlag ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getSecondaryNodeClusterCreationFlag ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getSecondaryNodeClusterCreationFlag ());
 }
 
 
@@ -1579,134 +1579,134 @@ const bool FrameworkToolKit::isFileServiceEnabled()
 
 bool FrameworkToolKit::isWarmHaRecoveryPreparationInProgress ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->isWarmHaRecoveryPreparationInProgress ());
+    return ((WaveFrameworkObjectManager::getInstance ())->isWarmHaRecoveryPreparationInProgress ());
 }
 
 bool FrameworkToolKit::isActivationCompleted ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getActivationCompleted ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getActivationCompleted ());
 }
 
 string FrameworkToolKit::getActivationCompletedTimeStamp ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getActivationCompletedTimeStamp ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getActivationCompletedTimeStamp ());
 }
 
 void FrameworkToolKit::incrementLineCardPostBootCount ()
 {
-    (PrismFrameworkObjectManager::getInstance ())->incrementLineCardPostBootCount ();
+    (WaveFrameworkObjectManager::getInstance ())->incrementLineCardPostBootCount ();
 }
 
 UI32 FrameworkToolKit::getNumberOfLineCardPostBootCurrentlyRunning ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getNumberOfLineCardPostBootCurrentlyRunning ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getNumberOfLineCardPostBootCurrentlyRunning ());
 }
 
 void FrameworkToolKit::decrementLineCardPostBootCount ()
 {
-    (PrismFrameworkObjectManager::getInstance ())->decrementLineCardPostBootCount ();
+    (WaveFrameworkObjectManager::getInstance ())->decrementLineCardPostBootCount ();
 }
 
 bool FrameworkToolKit::isPostBootStarted ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getPostBootStarted ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getPostBootStarted ());
 }
 
 string FrameworkToolKit::getPostBootStartTimeStamp()
 {
-     return ((PrismFrameworkObjectManager::getInstance ())->getPostBootStartedTimeStamp ());
+     return ((WaveFrameworkObjectManager::getInstance ())->getPostBootStartedTimeStamp ());
 }
 
 bool FrameworkToolKit::isPostBootCompleted ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getPostBootCompleted ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getPostBootCompleted ());
 }
 
 
 string FrameworkToolKit::getPostBootCompleteTimeStamp ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getPostBootCompletedTimeStamp ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getPostBootCompletedTimeStamp ());
 }
 
 
 bool FrameworkToolKit::isConfigReplayStarted ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getConfigReplayStarted ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getConfigReplayStarted ());
 }
 
 string FrameworkToolKit::getConfigReplayStartedTimeStamp ()
 {
 
-    return ((PrismFrameworkObjectManager::getInstance ())->getConfigReplayStartedTimeStamp ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getConfigReplayStartedTimeStamp ());
 
 }
 
 bool FrameworkToolKit::isConfigReplayCompleted ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getConfigReplayCompleted ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getConfigReplayCompleted ());
 }
 
 
 string   FrameworkToolKit::getConfigReplayCompletedTimeStamp ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getConfigReplayCompletedTimeStamp ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getConfigReplayCompletedTimeStamp ());
 }
 
 bool FrameworkToolKit::isConfigReplayInProgress ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getConfigReplayInProgress ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getConfigReplayInProgress ());
 }
 
 
 void FrameworkToolKit::setFileReplayStarted (bool fileReplayStarted)
 {
-    ((PrismFrameworkObjectManager::getInstance ())->setFileReplayStarted (fileReplayStarted));
+    ((WaveFrameworkObjectManager::getInstance ())->setFileReplayStarted (fileReplayStarted));
 }
 
 void FrameworkToolKit::setFileReplayCompleted (bool fileReplayCompleted)
 {
-    ((PrismFrameworkObjectManager::getInstance ())->fileReplayCompletedProcessing (fileReplayCompleted));
+    ((WaveFrameworkObjectManager::getInstance ())->fileReplayCompletedProcessing (fileReplayCompleted));
 }
 
 bool FrameworkToolKit::isFileReplayInProgress ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getFileReplayInProgress ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getFileReplayInProgress ());
 }
 
 
 bool FrameworkToolKit::isNodeReadyForAllCommands ()
 {
-      return ((PrismFrameworkObjectManager::getInstance ())->getNodeReadyForAllCommands ());
+      return ((WaveFrameworkObjectManager::getInstance ())->getNodeReadyForAllCommands ());
 }
 
 bool FrameworkToolKit::isNodeZeroized ()
 {
 
-      return ((PrismFrameworkObjectManager::getInstance ())->isNodeZeroized ());
+      return ((WaveFrameworkObjectManager::getInstance ())->isNodeZeroized ());
 }
 
 ResourceId FrameworkToolKit::getDbConversionStatus ()
 {
-      return ((PrismFrameworkObjectManager::getInstance ())->getDbConversionStatus ());
+      return ((WaveFrameworkObjectManager::getInstance ())->getDbConversionStatus ());
 }
 
 string FrameworkToolKit::getNodeReadyForAllCommandsTimeStamp ()
 {
 
-    return ((PrismFrameworkObjectManager::getInstance ())->getNodeReadyForAllCommandsTimeStamp ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getNodeReadyForAllCommandsTimeStamp ());
 
 }
 
 void FrameworkToolKit::rollbackCfgFile ()
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
     waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     pTemp->rollbackCfgFile ();
 }
 bool FrameworkToolKit::getIsDbRestoreIncomplete ()
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
     waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     return (pTemp->getIsDBRestoreIncomplete ());
@@ -1714,7 +1714,7 @@ bool FrameworkToolKit::getIsDbRestoreIncomplete ()
 
 void FrameworkToolKit::setIsDbRestoreIncomplete (bool isValid)
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
     waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     pTemp->setIsDBRestoreIncomplete (isValid);
@@ -1836,11 +1836,11 @@ void FrameworkToolKit::updateSchemaConversionDisabledByUser ()
         {
             if (0 < (output.size ()))
             {
-                trace (TRACE_LEVEL_ERROR, string("PrismFrameworkConfigurationWorker::createLockFileForConfigurationFile : deleteFileCmd = ")+ deleteFileCmd + " failed with error message : " + output[0]);
+                trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile : deleteFileCmd = ")+ deleteFileCmd + " failed with error message : " + output[0]);
             }
             else
             {
-                trace (TRACE_LEVEL_ERROR, string("PrismFrameworkConfigurationWorker::createLockFileForConfigurationFile : deleteFileCmd = ")+ deleteFileCmd + " failed.");
+                trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile : deleteFileCmd = ")+ deleteFileCmd + " failed.");
             }
         }
     }
@@ -1876,11 +1876,11 @@ void FrameworkToolKit::secureClearFile(const string &fileName, bool removeOnClea
 
 void FrameworkToolKit::getFullyConnectedLocations (vector<LocationId> &connectedLocationsVector)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)
@@ -1898,17 +1898,17 @@ void FrameworkToolKit::disconnectFromAllInstanceClients (const string &clientIpA
 
 void FrameworkToolKit::getConnectedInstances (vector<SI32> &connectedInstanceVector)
 {
-    (PrismFrameworkObjectManager::getInstance ())->getInstances (connectedInstanceVector);
+    (WaveFrameworkObjectManager::getInstance ())->getInstances (connectedInstanceVector);
 }
 
 void FrameworkToolKit::getConnectedInstancesAndSubInstances (vector<SI32> &connectedInstanceVector, vector<SI32> &connectedSubInstanceVector)
 {
-    (PrismFrameworkObjectManager::getInstance ())->getInstancesAndSubInstances (connectedInstanceVector, connectedSubInstanceVector);
+    (WaveFrameworkObjectManager::getInstance ())->getInstancesAndSubInstances (connectedInstanceVector, connectedSubInstanceVector);
 }
 
 SI32 FrameworkToolKit::getThisSlotInstance ()
 {
-    return ((PrismFrameworkObjectManager::getInstance ())->getThisSlotInstance ());
+    return ((WaveFrameworkObjectManager::getInstance ())->getThisSlotInstance ());
 }
 
 SI32 FrameworkToolKit::getHttpInterfaceReceiverPort ()
@@ -2092,7 +2092,7 @@ void FrameworkToolKit::uninitializeConsolePrintFunction ()
 
 bool FrameworkToolKit::getIsSyncDumpCompleted ()
 {
-    PrismFrameworkObjectManager *pTemp = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp = WaveFrameworkObjectManager::getInstance ();
     waveAssert (NULL != pTemp, __FILE__, __LINE__);
 
     return (pTemp->getIsSyncDumpCompleted ());
@@ -2268,7 +2268,7 @@ ResourceId FrameworkToolKit::deleteFilesOnAllNodes ( const vector<string> &filen
                                     trace (TRACE_LEVEL_ERROR, string ("FrameworkToolKit::deleteFilesOnAllNodes : Failed for location = ") + connectedLocationsVector[j] + (", disconnect from that node"));
                                     if ( true == disconnectFromFailedNode )
                                     {
-                                        (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (connectedLocationsVector[j]);
+                                        (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (connectedLocationsVector[j]);
                                     }
                                 }
                                 else
@@ -2445,7 +2445,7 @@ ResourceId FrameworkToolKit::pushFilesToAllNodes ( const vector<string> &sourceF
                                     trace (TRACE_LEVEL_ERROR, string ("FrameworkToolKit::pushFilesToAllNodes : Failed for location = ") + connectedLocationsVector[j] + (", disconnect from that node"));
                                     if ( true == disconnectFromFailedNode )
                                     {
-                                        (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (connectedLocationsVector[j]);
+                                        (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (connectedLocationsVector[j]);
                                     }
                                 }
                                 else
@@ -2663,7 +2663,7 @@ void FrameworkToolKit::disableLiveSync ()
     return;
 }
 
-// This is only used to set syncstate to OUT_OF_SYNC from other plugin other than PrismFrameworkOM
+// This is only used to set syncstate to OUT_OF_SYNC from other plugin other than WaveFrameworkOM
 void FrameworkToolKit::setSyncState (const UI32 &syncState)
 {
     FrameworkObjectManagerSetSyncStateMessage *pFrameworkObjectManagerSetSyncStateMessage = new FrameworkObjectManagerSetSyncStateMessage (syncState);
@@ -2680,14 +2680,14 @@ void FrameworkToolKit::setSyncState (const UI32 &syncState)
 
 UI32 FrameworkToolKit::getSyncState ()
 {
-    return (PrismFrameworkObjectManager::getInstance ()->getSyncState ());
+    return (WaveFrameworkObjectManager::getInstance ()->getSyncState ());
 }
 
 void FrameworkToolKit::notifySyncUpdateFailure (const ResourceId &reason)
 {
     if (FrameworkToolKit::getSyncFailureNotified () == false)
     {
-         if (PrismFrameworkObjectManager::getInstance ()->notifySyncUpdateFailure(reason) == true)
+         if (WaveFrameworkObjectManager::getInstance ()->notifySyncUpdateFailure(reason) == true)
          {
              FrameworkToolKit::setSyncFailureNotified (true);
              FrameworkToolKit::setSyncState(OUT_OF_SYNC);
@@ -2826,11 +2826,11 @@ void FrameworkToolKit::setSyncFailureNotified (const bool &syncFailureNotified)
 
 ClientStreamingSocket* FrameworkToolKit::getClientStreamingSocketForRemoteLocation (LocationId locationId)
 {
-    PrismFrameworkObjectManager *pTemp = NULL;
+    WaveFrameworkObjectManager *pTemp = NULL;
 
     if (true == (isFrameworkReadyToBoot ()))
     {
-        pTemp = PrismFrameworkObjectManager::getInstance ();
+        pTemp = WaveFrameworkObjectManager::getInstance ();
     }
 
     if (NULL != pTemp)

@@ -7,14 +7,14 @@
 
 #include "Framework/Core/ClusterFailoverCompleteEvent.h"
 #include "Framework/Core/FrameworkObjectManagerTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Attributes/AttributeResourceId.h"
 
 namespace WaveNs
 {
 
 ClusterFailoverCompleteEvent::ClusterFailoverCompleteEvent (FrameworkObjectManagerFailoverReason failoverReason, vector<LocationId> &failedLocationIds, bool isPrincipalChangedWithThisFailover)
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_FAILOVER_COMPLETE_EVENT),
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), FRAMEWORK_OBJECT_MANAGER_BROADCAST_FAILOVER_COMPLETE_EVENT),
       m_failoverReason                      (failoverReason),
       m_failedLocationIds                   (failedLocationIds),
       m_isPrincipalChangedWithThisFailover  (isPrincipalChangedWithThisFailover)

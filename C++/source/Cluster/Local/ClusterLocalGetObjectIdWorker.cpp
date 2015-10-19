@@ -10,7 +10,7 @@
 #include  "Framework/Types/Types.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/ObjectModel/WaveWorker.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"

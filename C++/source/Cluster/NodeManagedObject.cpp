@@ -4,7 +4,7 @@
  *   Author : Amr Sabaa                                                    *
  ***************************************************************************/
 
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Cluster/NodeManagedObject.h"
 
 

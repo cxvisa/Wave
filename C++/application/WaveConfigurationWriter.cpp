@@ -10,7 +10,7 @@
 #include <map>
 
 #include "Framework/Core/Wave.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
 #include "WaveResourceIds.h"
 
 using namespace std;
@@ -83,7 +83,7 @@ int main (int argc, char *argv[])
     {
         WaveNs::initializeWaveResourceIds ();
 
-        PrismFrameworkConfiguration waveFrameworkConfiguration;
+        WaveFrameworkConfiguration waveFrameworkConfiguration;
 
         waveFrameworkConfiguration.loadConfiguration (configurationFileName);
 

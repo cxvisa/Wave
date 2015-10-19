@@ -7,9 +7,9 @@
 #include "Cluster/Local/HeartBeat/HeartBeatFailureAgent.h"
 #include "Cluster/Local/HeartBeat/HeartBeatObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Cluster/Local/HeartBeat/HeartBeatFailureAgentContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 

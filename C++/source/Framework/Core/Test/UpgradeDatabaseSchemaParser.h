@@ -26,7 +26,7 @@
 #include "Framework/Persistence/PersistenceLocalObjectManagerSavePrismConfigurationMessage.h"
 #include "Framework/Persistence/PersistenceObjectManagerTypes.h"
 #include "Framework/Persistence/PersistenceLocalObjectManager.h"
-#include "Framework/Core/PrismFrameworkConfiguration.h"
+#include "Framework/Core/WaveFrameworkConfiguration.h"
 
 using namespace std;
 using namespace XERCES_CPP_NAMESPACE;
@@ -357,7 +357,7 @@ private :
             DOMDocument                                 *m_pDocument;
             DOMElement                                  *m_pRootElement;
             UpgradeDbxmlDifferenceSchema                *m_pUpgradeDbxmlDifferenceSchema;
-            PrismFrameworkConfiguration                 m_prismFrameworkConfiguration;
+            WaveFrameworkConfiguration                 m_waveFrameworkConfiguration;
 /* Define the MoSchemaInfoChangesMembers*/
     static  vector<string>                              m_managedObjectNames;
     static  vector<string>                              m_managedObjectFieldNamesStrings;

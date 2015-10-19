@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
+import com.CxWave.Wave.SystemManagement.SystemManagementToolKit;
 
 public class Wave
 {
@@ -26,13 +27,23 @@ public class Wave
 
         FrameworkToolKit.setWaveManagementInterfaceRole (WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER);
 
-        // Initialize time zone information
-
-        TimeZoneToolKit.initialize ();
-
         // Set if the database is to be enabled.
 
         DatabaseObjectManager.setIsDatabaseEnabled (waveMainConfiguration.getIsDatabaseEnabled ());
         DatabaseObjectManager.setDatabasePort (waveMainConfiguration.getDatabasePort ());
+
+        // Initialize Famework ToolKit.
+
+        FrameworkToolKit.initialize ();
+
+        // Initialize time zone information
+
+        TimeZoneToolKit.initialize ();
+
+        // Setup the System Management;
+
+        SystemManagementToolKit.setYinPaths (waveMainConfiguration.getYinPaths ());
+        SystemManagementToolKit.setWyserTagsFilePath (waveMainConfiguration.getWyserTagsFilePath ());
+
     }
 }

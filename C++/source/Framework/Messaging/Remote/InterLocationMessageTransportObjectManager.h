@@ -87,7 +87,7 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
     protected :
     public :
         friend class InterLocationMessageReceiverThread;
-        friend class PrismFrameworkObjectManager;
+        friend class WaveFrameworkObjectManager;
 };
 
 }

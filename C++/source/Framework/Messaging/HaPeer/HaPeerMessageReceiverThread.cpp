@@ -12,7 +12,7 @@
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FixedSizeBuffer.h"
 #include "Framework/Messaging/HaPeer/HaPeerMessageTransportObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManagerHaSyncWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManagerHaSyncWorker.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/PrismNodeConnectionInformation.h"
 #include "Framework/ObjectModel/ServiceIndependentMessageHandlerMap.h"
@@ -44,7 +44,7 @@ HaPeerMessageReceiverThread::~HaPeerMessageReceiverThread ()
         if (0 != m_peerServerPort)
         {
             tracePrintf (TRACE_LEVEL_WARN, "HaPeerMessageReceiverThread::~HaPeerMessageReceiverThread : Disconnecting From Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
-            (PrismFrameworkObjectManagerHaSyncWorker::getInstance ())->disconnectFromHaPeer (m_peerServerIpAddress, m_peerServerPort, false);
+            (WaveFrameworkObjectManagerHaSyncWorker::getInstance ())->disconnectFromHaPeer (m_peerServerIpAddress, m_peerServerPort, false);
             tracePrintf (TRACE_LEVEL_WARN, "HaPeerMessageReceiverThread::~HaPeerMessageReceiverThread : Disconnected  From Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
         }
 
@@ -174,7 +174,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
         {
             // Before starting to do anything, let us make sure that we are connected to the peer.
 
-            connectionStatus = (PrismFrameworkObjectManagerHaSyncWorker::getInstance ())->connectToHaPeer (m_peerServerIpAddress, m_peerServerPort);
+            connectionStatus = (WaveFrameworkObjectManagerHaSyncWorker::getInstance ())->connectToHaPeer (m_peerServerIpAddress, m_peerServerPort);
 
             if (FRAMEWORK_SUCCESS != connectionStatus)
             {

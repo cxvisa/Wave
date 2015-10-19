@@ -7,9 +7,9 @@
 #include "Framework/Zeroize/PrismZeroizeAgent.h"
 #include "Framework/Shutdown/PrismShutdownAgent.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/Zeroize/PrismZeroizeAgentContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/Core/Wave.h"
 
@@ -59,7 +59,7 @@ ResourceId PrismZeroizeAgent::execute ()
 ResourceId PrismZeroizeAgent::prepareFIPSZeroizeStep(PrismZeroizeAgentContext *pContext)
 {
     vector<string> commandOutput;
-    string          cmd = "/bin/touch " + PrismFrameworkObjectManager::getFIPSZeroizeFile();
+    string          cmd = "/bin/touch " + WaveFrameworkObjectManager::getFIPSZeroizeFile();
     FrameworkToolKit::systemCommandOutput (cmd, commandOutput);
     trace (TRACE_LEVEL_INFO, "PrismZeroizeAgent::prepareFIPSZeroizeStep: Beginning System Call SYNC");
     sync ();
@@ -82,7 +82,7 @@ ResourceId PrismZeroizeAgent::shutdownServicesStep(PrismZeroizeAgentContext *pCo
     trace(TRACE_LEVEL_INFO,"PrismZeroizeAgent::shutdownServicesStep: Shutting down all services\n");
     Wave::logOperationStatus (FIPS_OPERATION_SHUT_DOWN_SERVICES_FOR_ZEROIZE);
 
-    FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
   	PrismShutdownAgent *pShutdownAgent = new PrismShutdownAgent(m_pWaveObjectManager,frameworkSequenceGenerator);
     status = pShutdownAgent->execute();
     if(status != WAVE_MESSAGE_SUCCESS)
@@ -139,7 +139,7 @@ ResourceId PrismZeroizeAgent::executeZeroizeStep(PrismZeroizeAgentContext *pCont
 ResourceId PrismZeroizeAgent::completeFIPSZeroizeStep(PrismZeroizeAgentContext *pContext)
 {
 
-    if(unlink(PrismFrameworkObjectManager::getFIPSZeroizeFile().c_str()) < 0)
+    if(unlink(WaveFrameworkObjectManager::getFIPSZeroizeFile().c_str()) < 0)
     {
         trace (TRACE_LEVEL_ERROR, "PrismZeroizeAgent::completeFIPSZeroizeStep: Failed to cleanup FIPSZeroize File");
     }
@@ -157,7 +157,7 @@ bool PrismZeroizeAgent::needsZeroize(const WaveServiceId &waveServiceId)
 {
 
     bool returnFlag = true;
-    if (((PrismFrameworkObjectManager::getWaveServiceId ()) == waveServiceId))
+    if (((WaveFrameworkObjectManager::getWaveServiceId ()) == waveServiceId))
     {
         returnFlag = false;
     }

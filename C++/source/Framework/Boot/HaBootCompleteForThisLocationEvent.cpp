@@ -6,13 +6,13 @@
 
 #include "Framework/Boot/HaBootCompleteForThisLocationEvent.h"
 #include "Framework/Boot/BootTypes.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
 
 HaBootCompleteForThisLocationEvent::HaBootCompleteForThisLocationEvent ()
-    : WaveEvent (PrismFrameworkObjectManager::getWaveServiceId (), HA_BOOT_COMPLETE_FOR_THIS_LOCATION)
+    : WaveEvent (WaveFrameworkObjectManager::getWaveServiceId (), HA_BOOT_COMPLETE_FOR_THIS_LOCATION)
 {
 }
 

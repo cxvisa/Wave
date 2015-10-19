@@ -7,7 +7,7 @@
 #include "Cluster/CentralClusterConfigObjectManager.h"
 #include "Cluster/ClusterManagedObject.h"
 #include "Cluster/Local/HeartBeat/HeartBeatDebug.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 
 namespace WaveNs

@@ -9,7 +9,7 @@
 
 #include "Framework/Types/Types.h"
 
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Trace/TraceObjectManager.h"
 #include "Regression/RegressionTestObjectManager.h"
 #include "ManagementInterface/ManagementInterfaceObjectManager.h"

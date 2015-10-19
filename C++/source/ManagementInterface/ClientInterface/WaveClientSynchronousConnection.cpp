@@ -10,7 +10,7 @@
 #include "ManagementInterface/ClientInterface/WaveClientReceiverObjectManager.h"
 #include "Regression/RegressionServiceMessages.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Cluster/ClusterMessages.h"
 #include "Framework/Core/Test/FrameworkTestabilityManagementInterfaceMessages.h"
 #include "Framework/Persistence/PersistenceObjectManagerCompareDBMessage.h"

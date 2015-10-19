@@ -8,7 +8,7 @@
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfoRepository.h"
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfo.h"
-#include "Framework/Core/PrismFrameworkObjectManagerInitializeWorker.h"
+#include "Framework/Core/WaveFrameworkObjectManagerInitializeWorker.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -68,7 +68,7 @@ void DatabaseSchema::setupAttributesForSerializationInAttributeOrderFormat ()
  * The Schema can be obtained from 2 different places,
  * 
  * 1. The MoSchemaInfoManagedObject table in the database. 
- * 2. From the .cfg file using the PrismFrameworkConfiguration 
+ * 2. From the .cfg file using the WaveFrameworkConfiguration 
  *    for backward compatibility since Hydra's MoSchemaInfoManagedObject 
  *    table doesnt contain all the fields required in the schema.
  *

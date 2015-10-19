@@ -3,7 +3,7 @@
  *   All rights reserved.                                                  *
  ***************************************************************************/
 #include "Framework/MultiThreading/PrismPosixThread.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Types/Types.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -44,7 +44,7 @@ PrismPosixThread::PrismPosixThread (const PrismPosixThread &prismPosixThread)
 
 PrismPosixThread::~PrismPosixThread ()
 {
-    PrismFrameworkObjectManager::removeWaveThreadId (m_pThreadId);
+    WaveFrameworkObjectManager::removeWaveThreadId (m_pThreadId);
 }
 
 PrismPosixThread &PrismPosixThread::operator = (const PrismPosixThread &prismPosixThread)
@@ -117,7 +117,7 @@ WaveThreadStatus PrismPosixThread::run ()
     }
     else
     {
-        PrismFrameworkObjectManager::addWaveThreadId (m_pThreadId);
+        WaveFrameworkObjectManager::addWaveThreadId (m_pThreadId);
         return (WAVE_THREAD_SUCCESS);
     }
 }

@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Utils/TraceUtils.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 namespace WaveNs
 {
@@ -14,7 +14,7 @@ void waveAssert (bool isAssertNotRequired, const char *pFileName, UI32 lineNumbe
 {
     if (false == isAssertNotRequired)
     {
-        (PrismFrameworkObjectManager::getInstance ())->waveAssert (isAssertNotRequired, pFileName, lineNumber);
+        (WaveFrameworkObjectManager::getInstance ())->waveAssert (isAssertNotRequired, pFileName, lineNumber);
     }
 }
 

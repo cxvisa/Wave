@@ -8,7 +8,7 @@
 
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Database/DatabaseObjectManagerExecuteCursorCommandMessage.h"
 
 namespace WaveNs

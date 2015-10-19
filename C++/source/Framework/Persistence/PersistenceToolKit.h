@@ -43,7 +43,7 @@ class PersistenceToolKit
     public :
 
     friend class PersistenceLocalObjectManager;
-    friend class PrismFrameworkObjectManagerInitializeWorker;
+    friend class WaveFrameworkObjectManagerInitializeWorker;
 };
 
 }

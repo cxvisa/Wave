@@ -11,7 +11,7 @@
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Cluster/PrismCluster.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"

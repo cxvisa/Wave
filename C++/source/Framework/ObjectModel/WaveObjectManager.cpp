@@ -6,10 +6,10 @@
 
 #include "Framework/MultiThreading/WaveThread.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Types/Types.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
-#include "Framework/Core/PrismFrameworkServiceIndependentMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkServiceIndependentMessages.h"
 #include "Framework/ObjectModel/WaveWorker.h"
 #include "Framework/Utils/WaveMutex.h"
 #include "Framework/Utils/FrameworkToolKit.h"
@@ -471,7 +471,7 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     {
         // Cannot use trace and other Prism facilities here.  Framework is not even instantiated.
 
-        cerr << "WaveObjectManager::WaveObjectManager : Please make sure that the PrismFrameworkObjectManager is the first Object Manager that gets instantated." << endl;
+        cerr << "WaveObjectManager::WaveObjectManager : Please make sure that the WaveFrameworkObjectManager is the first Object Manager that gets instantated." << endl;
         cerr << "                                         Trying to instantiate Service : " << objectManagerName << endl;
         cerr << "CANOT CONTINUE.  EXITING ..." << endl;
         assert (0);
@@ -1400,7 +1400,7 @@ void WaveObjectManager::handleWaveEvent (const WaveEvent *&pWaveEvent)
 
 WaveMessageStatus WaveObjectManager::postToRemoteLocation (InterLocationMulticastMessage *pWaveMessage, set<LocationId> locationsToSent)
 {
-    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pWaveMessage, locationsToSent);
+    ResourceId status = ((WaveFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pWaveMessage, locationsToSent);
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
@@ -1439,8 +1439,8 @@ WaveMessageStatus WaveObjectManager::postToRemoteLocation (WaveMessage *pWaveMes
         return (WAVE_MESSAGE_ERROR_UNKNOWN_TYPE);
     }
 
-//    ResourceId status = ((PrismFrameworkObjectManager::createInstance ())->getThisLocation ())->postToRemoteLocation (tempString, destinationLocationId);
-    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pWaveMessage, destinationLocationId);
+//    ResourceId status = ((WaveFrameworkObjectManager::createInstance ())->getThisLocation ())->postToRemoteLocation (tempString, destinationLocationId);
+    ResourceId status = ((WaveFrameworkObjectManager::getInstance ())->getThisLocation ())->postToRemoteLocation (pWaveMessage, destinationLocationId);
 
 
     if(WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION_DUE_TO_PRINCIPAL_FAILOVER == status)
@@ -1459,7 +1459,7 @@ WaveMessageStatus WaveObjectManager::postToRemoteLocation (WaveMessage *pWaveMes
 
 WaveMessageStatus WaveObjectManager::postToHaPeerLocation (WaveMessage *pWaveMessage)
 {
-    ResourceId status = ((PrismFrameworkObjectManager::getInstance ())->getThisLocation ())->postToHaPeerLocation (pWaveMessage);
+    ResourceId status = ((WaveFrameworkObjectManager::getInstance ())->getThisLocation ())->postToHaPeerLocation (pWaveMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -1902,9 +1902,9 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (WaveMessage *pWaveMessag
 
     pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
-    if ((true == pWaveMessage->getIsALastConfigReplay ()) && (m_pAssociatedWaveThread->getWaveServiceId () == PrismFrameworkObjectManager::getWaveServiceId ()))
+    if ((true == pWaveMessage->getIsALastConfigReplay ()) && (m_pAssociatedWaveThread->getWaveServiceId () == WaveFrameworkObjectManager::getWaveServiceId ()))
     {
-        // This case is the initial start of the Last Config Replay where the PrismFrameworkPostPersistentBootWorker (PrismFrameworkObjectManager) triggers a last config replay.  We do not want to propagate message flags from the input message to output message here.  Otherwise, the last configuration replayed intent will have incorrect propagated flags.  Only the sendSynchronously () API needs this special handling since triggering the last config replay should only be synchronously replayed.
+        // This case is the initial start of the Last Config Replay where the WaveFrameworkPostPersistentBootWorker (WaveFrameworkObjectManager) triggers a last config replay.  We do not want to propagate message flags from the input message to output message here.  Otherwise, the last configuration replayed intent will have incorrect propagated flags.  Only the sendSynchronously () API needs this special handling since triggering the last config replay should only be synchronously replayed.
     }
     else
     {
@@ -5873,7 +5873,7 @@ bool WaveObjectManager::canInstantiateServiceAtThisTime (const string &prismServ
     }
     else
     {
-        if (true == (PrismFrameworkObjectManager::getIsInstantiated ()))
+        if (true == (WaveFrameworkObjectManager::getIsInstantiated ()))
         {
             return (true);
         }
@@ -9482,7 +9482,7 @@ void WaveObjectManager::sendPhase1MessageToAllNodesStep (WaveLinearSequencerCont
             LocationBase *pThisLocation = FrameworkToolKit::getPThisLocation ();
             if (NULL != pThisLocation)
             {
-                locationToSurrogate = ((PrismFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationId ());
+                locationToSurrogate = ((WaveFrameworkObjectManager::getInstance ())->m_pThisLocation->getLocationId ());
             }
 
             pClonedWaveMessageForPhase1->setSurrogatingForLocationId (locationsToSendTo[i]);

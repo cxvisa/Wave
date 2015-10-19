@@ -8,7 +8,7 @@
 #include "Framework/Boot/FirstTimePrismBootAgent.h"
 #include "Framework/Timer/TimerSignalObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/LocationManagement/Location.h"
 
 namespace WaveNs
@@ -116,7 +116,7 @@ ResourceId RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep (Pri
 {
     trace (TRACE_LEVEL_INFO, "RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep: Reverting the cfg to default values as we go back to First Time boot.");
 
-    PrismFrameworkObjectManager *pTemp         = PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager *pTemp         = WaveFrameworkObjectManager::getInstance ();
     pTemp->resetFrameworkConfigurationToDefault ();
 
     trace (TRACE_LEVEL_INFO, "RecoverPrismBootAgent::updateFrameworkConfigurationToDefaultStep: saving default configuration.");

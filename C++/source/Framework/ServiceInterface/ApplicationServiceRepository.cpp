@@ -8,7 +8,7 @@
 #include "Framework/ServiceInterface/ApplicationService.h"
 #include "Framework/ServiceInterface/ApplicationLocalService.h"
 #include "Framework/Core/FrameworkSequenceGenerator.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/TraceUtils.h"
@@ -99,7 +99,7 @@ void ApplicationServiceRepository::createApplicationServices ()
     map<UI32, string>::iterator element    = m_applicationServiceNamesMap.begin ();
     map<UI32, string>::iterator endElement = m_applicationServiceNamesMap.end ();
 
-    FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
 
     while (element != endElement)
     {
@@ -124,7 +124,7 @@ void ApplicationServiceRepository::createApplicationLocalServices ()
     map<UI32, string>::iterator element    = m_applicationLocalServiceNamesMap.begin ();
     map<UI32, string>::iterator endElement = m_applicationLocalServiceNamesMap.end ();
 
-    FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
 
     while (element != endElement)
     {

@@ -65,8 +65,8 @@ void WaveClient::initialize (const WaveClientConfiguration &waveClientConfigurat
 
     // set the WaveClient Framework configuration file.
 
-    PrismFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveClientConfiguration.getApplicationCompactName() + ".cfg");
-    PrismFrameworkObjectManager::setGlobalConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveClientConfiguration.getApplicationCompactName() + ".global.cfg");
+    WaveFrameworkObjectManager::setConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveClientConfiguration.getApplicationCompactName() + ".cfg");
+    WaveFrameworkObjectManager::setGlobalConfigurationFile ((getConfigurationFileDirectory ()) + "/" + waveClientConfiguration.getApplicationCompactName() + ".global.cfg");
 
     // Set the trace file name first
 
@@ -84,9 +84,9 @@ void WaveClient::initialize (const WaveClientConfiguration &waveClientConfigurat
 
     FrameworkToolKit::setIsRunningAsADaemon (false);
 
-    // PrismFrameworkObjectManager must be the first one to be created.
+    // WaveFrameworkObjectManager must be the first one to be created.
 
-    PrismFrameworkObjectManager::getInstance ();
+    WaveFrameworkObjectManager::getInstance ();
 
     // WARNING! WARNING! WARNING!
     // DO NOT CHANGE ABOVE THIS LINE
@@ -246,7 +246,7 @@ void WaveClient::registerNativeService (NativeMultiplePrismServiceInstantiator p
 
 void WaveClient::instantiateNativePrismServices ()
 {
-    FrameworkSequenceGenerator &frameworkSequenceGenerator                       = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator                       = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
     UI32                        numberOfNativePrismServciesToInstantiate         = m_nativePrismServiceInstantiators.size ();
     UI32                        numberOfNativeMultiplePrismServciesToInstantiate = m_nativeMultiplePrismServiceInstantiators.size ();
     UI32                        i                                                = 0;

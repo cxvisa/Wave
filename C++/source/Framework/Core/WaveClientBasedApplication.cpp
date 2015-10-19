@@ -109,10 +109,10 @@ extern "C" int waveClientMain (int argc, char *argv[], bool wait)
     cout << "     Port           : " << port << endl;
 #endif
 
-    PrismFrameworkObjectManager::setIpAddressForThisLocation (ipAddress);
+    WaveFrameworkObjectManager::setIpAddressForThisLocation (ipAddress);
 
-    PrismFrameworkObjectManager::setFrameworkSequenceType (type);
-    PrismFrameworkObjectManager::configureAsLocation (port);
+    WaveFrameworkObjectManager::setFrameworkSequenceType (type);
+    WaveFrameworkObjectManager::configureAsLocation (port);
 
     WaveClientConfiguration waveClientConfiguration;
 
@@ -125,14 +125,14 @@ extern "C" int waveClientMain (int argc, char *argv[], bool wait)
 
     WaveClient::initialize (waveClientConfiguration);
 
-    PrismFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootPrism ();
 
-    PrismFrameworkObjectManager::acquireBootSynchronizationMutex ();
-    PrismFrameworkObjectManager::releaseBootSynchronizationMutex ();
+    WaveFrameworkObjectManager::acquireBootSynchronizationMutex ();
+    WaveFrameworkObjectManager::releaseBootSynchronizationMutex ();
 
     if (true == wait)
     {
-        PrismFrameworkObjectManager::waitForPrismServicesToFinish ();
+        WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
     }
 
     return EXIT_SUCCESS;

@@ -3,7 +3,7 @@
  *   All rights reserved.                                                   *
  *   Author : Anil C                                                        *
  ***************************************************************************/
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/ObjectModel/WaveClientDataObjectGetWorker.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/ObjectModel/WaveSendToClusterContext.h"

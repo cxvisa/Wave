@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Boot/SecondaryNodeConfigurePrismBootAgent.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/Core/ApplicationSpecificServices.h"
@@ -117,7 +117,7 @@ bool SecondaryNodeConfigurePrismBootAgent::isAPersistentBoot ()
 
 bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedForEnableAndBoot (const WaveServiceId& waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -148,7 +148,7 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstallDuringPrePha
 
 bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstall (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -161,7 +161,7 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInstall (const Wave
 
 bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPrePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);
@@ -174,7 +174,7 @@ bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializeDuringPre
 
 bool SecondaryNodeConfigurePrismBootAgent::isToBeExcludedFromInitializePhase (const WaveServiceId &waveServiceId)
 {
-    if (((PrismFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
+    if (((WaveFrameworkObjectManager::getWaveServiceId               ()) == waveServiceId) ||
         (true == (WaveLocalObjectManagerForUserSpecificTasks::isAUserSpecificService (waveServiceId))))
     {
         return (true);

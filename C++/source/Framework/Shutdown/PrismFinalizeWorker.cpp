@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Shutdown/PrismFinalizeWorker.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/PrismFinalizeWorkerShutdownServicesContext.h"
 #include "Framework/Shutdown/PrismSecondaryNodeRejoinShutdownAgent.h"
 #include "Framework/Shutdown/PrismSecondaryNodeConfigureShutdownAgent.h"
@@ -50,7 +50,7 @@ ResourceId PrismFinalizeWorker::chooseAShutdownAgentStep (PrismFinalizeWorkerShu
 {
     trace (TRACE_LEVEL_DEVEL, "PrismFinalizeWorker::chooseAShutdownAgentStep : Entering ...");
 
-    FrameworkSequenceGenerator &frameworkSequenceGenerator = PrismFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
+    FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
     PrismShutdownMode           prismShutdownMode          = pPrismFinalizeWorkerShutdownServicesContext->getPrismShutdownMode ();
 
     if ((WAVE_SHUTDOWN_SECONDARY_CONFIGURE == prismShutdownMode) || (WAVE_SHUTDOWN_STANDBY_CONFIGURE == prismShutdownMode))

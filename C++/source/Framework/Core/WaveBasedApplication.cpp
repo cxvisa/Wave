@@ -311,11 +311,11 @@ extern "C" int prismMain (int argc, char *argv[])
         cout << "Starting Services now..." << endl;
     }
 
-    PrismFrameworkObjectManager::setIpAddressForThisLocation         (ipAddress);
-    PrismFrameworkObjectManager::setEthernetInterfaceForThisLocation (ethernetInterface);
+    WaveFrameworkObjectManager::setIpAddressForThisLocation         (ipAddress);
+    WaveFrameworkObjectManager::setEthernetInterfaceForThisLocation (ethernetInterface);
 
-    PrismFrameworkObjectManager::setFrameworkSequenceType            (type);
-    PrismFrameworkObjectManager::configureAsLocation                 (port);
+    WaveFrameworkObjectManager::setFrameworkSequenceType            (type);
+    WaveFrameworkObjectManager::configureAsLocation                 (port);
 
     WaveMainConfiguration waveMainConfiguration;
     vector<string>        yinPaths;
@@ -341,9 +341,9 @@ extern "C" int prismMain (int argc, char *argv[])
 
     Wave::initialize (waveMainConfiguration);
 
-    PrismFrameworkObjectManager::bootPrism ();
+    WaveFrameworkObjectManager::bootPrism ();
 
-    PrismFrameworkObjectManager::waitForPrismServicesToFinish ();
+    WaveFrameworkObjectManager::waitForPrismServicesToFinish ();
 
     delete [] pChangeDirectoryToArray;
 

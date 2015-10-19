@@ -14,7 +14,7 @@
 #include "ManagementInterface/WaveManagementClient.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
 #include "Shell/ShellObjectManager.h"
 #include "Shell/ShellDebug.h"

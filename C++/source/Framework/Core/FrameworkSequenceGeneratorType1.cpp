@@ -5,7 +5,7 @@
  ***************************************************************************/
 
 #include "Framework/Core/FrameworkSequenceGeneratorType1.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/Test/FrameworkCoreTestObjectManager.h"
 #include "Framework/Core/Test/FrameworkTestability1ObjectManager.h"
 #include "Framework/Core/Test/FrameworkTestability2ObjectManager.h"
@@ -256,7 +256,7 @@ FrameworkSequenceGeneratorType1::FrameworkSequenceGeneratorType1 ()
     m_waveServiceIdsToDisable.push_back (ClusterTestObjectManager::getWaveServiceId ());
     m_waveServiceIdsToDisable.push_back (PersistenceTestObjectManager::getWaveServiceId ());
 
-    //m_waveServiceIdsToDisable.push_back (PrismFrameworkObjectManager::getWaveServiceId ());
+    //m_waveServiceIdsToDisable.push_back (WaveFrameworkObjectManager::getWaveServiceId ());
     m_waveServiceIdsToDisable.push_back (ManagementInterfaceObjectManager::getWaveServiceId ());
     m_waveServiceIdsToDisable.push_back (InterLocationMessageTransportObjectManager::getWaveServiceId ());
     m_waveServiceIdsToDisable.push_back (RegressionTestObjectManager::getWaveServiceId ());

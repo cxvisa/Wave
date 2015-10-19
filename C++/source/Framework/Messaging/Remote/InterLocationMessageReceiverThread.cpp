@@ -12,7 +12,7 @@
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FixedSizeBuffer.h"
 #include "Framework/Messaging/Remote/InterLocationMessageTransportObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/LocationManagement/PrismNodeConnectionInformation.h"
 #include "Framework/Messaging/Remote/InterLocationTypes.h"
@@ -56,7 +56,7 @@ InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread ()
         {
 
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Invalidating Client Streaming socket for Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
-            //(PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (m_peerServerIpAddress, m_peerServerPort, false);
+            //(WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (m_peerServerIpAddress, m_peerServerPort, false);
             LocationId  peerServerLocationId = FrameworkToolKit::getLocationIdForIpAddressAndPort(m_peerServerIpAddress, m_peerServerPort);
 
 			// Identify who went down and return status accordingly.
@@ -64,14 +64,14 @@ InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread ()
 											WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE_DUE_TO_PRINCIPAL_FAILOVER:
 											WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE);
 																		
-            (PrismFrameworkObjectManager::getInstance ())->invalidateClientStreamingSocketForRemoteLocation (peerServerLocationId);
+            (WaveFrameworkObjectManager::getInstance ())->invalidateClientStreamingSocketForRemoteLocation (peerServerLocationId);
             (InterLocationMessageTransportObjectManager::getInstance ())->replyToRemoteMessagesPendingOnLocation (peerServerLocationId, failureStatus);
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Invalidated client streaming socket for Ip Address : %s, Port %d reason %s", m_peerServerIpAddress.c_str (), m_peerServerPort,FrameworkToolKit::localize(failureStatus).c_str());
 
 
 #if 0
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Disconnecting From Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (m_peerServerIpAddress, m_peerServerPort, false);
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (m_peerServerIpAddress, m_peerServerPort, false);
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Disconnected  From Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
 #endif     
 
@@ -231,7 +231,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                 else
                 {
 
-                    connectionStatus = (PrismFrameworkObjectManager::getInstance ())->connectToLocation (m_peerServerIpAddress, m_peerServerPort);
+                    connectionStatus = (WaveFrameworkObjectManager::getInstance ())->connectToLocation (m_peerServerIpAddress, m_peerServerPort);
 
                     if (FRAMEWORK_SUCCESS != connectionStatus)
                     {

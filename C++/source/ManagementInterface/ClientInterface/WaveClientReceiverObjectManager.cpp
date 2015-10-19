@@ -6,7 +6,7 @@
 
 #include "ManagementInterface/ClientInterface/WaveClientReceiverObjectManager.h"
 #include "ManagementInterface/ClientInterface/WaveClientTransportObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Utils/ServerStreamingSocket.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "ManagementInterface/ClientInterface/WaveClientReceiverThread.h"

@@ -4,7 +4,7 @@
  *   Author : Brian Adaniya                                                *
  ***************************************************************************/
 
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Zeroize/ZeroizeForFIPSLinearSequencerContext.h"
 
 

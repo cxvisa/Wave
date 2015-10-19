@@ -9,7 +9,7 @@
 
 #include "Framework/Types/Types.h"
 
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Core/WaveClientConfiguration.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"                                 
 #include <string>

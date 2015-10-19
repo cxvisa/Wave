@@ -12,7 +12,7 @@
 #include "Framework/LocationManagement/LocationBase.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "ManagementInterface/ClientInterface/WaveClientTransportObjectManager.h"
 
 namespace WaveNs
@@ -678,7 +678,7 @@ void HeartBeatObjectManager::heartBeatTimerHandler (TimerHandle timerHandle, Hea
 
         if ((pHeartBeatInfo->m_heartBeatStat.m_heartBeatLostInRow >= pHeartBeatInfo->m_heartBeatFailureThreshold)) 
         {
-            (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation ((pHeartBeatInfo->m_ipAddress).toString (), (SI32) (pHeartBeatInfo->m_portNumber));
+            (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation ((pHeartBeatInfo->m_ipAddress).toString (), (SI32) (pHeartBeatInfo->m_portNumber));
 
             // This is where the HeartBeatFailure message should be sent to all the services as a message
             HeartBeatFailureAgent  *pHeartBeatFailureAgent = new HeartBeatFailureAgent (m_pWaveObjectManager, pHeartBeatInfo->m_ipAddress, pHeartBeatInfo->m_portNumber);
@@ -730,7 +730,7 @@ void HeartBeatObjectManager::setThisLocationIpAddr (const string &thisLocationIp
 void HeartBeatObjectManager::disconnectFromNodeMessageHandler(DisconnectFromNodeMessage *pDisconnectFromNodeMessage)
 {
 
-    trace (TRACE_LEVEL_DEVEL, "PrismFrameworkObjectManager:: disconnectFromNodeMessageHandler: Entering ...");
+    trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager:: disconnectFromNodeMessageHandler: Entering ...");
 
     PrismLinearSequencerStep sequencerSteps[] =
     {
@@ -777,7 +777,7 @@ void HeartBeatObjectManager::processDisconnectFromNodeMessage (WaveLinearSequenc
 
     trace (TRACE_LEVEL_INFO, string ("HeartBeatObjectManager::processDisconnectFromNodeMessage::Disconnecting from Node: Loc: ") + locationId);
 
-    (PrismFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
+    (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (locationId);
 
     (WaveClientTransportObjectManager::getInstance ())->replyToPendingMessagesForServer (pDisconnectFromNodeMessage->getServerIpAddress (), (SI32) pDisconnectFromNodeMessage->getServerPort ());
 

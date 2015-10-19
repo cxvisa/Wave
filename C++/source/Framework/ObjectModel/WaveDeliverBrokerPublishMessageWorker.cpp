@@ -7,7 +7,7 @@
 #include "Framework/ObjectModel/WaveDeliverBrokerPublishMessageWorker.h"
 #include "Framework/ObjectModel/WaveObjectManager.h"
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveBrokerPublishMessage.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 
 namespace WaveNs
 {

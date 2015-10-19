@@ -6,7 +6,7 @@
 
 #include "Framework/MultiThreading/WaveMessageQueue.h"
 #include "Framework/Utils/AssertUtils.h"
-#include "Framework/Core/PrismFrameworkMessages.h"
+#include "Framework/Core/WaveFrameworkMessages.h"
 
 using namespace std;
 

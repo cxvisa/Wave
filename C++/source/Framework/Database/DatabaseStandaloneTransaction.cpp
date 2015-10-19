@@ -11,7 +11,7 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Database/DatabaseStandaloneTransaction.h"
 #include "Framework/Database/DatabaseObjectManager.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Cluster/Local/WaveNode.h"
 #include "Framework/Types/Types.h" 
 
@@ -539,7 +539,7 @@ ResourceId DatabaseStandaloneTransaction::rollbackDatabase ()
     return (status);
 }
 
-ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (PrismFrameworkConfiguration& prismFrameworkConfiguration)
+ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (WaveFrameworkConfiguration& waveFrameworkConfiguration)
 {
     ResourceId status = FRAMEWORK_ERROR;
 
@@ -555,8 +555,8 @@ ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (PrismFrameworkConf
     OrmRepository      *pOrmRepository  = OrmRepository::getInstance ();
     waveAssert (NULL != pOrmRepository, __FILE__, __LINE__);
 
-    string      thisLocationIpAddress   = prismFrameworkConfiguration.getThisLocationIpAddress ();
-    SI32        thisNodePort            = prismFrameworkConfiguration.getThisLocationPort ();
+    string      thisLocationIpAddress   = waveFrameworkConfiguration.getThisLocationIpAddress ();
+    SI32        thisNodePort            = waveFrameworkConfiguration.getThisLocationPort ();
     LocationId  thisnodelocationid      = 0;
 
     string commandString = string ("SELECT * FROM " + OrmRepository::getWaveCurrentSchema () + "." + WaveNode::getClassName () + " WHERE (ipaddress = '" + thisLocationIpAddress + "') AND (port = '" + thisNodePort + "')");
@@ -605,35 +605,35 @@ ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (PrismFrameworkConf
         return (status);
     }
 
-    LocationRole locRole = prismFrameworkConfiguration.getThisLocationRole ();
+    LocationRole locRole = waveFrameworkConfiguration.getThisLocationRole ();
 
-    prismFrameworkConfiguration.setThisLocationLocationId   (thisnodelocationid);
-    prismFrameworkConfiguration.setClusterPrimaryLocationId (thisnodelocationid);
-    prismFrameworkConfiguration.setClusterPrimaryPort       (thisNodePort);
+    waveFrameworkConfiguration.setThisLocationLocationId   (thisnodelocationid);
+    waveFrameworkConfiguration.setClusterPrimaryLocationId (thisnodelocationid);
+    waveFrameworkConfiguration.setClusterPrimaryPort       (thisNodePort);
 
     if ((LOCATION_SECONDARY_CLUSTER_PHASE_0 == locRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_1 == locRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_2 == locRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_3 == locRole))
     { 
-        prismFrameworkConfiguration.setThisLocationRole         (LOCATION_STAND_ALONE);
-        prismFrameworkConfiguration.setLastUsedLocationId       (thisnodelocationid);
+        waveFrameworkConfiguration.setThisLocationRole         (LOCATION_STAND_ALONE);
+        waveFrameworkConfiguration.setLastUsedLocationId       (thisnodelocationid);
 
         vector<string>      knownLocIpAddresses;
         vector<SI32>        knownLocPorts;
         vector<LocationId>  knownLocLocationIds;
 
-        prismFrameworkConfiguration.setKnownLocationIpAddresses (knownLocIpAddresses); 
-        prismFrameworkConfiguration.setKnownLocationPorts       (knownLocPorts);
-        prismFrameworkConfiguration.setKnownLocationLocationIds (knownLocLocationIds);
+        waveFrameworkConfiguration.setKnownLocationIpAddresses (knownLocIpAddresses); 
+        waveFrameworkConfiguration.setKnownLocationPorts       (knownLocPorts);
+        waveFrameworkConfiguration.setKnownLocationLocationIds (knownLocLocationIds);
     }     
     else if ((LOCATION_SECONDARY_REJOIN_PHASE_0 == locRole) || (LOCATION_SECONDARY_REJOIN_PHASE_1 == locRole) || (LOCATION_SECONDARY_REJOIN_PHASE_2 == locRole) || (LOCATION_SECONDARY_REJOIN_PHASE_3 == locRole))
     {   
-        prismFrameworkConfiguration.setThisLocationRole         (LOCATION_SECONDARY_UNCONFIRMED);
+        waveFrameworkConfiguration.setThisLocationRole         (LOCATION_SECONDARY_UNCONFIRMED);
     }
     
-    prismFrameworkConfiguration.setDBRestoreIncomplete(false);
+    waveFrameworkConfiguration.setDBRestoreIncomplete(false);
     
-    string prismConfigurationfileName = (PrismFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    string prismConfigurationfileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
 
-    status = prismFrameworkConfiguration.saveConfiguration (prismConfigurationfileName);
+    status = waveFrameworkConfiguration.saveConfiguration (prismConfigurationfileName);
 
     return ((WAVE_MESSAGE_SUCCESS == status) ? FRAMEWORK_SUCCESS : FRAMEWORK_ERROR);
 }

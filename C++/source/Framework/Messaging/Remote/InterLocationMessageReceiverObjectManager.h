@@ -47,7 +47,7 @@ class InterLocationMessageReceiverObjectManager : public WaveLocalObjectManagerF
     public :
 
     friend class InterLocationMessageReceiverThread;
-    friend class PrismFrameworkObjectManager;
+    friend class WaveFrameworkObjectManager;
 };
 
 }

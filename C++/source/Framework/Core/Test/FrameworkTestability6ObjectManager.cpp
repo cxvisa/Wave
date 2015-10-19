@@ -41,7 +41,7 @@
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/Persistence/PersistenceObjectManager.h"
 #include "Framework/Core/FrameworkObjectManagerMessages.h"
-#include "Framework/Core/PrismFrameworkObjectManager.h"
+#include "Framework/Core/WaveFrameworkObjectManager.h"
 
 
 namespace WaveNs
@@ -3808,7 +3808,7 @@ void FrameworkTestability6ObjectManager::validateGetDatabaseSchemaStep(UpgradePe
     {
         trace (TRACE_LEVEL_INFO, "FrameworkTestability6ObjectManager::validateGetDatabaseSchemaStep: PASSED: dbSchemaAfterModifyMO->isConvertibleTo (dbSchemaBeforeModify) .");
 
-        status = PrismFrameworkObjectManager::getInstance ()->upgradeDatabase ();
+        status = WaveFrameworkObjectManager::getInstance ()->upgradeDatabase ();
     }
     else
     {
