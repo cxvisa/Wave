@@ -11,7 +11,7 @@ namespace WaveNs
 
 WaveFinalizeWorkerShutdownServicesContext::WaveFinalizeWorkerShutdownServicesContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveSynchronousLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
-      m_prismShutdownMode (WAVE_SHUTDOWN_SECONDARY_CONFIGURE)
+      m_waveShutdownMode (WAVE_SHUTDOWN_SECONDARY_CONFIGURE)
 {
 }
 
@@ -21,12 +21,12 @@ WaveFinalizeWorkerShutdownServicesContext::~WaveFinalizeWorkerShutdownServicesCo
 
 WaveShutdownMode WaveFinalizeWorkerShutdownServicesContext::getWaveShutdownMode () const
 {
-    return (m_prismShutdownMode);
+    return (m_waveShutdownMode);
 }
 
-void WaveFinalizeWorkerShutdownServicesContext::setWaveShutdownMode (const WaveShutdownMode &prismShutdownMode)
+void WaveFinalizeWorkerShutdownServicesContext::setWaveShutdownMode (const WaveShutdownMode &waveShutdownMode)
 {
-    m_prismShutdownMode = prismShutdownMode;
+    m_waveShutdownMode = waveShutdownMode;
 }
 
 }

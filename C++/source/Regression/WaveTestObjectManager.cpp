@@ -10,8 +10,8 @@
 namespace WaveNs
 {
 
-WaveTestObjectManager::WaveTestObjectManager (const string &prismTestObjectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
-    : WaveLocalObjectManager (prismTestObjectManagerName, stackSize, pCpuAffinityVector)
+WaveTestObjectManager::WaveTestObjectManager (const string &waveTestObjectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
+    : WaveLocalObjectManager (waveTestObjectManagerName, stackSize, pCpuAffinityVector)
 {
     addOperationMap (WAVE_OBJECT_MANAGER_TEST,                   reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::testRequestHandler));
     addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION, reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::prepareForRegressionRequestHandler));

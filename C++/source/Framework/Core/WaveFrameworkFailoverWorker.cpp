@@ -38,8 +38,8 @@ void WaveFrameworkFailoverWorker::executeFailover (WaveFrameworkFailoverWorkerCo
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverRunFailoverAgentStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverCompleteEventStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::executeFailoverDestroyFailoverAgentStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkFailoverWorker::waveLinearSequencerFailedStep),
     };
 
     WaveFrameworkFailoverWorkerSequencerContext *pWaveFrameworkFailoverWorkerSequencerContext = new WaveFrameworkFailoverWorkerSequencerContext (pWaveFrameworkFailoverWorkerContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

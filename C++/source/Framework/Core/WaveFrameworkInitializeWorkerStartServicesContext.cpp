@@ -11,7 +11,7 @@ namespace WaveNs
 
 WaveFrameworkInitializeWorkerStartServicesContext::WaveFrameworkInitializeWorkerStartServicesContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps)
     : WaveSynchronousLinearSequencerContext (pWaveAsynchronousContext, pWaveElement, pSteps, numberOfSteps),
-      m_prismBootMode                (WAVE_BOOT_FIRST_TIME),
+      m_waveBootMode                (WAVE_BOOT_FIRST_TIME),
       m_waveBootPhase                (WAVE_BOOT_PHASE_ALL_PHASES),
       m_pWaveBootAgent              (NULL),
       m_isSchemaChangedOnFwdl        (false),
@@ -36,12 +36,12 @@ void WaveFrameworkInitializeWorkerStartServicesContext::setPWaveBootAgent (WaveB
 
 WaveBootMode WaveFrameworkInitializeWorkerStartServicesContext::getWaveBootMode () const
 {
-    return (m_prismBootMode);
+    return (m_waveBootMode);
 }
 
-void WaveFrameworkInitializeWorkerStartServicesContext::setWaveBootMode (WaveBootMode prismBootMode)
+void WaveFrameworkInitializeWorkerStartServicesContext::setWaveBootMode (WaveBootMode waveBootMode)
 {
-    m_prismBootMode = prismBootMode;
+    m_waveBootMode = waveBootMode;
 }
 
 WaveBootPhase WaveFrameworkInitializeWorkerStartServicesContext::getWaveBootPhase () const

@@ -25,7 +25,7 @@ class WaveNativeTest1Service : public WaveObjectManager
         static WaveNativeTest1Service *getInstance                            ();
         static WaveServiceId           getWaveServiceId                      ();
 
-               void                     prismNativeTest1ServiceMessage1Handler (WaveNativeTest1ServiceMessage1 *pMsg);
+               void                     waveNativeTest1ServiceMessage1Handler (WaveNativeTest1ServiceMessage1 *pMsg);
 
     // Now the Data Memebers
 

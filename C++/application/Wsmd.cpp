@@ -12,7 +12,7 @@
 #include "Framework/ServiceInterface/ApplicationService.h"
 #include "Framework/ServiceInterface/ApplicationLocalService.h"
 #include "Framework/Messaging/Local/WaveMessage.h"
-#include "Framework/ServiceInterface/Test/PrismNativeTest1Service.h"
+#include "Framework/ServiceInterface/Test/WaveNativeTest1Service.h"
 #include "Framework/ServiceInterface/ApplicationServiceUtils.h"
 #include "Framework/Utils/Integer.h"
 
@@ -25,7 +25,7 @@ extern "C" int waveSystemManagementMain (int argc, char *argv[]);
 
 int g_commandLineArgumentLength = 512;
 
-void genericMessageHandler (void *pPayLoad, UI32 payLoadLength, void *pPrismContext);
+void genericMessageHandler (void *pPayLoad, UI32 payLoadLength, void *pWaveContext);
 
 void displayUsage (const char *pProgramName)
 {
@@ -276,9 +276,9 @@ int main (int argc, char *argv[])
     return (waveSystemManagementMain (numberOfCommandLineArguments, pCommandLineArguments));
 }
 
-void genericMessageHandler (void *pPayLoad, UI32 payLoadLength, void *pPrismContext)
+void genericMessageHandler (void *pPayLoad, UI32 payLoadLength, void *pWaveContext)
 {
     cout << "Received Pay Load with Length " << payLoadLength << endl;
 
-    ApplicationServiceUtils::replyToApplicationService (pPayLoad, payLoadLength, pPrismContext);
+    ApplicationServiceUtils::replyToApplicationService (pPayLoad, payLoadLength, pWaveContext);
 }

@@ -422,8 +422,8 @@ bool HaPeerMessageReceiverThread::authorizeClient ()
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful              = false;
-    string          prismHaPassPhrase           = FrameworkToolKit::getWaveHaConnectionPassPhrase ();
-    FixedSizeBuffer passphraseFixedSizeBuffer (prismHaPassPhrase.size ());
+    string          waveHaPassPhrase           = FrameworkToolKit::getWaveHaConnectionPassPhrase ();
+    FixedSizeBuffer passphraseFixedSizeBuffer (waveHaPassPhrase.size ());
 
     isSuccessful = (*m_pServerStreamingSocket) >> (passphraseFixedSizeBuffer);
 
@@ -437,7 +437,7 @@ bool HaPeerMessageReceiverThread::authorizeClient ()
 
         passphraseFixedSizeBuffer.toString (passPhraseGivenByClient);
 
-        if (passPhraseGivenByClient != prismHaPassPhrase)
+        if (passPhraseGivenByClient != waveHaPassPhrase)
         {
             isSuccessful = false;
 

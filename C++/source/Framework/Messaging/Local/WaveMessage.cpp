@@ -34,12 +34,12 @@ WaveMessage::WaveMessageBuffer::WaveMessageBuffer (UI32 size, const void *pBuffe
     }
 }
 
-WaveMessage::WaveMessageBuffer::WaveMessageBuffer (const WaveMessage::WaveMessageBuffer &prismMessagebuffer)
+WaveMessage::WaveMessageBuffer::WaveMessageBuffer (const WaveMessage::WaveMessageBuffer &waveMessagebuffer)
 {
-    m_size    = prismMessagebuffer.m_size;
+    m_size    = waveMessagebuffer.m_size;
 
     m_pBuffer = new UI8[m_size];
-    memcpy (m_pBuffer, prismMessagebuffer.m_pBuffer, m_size);
+    memcpy (m_pBuffer, waveMessagebuffer.m_pBuffer, m_size);
 }
 
 WaveMessage::WaveMessageBuffer::~WaveMessageBuffer ()
@@ -47,14 +47,14 @@ WaveMessage::WaveMessageBuffer::~WaveMessageBuffer ()
     destroy ();
 }
 
-WaveMessage::WaveMessageBuffer &WaveMessage::WaveMessageBuffer::operator = (const WaveMessage::WaveMessageBuffer &prismMessagebuffer)
+WaveMessage::WaveMessageBuffer &WaveMessage::WaveMessageBuffer::operator = (const WaveMessage::WaveMessageBuffer &waveMessagebuffer)
 {
     destroy ();
 
-    m_size    = prismMessagebuffer.m_size;
+    m_size    = waveMessagebuffer.m_size;
 
     m_pBuffer = new UI8[m_size];
-    memcpy (m_pBuffer, prismMessagebuffer.m_pBuffer, m_size);
+    memcpy (m_pBuffer, waveMessagebuffer.m_pBuffer, m_size);
 
     return (*this);
 }
@@ -146,10 +146,10 @@ WaveMessage::WaveMessage (WaveServiceId serviceCode, UI32 operationCode)
 
     MessageTracker::addToMessageTracker (this);
 
-    m_prismMessageCreatorThreadId = WaveThread::getSelf ();
+    m_waveMessageCreatorThreadId = WaveThread::getSelf ();
 }
 
-WaveMessage::WaveMessage (const WaveMessage &prismMessage)
+WaveMessage::WaveMessage (const WaveMessage &waveMessage)
 {
     trace (TRACE_LEVEL_FATAL, "WaveMessage::WaveMessage : Copy Constructing a WaveMessage does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
@@ -173,7 +173,7 @@ WaveMessage::~WaveMessage ()
     pMessageCreationMutex->unlock ();
 }
 
-WaveMessage &WaveMessage::operator = (const WaveMessage &prismMessage)
+WaveMessage &WaveMessage::operator = (const WaveMessage &waveMessage)
 {
     trace (TRACE_LEVEL_FATAL, "WaveMessage::operator = : Assigning to a WaveMessage does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
@@ -897,13 +897,13 @@ void WaveMessage::setOriginalMessageId (const UI32 &originalMessageId)
     m_originalMessageId = originalMessageId;
 }
 
-void WaveMessage::copyBuffersFrom (const WaveMessage &prismMessage)
+void WaveMessage::copyBuffersFrom (const WaveMessage &waveMessage)
 {
     vector<UI32> bufferTagsVector;
     UI32         numberOfBuffers   = 0;
     UI32         i                 = 0;
 
-    prismMessage.getBufferTags (bufferTagsVector);
+    waveMessage.getBufferTags (bufferTagsVector);
 
     numberOfBuffers = bufferTagsVector.size ();
 
@@ -913,7 +913,7 @@ void WaveMessage::copyBuffersFrom (const WaveMessage &prismMessage)
         UI32               bufferSize = 0;
         WaveMessageStatus  status     = WAVE_MESSAGE_ERROR;
 
-        pBuffer = prismMessage.findBuffer (bufferTagsVector[i], bufferSize);
+        pBuffer = waveMessage.findBuffer (bufferTagsVector[i], bufferSize);
 
         waveAssert (NULL != pBuffer, __FILE__, __LINE__);
         waveAssert (0 != bufferSize, __FILE__, __LINE__);
@@ -1052,7 +1052,7 @@ void WaveMessage::appendNestedSql (const string &nestedSql)
 
 WaveThreadId  WaveMessage::getWaveMessageCreatorThreadId () const
 {
-    return (m_prismMessageCreatorThreadId);
+    return (m_waveMessageCreatorThreadId);
 }
 
 void WaveMessage::setSurrogatingForLocationId (LocationId disconnectedLocation)

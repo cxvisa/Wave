@@ -32,19 +32,19 @@ VOID CALLBACK timerExpirationCallback (HWND hwnd, UINT uMsg, UINT_PTR idEvent, D
 namespace WaveNs
 {
 
-unsigned int  prismSleep                 (unsigned int numberOfSecondsToSleep);
-void          prismSysLog                (char *pStringToLog);
+unsigned int  waveSleep                 (unsigned int numberOfSecondsToSleep);
+void          waveSysLog                (char *pStringToLog);
 void          initializeWaveSocketLayer ();
 void          getIpAddressesForThisHost  (vector<string> &ipAddressesForThisHost);
-int           prismCloseSocket           (int fd);
-void          prismBlockSignals          ();
-char         *prismGetCwd                (char *buf, size_t size);
-void          prismWaitForAlarmSignal    ();
-void          prismCreateWaitableTimer   ();
-int           prismSetITimer             (struct itimerval *pItimerValue);
+int           waveCloseSocket           (int fd);
+void          waveBlockSignals          ();
+char         *waveGetCwd                (char *buf, size_t size);
+void          waveWaitForAlarmSignal    ();
+void          waveCreateWaitableTimer   ();
+int           waveSetITimer             (struct itimerval *pItimerValue);
 HANDLE        getWaveTimerHandle        ();
-void          prismSetConsoleTextColor   (TraceLevel requestedTraceLevel);
-void          prismResetConsoleTextColor ();
+void          waveSetConsoleTextColor   (TraceLevel requestedTraceLevel);
+void          waveResetConsoleTextColor ();
 
 }
 

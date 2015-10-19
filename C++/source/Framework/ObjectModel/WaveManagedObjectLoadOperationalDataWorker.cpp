@@ -47,11 +47,11 @@ void WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataHandler (Wav
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataQueryManagedObjectStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataLoadStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::waveLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::loadOperationalDataUpdateWaveManagedObjectStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::waveLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectLoadOperationalDataWorker::waveLinearSequencerFailedStep),
     };
 
     LoadOperationalDataContext *pLoadOperationalDataContext = new LoadOperationalDataContext (pWaveLoadOperationalDataForManagedObjectObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

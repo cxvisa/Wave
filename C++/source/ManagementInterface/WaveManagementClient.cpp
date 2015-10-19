@@ -81,7 +81,7 @@ ResourceId WaveManagementClient::connect (const string &serverIpAddressFromClien
             {
                 delete m_pClientStreamingSocket;
                 m_pClientStreamingSocket = NULL;
-                prismSleep (1);
+                waveSleep (1);
             }
             else
             {

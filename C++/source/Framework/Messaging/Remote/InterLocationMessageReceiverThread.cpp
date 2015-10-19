@@ -556,8 +556,8 @@ bool InterLocationMessageReceiverThread::authorizeClient ()
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful              = false;
-    string          prismPassPhrase           = FrameworkToolKit::getWaveConnectionPassPhrase ();
-    FixedSizeBuffer passphraseFixedSizeBuffer (prismPassPhrase.size ());
+    string          wavePassPhrase           = FrameworkToolKit::getWaveConnectionPassPhrase ();
+    FixedSizeBuffer passphraseFixedSizeBuffer (wavePassPhrase.size ());
 
     isSuccessful = (*m_pServerStreamingSocket) >> (passphraseFixedSizeBuffer);
 
@@ -571,7 +571,7 @@ bool InterLocationMessageReceiverThread::authorizeClient ()
 
         passphraseFixedSizeBuffer.toString (passPhraseGivenByClient);
 
-        if (passPhraseGivenByClient != prismPassPhrase)
+        if (passPhraseGivenByClient != wavePassPhrase)
         {
             isSuccessful = false;
 

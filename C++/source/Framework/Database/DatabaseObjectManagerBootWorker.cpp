@@ -34,8 +34,8 @@ void DatabaseObjectManagerBootWorker::boot (WaveAsynchronousContextForBootPhases
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootConnectToDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::bootReconnectToDatabaseOnInstallIfRequiredStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerBootWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -96,7 +96,7 @@ void DatabaseObjectManagerBootWorker::bootDatabaseStep (WaveLinearSequencerConte
              * So, lets try connecting to DB and confirm if we need to retry 'pg_ctl start' command.
              */
 
-            prismSleep (4);
+            waveSleep (4);
 
             bool                isConnectedToDatabase = false;
             pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
@@ -131,7 +131,7 @@ void DatabaseObjectManagerBootWorker::bootDatabaseStep (WaveLinearSequencerConte
             {
                 tracePrintf (TRACE_LEVEL_WARN, false, true, output[0].c_str());
             }
-            prismSleep (4);
+            waveSleep (4);
         }
 
         if (0 != status)

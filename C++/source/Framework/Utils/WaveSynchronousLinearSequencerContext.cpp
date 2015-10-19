@@ -102,16 +102,16 @@ WaveSynchronousLinearSequencerContext::WaveSynchronousLinearSequencerContext (Wa
     return;
 }
 
-WaveSynchronousLinearSequencerContext::WaveSynchronousLinearSequencerContext (const WaveSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext)
+WaveSynchronousLinearSequencerContext::WaveSynchronousLinearSequencerContext (const WaveSynchronousLinearSequencerContext &waveSynchronousLinearSequencerContext)
 {
-    m_pWaveMessage                 = prismSynchronousLinearSequencerContext.m_pWaveMessage;
-    m_pWaveAsynchronousContext     = prismSynchronousLinearSequencerContext.m_pWaveAsynchronousContext;
-    m_pWaveElement                 = prismSynchronousLinearSequencerContext.m_pWaveElement;
-    m_pSteps                        = prismSynchronousLinearSequencerContext.m_pSteps;
-    m_numberOfSteps                 = prismSynchronousLinearSequencerContext.m_numberOfSteps;
-    m_currentStep                   = prismSynchronousLinearSequencerContext.m_currentStep;
-    m_isTransactionStartedByMe      = prismSynchronousLinearSequencerContext.m_isTransactionStartedByMe;
-    m_isADelayedCommitTransaction   = prismSynchronousLinearSequencerContext.m_isADelayedCommitTransaction;
+    m_pWaveMessage                 = waveSynchronousLinearSequencerContext.m_pWaveMessage;
+    m_pWaveAsynchronousContext     = waveSynchronousLinearSequencerContext.m_pWaveAsynchronousContext;
+    m_pWaveElement                 = waveSynchronousLinearSequencerContext.m_pWaveElement;
+    m_pSteps                        = waveSynchronousLinearSequencerContext.m_pSteps;
+    m_numberOfSteps                 = waveSynchronousLinearSequencerContext.m_numberOfSteps;
+    m_currentStep                   = waveSynchronousLinearSequencerContext.m_currentStep;
+    m_isTransactionStartedByMe      = waveSynchronousLinearSequencerContext.m_isTransactionStartedByMe;
+    m_isADelayedCommitTransaction   = waveSynchronousLinearSequencerContext.m_isADelayedCommitTransaction;
     m_completionStatus              = WAVE_MESSAGE_ERROR;
 
     m_clockId                       = 0;
@@ -136,7 +136,7 @@ WaveSynchronousLinearSequencerContext::WaveSynchronousLinearSequencerContext (co
 
     for (i = 0; i < m_numberOfSteps; i++)
     {
-        m_pSteps[i] = prismSynchronousLinearSequencerContext.m_pSteps[i];
+        m_pSteps[i] = waveSynchronousLinearSequencerContext.m_pSteps[i];
     }
 
     return;
@@ -152,17 +152,17 @@ WaveSynchronousLinearSequencerContext::~WaveSynchronousLinearSequencerContext ()
     garbageCollect ();
 }
 
-WaveSynchronousLinearSequencerContext &WaveSynchronousLinearSequencerContext::operator = (const WaveSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext)
+WaveSynchronousLinearSequencerContext &WaveSynchronousLinearSequencerContext::operator = (const WaveSynchronousLinearSequencerContext &waveSynchronousLinearSequencerContext)
 {
-    m_pWaveMessage                 = prismSynchronousLinearSequencerContext.m_pWaveMessage;
-    m_pWaveAsynchronousContext     = prismSynchronousLinearSequencerContext.m_pWaveAsynchronousContext;
-    m_pWaveElement                 = prismSynchronousLinearSequencerContext.m_pWaveElement;
-    m_pSteps                        = prismSynchronousLinearSequencerContext.m_pSteps;
-    m_numberOfSteps                 = prismSynchronousLinearSequencerContext.m_numberOfSteps;
-    m_currentStep                   = prismSynchronousLinearSequencerContext.m_currentStep;
-    m_isTransactionStartedByMe      = prismSynchronousLinearSequencerContext.m_isTransactionStartedByMe;
-    m_isADelayedCommitTransaction   = prismSynchronousLinearSequencerContext.m_isADelayedCommitTransaction;
-    m_completionStatus              = prismSynchronousLinearSequencerContext.m_completionStatus;
+    m_pWaveMessage                 = waveSynchronousLinearSequencerContext.m_pWaveMessage;
+    m_pWaveAsynchronousContext     = waveSynchronousLinearSequencerContext.m_pWaveAsynchronousContext;
+    m_pWaveElement                 = waveSynchronousLinearSequencerContext.m_pWaveElement;
+    m_pSteps                        = waveSynchronousLinearSequencerContext.m_pSteps;
+    m_numberOfSteps                 = waveSynchronousLinearSequencerContext.m_numberOfSteps;
+    m_currentStep                   = waveSynchronousLinearSequencerContext.m_currentStep;
+    m_isTransactionStartedByMe      = waveSynchronousLinearSequencerContext.m_isTransactionStartedByMe;
+    m_isADelayedCommitTransaction   = waveSynchronousLinearSequencerContext.m_isADelayedCommitTransaction;
+    m_completionStatus              = waveSynchronousLinearSequencerContext.m_completionStatus;
 
     m_clockId                       = 0;
 
@@ -186,7 +186,7 @@ WaveSynchronousLinearSequencerContext &WaveSynchronousLinearSequencerContext::op
 
     for (i = 0; i < m_numberOfSteps; i++)
     {
-        m_pSteps[i] = prismSynchronousLinearSequencerContext.m_pSteps[i];
+        m_pSteps[i] = waveSynchronousLinearSequencerContext.m_pSteps[i];
     }
 
     return (*this);

@@ -40,13 +40,13 @@ WaveMessageStatus HaPeerMessageTransportObjectManager::MessageMap::addMessage (W
 {
     lockAccess ();
 
-    UI32              prismMessageId    = pWaveMessage->getMessageId ();
-    WaveMessage       *pTempWaveMessage = findMessage (prismMessageId);
+    UI32              waveMessageId    = pWaveMessage->getMessageId ();
+    WaveMessage       *pTempWaveMessage = findMessage (waveMessageId);
     WaveMessageStatus  status          = WAVE_MESSAGE_SUCCESS;
 
     if (NULL == pTempWaveMessage)
     {
-        m_messagesMap[prismMessageId] = pWaveMessage;
+        m_messagesMap[waveMessageId] = pWaveMessage;
         status = WAVE_MESSAGE_SUCCESS;
     }
     else
@@ -59,9 +59,9 @@ WaveMessageStatus HaPeerMessageTransportObjectManager::MessageMap::addMessage (W
     return (status);
 }
 
-WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::findMessage (UI32 prismMessageId)
+WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::findMessage (UI32 waveMessageId)
 {
-    map<UI32, WaveMessage *>::iterator  element     = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator  element     = m_messagesMap.find (waveMessageId);
     map<UI32, WaveMessage *>::iterator  end         = m_messagesMap.end ();
     WaveMessage                        *pWaveMessage = NULL;
 
@@ -73,11 +73,11 @@ WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::findMessage (UI32 
     return (pWaveMessage);
 }
 
-WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
+WaveMessage *HaPeerMessageTransportObjectManager::MessageMap::removeMessage (UI32 waveMessageId)
 {
     lockAccess ();
 
-    map<UI32, WaveMessage *>::iterator element      = m_messagesMap.find (prismMessageId);
+    map<UI32, WaveMessage *>::iterator element      = m_messagesMap.find (waveMessageId);
     map<UI32, WaveMessage *>::iterator end          = m_messagesMap.end ();
     WaveMessage                        *pWaveMessage = NULL;
 
@@ -428,11 +428,11 @@ void HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads (WaveMe
     return;
 }
 
-void HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads (UI32 prismMessageId)
+void HaPeerMessageTransportObjectManager::replyToBeUsedByReceiverThreads (UI32 waveMessageId)
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (waveMessageId);
 
     if (NULL == pWaveMessage)
     {

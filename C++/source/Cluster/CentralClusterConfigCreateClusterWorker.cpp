@@ -56,8 +56,8 @@ void CentralClusterConfigCreateClusterWorker::createClusterMessageHandler (Clust
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterRequestFrameworkToCreateClusterStep),
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterCommitStep),
 //        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::createClusterStartHeartBeatsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigCreateClusterWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerCreateClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

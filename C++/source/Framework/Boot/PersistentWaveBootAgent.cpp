@@ -78,8 +78,8 @@ ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
     
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -123,8 +123,8 @@ ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::enableGlobalWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -154,8 +154,8 @@ ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -186,8 +186,8 @@ ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
     
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -220,8 +220,8 @@ ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -248,8 +248,8 @@ ResourceId PersistentWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::listenForEventsGlobalWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::bootGlobalWaveServicesStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -329,11 +329,11 @@ ResourceId PersistentWaveBootAgent::resetLocationRole (WaveSynchronousLinearSequ
 
 ResourceId PersistentWaveBootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
-    string                      prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    string                      waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     WaveFrameworkConfiguration waveFrameworkConfiguration;
     ResourceId                  status                       = WAVE_MESSAGE_ERROR;
 
-    status = waveFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
+    status = waveFrameworkConfiguration.loadConfiguration (waveConfigurationfileName);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -495,17 +495,17 @@ ResourceId PersistentWaveBootAgent::rollBackDataBase (WaveSynchronousLinearSeque
 
     // removing the cfg file to make sure if node rebooted in the middle of rollback.It should come clean.
 
-    const string    prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    const string    waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     vector<string>  output;
     SI32            cmdStatus                    = 0;
 
-    trace (TRACE_LEVEL_WARN, string ("PersistentWaveBootAgent::rollBackDataBase: deleting file ") + prismConfigurationfileName);
+    trace (TRACE_LEVEL_WARN, string ("PersistentWaveBootAgent::rollBackDataBase: deleting file ") + waveConfigurationfileName);
 
-    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + prismConfigurationfileName).c_str(), output);
+    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + waveConfigurationfileName).c_str(), output);
 
     if ( cmdStatus != 0 )
     {        
-        trace (TRACE_LEVEL_ERROR, string("PersistentWaveBootAgent::rollBackDataBase: Cmd to delete file ")+ prismConfigurationfileName + string(" failed with error message : ") + output[0]);
+        trace (TRACE_LEVEL_ERROR, string("PersistentWaveBootAgent::rollBackDataBase: Cmd to delete file ")+ waveConfigurationfileName + string(" failed with error message : ") + output[0]);
     }
 
     cleanPreparedTransactions ();

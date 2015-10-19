@@ -33,8 +33,8 @@ ResourceId SecondaryNodeUnconfigureWaveBootAgent::execute (const WaveBootPhase &
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeUnconfigureWaveBootAgent::listenForEventsWaveServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeUnconfigureWaveBootAgent::bootWaveServicesStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeUnconfigureWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeUnconfigureWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeUnconfigureWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeUnconfigureWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

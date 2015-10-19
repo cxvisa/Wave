@@ -584,7 +584,7 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     }
 }
 
-WaveObjectManager::WaveObjectManager (const WaveObjectManager &prismObjectManager)
+WaveObjectManager::WaveObjectManager (const WaveObjectManager &waveObjectManager)
     : WaveElement (this),
       m_isTransactionOn (false)
 {
@@ -670,7 +670,7 @@ string WaveObjectManager::getName () const
     return (m_name);
 }
 
-WaveObjectManager &WaveObjectManager::operator = (const WaveObjectManager &prismObjectManager)
+WaveObjectManager &WaveObjectManager::operator = (const WaveObjectManager &waveObjectManager)
 {
     trace (TRACE_LEVEL_FATAL, "WaveObjectManager::operator = : Assigning to a WaveObjectManager does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
@@ -854,9 +854,9 @@ void WaveObjectManager::addEventType (const UI32 &eventOperationCode)
     s_supportedEventsMutex.unlock ();
 }
 
-void WaveObjectManager::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
+void WaveObjectManager::listenForEvent (WaveServiceId waveServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
 {
-    WaveServiceId waveServiceId = prismServiceCode;
+    WaveServiceId waveServiceId = waveServiceCode;
 
     if (NULL == pWaveElement)
     {
@@ -1043,10 +1043,10 @@ void WaveObjectManager::unlistenEvents ()
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::unlistenEvents : Finished unlistening all the events for this service.");
 }
 
-void WaveObjectManager::addResponseMap (UI32 prismMessageId, WaveMessageResponseContext *pWaveMessageResponseContext)
+void WaveObjectManager::addResponseMap (UI32 waveMessageId, WaveMessageResponseContext *pWaveMessageResponseContext)
 {
     m_responsesMapMutex.lock ();
-    m_responsesMap[prismMessageId] = pWaveMessageResponseContext;
+    m_responsesMap[waveMessageId] = pWaveMessageResponseContext;
     m_responsesMapMutex.unlock ();
 }
 
@@ -1164,13 +1164,13 @@ WaveObjectManager *WaveObjectManager::getOwnerForManagedClass (const string &man
     return (pWaveObjectManager);
 }
 
-WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::removeResponseMap (UI32 prismMessageId)
+WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::removeResponseMap (UI32 waveMessageId)
 {
     WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
     m_responsesMapMutex.lock ();
 
-    map<UI32, WaveMessageResponseContext *>::iterator element = m_responsesMap.find (prismMessageId);
+    map<UI32, WaveMessageResponseContext *>::iterator element = m_responsesMap.find (waveMessageId);
     map<UI32, WaveMessageResponseContext *>::iterator end     = m_responsesMap.end ();
 
     if (end != element)
@@ -1311,13 +1311,13 @@ bool WaveObjectManager::isManagedClassSupported (const string &managedClass)
     }
 }
 
-WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::getResponseContext (UI32 prismMessageId)
+WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::getResponseContext (UI32 waveMessageId)
 {
     WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
     m_responsesMapMutex.lock ();
 
-    map<UI32, WaveMessageResponseContext *>::iterator element = m_responsesMap.find (prismMessageId);
+    map<UI32, WaveMessageResponseContext *>::iterator element = m_responsesMap.find (waveMessageId);
     map<UI32, WaveMessageResponseContext *>::iterator end     = m_responsesMap.end ();
 
     if (end != element)
@@ -1330,14 +1330,14 @@ WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::getResponseCon
     return (pWaveMessageResponseContext);
 }
 
-bool WaveObjectManager::isAKnownMessage (UI32 prismMessageId)
+bool WaveObjectManager::isAKnownMessage (UI32 waveMessageId)
 {
     // Please refer to the comment in the send method just above the corresponding locking
     // method.  The corresponssing lock line looks just like the line below
 
     m_sendReplyMutexForResponseMap.lock ();
 
-    if (NULL != (getResponseContext (prismMessageId)))
+    if (NULL != (getResponseContext (waveMessageId)))
     {
         m_sendReplyMutexForResponseMap.unlock ();
         return (true);
@@ -1543,13 +1543,13 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
 
     // Store the receiver LocationId.
 
-    UI32 prismMessageId = pWaveMessage->getMessageId ();
+    UI32 waveMessageId = pWaveMessage->getMessageId ();
 
     pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
-    if (NULL != (getResponseContext (prismMessageId)))
+    if (NULL != (getResponseContext (waveMessageId)))
     {
-        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : This message (with id : ") + prismMessageId + "was already registered.");
+        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : This message (with id : ") + waveMessageId + "was already registered.");
         return (WAVE_MESSAGE_ERROR_DUPLICATE_MESSAGE_SEND);
     }
 
@@ -1641,7 +1641,7 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
         }
         else
         {
-            addResponseMap (prismMessageId, pWaveMessageResponseContext);
+            addResponseMap (waveMessageId, pWaveMessageResponseContext);
         }
 
         // If user requested for a message timeout then start the timer.
@@ -1650,7 +1650,7 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
         {
             TimerHandle timerHandle;
 
-            ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds, reinterpret_cast<WaveTimerExpirationHandler> (&WaveObjectManager::sendTimerExpiredCallback), reinterpret_cast<void *> (prismMessageId));
+            ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds, reinterpret_cast<WaveTimerExpirationHandler> (&WaveObjectManager::sendTimerExpiredCallback), reinterpret_cast<void *> (waveMessageId));
 
             if (FRAMEWORK_SUCCESS != timeStatus)
             {
@@ -1671,9 +1671,9 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
 
 void WaveObjectManager::sendTimerExpiredCallback (TimerHandle timerHandle, void *pContext)
 {
-    UI32 prismMessageId = reinterpret_cast<ULI> (pContext);
+    UI32 waveMessageId = reinterpret_cast<ULI> (pContext);
 
-    handleWaveMessageResponseWhenTimeOutExpired (FRAMEWORK_TIME_OUT, prismMessageId);
+    handleWaveMessageResponseWhenTimeOutExpired (FRAMEWORK_TIME_OUT, waveMessageId);
 }
 
 WaveMessageStatus WaveObjectManager::sendOneWay (WaveMessage *pWaveMessage, const LocationId &locationId)
@@ -2242,7 +2242,7 @@ WaveMessageStatus WaveObjectManager::reply (WaveMessage *pWaveMessage)
 
 void WaveObjectManager::handleWaveMessageResponse (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled)
 {
-    UI32                         prismMessageId               = pWaveMessage->getMessageId ();
+    UI32                         waveMessageId               = pWaveMessage->getMessageId ();
     bool                         isLastReply                  = pWaveMessage->getIsLastReply ();
     WaveMessageResponseContext *pWaveMessageResponseContext = NULL;
 
@@ -2251,11 +2251,11 @@ void WaveObjectManager::handleWaveMessageResponse (FrameworkStatus frameworkStat
     //if (((FRAMEWORK_TIME_OUT != frameworkStatus) && (true == isLastReply)) || ((FRAMEWORK_TIME_OUT == frameworkStatus) && (true == isMessageRecalled)))
     if (true == isLastReply)
     {
-        pWaveMessageResponseContext = removeResponseMap (prismMessageId);
+        pWaveMessageResponseContext = removeResponseMap (waveMessageId);
     }
     else
     {
-        pWaveMessageResponseContext = getResponseContext (prismMessageId);
+        pWaveMessageResponseContext = getResponseContext (waveMessageId);
     }
 
     if (NULL != pWaveMessageResponseContext)
@@ -2305,9 +2305,9 @@ void WaveObjectManager::handleWaveMessageResponse (FrameworkStatus frameworkStat
     }
 }
 
-void WaveObjectManager::handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 prismMessageId)
+void WaveObjectManager::handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 waveMessageId)
 {
-    WaveMessageResponseContext *pWaveMessageResponseContext = getResponseContext (prismMessageId);
+    WaveMessageResponseContext *pWaveMessageResponseContext = getResponseContext (waveMessageId);
 
     if (NULL != pWaveMessageResponseContext)
     {
@@ -2463,8 +2463,8 @@ void WaveObjectManager::initializeHandler (WaveInitializeObjectManagerMessage *p
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::initializeInitializeWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::initializeInitializeSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pInitializeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2568,8 +2568,8 @@ void WaveObjectManager::listenForEventsHandler (WaveListenForEventsObjectManager
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::listenForEventsWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::listenForEventsSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pListenForEventsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2657,8 +2657,8 @@ void WaveObjectManager::installHandler (WaveInstallObjectManagerMessage *pInstal
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::installInstallWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::installInstallSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pInstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2755,8 +2755,8 @@ void WaveObjectManager::enableHandler (WaveEnableObjectManagerMessage *pEnableMe
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::enableEnableWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::enableEnableSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pEnableMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2859,8 +2859,8 @@ void WaveObjectManager::upgradeHandler (WaveUpgradeObjectManagerMessage *pUpgrad
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::upgradeDefaultValueStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::upgradeUpgradeWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::upgradeUpgradeSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContextForUpgradePhase *pWaveLinearSequencerContextForUpgradePhase = new WaveLinearSequencerContextForUpgradePhase (pUpgradeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -3179,8 +3179,8 @@ void WaveObjectManager::bootHandler (WaveBootObjectManagerMessage *pBootMessage)
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::bootBootWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::bootBootSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pBootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -3296,8 +3296,8 @@ void WaveObjectManager::hainstallHandler (WaveHaInstallObjectManagerMessage *pHa
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::hainstallInstallWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::hainstallInstallSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pHaInstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -3392,8 +3392,8 @@ void WaveObjectManager::habootHandler (WaveHaBootObjectManagerMessage *pHaBootMe
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::habootBootWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::habootBootSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pHaBootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -4424,8 +4424,8 @@ void WaveObjectManager::shutdownHandler (WaveShutdownObjectManagerMessage *pShut
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::shutdownShutdownWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::shutdownShutdownSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pShutdownMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -4512,8 +4512,8 @@ void WaveObjectManager::shutdown (WaveAsynchronousContextForShutDownPhases *pWav
             WaveLinearSequencerStep sequencerSteps[] =
             {
                 reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::notifyStep),
-                reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-                reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+                reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+                reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
             };
 
             WaveLinearSequencerContextForShutdownPhase *pWaveLinearSequencerContext = new WaveLinearSequencerContextForShutdownPhase (pWaveAsynchronousContextForShutDownPhases,  this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -4603,8 +4603,8 @@ void WaveObjectManager::uninstallHandler (WaveUninstallObjectManagerMessage *pUn
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::uninstallUninstallWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::uninstallUninstallSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pUninstallMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -4695,8 +4695,8 @@ void WaveObjectManager::disableHandler (WaveDisableObjectManagerMessage *pDisabl
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::disableUnlistenEventsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::disableDisableWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::disableDisableSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDisableMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -4834,8 +4834,8 @@ void WaveObjectManager::uninitializeHandler (WaveUninitializeObjectManagerMessag
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::uninitializeUninitializeWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::uninitializeUninitializeSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pUninitializeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -4925,8 +4925,8 @@ void WaveObjectManager::destructHandler (WaveDestructObjectManagerMessage *pDest
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::destructDestructWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::destructDestructSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDestructMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5024,8 +5024,8 @@ void WaveObjectManager::heartbeatFailureHandler (WaveHeartbeatFailureObjectManag
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::heartbeatFailureWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::heartbeatFailureSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pHeartbeatFailureMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5129,8 +5129,8 @@ void WaveObjectManager::configReplayEndHandler (WaveConfigReplayEndObjectManager
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::configReplayEndWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::configReplayEndSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pConfigReplayEndMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5235,8 +5235,8 @@ void WaveObjectManager::slotFailoverHandler (WaveSlotFailoverObjectManagerMessag
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::slotFailoverWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::slotFailoverSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pSlotFailoverMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5326,8 +5326,8 @@ void WaveObjectManager::multiPartitionCleanupHandler (WaveMultiPartitionCleanupO
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::multiPartitionCleanupWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::multiPartitionCleanupSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMultiPartitionCleanupMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5500,8 +5500,8 @@ void WaveObjectManager::fileReplayEndHandler (WaveFileReplayEndObjectManagerMess
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::fileReplayEndWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::fileReplayEndSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFileReplayEndMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5606,8 +5606,8 @@ void WaveObjectManager::externalStateSynchronizationHandler (WaveExternalStateSy
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::externalStateSynchronizationWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::externalStateSynchronizationSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pExternalStateSynchronizationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5863,11 +5863,11 @@ bool WaveObjectManager::isEventAllowedBeforeEnabling (const UI32 &eventOperation
     return (false);
 }
 
-bool WaveObjectManager::canInstantiateServiceAtThisTime (const string &prismServiceName)
+bool WaveObjectManager::canInstantiateServiceAtThisTime (const string &waveServiceName)
 {
     // This method ensures that no other service gets instantiated before the Framework Service itself gets instantiated.
 
-    if ("Wave Framework" == prismServiceName)
+    if ("Wave Framework" == waveServiceName)
     {
         return (true);
     }
@@ -6273,8 +6273,8 @@ void WaveObjectManager::clusterCreateCollectValidationDataHandler (WaveObjectMan
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::clusterCreateCollectValidationDataWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::clusterCreateCollectValidationDataSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerCollectValidationDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6327,8 +6327,8 @@ void WaveObjectManager::clusterCreateValidateHandler (WaveObjectManagerValidateC
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::clusterCreateValidateWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::clusterCreateValidateSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerValidateClusterCreationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6381,8 +6381,8 @@ void WaveObjectManager::clusterCreateSendValidationResultsHandler (WaveObjectMan
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::clusterCreateSendValidationResultsWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::clusterCreateSendValidationResultsSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerSendValidationResultsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6435,8 +6435,8 @@ void WaveObjectManager::haSyncCollectValidationDataHandler (WaveObjectManagerHaS
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::haSyncCollectValidationDataWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::haSyncCollectValidationDataSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerHaSyncCollectValidationDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6485,8 +6485,8 @@ void WaveObjectManager::haSyncValidateDataHandler (WaveObjectManagerHaSyncValida
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::haSyncValidateDataWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::haSyncValidateDataSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerHaSyncValidateDataMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6535,8 +6535,8 @@ void WaveObjectManager::haSyncSendValidationResultsHandler (WaveObjectManagerHaS
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::haSyncSendValidationResultsWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::haSyncSendValidationResultsSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerHaSyncSendValidationResultsMessage, this, sequencerSteps, sizeof
@@ -6602,8 +6602,8 @@ void WaveObjectManager::failoverHandler (WaveFailoverObjectManagerMessage *pWave
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::failoverWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::failoverSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveFailoverObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -8067,10 +8067,10 @@ ResourceId WaveObjectManager::querySynchronouslyForCount (WaveManagedObjectSynch
 
 ResourceId WaveObjectManager::querySynchronouslyForCount (const string &managedClassName, UI32 &count, const string &schema)
 {
-    WaveManagedObjectSynchronousQueryContext prismManagedObjectSynchronousQueryContext (managedClassName);
-    prismManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
 
-    return (querySynchronouslyForCount (&prismManagedObjectSynchronousQueryContext, count));
+    return (querySynchronouslyForCount (&waveManagedObjectSynchronousQueryContext, count));
 }
 
 ResourceId WaveObjectManager::querySynchronouslyForCount (const string &managedClassName, const string &fieldName, const string &range, UI32 &count, const string &schema)
@@ -8080,11 +8080,11 @@ ResourceId WaveObjectManager::querySynchronouslyForCount (const string &managedC
         return (WAVE_MESSAGE_ERROR_COUNT_QUERY_NOT_SUPPORTED_ON_NON_INTEGER_RANGE);
     }
 
-    WaveManagedObjectSynchronousQueryContext prismManagedObjectSynchronousQueryContext (managedClassName);
-    prismManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
-    prismManagedObjectSynchronousQueryContext.setAttributeRangeForQuery (new AttributeUI32Range (range, fieldName));
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    waveManagedObjectSynchronousQueryContext.setAttributeRangeForQuery (new AttributeUI32Range (range, fieldName));
 
-    return (querySynchronouslyForCount (&prismManagedObjectSynchronousQueryContext, count));
+    return (querySynchronouslyForCount (&waveManagedObjectSynchronousQueryContext, count));
 }
 
 vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext)
@@ -8201,29 +8201,29 @@ vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (const string
 {
     bool isManagedView = OrmRepository::isManagedClassAView (managedClassName);
 
-    WaveManagedObjectSynchronousQueryContext prismManagedObjectSynchronousQueryContext (managedClassName);
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
 
-    prismManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
     if (isManagedView)
     {
         bool loadRelations = false;
-        prismManagedObjectSynchronousQueryContext.setLoadCompositions (loadRelations);
-        prismManagedObjectSynchronousQueryContext.setLoadOneToManyRelationships (loadRelations);
+        waveManagedObjectSynchronousQueryContext.setLoadCompositions (loadRelations);
+        waveManagedObjectSynchronousQueryContext.setLoadOneToManyRelationships (loadRelations);
     }
     else
     {
-        prismManagedObjectSynchronousQueryContext.addOrderField ("name");
+        waveManagedObjectSynchronousQueryContext.addOrderField ("name");
     }
 
-    applyPartitionFiltersWithPropagatedPartitionContext (&prismManagedObjectSynchronousQueryContext);
+    applyPartitionFiltersWithPropagatedPartitionContext (&waveManagedObjectSynchronousQueryContext);
 
-    DatabaseObjectManagerExecuteQueryMessage databaseObjectManagerExecuteQueryMessage  (managedClassName, this, prismManagedObjectSynchronousQueryContext.getSql (), schema);
+    DatabaseObjectManagerExecuteQueryMessage databaseObjectManagerExecuteQueryMessage  (managedClassName, this, waveManagedObjectSynchronousQueryContext.getSql (), schema);
     ResourceId                               completionStatus                          = WAVE_MESSAGE_SUCCESS;
 
-    databaseObjectManagerExecuteQueryMessage.setSelectFieldsInManagedObject (prismManagedObjectSynchronousQueryContext.getSelectFieldsInManagedObject ());
-    databaseObjectManagerExecuteQueryMessage.setSelectFields                (prismManagedObjectSynchronousQueryContext.getSelectFields                ());
-    databaseObjectManagerExecuteQueryMessage.setLoadOneToManyRelationships  (prismManagedObjectSynchronousQueryContext.getLoadOneToManyRelationships  ());
-    databaseObjectManagerExecuteQueryMessage.setLoadCompositions            (prismManagedObjectSynchronousQueryContext.getLoadCompositions            ());
+    databaseObjectManagerExecuteQueryMessage.setSelectFieldsInManagedObject (waveManagedObjectSynchronousQueryContext.getSelectFieldsInManagedObject ());
+    databaseObjectManagerExecuteQueryMessage.setSelectFields                (waveManagedObjectSynchronousQueryContext.getSelectFields                ());
+    databaseObjectManagerExecuteQueryMessage.setLoadOneToManyRelationships  (waveManagedObjectSynchronousQueryContext.getLoadOneToManyRelationships  ());
+    databaseObjectManagerExecuteQueryMessage.setLoadCompositions            (waveManagedObjectSynchronousQueryContext.getLoadCompositions            ());
 
     WaveMessageStatus status = sendSynchronously (&databaseObjectManagerExecuteQueryMessage);
 
@@ -8259,20 +8259,20 @@ vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (const string
 
 vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (const string &managedClassName, vector<ObjectId> &objectIds, const string &schema)
 {
-    WaveManagedObjectSynchronousQueryContext prismManagedObjectSynchronousQueryContext (managedClassName);
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
 
-    prismManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
-    prismManagedObjectSynchronousQueryContext.addObjectIds (objectIds);
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    waveManagedObjectSynchronousQueryContext.addObjectIds (objectIds);
 
-    applyPartitionFiltersWithPropagatedPartitionContext (&prismManagedObjectSynchronousQueryContext);
+    applyPartitionFiltersWithPropagatedPartitionContext (&waveManagedObjectSynchronousQueryContext);
 
-    DatabaseObjectManagerExecuteQueryMessage  databaseObjectManagerExecuteQueryMessage (managedClassName, this, prismManagedObjectSynchronousQueryContext.getSql (), schema);
+    DatabaseObjectManagerExecuteQueryMessage  databaseObjectManagerExecuteQueryMessage (managedClassName, this, waveManagedObjectSynchronousQueryContext.getSql (), schema);
     ResourceId                                completionStatus                         = WAVE_MESSAGE_SUCCESS;
 
-    databaseObjectManagerExecuteQueryMessage.setSelectFieldsInManagedObject (prismManagedObjectSynchronousQueryContext.getSelectFieldsInManagedObject ());
-    databaseObjectManagerExecuteQueryMessage.setSelectFields                (prismManagedObjectSynchronousQueryContext.getSelectFields                ());
-    databaseObjectManagerExecuteQueryMessage.setLoadOneToManyRelationships  (prismManagedObjectSynchronousQueryContext.getLoadOneToManyRelationships  ());
-    databaseObjectManagerExecuteQueryMessage.setLoadCompositions            (prismManagedObjectSynchronousQueryContext.getLoadCompositions            ());
+    databaseObjectManagerExecuteQueryMessage.setSelectFieldsInManagedObject (waveManagedObjectSynchronousQueryContext.getSelectFieldsInManagedObject ());
+    databaseObjectManagerExecuteQueryMessage.setSelectFields                (waveManagedObjectSynchronousQueryContext.getSelectFields                ());
+    databaseObjectManagerExecuteQueryMessage.setLoadOneToManyRelationships  (waveManagedObjectSynchronousQueryContext.getLoadOneToManyRelationships  ());
+    databaseObjectManagerExecuteQueryMessage.setLoadCompositions            (waveManagedObjectSynchronousQueryContext.getLoadCompositions            ());
 
     WaveMessageStatus status = sendSynchronously (&databaseObjectManagerExecuteQueryMessage);
 
@@ -8308,20 +8308,20 @@ vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (const string
 
 vector<WaveManagedObject *> *WaveObjectManager::querySynchronouslyByName (const string &managedClassName, const string &managedObjectName, const string &schema)
 {
-    WaveManagedObjectSynchronousQueryContext prismManagedObjectSynchronousQueryContext (managedClassName);
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
 
-    prismManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
-    prismManagedObjectSynchronousQueryContext.addAndAttribute (new AttributeString (managedObjectName, "name"));
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    waveManagedObjectSynchronousQueryContext.addAndAttribute (new AttributeString (managedObjectName, "name"));
 
-    applyPartitionFiltersWithPropagatedPartitionContext (&prismManagedObjectSynchronousQueryContext);
+    applyPartitionFiltersWithPropagatedPartitionContext (&waveManagedObjectSynchronousQueryContext);
 
-    DatabaseObjectManagerExecuteQueryMessage  databaseObjectManagerExecuteQueryMessage (managedClassName, this, prismManagedObjectSynchronousQueryContext.getSql (), schema);
+    DatabaseObjectManagerExecuteQueryMessage  databaseObjectManagerExecuteQueryMessage (managedClassName, this, waveManagedObjectSynchronousQueryContext.getSql (), schema);
     ResourceId                                completionStatus                         = WAVE_MESSAGE_SUCCESS;
 
-    databaseObjectManagerExecuteQueryMessage.setSelectFieldsInManagedObject (prismManagedObjectSynchronousQueryContext.getSelectFieldsInManagedObject ());
-    databaseObjectManagerExecuteQueryMessage.setSelectFields                (prismManagedObjectSynchronousQueryContext.getSelectFields                ());
-    databaseObjectManagerExecuteQueryMessage.setLoadOneToManyRelationships  (prismManagedObjectSynchronousQueryContext.getLoadOneToManyRelationships  ());
-    databaseObjectManagerExecuteQueryMessage.setLoadCompositions            (prismManagedObjectSynchronousQueryContext.getLoadCompositions            ());
+    databaseObjectManagerExecuteQueryMessage.setSelectFieldsInManagedObject (waveManagedObjectSynchronousQueryContext.getSelectFieldsInManagedObject ());
+    databaseObjectManagerExecuteQueryMessage.setSelectFields                (waveManagedObjectSynchronousQueryContext.getSelectFields                ());
+    databaseObjectManagerExecuteQueryMessage.setLoadOneToManyRelationships  (waveManagedObjectSynchronousQueryContext.getLoadOneToManyRelationships  ());
+    databaseObjectManagerExecuteQueryMessage.setLoadCompositions            (waveManagedObjectSynchronousQueryContext.getLoadCompositions            ());
 
     WaveMessageStatus status = sendSynchronously (&databaseObjectManagerExecuteQueryMessage);
 
@@ -8562,10 +8562,10 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
     // Store the receiver LocationId.
     pManagementInterfaceMessage->m_receiverLocationId = (FrameworkToolKit::getThisLocationId ());
 
-    UI32 prismMessageId = pManagementInterfaceMessage->getMessageId ();
-    if (NULL != (getResponseContext (prismMessageId)))
+    UI32 waveMessageId = pManagementInterfaceMessage->getMessageId ();
+    if (NULL != (getResponseContext (waveMessageId)))
     {
-        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : This message (with id : ") + prismMessageId + "was already registered.");
+        trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager::send : This message (with id : ") + waveMessageId + "was already registered.");
         return (WAVE_MESSAGE_ERROR_DUPLICATE_MESSAGE_SEND);
     }
 
@@ -8597,7 +8597,7 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
     {
         pManagementInterfaceMessageResponseContext->setPInputMessageInResponseContext (m_pInputMessage);
     }
-    addResponseMap (prismMessageId, pManagementInterfaceMessageResponseContext);
+    addResponseMap (waveMessageId, pManagementInterfaceMessageResponseContext);
 
     m_sendReplyMutexForResponseMap.unlock ();
 
@@ -8632,8 +8632,8 @@ void WaveObjectManager::sendToWaveClients (WaveSendToClientsContext *pWaveSendTo
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::computeFailedInstancesForPhase1Step),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::sendPhase2MessageToAllInstancesIfApplicableStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::computeOverallInstancesStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendToClientsContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9293,8 +9293,8 @@ void WaveObjectManager::sendOneWayToWaveCluster (WaveSendToClusterContext *pWave
 
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::computeDisconnectedNodesIfSurrogateStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::sendPhase1MessageToAllNodesStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendToClusterContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9315,8 +9315,8 @@ void WaveObjectManager::sendToWaveCluster (WaveSendToClusterContext *pWaveSendTo
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::computeFailedNodesForPhase1Step),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::sendPhase2MessageToAllNodesIfApplicableStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::computeOverallStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendToClusterContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10119,8 +10119,8 @@ void WaveObjectManager::backendSyncUpHandler (WaveObjectManagerBackendSyncUpMess
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::backendSyncUpWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::backendSyncUpSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerBackendSyncUpMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10589,8 +10589,8 @@ void WaveObjectManager::databaseSanityCheckHandler (WaveObjectManagerDatabaseSan
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::checkBasicDatabaseSanitySelfStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::checkIncorrectEntriesWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::checkIncorrectEntriesSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10778,8 +10778,8 @@ void WaveObjectManager::zeroizeHandler (WaveZeroizeObjectManagerMessage *pMessag
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::zeroizeWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::zeroizeSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11008,7 +11008,7 @@ set<string>  &WaveObjectManager::getSetOfPartitionNamesReferencedInCurrentTransa
 ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (WaveMessage *pWaveMessage)
 {
     WaveThread    *pHaPeerTransportWaveThread                 = WaveThread::getWaveThreadForMessageHaPeerTransport ();
-    UI32            prismMessageId                              = pWaveMessage->getMessageId ();
+    UI32            waveMessageId                              = pWaveMessage->getMessageId ();
     string          serializedConfigurationIntentMessage        = "";
 
     if (NULL == pHaPeerTransportWaveThread)
@@ -11026,7 +11026,7 @@ ResourceId WaveObjectManager::sendOneWayForStoringConfigurationIntent (WaveMessa
     FrameworkObjectManagerStoreConfigurationIntentMessage *pStoreConfigurationIntentMessage = new FrameworkObjectManagerStoreConfigurationIntentMessage ();
     waveAssert (NULL != pStoreConfigurationIntentMessage, __FILE__, __LINE__);
 
-    pStoreConfigurationIntentMessage->setConfigurationIntentMessageId (prismMessageId);
+    pStoreConfigurationIntentMessage->setConfigurationIntentMessageId (waveMessageId);
 
     pWaveMessage->serialize2 (serializedConfigurationIntentMessage);
 
@@ -11082,8 +11082,8 @@ void WaveObjectManager::sendMulticast (WaveSendMulticastContext *pWaveSendMultic
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::performSendMulticast),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSendMulticastContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11256,7 +11256,7 @@ void WaveObjectManager::getAllOwnedManagedObjectClassNames (vector<string> &owne
 
 void WaveObjectManager::postponeMessageHandling (WaveMessage *pWaveMessage)
 {
-    //Always insert at the front so that when we get from the front and populate into the prism queue we are in the correct order.
+    //Always insert at the front so that when we get from the front and populate into the wave queue we are in the correct order.
     m_postponedMessageQueue.insertAtTheFront (pWaveMessage);
 }
 

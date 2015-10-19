@@ -59,7 +59,7 @@ class WaveManagedObjectUpdateContext : public WaveLinearSequencerContext
                 ResourceId                 getErrorInCreatingMO                         () const;
                 void                       setErrorInCreatingMO                         (const ResourceId &errorInCreatingMO);
 
-                void                       addAysnchronousContextForGarbageCollection   (WaveAsynchronousContext *prismAsynchronousContext);
+                void                       addAysnchronousContextForGarbageCollection   (WaveAsynchronousContext *waveAsynchronousContext);
 
         virtual void                       addManagedObjectForGarbageCollection         (WaveManagedObject *pWaveManagedObjectForGarbageCollection);
                
@@ -104,7 +104,7 @@ class WaveManagedObjectUpdateContext : public WaveLinearSequencerContext
         ObjectId                                m_parentObjectId;
         UI32                                    m_childUserTag;
         ResourceId                              m_errorInCreatingMO;
-        vector<WaveAsynchronousContext *>      m_prismAsynchronousContext;
+        vector<WaveAsynchronousContext *>      m_waveAsynchronousContext;
         bool                                    m_isDatabaseUpdateRequired;
         bool                                    m_isBackendUpdateRequired;    
         vector<string>                          m_parentManagedObjectNames;

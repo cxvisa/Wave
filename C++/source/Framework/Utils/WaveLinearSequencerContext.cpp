@@ -107,21 +107,21 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (WaveAsynchronousContext 
     return;
 }
 
-WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequencerContext &prismLinearSequencerContext)
+WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequencerContext &waveLinearSequencerContext)
 {
-    m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
-    m_pWaveAsynchronousContext                  = prismLinearSequencerContext.m_pWaveAsynchronousContext;
-    m_pWaveElement                              = prismLinearSequencerContext.m_pWaveElement;
-    m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
-    m_numberOfSteps                              = prismLinearSequencerContext.m_numberOfSteps;
-    m_currentStep                                = prismLinearSequencerContext.m_currentStep;
-    m_numberOfCallbacksBeforeAdvancingToNextStep = prismLinearSequencerContext.m_numberOfCallbacksBeforeAdvancingToNextStep;
-    m_isHoldAllRequested                         = prismLinearSequencerContext.m_isHoldAllRequested;
-    m_isTransactionStartedByMe                   = prismLinearSequencerContext.m_isTransactionStartedByMe;
-    m_numberOfFailures                           = prismLinearSequencerContext.m_numberOfFailures;
-    m_pQueryResults                              = prismLinearSequencerContext.m_pQueryResults;
-    m_isADelayedCommitTransaction                = prismLinearSequencerContext.m_isADelayedCommitTransaction;
-    m_completionStatus                           = prismLinearSequencerContext.m_completionStatus;
+    m_pWaveMessage                              = waveLinearSequencerContext.m_pWaveMessage;
+    m_pWaveAsynchronousContext                  = waveLinearSequencerContext.m_pWaveAsynchronousContext;
+    m_pWaveElement                              = waveLinearSequencerContext.m_pWaveElement;
+    m_pSteps                                     = waveLinearSequencerContext.m_pSteps;
+    m_numberOfSteps                              = waveLinearSequencerContext.m_numberOfSteps;
+    m_currentStep                                = waveLinearSequencerContext.m_currentStep;
+    m_numberOfCallbacksBeforeAdvancingToNextStep = waveLinearSequencerContext.m_numberOfCallbacksBeforeAdvancingToNextStep;
+    m_isHoldAllRequested                         = waveLinearSequencerContext.m_isHoldAllRequested;
+    m_isTransactionStartedByMe                   = waveLinearSequencerContext.m_isTransactionStartedByMe;
+    m_numberOfFailures                           = waveLinearSequencerContext.m_numberOfFailures;
+    m_pQueryResults                              = waveLinearSequencerContext.m_pQueryResults;
+    m_isADelayedCommitTransaction                = waveLinearSequencerContext.m_isADelayedCommitTransaction;
+    m_completionStatus                           = waveLinearSequencerContext.m_completionStatus;
 
     m_returnValue                                = -1;
     m_returnValueR                               = -1;
@@ -148,7 +148,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (const WaveLinearSequence
 
     for (i = 0; i < m_numberOfSteps; i++)
     {
-        m_pSteps[i] = prismLinearSequencerContext.m_pSteps[i];
+        m_pSteps[i] = waveLinearSequencerContext.m_pSteps[i];
     }
 
     return;
@@ -178,20 +178,20 @@ WaveLinearSequencerContext::~WaveLinearSequencerContext ()
     garbageCollect ();
 }
 
-WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLinearSequencerContext &prismLinearSequencerContext)
+WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLinearSequencerContext &waveLinearSequencerContext)
 {
-    m_pWaveMessage                              = prismLinearSequencerContext.m_pWaveMessage;
-    m_pWaveAsynchronousContext                  = prismLinearSequencerContext.m_pWaveAsynchronousContext;
-    m_pWaveElement                              = prismLinearSequencerContext.m_pWaveElement;
-    m_pSteps                                     = prismLinearSequencerContext.m_pSteps;
-    m_numberOfSteps                              = prismLinearSequencerContext.m_numberOfSteps;
-    m_currentStep                                = prismLinearSequencerContext.m_currentStep;
-    m_numberOfCallbacksBeforeAdvancingToNextStep = prismLinearSequencerContext.m_numberOfCallbacksBeforeAdvancingToNextStep;
-    m_isHoldAllRequested                         = prismLinearSequencerContext.m_isHoldAllRequested;
-    m_isTransactionStartedByMe                   = prismLinearSequencerContext.m_isTransactionStartedByMe;
-    m_numberOfFailures                           = prismLinearSequencerContext.m_numberOfFailures;
-    m_isADelayedCommitTransaction                = prismLinearSequencerContext.m_isADelayedCommitTransaction;
-    m_pQueryResults                              = prismLinearSequencerContext.m_pQueryResults;
+    m_pWaveMessage                              = waveLinearSequencerContext.m_pWaveMessage;
+    m_pWaveAsynchronousContext                  = waveLinearSequencerContext.m_pWaveAsynchronousContext;
+    m_pWaveElement                              = waveLinearSequencerContext.m_pWaveElement;
+    m_pSteps                                     = waveLinearSequencerContext.m_pSteps;
+    m_numberOfSteps                              = waveLinearSequencerContext.m_numberOfSteps;
+    m_currentStep                                = waveLinearSequencerContext.m_currentStep;
+    m_numberOfCallbacksBeforeAdvancingToNextStep = waveLinearSequencerContext.m_numberOfCallbacksBeforeAdvancingToNextStep;
+    m_isHoldAllRequested                         = waveLinearSequencerContext.m_isHoldAllRequested;
+    m_isTransactionStartedByMe                   = waveLinearSequencerContext.m_isTransactionStartedByMe;
+    m_numberOfFailures                           = waveLinearSequencerContext.m_numberOfFailures;
+    m_isADelayedCommitTransaction                = waveLinearSequencerContext.m_isADelayedCommitTransaction;
+    m_pQueryResults                              = waveLinearSequencerContext.m_pQueryResults;
 
     m_returnValue                                = -1;
     m_returnValueR                               = -1;
@@ -218,7 +218,7 @@ WaveLinearSequencerContext &WaveLinearSequencerContext::operator = (const WaveLi
 
     for (i = 0; i < m_numberOfSteps; i++)
     {
-        m_pSteps[i] = prismLinearSequencerContext.m_pSteps[i];
+        m_pSteps[i] = waveLinearSequencerContext.m_pSteps[i];
     }
 
     return (*this);

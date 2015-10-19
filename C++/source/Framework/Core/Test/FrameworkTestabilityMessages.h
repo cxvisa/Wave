@@ -263,13 +263,13 @@ class FrameworkTestabilityMessage4 : public WaveMessage
         ResourceId             m_resourceId2;
         ResourceId             m_resourceId3;
 
-        ResourceId               m_prismMessagePriority1; // WaveMessagePriority
-        ResourceId               m_prismMessagePriority2; // WaveMessagePriority
-        ResourceId               m_prismMessagePriority3; // WaveMessagePriority
+        ResourceId               m_waveMessagePriority1; // WaveMessagePriority
+        ResourceId               m_waveMessagePriority2; // WaveMessagePriority
+        ResourceId               m_waveMessagePriority3; // WaveMessagePriority
 
-        ResourceId               m_prismMessageType1; // WaveMessageType
-        ResourceId               m_prismMessageType2; // WaveMessageType
-        ResourceId               m_prismMessageType3; // WaveMessageType
+        ResourceId               m_waveMessageType1; // WaveMessageType
+        ResourceId               m_waveMessageType2; // WaveMessageType
+        ResourceId               m_waveMessageType3; // WaveMessageType
 
         WaveServiceId           m_waveServiceId1;
         WaveServiceId           m_waveServiceId2;

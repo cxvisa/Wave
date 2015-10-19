@@ -30,8 +30,8 @@ void DatabaseObjectManagerInitializeWorker::initialize (WaveAsynchronousContextF
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::initializeCreateObjectRelationalMappingStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -51,8 +51,8 @@ void DatabaseObjectManagerInitializeWorker::zeroize (WaveAsynchronousContextForS
     {
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::zeroizeDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::zeroizeDatabaseBackupFilesStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInitializeWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

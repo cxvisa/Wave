@@ -71,8 +71,8 @@ void CentralClusterConfigUpdateHardwareSynchronizationStateWorker::updateHardwar
      WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::sendUpdateWaveNodesToClusterLocalStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigUpdateHardwareSynchronizationStateWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pCentralClusterConfigUpdateHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

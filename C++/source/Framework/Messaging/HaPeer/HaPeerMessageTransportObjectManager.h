@@ -28,8 +28,8 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
                                            MessageMap                          ();
                                           ~MessageMap                          ();
                        WaveMessageStatus   addMessage                          (WaveMessage *pWaveMessage);
-                       WaveMessage       *findMessage                         (UI32 prismMessageId);
-                       WaveMessage       *removeMessage                       (UI32 prismMessageId);
+                       WaveMessage       *findMessage                         (UI32 waveMessageId);
+                       WaveMessage       *removeMessage                       (UI32 waveMessageId);
                        void                getPendingMessagesForRemoteLocation (LocationId locationId, vector<WaveMessage *> &messagesVector);
 
             // Now the data members
@@ -55,7 +55,7 @@ class HaPeerMessageTransportObjectManager : public WaveLocalObjectManager
         void                callbackForSendUsedByReceiverThreads       (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
         WaveMessage       *getPendingMessage                          (const UI32 &messageId);
         void                replyToBeUsedByReceiverThreads             (WaveMessage *pWaveMessage);
-        void                replyToBeUsedByReceiverThreads             (UI32 prismMessageId);
+        void                replyToBeUsedByReceiverThreads             (UI32 waveMessageId);
         void                getPendingMessagesForRemoteLocation        (LocationId locationId, vector<WaveMessage *> &messagesVector);
         void                replyToRemoteMessagesPendingOnLocation     (LocationId locationId, ResourceId completionStatus);
 

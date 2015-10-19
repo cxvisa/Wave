@@ -121,7 +121,7 @@ void ShellCluster::usageShellClusterQuit (void)
 /// registerClusterFunction
 /// Description
 /// Adds the command handler for a cli 
-/// to the shellcmdhandler in ShellBase(Shellprism)
+/// to the shellcmdhandler in ShellBase(Shellwave)
 /// Input
 /// clusterFunction: function ptr to the handler
 /// cliName: command string

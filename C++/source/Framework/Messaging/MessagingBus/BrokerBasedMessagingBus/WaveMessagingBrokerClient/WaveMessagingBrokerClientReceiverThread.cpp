@@ -343,8 +343,8 @@ bool WaveMessagingBrokerClientReceiverThread::authorizeClient ()
     // proper pass phrase, then we know it is a rogue client.  We must drop the client.
 
     bool            isSuccessful              = false;
-    string          prismPassPhrase           = FrameworkToolKit::getWaveConnectionPassPhraseForMessageBroker ();
-    FixedSizeBuffer passphraseFixedSizeBuffer (prismPassPhrase.size ());
+    string          wavePassPhrase           = FrameworkToolKit::getWaveConnectionPassPhraseForMessageBroker ();
+    FixedSizeBuffer passphraseFixedSizeBuffer (wavePassPhrase.size ());
 
     isSuccessful = (*m_pServerStreamingSocket) >> (passphraseFixedSizeBuffer);
 
@@ -358,7 +358,7 @@ bool WaveMessagingBrokerClientReceiverThread::authorizeClient ()
 
         passphraseFixedSizeBuffer.toString (passPhraseGivenByClient);
 
-        if (passPhraseGivenByClient != prismPassPhrase)
+        if (passPhraseGivenByClient != wavePassPhrase)
         {
             isSuccessful = false;
 

@@ -199,7 +199,7 @@ void Location::initializeClientCommunications ()
                 if (false == (pClientSocket->getIsConnected ()))
                 {
                     delete pClientSocket;
-                    prismSleep (1);
+                    waveSleep (1);
                 }
                 else
                 {
@@ -448,7 +448,7 @@ ResourceId Location::connectToRemoteLocation (LocationId locationId, UI32 number
                     {
                         delete pClientSocket;
                         unlockAccess ();
-                        prismSleep (1);
+                        waveSleep (1);
                     }
                     else
                     {
@@ -1018,7 +1018,7 @@ ResourceId Location::connectToHaPeer (const string &ipAddress, const SI32 port, 
                     {
                         delete pClientSocket;
                         unlockAccess ();
-                        prismSleep (1);
+                        waveSleep (1);
                     }
                     else
                     {

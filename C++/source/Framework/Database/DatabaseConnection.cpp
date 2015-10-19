@@ -137,7 +137,7 @@ bool DatabaseConnection::connect (const UI32 &maximumNumberOfRetries)
         cout << "Still Waiting to connect ..." << numberOfTries << "\r";
         fflush (stdout);
 
-        prismSleep (1);
+        waveSleep (1);
     }
 
     int numberOfTriesInfiniteLoop       = 0;
@@ -160,7 +160,7 @@ bool DatabaseConnection::connect (const UI32 &maximumNumberOfRetries)
                 {
                     trace (TRACE_LEVEL_INFO, "DatabaseConnection::connect: Trying to connect again since database system is starting up");
                 }
-                prismSleep (1);
+                waveSleep (1);
 
                 numberOfTriesInfiniteLoop++;
 
@@ -172,7 +172,7 @@ bool DatabaseConnection::connect (const UI32 &maximumNumberOfRetries)
                 {
                     trace (TRACE_LEVEL_INFO, "DatabaseConnection::connect: Trying to connect again since database system, previous shutdown is still in progress.");
                 }
-                prismSleep (1);
+                waveSleep (1);
 
                 numberOfTriesInfiniteLoop++;
 

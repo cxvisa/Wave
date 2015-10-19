@@ -101,8 +101,8 @@ void CentralClusterConfigGetDebugInfoWorker::getDebugInfoHandler(ClusterConfigOb
 
       reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::getPrincipalNodeInfoStep),
       reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::getSecondaryNodesInfoStep),
-      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::prismLinearSequencerSucceededStep),
-      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::prismLinearSequencerFailedStep)
+      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::waveLinearSequencerSucceededStep),
+      reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigGetDebugInfoWorker::waveLinearSequencerFailedStep)
   };
 
   //Note that this is freed in SequencerSucceeded step inside the framework code

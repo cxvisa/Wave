@@ -44,8 +44,8 @@ ResourceId WaveZeroizeAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::shutdownServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::executeZeroizeStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::completeFIPSZeroizeStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveZeroizeAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveZeroizeAgentContext *pWaveZeroizeAgentContext = new WaveZeroizeAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

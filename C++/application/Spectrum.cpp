@@ -13,7 +13,7 @@
 using namespace std;
 using namespace WaveNs;
 
-extern "C" int prismMain (int argc, char *argv[]);
+extern "C" int waveMain (int argc, char *argv[]);
 
 int g_commandLineArgumentLength = 1024;
 
@@ -241,5 +241,5 @@ int main (int argc, char *argv[])
 
     Wave::enableAllFeatures ();
 
-    return (prismMain (numberOfCommandLineArguments, pCommandLineArguments));
+    return (waveMain (numberOfCommandLineArguments, pCommandLineArguments));
 }

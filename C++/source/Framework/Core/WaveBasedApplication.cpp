@@ -18,7 +18,7 @@ namespace WaveNs
 {
 }
 
-extern "C" int prismMain (int argc, char *argv[])
+extern "C" int waveMain (int argc, char *argv[])
 {
     bool                   isADaemon                                    = true;
     FrameworkSequenceType  type                                         = FRAMEWORK_SEQUENCE_TYPE0;

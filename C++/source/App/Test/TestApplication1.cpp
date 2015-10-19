@@ -23,7 +23,7 @@ extern "C" int testMain1 (int argc, char *argv[], int id)
 
     while (true)
     {
-        prismSleep (5);
+        waveSleep (5);
     }
 
     return 0;

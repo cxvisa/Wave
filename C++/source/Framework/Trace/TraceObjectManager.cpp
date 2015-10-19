@@ -248,7 +248,7 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
 
     if (requestedTraceLevel >= currentTraceLevel)
     {
-        prismSetConsoleTextColor (requestedTraceLevel);
+        waveSetConsoleTextColor (requestedTraceLevel);
 
         if (false == suppressPrefix)
         {
@@ -318,10 +318,10 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
 
         if (true == (getIsSysLogRequired ()))
         {
-            prismSysLog (pTempString);
+            waveSysLog (pTempString);
         }
 
-        prismResetConsoleTextColor ();
+        waveResetConsoleTextColor ();
 
         if (true == addNewLine)
         {
@@ -392,7 +392,7 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
 
     if (requestedTraceLevel >= currentTraceLevel)
     {
-        prismSetConsoleTextColor (requestedTraceLevel);
+        waveSetConsoleTextColor (requestedTraceLevel);
 
         if (false == suppressPrefix)
         {
@@ -451,10 +451,10 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
 
         if (true == (getIsSysLogRequired ()))
         {
-            prismSysLog (pTempString);
+            waveSysLog (pTempString);
         }
 
-        prismResetConsoleTextColor ();
+        waveResetConsoleTextColor ();
 
         if (true == addNewLine)
         {
@@ -526,7 +526,7 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
 
     if (requestedTraceLevel >= currentTraceLevel)
     {
-        prismSetConsoleTextColor (requestedTraceLevel);
+        waveSetConsoleTextColor (requestedTraceLevel);
 
         traceStr = getTraceTagForLevel (requestedTraceLevel);
 
@@ -573,10 +573,10 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
 
         if (true == (getIsSysLogRequired ()))
         {
-            prismSysLog (pTempString);
+            waveSysLog (pTempString);
         }
 
-        prismResetConsoleTextColor ();
+        waveResetConsoleTextColor ();
 
         cout << endl;
         cout << "\r";
@@ -636,7 +636,7 @@ void TraceObjectManager::traceMessageHandler (TraceMessage *pTraceMessage)
 
     if (requestedTraceLevel >= currentTraceLevel)
     {
-        prismSetConsoleTextColor (requestedTraceLevel);
+        waveSetConsoleTextColor (requestedTraceLevel);
         traceStr = getTraceTagForLevel (requestedTraceLevel);
 
         cout << traceStr;
@@ -675,12 +675,12 @@ void TraceObjectManager::traceMessageHandler (TraceMessage *pTraceMessage)
 
         if (true == (getIsSysLogRequired ()))
         {
-            prismSysLog (pTempString2);
+            waveSysLog (pTempString2);
         }
 
         delete[] pTempString2;
 
-        prismResetConsoleTextColor ();
+        waveResetConsoleTextColor ();
 
         if (true == addNewLine)
         {

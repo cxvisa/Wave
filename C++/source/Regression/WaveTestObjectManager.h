@@ -24,7 +24,7 @@ class WaveTestObjectManager : public WaveLocalObjectManager
         virtual WaveMessage *createMessageInstance (const UI32 &operationCode);
 
     protected :
-                     WaveTestObjectManager              (const string &prismTestObjectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
+                     WaveTestObjectManager              (const string &waveTestObjectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
         virtual void testRequestHandler                  (RegressionTestMessage *pMessage) = 0;
                 void prepareForRegressionRequestHandler  (RegressionPrepareMessage *pMessage);
                 void prepareForRegressionRequestHandler2 (RegressionPrepareMessage2 *pMessage);

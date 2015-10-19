@@ -33,7 +33,7 @@ StreamingSocketBase::~StreamingSocketBase ()
 {
     if (true == (isValid ()))
     {
-        prismCloseSocket (m_socket);
+        waveCloseSocket (m_socket);
     }
 }
 

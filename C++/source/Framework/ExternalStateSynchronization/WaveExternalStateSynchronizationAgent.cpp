@@ -33,8 +33,8 @@ ResourceId WaveExternalStateSynchronizationAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveExternalStateSynchronizationAgent::getListOfEnabledServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveExternalStateSynchronizationAgent::externalStateSynchronizationServicesStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveExternalStateSynchronizationAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveExternalStateSynchronizationAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveExternalStateSynchronizationAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveExternalStateSynchronizationAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveExternalStateSynchronizationAgentContext *pWaveExternalStateSynchronizationAgentContext = new WaveExternalStateSynchronizationAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -68,9 +68,9 @@ ResourceId WaveExternalStateSynchronizationAgent::externalStateSynchronizationSe
             continue;
         }
 
-        WaveExternalStateSynchronizationObjectManagerMessage prismExternalStateSynchronizationObjectManagerMessage (serviceIdsToExternalStateSynchronization[i], m_fssStageNumber, m_serviceType);
+        WaveExternalStateSynchronizationObjectManagerMessage waveExternalStateSynchronizationObjectManagerMessage (serviceIdsToExternalStateSynchronization[i], m_fssStageNumber, m_serviceType);
 
-        ResourceId status = sendSynchronously (&prismExternalStateSynchronizationObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveExternalStateSynchronizationObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {

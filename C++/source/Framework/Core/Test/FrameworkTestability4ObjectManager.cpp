@@ -48,33 +48,33 @@ namespace WaveNs
 FrameworkTestability4ObjectManager::FrameworkTestability4ObjectManager ()
     : WaveLocalObjectManager (getWaveServiceName ())
 {
-    WaveTestManagedObject1 prismTestManagedObject1 (this);
-    WaveTestManagedObject2 prismTestManagedObject2 (this);
-    WaveTestManagedObject3 prismTestManagedObject3 (this);
-    WaveTestManagedObject4 prismTestManagedObject4 (this);
-    WaveTestManagedObject5 prismTestManagedObject5 (this);
+    WaveTestManagedObject1 waveTestManagedObject1 (this);
+    WaveTestManagedObject2 waveTestManagedObject2 (this);
+    WaveTestManagedObject3 waveTestManagedObject3 (this);
+    WaveTestManagedObject4 waveTestManagedObject4 (this);
+    WaveTestManagedObject5 waveTestManagedObject5 (this);
     WaveTestManagedObject6  waveTestManagedObject6  (this);
     WaveTestManagedObject7  waveTestManagedObject7  (this);
     WaveTestManagedObject8  waveTestManagedObject8  (this);
     WaveTestManagedObject10 waveTestManagedObject10 (this);
     WaveTestManagedObject11 waveTestManagedObject11 (this);
     WaveTestManagedObject12 waveTestManagedObject12 (this);
-    WaveTestManagedView1   prismTestManagedView1   (this);
-    WaveTestManagedView2   prismTestManagedView2   (this);
+    WaveTestManagedView1   waveTestManagedView1   (this);
+    WaveTestManagedView2   waveTestManagedView2   (this);
 
-    prismTestManagedObject1.setupOrm ();
-    prismTestManagedObject2.setupOrm ();
-    prismTestManagedObject3.setupOrm ();
-    prismTestManagedObject4.setupOrm ();
-    prismTestManagedObject5.setupOrm ();
+    waveTestManagedObject1.setupOrm ();
+    waveTestManagedObject2.setupOrm ();
+    waveTestManagedObject3.setupOrm ();
+    waveTestManagedObject4.setupOrm ();
+    waveTestManagedObject5.setupOrm ();
     waveTestManagedObject6.setupOrm ();
     waveTestManagedObject7.setupOrm ();
     waveTestManagedObject8.setupOrm ();
     waveTestManagedObject10.setupOrm ();
     waveTestManagedObject11.setupOrm ();
     waveTestManagedObject12.setupOrm ();
-    prismTestManagedView1.setupOrm   ();
-    prismTestManagedView2.setupOrm   ();
+    waveTestManagedView1.setupOrm   ();
+    waveTestManagedView2.setupOrm   ();
 
     addManagedClass (WaveTestManagedObject1::getClassName ());
     addManagedClass (WaveTestManagedObject2::getClassName ());
@@ -642,8 +642,8 @@ void FrameworkTestability4ObjectManager::frameworkTestabilityMessage8RequestHand
         // Test tear-down - cleanup the created WaveTestManagedObject7 objects.
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::deleteAllCreatedObjects7TestStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::waveLinearSequencerFailedStep)
     };
 
     FrameworkPersistenceTestContext *pFrameworkPersistenceTestContext = new FrameworkPersistenceTestContext (pFrameworkTestabilityMessage8, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -659,8 +659,8 @@ void FrameworkTestability4ObjectManager::frameworkTestabilityMessage8RequestHand
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::simpleSynchronousPageQueryTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::deleteAllCreatedObjectsTestStep),
  
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability4ObjectManager::waveLinearSequencerFailedStep)
     };
     FrameworkPersistenceTestContext *pFrameworkPersistenceTestContext = new FrameworkPersistenceTestContext (pFrameworkTestabilityMessage8, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
          pFrameworkPersistenceTestContext->start ();

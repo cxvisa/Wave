@@ -28,7 +28,7 @@ class MessageTracker
         static bool isAKnownMessageWithBt (const WaveMessage *pWaveMessage);
         static void clearCurrentlyAllocatedMessagesWithBt ();
 
-        static void getMessagesForAThread    (const WaveThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings); // no-lock
+        static void getMessagesForAThread    (const WaveThreadId &waveThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings); // no-lock
 
     protected :
     public :

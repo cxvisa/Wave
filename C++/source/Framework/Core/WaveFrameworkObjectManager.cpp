@@ -141,8 +141,8 @@ static WaveMutex                           s_bootSynchronizationMutex;
 static WaveMutex                           s_dbRestoreMutex;
 static WaveMutex                           s_dbConversionStatusMutex;
 
-static map<WaveThreadId, WaveThreadId>    s_prismThreadIdRepository;
-static WaveMutex                           s_prismThredIdRepositoryMutex;
+static map<WaveThreadId, WaveThreadId>    s_waveThreadIdRepository;
+static WaveMutex                           s_waveThredIdRepositoryMutex;
 
 static const UI32                           s_clusterPhase0TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
 static const UI32                           s_clusterPhase1TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
@@ -836,7 +836,7 @@ void WaveFrameworkObjectManager::initializeServerCommunications ()
                 {
                     trace (TRACE_LEVEL_WARN, "Still Waiting for TCP/IP Layer to allow us to bind on Server Socket ...");
 
-                    prismSleep (1);
+                    waveSleep (1);
                 }
             }
             else
@@ -969,53 +969,53 @@ bool WaveFrameworkObjectManager::getIsFrameworkReadyToBoot ()
     return (isFrameworkReadyToBoot);
 }
 
-void WaveFrameworkObjectManager::addWaveThreadId (const WaveThreadId &prismThreadId)
+void WaveFrameworkObjectManager::addWaveThreadId (const WaveThreadId &waveThreadId)
 {
-    s_prismThredIdRepositoryMutex.lock ();
+    s_waveThredIdRepositoryMutex.lock ();
 
-    s_prismThreadIdRepository [prismThreadId] = prismThreadId;
+    s_waveThreadIdRepository [waveThreadId] = waveThreadId;
 
-    s_prismThredIdRepositoryMutex.unlock ();
+    s_waveThredIdRepositoryMutex.unlock ();
 }
 
-void WaveFrameworkObjectManager::removeWaveThreadId (const WaveThreadId &prismThreadId)
+void WaveFrameworkObjectManager::removeWaveThreadId (const WaveThreadId &waveThreadId)
 {
-    s_prismThredIdRepositoryMutex.lock ();
+    s_waveThredIdRepositoryMutex.lock ();
 
-    map<WaveThreadId, WaveThreadId>::iterator  element = s_prismThreadIdRepository.find (prismThreadId);
-    map<WaveThreadId, WaveThreadId>::iterator  end     = s_prismThreadIdRepository.end (); 
+    map<WaveThreadId, WaveThreadId>::iterator  element = s_waveThreadIdRepository.find (waveThreadId);
+    map<WaveThreadId, WaveThreadId>::iterator  end     = s_waveThreadIdRepository.end (); 
 
     if (end != element)
     {   
-        s_prismThreadIdRepository.erase (element);
+        s_waveThreadIdRepository.erase (element);
     }
     else
     {
         WaveNs::trace (TRACE_LEVEL_WARN, string ("WaveFrameworkObjectManager::removeWaveThreadId This thread Id does not exist"));
     } 
 
-    s_prismThredIdRepositoryMutex.unlock ();    
+    s_waveThredIdRepositoryMutex.unlock ();    
 }
 
-void WaveFrameworkObjectManager::getAllWaveThreads (map<WaveThreadId, WaveThreadId> &prismThreadsMap)
+void WaveFrameworkObjectManager::getAllWaveThreads (map<WaveThreadId, WaveThreadId> &waveThreadsMap)
 {
-    s_prismThredIdRepositoryMutex.lock ();
+    s_waveThredIdRepositoryMutex.lock ();
 
-    prismThreadsMap = s_prismThreadIdRepository;
+    waveThreadsMap = s_waveThreadIdRepository;
 
-    s_prismThredIdRepositoryMutex.unlock ();
+    s_waveThredIdRepositoryMutex.unlock ();
 }
         
 void WaveFrameworkObjectManager::deleteAllWaveThreads ()
 {
     map<WaveThreadId, WaveThreadId>::iterator  threadIterator;
     UI32 retVal = 0;
-    s_prismThredIdRepositoryMutex.lock ();
+    s_waveThredIdRepositoryMutex.lock ();
 
     // This code has been added so that we test the existence of the thread id that is pthread_cancel'ed before proceeding to kill other pthreads
     // Also, at the end of the function we do not unlock the mutex so that no other deleteAllWaveThreads call is made to kill the same set of threads again
 
-    for (threadIterator = s_prismThreadIdRepository.begin (); threadIterator != s_prismThreadIdRepository.end (); threadIterator++)
+    for (threadIterator = s_waveThreadIdRepository.begin (); threadIterator != s_waveThreadIdRepository.end (); threadIterator++)
     {   
         retVal = pthread_cancel (threadIterator->first);
         
@@ -1029,12 +1029,12 @@ void WaveFrameworkObjectManager::deleteAllWaveThreads ()
             }
             else
             {
-                prismUSleep (100000);
+                waveUSleep (100000);
             }
         }
     }   
 
-    //s_prismThredIdRepositoryMutex.unlock ();
+    //s_waveThredIdRepositoryMutex.unlock ();
 }
 
 ResourceId WaveFrameworkObjectManager::createBufferForFileToSync ( const string &filenameToSync, char* &pfileBuffer, UI32 &sizeOfFileBuffer )
@@ -1564,7 +1564,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     string                              ipAddress                           = "";
     SI32                                port                                = 0;
     UI32                                numberOfFailures                    = 0;
-    string                              prismVersionString                  = WaveVersion::getVersionString ();
+    string                              waveVersionString                  = WaveVersion::getVersionString ();
 
 
 
@@ -1584,7 +1584,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
 
         if (true == (FrameworkToolKit::isAKnownLocation (ipAddress, port)))
         {
-            WaveConfigureClusterSecondaryMessage *pMessage = new WaveConfigureClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
+            WaveConfigureClusterSecondaryMessage *pMessage = new WaveConfigureClusterSecondaryMessage (waveVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
 
             // Add all the validation buffers to the message before sending out
 
@@ -3412,7 +3412,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeMessageHandler (WaveConfi
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -3444,8 +3444,8 @@ void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerMessageHandler (Wav
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveConfigureClusterSecondaryHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -3470,7 +3470,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase1MessageHandler (Wav
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -3491,8 +3491,8 @@ void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase1MessageHandle
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveConfigureClusterSecondaryHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -3587,8 +3587,8 @@ void WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeC
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocationStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
         };
 
         WaveAsynchronousContext *pWaveAsynchronousContext = new WaveAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::prepareSecondaryNodeForAddNodeIfRequiredCallback), pSecondaryNodeClusterContext);
@@ -4712,7 +4712,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeSetLocationRoleOnStandbyStep
 
 void WaveFrameworkObjectManager::primaryNodeClusterSuccessStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    WaveFrameworkObjectManager::prismLinearSequencerSucceededStep (pWaveLinearSequencerContext);
+    WaveFrameworkObjectManager::waveLinearSequencerSucceededStep (pWaveLinearSequencerContext);
 
     setPrimaryNodeClusterOperationFlag (false);
     resumePostponedMessages ();
@@ -4720,7 +4720,7 @@ void WaveFrameworkObjectManager::primaryNodeClusterSuccessStep (WaveLinearSequen
 
 void WaveFrameworkObjectManager::primaryNodeClusterFailureStep (WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
-    WaveFrameworkObjectManager::prismLinearSequencerFailedStep (pWaveLinearSequencerContext);
+    WaveFrameworkObjectManager::waveLinearSequencerFailedStep (pWaveLinearSequencerContext);
 
     setPrimaryNodeClusterOperationFlag (false);
     resumePostponedMessages ();
@@ -4765,7 +4765,7 @@ void WaveFrameworkObjectManager::secondaryNodeClusterFailureStep (SecondaryNodeC
 
     pMessage->setDisconnectFromLocationAfterReply (true);
 
-    WaveFrameworkObjectManager::prismLinearSequencerFailedStep (pSecondaryNodeClusterContext);
+    WaveFrameworkObjectManager::waveLinearSequencerFailedStep (pSecondaryNodeClusterContext);
 
     setSecondaryNodeClusterCreationFlag (false);
     if (true == getNeedNotifyClusterReadyState())
@@ -4885,7 +4885,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2MessageHandler (Wav
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
 //        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -5150,8 +5150,8 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3MessageHandler (Wav
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveConfigureClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5170,8 +5170,8 @@ void WaveFrameworkObjectManager::configureSecondaryNodeHaPeerPhase3MessageHandle
     {
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveConfigureClusterSecondaryHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5303,8 +5303,8 @@ void WaveFrameworkObjectManager::updateListOfSecondariesMessageHandler (Framewor
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),  
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     UpdateListOfSecondariesContext *pUpdateListOfSecondariesContext = new UpdateListOfSecondariesContext (pFrameworkObjectManagerUpdateListOfSecondariesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -5850,7 +5850,7 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep
     string                            ipAddress                         = "";
     SI32                              port                              = 0;
     UI32                              numberOfFailures                  = 0;
-    string                            prismVersionString                = WaveVersion::getVersionString ();
+    string                            waveVersionString                = WaveVersion::getVersionString ();
 
     waveAssert (NULL != pFrameworkObjectManagerAddNodesToClusterMessage, __FILE__, __LINE__);
 
@@ -5868,7 +5868,7 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsStep
 
         if (true == (FrameworkToolKit::isAKnownLocation (ipAddress, port)))
         {
-            WaveConfigureClusterSecondaryMessage *pMessage = new WaveConfigureClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
+            WaveConfigureClusterSecondaryMessage *pMessage = new WaveConfigureClusterSecondaryMessage (waveVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, newLocationId);
 
             // Add all the validation buffers to the message before sending out
 
@@ -6054,8 +6054,8 @@ void WaveFrameworkObjectManager::deleteNodesFromClusterMessageHandler (Framework
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),        
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     DeleteNodesFromClusterContext *pDeleteNodesFromClusterContext = new DeleteNodesFromClusterContext (pFrameworkObjectManagerDeleteNodesFromClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6305,8 +6305,8 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryMessageHandler (Fram
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterBroadcastLocalNodeDeletedEventStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     DeleteNodeOnSecondaryContext *pDeleteNodeOnSecondaryContext = new DeleteNodeOnSecondaryContext (pFrameworkObjectManagerUnconfigureClusterSecondaryMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -6664,8 +6664,8 @@ void WaveFrameworkObjectManager::destroyClusterAsynchronousHandler (DestroyClust
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterRunFailoverStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::destroyClusterBroadcastDeleteClusterEventStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     DestroyClusterContext *pDestroyClusterContext = new DestroyClusterContext (pDestroyClusterAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -7023,7 +7023,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkOb
     };
 
     //This memory is freed within the Framework as part of prsimLinearSequencerSucceeded or
-    //prismLinearSequencerFailedStep
+    //waveLinearSequencerFailedStep
     RejoinNodesToClusterContext *pRejoinNodesToClusterContext = new RejoinNodesToClusterContext (pFrameworkObjectManagerRejoinNodesToClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
     // Set an indication that cluster operation is in progress on primary node
     setPrimaryNodeClusterOperationFlag (true);
@@ -7208,7 +7208,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
     waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
     WaveMessageStatus status  = WAVE_MESSAGE_ERROR;  
-    string prismVersionString = WaveVersion::getVersionString ();
+    string waveVersionString = WaveVersion::getVersionString ();
 
     ++(*pRejoinNodesToClusterContext);
 
@@ -7240,7 +7240,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
 
         if (true == (FrameworkToolKit::isAKnownLocation (ipAddress, port)) && (false == pFrameworkObjectManagerRejoinNodesToClusterMessage->isNewNodeStatusSet (ipAddress, port)))
         {
-            FrameworkObjectManagerRejoinClusterSecondaryMessage *pMessage = new FrameworkObjectManagerRejoinClusterSecondaryMessage (prismVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, locationId);
+            FrameworkObjectManagerRejoinClusterSecondaryMessage *pMessage = new FrameworkObjectManagerRejoinClusterSecondaryMessage (waveVersionString, thisLocationIpAddress, thisLocationPort, thisLocationId, ipAddress, port, locationId);
 
             pMessage->setSchemaChangeVectors ();
 
@@ -8092,7 +8092,7 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryMessageHandler (Framework
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -8123,8 +8123,8 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageHandler (Fra
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeCleanPreparedTransactionsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeEmptyDatabaseStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -8150,7 +8150,7 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase1MessageHandler (Wav
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -8171,8 +8171,8 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase1MessageHandle
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pWaveRejoinClusterSecondaryHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -8803,7 +8803,7 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase2MessageHandler (Wav
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -8907,8 +8907,8 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler (Wav
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
         };
 
         pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveRejoinClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -8932,8 +8932,8 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryPhase3MessageHandler (Wav
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
         };
 
         pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveRejoinClusterSecondaryPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -8953,8 +8953,8 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerPhase3MessageHandle
     {
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pWaveRejoinClusterSecondaryHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9224,8 +9224,8 @@ void WaveFrameworkObjectManager::detachFromClusterAsynchronousHandler (DetachFro
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterDisconnectFromKnownLocationsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterUnconfigureThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::detachFromClusterRunFailoverStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     DetachFromClusterContext *pDetachFromClusterContext = new DetachFromClusterContext (pDetachFromClusterAsynchronousContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9324,8 +9324,8 @@ void WaveFrameworkObjectManager::lostHeartBeatMessageHandler (FrameworkObjectMan
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::lostHeartBeatStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     HeartBeatLostContext *pHeartBeatLostContext      = new HeartBeatLostContext (pFrameworkObjectManagerLostHeartBeatMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9617,7 +9617,7 @@ void WaveFrameworkObjectManager::primaryChangedMessageHandler (FrameworkObjectMa
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -9648,8 +9648,8 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerMessageHandler (FrameworkOb
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedEmptyDatabaseStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerPrimaryChangedHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -9676,7 +9676,7 @@ void WaveFrameworkObjectManager::primaryChangedPhase1MessageHandler (FrameworkOb
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodeUpdateInstanceIdsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -9705,8 +9705,8 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPhase1MessageHandler (Frame
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryChangedLoadDatabaseFromPrimaryDatabaseStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterContext = new SecondaryNodeClusterContext (pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10034,17 +10034,17 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
         }
     }
 
-    const string    prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName (); 
+    const string    waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName (); 
     vector<string>  output;
     SI32            cmdStatus                    = 0;
 
-    trace (TRACE_LEVEL_WARN, string ("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: deleting file ") + prismConfigurationfileName);
+    trace (TRACE_LEVEL_WARN, string ("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: deleting file ") + waveConfigurationfileName);
 
-    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + prismConfigurationfileName).c_str(), output);
+    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + waveConfigurationfileName).c_str(), output);
 
     if ( cmdStatus != 0 ) 
     {            
-        trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Cmd to delete file ")+ prismConfigurationfileName + string(" failed with error message : ") + output[0]);
+        trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Cmd to delete file ")+ waveConfigurationfileName + string(" failed with error message : ") + output[0]);
     }
 
     DatabaseObjectManagerEmptyMessage databaseEmptyMessage;
@@ -10342,7 +10342,7 @@ void WaveFrameworkObjectManager::primaryChangedPhase2MessageHandler (FrameworkOb
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinSecondaryNodePhase2BootServicesPostPhaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::secondaryNodeClusterFailureStep),
     };
 
@@ -10372,8 +10372,8 @@ void WaveFrameworkObjectManager::primaryChangedPhase3MessageHandler (FrameworkOb
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::checkHaPeerSyncPostPhaseStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pFrameworkObjectManagerPrimaryChangedPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10392,8 +10392,8 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPhase3MessageHandler (Frame
     {
         //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prepareStandbyAfterClusterPhaseSync),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     pSecondaryNodeClusterPhase3Context = new SecondaryNodeClusterPhase3Context (pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -10864,8 +10864,8 @@ void WaveFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler(
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::processSecondeyNodeFailureMessage),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerSecondaryNodeFailureNotificationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11039,8 +11039,8 @@ void WaveFrameworkObjectManager::disconnectFromAllNodesHandler (FrameworkObjectM
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectAllKnownLocationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllNodesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11054,8 +11054,8 @@ void WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler (Fr
     WaveLinearSequencerStep sequencerSteps [] = 
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep)
     };
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
@@ -11127,8 +11127,8 @@ void WaveFrameworkObjectManager::resetNodeForClusterMergeHandler (FrameworkObjec
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectFromAllNodes),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureNodeForResetAndStartServices),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerResetNodeToUnconfirmRole, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11447,8 +11447,8 @@ void WaveFrameworkObjectManager::disconnectFromAllInstanceClientsHandler (Framew
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::disconnectAllInstanceClientsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerDisconnectFromAllInstanceClientsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11481,7 +11481,7 @@ void WaveFrameworkObjectManager::zeroizeForFIPSMessageHandler(ZeroizeForFIPSMess
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::notifyAllClientSessionsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::triggerFIPSZeroizeStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::zeroizeSuccessStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
     
     ZeroizeForFIPSLinearSequencerContext *pContext = new ZeroizeForFIPSLinearSequencerContext (pMessage, (WaveElement*)this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -11612,7 +11612,7 @@ void WaveFrameworkObjectManager::zeroizeSuccessStep (ZeroizeForFIPSLinearSequenc
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::zeroizeSuccessStep.");
 
-    WaveFrameworkObjectManager::prismLinearSequencerSucceededStep (pZeroizeForFIPSLinearSequencerContext);
+    WaveFrameworkObjectManager::waveLinearSequencerSucceededStep (pZeroizeForFIPSLinearSequencerContext);
 
     UI32 numberOfIterations = 0;
 
@@ -11626,7 +11626,7 @@ void WaveFrameworkObjectManager::zeroizeSuccessStep (ZeroizeForFIPSLinearSequenc
         if (numberOfIterations < 900)
         {
             ++numberOfIterations;
-            prismSleep (1);
+            waveSleep (1);
         }
         else
         {

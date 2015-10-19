@@ -59,8 +59,8 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeMessageHandler (ClusterObje
         {
             reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep),
             reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::waveLinearSequencerFailedStep)
         };
 
         pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerForDisconnectedSteps, sizeof (sequencerForDisconnectedSteps) / sizeof (sequencerForDisconnectedSteps[0]));
@@ -72,8 +72,8 @@ void CentralClusterConfigDeleteNodeWorker::deleteNodeMessageHandler (ClusterObje
             reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeValidateStep),
             reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeStopHeartBeatsStep),
             reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::deleteNodeRequestFrameworkToDeleteNodeStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteNodeWorker::waveLinearSequencerFailedStep)
         };
 
         pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerDeleteNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

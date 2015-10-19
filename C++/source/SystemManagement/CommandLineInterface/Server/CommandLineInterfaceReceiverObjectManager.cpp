@@ -111,11 +111,11 @@ void CommandLineInterfaceReceiverObjectManager::bootCompleteForThisLocationEvent
     m_pCommandLineInterfaceReceiverThread->run ();
 }
 
-WaveMessageStatus CommandLineInterfaceReceiverObjectManager::send (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, UI32 timeOutInMilliSeconds, LocationId locationId)
+WaveMessageStatus CommandLineInterfaceReceiverObjectManager::send (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, UI32 timeOutInMilliSeconds, LocationId locationId)
 {
     if (NULL != pCommandLineInterfaceReceiverWorkerThread)
     {
-        addToCommandLineInterfaceReceiverMapsByMessage (pWaveMessage, pCommandLineInterfaceReceiverWorkerThread, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
+        addToCommandLineInterfaceReceiverMapsByMessage (pWaveMessage, pCommandLineInterfaceReceiverWorkerThread, waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
 
         return (WaveObjectManager::send (pWaveMessage, reinterpret_cast<WaveMessageResponseHandler> (&CommandLineInterfaceReceiverObjectManager::sendCallback), pWaveMessageContext, timeOutInMilliSeconds, locationId, this));
     }
@@ -132,18 +132,18 @@ void CommandLineInterfaceReceiverObjectManager::sendCallback (FrameworkStatus fr
     waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     CommandLineInterfaceReceiverWorkerThread                               *pCommandLineInterfaceReceiverWorkerThread                              = NULL;
-    WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
+    WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
     void                                                                   *pWaveMessageContext                                                   = NULL;
 
-    getCommandLineInterfaceReceiverDetailsForMessage (pWaveMessage, pCommandLineInterfaceReceiverWorkerThread, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
+    getCommandLineInterfaceReceiverDetailsForMessage (pWaveMessage, pCommandLineInterfaceReceiverWorkerThread, waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
 
     waveAssert (NULL != pCommandLineInterfaceReceiverWorkerThread,                              __FILE__, __LINE__);
-    waveAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
+    waveAssert (NULL != waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
     waveAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
 
     removeFromCommandLineInterfaceReceiverMapsByMessage (pWaveMessage);
 
-    CommandLineInterfaceWorkerSendContext *pCommandLineInterfaceWorkerSendContext = new CommandLineInterfaceWorkerSendContext (frameworkStatus, pWaveMessage, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
+    CommandLineInterfaceWorkerSendContext *pCommandLineInterfaceWorkerSendContext = new CommandLineInterfaceWorkerSendContext (frameworkStatus, pWaveMessage, waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext);
 
     waveAssert (NULL != pCommandLineInterfaceWorkerSendContext, __FILE__, __LINE__);
 
@@ -173,7 +173,7 @@ bool CommandLineInterfaceReceiverObjectManager::isAMessageSentByThisObjectManage
     return (isKnown);
 }
 
-void CommandLineInterfaceReceiverObjectManager::addToCommandLineInterfaceReceiverMapsByMessage (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext)
+void CommandLineInterfaceReceiverObjectManager::addToCommandLineInterfaceReceiverMapsByMessage (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext)
 {
     waveAssert (NULL != pWaveMessage,                             __FILE__, __LINE__);
     waveAssert (NULL != pCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
@@ -189,19 +189,19 @@ void CommandLineInterfaceReceiverObjectManager::addToCommandLineInterfaceReceive
         UI32 messageId = pWaveMessage->getMessageId ();
 
         m_commandLineInterfaceReceiverWorkerThreadMapByMessageId[messageId] = pCommandLineInterfaceReceiverWorkerThread;
-        m_commandLineInterfaceReceiverCallbackMapByMessageId[messageId]     = prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
+        m_commandLineInterfaceReceiverCallbackMapByMessageId[messageId]     = waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
         m_commandLineInterfaceReceiverContextMapByMessageId[messageId]      = pWaveMessageContext;
     }
 }
 
-void CommandLineInterfaceReceiverObjectManager::getCommandLineInterfaceReceiverDetailsForMessage    (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *&pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread &prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *&pWaveMessageContext)
+void CommandLineInterfaceReceiverObjectManager::getCommandLineInterfaceReceiverDetailsForMessage    (WaveMessage *pWaveMessage, CommandLineInterfaceReceiverWorkerThread *&pCommandLineInterfaceReceiverWorkerThread, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread &waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *&pWaveMessageContext)
 {
     waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
     bool isKnown = isAMessageSentByThisObjectManager (pWaveMessage);
 
     pCommandLineInterfaceReceiverWorkerThread                              = NULL;
-    prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
+    waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = NULL;
     pWaveMessageContext                                                   = NULL;
 
     if (false == isKnown)
@@ -213,11 +213,11 @@ void CommandLineInterfaceReceiverObjectManager::getCommandLineInterfaceReceiverD
         UI32 messageId = pWaveMessage->getMessageId ();
 
         pCommandLineInterfaceReceiverWorkerThread                              = m_commandLineInterfaceReceiverWorkerThreadMapByMessageId[messageId];
-        prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = m_commandLineInterfaceReceiverCallbackMapByMessageId[messageId];
+        waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = m_commandLineInterfaceReceiverCallbackMapByMessageId[messageId];
         pWaveMessageContext                                                   = m_commandLineInterfaceReceiverContextMapByMessageId[messageId];
 
         waveAssert (NULL != pCommandLineInterfaceReceiverWorkerThread,                              __FILE__, __LINE__);
-        waveAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
+        waveAssert (NULL != waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
         waveAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
     }
 }

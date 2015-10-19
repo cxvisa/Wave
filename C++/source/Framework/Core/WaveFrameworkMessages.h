@@ -251,8 +251,8 @@ class WaveTimerExpiredObjectManagerMessage : public WaveMessage
     protected :
     public :
                                                WaveTimerExpiredObjectManagerMessage (WaveServiceId id, TimerHandle m_timerId, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender);
-                                               WaveTimerExpiredObjectManagerMessage (const WaveTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage);
-        WaveTimerExpiredObjectManagerMessage &operator =                            (const WaveTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage);
+                                               WaveTimerExpiredObjectManagerMessage (const WaveTimerExpiredObjectManagerMessage &waveTimerExpiredObjectManagerMessage);
+        WaveTimerExpiredObjectManagerMessage &operator =                            (const WaveTimerExpiredObjectManagerMessage &waveTimerExpiredObjectManagerMessage);
         WaveTimerExpirationHandler            getTimerExpirationCallback            ();
         void                                  *getTimerExpirationContext             ();
         TimerHandle                            getTimerId                            ();

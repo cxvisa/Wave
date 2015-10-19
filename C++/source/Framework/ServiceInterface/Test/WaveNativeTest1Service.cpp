@@ -13,7 +13,7 @@ namespace WaveNs
 WaveNativeTest1Service::WaveNativeTest1Service ()
     : WaveObjectManager ("WaveNativeTest1Service")
 {
-   addOperationMap (WAVE_NATIVE_TEST1_SERVICE_MESSAGE1, reinterpret_cast<WaveMessageHandler> (&WaveNativeTest1Service::prismNativeTest1ServiceMessage1Handler));
+   addOperationMap (WAVE_NATIVE_TEST1_SERVICE_MESSAGE1, reinterpret_cast<WaveMessageHandler> (&WaveNativeTest1Service::waveNativeTest1ServiceMessage1Handler));
 }
 
 WaveNativeTest1Service::~WaveNativeTest1Service ()
@@ -38,7 +38,7 @@ WaveServiceId WaveNativeTest1Service::getWaveServiceId ()
     return ((getInstance ())->getServiceId ());
 }
 
-void WaveNativeTest1Service::prismNativeTest1ServiceMessage1Handler (WaveNativeTest1ServiceMessage1 *pMsg)
+void WaveNativeTest1Service::waveNativeTest1ServiceMessage1Handler (WaveNativeTest1ServiceMessage1 *pMsg)
 {
     trace (TRACE_LEVEL_DEVEL , "Wave Native Test1 Messge Received");
 
@@ -48,7 +48,7 @@ void WaveNativeTest1Service::prismNativeTest1ServiceMessage1Handler (WaveNativeT
 
     if (0 == (numberOfReceivedMessagesSoFar % 1000))
     {
-        cout << "WaveNativeTest1Service::prismNativeTest1ServiceMessage1Handler : Received " <<  numberOfReceivedMessagesSoFar << " Messages. \r";
+        cout << "WaveNativeTest1Service::waveNativeTest1ServiceMessage1Handler : Received " <<  numberOfReceivedMessagesSoFar << " Messages. \r";
         fflush (stdout);
     }
 

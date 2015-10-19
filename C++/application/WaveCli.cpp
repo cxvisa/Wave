@@ -29,7 +29,7 @@ extern "C" int waveClientMain (int argc, char *argv[], bool wait);
 int                              g_commandLineArgumentLength = 512;
 WaveClientSynchronousConnection *g_pConnection               = NULL;
 
-void genericMessageHandler (void *pPayLoad, UI32 payLoadLength, void *pPrismContext);
+void genericMessageHandler (void *pPayLoad, UI32 payLoadLength, void *pWaveContext);
 
 void displayUsage (const char *pProgramName)
 {

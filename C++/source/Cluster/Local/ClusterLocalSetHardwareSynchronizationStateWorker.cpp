@@ -70,11 +70,11 @@ void ClusterLocalSetHardwareSynchronizationStateWorker::setHardwareSynchronizati
 {
      WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::waveLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::updateWaveNodeManagedObjectStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::waveLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHardwareSynchronizationStateWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalSetHardwareSynchronizationStateMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

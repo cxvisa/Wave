@@ -268,8 +268,8 @@ void  DistributedDebugGlobalObjectManager::runDebugScriptMessageHandler  (RunDeb
    WaveLinearSequencerStep sequencerSteps[] =
     {
 	reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::sendDebugScriptToAllNodesStep), 
-        reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedDebugGlobalObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new WaveLinearSequencerContext (pRunDebugScriptMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

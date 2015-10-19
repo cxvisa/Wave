@@ -241,12 +241,12 @@ extern "C" int duplicateMultiCastCmds (int appId, unsigned int nCommands, comman
     }
 }
 
-extern "C" int prismRegisterApp  (char * applicationName, applicationMainFunction applicationMain)
+extern "C" int waveRegisterApp  (char * applicationName, applicationMainFunction applicationMain)
 {
     return (AppObjectManager::registerApp (applicationName, applicationMain));
 }
 
-extern "C" int prismRegisterAppWithArg  (char * applicationName, applicationMainFunction applicationMain, UI32 argc, char *argv[])
+extern "C" int waveRegisterAppWithArg  (char * applicationName, applicationMainFunction applicationMain, UI32 argc, char *argv[])
 {
     return (AppObjectManager::registerApp (applicationName, applicationMain, argc, argv));
 }

@@ -92,7 +92,7 @@ ResourceId WaveManagementServer::connect (const UI32 &numberOfRetries, const UI3
 
                 tracePrintf (TRACE_LEVEL_WARN, false, true, ".");
                 fflush (stdout);
-                prismSleep (1);
+                waveSleep (1);
             }
             else
             {

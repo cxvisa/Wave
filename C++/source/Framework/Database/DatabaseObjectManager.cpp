@@ -647,7 +647,7 @@ ResourceId DatabaseObjectManager::createNewWaveDatabase ()
         status = WAVE_MESSAGE_ERROR_INIT_DATABASE_FAILED;
     }
 
-    prismSleep (20);
+    waveSleep (20);
     // start the database
     WaveNs::trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManager::createNewWaveDatabase : Booting the database to create Wave Database...");
 
@@ -673,7 +673,7 @@ ResourceId DatabaseObjectManager::createNewWaveDatabase ()
             WaveNs::tracePrintf (TRACE_LEVEL_WARN, false, true, output[0].c_str());
         }
         i++;
-        prismSleep (4);
+        waveSleep (4);
     }
 
     if (0 != cmdStatus)
@@ -682,7 +682,7 @@ ResourceId DatabaseObjectManager::createNewWaveDatabase ()
         WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 
-    prismSleep (10);
+    waveSleep (10);
 
     // create a database    
     WaveNs::trace (TRACE_LEVEL_DEBUG, "DatabaseObjectManager::createNewWaveDatabase : Creating Wave Database...");
@@ -756,19 +756,19 @@ void DatabaseObjectManager::handleDatabaseCorruption ()
     }
 
     // 3.
-    const string prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-    const string prismConfigurationBackupfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ();
+    const string waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    const string waveConfigurationBackupfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ();
 
-    WaveNs::trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleDatabaseCorruption: deleting files " + prismConfigurationfileName + " and " + prismConfigurationBackupfileName);
+    WaveNs::trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleDatabaseCorruption: deleting files " + waveConfigurationfileName + " and " + waveConfigurationBackupfileName);
 
     cmdStatus = 0;
     output.clear();
 
-    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + prismConfigurationfileName + string (" ") + prismConfigurationBackupfileName).c_str(), output);
+    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + waveConfigurationfileName + string (" ") + waveConfigurationBackupfileName).c_str(), output);
 
     if ( cmdStatus != 0 )
     {        
-        WaveNs::trace (TRACE_LEVEL_ERROR, string("DatabaseObjectManager::handleDatabaseCorruption: cmd to delete files ")+ prismConfigurationfileName + string (", ") + prismConfigurationBackupfileName + string(" failed with error message : ") + output[0]);
+        WaveNs::trace (TRACE_LEVEL_ERROR, string("DatabaseObjectManager::handleDatabaseCorruption: cmd to delete files ")+ waveConfigurationfileName + string (", ") + waveConfigurationBackupfileName + string(" failed with error message : ") + output[0]);
     }
 
     //4. 
@@ -792,12 +792,12 @@ void DatabaseObjectManager::handleDatabaseCorruption ()
 
     // 5. 
     Wave::logOperationStatus (REBOOT_FOR_DB_CORRUPTION_AUTO_RECOVERY);
-    prismSleep(10);
+    waveSleep(10);
 
     WaveNs::trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleDatabaseCorruption: System going down for auto db recovery.");
 
     FrameworkToolKit::systemCommandOutput ("/fabos/sbin/reboot -s -r AutoRecoveryForDBCorruption", output);
-    prismSleep(20);
+    waveSleep(20);
 }
 
 void DatabaseObjectManager::handleIfDBCorruption (string &databaseErrorMessage, PGresult *pResult)
@@ -916,7 +916,7 @@ void DatabaseObjectManager::goOnInfiniteLoopBeforeReboot ()
         if (numberOfIterations < 300)
         {
             ++numberOfIterations;
-            prismSleep (1);
+            waveSleep (1);
         }
         else
         {

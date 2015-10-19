@@ -63,8 +63,8 @@ void WaveManagedObjectCreateWorker::createHandler (WaveObjectManagerCreateWaveMa
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::createPostUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::createAttributesPostUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::commitWaveManagedObjectAfterUpdatingBackend),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::waveLinearSequencerFailedStep),
     };
 
     WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext = new WaveManagedObjectCreateContext (pWaveObjectManagerCreateWaveManagedObjectMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -101,8 +101,8 @@ void WaveManagedObjectCreateWorker::asynchronousCreateHandler (WaveManagedObject
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::createUpdateHardwareStepForChild),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::createPostUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::commitWaveManagedObjectAfterUpdatingBackend),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectCreateWorker::waveLinearSequencerFailedStep),
     };
 
     WaveManagedObjectCreateContext *pWaveManagedObjectCreateContext = new WaveManagedObjectCreateContext (pWaveManagedObjectAsynchronousCreateContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -210,7 +210,7 @@ void WaveManagedObjectCreateWorker::WaveManagedObjectStartTransactionStep (WaveM
         return;
     }
  
-    prismLinearSequencerStartTransactionStep (pWaveManagedObjectCreateContext);
+    waveLinearSequencerStartTransactionStep (pWaveManagedObjectCreateContext);
 }
 
 #if 0
@@ -1281,7 +1281,7 @@ void WaveManagedObjectCreateWorker::commitWaveManagedObjectBeforeUpdatingBackend
 
     if (false == updateHardwareBeforeManagedObject)
     {
-        prismLinearSequencerCommitTransactionStep (pWaveManagedObjectCreateContext);
+        waveLinearSequencerCommitTransactionStep (pWaveManagedObjectCreateContext);
     }
     else
     {
@@ -1308,7 +1308,7 @@ void WaveManagedObjectCreateWorker::commitWaveManagedObjectAfterUpdatingBackend 
 
     if (true == updateHardwareBeforeManagedObject)
     {
-        prismLinearSequencerCommitTransactionStep (pWaveManagedObjectCreateContext);
+        waveLinearSequencerCommitTransactionStep (pWaveManagedObjectCreateContext);
     }
     else
     {

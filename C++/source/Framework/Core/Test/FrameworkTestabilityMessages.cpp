@@ -385,13 +385,13 @@ FrameworkTestabilityMessage4::FrameworkTestabilityMessage4 ()
     m_resourceId2 = WAVE_MESSAGE_ERROR;                        // ResourceId             m_resourceId2;
     m_resourceId3 = WAVE_MESSAGE_ERROR;                        // ResourceId             m_resourceId3;
                                                                // 
-    m_prismMessagePriority1 = WAVE_MESSAGE_PRIORITY_NORMAL;    // ResourceId             m_prismMessagePriority1; // WaveMessagePriority
-    m_prismMessagePriority2 = WAVE_MESSAGE_PRIORITY_NORMAL;    // ResourceId             m_prismMessagePriority2; // WaveMessagePriority
-    m_prismMessagePriority3 = WAVE_MESSAGE_PRIORITY_NORMAL;    // ResourceId             m_prismMessagePriority3; // WaveMessagePriority
+    m_waveMessagePriority1 = WAVE_MESSAGE_PRIORITY_NORMAL;    // ResourceId             m_waveMessagePriority1; // WaveMessagePriority
+    m_waveMessagePriority2 = WAVE_MESSAGE_PRIORITY_NORMAL;    // ResourceId             m_waveMessagePriority2; // WaveMessagePriority
+    m_waveMessagePriority3 = WAVE_MESSAGE_PRIORITY_NORMAL;    // ResourceId             m_waveMessagePriority3; // WaveMessagePriority
                                                                // 
-    m_prismMessageType1 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType1; // WaveMessageType
-    m_prismMessageType2 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType2; // WaveMessageType
-    m_prismMessageType3 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_prismMessageType3; // WaveMessageType
+    m_waveMessageType1 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_waveMessageType1; // WaveMessageType
+    m_waveMessageType2 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_waveMessageType2; // WaveMessageType
+    m_waveMessageType3 = WAVE_MESSAGE_TYPE_REQUEST;           // ResourceId             m_waveMessageType3; // WaveMessageType
                                                                // 
     m_waveServiceId1 = 0;                                     // WaveServiceId         m_waveServiceId1;
     m_waveServiceId2 = 0;                                     // WaveServiceId         m_waveServiceId2;
@@ -531,13 +531,13 @@ void FrameworkTestabilityMessage4::setupAttributesForSerialization ()
      addSerializableAttribute (new AttributeResourceId (&m_resourceId2, "resourceId2"));
      addSerializableAttribute (new AttributeResourceId (&m_resourceId3, "resourceId3"));
 
-     addSerializableAttribute (new AttributeWaveMessagePriority (&m_prismMessagePriority1, "prismMessagePriority1"));
-     addSerializableAttribute (new AttributeWaveMessagePriority (&m_prismMessagePriority2, "prismMessagePriority2"));
-     addSerializableAttribute (new AttributeWaveMessagePriority (&m_prismMessagePriority3, "prismMessagePriority3"));
+     addSerializableAttribute (new AttributeWaveMessagePriority (&m_waveMessagePriority1, "waveMessagePriority1"));
+     addSerializableAttribute (new AttributeWaveMessagePriority (&m_waveMessagePriority2, "waveMessagePriority2"));
+     addSerializableAttribute (new AttributeWaveMessagePriority (&m_waveMessagePriority3, "waveMessagePriority3"));
 
-     addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType1, "prismMessageType1"));
-     addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType2, "prismMessageType2"));
-     addSerializableAttribute (new AttributeWaveMessageType (&m_prismMessageType3, "prismMessageType3"));
+     addSerializableAttribute (new AttributeWaveMessageType (&m_waveMessageType1, "waveMessageType1"));
+     addSerializableAttribute (new AttributeWaveMessageType (&m_waveMessageType2, "waveMessageType2"));
+     addSerializableAttribute (new AttributeWaveMessageType (&m_waveMessageType3, "waveMessageType3"));
 
      addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId1, "waveServiceId1"));
      addSerializableAttribute (new AttributeWaveServiceId (&m_waveServiceId2, "waveServiceId2"));
@@ -1047,24 +1047,24 @@ bool FrameworkTestabilityMessage4::validateResourceIdContent ()
 
 void FrameworkTestabilityMessage4::setupWaveMessagePriorityInput ()
 {
-    m_prismMessagePriority1 = WAVE_MESSAGE_PRIORITY_NORMAL;
-    m_prismMessagePriority2 = WAVE_MESSAGE_PRIORITY_HIGH;
-    m_prismMessagePriority3 = WAVE_MESSAGE_PRIORITY_HIGH;
+    m_waveMessagePriority1 = WAVE_MESSAGE_PRIORITY_NORMAL;
+    m_waveMessagePriority2 = WAVE_MESSAGE_PRIORITY_HIGH;
+    m_waveMessagePriority3 = WAVE_MESSAGE_PRIORITY_HIGH;
 }
 
 bool FrameworkTestabilityMessage4::validateWaveMessagePriorityContent ()
 {
-    if (WAVE_MESSAGE_PRIORITY_NORMAL != m_prismMessagePriority1)
+    if (WAVE_MESSAGE_PRIORITY_NORMAL != m_waveMessagePriority1)
     {
         return (false);
     }
 
-    if (WAVE_MESSAGE_PRIORITY_HIGH != m_prismMessagePriority2)
+    if (WAVE_MESSAGE_PRIORITY_HIGH != m_waveMessagePriority2)
     {
         return (false);
     }
 
-    if (WAVE_MESSAGE_PRIORITY_HIGH != m_prismMessagePriority3)
+    if (WAVE_MESSAGE_PRIORITY_HIGH != m_waveMessagePriority3)
     {
         return (false);
     }
@@ -1074,24 +1074,24 @@ bool FrameworkTestabilityMessage4::validateWaveMessagePriorityContent ()
 
 void FrameworkTestabilityMessage4::setupWaveMessageTypeInput ()
 {
-    m_prismMessageType1 = WAVE_MESSAGE_TYPE_REQUEST;
-    m_prismMessageType2 = WAVE_MESSAGE_TYPE_RESPONSE;
-    m_prismMessageType3 = WAVE_MESSAGE_TYPE_REQUEST;
+    m_waveMessageType1 = WAVE_MESSAGE_TYPE_REQUEST;
+    m_waveMessageType2 = WAVE_MESSAGE_TYPE_RESPONSE;
+    m_waveMessageType3 = WAVE_MESSAGE_TYPE_REQUEST;
 }
 
 bool FrameworkTestabilityMessage4::validateWaveMessageTypeContent ()
 {
-    if (WAVE_MESSAGE_TYPE_REQUEST != m_prismMessageType1)
+    if (WAVE_MESSAGE_TYPE_REQUEST != m_waveMessageType1)
     {
         return (false);
     }
 
-    if (WAVE_MESSAGE_TYPE_RESPONSE != m_prismMessageType2)
+    if (WAVE_MESSAGE_TYPE_RESPONSE != m_waveMessageType2)
     {
         return (false);
     }
 
-    if (WAVE_MESSAGE_TYPE_REQUEST != m_prismMessageType3)
+    if (WAVE_MESSAGE_TYPE_REQUEST != m_waveMessageType3)
     {
         return (false);
     }

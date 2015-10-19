@@ -91,7 +91,7 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
              * So, lets try connecting to DB and confirm if we need to retry 'pg_ctl start' command.
              */
 
-            prismSleep (4);
+            waveSleep (4);
 
             bool                isConnectedToDatabase = false;
             pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
@@ -125,7 +125,7 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
             {   
                 tracePrintf (TRACE_LEVEL_WARN, false, true, output[0].c_str());
             }
-            prismSleep (4);
+            waveSleep (4);
         }
 
         if (0 != status)
@@ -631,9 +631,9 @@ ResourceId DatabaseStandaloneTransaction::rollbackConfigFile (WaveFrameworkConfi
     
     waveFrameworkConfiguration.setDBRestoreIncomplete(false);
     
-    string prismConfigurationfileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    string waveConfigurationfileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
 
-    status = waveFrameworkConfiguration.saveConfiguration (prismConfigurationfileName);
+    status = waveFrameworkConfiguration.saveConfiguration (waveConfigurationfileName);
 
     return ((WAVE_MESSAGE_SUCCESS == status) ? FRAMEWORK_SUCCESS : FRAMEWORK_ERROR);
 }

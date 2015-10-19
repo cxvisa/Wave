@@ -62,8 +62,8 @@ void ClusterTestObjectManager::testRequestHandler (RegressionTestMessage *pMessa
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::DuplicateCmdMulticastOneWayStep),
 //        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::AddDeleteNodeStep),
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::clusterDeleteStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     ClusterTestContext *pClusterTestContext = new ClusterTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

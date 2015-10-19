@@ -28,10 +28,10 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
             public :
                                            MessageMap                                    ();
                                           ~MessageMap                                    ();
-                       WaveMessageStatus   addMessage                                    (WaveMessage *pWaveMessage, UI32 prismMessageId = 0);
-                       WaveMessage       *findMessage                                   (UI32 prismMessageId);
-                       WaveMessage       *findMessageWithLock                           (UI32 prismMessageId);
-                       WaveMessage       *removeMessage                                 (UI32 prismMessageId);
+                       WaveMessageStatus   addMessage                                    (WaveMessage *pWaveMessage, UI32 waveMessageId = 0);
+                       WaveMessage       *findMessage                                   (UI32 waveMessageId);
+                       WaveMessage       *findMessageWithLock                           (UI32 waveMessageId);
+                       WaveMessage       *removeMessage                                 (UI32 waveMessageId);
                        void                getPendingMessagesForRemoteLocationForReplying (LocationId locationId, vector<WaveMessage *> &messagesVector);
 
             // Now the data members
@@ -60,7 +60,7 @@ class InterLocationMessageTransportObjectManager : public WaveLocalObjectManager
         WaveMessage       *getPendingMessage                               (const UI32 &messageId);
         WaveMessage       *getPendingMessageWithoutRemove                  (const UI32 &messageId);
         void                replyToBeUsedByReceiverThreads                  (WaveMessage *pWaveMessage);
-        void                replyToBeUsedByReceiverThreads                  (UI32 prismMessageId);
+        void                replyToBeUsedByReceiverThreads                  (UI32 waveMessageId);
         void                getPendingMessagesForRemoteLocationForReplying  (LocationId locationId, vector<WaveMessage *> &messagesVector);
         void                replyToRemoteMessagesPendingOnLocation          (LocationId locationId, ResourceId completionStatus);
 

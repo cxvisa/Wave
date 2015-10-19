@@ -25,21 +25,21 @@ using namespace std;
 namespace WaveNs
 {
 
-unsigned int  prismSleep                 (unsigned int numberOfSecondsToSleep);
-unsigned int  prismUSleep                (unsigned int numberOfMicroSecondsToSleep);
-void          prismSysLog                (const char * const pStringToLog);
+unsigned int  waveSleep                 (unsigned int numberOfSecondsToSleep);
+unsigned int  waveUSleep                (unsigned int numberOfMicroSecondsToSleep);
+void          waveSysLog                (const char * const pStringToLog);
 void          initializeWaveSocketLayer ();
 void          getIpAddressesForThisHost  (vector<string> &ipAddressesForThisHost);
 string        getIpAddressForInterface   (const string &interfaceName);
-int           prismCloseSocket           (int fd);
-void          prismBlockSignals          ();
-void          prismInstallSigIntHandler  ();
-char         *prismGetCwd                (char *buf, size_t size);
-void          prismCreateWaitableTimer   ();
-void          prismWaitForAlarmSignal    ();
-int           prismSetITimer             (struct itimerval *pItimerValue);
-void          prismSetConsoleTextColor   (TraceLevel requestedTraceLevel);
-void          prismResetConsoleTextColor ();
+int           waveCloseSocket           (int fd);
+void          waveBlockSignals          ();
+void          waveInstallSigIntHandler  ();
+char         *waveGetCwd                (char *buf, size_t size);
+void          waveCreateWaitableTimer   ();
+void          waveWaitForAlarmSignal    ();
+int           waveSetITimer             (struct itimerval *pItimerValue);
+void          waveSetConsoleTextColor   (TraceLevel requestedTraceLevel);
+void          waveResetConsoleTextColor ();
 string        getIPv6AddressForInterface (const string &interfaceName);
 string        getStateForInterface       (const string &interfaceName);
 

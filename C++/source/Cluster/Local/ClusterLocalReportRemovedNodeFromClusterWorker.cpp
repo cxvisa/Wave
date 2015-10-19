@@ -71,8 +71,8 @@ void ClusterLocalReportRemovedNodeFromClusterWorker::nodeRemovedMessageHandler(C
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::updateWaveNodeManagedObjectStep),     
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportRemovedNodeFromClusterWorker::waveLinearSequencerFailedStep)
     };
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalReportRemovedNodeFromClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 
    

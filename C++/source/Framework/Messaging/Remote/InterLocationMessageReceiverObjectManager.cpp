@@ -43,7 +43,7 @@ bool InterLocationMessageReceiverObjectManager::addInterLocationMessageReceiverT
             s_interLocationMessageReceiverThreadCacheMutex.unlock ();
         }
 
-        prismSleep (1);
+        waveSleep (1);
     }
 #else
 

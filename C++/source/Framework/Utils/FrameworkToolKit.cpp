@@ -572,7 +572,7 @@ const string FrameworkToolKit::getProcessCurrentWorkingDirectory ()
 
     if (NULL != pTempBuffer)
     {
-        if (NULL != prismGetCwd (pTempBuffer, 4096))
+        if (NULL != waveGetCwd (pTempBuffer, 4096))
         {
         	currentWorkingDirectory = pTempBuffer;
         }
@@ -742,7 +742,7 @@ void FrameworkToolKit::registerDebugShellEntries ()
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printNumberOfCpus),                    "ncpu");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugResourceId),                      "localize");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugAllResourceEnums),                "localizeallresourceenums");
-    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugSaveWaveConfiguration),          "saveprismconfig");
+    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugSaveWaveConfiguration),          "savewaveconfig");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printServices),                        "printservices");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printServices),                        "ps");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::printRemoteLocations),                 "printremotelocations");

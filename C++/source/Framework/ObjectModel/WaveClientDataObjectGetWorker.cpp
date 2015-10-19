@@ -121,8 +121,8 @@ void WaveClientDataObjectGetWorker::getDataFromClientHandlerForSendToCluster (Wa
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::sendMessageToAllNodesStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientDataObjectGetWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveObjectManagerGetDataFromClientMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

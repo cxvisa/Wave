@@ -220,7 +220,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage2RequestHand
                 break;
             }
 
-            prismSleep (1);
+            waveSleep (1);
         }
     }
 
@@ -242,8 +242,8 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage3RequestHand
     {
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage3ValidateInputBuffersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::frameworkTestabilityMessage3AttachOutputBuffersStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -335,7 +335,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage5RequestHand
 
     while (0 == (numberOfPendingMessages = getNumberOfPendingNormalMessages ()))
     {
-        prismSleep (1);
+        waveSleep (1);
     }
 
     trace (TRACE_LEVEL_INFO, "FrameworkTestability1ObjectManager::frameworkTestabilityMessage5RequestHandler : Received more messages in the incoming queues.");
@@ -344,7 +344,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage5RequestHand
 
     while (0 != (numberOfPendingMessages = getNumberOfPendingNormalMessages ()))
     {
-        prismSleep (1);
+        waveSleep (1);
     }
 
     trace (TRACE_LEVEL_INFO, "FrameworkTestability1ObjectManager::frameworkTestabilityMessage5RequestHandler : All messages from the incoming queues are gone.");
@@ -367,7 +367,7 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityMessage6RequestHand
 void FrameworkTestability1ObjectManager::frameworkTestabilityMessage7RequestHandler (FrameworkTestabilityMessage7 *pMessage)
 {
     trace (TRACE_LEVEL_DEVEL, "FrameworkTestability1ObjectManager::frameworkTestabilityMessage7RequestHandler : Serving up a FrameworkTestabilityMessage1.");
-    prismSleep (1);
+    waveSleep (1);
     incrementNumberOfProcessedMessage7s ();
     // Use cout for the following, not trace.
     cout << "Number of Processed Message7s : " << s_numberOfProcessedMessage7s << " \r";
@@ -623,8 +623,8 @@ void FrameworkTestability1ObjectManager::frameworkTestabilityManagementInterface
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1AllFailureButPhase2MessageSetTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSuccessTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::sendToClientsWithBuffersPhase1SomeSucesssButPhase2MessageSetTestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability1ObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

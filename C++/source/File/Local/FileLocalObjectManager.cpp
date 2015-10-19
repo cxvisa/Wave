@@ -120,16 +120,16 @@ namespace WaveNs
 
           WaveLinearSequencerStep sequencerSteps[] =
           {
-               // reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerStartTransactionStep),
+               // reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerStartTransactionStep),
                // Your configuration change code goes here
 
-               // reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerCommitTransactionStep),
+               // reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerCommitTransactionStep),
                // Programming Protocol Daemons goes here
 
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::ProcessAbortFileTransferMessage),
 
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
           };
 
           WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pAbortFileTransferMessage, this, sequencerSteps, sizeof (sequencerSteps) /sizeof (sequencerSteps[0]));
@@ -199,13 +199,13 @@ namespace WaveNs
            
           WaveLinearSequencerStep sequencerSteps[] =
           {
-//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerStartTransactionStep),
+//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerStartTransactionStep),
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::validateLocationIdAndVersion),
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::validateTransferFlag),
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::addToIncomingQueue),
-//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerCommitTransactionStep),
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerCommitTransactionStep),
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
           };
 
         WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFileTransferHandshakeMessage, this, 
@@ -382,13 +382,13 @@ namespace WaveNs
 
           WaveLinearSequencerStep sequencerSteps[] =
           {
-//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerStartTransactionStep),
+//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerStartTransactionStep),
                // Your configuration change code goes here
 
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::ProcessFileFragmentMessage),
-//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerCommitTransactionStep),
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerCommitTransactionStep),
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
           };
 
           WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPushFileFragmentMessage, this, 
@@ -456,7 +456,7 @@ namespace WaveNs
          }  while(0);
 
          // for failover testing.
-         // WaveNs::prismSleep (1);
+         // WaveNs::waveSleep (1);
 	 
          pPushFileFragmentMessage->setCompletionStatus(status);
          pWaveLinearSequencerContext->executeNextStep (status);
@@ -565,8 +565,8 @@ namespace WaveNs
         WaveLinearSequencerStep sequencerSteps[] =
         {
             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::DeleteFileHaPeerStep),
-            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
         };
 
         WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFileDeleteFileToHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) /sizeof (sequencerSteps[0]));
@@ -602,7 +602,7 @@ namespace WaveNs
         WaveLinearSequencerStep sequencerSteps[] =
         {
             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::DeleteFileStep),
-            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),                                      reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),                                      reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
         };
 
         WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFileDeleteFileMessage, this, sequencerSteps, sizeof (sequencerSteps) /sizeof (sequencerSteps[0]));
@@ -718,8 +718,8 @@ namespace WaveNs
             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::DeleteValidateStep),
             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::DeleteRequestFileTransferHandshake),
             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::sendDeleteMessageToAll),
-            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
         };
 
         WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFileDeleteRequestMessage, this, sequencerSteps, sizeof (sequencerSteps) /sizeof (sequencerSteps[0]));
@@ -1003,16 +1003,16 @@ namespace WaveNs
           {
                // Data validation first, if it fails, we bail out.
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::ValidateInputs),
-//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerStartTransactionStep),
+//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerStartTransactionStep),
                // Your configuration change code goes here
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::TriggerAsyncFileTransferHandshake),
 //             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::TriggerFileTransferHandshake),               
 //             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::StartFileTransfer),
                reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::StartAsyncFileTransfer),
-//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerCommitTransactionStep),
+//             reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerCommitTransactionStep),
                // Programming Protocol Daemons goes here
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerSucceededStep),
-               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::prismLinearSequencerFailedStep)
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerSucceededStep),
+               reinterpret_cast<WaveLinearSequencerStep>(&FileLocalObjectManager::waveLinearSequencerFailedStep)
           };
 
           WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPushFileMessage, this, 
@@ -1375,7 +1375,7 @@ namespace WaveNs
                     }
 
                     // for failover testing.
-                    // WaveNs::prismSleep (1);
+                    // WaveNs::waveSleep (1);
 
                }  // for - loop.
                
@@ -1781,8 +1781,8 @@ void FileLocalObjectManager::PushFileToHaPeerMessageHandler (PushFileToHaPeerMes
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::pushFileToHaPeerValidateReceiptStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::pushFileToHaPeerReceiveFileStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (pPushFileToHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1864,8 +1864,8 @@ void FileLocalObjectManager::FilePushFileToHaPeerMessageHandler (FilePushFileToH
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::pushFileToHaPeerValidateStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::pushFileToHaPeerSendFileStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FileLocalObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (pFilePushFileToHaPeerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

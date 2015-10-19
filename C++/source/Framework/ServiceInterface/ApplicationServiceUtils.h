@@ -46,7 +46,7 @@ class ApplicationServiceUtils
     protected :
     public :
         static WaveServiceId getWaveServiceIdForApplicationServiceId (const UI32 &applicationServiceId);
-        static ResourceId     sendToApplicationService                 (const WaveServiceId &sendingApplicationServiceWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &waveServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext);
+        static ResourceId     sendToApplicationService                 (const WaveServiceId &sendingApplicationServiceWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &waveServiceId, const LocationId &waveLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext);
         static void           replyToApplicationService                (void *pOutputPayLoad, const UI32 outputPayLoadLength, void *pWaveContext);
 
     // Now the data members

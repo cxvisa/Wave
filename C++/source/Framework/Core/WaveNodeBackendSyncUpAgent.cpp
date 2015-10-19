@@ -31,8 +31,8 @@ ResourceId WaveNodeBackendSyncUpAgent::execute ()
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::sendBackendSyncUpStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveNodeBackendSyncUpAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

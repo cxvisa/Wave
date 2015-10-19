@@ -105,8 +105,8 @@ void CentralClusterConfigRejoinNodeWorker::rejoinNodeMessageHandler (ClusterObje
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeCommitStep),
 #endif
 //        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::rejoinNodeStartHeartBeatsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigRejoinNodeWorker::waveLinearSequencerFailedStep)
     };
 
     //Note that this is freed in SequencerSucceeded step inside the framework code

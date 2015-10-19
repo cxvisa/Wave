@@ -150,7 +150,7 @@ WaveConnectionStatus WaveClientSynchronousConnection::connect (const string &wav
                 break;
             }
 
-            prismUSleep (1000);
+            waveUSleep (1000);
 
             numberOfRetries++;
         }
@@ -198,7 +198,7 @@ void WaveClientSynchronousConnection::close ()
         	break;
         }
 
-        prismSleep (1);
+        waveSleep (1);
 
         numberOfRetries++;
     }
@@ -284,9 +284,9 @@ string WaveClientSynchronousConnection::getServiceNameById (const WaveServiceId 
     return ((WaveClientTransportObjectManager::getInstance ())->getWaveServiceNameForServiceId (getWaveServerId (), waveServiceId));
 }
 
-WaveServiceId WaveClientSynchronousConnection::getServiceIdByName (const string &prismServiceName) const
+WaveServiceId WaveClientSynchronousConnection::getServiceIdByName (const string &waveServiceName) const
 {
-    return ((WaveClientTransportObjectManager::getInstance ())->getWaveServiceIdForServiceName (getWaveServerId (), prismServiceName));
+    return ((WaveClientTransportObjectManager::getInstance ())->getWaveServiceIdForServiceName (getWaveServerId (), waveServiceName));
 }
 
 ResourceId WaveClientSynchronousConnection::getListOfTestServices (vector<RegressionTestEntry> &testServices)

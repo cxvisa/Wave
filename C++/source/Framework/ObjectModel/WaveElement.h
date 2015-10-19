@@ -61,8 +61,8 @@ class WaveElement
 
     protected :
                                               WaveElement                                         (WaveObjectManager *pWaveObjectManager);
-                                              WaveElement                                         (const WaveElement &prismElement);
-                WaveElement                 &operator =                                           (const WaveElement &prismElement);
+                                              WaveElement                                         (const WaveElement &waveElement);
+                WaveElement                 &operator =                                           (const WaveElement &waveElement);
         virtual WaveMessageStatus             send                                                 (WaveMessage *pWaveMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0, WaveElement *pWaveMessageSender = NULL) = 0;
         virtual WaveMessageStatus             sendOneWay                                           (WaveMessage *pWaveMessage, const LocationId &locationId = 0) = 0;
         virtual WaveMessageStatus             sendOneWayToFront                                    (WaveMessage *pWaveMessage, const LocationId &locationId = 0) = 0;
@@ -81,14 +81,14 @@ class WaveElement
         virtual ResourceId                    startTimer                                           (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL) = 0;
         virtual ResourceId                    deleteTimer                                          (TimerHandle timerHandle) = 0;
 
-                void                          prismLinearSequencerSucceededStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                          prismLinearSequencerFailedStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                          prismLinearSequencerStartTransactionStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                          prismLinearSequencerCommitTransactionStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerSucceededStep         (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerFailedStep            (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerStartTransactionStep  (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
-                ResourceId                    prismSynchronousLinearSequencerCommitTransactionStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                void                          waveLinearSequencerSucceededStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                          waveLinearSequencerFailedStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                          waveLinearSequencerStartTransactionStep             (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                          waveLinearSequencerCommitTransactionStep            (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                ResourceId                    waveSynchronousLinearSequencerSucceededStep         (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId                    waveSynchronousLinearSequencerFailedStep            (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId                    waveSynchronousLinearSequencerStartTransactionStep  (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
+                ResourceId                    waveSynchronousLinearSequencerCommitTransactionStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);
 
 
         virtual void                          holdMessages                                         ()                                                                                    = 0;

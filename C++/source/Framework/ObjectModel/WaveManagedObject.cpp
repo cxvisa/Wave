@@ -469,9 +469,9 @@ void WaveManagedObject::addEventType (const UI32 &eventOperationCode)
     m_pCurrentOwnerWaveObjectManager->addEventType (eventOperationCode);
 }
 
-void WaveManagedObject::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
+void WaveManagedObject::listenForEvent (WaveServiceId waveServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
 {
-    m_pCurrentOwnerWaveObjectManager->listenForEvent (prismServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
+    m_pCurrentOwnerWaveObjectManager->listenForEvent (waveServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
 }
 
 ResourceId WaveManagedObject::sendSynchronouslyToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance)
@@ -529,8 +529,8 @@ ResourceId WaveManagedObject::loadOperationalDataSynchronousWrapper (const vecto
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::loadOperationalDataSynchronouslyLoadStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::loadOperationalDataSynchronouslyRequeryStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveManagedObject::waveSynchronousLinearSequencerFailedStep)
     };
 
     LoadOperationalDataSynchronousContext *pLoadOperationalDataSynchronousContext = new LoadOperationalDataSynchronousContext (reinterpret_cast<WaveMessage *> (NULL), dynamic_cast<WaveElement *> (this), sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

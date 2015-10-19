@@ -42,8 +42,8 @@ ResourceId RecoverWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::installWaveServicesDuringPrePhaseStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -70,8 +70,8 @@ ResourceId RecoverWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::saveWaveConfigurationStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&RecoverWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

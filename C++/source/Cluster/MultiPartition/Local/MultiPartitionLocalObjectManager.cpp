@@ -72,12 +72,12 @@ namespace WaveNs
           WaveSynchronousLinearSequencerStep  sequencerSteps[] =
           {
                reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::validateInputs),
-               // reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+               // reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
                reinterpret_cast<WaveSynchronousLinearSequencerStep>(&MultiPartitionLocalObjectManager::processPartitionObjectCleanup),
 
-               // reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-               reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
-               reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
+               // reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
+               reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::waveSynchronousLinearSequencerSucceededStep),
+               reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionLocalObjectManager::waveSynchronousLinearSequencerFailedStep)
 
           };
 

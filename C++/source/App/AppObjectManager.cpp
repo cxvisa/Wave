@@ -195,7 +195,7 @@ AppObjectManager *AppObjectManager::getAppObjectManager (UI32 appId)
 }
 
     // This is called after creating Wave object managers. This function will create the
-    // object managers for all the application registered with prism.
+    // object managers for all the application registered with wave.
 
 void AppObjectManager::createAppObjectMangers ()
 {
@@ -219,7 +219,7 @@ void AppObjectManager::createAppObjectMangers ()
         appDetail->setAppInterfaceObjectManager (appInterfaceObjectManager);
         appDetail->setAppInterfaceServiceId (appInterfaceObjectManager->getWaveServiceId ());
         appDetail->setAppServiceId (appObjectManager->getServiceId ());
-        // Add the created object manager to prism init/boot/... steps
+        // Add the created object manager to wave init/boot/... steps
         FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
         frameworkSequenceGenerator.addWaveServiceIdToAll        (appObjectManager->getServiceId ());
         frameworkSequenceGenerator.addWaveServiceIdToAll        (appInterfaceObjectManager->getWaveServiceId ());

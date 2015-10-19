@@ -91,19 +91,19 @@ void WaveFrameworkObjectManagerServiceControlWorker::serviceSetCpuAffinityMessag
 
           WaveServiceId                           waveServiceId                          = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getWaveServiceId ();
           vector<UI32>                             cpuAffinityVector                       = pFrameworkObjectManagerServiceSetCpuAffinityMessage->getCpuAffinityVector ();
-          WaveSetCpuAffinityObjectManagerMessage  prismSetCpuAffinityObjectManagerMessage   (waveServiceId);
+          WaveSetCpuAffinityObjectManagerMessage  waveSetCpuAffinityObjectManagerMessage   (waveServiceId);
           ResourceId                               status                                  = WAVE_MESSAGE_SUCCESS;
     const WaveServiceId                           thisServiceId                           = getServiceId ();
 
     if (thisServiceId != waveServiceId)
     {
-        prismSetCpuAffinityObjectManagerMessage.setCpuAffinityVector (cpuAffinityVector);
+        waveSetCpuAffinityObjectManagerMessage.setCpuAffinityVector (cpuAffinityVector);
 
-        status = sendSynchronously (&prismSetCpuAffinityObjectManagerMessage);
+        status = sendSynchronously (&waveSetCpuAffinityObjectManagerMessage);
 
         if (WAVE_MESSAGE_SUCCESS == status)
         {
-            status = prismSetCpuAffinityObjectManagerMessage.getCompletionStatus ();
+            status = waveSetCpuAffinityObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {

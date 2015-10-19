@@ -25,9 +25,9 @@ class WavePosixThread
 {
     public :
                                          WavePosixThread  (const UI32 &stackSize = 0);
-                                         WavePosixThread  (const WavePosixThread &prismPosixThread);
+                                         WavePosixThread  (const WavePosixThread &wavePosixThread);
         virtual                         ~WavePosixThread  ();
-                WavePosixThread        &operator =        (const WavePosixThread &prismPosixThread);
+                WavePosixThread        &operator =        (const WavePosixThread &wavePosixThread);
         virtual WaveThreadStatus        run               ();
                 WaveThreadStatus        joinCallingThread ();
         const   WavePosixThreadContext *getThreadContext  ();

@@ -73,8 +73,8 @@ void ClusterLocalReportPrimaryNodeChangedWorker::primaryNodeChangedMessageHandle
     {
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::updateWaveNodeManagedObjectStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalReportPrimaryNodeChangedWorker::waveLinearSequencerFailedStep)
     };
 
     //Note: Memory is freed inside the framework in the Succeeeded or Failure step

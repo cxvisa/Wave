@@ -92,14 +92,14 @@ const WaveVersion *WaveVersion::getInstance ()
 string WaveVersion::getVersionString ()
 {
     const WaveVersion *pWaveVersion       = getInstance ();
-          string        prismVersionString;
+          string        waveVersionString;
 
     if (NULL != pWaveVersion)
     {
-        prismVersionString = string ("") + pWaveVersion->getMajor () + "." + pWaveVersion->getMinor () + "." + pWaveVersion->getPatch () + "." + pWaveVersion->getRevision () + "-" + pWaveVersion->getBuildType () + "." + pWaveVersion->getBuildNumber ();
+        waveVersionString = string ("") + pWaveVersion->getMajor () + "." + pWaveVersion->getMinor () + "." + pWaveVersion->getPatch () + "." + pWaveVersion->getRevision () + "-" + pWaveVersion->getBuildType () + "." + pWaveVersion->getBuildNumber ();
     }
 
-    return (prismVersionString);
+    return (waveVersionString);
 }
 
 }

@@ -127,7 +127,7 @@ ResourceId WaveMessagingBroker::connect (const UI32 &numberOfRetries, const UI32
 
                 tracePrintf (TRACE_LEVEL_WARN, false, true, "+");
                 fflush (stdout);
-                prismSleep (1);
+                waveSleep (1);
             }
             else
             {

@@ -374,7 +374,7 @@ string StreamingSocket::getIpAddressForInterface (const string &interfaceName)
 
 void StreamingSocket::close (void)
 {
-    prismCloseSocket (getSocket ());
+    waveCloseSocket (getSocket ());
     setSocket (-1);
 }
 

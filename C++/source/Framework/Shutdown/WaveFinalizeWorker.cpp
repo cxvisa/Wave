@@ -24,7 +24,7 @@ WaveFinalizeWorker::~WaveFinalizeWorker ()
    m_pWaveShutdownAgent = NULL;
 }
 
-ResourceId WaveFinalizeWorker::shutdownWaveServices (const WaveShutdownMode &prismShutdownMode)
+ResourceId WaveFinalizeWorker::shutdownWaveServices (const WaveShutdownMode &waveShutdownMode)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFinalizeWorker::shutdownWaveServices : Entering ...");
 
@@ -33,13 +33,13 @@ ResourceId WaveFinalizeWorker::shutdownWaveServices (const WaveShutdownMode &pri
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::chooseAShutdownAgentStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::runTheShutdownAgentStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::destroyAShutdownAgentStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::prismSynchronousLinearSequencerFailedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFinalizeWorker::waveSynchronousLinearSequencerFailedStep),
     };
 
     WaveFinalizeWorkerShutdownServicesContext *pWaveFinalizeWorkerShutdownServicesContext = new WaveFinalizeWorkerShutdownServicesContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pWaveFinalizeWorkerShutdownServicesContext->setWaveShutdownMode (prismShutdownMode);
+    pWaveFinalizeWorkerShutdownServicesContext->setWaveShutdownMode (waveShutdownMode);
 
     ResourceId status = pWaveFinalizeWorkerShutdownServicesContext->execute ();
 
@@ -51,19 +51,19 @@ ResourceId WaveFinalizeWorker::chooseAShutdownAgentStep (WaveFinalizeWorkerShutd
     trace (TRACE_LEVEL_DEVEL, "WaveFinalizeWorker::chooseAShutdownAgentStep : Entering ...");
 
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    WaveShutdownMode           prismShutdownMode          = pWaveFinalizeWorkerShutdownServicesContext->getWaveShutdownMode ();
+    WaveShutdownMode           waveShutdownMode          = pWaveFinalizeWorkerShutdownServicesContext->getWaveShutdownMode ();
 
-    if ((WAVE_SHUTDOWN_SECONDARY_CONFIGURE == prismShutdownMode) || (WAVE_SHUTDOWN_STANDBY_CONFIGURE == prismShutdownMode))
+    if ((WAVE_SHUTDOWN_SECONDARY_CONFIGURE == waveShutdownMode) || (WAVE_SHUTDOWN_STANDBY_CONFIGURE == waveShutdownMode))
     {
         m_pWaveShutdownAgent = new WaveSecondaryNodeConfigureShutdownAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if ((WAVE_SHUTDOWN_SECONDARY_REJOIN == prismShutdownMode) || (WAVE_SHUTDOWN_SECONDARY_ROLLBACK == prismShutdownMode))
+    else if ((WAVE_SHUTDOWN_SECONDARY_REJOIN == waveShutdownMode) || (WAVE_SHUTDOWN_SECONDARY_ROLLBACK == waveShutdownMode))
     {
         m_pWaveShutdownAgent = new WaveSecondaryNodeRejoinShutdownAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, string ("WaveFinalizeWorker::chooseAShutdownAgentStep : Unknown Wave Shutdown Mode : ") + (UI32) prismShutdownMode);
+        trace (TRACE_LEVEL_FATAL, string ("WaveFinalizeWorker::chooseAShutdownAgentStep : Unknown Wave Shutdown Mode : ") + (UI32) waveShutdownMode);
         waveAssert (false, __FILE__, __LINE__);
     }
 

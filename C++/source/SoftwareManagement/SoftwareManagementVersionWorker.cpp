@@ -53,8 +53,8 @@ void SoftwareManagementVersionWorker::softwareManagementGetVersionMessageHandler
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::getVersionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&SoftwareManagementVersionWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pSoftwareManagementGetVersionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

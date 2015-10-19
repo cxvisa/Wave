@@ -45,8 +45,8 @@ void FrameworkCoreTestObjectManager::testRequestHandler (RegressionTestMessage *
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::frameworkCoreTestFormattedErrorStringValidationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkCoreTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

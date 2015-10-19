@@ -20,13 +20,13 @@ class WaveFinalizeWorkerShutdownServicesContext : public WaveSynchronousLinearSe
     public :
                         WaveFinalizeWorkerShutdownServicesContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                        ~WaveFinalizeWorkerShutdownServicesContext ();
-        void                setWaveShutdownMode                               (const WaveShutdownMode &prismShutdownMode);
+        void                setWaveShutdownMode                               (const WaveShutdownMode &waveShutdownMode);
         WaveShutdownMode   getWaveShutdownMode                               () const;
 
     // Now the data members
 
     private :
-        WaveShutdownMode   m_prismShutdownMode;
+        WaveShutdownMode   m_waveShutdownMode;
 
     protected :
     public :

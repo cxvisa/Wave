@@ -60,7 +60,7 @@ void TimerWorker::addTimer (TimerObjectManagerAddTimerMessage *pMessage)
 
     memset (&timerVal, 0, sizeof (itimerval));
 
-    if (0 != prismSetITimer (&timerVal))
+    if (0 != waveSetITimer (&timerVal))
     {
         // Could not stop the timer. Fatal error. Can not continue.
 
@@ -383,14 +383,14 @@ int  TimerWorker::restartTimer ()
             timerVal.it_value.tv_sec--;
         }
 
-        int status = prismSetITimer (&timerVal);
+        int status = waveSetITimer (&timerVal);
 
         if (0 != status)
         {
             // This should never happens. This is debug info, in case it happens.
 
-            trace (TRACE_LEVEL_ERROR, string ("Error in prismSetITimer , TimeVal:") + timerVal.it_value.tv_sec + string (":") + timerVal.it_value.tv_usec);
-            //cout << "Error in prismSetITimer , TimeVal:" << timerVal.it_value.tv_sec << ":" << timerVal.it_value.tv_usec << endl;
+            trace (TRACE_LEVEL_ERROR, string ("Error in waveSetITimer , TimeVal:") + timerVal.it_value.tv_sec + string (":") + timerVal.it_value.tv_usec);
+            //cout << "Error in waveSetITimer , TimeVal:" << timerVal.it_value.tv_sec << ":" << timerVal.it_value.tv_usec << endl;
         }
 
         return status;
@@ -466,7 +466,7 @@ void TimerWorker::deleteTimer (TimerObjectManagerDeleteTimerMessage *pMessage)
 
     memset (&timerVal, 0, sizeof (itimerval));
 
-    if (0 != prismSetITimer (&timerVal))
+    if (0 != waveSetITimer (&timerVal))
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteTimer : Could not disable timer.");
         waveAssert (false, __FILE__, __LINE__);
@@ -595,7 +595,7 @@ void TimerWorker::deleteAllTimersForService (TimerObjectManagerDeleteAllTimersFo
 
     memset (&timerVal, 0, sizeof (itimerval));
 
-    if (0 != prismSetITimer (&timerVal))
+    if (0 != waveSetITimer (&timerVal))
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteAllTimersForService : Could not disable timer.");
         waveAssert (false, __FILE__, __LINE__);
@@ -707,7 +707,7 @@ void TimerWorker::deleteAllTimers ()
 
     memset (&timerVal, 0, sizeof (itimerval));
 
-    if (0 != prismSetITimer (&timerVal))
+    if (0 != waveSetITimer (&timerVal))
     {
         trace (TRACE_LEVEL_ERROR, "TimerWorker::deleteAllTimers : Could not disable timer.");
         waveAssert (false, __FILE__, __LINE__);

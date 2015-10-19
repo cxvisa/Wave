@@ -143,8 +143,8 @@ void DistributedLogObjectManager::initialize (WaveAsynchronousContextForBootPhas
         {
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromConfigurationMOStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromEntriesMOStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
         };
 
         DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext = new DistributedLogSynchronousLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -161,11 +161,11 @@ void DistributedLogObjectManager::install (WaveAsynchronousContextForBootPhases 
 
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogInstallDefaultConfigurationMOStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext = new DistributedLogSynchronousLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -185,8 +185,8 @@ void DistributedLogObjectManager::haboot (WaveAsynchronousContextForBootPhases *
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromConfigurationMOStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromEntriesMOStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext = new DistributedLogSynchronousLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -412,12 +412,12 @@ void DistributedLogObjectManager::distributedLogAddLogEntryMessageHandler (Distr
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogSetupADelayedCommitTransactionIfRequiredStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogAddLogEntryStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateFirstAndNextLogIdStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     pDistributedLogAddLogEntryMessage->setIsConfigurationChange (false);
@@ -432,8 +432,8 @@ void DistributedLogObjectManager::distributedLogUpdateInMemoryLogIdMessageHandle
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateInMemoryObjectsFromEntriesMOStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext = new DistributedLogSynchronousLinearSequencerContext (pDistributedLogUpdateLogIdMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -445,12 +445,12 @@ void DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesMessageHandle
 {
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogRemoveLogEntriesIfRequiredStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     pDistributedLogUpdateMaxLogEntriesMessage->setIsConfigurationChange (false);

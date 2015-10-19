@@ -668,9 +668,9 @@ WaveServiceId WaveWorker::getServiceId ()
     return (m_pWaveObjectManager->getServiceId ());
 }
 
-void WaveWorker::listenForEvent (WaveServiceId prismServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
+void WaveWorker::listenForEvent (WaveServiceId waveServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
 {
-    m_pWaveObjectManager->listenForEvent (prismServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
+    m_pWaveObjectManager->listenForEvent (waveServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
 }
 
 ResourceId WaveWorker::sendSynchronouslyToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance)

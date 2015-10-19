@@ -42,13 +42,13 @@ WaveMessageStatus WaveClientTransportObjectManager::MessageMap::addMessage (Mana
 {
     lockAccess ();
 
-    UI32                        prismMessageId                  = pManagementInterfaceMessage->getMessageId ();
-    ManagementInterfaceMessage *pTempManagementInterfaceMessage = findMessage (prismMessageId);
+    UI32                        waveMessageId                  = pManagementInterfaceMessage->getMessageId ();
+    ManagementInterfaceMessage *pTempManagementInterfaceMessage = findMessage (waveMessageId);
     WaveMessageStatus           status                          = WAVE_MESSAGE_SUCCESS;
 
     if (NULL == pTempManagementInterfaceMessage)
     {
-        m_messagesMap[prismMessageId] = pManagementInterfaceMessage;
+        m_messagesMap[waveMessageId] = pManagementInterfaceMessage;
         status                        = WAVE_MESSAGE_SUCCESS;
     }
     else
@@ -61,9 +61,9 @@ WaveMessageStatus WaveClientTransportObjectManager::MessageMap::addMessage (Mana
     return (status);
 }
 
-ManagementInterfaceMessage *WaveClientTransportObjectManager::MessageMap::findMessage (UI32 prismMessageId)
+ManagementInterfaceMessage *WaveClientTransportObjectManager::MessageMap::findMessage (UI32 waveMessageId)
 {
-    map<UI32, ManagementInterfaceMessage *>::iterator  element                     = m_messagesMap.find (prismMessageId);
+    map<UI32, ManagementInterfaceMessage *>::iterator  element                     = m_messagesMap.find (waveMessageId);
     map<UI32, ManagementInterfaceMessage *>::iterator  end                         = m_messagesMap.end ();
     ManagementInterfaceMessage                        *pManagementInterfaceMessage = NULL;
 
@@ -75,11 +75,11 @@ ManagementInterfaceMessage *WaveClientTransportObjectManager::MessageMap::findMe
     return (pManagementInterfaceMessage);
 }
 
-ManagementInterfaceMessage *WaveClientTransportObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
+ManagementInterfaceMessage *WaveClientTransportObjectManager::MessageMap::removeMessage (UI32 waveMessageId)
 {
     lockAccess ();
 
-    map<UI32, ManagementInterfaceMessage *>::iterator element                      = m_messagesMap.find (prismMessageId);
+    map<UI32, ManagementInterfaceMessage *>::iterator element                      = m_messagesMap.find (waveMessageId);
     map<UI32, ManagementInterfaceMessage *>::iterator end                          = m_messagesMap.end ();
     ManagementInterfaceMessage                        *pManagementInterfaceMessage = NULL;
 
@@ -163,8 +163,8 @@ void WaveClientTransportObjectManager::managementInterfaceMessageHandler (Manage
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::managementInterfaceMessagePostToServerStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveClientTransportObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -418,11 +418,11 @@ void WaveClientTransportObjectManager::replyToBeUsedByReceiverThreads (Managemen
     return;
 }
 
-void WaveClientTransportObjectManager::replyToBeUsedByReceiverThreads (UI32 prismMessageId)
+void WaveClientTransportObjectManager::replyToBeUsedByReceiverThreads (UI32 waveMessageId)
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (waveMessageId);
 
     if (NULL == pWaveMessage)
     {

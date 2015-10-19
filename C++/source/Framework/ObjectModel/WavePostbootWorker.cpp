@@ -29,8 +29,8 @@ void WavePostbootWorker::postbootHandler (WavePostbootObjectManagerMessage *pWav
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WavePostbootWorker::postbootBootWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WavePostbootWorker::postbootBootSelfStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WavePostbootWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WavePostbootWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WavePostbootWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WavePostbootWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWavePostbootObjectManagerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

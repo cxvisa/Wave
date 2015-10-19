@@ -116,9 +116,9 @@ void MessageTracker::deleteFromMessageTracker(const WaveMessage* pWaveMessage)
 }
 
 // private, no-lock.
-void MessageTracker::getMessagesForAThread (const WaveThreadId &prismThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
+void MessageTracker::getMessagesForAThread (const WaveThreadId &waveThreadId, vector<WaveServiceId> &messageServiceIds, vector<UI32> &messageOperationCodes, vector<WaveMessageType> &messageTypes, vector<string> &btStrings)
 {
-    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
+    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator itr1 = m_currentlyAllocatedMessagesByThread.find (waveThreadId);
     map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::const_iterator end1 = m_currentlyAllocatedMessagesByThread.end ();
 
     if (end1 == itr1)
@@ -168,9 +168,9 @@ void MessageTracker::getMessages (const WaveServiceId &waveServiceId, vector<Wav
         return;
     }
 
-    WaveThreadId prismThreadId = pWaveThread->getId ();
+    WaveThreadId waveThreadId = pWaveThread->getId ();
 
-    getMessagesForAThread (prismThreadId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
+    getMessagesForAThread (waveThreadId, messageServiceIds, messageOperationCodes, messageTypes, btStrings);
 
     WaveServiceId serviceIdForReservedWaveLocalObjectManager = ReservedWaveLocalObjectManager::getWaveServiceId ();
 
@@ -235,15 +235,15 @@ void MessageTracker::getMessages (const WaveServiceId &waveServiceId, vector<Wav
     }
 
 #if 0
-    WaveThreadId                                                                  prismThreadId    = (WaveThread::getWaveThreadForServiceId (waveServiceId))->getId ();
-    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadElement    = m_currentlyAllocatedMessagesByThread.find (prismThreadId);
+    WaveThreadId                                                                  waveThreadId    = (WaveThread::getWaveThreadForServiceId (waveServiceId))->getId ();
+    map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadElement    = m_currentlyAllocatedMessagesByThread.find (waveThreadId);
     map<WaveThreadId, map<const WaveMessage *, const WaveMessage *> >::iterator threadEndElement = m_currentlyAllocatedMessagesByThread.end  ();
 
     string btstring = "";
     if (threadEndElement != threadElement)
     {
-        map<const WaveMessage *, const WaveMessage *>::iterator messageElement    = m_currentlyAllocatedMessagesByThread[prismThreadId].begin ();
-        map<const WaveMessage *, const WaveMessage *>::iterator messageEndElement = m_currentlyAllocatedMessagesByThread[prismThreadId].end   ();
+        map<const WaveMessage *, const WaveMessage *>::iterator messageElement    = m_currentlyAllocatedMessagesByThread[waveThreadId].begin ();
+        map<const WaveMessage *, const WaveMessage *>::iterator messageEndElement = m_currentlyAllocatedMessagesByThread[waveThreadId].end   ();
 
         while (messageEndElement != messageElement)
         {

@@ -470,7 +470,7 @@ size_t WaveFrameworkConfiguration::getSchemaChangeInfo (vector<string> & managed
 }
 
 /*
- * Save the prism Configuration after updating the vectors
+ * Save the wave Configuration after updating the vectors
  */
 bool WaveFrameworkConfiguration::setSchemaChangeInfo (vector<string> & managedObjectNames, vector<string> & managedObjectFieldNamesStrings,vector<string> & managedObjectFieldTypesStrings,vector<UI32> & classIds, vector<UI32> & parentClassIds, vector<string> & userDefinedKeyCombinationsFieldNamesForSchemaChange, vector<string> & userDefinedKeyCombinationsFieldTypesForSchemaChange, vector<string> &fieldNamesExpandedTypesForSchemaChange)
 {

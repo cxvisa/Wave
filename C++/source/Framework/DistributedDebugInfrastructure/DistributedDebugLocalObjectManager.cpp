@@ -189,8 +189,8 @@ void  DistributedDebugLocalObjectManager::runDebugScriptOnClusterMemberMessageHa
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedDebugLocalObjectManager::executeScriptStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep>(&DistributedDebugLocalObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pRunDebugScriptMessageHandlerContext = new WaveSynchronousLinearSequencerContext (pRunDebugScriptOnClusterMemberMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

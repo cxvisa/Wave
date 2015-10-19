@@ -16,9 +16,9 @@ namespace WaveNs
 {
 
 #ifdef __ZVM__
-static UI32 s_prismPosixThreadStackSize = PTHREAD_STACK_MIN * 4 * 32;
+static UI32 s_wavePosixThreadStackSize = PTHREAD_STACK_MIN * 4 * 32;
 #else
-static UI32 s_prismPosixThreadStackSize = PTHREAD_STACK_MIN * 16;
+static UI32 s_wavePosixThreadStackSize = PTHREAD_STACK_MIN * 16;
 #endif
 
 WavePosixThread::WavePosixThread (const UI32 &stackSize)
@@ -32,11 +32,11 @@ WavePosixThread::WavePosixThread (const UI32 &stackSize)
 
     if (0 == m_stackSize)
     {
-        m_stackSize = s_prismPosixThreadStackSize; // The default Stack Size.
+        m_stackSize = s_wavePosixThreadStackSize; // The default Stack Size.
     }
 }
 
-WavePosixThread::WavePosixThread (const WavePosixThread &prismPosixThread)
+WavePosixThread::WavePosixThread (const WavePosixThread &wavePosixThread)
 {
     WaveNs::trace (TRACE_LEVEL_FATAL, "WavePosixThread::WavePosixThread : Copy constructing a WavePosixThread does not make sense and hence not allowed.");
     WaveNs::waveAssert (false, __FILE__, __LINE__);
@@ -47,7 +47,7 @@ WavePosixThread::~WavePosixThread ()
     WaveFrameworkObjectManager::removeWaveThreadId (m_pThreadId);
 }
 
-WavePosixThread &WavePosixThread::operator = (const WavePosixThread &prismPosixThread)
+WavePosixThread &WavePosixThread::operator = (const WavePosixThread &wavePosixThread)
 {
     WaveNs::trace (TRACE_LEVEL_FATAL, "WavePosixThread::operator = : Assigning to a WavePosixThread does not make sense and hence not allowed.");
     WaveNs::waveAssert (false, __FILE__, __LINE__);
@@ -70,11 +70,11 @@ WaveThreadStatus WavePosixThread::run ()
     // http://www.gnu.org/software/libc/manual/html_mono/libc.html#Threads%20and%20Signal%20Handling
     // This works on GNU/Linux as well as Net BSD systems.
 
-    prismInstallSigIntHandler ();
+    waveInstallSigIntHandler ();
 
     if (0 == signalMaskIndicator)
     {
-        prismBlockSignals ();
+        waveBlockSignals ();
 
         signalMaskIndicator = 1;
 

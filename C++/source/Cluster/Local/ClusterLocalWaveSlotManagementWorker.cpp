@@ -218,12 +218,12 @@ void ClusterLocalWaveSlotManagementWorker::slotOnlineMessageHandler (ClusterLoca
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::getSlotObjects),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::validateSlotAdd),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::createOrUpdateSlotManagedObject),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::createCompositionAssociationIfNewSlotMO),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
     ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pClusterLocalSlotOnlineMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -312,11 +312,11 @@ void ClusterLocalWaveSlotManagementWorker::slotOfflineMessageHandler (ClusterLoc
 
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::getSlotObjects),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::validateSlotUpdate),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::updateSlotManagedObject),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
     ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pClusterLocalSlotOfflineMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -400,12 +400,12 @@ void ClusterLocalWaveSlotManagementWorker::slotRemoveMessageHandler (ClusterLoca
     {
 
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::getSlotObjects),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::removeSlotCompositionAssociation),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::removeSlot),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
     ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pSlotRemoveMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -471,11 +471,11 @@ void ClusterLocalWaveSlotManagementWorker::slotRemoveAllMessageHandler (ClusterL
 
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::removeAllSlots),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&ClusterLocalWaveSlotManagementWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
     ClusterLocalMessagingContext *pClusterLocalMessagingContext = new ClusterLocalMessagingContext (reinterpret_cast<WaveMessage *> (pSlotRemoveAllMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

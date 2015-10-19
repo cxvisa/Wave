@@ -86,7 +86,7 @@ WaveServiceId ApplicationServiceUtils::getWaveServiceIdForApplicationServiceId (
     return (applicationServiceWaveServiceId);
 }
 
-ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceId &sendingApplicationWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &receivingApplicationwaveServiceId, const LocationId &prismLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext)
+ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceId &sendingApplicationWaveServiceId, void *pPayLoad, const UI32 &payLoadLength, const WaveServiceId &receivingApplicationwaveServiceId, const LocationId &waveLocationId, ApplicationServiceCallback pApplicationServiceCallback, void *pApplicationContext)
 {
     ApplicationServiceMessage *pApplicationServiceMessage = new ApplicationServiceMessage (getWaveServiceIdForApplicationServiceId (receivingApplicationwaveServiceId));
     ResourceId                 status                     = WAVE_MESSAGE_ERROR;
@@ -114,7 +114,7 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
 
         waveAssert (NULL != pApplicationLocalService, __FILE__, __LINE__);
 
-        status = pApplicationLocalService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationLocalService::applicationLocalServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
+        status = pApplicationLocalService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationLocalService::applicationLocalServiceMessageCallback), pApplicationServiceSendContext, 0, waveLocationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -127,7 +127,7 @@ ResourceId ApplicationServiceUtils::sendToApplicationService (const WaveServiceI
 
         waveAssert (NULL != pApplicationService, __FILE__, __LINE__);
 
-        status = pApplicationService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationService::applicationServiceMessageCallback), pApplicationServiceSendContext, 0, prismLocationId);
+        status = pApplicationService->send (pApplicationServiceMessage, reinterpret_cast<WaveMessageResponseHandler> (&ApplicationService::applicationServiceMessageCallback), pApplicationServiceSendContext, 0, waveLocationId);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {

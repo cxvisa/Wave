@@ -34,7 +34,7 @@ class WaveFinalizeWorker : protected WaveWorker
     public :
                             WaveFinalizeWorker   (WaveObjectManager *pWaveObjectManager);
                 virtual    ~WaveFinalizeWorker   ();
-                ResourceId  shutdownWaveServices (const WaveShutdownMode &prismShutdownMode = WAVE_SHUTDOWN_SECONDARY_CONFIGURE);
+                ResourceId  shutdownWaveServices (const WaveShutdownMode &waveShutdownMode = WAVE_SHUTDOWN_SECONDARY_CONFIGURE);
 
     // Now the data members
 

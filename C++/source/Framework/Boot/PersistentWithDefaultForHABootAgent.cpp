@@ -56,8 +56,8 @@ ResourceId PersistentWithDefaultForHABootAgent::execute (const WaveBootPhase &wa
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::installGlobalWaveServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::bootGlobalWaveServicesStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&PersistentWithDefaultForHABootAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -69,11 +69,11 @@ ResourceId PersistentWithDefaultForHABootAgent::execute (const WaveBootPhase &wa
 
 ResourceId PersistentWithDefaultForHABootAgent::createFrameworkConfigurationFromPersistedConfigurationStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)
 {
-    string                      prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    string                      waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     WaveFrameworkConfiguration waveFrameworkConfiguration;
     ResourceId                  status                       = WAVE_MESSAGE_ERROR;
 
-    status = waveFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
+    status = waveFrameworkConfiguration.loadConfiguration (waveConfigurationfileName);
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {

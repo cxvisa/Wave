@@ -435,8 +435,8 @@ void FrameworkTestability6ObjectManager::testRequestHandler(RegressionTestMessag
 
             reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllObjectsTestStep),
 
-            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::waveLinearSequencerFailedStep)
         };
 
         UpgradePersistenceTestContext *pUpgradePersistenceTestContext = new UpgradePersistenceTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -671,8 +671,8 @@ void FrameworkTestability6ObjectManager::frameworkTestabilityMessage11RequestHan
             reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::deleteAllCreatedObjects7TestStep),
 
             reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::simpleOneToManyCompositionQueryTestStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::prismLinearSequencerFailedStep)
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&FrameworkTestability6ObjectManager::waveLinearSequencerFailedStep)
         };
 
         UpgradePersistenceTestContext *pUpgradePersistenceTestContext = new UpgradePersistenceTestContext (pFrameworkTestabilityMessage11, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

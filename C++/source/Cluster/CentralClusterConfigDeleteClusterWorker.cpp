@@ -55,8 +55,8 @@ void CentralClusterConfigDeleteClusterWorker::deleteClusterMessageHandler (Clust
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterStopHeartBeatsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterCommitStep),
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::deleteClusterRequestFrameworkToDeleteClusterStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigDeleteClusterWorker::waveLinearSequencerFailedStep)
     };
 
     ClusterDeleteContext *pClusterDeleteContext = new ClusterDeleteContext (pClusterObjectManagerDeleteClusterMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

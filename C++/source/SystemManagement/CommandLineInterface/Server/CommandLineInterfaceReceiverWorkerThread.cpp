@@ -136,16 +136,16 @@ void CommandLineInterfaceReceiverWorkerThread::processMessages ()
                 {
                     FrameworkStatus                                                         frameworkStatus                                                        = pCommandLineInterfaceWorkerSendContext->getFrameworkStatus             ();
                     WaveMessage                                                           *pWaveMessage                                                          = pCommandLineInterfaceWorkerSendContext->getPWaveMessage               ();
-                    WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = pCommandLineInterfaceWorkerSendContext->getWaveMessageResponseHandler ();
+                    WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread = pCommandLineInterfaceWorkerSendContext->getWaveMessageResponseHandler ();
                     void                                                                   *pWaveMessageContext                                                   = pCommandLineInterfaceWorkerSendContext->getPWaveMessageContext        ();
 
                     waveAssert (NULL != pWaveMessage,                                                          __FILE__, __LINE__);
-                    waveAssert (NULL != prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
+                    waveAssert (NULL != waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, __FILE__, __LINE__);
                     waveAssert (NULL != pWaveMessageContext,                                                   __FILE__, __LINE__);
 
                     delete pCommandLineInterfaceWorkerSendContext;
 
-                    (this->*prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread) (frameworkStatus, pWaveMessage, pWaveMessageContext);
+                    (this->*waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread) (frameworkStatus, pWaveMessage, pWaveMessageContext);
                 }
             }
 
@@ -320,9 +320,9 @@ WaveThreadStatus CommandLineInterfaceReceiverWorkerThread::start()
     return (WAVE_THREAD_SUCCESS);
 }
 
-WaveMessageStatus CommandLineInterfaceReceiverWorkerThread::send (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId)
+WaveMessageStatus CommandLineInterfaceReceiverWorkerThread::send (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, UI32 timeOutInMilliSeconds, LocationId locationId)
 {
-    return (m_pCommandLineInterfaceReceiverObjectManager->send (pWaveMessage, prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext, this, timeOutInMilliSeconds, locationId));
+    return (m_pCommandLineInterfaceReceiverObjectManager->send (pWaveMessage, waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, pWaveMessageContext, this, timeOutInMilliSeconds, locationId));
 }
 
 }

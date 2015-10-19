@@ -72,8 +72,8 @@ void ClusterLocalSetHaRoleWorker::setHaRoleMessageHandler (ClusterLocalSetHaRole
     {
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::updateWaveHaNodeManagedObjectStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetHaRoleWorker::waveLinearSequencerFailedStep)
     };
 
     //Note: Memory is freed inside the framework in the Succeeeded or Failure step

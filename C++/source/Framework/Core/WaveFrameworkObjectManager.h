@@ -599,9 +599,9 @@ class WaveFrameworkObjectManager : WaveLocalObjectManager
                 UI32                         getSyncState                                          ();
                 void                         setSyncState                                          (const UI32& syncState);
                 UI32                         getStandbySyncState                                   ();
-        static void                          addWaveThreadId                                      (const WaveThreadId &prismThreadId);
-        static void                          removeWaveThreadId                                   (const WaveThreadId &prismThreadId);
-        static void                          getAllWaveThreads                                    (map<WaveThreadId, WaveThreadId> &prismThreadsMap);
+        static void                          addWaveThreadId                                      (const WaveThreadId &waveThreadId);
+        static void                          removeWaveThreadId                                   (const WaveThreadId &waveThreadId);
+        static void                          getAllWaveThreads                                    (map<WaveThreadId, WaveThreadId> &waveThreadsMap);
         static void                          deleteAllWaveThreads                                 ();
                 bool                         getWaveConfigurationValidity                         ();
                ClientStreamingSocket*        getClientStreamingSocketForRemoteLocation             (LocationId locationId);

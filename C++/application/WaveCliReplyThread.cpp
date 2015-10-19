@@ -14,7 +14,7 @@ namespace WaveNs
 {
 
 WaveCliReplyThread::WaveCliReplyThread (ManagementInterfaceMessage *pManagementInterfaceMessage)
-    : PrismPosixThread (),
+    : WavePosixThread (),
       m_pManagementInterfaceMessage (pManagementInterfaceMessage)
 {
 }

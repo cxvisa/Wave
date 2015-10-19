@@ -32,11 +32,11 @@ void ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressMessageHandler 
     {
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressValidateStep),
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateWaveFrameworkObjectManagerStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::prismLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::waveLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::setThisNodeIpAddressUpdateThisWaveNodeStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::prismLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::waveLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ClusterLocalSetThisNodeIpAddressWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterLocalSetThisNodeIpAddressMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

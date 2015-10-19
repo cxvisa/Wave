@@ -50,8 +50,8 @@ void FrameworkLocalMessagingTestObjectManager2::testRequestHandler (RegressionTe
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageResponseDeliveryAfterTimeoutTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithTimeout2TestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::simpleAsynchronousMessageWithBuffersWithTimeout2TestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager2::waveLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -382,7 +382,7 @@ void FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Call
         // then we got a timed out delivery, waiting for a second makes sure that the last picked up
         // message will be processed completely before we start the next test.
 
-        prismSleep (1);
+        waveSleep (1);
 
         trace (TRACE_LEVEL_INFO, string ("    Number of Messages Processed       : ") + FrameworkTestability1ObjectManager::getNumberOfProcessedMessage7s ());
     }
@@ -497,7 +497,7 @@ void FrameworkLocalMessagingTestObjectManager2::frameworkTestabilityMessage7Call
         // then we got a timed out delivery, waiting for a second makes sure that the last picked up
         // message will be processed completely before we start the next test.
 
-        prismSleep (1);
+        waveSleep (1);
 
         trace (TRACE_LEVEL_INFO, string ("    Number of Messages Processed       : ") + FrameworkTestability1ObjectManager::getNumberOfProcessedMessage7s ());
     }

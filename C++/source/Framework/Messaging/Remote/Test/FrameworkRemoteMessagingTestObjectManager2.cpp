@@ -57,8 +57,8 @@ void FrameworkRemoteMessagingTestObjectManager2::testRequestHandler (RegressionT
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::synchronousMessageAttributeTest),
         //reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::messageCloningTestStep),
         //reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::messageCloningWithBuffersTestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager2::waveLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

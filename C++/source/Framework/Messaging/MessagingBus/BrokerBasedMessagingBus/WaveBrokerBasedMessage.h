@@ -21,9 +21,9 @@ class WaveBrokerBasedMessage : public SerializableObject
             protected :
             public :
                                               WaveBrokerBasedMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMesage = false);
-                                              WaveBrokerBasedMessageBuffer (const WaveBrokerBasedMessageBuffer &prismMessagebuffer);
+                                              WaveBrokerBasedMessageBuffer (const WaveBrokerBasedMessageBuffer &waveMessagebuffer);
                                              ~WaveBrokerBasedMessageBuffer ();
-                WaveBrokerBasedMessageBuffer  &operator =                  (const WaveBrokerBasedMessageBuffer &prismMessageBuffer);
+                WaveBrokerBasedMessageBuffer  &operator =                  (const WaveBrokerBasedMessageBuffer &waveMessageBuffer);
 
                 void                           destroy                     ();
                 UI32                           getSize                     () const;

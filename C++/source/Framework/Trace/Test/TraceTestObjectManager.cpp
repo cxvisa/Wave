@@ -55,8 +55,8 @@ void TraceTestObjectManager::testRequestHandler (RegressionTestMessage *pRegress
         reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::clearTraceClientsInformationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::getTraceClientsInformationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::displayTraceClientsInformationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TraceTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     TraceTestContext *pTraceTestContext = new TraceTestContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

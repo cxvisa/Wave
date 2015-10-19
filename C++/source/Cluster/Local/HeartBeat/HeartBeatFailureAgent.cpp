@@ -34,8 +34,8 @@ ResourceId HeartBeatFailureAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::getListOfEnabledServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::sendHeartBeatFailureStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HeartBeatFailureAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     HeartBeatFailureAgentContext *pHeartBeatFailureAgentContext = new HeartBeatFailureAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -71,9 +71,9 @@ ResourceId HeartBeatFailureAgent::sendHeartBeatFailureStep (HeartBeatFailureAgen
             continue;
         }
 
-        WaveHeartbeatFailureObjectManagerMessage *prismHeartbeatFailureObjectManagerMessage = new WaveHeartbeatFailureObjectManagerMessage (serviceIdsToSendHeartBeatFailure[i], m_ipAddress, m_portNumber);
+        WaveHeartbeatFailureObjectManagerMessage *waveHeartbeatFailureObjectManagerMessage = new WaveHeartbeatFailureObjectManagerMessage (serviceIdsToSendHeartBeatFailure[i], m_ipAddress, m_portNumber);
 
-        ResourceId status = sendOneWay (prismHeartbeatFailureObjectManagerMessage);
+        ResourceId status = sendOneWay (waveHeartbeatFailureObjectManagerMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {

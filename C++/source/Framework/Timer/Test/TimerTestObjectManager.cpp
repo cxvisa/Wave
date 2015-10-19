@@ -51,8 +51,8 @@ void TimerTestObjectManager::testRequestHandler (RegressionTestMessage *pMessage
         reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::timerShowStatStep),
         reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::timerCancelTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::periodicTimerCancelTestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&TimerTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     FrameworkTimerTestContext *pFrameworkTimerTestContext = new FrameworkTimerTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -348,7 +348,7 @@ void TimerTestObjectManager::timerCancelTestStep (FrameworkTimerTestContext *pFr
     gettimeofday (&m_endSendTime, NULL);
     trace (TRACE_LEVEL_INFO, "Timer Cancel. Sent All timer messages and now waiting for timers to expire.");
 
-    prismSleep (10);
+    waveSleep (10);
     trace (TRACE_LEVEL_INFO, "Timer Cancel. Timer should have expired by now. We will try to cancel them");
 
     while (timeDataList.size () > 0)
@@ -425,7 +425,7 @@ void TimerTestObjectManager::periodicTimerCancelTestStep (FrameworkTimerTestCont
     gettimeofday (&m_endSendTime, NULL);
     trace (TRACE_LEVEL_INFO, "Timer Cancel. Sent All timer messages and now waiting for timers to expire.");
 
-    prismSleep (10);
+    waveSleep (10);
     trace (TRACE_LEVEL_INFO, "Timer Cancel. Timer should have expired by now. We will try to cancel them");
 
     while (timeDataList.size () > 0)

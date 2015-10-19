@@ -45,11 +45,11 @@ WaveManagedObjectUpdateContext::~WaveManagedObjectUpdateContext ()
 
     m_attributes.clear ();
 
-    UI32 numberOfSynchronousContext = m_prismAsynchronousContext.size ();
+    UI32 numberOfSynchronousContext = m_waveAsynchronousContext.size ();
 
     for (UI32 i = 0; i < numberOfSynchronousContext; i++)
     {
-        WaveAsynchronousContext *pWaveAsynchronousContext = m_prismAsynchronousContext [i];
+        WaveAsynchronousContext *pWaveAsynchronousContext = m_waveAsynchronousContext [i];
 
         if (NULL != pWaveAsynchronousContext)
         {
@@ -58,7 +58,7 @@ WaveManagedObjectUpdateContext::~WaveManagedObjectUpdateContext ()
         }
     }
 
-    m_prismAsynchronousContext.clear ();
+    m_waveAsynchronousContext.clear ();
 }
 
 ObjectId WaveManagedObjectUpdateContext::getInputWaveManagedObjectId () const
@@ -174,9 +174,9 @@ void WaveManagedObjectUpdateContext::setErrorInCreatingMO (const ResourceId &err
     m_errorInCreatingMO = errorInCreatingMO;
 }
 
-void WaveManagedObjectUpdateContext::addAysnchronousContextForGarbageCollection   (WaveAsynchronousContext *prismAsynchronousContext)
+void WaveManagedObjectUpdateContext::addAysnchronousContextForGarbageCollection   (WaveAsynchronousContext *waveAsynchronousContext)
 {
-    m_prismAsynchronousContext.push_back (prismAsynchronousContext);
+    m_waveAsynchronousContext.push_back (waveAsynchronousContext);
 }
 
 void WaveManagedObjectUpdateContext::addManagedObjectForGarbageCollection (WaveManagedObject *pWaveManagedObjectForGarbageCollection)

@@ -50,13 +50,13 @@ namespace WaveNs
 
 static WaveMutex s_timerMutex;
 
-unsigned int prismSleep (unsigned int numberOfSecondsToSleep)
+unsigned int waveSleep (unsigned int numberOfSecondsToSleep)
 {
     Sleep (numberOfSecondsToSleep * 1000);
     return (0);
 }
 
-void prismSysLog (char *pStringToLog)
+void waveSysLog (char *pStringToLog)
 {
 }
 
@@ -105,21 +105,21 @@ void getIpAddressesForThisHost (vector<string> &ipAddressesForThisHost)
     }
 }
 
-int prismCloseSocket (int fd)
+int waveCloseSocket (int fd)
 {
     return (closesocket (fd));
 }
 
-void prismBlockSignals ()
+void waveBlockSignals ()
 {
 }
 
-char *prismGetCwd (char *buf, size_t size)
+char *waveGetCwd (char *buf, size_t size)
 {
     return (_getcwd (buf, size));
 }
 
-void prismCreateWaitableTimer ()
+void waveCreateWaitableTimer ()
 {
     hTimer = CreateWaitableTimer (NULL, FALSE, NULL); // Synchronization Timer
 
@@ -130,7 +130,7 @@ void prismCreateWaitableTimer ()
     }
 }
 
-void prismWaitForAlarmSignal ()
+void waveWaitForAlarmSignal ()
 {
     BOOL bRet;
     MSG  msg;
@@ -148,7 +148,7 @@ void prismWaitForAlarmSignal ()
     }
 }
 
-int prismSetITimer (struct itimerval *pItimerValue)
+int waveSetITimer (struct itimerval *pItimerValue)
 {
     s_timerMutex.lock ();
 
@@ -198,7 +198,7 @@ HANDLE getWaveTimerHandle ()
     return (pHandle);
 }
 
-void prismSetConsoleTextColor (TraceLevel requestedTraceLevel)
+void waveSetConsoleTextColor (TraceLevel requestedTraceLevel)
 {
     static HANDLE hStdOut = GetStdHandle (STD_OUTPUT_HANDLE);
 
@@ -236,7 +236,7 @@ void prismSetConsoleTextColor (TraceLevel requestedTraceLevel)
     }
 }
 
-void prismResetConsoleTextColor ()
+void waveResetConsoleTextColor ()
 {
     static HANDLE hStdOut = GetStdHandle (STD_OUTPUT_HANDLE);
 

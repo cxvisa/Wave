@@ -57,8 +57,8 @@ void WaveDebugInformationWorker::getDebugInformationHandler (WaveObjectManagerGe
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::getDebugInformationWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::getDebugInformationObjectManagerStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::waveLinearSequencerFailedStep),
     };
 
     WaveDebugInformationContext *pWaveDebugInformationContext = new WaveDebugInformationContext (pWaveObjectManagerGetDebugInformationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -203,8 +203,8 @@ void WaveDebugInformationWorker::resetDebugInformationHandler (WaveObjectManager
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::resetDebugInformationWorkersStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::resetDebugInformationObjectManagerStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveDebugInformationWorker::waveLinearSequencerFailedStep),
     };
 
     WaveDebugInformationContext *pWaveDebugInformationContext = new WaveDebugInformationContext (pWaveObjectManagerResetDebugInformationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

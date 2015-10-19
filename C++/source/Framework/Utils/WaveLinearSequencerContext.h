@@ -43,9 +43,9 @@ class WaveLinearSequencerContext
     public :
                                              WaveLinearSequencerContext                   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                              WaveLinearSequencerContext                   (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                             WaveLinearSequencerContext                   (const WaveLinearSequencerContext &prismLinearSequencerContext);
+                                             WaveLinearSequencerContext                   (const WaveLinearSequencerContext &waveLinearSequencerContext);
         virtual                             ~WaveLinearSequencerContext                   ();
-                WaveLinearSequencerContext &operator =                                    (const WaveLinearSequencerContext &prismLinearSequencerContext);
+                WaveLinearSequencerContext &operator =                                    (const WaveLinearSequencerContext &waveLinearSequencerContext);
                 ResourceId                   getCompletionStatus                           ();
                 void                         start                                         ();
                 void                         executeNextStep                               (const ResourceId &currentStepStatus);

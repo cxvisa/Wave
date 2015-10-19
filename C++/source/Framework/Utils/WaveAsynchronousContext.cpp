@@ -20,7 +20,7 @@ WaveAsynchronousContext::WaveAsynchronousContext (WaveElement *pCaller, WaveAsyn
     m_completionStatus = WAVE_MESSAGE_ERROR;
 }
 
-WaveAsynchronousContext::WaveAsynchronousContext (const WaveAsynchronousContext &prismAsynchronousContext)
+WaveAsynchronousContext::WaveAsynchronousContext (const WaveAsynchronousContext &waveAsynchronousContext)
     : m_pCaller (NULL),
       m_pCallback (NULL),
       m_pCallerContext (NULL)
@@ -34,7 +34,7 @@ WaveAsynchronousContext::~WaveAsynchronousContext ()
     garbageCollect ();
 }
 
-WaveAsynchronousContext &WaveAsynchronousContext::operator = (const WaveAsynchronousContext &prismAsynchronousContext)
+WaveAsynchronousContext &WaveAsynchronousContext::operator = (const WaveAsynchronousContext &waveAsynchronousContext)
 {
     trace (TRACE_LEVEL_FATAL, "WaveAsynchronousContext::operator = : Assigning to a WaveAsynchronousContext does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);

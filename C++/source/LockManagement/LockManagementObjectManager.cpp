@@ -146,8 +146,8 @@ void LockManagementObjectManager::executeAcquireLockMessageHandler (LockManageme
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::setServiceStringFromAcquireMessageStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::queryLockManagedObjectFromServiceStringStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::createLockManagedObjectInDataBaseStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     LockManagementMessagingContext *pLockManagementMessagingContext = new LockManagementMessagingContext (reinterpret_cast<WaveMessage*> (pLockManagementObjectManagerAcquireLockMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -289,8 +289,8 @@ void LockManagementObjectManager::executeReleaseLockMessageHandler (LockManageme
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::setServiceStringFromReleaseMessageStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::queryLockManagedObjectFromServiceStringStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::deleteLockManagedObjectFromDataBaseStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&LockManagementObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     LockManagementMessagingContext *pLockManagementMessagingContext = new LockManagementMessagingContext (reinterpret_cast<WaveMessage*> (pLockManagementObjectManagerReleaseLockMessage), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

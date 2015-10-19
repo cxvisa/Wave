@@ -30,8 +30,8 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
                                             MessageMap                  ();
                                             ~MessageMap                  ();
                 WaveMessageStatus           addMessage                  (ManagementInterfaceMessage *pManagementInterfaceMessage);
-                ManagementInterfaceMessage *findMessage                 (UI32 prismMessageId);
-                ManagementInterfaceMessage *removeMessage               (UI32 prismMessageId);
+                ManagementInterfaceMessage *findMessage                 (UI32 waveMessageId);
+                ManagementInterfaceMessage *removeMessage               (UI32 waveMessageId);
                 void                        getPendingMessagesForServer (const UI32 &serverId, vector<ManagementInterfaceMessage *> &messagesVector);
 
             // Now the data members
@@ -59,7 +59,7 @@ class WaveClientTransportObjectManager : public WaveLocalObjectManager
         void                        callbackForSendUsedByReceiverThreads            (FrameworkStatus frameworkStatus, ManagementInterfaceMessage *pManagementInterfaceMessage, void *pContext);
         ManagementInterfaceMessage *getPendingMessage                               (const UI32 &messageId);
         void                        replyToBeUsedByReceiverThreads                  (ManagementInterfaceMessage *pManagementInterfaceMessage);
-        void                        replyToBeUsedByReceiverThreads                  (UI32 prismMessageId);
+        void                        replyToBeUsedByReceiverThreads                  (UI32 waveMessageId);
         void                        getPendingMessagesForServer                     (const UI32 &serverId, vector<ManagementInterfaceMessage *> &messagesVector);
         void                        replyToRemoteMessagesPendingForServer           (const UI32 &serverId, ResourceId completionStatus);
 

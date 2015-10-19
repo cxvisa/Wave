@@ -48,8 +48,8 @@ ResourceId WavePostbootAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WavePostbootAgent::sendPostbootPassStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WavePostbootAgent::notifyPostbootCompletedStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WavePostbootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WavePostbootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WavePostbootAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WavePostbootAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WavePostbootAgentContext *pWavePostbootAgentContext = new WavePostbootAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -239,9 +239,9 @@ ResourceId WavePostbootAgent::sendPostbootPassStep (WavePostbootAgentContext *pW
             // Create a message with the serviceId & the pass number. This message will be sent to the plugins
 
             trace (TRACE_LEVEL_INFO, string("WavePostbootAgent::sendPostbootPassStep: Sending postboot message to serviceId:") + FrameworkToolKit::getServiceNameById (serviceId) + string(" with passNum:") + passNum + string(" passName:") + passName + string(" parameter:") + m_parameter + string(" recoveryType:") + m_recoveryType);
-            WavePostbootObjectManagerMessage prismPostbootObjectManagerMessage (serviceId, passNum, passName, m_parameter, m_recoveryType);
+            WavePostbootObjectManagerMessage wavePostbootObjectManagerMessage (serviceId, passNum, passName, m_parameter, m_recoveryType);
 
-            ResourceId status = sendSynchronously (&prismPostbootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&wavePostbootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -251,7 +251,7 @@ ResourceId WavePostbootAgent::sendPostbootPassStep (WavePostbootAgentContext *pW
             }
             else
             {
-                if (WAVE_MESSAGE_SUCCESS != prismPostbootObjectManagerMessage.getCompletionStatus ())
+                if (WAVE_MESSAGE_SUCCESS != wavePostbootObjectManagerMessage.getCompletionStatus ())
                 {
                     trace (TRACE_LEVEL_FATAL, string("WavePostbootAgent::sendPostbootPassStep: Failed to send message"));
                 }

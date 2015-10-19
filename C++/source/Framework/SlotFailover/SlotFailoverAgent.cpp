@@ -32,8 +32,8 @@ ResourceId SlotFailoverAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::getListOfEnabledServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::sendSlotFailoverStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SlotFailoverAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     SlotFailoverAgentContext *pSlotFailoverAgentContext = new SlotFailoverAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -67,9 +67,9 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
             continue;
         }
 
-        WaveSlotFailoverObjectManagerMessage *prismSlotFailoverObjectManagerMessage = new WaveSlotFailoverObjectManagerMessage (serviceIdsToSendSlotFailover[i], m_slotNumber);
+        WaveSlotFailoverObjectManagerMessage *waveSlotFailoverObjectManagerMessage = new WaveSlotFailoverObjectManagerMessage (serviceIdsToSendSlotFailover[i], m_slotNumber);
 
-        ResourceId status = sendSynchronously (prismSlotFailoverObjectManagerMessage);
+        ResourceId status = sendSynchronously (waveSlotFailoverObjectManagerMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -78,7 +78,7 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
         }
         else
         {
-            status = prismSlotFailoverObjectManagerMessage->getCompletionStatus ();
+            status = waveSlotFailoverObjectManagerMessage->getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -91,7 +91,7 @@ ResourceId SlotFailoverAgent::sendSlotFailoverStep (SlotFailoverAgentContext *pS
             }
         }
 
-        delete prismSlotFailoverObjectManagerMessage;
+        delete waveSlotFailoverObjectManagerMessage;
     }
 
     return (WAVE_MESSAGE_SUCCESS);

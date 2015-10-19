@@ -58,8 +58,8 @@ ResourceId MultiPartitionGlobalCleanupAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::getListOfEnabledServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionGlobalCleanupAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     MultiPartitionGlobalCleanupAgentContext *pMultiPartitionGlobalCleanupAgentContext = new MultiPartitionGlobalCleanupAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -104,27 +104,27 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
 
         ObjectId ownerPartitionManagedObjectId = getOwnerPartitionManagedObjectId ();
 
-        WaveMultiPartitionCleanupObjectManagerMessage *prismMultiPartitionCleanupObjectManagerMessage = new WaveMultiPartitionCleanupObjectManagerMessage (serviceIdsToSendMultiPartitionCleanup[i], m_partitionName, ownerPartitionManagedObjectId );
+        WaveMultiPartitionCleanupObjectManagerMessage *waveMultiPartitionCleanupObjectManagerMessage = new WaveMultiPartitionCleanupObjectManagerMessage (serviceIdsToSendMultiPartitionCleanup[i], m_partitionName, ownerPartitionManagedObjectId );
 
         if (true == getIsPartialCleanup ())
         {
             ResourceId partialCleanupTag = getPartialCleanupTag ();
-            prismMultiPartitionCleanupObjectManagerMessage->setPartialCleanupTag (partialCleanupTag);
+            waveMultiPartitionCleanupObjectManagerMessage->setPartialCleanupTag (partialCleanupTag);
         }
 
-        ResourceId status = sendSynchronously (prismMultiPartitionCleanupObjectManagerMessage);
+        ResourceId status = sendSynchronously (waveMultiPartitionCleanupObjectManagerMessage);
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "WaveMultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep: Could not send PartitionCleanup to service: " + FrameworkToolKit::getServiceNameById (serviceIdsToSendMultiPartitionCleanup[i]));
 
-            delete prismMultiPartitionCleanupObjectManagerMessage;
+            delete waveMultiPartitionCleanupObjectManagerMessage;
 
             return (status);
         }
         else
         {
-            status = prismMultiPartitionCleanupObjectManagerMessage->getCompletionStatus ();
+            status = waveMultiPartitionCleanupObjectManagerMessage->getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -137,7 +137,7 @@ ResourceId MultiPartitionGlobalCleanupAgent::sendMultiPartitionGlobalCleanupStep
             }
         }
 
-        delete prismMultiPartitionCleanupObjectManagerMessage;
+        delete waveMultiPartitionCleanupObjectManagerMessage;
     }
 
     return (WAVE_MESSAGE_SUCCESS);

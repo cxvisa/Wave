@@ -47,13 +47,13 @@ WaveMessageStatus ManagementInterfaceObjectManager::MessageMap::addMessage (Mana
 {
     lockAccess ();
 
-    UI32                        prismMessageId                  = pManagementInterfaceMessage->getMessageId ();
-    ManagementInterfaceMessage *pTempManagementInterfaceMessage = findMessage (prismMessageId);
+    UI32                        waveMessageId                  = pManagementInterfaceMessage->getMessageId ();
+    ManagementInterfaceMessage *pTempManagementInterfaceMessage = findMessage (waveMessageId);
     WaveMessageStatus           status                          = WAVE_MESSAGE_SUCCESS;
 
     if (NULL == pTempManagementInterfaceMessage)
     {
-        m_messagesMap[prismMessageId] = pManagementInterfaceMessage;
+        m_messagesMap[waveMessageId] = pManagementInterfaceMessage;
         status                        = WAVE_MESSAGE_SUCCESS;
     }
     else
@@ -66,9 +66,9 @@ WaveMessageStatus ManagementInterfaceObjectManager::MessageMap::addMessage (Mana
     return (status);
 }
 
-ManagementInterfaceMessage *ManagementInterfaceObjectManager::MessageMap::findMessage (UI32 prismMessageId)
+ManagementInterfaceMessage *ManagementInterfaceObjectManager::MessageMap::findMessage (UI32 waveMessageId)
 {
-    map<UI32, ManagementInterfaceMessage *>::iterator  element                     = m_messagesMap.find (prismMessageId);
+    map<UI32, ManagementInterfaceMessage *>::iterator  element                     = m_messagesMap.find (waveMessageId);
     map<UI32, ManagementInterfaceMessage *>::iterator  end                         = m_messagesMap.end ();
     ManagementInterfaceMessage                        *pManagementInterfaceMessage = NULL;
 
@@ -80,11 +80,11 @@ ManagementInterfaceMessage *ManagementInterfaceObjectManager::MessageMap::findMe
     return (pManagementInterfaceMessage);
 }
 
-ManagementInterfaceMessage *ManagementInterfaceObjectManager::MessageMap::removeMessage (UI32 prismMessageId)
+ManagementInterfaceMessage *ManagementInterfaceObjectManager::MessageMap::removeMessage (UI32 waveMessageId)
 {
     lockAccess ();
 
-    map<UI32, ManagementInterfaceMessage *>::iterator element                      = m_messagesMap.find (prismMessageId);
+    map<UI32, ManagementInterfaceMessage *>::iterator element                      = m_messagesMap.find (waveMessageId);
     map<UI32, ManagementInterfaceMessage *>::iterator end                          = m_messagesMap.end ();
     ManagementInterfaceMessage                        *pManagementInterfaceMessage = NULL;
 
@@ -195,8 +195,8 @@ void ManagementInterfaceObjectManager::managementInterfaceMessageHandler (Manage
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::managementInterfaceMessagePostToClientStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -209,8 +209,8 @@ void ManagementInterfaceObjectManager::managementInterfaceClientListHandler (Man
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::getClientsInformation),
-        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&ManagementInterfaceObjectManager::waveLinearSequencerFailedStep)
     };
  
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pManagementInterfaceClientListMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -508,11 +508,11 @@ void ManagementInterfaceObjectManager::replyToBeUsedByReceiverThreads (Managemen
     return;
 }
 
-void ManagementInterfaceObjectManager::replyToBeUsedByReceiverThreads (UI32 prismMessageId)
+void ManagementInterfaceObjectManager::replyToBeUsedByReceiverThreads (UI32 waveMessageId)
 {
     // This method must be protected with locking mechanism since it can be executed from mutiple receiver threads.
 
-    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (prismMessageId);
+    WaveMessage *pWaveMessage = m_remoteMessagesMap.removeMessage (waveMessageId);
 
     if (NULL == pWaveMessage)
     {

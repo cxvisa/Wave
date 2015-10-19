@@ -25,17 +25,17 @@ using namespace std;
 namespace WaveNs
 {
 
-unsigned int prismSleep (unsigned int numberOfSecondsToSleep)
+unsigned int waveSleep (unsigned int numberOfSecondsToSleep)
 {
     return (sleep (numberOfSecondsToSleep));
 }
 
-unsigned int prismUSleep (unsigned int numberOfMicroSecondsToSleep)
+unsigned int waveUSleep (unsigned int numberOfMicroSecondsToSleep)
 {
     return (usleep (numberOfMicroSecondsToSleep));
 }
 
-void prismSysLog (const char * const pStringToLog)
+void waveSysLog (const char * const pStringToLog)
 {
     syslog (LOG_USER | LOG_ERR, "%s", pStringToLog);
 }
@@ -249,12 +249,12 @@ string getStateForInterface (const string &interfaceName)
     return (result);
 }
 
-int prismCloseSocket (int fd)
+int waveCloseSocket (int fd)
 {
     return (close (fd));
 }
 
-void prismBlockSignals ()
+void waveBlockSignals ()
 {
     // The following code massks the SIGALRM and SIGPIPE signals for the entire process.
     // This happens jut before the first ptheread gets created in the system and it only happens
@@ -308,7 +308,7 @@ void sigSegvHandler (int signal)
     Wave::waveExit ();
 }
 
-void prismInstallSigIntHandler ()
+void waveInstallSigIntHandler ()
 {
     struct sigaction signalAction;
 
@@ -325,16 +325,16 @@ void prismInstallSigIntHandler ()
     sigaction (SIGSEGV, &signalAction, NULL);
 }
 
-char *prismGetCwd (char *buf, size_t size)
+char *waveGetCwd (char *buf, size_t size)
 {
     return (getcwd (buf, size));
 }
 
-void prismCreateWaitableTimer ()
+void waveCreateWaitableTimer ()
 {
 }
 
-void prismWaitForAlarmSignal ()
+void waveWaitForAlarmSignal ()
 {
     int             sig;
     sigset_t        signalsToWaitFor;
@@ -345,12 +345,12 @@ void prismWaitForAlarmSignal ()
     sigwait (&signalsToWaitFor, &sig);
 }
 
-int prismSetITimer (struct itimerval *pItimerValue)
+int waveSetITimer (struct itimerval *pItimerValue)
 {
     return (setitimer (ITIMER_REAL, pItimerValue, NULL));
 }
 
-void prismSetConsoleTextColor (TraceLevel requestedTraceLevel)
+void waveSetConsoleTextColor (TraceLevel requestedTraceLevel)
 {
     switch (requestedTraceLevel)
     {
@@ -384,7 +384,7 @@ void prismSetConsoleTextColor (TraceLevel requestedTraceLevel)
     }
 }
 
-void prismResetConsoleTextColor ()
+void waveResetConsoleTextColor ()
 {
     cout << "\033[0m";
 }

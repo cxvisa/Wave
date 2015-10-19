@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2012 Vidyasagara Guntaka                                
  *   All rights reserved.  
- *   Description: This file defines the prism framework service independent
+ *   Description: This file defines the wave framework service independent
  *                messages.  These service independent messages are directly
  *                handled in the HaPeerMessageReceiverThread or 
  *                InterLocationMessageReceiverThread.

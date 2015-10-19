@@ -364,7 +364,7 @@ ClusterObjectManagerRejoinNodeMessage::~ClusterObjectManagerRejoinNodeMessage ()
 /// Name:
 /// setupAttributesForSerialization
 /// Description:
-/// This message is a prismMessage each prismMessage is a serilizableObject
+/// This message is a waveMessage each waveMessage is a serilizableObject
 /// that has a map to store the serializable attributes. Thi method is putting the
 /// attributes into the map
 /// Input
@@ -1209,7 +1209,7 @@ void ClusterConfigObjectManagerGetClusterInfoMessage::getSecondaryNodeDebugInfo(
 /// Name:
 /// setupAttributesForSerialization
 /// Description:
-/// This message is a prismMessage each prismMessage is a serilizableObject
+/// This message is a waveMessage each waveMessage is a serilizableObject
 /// that has a map to store the serializable attributes. Thi method is putting the
 /// attributes into the map
 /// Input

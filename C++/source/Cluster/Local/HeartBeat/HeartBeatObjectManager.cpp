@@ -736,8 +736,8 @@ void HeartBeatObjectManager::disconnectFromNodeMessageHandler(DisconnectFromNode
     {
     reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::validateDisconnectFromNodeRequest),
     reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::processDisconnectFromNodeMessage),
-    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerSucceededStep),
-    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::prismLinearSequencerFailedStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::waveLinearSequencerSucceededStep),
+    reinterpret_cast<WaveLinearSequencerStep> (&HeartBeatObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDisconnectFromNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

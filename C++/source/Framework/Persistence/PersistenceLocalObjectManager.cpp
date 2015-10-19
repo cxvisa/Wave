@@ -269,7 +269,7 @@ void PersistenceLocalObjectManager::setStartupFileMessageHandler (PersistenceLoc
     FrameworkToolKit::setIsStartupValid (false);
     FrameworkToolKit::setStartupFileName (fileName);
 
-    // Setting of regular file is a local operation only. Hence, save the prism configuration
+    // Setting of regular file is a local operation only. Hence, save the wave configuration
     if (WAVE_PERSISTENCE_REGULAR_FILE == pMessage->getStartupFileType ())
     {
         status = FrameworkToolKit::saveWaveConfiguration (false);
@@ -345,7 +345,7 @@ void PersistenceLocalObjectManager::setConfigurationValidMessageHandler( Persist
     status = FrameworkToolKit::changeWaveConfigurationValidity( validity);
     if (WAVE_MESSAGE_SUCCESS != status)
     {
-        trace (TRACE_LEVEL_ERROR, string ("PersistenceLocalObjectManager::setConfigurationValidMessageHandler : Changing prismConfiguration validity failed with status : ") + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, string ("PersistenceLocalObjectManager::setConfigurationValidMessageHandler : Changing waveConfiguration validity failed with status : ") + FrameworkToolKit::localize (status));
     }
 
     pPersistenceLocalObjectManagerSetConfigurationValidMessage->setCompletionStatus (status);
@@ -501,8 +501,8 @@ void PersistenceLocalObjectManager::executeTransactionMessageHandler (Persistenc
         {
             reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::sendTransactionToDatabase),
             reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::handleTransactionResult),
-            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&PersistenceLocalObjectManager::waveLinearSequencerFailedStep),
         };
 
         PersistenceLocalExecuteTransactionContext *pPersistenceLocalExecuteTransactionContext = new PersistenceLocalExecuteTransactionContext (pPersistenceLocalObjectManagerExecuteTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

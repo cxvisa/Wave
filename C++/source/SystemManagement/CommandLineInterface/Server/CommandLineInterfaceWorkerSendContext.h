@@ -19,7 +19,7 @@ class CommandLineInterfaceWorkerSendContext
     private :
     protected :
     public :
-                                                                                CommandLineInterfaceWorkerSendContext (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext);
+                                                                                CommandLineInterfaceWorkerSendContext (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext);
                                                                                ~CommandLineInterfaceWorkerSendContext ();
 
         FrameworkStatus                                                         getFrameworkStatus                    ();
@@ -32,7 +32,7 @@ class CommandLineInterfaceWorkerSendContext
     private :
         FrameworkStatus                                                         m_frameworkStatus;
         WaveMessage                                                           *m_pWaveMessage;
-        WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  m_prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
+        WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread  m_waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread;
         void                                                                   *m_pWaveMessageContext;
 
     protected :

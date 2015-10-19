@@ -23,12 +23,12 @@ WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::WaveBrokerBasedMessageBuff
     }
 }
 
-WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::WaveBrokerBasedMessageBuffer (const WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer &prismMessagebuffer)
+WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::WaveBrokerBasedMessageBuffer (const WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer &waveMessagebuffer)
 {
-    m_size    = prismMessagebuffer.m_size;
+    m_size    = waveMessagebuffer.m_size;
 
     m_pBuffer = new UI8[m_size];
-    memcpy (m_pBuffer, prismMessagebuffer.m_pBuffer, m_size);
+    memcpy (m_pBuffer, waveMessagebuffer.m_pBuffer, m_size);
 }
 
 WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::~WaveBrokerBasedMessageBuffer ()
@@ -36,14 +36,14 @@ WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::~WaveBrokerBasedMessageBuf
     destroy ();
 }
 
-WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer &WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::operator = (const WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer &prismMessagebuffer)
+WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer &WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer::operator = (const WaveBrokerBasedMessage::WaveBrokerBasedMessageBuffer &waveMessagebuffer)
 {
     destroy ();
 
-    m_size    = prismMessagebuffer.m_size;
+    m_size    = waveMessagebuffer.m_size;
 
     m_pBuffer = new UI8[m_size];
-    memcpy (m_pBuffer, prismMessagebuffer.m_pBuffer, m_size);
+    memcpy (m_pBuffer, waveMessagebuffer.m_pBuffer, m_size);
 
     return (*this);
 }

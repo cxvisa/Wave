@@ -36,7 +36,7 @@ class CommandLineInterfaceReceiverWorkerThread : public WavePosixThread, WaveWor
                 CommandLineInterfaceWorkerMessage *getNextCommandLineInterfaceWorkerMessage                     ();
                 void                               processMessages                                              ();
                 void                               processSendCallbacks                                         (CommandLineInterfaceMessage *pCommandLineInterfaceMessage);
-        virtual WaveMessageStatus                  send                                                         (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread prismMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0);
+        virtual WaveMessageStatus                  send                                                         (WaveMessage *pWaveMessage, WaveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread waveMessageResponseHandlerForCommandLineInterfaceReceiverWorkerThread, void *pWaveMessageContext, UI32 timeOutInMilliSeconds = 0, LocationId locationId = 0);
 
         virtual WaveThreadStatus                   start                                                        ();
                 void                               processCommandLineInterfaceMessage                           (CommandLineInterfaceMessage *pCommandLineInterfaceMessage);

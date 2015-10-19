@@ -89,8 +89,8 @@ void FileLocalMessagingTestObjectManager::testRequestHandler (RegressionTestMess
 
         // TODO:Add more tests here for other messages, and messages expected to succeed for correct inputs.
         reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::CleanupTempTestFiles),
-        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FileLocalMessagingTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

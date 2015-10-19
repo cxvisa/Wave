@@ -36,8 +36,8 @@ void DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandMes
 
 	WaveLinearSequencerStep sequencerSteps[] = 	{	 
 		reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerExecuteCursorCommandWorker::executeCursorCfgCommandHandler),
-		reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerExecuteCursorCommandWorker::prismLinearSequencerSucceededStep),	 
-		reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerExecuteCursorCommandWorker::prismLinearSequencerFailedStep),
+		reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerExecuteCursorCommandWorker::waveLinearSequencerSucceededStep),	 
+		reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerExecuteCursorCommandWorker::waveLinearSequencerFailedStep),
 	};
 
 	WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pDatabaseObjectManagerExecuteCursorCfgCommandMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

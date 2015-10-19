@@ -54,8 +54,8 @@ void FrameworkLocalMessagingTestObjectManager::testRequestHandler (RegressionTes
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleRecallFromBackMessageTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::simpleEventTestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkLocalMessagingTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -285,7 +285,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
 
     while (false == (FrameworkTestability1ObjectManager::getAndResetAreMessage6sReceived ()))
     {
-        prismSleep (1);
+        waveSleep (1);
     }
 
     trace (TRACE_LEVEL_INFO, "FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep : The receiver indicated that it saw messages in its incoming queues.  We can proceed to cancel them.");

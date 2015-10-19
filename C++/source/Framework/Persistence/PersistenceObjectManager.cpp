@@ -880,8 +880,8 @@ void PersistenceObjectManager::executeTransactionMessageHandler (PersistenceObje
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executeTransactionSendRequestToAllLocationsForCommittRollbackPhaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executePushWaveConfigurationToFileOnAllLocationsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::executePushWaveConfigurationToKernelOnAllLocationsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = new PersistenceExecuteTransactionContext (pPersistenceObjectManagerExecuteTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), pPersistenceObjectManagerExecuteTransactionMessage->getSql ());
@@ -1542,8 +1542,8 @@ void PersistenceObjectManager::copyFileMessageHandler (PersistenceObjectManagerC
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::copyFileSendRequestToAllLocationsForPreparePhaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::saveWaveConfigurationAtAllLocationsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = new PersistenceExecuteTransactionContext (pPersistenceObjectManagerCopyFileMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), "");
@@ -1667,8 +1667,8 @@ void PersistenceObjectManager::compareDBMessageHandler (PersistenceObjectManager
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::sendGetCksumMessageRequestToAllLocationsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     PersistenceExecuteTransactionContext *pPersistenceExecuteTransactionContext = new PersistenceExecuteTransactionContext (pPersistenceObjectManagerCompareDBMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), "");
@@ -1968,8 +1968,8 @@ void PersistenceObjectManager::addXPathStringsMessageHandler (PersistenceObjectM
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::createXPathStringManagedObjectsStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerAddXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2108,8 +2108,8 @@ void PersistenceObjectManager::deleteXPathStringsMessageHandler (PersistenceObje
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::deleteXPathStringManagedObjectsStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerDeleteXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2186,8 +2186,8 @@ void PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsMessageHand
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::getLastUpdateTimestampsForXPathStringsStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerGetLastUpdateTimestampsForXPathStringsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2258,8 +2258,8 @@ void PersistenceObjectManager::resetXPathStringsTimestampsMessageHandler (Persis
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::resetXPathStringsTimestampsStep),
 
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerResetXPathStringsTimestampsMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2520,8 +2520,8 @@ void PersistenceObjectManager::addDelayedTransactionMessageHandler (PersistenceO
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::addDelayedTransactionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pPersistenceObjectManagerAddDelayedTransactionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

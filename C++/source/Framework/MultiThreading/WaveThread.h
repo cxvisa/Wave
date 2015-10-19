@@ -39,7 +39,7 @@ class WaveThread : public WavePosixThread
         WaveObjectManager *getWaveObjectManagerForOperationCode                  (UI32 operationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCode             (UI32 eventOperationCode);
         WaveObjectManager *getWaveObjectManagerForEventOperationCodeForListening (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
-        WaveObjectManager *getWaveObjectManagerForWaveMessageId                 (UI32 prismMessageId);
+        WaveObjectManager *getWaveObjectManagerForWaveMessageId                 (UI32 waveMessageId);
         WaveObjectManager *getWaveObjectManagerForManagedClass                   (const string &managedClass);
         WaveServiceId      getWaveServiceId                                      () const;
         bool                hasWaveObjectManagers                                 ();
@@ -80,7 +80,7 @@ class WaveThread : public WavePosixThread
         static vector<UI32>       getCpuAffinityVectorForServiceId        (WaveServiceId id);
         static WaveThreadId      getSelf                                 ();
         static string             getWaveServiceNameForServiceId         (const WaveServiceId &id);
-        static WaveServiceId     getWaveServiceIdForServiceName         (const string &prismServiceName);
+        static WaveServiceId     getWaveServiceIdForServiceName         (const string &waveServiceName);
         static WaveThread       *getWaveThreadForMessageRemoteTransport ();
         static WaveThread       *getWaveThreadForMessageHaPeerTransport ();
         static WaveThreadStatus   joinAllThreads                          ();
@@ -126,8 +126,8 @@ class WaveThread : public WavePosixThread
 
                vector<UI32>                            m_cpuAffinityVector;
 
-        static map<WaveThreadId, WaveObjectManager *> m_prismThreadIdToWaveObjectManagerMap;
-        static WaveMutex                              m_prismThreadIdToWaveObjectManagerMapMutex;
+        static map<WaveThreadId, WaveObjectManager *> m_waveThreadIdToWaveObjectManagerMap;
+        static WaveMutex                              m_waveThreadIdToWaveObjectManagerMapMutex;
 
                bool                                    m_terminateThread;
 

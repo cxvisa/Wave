@@ -48,8 +48,8 @@ void WaveFailoverAgent::execute (WaveFailoverAgentContext *pWaveFailoverAgentCon
     WaveNs::WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFailoverAgent::failoverWaveServicesStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFailoverAgent::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFailoverAgent::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFailoverAgent::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFailoverAgent::waveLinearSequencerFailedStep)
     };
 
     WaveFailoverAgentSequencerContext *pWaveFailoverAgentSequencerContext = new WaveFailoverAgentSequencerContext (pWaveFailoverAgentContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -86,13 +86,13 @@ void WaveFailoverAgent::failoverWaveServicesStep (WaveFailoverAgentSequencerCont
         //if ((false == (isToBeExcludedForFailover (serviceIdsToFailover[index]))) && (serviceToBeIgnored != serviceIdsToFailover[index]))
         if (false == (isToBeExcludedForFailover (serviceIdsToFailover[index])))
         {
-            WaveFailoverObjectManagerMessage prismFailoverObjectManagerMessage (serviceIdsToFailover[index], getFailoverReason (), isPrincipalChangedWithThisFailover);
+            WaveFailoverObjectManagerMessage waveFailoverObjectManagerMessage (serviceIdsToFailover[index], getFailoverReason (), isPrincipalChangedWithThisFailover);
 
-            (prismFailoverObjectManagerMessage.getFailedLocationIds ()) = failedLocationIds;
+            (waveFailoverObjectManagerMessage.getFailedLocationIds ()) = failedLocationIds;
 
-            prismFailoverObjectManagerMessage.setIsConfigurationChange (isConfigurationChange);
+            waveFailoverObjectManagerMessage.setIsConfigurationChange (isConfigurationChange);
             
-            ResourceId status = sendSynchronously (&prismFailoverObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveFailoverObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -132,9 +132,9 @@ void WaveFailoverAgent::initializeWaveGlobalServicesDuringPrePhaseStep (WaveFail
     {
         if (false == (isToBeExcludedDuringPrePhase (serviceIdsToInitialize [i])))
         {
-            WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getBootReason ());
+            WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getBootReason ());
 
-            ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -143,7 +143,7 @@ void WaveFailoverAgent::initializeWaveGlobalServicesDuringPrePhaseStep (WaveFail
                 pWaveFailoverAgentSequencerContext->executeNextStep(status);
             }
 
-            status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+            status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -176,9 +176,9 @@ void WaveFailoverAgent::enableWaveGlobalServicesDuringPrePhaseStep (WaveFailover
     {
         if (false == (isToBeExcludedDuringPrePhase (serviceIdsToEnableDuringPrePhase[i])))
         {
-            WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnableDuringPrePhase[i], getBootReason ());
+            WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnableDuringPrePhase[i], getBootReason ());
 
-            ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -190,7 +190,7 @@ void WaveFailoverAgent::enableWaveGlobalServicesDuringPrePhaseStep (WaveFailover
             }
             else
             {
-                status = prismEnableObjectManagerMessage.getCompletionStatus ();
+                status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
@@ -228,9 +228,9 @@ void WaveFailoverAgent::listenForEventsWaveGlobalServicesDuringPrePhaseStep (Wav
     {
         if (false == (isToBeExcludedDuringPrePhase (serviceIdsToEnableDuringPrePhase[i])))
         {
-            WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnableDuringPrePhase[i]);
+            WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnableDuringPrePhase[i]);
 
-            ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -244,7 +244,7 @@ void WaveFailoverAgent::listenForEventsWaveGlobalServicesDuringPrePhaseStep (Wav
             }
             else
             {
-                status  = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+                status  = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
@@ -282,9 +282,9 @@ void WaveFailoverAgent::bootWaveGlobalServicesDuringPrePhaseStep (WaveFailoverAg
     {
         if (false == isToBeExcludedDuringPrePhase (serviceIdsToBoot[i]))
         {
-            WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getBootReason ());
+            WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getBootReason ());
 
-            ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -293,7 +293,7 @@ void WaveFailoverAgent::bootWaveGlobalServicesDuringPrePhaseStep (WaveFailoverAg
                 pWaveFailoverAgentSequencerContext->executeNextStep(WAVE_MESSAGE_ERROR);
             }
 
-            status = prismBootObjectManagerMessage.getCompletionStatus ();
+            status = waveBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -324,9 +324,9 @@ void WaveFailoverAgent::initializeWaveGlobalServicesStep (WaveFailoverAgentSeque
     {
         if (false == isToBeExcluded (serviceIdsToInitialize[i]))
         {
-            WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getBootReason ());
+            WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getBootReason ());
 
-            ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -335,7 +335,7 @@ void WaveFailoverAgent::initializeWaveGlobalServicesStep (WaveFailoverAgentSeque
                 pWaveFailoverAgentSequencerContext->executeNextStep(status);
             }
 
-            status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+            status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -367,9 +367,9 @@ void WaveFailoverAgent::enableWaveGlobalServicesStep (WaveFailoverAgentSequencer
     {
         if (false == (isToBeExcluded (serviceIdsToEnable[i])))
         {
-            WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnable[i], getBootReason ());
+            WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnable[i], getBootReason ());
 
-            ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -381,7 +381,7 @@ void WaveFailoverAgent::enableWaveGlobalServicesStep (WaveFailoverAgentSequencer
             }
             else
             {
-                status = prismEnableObjectManagerMessage.getCompletionStatus ();
+                status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
@@ -420,9 +420,9 @@ void WaveFailoverAgent::listenForEventsWaveGlobalServicesStep (WaveFailoverAgent
     {
         if (false == (isToBeExcluded (serviceIdsToEnable[i])))
         {
-            WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
+            WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
 
-            ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -434,7 +434,7 @@ void WaveFailoverAgent::listenForEventsWaveGlobalServicesStep (WaveFailoverAgent
             }
             else
             {
-                status = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+                status = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
                 if (WAVE_MESSAGE_SUCCESS != status)
                 {
@@ -471,9 +471,9 @@ void WaveFailoverAgent::bootWaveGlobalServicesStep (WaveFailoverAgentSequencerCo
     {
         if (false == (isToBeExcluded (serviceIdsToBoot[i])))
         {
-            WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getBootReason ());
+            WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getBootReason ());
 
-            ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -482,7 +482,7 @@ void WaveFailoverAgent::bootWaveGlobalServicesStep (WaveFailoverAgentSequencerCo
                 pWaveFailoverAgentSequencerContext->executeNextStep(status);
             }
 
-            status = prismBootObjectManagerMessage.getCompletionStatus ();
+            status = waveBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1599,13 +1599,13 @@ void WaveFailoverAgent::failoverForUnknownWaveNodeWaveServicesStep (WaveFailover
         //if ((false == (isToBeExcludedForFailover (serviceIdsToFailover[index]))) && (serviceToBeIgnored != serviceIdsToFailover[index]))
         if (false == (isToBeExcludedForFailover (serviceIdsToFailover[index])))
         {
-            WaveFailoverObjectManagerMessage prismFailoverObjectManagerMessage (serviceIdsToFailover[index], FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED, isPrincipalChangedWithThisFailover);
+            WaveFailoverObjectManagerMessage waveFailoverObjectManagerMessage (serviceIdsToFailover[index], FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED, isPrincipalChangedWithThisFailover);
 
-            (prismFailoverObjectManagerMessage.getFailedLocationIds ()) = failedLocationIds;
+            (waveFailoverObjectManagerMessage.getFailedLocationIds ()) = failedLocationIds;
 
-            prismFailoverObjectManagerMessage.setIsConfigurationChange (isConfigurationChange);
+            waveFailoverObjectManagerMessage.setIsConfigurationChange (isConfigurationChange);
 
-            ResourceId status = sendSynchronously (&prismFailoverObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveFailoverObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {

@@ -34,9 +34,9 @@ class WaveMessage : virtual public SerializableObject
             protected :
             public :
                                     WaveMessageBuffer (UI32 size, const void *pBuffer, bool ownedByMesage = false);
-                                    WaveMessageBuffer (const WaveMessageBuffer &prismMessagebuffer);
+                                    WaveMessageBuffer (const WaveMessageBuffer &waveMessagebuffer);
                                    ~WaveMessageBuffer ();
-                WaveMessageBuffer &operator =         (const WaveMessageBuffer &prismMessageBuffer);
+                WaveMessageBuffer &operator =         (const WaveMessageBuffer &waveMessageBuffer);
 
                 void                destroy            ();
                 UI32                getSize            () const;
@@ -65,13 +65,13 @@ class WaveMessage : virtual public SerializableObject
 
     protected :
                               WaveMessage                    (WaveServiceId serviceCode, UI32 operationCode);
-                              WaveMessage                    (const WaveMessage &prismMessage);
+                              WaveMessage                    (const WaveMessage &waveMessage);
         virtual void          setupAttributesForSerialization ();
         virtual void          setupAttributesForSerializationInAttributeOrderFormat ();
                 void          setType                         (WaveMessageType type);
         virtual void          setServiceCode                  (const WaveServiceId &serviceCode);
 
-                void          copyBuffersFrom                 (const WaveMessage &prismMessage);
+                void          copyBuffersFrom                 (const WaveMessage &waveMessage);
 
                 void          setMessageId                    (const UI32 &messageId);
                 void          setSenderServiceCode            (const WaveServiceId &senderServiceCode);
@@ -79,7 +79,7 @@ class WaveMessage : virtual public SerializableObject
 
     public :
         virtual                          ~WaveMessage                             ();
-                WaveMessage             &operator =                               (const WaveMessage &prismMessage);
+                WaveMessage             &operator =                               (const WaveMessage &waveMessage);
                 WaveMessageType           getType                                  () const;
                 UI32                      getMessageId                             () const;
                 UI32                      getMessageIdAtOriginatingLocation        () const;
@@ -239,7 +239,7 @@ class WaveMessage : virtual public SerializableObject
                bool                             m_isConfigurationFlagSetByUser;
                string                           m_nestedSql;
                UI32                             m_transactionCounter;
-               WaveThreadId                    m_prismMessageCreatorThreadId;
+               WaveThreadId                    m_waveMessageCreatorThreadId;
                LocationId                       m_surrogatingForLocationId;
                bool                             m_needSurrogateSupportFlag ;
                bool                             m_isMessageBeingSurrogatedFlag;

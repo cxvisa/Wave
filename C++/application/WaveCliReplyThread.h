@@ -7,13 +7,13 @@
 #ifndef WAVECLIREPLYTHREAD
 #define WAVECLIREPLYTHREAD
 
-#include "Framework/MultiThreading/PrismPosixThread.h"
+#include "Framework/MultiThreading/WavePosixThread.h"
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 
 namespace WaveNs
 {
 
-class WaveCliReplyThread : public PrismPosixThread
+class WaveCliReplyThread : public WavePosixThread
 {
     private:
                 WaveThreadStatus start ();

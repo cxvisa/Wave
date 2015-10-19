@@ -48,8 +48,8 @@ ResourceId FirstTimeWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
 
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::saveWaveConfigurationStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&FirstTimeWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

@@ -54,8 +54,8 @@ void WaveSystemManagementYangInterfacesInitializeWorker::initialize (WaveAsynchr
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::initializeSystemManagementInterfaceStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -86,8 +86,8 @@ void WaveSystemManagementYangInterfacesInitializeWorker::rebuildYangInterfacesMe
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::rebuildSystemManagementInterfaceStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementYangInterfacesInitializeWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveSystemManagementRebuildYangInterfacesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

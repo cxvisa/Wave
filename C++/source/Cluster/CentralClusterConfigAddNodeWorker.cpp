@@ -57,8 +57,8 @@ void CentralClusterConfigAddNodeWorker::addNodeMessageHandler (ClusterObjectMana
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeRequestFrameworkToAddNodeStep),
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeCommitStep),
 //        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::addNodeStartHeartBeatsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigAddNodeWorker::waveLinearSequencerFailedStep)
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pClusterObjectManagerAddNodeMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0])); 

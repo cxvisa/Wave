@@ -39,8 +39,8 @@ ResourceId WaveShutdownAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveShutdownAgent::disablePostPhaseServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveShutdownAgent::uninitializePostPhaseServicesStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveShutdownAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveShutdownAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveShutdownAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveShutdownAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveShutdownAgentContext *pWaveShutdownAgentContext = new WaveShutdownAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -77,9 +77,9 @@ ResourceId WaveShutdownAgent::shutdownServicesStep (WaveShutdownAgentContext *pW
             continue;
         }
 
-        WaveShutdownObjectManagerMessage prismShutdownObjectManagerMessage (serviceIdsToShutdown[i]);
+        WaveShutdownObjectManagerMessage waveShutdownObjectManagerMessage (serviceIdsToShutdown[i]);
 
-        ResourceId status = sendSynchronously (&prismShutdownObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveShutdownObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -114,9 +114,9 @@ ResourceId WaveShutdownAgent::uninstallServicesStep (WaveShutdownAgentContext *p
             continue;
         }
 
-        WaveUninstallObjectManagerMessage prismUninstallObjectManagerMessage (serviceIdsToUninstall[i]);
+        WaveUninstallObjectManagerMessage waveUninstallObjectManagerMessage (serviceIdsToUninstall[i]);
 
-        ResourceId status = sendSynchronously (&prismUninstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveUninstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -151,9 +151,9 @@ ResourceId WaveShutdownAgent::disableServicesStep (WaveShutdownAgentContext *pWa
             continue;
         }
 
-        WaveDisableObjectManagerMessage prismDisableObjectManagerMessage (serviceIdsToDisable[i]);
+        WaveDisableObjectManagerMessage waveDisableObjectManagerMessage (serviceIdsToDisable[i]);
 
-        ResourceId status = sendSynchronously (&prismDisableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveDisableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -190,9 +190,9 @@ ResourceId WaveShutdownAgent::uninitializeServicesStep (WaveShutdownAgentContext
             continue;
         }
 
-        WaveUninitializeObjectManagerMessage prismUninitializeObjectManagerMessage (serviceIdsToUninitialize[i]);
+        WaveUninitializeObjectManagerMessage waveUninitializeObjectManagerMessage (serviceIdsToUninitialize[i]);
 
-        ResourceId status = sendSynchronously (&prismUninitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveUninitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -227,9 +227,9 @@ ResourceId WaveShutdownAgent::shutdownPostPhaseServicesStep (WaveShutdownAgentCo
             continue;
         }
 
-        WaveShutdownObjectManagerMessage prismShutdownObjectManagerMessage (serviceIdsToShutdown[i]);
+        WaveShutdownObjectManagerMessage waveShutdownObjectManagerMessage (serviceIdsToShutdown[i]);
 
-        ResourceId status = sendSynchronously (&prismShutdownObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveShutdownObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -264,9 +264,9 @@ ResourceId WaveShutdownAgent::uninstallPostPhaseServicesStep (WaveShutdownAgentC
             continue;
         }
 
-        WaveUninstallObjectManagerMessage prismUninstallObjectManagerMessage (serviceIdsToUninstall[i]);
+        WaveUninstallObjectManagerMessage waveUninstallObjectManagerMessage (serviceIdsToUninstall[i]);
 
-        ResourceId status = sendSynchronously (&prismUninstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveUninstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -301,9 +301,9 @@ ResourceId WaveShutdownAgent::disablePostPhaseServicesStep (WaveShutdownAgentCon
             continue;
         }
 
-        WaveDisableObjectManagerMessage prismDisableObjectManagerMessage (serviceIdsToDisable[i]);
+        WaveDisableObjectManagerMessage waveDisableObjectManagerMessage (serviceIdsToDisable[i]);
 
-        ResourceId status = sendSynchronously (&prismDisableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveDisableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -338,9 +338,9 @@ ResourceId WaveShutdownAgent::uninitializePostPhaseServicesStep (WaveShutdownAge
             continue;
         }
 
-        WaveUninitializeObjectManagerMessage prismUninitializeObjectManagerMessage (serviceIdsToUninitialize[i]);
+        WaveUninitializeObjectManagerMessage waveUninitializeObjectManagerMessage (serviceIdsToUninitialize[i]);
 
-        ResourceId status = sendSynchronously (&prismUninitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveUninitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {

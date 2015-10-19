@@ -99,7 +99,7 @@ void SubLocation::initializeClientCommunications ()
         {
             delete pClientSocket;
             m_pClientSocketForParentLocation = pClientSocket = NULL;
-            prismSleep (1);
+            waveSleep (1);
         }
         else
         {
@@ -212,7 +212,7 @@ ResourceId SubLocation::connectToRemoteLocation (LocationId locationId, UI32 num
                     {
                         delete pClientSocket;
                         m_pClientSocketForParentLocation = pClientSocket = NULL;
-                        prismSleep (1);
+                        waveSleep (1);
                     }
                     else
                     {

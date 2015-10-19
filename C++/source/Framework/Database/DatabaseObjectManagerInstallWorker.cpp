@@ -62,8 +62,8 @@ void DatabaseObjectManagerInstallWorker::install (WaveAsynchronousContextForBoot
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installBootDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installCreateWaveDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DatabaseObjectManagerInstallWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -193,7 +193,7 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
          * So, lets try connecting to DB and confirm if we need to retry 'pg_ctl start' command.
          */
 
-        prismSleep (4);
+        waveSleep (4);
 
         bool                isConnectedToDatabse = false;
         DatabaseConnection *pDatabaseConnection  = DatabaseConnection::getInstance (DatabaseObjectManager::getDatabaseName (), DatabaseObjectManager::getDatabasePort ());
@@ -228,7 +228,7 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
         {
             tracePrintf (TRACE_LEVEL_WARN, false, true, output[0].c_str());
         }
-        prismSleep (4);
+        waveSleep (4);
     }
 
     if (0 != status)
@@ -240,7 +240,7 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
     // Log the return status
     trace (TRACE_LEVEL_INFO, string("DatabaseObjectManagerInstallWorker::installBootDatabaseStep : ret:") + status);
 
-    prismSleep (5);
+    waveSleep (5);
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }

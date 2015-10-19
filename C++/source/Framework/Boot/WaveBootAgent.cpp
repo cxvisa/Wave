@@ -52,8 +52,8 @@ ResourceId WaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveBootAgent::installGlobalWaveServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveBootAgent::bootGlobalWaveServicesStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveBootAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -87,9 +87,9 @@ ResourceId WaveBootAgent::initializeWaveServicesDuringPrePhaseStep (WaveSynchron
             }
         }
     
-        WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
+        WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -98,7 +98,7 @@ ResourceId WaveBootAgent::initializeWaveServicesDuringPrePhaseStep (WaveSynchron
             return (status);
         }
 
-        status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+        status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -139,9 +139,9 @@ ResourceId WaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep (WaveSyn
             continue;
         }
 
-        WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
+        WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
 
-        ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -150,7 +150,7 @@ ResourceId WaveBootAgent::listenForEventsWaveServicesDuringPrePhaseStep (WaveSyn
             return (status);
         }
 
-        status = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+        status = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -191,9 +191,9 @@ ResourceId WaveBootAgent::enableWaveServicesDuringPrePhaseStep (WaveSynchronousL
             continue;
         }
 
-        WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+        WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -202,7 +202,7 @@ ResourceId WaveBootAgent::enableWaveServicesDuringPrePhaseStep (WaveSynchronousL
             return (status);
         }
 
-        status = prismEnableObjectManagerMessage.getCompletionStatus ();
+        status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -243,9 +243,9 @@ ResourceId WaveBootAgent::installWaveServicesDuringPrePhaseStep (WaveSynchronous
             continue;
         }
 
-        WaveInstallObjectManagerMessage prismInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+        WaveInstallObjectManagerMessage waveInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -254,7 +254,7 @@ ResourceId WaveBootAgent::installWaveServicesDuringPrePhaseStep (WaveSynchronous
             return (status);
         }
 
-        status = prismInstallObjectManagerMessage.getCompletionStatus ();
+        status = waveInstallObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -295,9 +295,9 @@ ResourceId WaveBootAgent::bootWaveServicesDuringPrePhaseStep (WaveSynchronousLin
             continue;
         }
 
-        WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
+        WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
 
-        ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -306,7 +306,7 @@ ResourceId WaveBootAgent::bootWaveServicesDuringPrePhaseStep (WaveSynchronousLin
             return (status);
         }
 
-        status = prismBootObjectManagerMessage.getCompletionStatus ();
+        status = waveBootObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -341,9 +341,9 @@ ResourceId WaveBootAgent::initializeGlobalWaveServicesDuringPrePhaseStep (WaveSy
 
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToInitialize[i])))
         {
-            WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
+            WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -352,7 +352,7 @@ ResourceId WaveBootAgent::initializeGlobalWaveServicesDuringPrePhaseStep (WaveSy
                 return (status);
             }
 
-            status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+            status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -388,9 +388,9 @@ ResourceId WaveBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep (WaveS
 
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToEnable[i])))
         {
-            WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
+            WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
 
-            ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -398,7 +398,7 @@ ResourceId WaveBootAgent::listenForEventsGlobalServicesDuringPrePhaseStep (WaveS
                 return (status);
             }
 
-            status = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+            status = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -433,9 +433,9 @@ ResourceId WaveBootAgent::enableGlobalWaveServicesDuringPrePhaseStep (WaveSynchr
 
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToEnable[i])))
         {
-            WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+            WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -443,7 +443,7 @@ ResourceId WaveBootAgent::enableGlobalWaveServicesDuringPrePhaseStep (WaveSynchr
                 return (status);
             }
 
-            status = prismEnableObjectManagerMessage.getCompletionStatus ();
+            status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -479,9 +479,9 @@ ResourceId WaveBootAgent::bootGlobalWaveServicesDuringPrePhaseStep (WaveSynchron
         
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToBoot[i])))
         {
-            WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
+            WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
 
-            ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -489,7 +489,7 @@ ResourceId WaveBootAgent::bootGlobalWaveServicesDuringPrePhaseStep (WaveSynchron
                 return (status);
             }
 
-            status = prismBootObjectManagerMessage.getCompletionStatus ();
+            status = waveBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -529,9 +529,9 @@ ResourceId WaveBootAgent::initializeLocalWaveServicesStep (WaveSynchronousLinear
 
         if (true == (FrameworkToolKit::isALocalService (serviceIdsToInitialize[i])))
         {
-            WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
+            WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -539,7 +539,7 @@ ResourceId WaveBootAgent::initializeLocalWaveServicesStep (WaveSynchronousLinear
                 return (status);
             }
 
-            status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+            status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -574,9 +574,9 @@ ResourceId WaveBootAgent::initializeGlobalWaveServicesStep (WaveSynchronousLinea
 
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToInitialize[i])))
         {
-            WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
+            WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -584,7 +584,7 @@ ResourceId WaveBootAgent::initializeGlobalWaveServicesStep (WaveSynchronousLinea
                 return (status);
             }
 
-            status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+            status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -625,9 +625,9 @@ ResourceId WaveBootAgent::initializeWaveServicesStep (WaveSynchronousLinearSeque
             }
         }
     
-        WaveInitializeObjectManagerMessage prismInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
+        WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -635,7 +635,7 @@ ResourceId WaveBootAgent::initializeWaveServicesStep (WaveSynchronousLinearSeque
             return (status);
         }
 
-        status = prismInitializeObjectManagerMessage.getCompletionStatus ();
+        status = waveInitializeObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -677,9 +677,9 @@ ResourceId WaveBootAgent::listenForEventsLocalWaveServicesStep (WaveSynchronousL
                 continue;
             }
 
-            WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
+            WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
 
-            ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -687,7 +687,7 @@ ResourceId WaveBootAgent::listenForEventsLocalWaveServicesStep (WaveSynchronousL
                 return (status);
             }
 
-            status = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+            status = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -731,9 +731,9 @@ ResourceId WaveBootAgent::enableLocalWaveServicesStep (WaveSynchronousLinearSequ
                 continue;
             }
 
-            WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+            WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -741,7 +741,7 @@ ResourceId WaveBootAgent::enableLocalWaveServicesStep (WaveSynchronousLinearSequ
                 return (status);
             }
 
-            status = prismEnableObjectManagerMessage.getCompletionStatus ();
+            status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -784,9 +784,9 @@ ResourceId WaveBootAgent::listenForEventsGlobalWaveServicesStep (WaveSynchronous
                 continue;
             }
 
-            WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
+            WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
 
-            ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -794,7 +794,7 @@ ResourceId WaveBootAgent::listenForEventsGlobalWaveServicesStep (WaveSynchronous
                 return (status);
             }
 
-            status = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+            status = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -837,9 +837,9 @@ ResourceId WaveBootAgent::enableGlobalWaveServicesStep (WaveSynchronousLinearSeq
                 continue;
             }
 
-            WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+            WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -847,7 +847,7 @@ ResourceId WaveBootAgent::enableGlobalWaveServicesStep (WaveSynchronousLinearSeq
                 return (status);
             }
 
-            status = prismEnableObjectManagerMessage.getCompletionStatus ();
+            status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -894,9 +894,9 @@ ResourceId WaveBootAgent::listenForEventsWaveServicesStep (WaveSynchronousLinear
             continue;
         }
 
-        WaveListenForEventsObjectManagerMessage prismListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
+        WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage (serviceIdsToEnable[i]);
 
-        ResourceId status = sendSynchronously (&prismListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveListenForEventsObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -904,7 +904,7 @@ ResourceId WaveBootAgent::listenForEventsWaveServicesStep (WaveSynchronousLinear
             return (status);
         }
 
-        status = prismListenForEventsObjectManagerMessage.getCompletionStatus ();
+        status = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -949,9 +949,9 @@ ResourceId WaveBootAgent::enableWaveServicesStep (WaveSynchronousLinearSequencer
             continue;
         }
 
-        WaveEnableObjectManagerMessage prismEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+        WaveEnableObjectManagerMessage waveEnableObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveEnableObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -959,7 +959,7 @@ ResourceId WaveBootAgent::enableWaveServicesStep (WaveSynchronousLinearSequencer
             return (status);
         }
 
-        status = prismEnableObjectManagerMessage.getCompletionStatus ();
+        status = waveEnableObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1006,9 +1006,9 @@ ResourceId WaveBootAgent::installLocalWaveServicesStep (WaveSynchronousLinearSeq
                 continue;
             }
 
-            WaveInstallObjectManagerMessage prismInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+            WaveInstallObjectManagerMessage waveInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1016,7 +1016,7 @@ ResourceId WaveBootAgent::installLocalWaveServicesStep (WaveSynchronousLinearSeq
                 return (status);
             }
 
-            status = prismInstallObjectManagerMessage.getCompletionStatus ();
+            status = waveInstallObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1059,9 +1059,9 @@ ResourceId WaveBootAgent::installGlobalWaveServicesStep (WaveSynchronousLinearSe
                continue;
            }
 
-            WaveInstallObjectManagerMessage prismInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+            WaveInstallObjectManagerMessage waveInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1069,7 +1069,7 @@ ResourceId WaveBootAgent::installGlobalWaveServicesStep (WaveSynchronousLinearSe
                 return (status);
             }
 
-            status = prismInstallObjectManagerMessage.getCompletionStatus ();
+            status = waveInstallObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1105,9 +1105,9 @@ ResourceId WaveBootAgent::installWaveServicesStep (WaveSynchronousLinearSequence
             }
         }
 
-        WaveInstallObjectManagerMessage prismInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+        WaveInstallObjectManagerMessage waveInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1115,7 +1115,7 @@ ResourceId WaveBootAgent::installWaveServicesStep (WaveSynchronousLinearSequence
             return (status);
         }
 
-        status = prismInstallObjectManagerMessage.getCompletionStatus ();
+        status = waveInstallObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1157,9 +1157,9 @@ ResourceId WaveBootAgent::bootLocalWaveServicesStep (WaveSynchronousLinearSequen
                 continue;
             }
 
-            WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
+            WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
 
-            ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1167,7 +1167,7 @@ ResourceId WaveBootAgent::bootLocalWaveServicesStep (WaveSynchronousLinearSequen
                 return (status);
             }
 
-            status = prismBootObjectManagerMessage.getCompletionStatus ();
+            status = waveBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1460,9 +1460,9 @@ ResourceId WaveBootAgent::bootGlobalWaveServicesStep (WaveSynchronousLinearSeque
                 continue;
             }
 
-            WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
+            WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
 
-            ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1470,7 +1470,7 @@ ResourceId WaveBootAgent::bootGlobalWaveServicesStep (WaveSynchronousLinearSeque
                 return (status);
             }
 
-            status = prismBootObjectManagerMessage.getCompletionStatus ();
+            status = waveBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1516,9 +1516,9 @@ ResourceId WaveBootAgent::bootWaveServicesStep (WaveSynchronousLinearSequencerCo
             continue;
         }
 
-        WaveBootObjectManagerMessage prismBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
+        WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
 
-        ResourceId status = sendSynchronously (&prismBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1526,7 +1526,7 @@ ResourceId WaveBootAgent::bootWaveServicesStep (WaveSynchronousLinearSequencerCo
             return (status);
         }
 
-        status = prismBootObjectManagerMessage.getCompletionStatus ();
+        status = waveBootObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1574,9 +1574,9 @@ ResourceId  WaveBootAgent::upgradeWaveServicesDuringPrePhaseStep (WaveSynchronou
             continue;
         }*/
 
-        WaveUpgradeObjectManagerMessage prismUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+        WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1585,7 +1585,7 @@ ResourceId  WaveBootAgent::upgradeWaveServicesDuringPrePhaseStep (WaveSynchronou
             return (status);
         }
 
-        status = prismUpgradeObjectManagerMessage.getCompletionStatus ();
+        status = waveUpgradeObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1612,17 +1612,17 @@ void WaveBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
     // 1.
     vector<string>  output;
     SI32            cmdStatus                  = 0;
-    const string    prismConfigurationfileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    const string    waveConfigurationfileName = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
 
-    trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleUpgradeFailure: deleting file " + prismConfigurationfileName);
+    trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleUpgradeFailure: deleting file " + waveConfigurationfileName);
 
-    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + prismConfigurationfileName).c_str(), output);
+    cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + waveConfigurationfileName).c_str(), output);
     
     if (0 != cmdStatus)
     {
         if (0 < output.size())
         {
-            trace (TRACE_LEVEL_ERROR, string("DatabaseObjectManager::handleUpgradeFailure: cmd to deleted file ")+ prismConfigurationfileName + string(" failed with error message : ") + output[0]);
+            trace (TRACE_LEVEL_ERROR, string("DatabaseObjectManager::handleUpgradeFailure: cmd to deleted file ")+ waveConfigurationfileName + string(" failed with error message : ") + output[0]);
         }
     }
     
@@ -1637,7 +1637,7 @@ void WaveBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
 
     output.clear();
     FrameworkToolKit::systemCommandOutput ("/fabos/sbin/reboot -s -r AutoRecoveryForUpgradeFailure", output);
-    prismSleep(30);
+    waveSleep(30);
 
     trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleUpgradeFailure: Reboot is triggered but system has not yet rebooted.");
     waveAssert (false, __FILE__, __LINE__);
@@ -1668,9 +1668,9 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesDuringPrePhaseStep (WaveSync
 
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToEnable[i])))
         {
-            WaveUpgradeObjectManagerMessage prismUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+            WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1679,7 +1679,7 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesDuringPrePhaseStep (WaveSync
                 return (status);
             }
     
-            status = prismUpgradeObjectManagerMessage.getCompletionStatus ();
+            status = waveUpgradeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1733,9 +1733,9 @@ ResourceId  WaveBootAgent::upgradeLocalWaveServicesStep (WaveSynchronousLinearSe
                 continue;
             }
         
-            WaveUpgradeObjectManagerMessage prismUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+            WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1744,7 +1744,7 @@ ResourceId  WaveBootAgent::upgradeLocalWaveServicesStep (WaveSynchronousLinearSe
                 return (status);
             }
 
-            status = prismUpgradeObjectManagerMessage.getCompletionStatus ();
+            status = waveUpgradeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1798,9 +1798,9 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesStep (WaveSynchronousLinearS
                 continue;
             }
     
-            WaveUpgradeObjectManagerMessage prismUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+            WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1809,7 +1809,7 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesStep (WaveSynchronousLinearS
                 return (status);
             }
 
-            status = prismUpgradeObjectManagerMessage.getCompletionStatus ();
+            status = waveUpgradeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -1865,9 +1865,9 @@ ResourceId  WaveBootAgent::upgradeWaveServicesStep (WaveSynchronousLinearSequenc
             continue;
         }*/
 
-        WaveUpgradeObjectManagerMessage prismUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
+        WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -1876,7 +1876,7 @@ ResourceId  WaveBootAgent::upgradeWaveServicesStep (WaveSynchronousLinearSequenc
             return (status);
         }
 
-        status = prismUpgradeObjectManagerMessage.getCompletionStatus ();
+        status = waveUpgradeObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {

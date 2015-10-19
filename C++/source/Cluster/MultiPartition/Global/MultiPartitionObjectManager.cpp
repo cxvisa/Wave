@@ -294,11 +294,11 @@ void MultiPartitionObjectManager::addPartitionMessageHandler(MultiPartitionAddPa
     WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::validateInputsForAddPartition),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::createPartitionManagedObjectStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     MultiPartitionSynchronousLinearSequencerContext *pMultiPartitionSynchronousLinearSequencerContext = new MultiPartitionSynchronousLinearSequencerContext(pMultiPartitionAddPartitionMessage, 
@@ -419,11 +419,11 @@ void MultiPartitionObjectManager::deletePartitionMessageHandler(MultiPartitionDe
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::validateInputsForDeletePartition),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::triggerPartitionCleanupForLocalServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::triggerPartitionCleanupForGlocalServicesStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::deletePartitionManagedObject),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&MultiPartitionObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     MultiPartitionSynchronousLinearSequencerContext *pMultiPartitionSynchronousLinearSequencerContext = new MultiPartitionSynchronousLinearSequencerContext(pMultiPartitionDeletePartitionMessage, 

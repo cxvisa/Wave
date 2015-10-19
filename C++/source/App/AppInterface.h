@@ -332,7 +332,7 @@ extern "C"
                                   received from another node in the cluster.
             void (*duplicateCmdHandler_t)           (unsigned int cmdLen, void *command, unsigned int cmdLen2, void *command2, unsigned int *resultLen, void **result)
             calling to duplicateCmdHandler_t is sync call. The result pointer should be allocated by
-            duplicateCmdHandler_t if it is required to send result back. prism will free this memory if it is not NULL
+            duplicateCmdHandler_t if it is required to send result back. wave will free this memory if it is not NULL
 
 
         Returns:
@@ -379,7 +379,7 @@ extern "C"
 
 
     /*
-        This function register the main for the application that will use prism. This function
+        This function register the main for the application that will use wave. This function
         should be call before WaveInit is called. Wave will create a seperate thread and call
         "applicationMain" from that thread.
 
@@ -392,9 +392,9 @@ extern "C"
         Returns:
     WAVE_MESSAGE_SUCCESS: Registeration successed.
     */
-    int prismRegisterAppWithArg  (char * applicationName, applicationMainFunction applicationMain, unsigned int argc, char *argv[]);
+    int waveRegisterAppWithArg  (char * applicationName, applicationMainFunction applicationMain, unsigned int argc, char *argv[]);
 
-    int prismRegisterApp  (char * applicationName, applicationMainFunction applicationMain);
+    int waveRegisterApp  (char * applicationName, applicationMainFunction applicationMain);
 
     /*
         This function is used to configure the heartbeat rate and the number of heartbeat to lose before notifying

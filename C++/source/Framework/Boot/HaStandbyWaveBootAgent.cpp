@@ -57,8 +57,8 @@ ResourceId HaStandbyWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
     
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -82,8 +82,8 @@ ResourceId HaStandbyWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
          // This should happen only after suceesful schema conversion. Schema conversion on standby is attempted after this step. Hence, commenting. 
          //   reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -113,8 +113,8 @@ ResourceId HaStandbyWaveBootAgent::execute (const WaveBootPhase &waveBootPhase)
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateDatabaseForeignKeyConstraintsStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&HaStandbyWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -233,9 +233,9 @@ ResourceId HaStandbyWaveBootAgent::haInstallWaveServicesDuringPrePhaseStep (Wave
             continue;
         }
 
-        WaveHaInstallObjectManagerMessage prismHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+        WaveHaInstallObjectManagerMessage waveHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismHaInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveHaInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -244,7 +244,7 @@ ResourceId HaStandbyWaveBootAgent::haInstallWaveServicesDuringPrePhaseStep (Wave
             return (status);
         }
 
-        status = prismHaInstallObjectManagerMessage.getCompletionStatus ();
+        status = waveHaInstallObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -280,9 +280,9 @@ ResourceId HaStandbyWaveBootAgent::haInstallWaveServicesStep (WaveSynchronousLin
             }
         }
 
-        WaveHaInstallObjectManagerMessage prismHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
+        WaveHaInstallObjectManagerMessage waveHaInstallObjectManagerMessage (serviceIdsToInstall[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismHaInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveHaInstallObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -290,7 +290,7 @@ ResourceId HaStandbyWaveBootAgent::haInstallWaveServicesStep (WaveSynchronousLin
             return (status);
         }
 
-        status = prismHaInstallObjectManagerMessage.getCompletionStatus ();
+        status = waveHaInstallObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -324,9 +324,9 @@ ResourceId HaStandbyWaveBootAgent::haBootLocalWaveServicesStep (WaveSynchronousL
                 continue;
             }
 
-            WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+            WaveHaBootObjectManagerMessage waveHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -334,7 +334,7 @@ ResourceId HaStandbyWaveBootAgent::haBootLocalWaveServicesStep (WaveSynchronousL
                 return (status);
             }
 
-            status = prismHaBootObjectManagerMessage.getCompletionStatus ();
+            status = waveHaBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -370,9 +370,9 @@ ResourceId HaStandbyWaveBootAgent::haBootGlobalWaveServicesStep (WaveSynchronous
                 continue;
             }
 
-            WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+            WaveHaBootObjectManagerMessage waveHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
-            ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+            ResourceId status = sendSynchronously (&waveHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -380,7 +380,7 @@ ResourceId HaStandbyWaveBootAgent::haBootGlobalWaveServicesStep (WaveSynchronous
                 return (status);
             }
 
-            status = prismHaBootObjectManagerMessage.getCompletionStatus ();
+            status = waveHaBootObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
@@ -426,9 +426,9 @@ ResourceId HaStandbyWaveBootAgent::haBootWaveServicesStep (WaveSynchronousLinear
             continue;
         }
 
-        WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+        WaveHaBootObjectManagerMessage waveHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -436,7 +436,7 @@ ResourceId HaStandbyWaveBootAgent::haBootWaveServicesStep (WaveSynchronousLinear
             return (status);
         }
 
-        status = prismHaBootObjectManagerMessage.getCompletionStatus ();
+        status = waveHaBootObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -476,9 +476,9 @@ ResourceId HaStandbyWaveBootAgent::haBootWaveServicesDuringPrePhaseStep (WaveSyn
             continue;
         }
 
-        WaveHaBootObjectManagerMessage prismHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
+        WaveHaBootObjectManagerMessage waveHaBootObjectManagerMessage (serviceIdsToBoot[i], getReason ());
 
-        ResourceId status = sendSynchronously (&prismHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
+        ResourceId status = sendSynchronously (&waveHaBootObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
@@ -487,7 +487,7 @@ ResourceId HaStandbyWaveBootAgent::haBootWaveServicesDuringPrePhaseStep (WaveSyn
             return (status);
         }
 
-        status = prismHaBootObjectManagerMessage.getCompletionStatus ();
+        status = waveHaBootObjectManagerMessage.getCompletionStatus ();
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {

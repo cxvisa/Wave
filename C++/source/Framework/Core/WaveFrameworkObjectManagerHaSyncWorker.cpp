@@ -164,7 +164,7 @@ void WaveFrameworkObjectManagerHaSyncWorker::initializeHaPeerServerCommunication
                 {
                     trace (TRACE_LEVEL_WARN, "Still Waiting for TCP/IP Layer to allow us to bind on Server Socket ...");
 
-                    prismSleep (1);
+                    waveSleep (1);
                 }
             }
             else
@@ -222,8 +222,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::initHaIpAddressHandler (FrameworkOb
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::initHaIpAddressStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerInitHaIpAddressMessage, this, sequencerSteps,sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -279,7 +279,7 @@ void WaveFrameworkObjectManagerHaSyncWorker::startHaSyncDumpHandler (FrameworkOb
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncCreateDatabaseDumpStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::setSyncCompletionStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncFailedStep),
     };
 
@@ -594,10 +594,10 @@ void WaveFrameworkObjectManagerHaSyncWorker::haSyncCreateStandbyMessageStep (Sta
 {
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerHaSyncWorker::haSyncCreateStandbyMessageStep");
 
-    string prismVersionString = WaveVersion::getVersionString ();
+    string waveVersionString = WaveVersion::getVersionString ();
     LocationRole locationRole = FrameworkToolKit::getThisLocationRole ();
 
-    WaveHaSyncConfigureStandbyMessage *pMessage = new WaveHaSyncConfigureStandbyMessage (prismVersionString, locationRole);
+    WaveHaSyncConfigureStandbyMessage *pMessage = new WaveHaSyncConfigureStandbyMessage (waveVersionString, locationRole);
     waveAssert (NULL != pMessage, __FILE__, __LINE__);
 
     UI32 context = pStartHaSyncDumpContext->getContextInfo ();
@@ -1134,8 +1134,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbySetInSyncStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1160,8 +1160,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbySetInSyncStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1185,8 +1185,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseStep),
             //reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::copyRunningStartupStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1197,8 +1197,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
         {
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyValidateVersionStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateStartupFileStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1209,8 +1209,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
         {
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyValidateVersionStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateStartupFileStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1220,8 +1220,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
         WaveLinearSequencerStep sequencerSteps[] =
         {
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateVcsConfigStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1244,8 +1244,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbySetInSyncStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1268,8 +1268,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbySetInSyncStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1291,8 +1291,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::copyStartupSchemaStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::updateInstanceIdStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyServicesPostPhaseStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
 
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1303,8 +1303,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyHandler (WaveHaSync
         {
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::configureStandbyValidateVersionStep),
             reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::copyRunningStartupStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+            reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
         };
     
         pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pWaveHaSyncConfigureStandbyMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -1956,14 +1956,14 @@ void WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateWaveConfigura
 
     if (false == cfgValidity)
     {
-        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateWaveConfigurationFileStep: remove prism configuration file.");
+        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateWaveConfigurationFileStep: remove wave configuration file.");
         status = FrameworkToolKit::changeWaveConfigurationValidity (false);
     }
     else
     { 
         if (pReceiveHaSyncDumpContext->getIsDbSyncRequired ())
         {
-            trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateWaveConfigurationFileStep: save prism configuration file.");
+            trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerHaSyncWorker::configureStandbyUpdateWaveConfigurationFileStep: save wave configuration file.");
             status = FrameworkToolKit::changeWaveConfigurationValidity (true);
         }
     }
@@ -2166,7 +2166,7 @@ void WaveFrameworkObjectManagerHaSyncWorker::startHaSyncUpdateHandler (Framework
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncGetConfigurationFileStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncCreateDatabaseDumpStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncFailedStep),
     };
 
@@ -2226,8 +2226,8 @@ void WaveFrameworkObjectManagerHaSyncWorker::getFirmwareVersionHandler (Framewor
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::sendFirmwareVersionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep),
     };
 
     ReceiveHaSyncDumpContext *pReceiveHaSyncDumpContext = new ReceiveHaSyncDumpContext (pFrameworkObjectManagerGetFirmwareVersionMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -2337,7 +2337,7 @@ void WaveFrameworkObjectManagerHaSyncWorker::startCcmdHaSyncDumpHandler (Framewo
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncCreateDatabaseDumpStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::setSyncCompletionStatusStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncFailedStep),
     };
 
@@ -2446,7 +2446,7 @@ void WaveFrameworkObjectManagerHaSyncWorker::startCcmdHaSyncUpdateHandler (Frame
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncGetConfigurationFileStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncCreateDatabaseDumpStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncSendDatabaseDumpStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManagerHaSyncWorker::haSyncFailedStep),
     };
 
@@ -2670,7 +2670,7 @@ void WaveFrameworkObjectManagerHaSyncWorker::haSyncFailedStep (StartHaSyncDumpCo
         setSyncState (OUT_OF_SYNC);
         FrameworkToolKit::disableLiveSync ();
     }
-    WaveFrameworkObjectManagerHaSyncWorker::prismLinearSequencerFailedStep (pStartHaSyncDumpContext);
+    WaveFrameworkObjectManagerHaSyncWorker::waveLinearSequencerFailedStep (pStartHaSyncDumpContext);
 }
 
 

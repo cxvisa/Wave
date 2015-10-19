@@ -123,15 +123,15 @@ vector<UI32> &CreateClusterWithNodesContext::getValidationDetailsSizesVector ()
 
 void CreateClusterWithNodesContext::addValidaionResultsLocation (const string &ipAddress, const SI32 &port)
 {
-    m_prismLocationIpAddressesForValidationResultsVector.push_back (ipAddress);
-    m_prismLocationPortsForValidationResultsVector.push_back (port);
+    m_waveLocationIpAddressesForValidationResultsVector.push_back (ipAddress);
+    m_waveLocationPortsForValidationResultsVector.push_back (port);
 }
 
 UI32 CreateClusterWithNodesContext::getNumberOfResultsLocations ()
 {
-    waveAssert (m_prismLocationIpAddressesForValidationResultsVector.size () == m_prismLocationPortsForValidationResultsVector.size (), __FILE__, __LINE__);
+    waveAssert (m_waveLocationIpAddressesForValidationResultsVector.size () == m_waveLocationPortsForValidationResultsVector.size (), __FILE__, __LINE__);
 
-    return (m_prismLocationIpAddressesForValidationResultsVector.size ());
+    return (m_waveLocationIpAddressesForValidationResultsVector.size ());
 }
 
 void CreateClusterWithNodesContext::getResultsLocationAt (const UI32 &i, string &ipAddress, SI32 &port)
@@ -141,8 +141,8 @@ void CreateClusterWithNodesContext::getResultsLocationAt (const UI32 &i, string 
 
     if (i < getNumberOfResultsLocations ())
     {
-        ipAddress = m_prismLocationIpAddressesForValidationResultsVector[i];
-        port      = m_prismLocationPortsForValidationResultsVector[i];
+        ipAddress = m_waveLocationIpAddressesForValidationResultsVector[i];
+        port      = m_waveLocationPortsForValidationResultsVector[i];
     }
 }
 
@@ -150,8 +150,8 @@ void CreateClusterWithNodesContext::addValidationResultsForService (const string
 {
     string uniqueIdString = ipAddress + string (":") + port + string (":") + waveServiceId;
 
-    m_prismLocationValidationResultsVector[uniqueIdString]      = pValidationResults;
-    m_prismLocationValidationResultsSizesVector[uniqueIdString] = validationResultsSize;
+    m_waveLocationValidationResultsVector[uniqueIdString]      = pValidationResults;
+    m_waveLocationValidationResultsSizesVector[uniqueIdString] = validationResultsSize;
 }
 
 void CreateClusterWithNodesContext::getValidationResultsForService (const string &ipAddress, const SI32 &port, const WaveServiceId &waveServiceId, void *&pValidationResults, UI32 &validationResultsSize)
@@ -161,8 +161,8 @@ void CreateClusterWithNodesContext::getValidationResultsForService (const string
     pValidationResults    = NULL;
     validationResultsSize = 0;
 
-    map<string, void *>::iterator validationResultsElement = m_prismLocationValidationResultsVector.find (uniqueIdString);
-    map<string, void *>::iterator validationResultsEnd     = m_prismLocationValidationResultsVector.end ();
+    map<string, void *>::iterator validationResultsElement = m_waveLocationValidationResultsVector.find (uniqueIdString);
+    map<string, void *>::iterator validationResultsEnd     = m_waveLocationValidationResultsVector.end ();
 
     if (validationResultsElement != validationResultsEnd)
     {
@@ -173,8 +173,8 @@ void CreateClusterWithNodesContext::getValidationResultsForService (const string
         return;
     }
 
-    map<string, UI32>::iterator validationResultsSizeElement = m_prismLocationValidationResultsSizesVector.find (uniqueIdString);
-    map<string, UI32>::iterator validationResultsSizeEnd     = m_prismLocationValidationResultsSizesVector.end ();
+    map<string, UI32>::iterator validationResultsSizeElement = m_waveLocationValidationResultsSizesVector.find (uniqueIdString);
+    map<string, UI32>::iterator validationResultsSizeEnd     = m_waveLocationValidationResultsSizesVector.end ();
 
     if (validationResultsSizeElement != validationResultsSizeEnd)
     {

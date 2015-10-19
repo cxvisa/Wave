@@ -31,8 +31,8 @@ ResourceId WaveSecondaryNodeRejoinShutdownAgent::execute ()
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveSecondaryNodeRejoinShutdownAgent::disablePostPhaseServicesStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveSecondaryNodeRejoinShutdownAgent::uninitializePostPhaseServicesStep),
 
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveSecondaryNodeRejoinShutdownAgent::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveSecondaryNodeRejoinShutdownAgent::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveSecondaryNodeRejoinShutdownAgent::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveSecondaryNodeRejoinShutdownAgent::waveSynchronousLinearSequencerFailedStep)
     };
 
     WaveShutdownAgentContext *pWaveShutdownAgentContext = new WaveShutdownAgentContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

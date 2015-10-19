@@ -36,9 +36,9 @@ class WaveSynchronousLinearSequencerContext
     public :
                                                         WaveSynchronousLinearSequencerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                                                         WaveSynchronousLinearSequencerContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                                        WaveSynchronousLinearSequencerContext (const WaveSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext);
+                                                        WaveSynchronousLinearSequencerContext (const WaveSynchronousLinearSequencerContext &waveSynchronousLinearSequencerContext);
         virtual                                        ~WaveSynchronousLinearSequencerContext ();
-                WaveSynchronousLinearSequencerContext &operator =                             (const WaveSynchronousLinearSequencerContext &prismSynchronousLinearSequencerContext);
+                WaveSynchronousLinearSequencerContext &operator =                             (const WaveSynchronousLinearSequencerContext &waveSynchronousLinearSequencerContext);
                 ResourceId                              getCompletionStatus                    ();
                 ResourceId                              execute                                ();
                 WaveMessage                           *getPWaveMessage                       ();

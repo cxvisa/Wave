@@ -56,8 +56,8 @@ void WaveSecondaryUncontrolledFailoverAgent::execute (WaveFailoverAgentContext *
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::startHeartBeatToSecondariesStep), 
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::saveWaveConfiguration), 
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::failoverForUnknownWaveNodeWaveServicesStep), 
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSecondaryUncontrolledFailoverAgent::waveLinearSequencerFailedStep)
     };
 
     WaveFailoverAgentSequencerContext *pWaveFailoverAgentSequencerContext = new WaveFailoverAgentSequencerContext (pWaveFailoverAgentContext, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

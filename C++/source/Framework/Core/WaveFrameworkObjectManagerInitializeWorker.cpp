@@ -69,7 +69,7 @@ WaveFrameworkObjectManagerInitializeWorker::~WaveFrameworkObjectManagerInitializ
 {
 }
 
-ResourceId WaveFrameworkObjectManagerInitializeWorker::startWaveServices (const WaveBootMode &prismBootMode, const WaveBootPhase &waveBootPhase)
+ResourceId WaveFrameworkObjectManagerInitializeWorker::startWaveServices (const WaveBootMode &waveBootMode, const WaveBootPhase &waveBootPhase)
 {
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::startWaveServices : Entering ...");
 
@@ -81,13 +81,13 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::startWaveServices (const 
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::informServicesToInitializeBeforeBootComplete),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::declareBootCompleteStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::prismSynchronousLinearSequencerFailedStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkObjectManagerInitializeWorker::waveSynchronousLinearSequencerFailedStep),
     };
 
     WaveFrameworkInitializeWorkerStartServicesContext *pWaveFrameworkInitializeWorkerStartServicesContext = new WaveFrameworkInitializeWorkerStartServicesContext (reinterpret_cast<WaveAsynchronousContext *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (prismBootMode);
+    pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootMode (waveBootMode);
     pWaveFrameworkInitializeWorkerStartServicesContext->setWaveBootPhase (waveBootPhase);
 
     ResourceId status = pWaveFrameworkInitializeWorkerStartServicesContext->execute ();
@@ -282,11 +282,11 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
     }
     else
     {
-        string                      prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+        string                      waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
         WaveFrameworkConfiguration waveFrameworkConfiguration;
         ResourceId                  status1                      = WAVE_MESSAGE_ERROR;
 
-        status1 = waveFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
+        status1 = waveFrameworkConfiguration.loadConfiguration (waveConfigurationfileName);
 
         waveAssert (WAVE_MESSAGE_SUCCESS == status1, __FILE__, __LINE__);
 
@@ -336,13 +336,13 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
             {
                 // delete cfg file
                 vector<string>  output;
-                string          cmdString = string ("/bin/rm -rf ") + prismConfigurationfileName;
+                string          cmdString = string ("/bin/rm -rf ") + waveConfigurationfileName;
                 SI32            cmdStatus = FrameworkToolKit::systemCommandOutput (cmdString.c_str(), output);
 
                 if ( 0 != cmdStatus )
                 {
                     rollbackStatus = FRAMEWORK_ERROR;
-                    trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep: failed to delete file ")+ prismConfigurationfileName);
+                    trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep: failed to delete file ")+ waveConfigurationfileName);
                 }
                 else
                 {
@@ -432,45 +432,45 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep (Wav
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Entering ...");
 
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
-    WaveBootMode               prismBootMode              = pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ();
+    WaveBootMode               waveBootMode              = pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootMode ();
 
-    trace (TRACE_LEVEL_INFO, string ("Boot Mode is ") + prismBootMode);
+    trace (TRACE_LEVEL_INFO, string ("Boot Mode is ") + waveBootMode);
 
-    if (WAVE_BOOT_FIRST_TIME == prismBootMode)
+    if (WAVE_BOOT_FIRST_TIME == waveBootMode)
     {
         m_pWaveBootAgent = new FirstTimeWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_PERSISTENT == prismBootMode)
+    else if (WAVE_BOOT_PERSISTENT == waveBootMode)
     {
         m_pWaveBootAgent = new PersistentWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_PERSISTENT_WITH_DEFAULT == prismBootMode)
+    else if (WAVE_BOOT_PERSISTENT_WITH_DEFAULT == waveBootMode)
     {
         m_pWaveBootAgent = new PersistentWithDefaultWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_SECONDARY_CONFIGURE == prismBootMode)
+    else if (WAVE_BOOT_SECONDARY_CONFIGURE == waveBootMode)
     {
         m_pWaveBootAgent = new SecondaryNodeConfigureWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_SECONDARY_UNCONFIGURE == prismBootMode)
+    else if (WAVE_BOOT_SECONDARY_UNCONFIGURE == waveBootMode)
     {
         m_pWaveBootAgent = new SecondaryNodeUnconfigureWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_SECONDARY_REJOIN == prismBootMode)
+    else if (WAVE_BOOT_SECONDARY_REJOIN == waveBootMode)
     {
         m_pWaveBootAgent = new SecondaryNodeRejoinWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_HASTANDBY == prismBootMode)
+    else if (WAVE_BOOT_HASTANDBY == waveBootMode)
     {
         m_pWaveBootAgent = new HaStandbyWaveBootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
-    else if (WAVE_BOOT_PREPARE_FOR_HA_BOOT == prismBootMode)
+    else if (WAVE_BOOT_PREPARE_FOR_HA_BOOT == waveBootMode)
     {
         m_pWaveBootAgent = new PersistentWithDefaultForHABootAgent (m_pWaveObjectManager, frameworkSequenceGenerator);
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, string ("WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Unknown Wave Boot Mode : ") + (UI32) prismBootMode);
+        trace (TRACE_LEVEL_FATAL, string ("WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Unknown Wave Boot Mode : ") + (UI32) waveBootMode);
         waveAssert (false, __FILE__, __LINE__);
     }
 
@@ -561,7 +561,7 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep (Wa
             system ((string ("/bin/rm -rf ") + (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ()).c_str());
         }
 
-        // 2. save prism configuration
+        // 2. save wave configuration
         FrameworkToolKit::saveWaveConfiguration ();
 
         if (true == (DatabaseObjectManager::getIsDatabaseEnabled ()))
@@ -684,10 +684,10 @@ void WaveFrameworkObjectManagerInitializeWorker::FrameworkUpdateDatabaseSchema (
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    string prismConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
+    string waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     WaveFrameworkConfiguration waveFrameworkConfiguration;
 
-    status = waveFrameworkConfiguration.loadConfiguration (prismConfigurationfileName);
+    status = waveFrameworkConfiguration.loadConfiguration (waveConfigurationfileName);
 
     waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
 

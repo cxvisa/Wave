@@ -61,8 +61,8 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByQualifiedYangPathComputeYangDisplayConfigurationContextStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::waveLinearSequencerFailedStep),
     };
 
     DisplayCurrentConfigurationContext *pDisplayCurrentConfigurationContext = new DisplayCurrentConfigurationContext (pWaveSystemManagementDisplayConfigurationByQualifiedYangPathMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -211,8 +211,8 @@ void WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfiguration
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationByTargetNodeNameComputeYangDisplayConfigurationContextStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::displayCurrentConfigurationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveSystemManagementDisplayConfigurationWorker::waveLinearSequencerFailedStep),
     };
 
     DisplayCurrentConfigurationContext *pDisplayCurrentConfigurationContext = new DisplayCurrentConfigurationContext (pWaveSystemManagementDisplayConfigurationByTargetNodeNameMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

@@ -36,12 +36,12 @@ CentralClusterConfigObjectManager::CentralClusterConfigObjectManager ()
       m_cluster (this)
 {
     NodeManagedObject nodeManagedObject (this);
-    WaveCluster      prismCluster      (this);
+    WaveCluster      waveCluster      (this);
 
     nodeManagedObject.setupOrm ();
     addManagedClass (NodeManagedObject::getClassName ());
 
-    prismCluster.setupOrm ();
+    waveCluster.setupOrm ();
     addManagedClass (WaveCluster::getClassName ());
 
 //    addOperationMap (CLUSTER_CREATE_CLUSTER,                    reinterpret_cast<WaveMessageHandler> (&CentralClusterConfigObjectManager::createClusterConfig));
@@ -251,8 +251,8 @@ void CentralClusterConfigObjectManager::boot (WaveAsynchronousContextForBootPhas
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::bootQueryNodesStep),
         reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::bootStartHeartBeatsStep),
 #endif
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::prismLinearSequencerFailedStep)
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&CentralClusterConfigObjectManager::waveLinearSequencerFailedStep)
     };
 
     ClusterBootContext *pClusterBootContext = new ClusterBootContext (pWaveAsynchronousContextForBootPhases, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -468,30 +468,30 @@ void CentralClusterConfigObjectManager::failover (FailoverAsynchronousContext *p
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryWaveClusterStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveNodeObjectsStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
 #if 0
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverStartHeartBeatsIfPrimaryChangedStep),
 #endif
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
     WaveNs::WaveSynchronousLinearSequencerStep sequencerUncontrolledSteps[] =
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryWaveClusterStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverDetermineIfPrimaryChangedStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverQueryAllWaveNodeObjectsStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerStartTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerStartTransactionStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUncontrolledUpdateWaveNodeObjectsStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverUpdateWaveClusterStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerCommitTransactionStep),
 #if 0
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::failoverStartHeartBeatsIfUncontrolledPrimaryChangedStep),
 #endif
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&CentralClusterConfigObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
     ClusterFailoverContext *pClusterFailoverContext;

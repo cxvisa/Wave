@@ -29,8 +29,8 @@ namespace WaveNs
 
 static WaveServiceMap                         *s_pWaveServiceMap                                       = NULL;
 
-       map<WaveThreadId, WaveObjectManager *>  WaveThread::m_prismThreadIdToWaveObjectManagerMap;
-       WaveMutex                               WaveThread::m_prismThreadIdToWaveObjectManagerMapMutex;
+       map<WaveThreadId, WaveObjectManager *>  WaveThread::m_waveThreadIdToWaveObjectManagerMap;
+       WaveMutex                               WaveThread::m_waveThreadIdToWaveObjectManagerMapMutex;
 
 WaveThread::WaveThread (WaveServiceId id, const string &serviceName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : WavePosixThread    (stackSize),
@@ -83,11 +83,11 @@ WaveThread::~WaveThread ()
 
     waveAssert (1 == numberOfWaveObjectManagers, __FILE__, __LINE__); // For now, enforce that there is exactly on Wave OM per thread.
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.lock ();
 
-    m_prismThreadIdToWaveObjectManagerMap.erase (m_prismThreadIdToWaveObjectManagerMap.find (thisThreadId));
+    m_waveThreadIdToWaveObjectManagerMap.erase (m_waveThreadIdToWaveObjectManagerMap.find (thisThreadId));
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
 }
 
 WaveThreadStatus WaveThread::start ()
@@ -104,13 +104,13 @@ WaveThreadStatus WaveThread::start ()
             break;
         }
 
-        prismUSleep (10000);
+        waveUSleep (10000);
     }
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
-    m_prismThreadIdToWaveObjectManagerMap[thisThreadId] = m_pWaveObjectManagers[0];
+    m_waveThreadIdToWaveObjectManagerMapMutex.lock ();
+    m_waveThreadIdToWaveObjectManagerMap[thisThreadId] = m_pWaveObjectManagers[0];
     //trace (TRACE_LEVEL_INFO, string ("WaveThread::start : Wave Thread ID ") + thisThreadId + string (" corresponds to Wave OM : ") + (m_pWaveObjectManagers[0])->getName ());
-    m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
 
     setCpuAffinity (m_cpuAffinityVector);
 
@@ -232,7 +232,7 @@ WaveThreadStatus WaveThread::consumePendingMessages ()
             break;
         }
 
-        prismSleep (1);
+        waveSleep (1);
     }
 
     WaveMessage *pWaveMessage = NULL;
@@ -1027,7 +1027,7 @@ WaveObjectManager *WaveThread::getWaveObjectManagerForEventOperationCodeForListe
     return (NULL);
 }
 
-WaveObjectManager *WaveThread::getWaveObjectManagerForWaveMessageId  (UI32 prismMessageId)
+WaveObjectManager *WaveThread::getWaveObjectManagerForWaveMessageId  (UI32 waveMessageId)
 {
     vector<WaveObjectManager *>::iterator  element            = m_pWaveObjectManagers.begin ();
     vector<WaveObjectManager *>::iterator  limitingElement    = m_pWaveObjectManagers.end (); // last element + 1
@@ -1037,7 +1037,7 @@ WaveObjectManager *WaveThread::getWaveObjectManagerForWaveMessageId  (UI32 prism
     {
         pWaveObjectManager = *element;
 
-        if (pWaveObjectManager->isAKnownMessage (prismMessageId))
+        if (pWaveObjectManager->isAKnownMessage (waveMessageId))
         {
             return (pWaveObjectManager);
         }
@@ -1403,10 +1403,10 @@ WaveObjectManager *WaveThread::getWaveObjectManagerForCurrentThread ()
 {
     WaveObjectManager *pWaveObjectManager = NULL;
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.lock ();
 
-    map<WaveThreadId, WaveObjectManager *>::iterator element    = m_prismThreadIdToWaveObjectManagerMap.find (pthread_self ());
-    map<WaveThreadId, WaveObjectManager *>::iterator endElement = m_prismThreadIdToWaveObjectManagerMap.end ();
+    map<WaveThreadId, WaveObjectManager *>::iterator element    = m_waveThreadIdToWaveObjectManagerMap.find (pthread_self ());
+    map<WaveThreadId, WaveObjectManager *>::iterator endElement = m_waveThreadIdToWaveObjectManagerMap.end ();
 
     if (endElement != element)
     {
@@ -1417,7 +1417,7 @@ WaveObjectManager *WaveThread::getWaveObjectManagerForCurrentThread ()
         pWaveObjectManager = ReservedWaveLocalObjectManager::getInstance ();
     }
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
 
     return (pWaveObjectManager);
 }
@@ -1427,10 +1427,10 @@ WaveServiceId WaveThread::getWaveServiceIdForCurrentThread ()
     WaveObjectManager *pWaveObjectManager = NULL;
     WaveServiceId     waveServiceId;
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.lock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.lock ();
 
-    map<WaveThreadId, WaveObjectManager *>::iterator element    = m_prismThreadIdToWaveObjectManagerMap.find (pthread_self ());
-    map<WaveThreadId, WaveObjectManager *>::iterator endElement = m_prismThreadIdToWaveObjectManagerMap.end ();
+    map<WaveThreadId, WaveObjectManager *>::iterator element    = m_waveThreadIdToWaveObjectManagerMap.find (pthread_self ());
+    map<WaveThreadId, WaveObjectManager *>::iterator endElement = m_waveThreadIdToWaveObjectManagerMap.end ();
 
     if (endElement != element)
     {
@@ -1445,7 +1445,7 @@ WaveServiceId WaveThread::getWaveServiceIdForCurrentThread ()
 
     waveServiceId = pWaveObjectManager->getServiceId ();
 
-    m_prismThreadIdToWaveObjectManagerMapMutex.unlock ();
+    m_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
 
     return (waveServiceId);
 }

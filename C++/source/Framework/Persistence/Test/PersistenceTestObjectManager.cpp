@@ -44,8 +44,8 @@ void PersistenceTestObjectManager::testRequestHandler (RegressionTestMessage *pR
     {
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::simpleTransactionForObjectCreationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::nestedTransactionForObjectCreationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&PersistenceTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

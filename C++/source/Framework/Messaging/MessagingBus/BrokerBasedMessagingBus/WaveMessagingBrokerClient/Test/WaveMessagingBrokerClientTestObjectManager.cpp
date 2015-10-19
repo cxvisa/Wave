@@ -52,8 +52,8 @@ void WaveMessagingBrokerClientTestObjectManager::testRequestHandler (RegressionT
         reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerConnectTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerSubscribeMessageTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::simpleWaveBrokerPublishMessageTestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveMessagingBrokerClientTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pRegressionTestMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

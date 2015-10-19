@@ -68,8 +68,8 @@ void WaveManagedObjectDeleteWorker::deleteHandlerForMultipleDelete (WaveObjectMa
     WaveLinearSequencerStep sequencerStepsForMultipleDelete [] = 
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::sendAsynchronousDeleteMessagesStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerFailedStep),
     };
     
     WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContextForMultipleDelete = new WaveManagedObjectDeleteContext (pWaveObjectManagerDeleteWaveManagedObjectsMessage, this, sequencerStepsForMultipleDelete, sizeof (sequencerStepsForMultipleDelete) / sizeof (sequencerStepsForMultipleDelete[0])); 
@@ -203,9 +203,9 @@ void WaveManagedObjectDeleteWorker::deleteHandler (WaveObjectManagerDeleteWaveMa
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::deletePreDeleteManagedObjectStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::deleteDeleteManagedObjectStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::deletePostDeleteManagedObjectStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerCommitTransactionStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerCommitTransactionStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerFailedStep),
     };
 
     WaveLinearSequencerStep sequencerStepsForLeaf[] =
@@ -222,8 +222,8 @@ void WaveManagedObjectDeleteWorker::deleteHandler (WaveObjectManagerDeleteWaveMa
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::deleteUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::deletePostUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::commitWaveManagedObjectAfterUpdatingBackend),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectDeleteWorker::waveLinearSequencerFailedStep),
     };
 
     if (pWaveObjectManagerDeleteWaveManagedObjectMessage->getIsMO()) 
@@ -345,7 +345,7 @@ void WaveManagedObjectDeleteWorker::WaveManagedObjectStartTransactionStep (WaveM
         return;
     }
  
-    prismLinearSequencerStartTransactionStep (pWaveManagedObjectDeleteContext);
+    waveLinearSequencerStartTransactionStep (pWaveManagedObjectDeleteContext);
 }
 
 void WaveManagedObjectDeleteWorker::deleteValidateManagedObjectStep (WaveManagedObjectDeleteContext *pWaveManagedObjectDeleteContext)
@@ -1002,7 +1002,7 @@ void WaveManagedObjectDeleteWorker::commitWaveManagedObjectBeforeUpdatingBackend
 
     if (false == updateHardwareBeforeManagedObject)
     {
-        prismLinearSequencerCommitTransactionStep (pWaveManagedObjectDeleteContext);
+        waveLinearSequencerCommitTransactionStep (pWaveManagedObjectDeleteContext);
     }
     else
     {
@@ -1029,7 +1029,7 @@ void WaveManagedObjectDeleteWorker::commitWaveManagedObjectAfterUpdatingBackend 
 
     if (true == updateHardwareBeforeManagedObject)
     {
-        prismLinearSequencerCommitTransactionStep (pWaveManagedObjectDeleteContext);
+        waveLinearSequencerCommitTransactionStep (pWaveManagedObjectDeleteContext);
     }
     else
     {

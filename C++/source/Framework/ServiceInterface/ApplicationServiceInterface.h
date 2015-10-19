@@ -152,7 +152,7 @@ void addMessageHandler (const unsigned int applicationServiceId, const unsigned 
 //         Length of the input payload.
 //     receivingApplicationServiceWaveServiceId:
 //         Receiving Wave Application Service Id.  This is similar to sendingApplicationServiceWaveServiceId.
-//     prismLocationId:
+//     waveLocationId:
 //         The Location Id of the node to which the request (message) has to be sent.
 //     pWaveApplicationServiceCallback:
 //         Pointer to a function that can be used as a callback.  If the Callback is NULL, then no callback function will be executed upon the
@@ -168,7 +168,7 @@ unsigned int sendToApplicationService (const unsigned int                       
                                                       void                            *pPayLoad,
                                        const unsigned int                              payLoadLength,
                                        const unsigned int                              receivingApplicationServiceWaveServiceId,
-                                       const unsigned int                              prismLocationId,
+                                       const unsigned int                              waveLocationId,
                                                       WaveApplicationServiceCallback  pWaveApplicationServiceCallback,
                                                       void                            *pApplicationContext);
 

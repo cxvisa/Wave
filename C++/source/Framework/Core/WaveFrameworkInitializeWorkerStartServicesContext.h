@@ -22,7 +22,7 @@ class WaveFrameworkInitializeWorkerStartServicesContext : public WaveSynchronous
     public :
                         WaveFrameworkInitializeWorkerStartServicesContext (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveSynchronousLinearSequencerStep *pSteps, UI32 numberOfSteps);
                        ~WaveFrameworkInitializeWorkerStartServicesContext ();
-        void            setWaveBootMode                                   (WaveBootMode prismBootMode);
+        void            setWaveBootMode                                   (WaveBootMode waveBootMode);
         WaveBootMode   getWaveBootMode                                   () const;
         void            setWaveBootPhase                                   (const WaveBootPhase &waveBootPhase);
         WaveBootPhase   getWaveBootPhase                                   () const;
@@ -36,7 +36,7 @@ class WaveFrameworkInitializeWorkerStartServicesContext : public WaveSynchronous
     // Now the data members
 
     private :
-        WaveBootMode   m_prismBootMode;
+        WaveBootMode   m_waveBootMode;
         WaveBootPhase   m_waveBootPhase;
         WaveBootAgent *m_pWaveBootAgent;
         bool            m_isSchemaChangedOnFwdl;

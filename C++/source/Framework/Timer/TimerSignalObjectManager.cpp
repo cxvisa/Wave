@@ -53,11 +53,11 @@ void TimerSignalObjectManager::boot (WaveAsynchronousContextForBootPhases *pWave
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
 
-	prismCreateWaitableTimer ();
+	waveCreateWaitableTimer ();
 
     while (1)
     {
-        prismWaitForAlarmSignal ();
+        waveWaitForAlarmSignal ();
         catchTimerAlarm ();
     }
 }

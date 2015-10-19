@@ -524,15 +524,15 @@ class WaveObjectManager : public WaveElement
                 bool                isOperationCodeSupported                     (UI32 operationCode);
                 bool                isEventOperationCodeSupported                (UI32 eventOperationCode);
                 bool                isEventOperationCodeSupportedForListening    (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
-                bool                isAKnownMessage                              (UI32 prismMessageId);
+                bool                isAKnownMessage                              (UI32 waveMessageId);
                 void                handleWaveMessage                           (WaveMessage *pWaveMessage);
                 void                handleWaveEvent                             (const WaveEvent *&pWaveEvent);
                 void                handleWaveMessageResponse                   (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled = false);
-                void                handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 prismMessageId);
+                void                handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 waveMessageId);
                 void                addWorker                                    (WaveWorker *pWorker);
                 void                removeWorker                                 (WaveWorker *pWorker);
         static  bool                isEventAllowedBeforeEnabling                 (const UI32 &eventOperationCode);
-        static  bool                canInstantiateServiceAtThisTime              (const string &prismServiceName);
+        static  bool                canInstantiateServiceAtThisTime              (const string &waveServiceName);
 
         virtual WaveMessage       *createMessageInstance                        (const UI32 &operationCode);
                 WaveMessage       *createMessageInstanceWrapper                 (const UI32 &operationCode);
@@ -598,10 +598,10 @@ class WaveObjectManager : public WaveElement
     protected :
                 bool                getIsEnabled                                 ();
                                                                  WaveObjectManager                            (const string &objectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
-                                                                 WaveObjectManager                            (const WaveObjectManager &prismObjectManager);
+                                                                 WaveObjectManager                            (const WaveObjectManager &waveObjectManager);
         virtual                                                 ~WaveObjectManager                            ();
                 string                                           getName                                      () const;
-                WaveObjectManager                              &operator =                                    (const WaveObjectManager &prismObjectManager);
+                WaveObjectManager                              &operator =                                    (const WaveObjectManager &waveObjectManager);
                 void                                             addOperationMap                              (UI32 operationCode, WaveMessageHandler pMessageHandler, WaveElement *pWaveElement = NULL);
                 void                                             addServiceIndependentOperationMap            (UI32 operationCode, WaveServiceIndependentMessageHandler pWaveServiceIndependentMessageHandler);
                 void                                             addServiceIndependentOperationMap            (UI32 operationCode, ManagementInterfaceServiceIndependentMessageHandler pManagementInterfaceServiceIndependentMessageHandler);
@@ -610,11 +610,11 @@ class WaveObjectManager : public WaveElement
         virtual void                                             addEventType                                 (const UI32 &eventOperationCode);
         virtual void                                             listenForEvent                               (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
         virtual void                                             unlistenEvents                               ();
-                void                                             addResponseMap                               (UI32 prismMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
-                WaveMessageResponseContext                     *removeResponseMap                            (UI32 prismMessageId);
+                void                                             addResponseMap                               (UI32 waveMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
+                WaveMessageResponseContext                     *removeResponseMap                            (UI32 waveMessageId);
                 WaveOperationMapContext                        *getWaveMessageHandler                       (UI32 operationCode, UI32 messageHandlerServiceCode = 0, UI32 thisServiceId = 0);
                 WaveEventMapContext                            *getWaveEventHandler                         (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
-                WaveObjectManager::WaveMessageResponseContext *getResponseContext                            (UI32 prismMessageId);
+                WaveObjectManager::WaveMessageResponseContext *getResponseContext                            (UI32 waveMessageId);
                 void                                             setIsEnabled                                 (bool isEnabled);
         virtual TraceClientId                                    getTraceClientId                             ();
 

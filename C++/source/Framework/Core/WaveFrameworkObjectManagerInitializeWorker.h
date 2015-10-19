@@ -53,7 +53,7 @@ class WaveFrameworkObjectManagerInitializeWorker : public WaveWorker
                            WaveFrameworkObjectManagerInitializeWorker (WaveObjectManager *pWaveObjectManager);
                           ~WaveFrameworkObjectManagerInitializeWorker ();
 
-               ResourceId  startWaveServices                          (const WaveBootMode &prismBootMode = WAVE_BOOT_UNKNOWN, const WaveBootPhase &waveBootPhase = WAVE_BOOT_PHASE_ALL_PHASES);
+               ResourceId  startWaveServices                          (const WaveBootMode &waveBootMode = WAVE_BOOT_UNKNOWN, const WaveBootPhase &waveBootPhase = WAVE_BOOT_PHASE_ALL_PHASES);
 
         static bool        getInitialBootCompleted                     ();
         static void        setInitialBootCompleted                     (const bool &initialBootCompleted);

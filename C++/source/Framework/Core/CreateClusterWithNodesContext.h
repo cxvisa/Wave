@@ -62,10 +62,10 @@ class CreateClusterWithNodesContext : public WaveLinearSequencerContext
 
         vector<WaveServiceId> m_waveServiceIdsToCommunicate;
 
-        vector<string>         m_prismLocationIpAddressesForValidationResultsVector;
-        vector<SI32>           m_prismLocationPortsForValidationResultsVector;
-        map<string, void *>    m_prismLocationValidationResultsVector;
-        map<string, UI32>      m_prismLocationValidationResultsSizesVector;
+        vector<string>         m_waveLocationIpAddressesForValidationResultsVector;
+        vector<SI32>           m_waveLocationPortsForValidationResultsVector;
+        map<string, void *>    m_waveLocationValidationResultsVector;
+        map<string, UI32>      m_waveLocationValidationResultsSizesVector;
         bool                   m_isDeletion;
         vector<LocationId>     m_successfullyAddedLocationIdVector;
         vector<LocationId>     m_failedLocationIds;

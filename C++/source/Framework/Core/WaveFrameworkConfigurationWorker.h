@@ -37,8 +37,8 @@ class WaveFrameworkConfigurationWorker : public WaveWorker
     public :
                             WaveFrameworkConfigurationWorker (WaveObjectManager *pWaveObjectManager);
         virtual            ~WaveFrameworkConfigurationWorker ();
-                ResourceId  saveWaveConfiguration            (const string &prismConfigurationFile, const bool &syncToStandby);
-                ResourceId  loadWaveConfiguration            (const string &prismConfigurationFile);
+                ResourceId  saveWaveConfiguration            (const string &waveConfigurationFile, const bool &syncToStandby);
+                ResourceId  loadWaveConfiguration            (const string &waveConfigurationFile);
                 bool        getWaveConfigurationValidity     ();
                 ResourceId  changeWaveConfigurationValidity  (const bool &validity );      
                 WaveMessage *createMessageInstance           (const UI32 &operationCode);
@@ -48,7 +48,7 @@ class WaveFrameworkConfigurationWorker : public WaveWorker
 
     private :
         bool        m_isWaveConfigurationValid ;
-        WaveMutex  m_prismConfigurationValidityMutex;
+        WaveMutex  m_waveConfigurationValidityMutex;
  
     protected :
     public :

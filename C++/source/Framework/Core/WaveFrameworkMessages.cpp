@@ -185,14 +185,14 @@ WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage (Wave
 
 }
 
-WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage (const WaveTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
+WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage (const WaveTimerExpiredObjectManagerMessage &waveTimerExpiredObjectManagerMessage)
     : WaveMessage (0, WAVE_OBJECT_MANAGER_TIMER_EXPIRED)
 {
     trace (TRACE_LEVEL_FATAL, "WaveTimerExpiredObjectManagerMessage::WaveTimerExpiredObjectManagerMessage : Copy constructing WaveTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
 }
 
-WaveTimerExpiredObjectManagerMessage &WaveTimerExpiredObjectManagerMessage::operator = (const WaveTimerExpiredObjectManagerMessage &prismTimerExpiredObjectManagerMessage)
+WaveTimerExpiredObjectManagerMessage &WaveTimerExpiredObjectManagerMessage::operator = (const WaveTimerExpiredObjectManagerMessage &waveTimerExpiredObjectManagerMessage)
 {
     trace (TRACE_LEVEL_FATAL, "WaveTimerExpiredObjectManagerMessage::operator = : Assigning to a WaveTimerExpiredObjectManagerMessage does not make sense and hence not allowed.");
     waveAssert (false, __FILE__, __LINE__);
@@ -1054,7 +1054,7 @@ WaveZeroizeObjectManagerMessage::WaveZeroizeObjectManagerMessage (WaveServiceId 
 WaveObjectManagerGetDebugInformationMessage::WaveObjectManagerGetDebugInformationMessage ()
     : ManagementInterfaceMessage ("", WAVE_OBJECT_MANAGER_GET_DEBUG_INFORMATION)
 {
-    // An empty service string name is equivalent to prism service id 0
+    // An empty service string name is equivalent to wave service id 0
 
     setIsMessageSupportedWhenServiceIsPaused (true);
 }
@@ -1089,7 +1089,7 @@ const string & WaveObjectManagerGetDebugInformationMessage::getDebugInformation 
 WaveObjectManagerResetDebugInformationMessage::WaveObjectManagerResetDebugInformationMessage ()
     : ManagementInterfaceMessage ("", WAVE_OBJECT_MANAGER_RESET_DEBUG_INFORMATION)
 {
-    // An empty service string name is equivalent to prism service id 0
+    // An empty service string name is equivalent to wave service id 0
 
     setIsMessageSupportedWhenServiceIsPaused (true);
 }

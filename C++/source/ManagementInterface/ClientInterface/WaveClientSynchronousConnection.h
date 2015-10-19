@@ -56,7 +56,7 @@ class WaveClientSynchronousConnection
         // Other management interface related member functions.
 
         string                getServiceNameById                                      (const WaveServiceId &waveServiceId) const;
-        WaveServiceId        getServiceIdByName                                      (const string &prismServiceName) const;
+        WaveServiceId        getServiceIdByName                                      (const string &waveServiceName) const;
 
         ResourceId            getListOfTestServices                                   (vector<RegressionTestEntry> &testServices);
         ResourceId            prepareTestForAService                                  (const WaveServiceId &waveServiceId, const vector<string> &inputStrings);

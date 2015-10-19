@@ -189,7 +189,7 @@ void ShellWave::usageShellWaveHelp ()
     usageShellWaveLoadScript ();
     usageShellWaveClusterService ();
     usageShellWaveWyserService ();
-    cout << "help                       <Help for prism shell>" << endl;
+    cout << "help                       <Help for wave shell>" << endl;
 }
 
 

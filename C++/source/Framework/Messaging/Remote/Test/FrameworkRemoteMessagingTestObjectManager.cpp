@@ -88,8 +88,8 @@ void FrameworkRemoteMessagingTestObjectManager::testRequestHandler (RegressionTe
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::sendOneWayToWaveClusterTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentToWaveCluster),
         reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::remoteMessagingPerformanceMeasurementForSentMulticast),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&FrameworkRemoteMessagingTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     FrameworkLocalMessagingTestContext *pFrameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

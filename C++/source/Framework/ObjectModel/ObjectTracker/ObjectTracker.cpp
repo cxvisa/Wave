@@ -142,15 +142,15 @@ void ObjectTracker::getObjects (const WaveServiceId &waveServiceId, vector<strin
         return;
     }
 
-    WaveThreadId                                                                            prismThreadId    = (WaveThread::getWaveThreadForServiceId (waveServiceId))->getId ();
-    map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadElement    = m_currentlyAllocatedObjectsByThread.find (prismThreadId);
+    WaveThreadId                                                                            waveThreadId    = (WaveThread::getWaveThreadForServiceId (waveServiceId))->getId ();
+    map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadElement    = m_currentlyAllocatedObjectsByThread.find (waveThreadId);
     map<WaveThreadId, map<const WaveManagedObject *, const WaveManagedObject *> >::iterator threadEndElement = m_currentlyAllocatedObjectsByThread.end  ();
 
     string btstring = "";
     if (threadEndElement != threadElement)
     {
-        map<const WaveManagedObject *, const WaveManagedObject *>::iterator messageElement    = m_currentlyAllocatedObjectsByThread[prismThreadId].begin ();
-        map<const WaveManagedObject *, const WaveManagedObject *>::iterator messageEndElement = m_currentlyAllocatedObjectsByThread[prismThreadId].end   ();
+        map<const WaveManagedObject *, const WaveManagedObject *>::iterator messageElement    = m_currentlyAllocatedObjectsByThread[waveThreadId].begin ();
+        map<const WaveManagedObject *, const WaveManagedObject *>::iterator messageEndElement = m_currentlyAllocatedObjectsByThread[waveThreadId].end   ();
 
         while (messageEndElement != messageElement)
         {

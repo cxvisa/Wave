@@ -157,8 +157,8 @@ void DistributedLogTestObjectManager::testRequestHandler (RegressionTestMessage 
         reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addAuditLog3UsingSendToWaveClusterTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::addManagedObjectLog1UsingSendToWaveClusterTestStep),
         reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::restoreMaxAllowedLogEntriesTestStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&DistributedLogTestObjectManager::waveLinearSequencerFailedStep),
     };
 
     DistributedLogTestContext *pDistributedLogTestContext = new DistributedLogTestContext (pMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

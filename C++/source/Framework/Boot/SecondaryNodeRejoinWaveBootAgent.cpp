@@ -70,8 +70,8 @@ ResourceId SecondaryNodeRejoinWaveBootAgent::execute (const WaveBootPhase &waveB
 
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::bootWaveServicesDuringPrePhaseStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -92,8 +92,8 @@ ResourceId SecondaryNodeRejoinWaveBootAgent::execute (const WaveBootPhase &waveB
 
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::bootWaveServicesStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -114,8 +114,8 @@ ResourceId SecondaryNodeRejoinWaveBootAgent::execute (const WaveBootPhase &waveB
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::bootWaveServicesStep),
             reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::backendSyncUpStep),
 
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerSucceededStep),
-            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::prismSynchronousLinearSequencerFailedStep)
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::waveSynchronousLinearSequencerSucceededStep),
+            reinterpret_cast<WaveSynchronousLinearSequencerStep> (&SecondaryNodeRejoinWaveBootAgent::waveSynchronousLinearSequencerFailedStep)
         };
 
         WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext = new WaveSynchronousLinearSequencerContext (reinterpret_cast<WaveMessage *> (NULL), this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));

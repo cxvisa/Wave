@@ -67,8 +67,8 @@ void WaveManagedObjectUpdateWorker::updateHandler (WaveObjectManagerUpdateWaveMa
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updatePostUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::updateAttributesPostUpdateHardwareStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::commitWaveManagedObjectAfterUpdatingBackend),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::prismLinearSequencerSucceededStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::prismLinearSequencerFailedStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::waveLinearSequencerSucceededStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveManagedObjectUpdateWorker::waveLinearSequencerFailedStep),
     };
 
     WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext = new WaveManagedObjectUpdateContext (pWaveObjectManagerUpdateWaveManagedObjectMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
@@ -178,7 +178,7 @@ void WaveManagedObjectUpdateWorker::WaveManagedObjectStartTransactionStep (WaveM
         return;
     }
  
-    prismLinearSequencerStartTransactionStep (pWaveManagedObjectUpdateContext);
+    waveLinearSequencerStartTransactionStep (pWaveManagedObjectUpdateContext);
 }
 
 void WaveManagedObjectUpdateWorker::updateValidateManagedObjectStep (WaveManagedObjectUpdateContext *pWaveManagedObjectUpdateContext)
@@ -1072,7 +1072,7 @@ void WaveManagedObjectUpdateWorker::commitWaveManagedObjectBeforeUpdatingBackend
 
     if (false == updateHardwareBeforeManagedObject)
     {
-        prismLinearSequencerCommitTransactionStep (pWaveManagedObjectUpdateContext);
+        waveLinearSequencerCommitTransactionStep (pWaveManagedObjectUpdateContext);
     }
     else
     {
@@ -1099,7 +1099,7 @@ void WaveManagedObjectUpdateWorker::commitWaveManagedObjectAfterUpdatingBackend 
 
     if (true == updateHardwareBeforeManagedObject)
     {
-        prismLinearSequencerCommitTransactionStep (pWaveManagedObjectUpdateContext);
+        waveLinearSequencerCommitTransactionStep (pWaveManagedObjectUpdateContext);
     }
     else
     {

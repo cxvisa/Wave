@@ -49,7 +49,7 @@ class WaveBootAgent : protected WaveWorker
 
     protected :
                    WaveBootAgent                                 (WaveObjectManager *pWaveObjectManager, FrameworkSequenceGenerator &currentFrameworkSequenceGenerator);
-        void       addAStepToWaveBootAgent                       (WaveSynchronousLinearSequencerStep prismBootAgentStep);
+        void       addAStepToWaveBootAgent                       (WaveSynchronousLinearSequencerStep waveBootAgentStep);
         virtual bool           willBeAPrimaryLocation                       ();
 
         ResourceId initializeWaveServicesDuringPrePhaseStep      (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext);

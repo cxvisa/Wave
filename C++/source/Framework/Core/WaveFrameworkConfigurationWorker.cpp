@@ -53,7 +53,7 @@ WaveMessage *WaveFrameworkConfigurationWorker::createMessageInstance (const UI32
     return (pWaveMessage);
 }
 
-ResourceId WaveFrameworkConfigurationWorker::saveWaveConfiguration (const string &prismConfigurationFile, const bool &syncToStandby)
+ResourceId WaveFrameworkConfigurationWorker::saveWaveConfiguration (const string &waveConfigurationFile, const bool &syncToStandby)
 {
     WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext = NULL;
 
@@ -64,11 +64,11 @@ ResourceId WaveFrameworkConfigurationWorker::saveWaveConfiguration (const string
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::displayConfigurationStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::saveConfigurationStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::sendConfigurationToStandbyStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
-    pWaveFrameworkConfigurationContext = new WaveFrameworkConfigurationContext (NULL, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), prismConfigurationFile);
+    pWaveFrameworkConfigurationContext = new WaveFrameworkConfigurationContext (NULL, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), waveConfigurationFile);
 
     pWaveFrameworkConfigurationContext->setSyncToStandby (syncToStandby);
 
@@ -187,17 +187,17 @@ ResourceId WaveFrameworkConfigurationWorker::sendConfigurationToStandbyStep (Wav
     return (status);
 }
 
-ResourceId WaveFrameworkConfigurationWorker::loadWaveConfiguration (const string &prismConfigurationFile)
+ResourceId WaveFrameworkConfigurationWorker::loadWaveConfiguration (const string &waveConfigurationFile)
 {
     WaveNs::WaveSynchronousLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::loadConfigurationStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::displayConfigurationStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
-    WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext = new WaveFrameworkConfigurationContext (NULL, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), prismConfigurationFile);
+    WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext = new WaveFrameworkConfigurationContext (NULL, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), waveConfigurationFile);
 
     ResourceId status = pWaveFrameworkConfigurationContext->execute ();
 
@@ -255,20 +255,20 @@ ResourceId WaveFrameworkConfigurationWorker::changeWaveConfigurationValidity ( c
 
 void WaveFrameworkConfigurationWorker::setWaveConfigurationValidity(const bool &validity)
 {
-    m_prismConfigurationValidityMutex.lock();
+    m_waveConfigurationValidityMutex.lock();
     
     m_isWaveConfigurationValid = validity;
     
-    m_prismConfigurationValidityMutex.unlock();
+    m_waveConfigurationValidityMutex.unlock();
 }
 
 bool WaveFrameworkConfigurationWorker::getWaveConfigurationValidity( )
 {
-    m_prismConfigurationValidityMutex.lock();
+    m_waveConfigurationValidityMutex.lock();
 
     bool validity = m_isWaveConfigurationValid ;
 
-    m_prismConfigurationValidityMutex.unlock();
+    m_waveConfigurationValidityMutex.unlock();
     
     return validity;
 }
@@ -386,13 +386,13 @@ ResourceId WaveFrameworkConfigurationWorker::syncWaveConfigurationMessageHandler
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::displayConfigurationStep),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::setInMemoryConfiguration),
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::prismSynchronousLinearSequencerSucceededStep),
-        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::prismSynchronousLinearSequencerFailedStep)
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::waveSynchronousLinearSequencerSucceededStep),
+        reinterpret_cast<WaveSynchronousLinearSequencerStep> (&WaveFrameworkConfigurationWorker::waveSynchronousLinearSequencerFailedStep)
     };
 
-    string prismConfigurationFile = pFrameworkObjectManagerSyncConfigurationMessage->getWaveFrameworkConfigurationFileName ();
+    string waveConfigurationFile = pFrameworkObjectManagerSyncConfigurationMessage->getWaveFrameworkConfigurationFileName ();
 
-    WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext = new WaveFrameworkConfigurationContext (pFrameworkObjectManagerSyncConfigurationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), prismConfigurationFile);
+    WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext = new WaveFrameworkConfigurationContext (pFrameworkObjectManagerSyncConfigurationMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]), waveConfigurationFile);
 
     // set cfg object in context
 
@@ -436,12 +436,12 @@ ResourceId WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep (Wa
 
     if (false == cfgValidity)
     {
-        trace (TRACE_LEVEL_INFO, "WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep: remove prism configuration file.");
+        trace (TRACE_LEVEL_INFO, "WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep: remove wave configuration file.");
         status = FrameworkToolKit::changeWaveConfigurationValidity (false);
     }
     else
     {      
-        trace (TRACE_LEVEL_INFO, "WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep: save prism configuration file.");
+        trace (TRACE_LEVEL_INFO, "WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep: save wave configuration file.");
         status = FrameworkToolKit::changeWaveConfigurationValidity (true);
     }
     

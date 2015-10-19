@@ -23,9 +23,9 @@ class WaveAsynchronousContext
     protected :
     public :
                                           WaveAsynchronousContext              (WaveElement *pCaller, WaveAsynchronousCallback pCallback, void *pCallerContext = NULL);
-                                          WaveAsynchronousContext              (const WaveAsynchronousContext &prismAsynchronousContext);
+                                          WaveAsynchronousContext              (const WaveAsynchronousContext &waveAsynchronousContext);
         virtual                          ~WaveAsynchronousContext              ();
-                WaveAsynchronousContext &operator =                            (const WaveAsynchronousContext &prismAsynchronousContext);
+                WaveAsynchronousContext &operator =                            (const WaveAsynchronousContext &waveAsynchronousContext);
                 void                      setCompletionStatus                   (const ResourceId &status);
                 ResourceId                getCompletionStatus                   ();
                 void                     *getPCallerContext                     ();
