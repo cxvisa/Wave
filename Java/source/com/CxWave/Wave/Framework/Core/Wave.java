@@ -32,7 +32,7 @@ public class Wave
         DatabaseObjectManager.setIsDatabaseEnabled (waveMainConfiguration.getIsDatabaseEnabled ());
         DatabaseObjectManager.setDatabasePort (waveMainConfiguration.getDatabasePort ());
 
-        // Initialize Famework ToolKit.
+        // Initialize Framework ToolKit.
 
         FrameworkToolKit.initialize ();
 

@@ -16,10 +16,14 @@ import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Framework.Core.Wave;
+import com.CxWave.Wave.Framework.Core.WaveMainConfiguration;
+
+import java.util.Vector;
 
 class Spectrum
 {
@@ -85,13 +89,28 @@ class Spectrum
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_ERROR,      "This is a test", true, false);
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL,      "This is a test", true, false);
 
-        Wave.initialize (null);
+        Wave.initialize (new WaveMainConfiguration ());
 
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN,       "This is a test. H : " + TimeZoneToolKit.getTimeZoneHours ().getValue () + ", M : " + TimeZoneToolKit.getTimeZoneMinutes ().getValue () + ", DTZ : " + TimeZoneToolKit.getDefaultTimeZone ().toString (), true, false);
 
-        XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
+        if (2 <= (commandLineArguments.length))
+        {
+            XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
 
-        xmlFile.debugPrint ();
+            xmlFile.debugPrint ();
+        }
+
+        if (3 <= (commandLineArguments.length))
+        {
+            Vector<String> tokens = new Vector<String> ();
+
+            WaveStringUtils.tokenize (commandLineArguments[2], tokens, ' ');
+
+            for (String token : tokens)
+            {
+                System.out.println ("Token : " + token);
+            }
+        }
 
         DaemonUtils.daemonize ();
 

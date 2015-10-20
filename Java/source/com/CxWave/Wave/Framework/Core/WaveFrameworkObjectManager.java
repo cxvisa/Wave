@@ -5,9 +5,13 @@
 package com.CxWave.Wave.Framework.Core;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
+    private static WaveFrameworkObjectManager s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
+
     private WaveFrameworkObjectManager ()
     {
         super (getServiceName ());
@@ -16,5 +20,22 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public static String getServiceName ()
     {
         return ("Wave Framework");
+    }
+
+    public WaveFrameworkObjectManager getInstance ()
+    {
+        if (null == s_waveFrameworkObjectManager)
+        {
+            s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
+        }
+
+        WaveAssertUtils.waveAssert (null != s_waveFrameworkObjectManager);
+
+        return (s_waveFrameworkObjectManager);
+    }
+
+    public WaveServiceId getWaveServiceId ()
+    {
+        return ((getInstance ()).getWaveServiceId ());
     }
 }

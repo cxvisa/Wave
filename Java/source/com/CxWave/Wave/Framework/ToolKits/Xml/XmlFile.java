@@ -86,16 +86,16 @@ public class XmlFile
 
     }
 
-    public void loadFromFile (final String waveComponentsFilePath) throws ParserConfigurationException, SAXException, IOException
+    public void loadFromFile (final String waveXmlFilePath) throws ParserConfigurationException, SAXException, IOException
     {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance ();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder ();
+        final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance ();
+        final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder ();
 
-        // System.out.println ("Using " + waveComponentsFilePath + " for reading Wave Components.");
+        System.out.println ("Using " + waveXmlFilePath + " for reading XML Content.");
 
-        File waveComponmentsFile = new File (waveComponentsFilePath);
+        final File waveXmlFile = new File (waveXmlFilePath);
 
-        Document document = documentBuilder.parse (waveComponmentsFile);
+        final Document document = documentBuilder.parse (waveXmlFile);
 
         // System.out.println ("Successfully obtained DOM Document.");
 
@@ -104,7 +104,7 @@ public class XmlFile
             return;
         }
 
-        Element rootElement = document.getDocumentElement ();
+        final Element rootElement = document.getDocumentElement ();
 
         if (null == rootElement)
         {
