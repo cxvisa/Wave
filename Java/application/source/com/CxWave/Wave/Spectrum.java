@@ -112,6 +112,18 @@ class Spectrum
             }
         }
 
+        if (3 <= (commandLineArguments.length))
+        {
+            Vector<String> tokens = new Vector<String> ();
+
+            WaveStringUtils.tokenizeConsideringStringQuotes (commandLineArguments[2], tokens, ' ');
+
+            for (String token : tokens)
+            {
+                System.out.println ("Token : " + token);
+            }
+        }
+
         DaemonUtils.daemonize ();
 
         while (true)
