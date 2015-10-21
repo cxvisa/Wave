@@ -29,6 +29,7 @@ public class WaveMainConfiguration
     private long           m_databaseEmptyTypeAutoDetectionThresholdValue;
     private String         m_configurationFile;
     private String         m_configurationFileDirectory;
+    private String         m_globalConfigurationFile;
 
     public WaveMainConfiguration ()
     {
@@ -240,5 +241,15 @@ public class WaveMainConfiguration
         {
             return (new String (""));
         }
+    }
+
+    public String getGlobalConfigurationFile ()
+    {
+        return m_globalConfigurationFile;
+    }
+
+    public void setGlobalConfigurationFile (final String globalConfigurationFile)
+    {
+        m_globalConfigurationFile = globalConfigurationFile;
     }
 }

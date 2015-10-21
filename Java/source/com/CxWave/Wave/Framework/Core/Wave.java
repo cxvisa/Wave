@@ -52,6 +52,7 @@ public class Wave
 
         String waveConfigurationFile = null;
         String waveConfigurationFileDirectory = null;
+        String waveGlobalConfigurationFile = null;
 
         if (WaveStringUtils.isBlank (waveMainConfiguration.getConfigurationFile ()))
         {
@@ -71,7 +72,18 @@ public class Wave
             waveConfigurationFileDirectory = waveMainConfiguration.getConfigurationFileDirectory ();
         }
 
+        if (WaveStringUtils.isBlank (waveMainConfiguration.getGlobalConfigurationFile ()))
+        {
+            waveGlobalConfigurationFile = (waveMainConfiguration.getApplicationCompactName ()) + ".global.cfg";
+        }
+        else
+        {
+            waveGlobalConfigurationFile = waveMainConfiguration.getGlobalConfigurationFile ();
+        }
+
         WaveFrameworkObjectManager.setConfigurationFile (waveConfigurationFileDirectory + "/" + waveConfigurationFile);
+        WaveFrameworkObjectManager.setGlobalConfigurationFile (waveConfigurationFileDirectory + "/" + waveGlobalConfigurationFile);
+
     }
 
     private static String getConfigurationFileDirectory ()
