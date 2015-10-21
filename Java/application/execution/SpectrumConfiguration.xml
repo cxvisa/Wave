@@ -13,6 +13,19 @@
             <language>en</language>
             <country>US</country>
         </environment>
+
+        <configuration>
+            <directory-name></directory-name>
+            <local>
+                <file-name></file-name>
+                <bckup-file-name></bckup-file-Name>
+                <lock-file-name></lock-file-Name>
+            </local>
+
+            <global>
+                <file-name></file-name>
+            </global>
+        </configuration>
     </application>
 
     <database>
@@ -59,47 +72,44 @@
 
        <trace>
            <enable>true</enable>
-
+           <directory-name></directory-name>
+           <file-name></file-name>
            <file-size>10MB</file-size>
-
            <number-of-files>5</number-of-files>
-
            <default-level>INFO</default-level>
        </trace>
 
        <log>
+           <enable>true</enable>
+           <number-of-logs>100000</number-of-logs>
+           <audit-log>
+           </audit-log>
        </log>
-
-       <audit-log>
-          <enable>true</enable>
-          <number-of-logs>100000</number-of-logs>
-       </audit-log>
     </ras>
 
     <ha>
-        <enable>
-        </enable>
-
-        <port>
-        </port>
+        <enable>true</enable>
+        <port></port>
     </ha>
 
     <http>
         <enable>true</enable>
-
         <port>1100</port>
     </http>
 
     <orm>
         <schema>
-            <detect-diff>
-            </detect-diff>
+            <detect-diff>true</detect-diff>
         </schema>
     </orm>
 
     <upgrade>
-        <dump-db>
-        </dump-db>
+        <dump-db>true</dump-db>
     </upgrade>
+
+    <profile>
+        <enable>false></enable>
+        <file-name></file-name>
+    </profile>
 </wave>
 

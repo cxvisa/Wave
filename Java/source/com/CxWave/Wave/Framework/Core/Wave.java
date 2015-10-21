@@ -7,6 +7,7 @@ package com.CxWave.Wave.Framework.Core;
 import com.CxWave.Wave.Framework.Database.DatabaseObjectManager;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
+import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
@@ -17,6 +18,7 @@ public class Wave
 {
     private static WaveMutex s_waveMutex                      = new WaveMutex ();
     private static String    s_waveConfigurationFileDirectory = null;
+    private static String    s_waveTraceFileDirectory         = null;
 
     private Wave ()
     {
@@ -53,6 +55,9 @@ public class Wave
         String waveConfigurationFile = null;
         String waveConfigurationFileDirectory = null;
         String waveGlobalConfigurationFile = null;
+        String waveLockFileForConfigurationFile = null;
+        String waveTraceFileDirectory = null;
+        String waveTraceFileName = null;
 
         if (WaveStringUtils.isBlank (waveMainConfiguration.getConfigurationFile ()))
         {
@@ -81,8 +86,38 @@ public class Wave
             waveGlobalConfigurationFile = waveMainConfiguration.getGlobalConfigurationFile ();
         }
 
+        if (WaveStringUtils.isBlank (waveMainConfiguration.getLockFileForConfigurationFile ()))
+        {
+            waveLockFileForConfigurationFile = (waveMainConfiguration.getApplicationCompactName ()) + ".cfg.tmp";
+        }
+        else
+        {
+            waveLockFileForConfigurationFile = waveMainConfiguration.getLockFileForConfigurationFile ();
+        }
+
+        if (WaveStringUtils.isBlank (waveMainConfiguration.getTraceFileDirectory ()))
+        {
+            waveTraceFileDirectory = getTraceFileDirectory ();
+        }
+        else
+        {
+            waveTraceFileDirectory = waveMainConfiguration.getTraceFileDirectory ();
+        }
+
+        if (WaveStringUtils.isBlank (waveMainConfiguration.getTraceFileName ()))
+        {
+            waveTraceFileName = (waveMainConfiguration.getApplicationCompactName ()) + ".trc";
+        }
+        else
+        {
+            waveTraceFileName = waveMainConfiguration.getTraceFileName ();
+        }
+
         WaveFrameworkObjectManager.setConfigurationFile (waveConfigurationFileDirectory + "/" + waveConfigurationFile);
         WaveFrameworkObjectManager.setGlobalConfigurationFile (waveConfigurationFileDirectory + "/" + waveGlobalConfigurationFile);
+        WaveFrameworkObjectManager.setLockFileForConfigurationFile (waveConfigurationFileDirectory + "/" + waveLockFileForConfigurationFile);
+
+        TraceObjectManager.setWaveTraceFileName (waveTraceFileDirectory + "/" + waveTraceFileName);
 
     }
 
@@ -104,5 +139,25 @@ public class Wave
         s_waveMutex.unlock ();
 
         return (waveConfigurationFileDirectory);
+    }
+
+    private static String getTraceFileDirectory ()
+    {
+        String waveTraceFileDirectory = null;
+
+        s_waveMutex.lock ();
+
+        if (WaveStringUtils.isNotBlank (s_waveTraceFileDirectory))
+        {
+            waveTraceFileDirectory = s_waveTraceFileDirectory;
+        }
+        else
+        {
+            waveTraceFileDirectory = s_waveTraceFileDirectory = FrameworkToolKit.getProcessInitialWorkingDirectory ();
+        }
+
+        s_waveMutex.unlock ();
+
+        return (waveTraceFileDirectory);
     }
 }

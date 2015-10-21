@@ -30,6 +30,10 @@ public class WaveMainConfiguration
     private String         m_configurationFile;
     private String         m_configurationFileDirectory;
     private String         m_globalConfigurationFile;
+    private String         m_lockFileForConfigurationFile;
+    private String         m_traceFileDirectory;
+    private String         m_traceFileName;
+    private String         m_profileFileName;
 
     public WaveMainConfiguration ()
     {
@@ -251,5 +255,45 @@ public class WaveMainConfiguration
     public void setGlobalConfigurationFile (final String globalConfigurationFile)
     {
         m_globalConfigurationFile = globalConfigurationFile;
+    }
+
+    public String getLockFileForConfigurationFile ()
+    {
+        return m_lockFileForConfigurationFile;
+    }
+
+    public void setLockFileForConfigurationFile (final String lockFileForConfigurationFile)
+    {
+        m_lockFileForConfigurationFile = lockFileForConfigurationFile;
+    }
+
+    public String getTraceFileDirectory ()
+    {
+        return m_traceFileDirectory;
+    }
+
+    public void setTraceFileDirectory (final String traceFileDirectory)
+    {
+        m_traceFileDirectory = traceFileDirectory;
+    }
+
+    public String getTraceFileName ()
+    {
+        return m_traceFileName;
+    }
+
+    public void setTraceFileName (final String traceFileName)
+    {
+        m_traceFileName = traceFileName;
+    }
+
+    public String getProfileFileName ()
+    {
+        return m_profileFileName;
+    }
+
+    public void setProfileFileName (final String profileFileName)
+    {
+        m_profileFileName = profileFileName;
     }
 }

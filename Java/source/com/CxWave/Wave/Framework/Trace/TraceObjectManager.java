@@ -16,7 +16,7 @@ public class TraceObjectManager extends WaveObjectManager
 {
     private static TraceObjectManager s_traceObjectManager = null;
 
-    private static String        s_waveTraceFilePath = "waveTraceFile.log";
+    private static String        s_waveTraceFileName = null;
     private static boolean       s_isFirstTime       = true;
     private static WaveTraceFile s_waveTraceFile     = new WaveTraceFile ();
     private static WaveMutex     s_mutexForTracing   = new WaveMutex ();
@@ -41,15 +41,14 @@ public class TraceObjectManager extends WaveObjectManager
         return (s_traceObjectManager);
     }
 
-    public static void setWaveTraceFilePath (final String waveTraceFilePath)
+    public static String getWaveTraceFileName ()
     {
-        s_waveTraceFilePath = waveTraceFilePath;
-
+        return s_waveTraceFileName;
     }
 
-    public static String getWaveTraceFilePath ()
+    public static void setWaveTraceFileName (final String waveTraceFileName)
     {
-        return (s_waveTraceFilePath);
+        s_waveTraceFileName = waveTraceFileName;
     }
 
     private static String getTraceTagForLevel (final TraceLevel traceLevel)
@@ -109,18 +108,18 @@ public class TraceObjectManager extends WaveObjectManager
 
         if (s_isFirstTime)
         {
-            s_waveTraceFile.setNewFilePath (s_waveTraceFilePath);
+            s_waveTraceFile.setNewFilePath (s_waveTraceFileName);
 
             s_isFirstTime = false;
         }
 
         final TraceClientMap traceClientMap = TraceClientMap.getInstance ();
 
-        TraceLevel currentTraceLevel = traceClientMap.getTraceClientLevel (traceClientId);
+        final TraceLevel currentTraceLevel = traceClientMap.getTraceClientLevel (traceClientId);
 
         if (0 >= (currentTraceLevel.compareTo (requestedTraceLevel)))
         {
-            StringBuilder computedTraceString = new StringBuilder ();
+            final StringBuilder computedTraceString = new StringBuilder ();
 
             WaveTerminalUtils.waveSetConsoleTextColor (requestedTraceLevel);
 
@@ -153,11 +152,11 @@ public class TraceObjectManager extends WaveObjectManager
 
     public static TraceClientId addClient (final TraceLevel traceLevel, final String traceClientName)
     {
-        TraceClientMap traceClientMap = TraceClientMap.getInstance ();
+        final TraceClientMap traceClientMap = TraceClientMap.getInstance ();
 
         WaveAssertUtils.waveAssert (null != traceClientMap);
 
-        TraceClientId traceClientId = traceClientMap.addClient (traceLevel, traceClientName);
+        final TraceClientId traceClientId = traceClientMap.addClient (traceLevel, traceClientName);
 
         return (traceClientId);
     }

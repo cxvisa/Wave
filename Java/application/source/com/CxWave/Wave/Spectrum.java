@@ -21,6 +21,7 @@ import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Framework.Core.Wave;
+import com.CxWave.Wave.Framework.Core.WaveBasedApplication;
 import com.CxWave.Wave.Framework.Core.WaveMainConfiguration;
 
 import java.util.Vector;
@@ -29,6 +30,10 @@ class Spectrum
 {
     public static void main (final String[] commandLineArguments)
     {
+        WaveMainConfiguration waveMainConfiguration = new WaveMainConfiguration ();
+
+        WaveBasedApplication.waveMain (waveMainConfiguration);
+
         EnvironmentUtils.recordAllCommandLineArguments ();
 
         System.out.println ("Print JVM Command Line Arguments : " + (EnvironmentUtils.getVirtualMachineCommandLineArguments ()).toString ());

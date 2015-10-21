@@ -16,6 +16,7 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private static String s_frameworkConfigurationBackupFile     = null;
     private static String s_frameworkGlobalConfigurationFile     = null;
     private static String s_frameworkGlobalConfigurationTempFile = null;
+    private static String s_lockFileForConfigurationFile         = null;
 
     private WaveFrameworkObjectManager ()
     {
@@ -54,5 +55,15 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     {
         s_frameworkGlobalConfigurationFile = globalConfigurationFile;
         s_frameworkGlobalConfigurationTempFile = s_frameworkGlobalConfigurationFile + ".tmp";
+    }
+
+    public static String getLockFileForConfigurationFile ()
+    {
+        return s_lockFileForConfigurationFile;
+    }
+
+    public static void setLockFileForConfigurationFile (final String lockFileForConfigurationFile)
+    {
+        s_lockFileForConfigurationFile = lockFileForConfigurationFile;
     }
 }
