@@ -10,32 +10,41 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
-    private static WaveFrameworkObjectManager s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
+	private static WaveFrameworkObjectManager s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
 
-    private WaveFrameworkObjectManager ()
-    {
-        super (getServiceName ());
-    }
+	private static String s_frameworkConfigurationFile		 = null;
+	private static String s_frameworkConfigurationBackupFile = null;
 
-    public static String getServiceName ()
-    {
-        return ("Wave Framework");
-    }
+	private WaveFrameworkObjectManager ()
+	{
+		super (getServiceName ());
+	}
 
-    public WaveFrameworkObjectManager getInstance ()
-    {
-        if (null == s_waveFrameworkObjectManager)
-        {
-            s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
-        }
+	public static String getServiceName ()
+	{
+		return ("Wave Framework");
+	}
 
-        WaveAssertUtils.waveAssert (null != s_waveFrameworkObjectManager);
+	public WaveFrameworkObjectManager getInstance ()
+	{
+		if (null == s_waveFrameworkObjectManager)
+		{
+			s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
+		}
 
-        return (s_waveFrameworkObjectManager);
-    }
+		WaveAssertUtils.waveAssert (null != s_waveFrameworkObjectManager);
 
-    public WaveServiceId getWaveServiceId ()
-    {
-        return ((getInstance ()).getWaveServiceId ());
-    }
+		return (s_waveFrameworkObjectManager);
+	}
+
+	public WaveServiceId getWaveServiceId ()
+	{
+		return ((getInstance ()).getWaveServiceId ());
+	}
+
+	public static void setConfigurationFile (final String configurationFile)
+	{
+		s_frameworkConfigurationFile = configurationFile;
+		s_frameworkConfigurationBackupFile = s_frameworkConfigurationFile + ".bk";
+	}
 }

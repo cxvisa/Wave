@@ -6,6 +6,8 @@ package com.CxWave.Wave.Framework.Core;
 
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+
 public class WaveMainConfiguration
 {
     private String         m_applicationName;
@@ -25,6 +27,8 @@ public class WaveMainConfiguration
     private String         m_wyserTagsFilePath;
     private String         m_databaseEmptyType;
     private long           m_databaseEmptyTypeAutoDetectionThresholdValue;
+    private String         m_configurationFile;
+    private String         m_configurationFileDirectory;
 
     public WaveMainConfiguration ()
     {
@@ -198,5 +202,43 @@ public class WaveMainConfiguration
     public void setDatabaseEmptyTypeAutoDetectionThresholdValue (final long databaseEmptyTypeAutoDetectionThresholdValue)
     {
         m_databaseEmptyTypeAutoDetectionThresholdValue = databaseEmptyTypeAutoDetectionThresholdValue;
+    }
+
+    public String getConfigurationFile ()
+    {
+        return m_configurationFile;
+    }
+
+    public void setConfigurationFile (final String configurationFile)
+    {
+        m_configurationFile = configurationFile;
+    }
+
+    public String getConfigurationFileDirectory ()
+    {
+        return m_configurationFileDirectory;
+    }
+
+    public void setConfigurationFileDirectory (final String configurationFileDirectory)
+    {
+        m_configurationFileDirectory = configurationFileDirectory;
+    }
+
+    public String getApplicationCompactName ()
+    {
+        final Vector<String> tokensInApplicationName = new Vector<String> ();
+
+        WaveStringUtils.tokenize (m_applicationName, tokensInApplicationName, '/');
+
+        final int numberOfTokens = tokensInApplicationName.size ();
+
+        if (0 < numberOfTokens)
+        {
+            return (tokensInApplicationName.get (numberOfTokens - 1));
+        }
+        else
+        {
+            return (new String (""));
+        }
     }
 }

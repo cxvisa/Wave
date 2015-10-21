@@ -55,4 +55,14 @@ public class FrameworkToolKit
     {
         return ((Runtime.getRuntime ()).availableProcessors ());
     }
+
+    public static String getProcessInitialWorkingDirectory ()
+    {
+        return s_processInitialWorkingDirectory;
+    }
+
+    public static void setProcessInitialWorkingDirectory (final String processInitialWorkingDirectory)
+    {
+        s_processInitialWorkingDirectory = processInitialWorkingDirectory;
+    }
 }
