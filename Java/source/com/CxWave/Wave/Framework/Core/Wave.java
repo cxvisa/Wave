@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
+import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
@@ -118,6 +119,10 @@ public class Wave
         WaveFrameworkObjectManager.setLockFileForConfigurationFile (waveConfigurationFileDirectory + "/" + waveLockFileForConfigurationFile);
 
         TraceObjectManager.setWaveTraceFileName (waveTraceFileDirectory + "/" + waveTraceFileName);
+
+        // Initialize Source Utils
+
+        SourceUtils.initialize ();
 
     }
 

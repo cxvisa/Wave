@@ -5,6 +5,8 @@
 package com.CxWave.Wave.Framework.Type;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class UI32
 {
@@ -17,9 +19,14 @@ public class UI32
 
     public UI32 (final long value)
     {
-        WaveAssertUtils.waveAssert (isValid (value));
+        if (!(isValid (value)))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "Invalid Value : " + value, true, false);
 
-        m_value = new Integer ((int) (value - (1 << 31)));
+            WaveAssertUtils.waveAssert ();
+        }
+
+        m_value = new Integer ((int) (value - (1L << 31)));
     }
 
     @Override
@@ -54,7 +61,7 @@ public class UI32
 
     public boolean isValid (final long value)
     {
-        if ((0 <= value) && ((1 << 31) > value))
+        if ((0 <= value) && ((1L << 31) > value))
         {
             return (true);
         }

@@ -4,12 +4,15 @@
 
 package com.CxWave.Wave.Framework.Utils.Source;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class WaveJavaClass
 {
@@ -18,6 +21,8 @@ public class WaveJavaClass
     private final Map<String, WaveJavaAnnotation> m_annotations;
     private WaveJavaClass                         m_superClass;
     private final Map<String, WaveJavaClass>      m_childClasses;
+    private final Map<String, WaveJavaClass>      m_anonymousClasses;
+    private WaveJavaClass                         m_declaringClass;
 
     public WaveJavaClass (final String name)
     {
@@ -25,6 +30,7 @@ public class WaveJavaClass
         m_superInterfaces = new HashMap<String, WaveJavaInterface> ();
         m_annotations = new HashMap<String, WaveJavaAnnotation> ();
         m_childClasses = new HashMap<String, WaveJavaClass> ();
+        m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
     }
 
     public String getName ()
@@ -105,15 +111,25 @@ public class WaveJavaClass
 
     public void setSuperClass (final String superClassName)
     {
+        if ((superClassName.startsWith ("java.")) || (superClassName.startsWith ("javax.")))
+        {
+            return;
+        }
+
         if (WaveStringUtils.isNotBlank (superClassName))
         {
             final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (superClassName);
 
-            WaveAssertUtils.waveAssert (null != waveJavaClass);
+            if (null == waveJavaClass)
+            {
+                WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN, "Could not find super class : " + superClassName, true, false);
+            }
+            else
+            {
+                m_superClass = waveJavaClass;
 
-            m_superClass = waveJavaClass;
-
-            m_superClass.addChildClass (this);
+                m_superClass.addChildClass (this);
+            }
         }
     }
 
@@ -127,5 +143,68 @@ public class WaveJavaClass
         }
 
         return (superClassName);
+    }
+
+    private void addAnonymousClass (final WaveJavaClass anonymousClass)
+    {
+        WaveAssertUtils.waveAssert (null != anonymousClass);
+
+        m_anonymousClasses.put (anonymousClass.getName (), anonymousClass);
+
+    }
+
+    public void setDeclaringClass (final String declaringClassName)
+    {
+        if (WaveStringUtils.isNotBlank (declaringClassName))
+        {
+            final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (declaringClassName);
+
+            WaveAssertUtils.waveAssert (null != waveJavaClass);
+
+            m_declaringClass = waveJavaClass;
+
+            m_declaringClass.addAnonymousClass (this);
+        }
+    }
+
+    public void compute ()
+    {
+        Class<?> reflectionClass = null;
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "Computing for Java Class " + m_name, true, false);
+
+        try
+        {
+            reflectionClass = Class.forName (m_name);
+        }
+        catch (final ClassNotFoundException e)
+        {
+            e.printStackTrace ();
+            WaveAssertUtils.waveAssert ();
+        }
+
+        final Class<?> reflectionSuperClass = reflectionClass.getSuperclass ();
+
+        setSuperClass (reflectionSuperClass.getName ());
+
+        final Class<?>[] superInterfaces = reflectionClass.getInterfaces ();
+        final Vector<String> superInterfaceNames = new Vector<String> ();
+
+        for (final Class<?> superInterface : superInterfaces)
+        {
+            superInterfaceNames.add (superInterface.getName ());
+        }
+
+        addSuperInterfaces (superInterfaceNames);
+
+        final Annotation[] annotations = reflectionClass.getAnnotations ();
+        final Vector<String> annotationNames = new Vector<String> ();
+
+        for (final Annotation annotation : annotations)
+        {
+            annotationNames.add ((annotation.annotationType ()).getName ());
+        }
+
+        addAnnotations (annotationNames);
     }
 }

@@ -489,4 +489,9 @@ public class SourceUtils
 
         return (allAvailableClassFileVector);
     }
+
+    public static void initialize ()
+    {
+        WaveJavaSourceRepository.initialize ();
+    }
 }

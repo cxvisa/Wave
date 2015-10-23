@@ -235,6 +235,11 @@ public class WaveMainConfiguration extends SerializableObject
 
     public String getApplicationCompactName ()
     {
+        if (WaveStringUtils.isBlank (m_applicationName))
+        {
+            return ("");
+        }
+
         final Vector<String> tokensInApplicationName = new Vector<String> ();
 
         WaveStringUtils.tokenize (m_applicationName, tokensInApplicationName, '/');
