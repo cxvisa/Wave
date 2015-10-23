@@ -1,8 +1,6 @@
-/***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc             *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
- ***************************************************************************/
+/*************************************************************************************************************************
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
+ *************************************************************************************************************************/
 
 package com.CxWave.Wave.Framework.Utils.Source;
 
@@ -30,9 +28,9 @@ import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 
 public class SourceUtils
 {
-    private static void getListOfAllFilesInTheDirectoryInternal (final File[] inputFiles, Vector<String> allFiles)
+    private static void getListOfAllFilesInTheDirectoryInternal (final File[] inputFiles, final Vector<String> allFiles)
     {
-        for (File file : inputFiles)
+        for (final File file : inputFiles)
         {
             if (file.isDirectory ())
             {
@@ -40,13 +38,13 @@ public class SourceUtils
                 {
                     allFiles.add (file.getCanonicalPath ());
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
 
-                File[] filesInDirecrory = file.listFiles ();
+                final File[] filesInDirecrory = file.listFiles ();
 
                 getListOfAllFilesInTheDirectoryInternal (filesInDirecrory, allFiles);
             }
@@ -59,10 +57,10 @@ public class SourceUtils
                         allFiles.add (file.getCanonicalPath ());
                     }
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
             }
         }
@@ -71,19 +69,21 @@ public class SourceUtils
     /**
      * Returns a list of all files and directories in the given set of directory paths
      *
-     * @param directoryPaths The array holding the input directory paths.  It is expected that there will be only directory paths in the input and no simple file names (including symbolic links etc.,).
-     *  If any of the input entries corresponds to a non directory entry (like file) it will be present in the output.
+     * @param directoryPaths
+     *            The array holding the input directory paths. It is expected that there will be only directory paths in the
+     *            input and no simple file names (including symbolic links etc.,). If any of the input entries corresponds to a
+     *            non directory entry (like file) it will be present in the output.
      *
-     * @return Returns a List containing the names of all directories and files obtained by traversing recursively all of the input directory paths.
-     *  The entries corresponding the valid elements in the input will be present in the output.
+     * @return Returns a List containing the names of all directories and files obtained by traversing recursively all of the
+     *         input directory paths. The entries corresponding the valid elements in the input will be present in the output.
      */
 
     public static List<String> getListOfAllFilesInTheDirectories (final String[] directoryPaths)
     {
-        Vector<File>   inputFiles = new Vector<File> ();
-        Vector<String> allFiles   = new Vector<String> ();
+        final Vector<File> inputFiles = new Vector<File> ();
+        final Vector<String> allFiles = new Vector<String> ();
 
-        for (String directoryPath : directoryPaths)
+        for (final String directoryPath : directoryPaths)
         {
             inputFiles.add (new File (directoryPath));
         }
@@ -96,16 +96,19 @@ public class SourceUtils
     /**
      * A convenience method to obtain list of all files and directory names by recursively traversing the given directory path.
      *
-     * @param directoryPath The input directory path.  It is expected to be a directory path.  If a non directory path is given, it will alone be present in the output.
+     * @param directoryPath
+     *            The input directory path. It is expected to be a directory path. If a non directory path is given, it will
+     *            alone be present in the output.
      *
-     * @return  Returns a list of all directories and files present in the given directory tree.
-     *  If the input is a valid directory path / file, it will be present in the output.  If the input is not a valid directory path then the returned List will be empty.
-     *  If the input is a valid non-directory entity then the output contains only the element corresponding to the input.
+     * @return Returns a list of all directories and files present in the given directory tree. If the input is a valid
+     *         directory path / file, it will be present in the output. If the input is not a valid directory path then the
+     *         returned List will be empty. If the input is a valid non-directory entity then the output contains only the
+     *         element corresponding to the input.
      */
 
     public static List<String> getListOfAllFilesInTheDirectory (final String directoryPath)
     {
-        Vector<String> directoryPaths = new Vector<String> ();
+        final Vector<String> directoryPaths = new Vector<String> ();
 
         if (null != directoryPath)
         {
@@ -115,9 +118,9 @@ public class SourceUtils
         return (getListOfAllFilesInTheDirectories (directoryPaths.toArray (new String[1])));
     }
 
-    private static void getListOfAllDirectoriesInTheDirectoryInternal (final File[] inputFiles, Vector<String> allFiles)
+    private static void getListOfAllDirectoriesInTheDirectoryInternal (final File[] inputFiles, final Vector<String> allFiles)
     {
-        for (File file : inputFiles)
+        for (final File file : inputFiles)
         {
             if (file.isDirectory ())
             {
@@ -125,13 +128,13 @@ public class SourceUtils
                 {
                     allFiles.add (file.getCanonicalPath ());
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
 
-                File[] filesInDirecrory = file.listFiles ();
+                final File[] filesInDirecrory = file.listFiles ();
 
                 getListOfAllDirectoriesInTheDirectoryInternal (filesInDirecrory, allFiles);
             }
@@ -141,22 +144,25 @@ public class SourceUtils
     /**
      * Returns a list of all directories in the given set of directory paths
      *
-     * @param directoryPaths The array holding the input directory paths.  It is expected that there will be only directory paths in the input and no simple file names (including symbolic links etc.,).
-     * Any non directory paths in the input will be ignored.
+     * @param directoryPaths
+     *            The array holding the input directory paths. It is expected that there will be only directory paths in the
+     *            input and no simple file names (including symbolic links etc.,). Any non directory paths in the input will be
+     *            ignored.
      *
-     * @return Returns a List containing the names of all directories (only) obtained by traversing recursively all of the input directory trees.
-     * There will not be paths corresponding to any files.  The valid entries corresponding to directories in the input will be present in the output.
+     * @return Returns a List containing the names of all directories (only) obtained by traversing recursively all of the input
+     *         directory trees. There will not be paths corresponding to any files. The valid entries corresponding to
+     *         directories in the input will be present in the output.
      *
      */
 
     public static List<String> getListOfAllDirectoriesInTheDirectories (final String[] directoryPaths)
     {
-        Vector<File>   inputFiles = new Vector<File> ();
-        Vector<String> allFiles   = new Vector<String> ();
+        final Vector<File> inputFiles = new Vector<File> ();
+        final Vector<String> allFiles = new Vector<String> ();
 
-        for (String directoryPath : directoryPaths)
+        for (final String directoryPath : directoryPaths)
         {
-            File fileForDirectoryPath = new File (directoryPath);
+            final File fileForDirectoryPath = new File (directoryPath);
 
             if (fileForDirectoryPath.isDirectory ())
             {
@@ -172,16 +178,19 @@ public class SourceUtils
     /**
      * A convenience method to obtain list of all directories in a given directory.
      *
-     * @param directoryPath The input directory path.  It is expected to be a directory path.  If a non directory path as input will be ignored and an empty List will be returned.
+     * @param directoryPath
+     *            The input directory path. It is expected to be a directory path. If a non directory path as input will be
+     *            ignored and an empty List will be returned.
      *
-     * @return Returns the list of all directories (only) obtained by recursively traversing the given directory tree.
-     * If the input corresponds to a valid directory path, it will be present in the output.  If the input is not a valid directory path then an empty list will be returned.
+     * @return Returns the list of all directories (only) obtained by recursively traversing the given directory tree. If the
+     *         input corresponds to a valid directory path, it will be present in the output. If the input is not a valid
+     *         directory path then an empty list will be returned.
      *
      */
 
     public static List<String> getListOfAllDirectoriesInTheDirectory (final String directoryPath)
     {
-        Vector<String> directoryPaths = new Vector<String> ();
+        final Vector<String> directoryPaths = new Vector<String> ();
 
         if (null != directoryPath)
         {
@@ -194,20 +203,23 @@ public class SourceUtils
     /**
      * Obtains and returns a list of all files ONLY by traversing the given set of input directory paths.
      *
-     * @param directoryPaths An array containing the directory paths that should be recursively traversed.  It is expected that these are directories.
-     * Any invalid elements will be ignored.  If an element is a non -directory element and is valid, it will be present in the output.
+     * @param directoryPaths
+     *            An array containing the directory paths that should be recursively traversed. It is expected that these are
+     *            directories. Any invalid elements will be ignored. If an element is a non -directory element and is valid, it
+     *            will be present in the output.
      *
-     * @return Returns a list of file Files ONLY by traversing the given set of input directory paths.  There will be no directories in the output.
+     * @return Returns a list of file Files ONLY by traversing the given set of input directory paths. There will be no
+     *         directories in the output.
      */
 
     public static List<String> getListOfAllFilesOnlyInTheDirectories (final String[] directoryPaths)
     {
-        Vector<File>   inputFiles = new Vector<File> ();
-        Vector<String> allFiles   = new Vector<String> ();
+        final Vector<File> inputFiles = new Vector<File> ();
+        final Vector<String> allFiles = new Vector<String> ();
 
-        for (String directoryPath : directoryPaths)
+        for (final String directoryPath : directoryPaths)
         {
-            File fileForDirectoryPath = new File (directoryPath);
+            final File fileForDirectoryPath = new File (directoryPath);
 
             if (fileForDirectoryPath.isDirectory ())
             {
@@ -224,13 +236,13 @@ public class SourceUtils
         return (allFiles);
     }
 
-    private static void getListOfAllFilesOnlyInTheDirectoryInternal (final File[] inputFiles, Vector<String> allFiles)
+    private static void getListOfAllFilesOnlyInTheDirectoryInternal (final File[] inputFiles, final Vector<String> allFiles)
     {
-        for (File file : inputFiles)
+        for (final File file : inputFiles)
         {
             if (file.isDirectory ())
             {
-                File[] filesInDirecrory = file.listFiles ();
+                final File[] filesInDirecrory = file.listFiles ();
 
                 getListOfAllFilesOnlyInTheDirectoryInternal (filesInDirecrory, allFiles);
             }
@@ -243,10 +255,10 @@ public class SourceUtils
                         allFiles.add (file.getCanonicalPath ());
                     }
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
             }
         }
@@ -255,17 +267,19 @@ public class SourceUtils
     /**
      * A convenience method to obtain a list of files ONLY by recursively traversing the given input directory
      *
-     * @param directoryPath The input directory that needs to traversed recursively.  It is expected that this will be a directory.
-     *  If a non-directory valid file is given then this element will alone be present in the output list.
+     * @param directoryPath
+     *            The input directory that needs to traversed recursively. It is expected that this will be a directory. If a
+     *            non-directory valid file is given then this element will alone be present in the output list.
      *
-     * @return list of files ONLY by recursively traversing the given input directory.  If the input is a valid directory, then the directory will be
-     *  traversed recursively for further processing.  If the input is a non existent file or directory, then the returned list will be empty.
-     *  If the input is a valid non-directory file path, then this path alone will be present in the output.
+     * @return list of files ONLY by recursively traversing the given input directory. If the input is a valid directory, then
+     *         the directory will be traversed recursively for further processing. If the input is a non existent file or
+     *         directory, then the returned list will be empty. If the input is a valid non-directory file path, then this path
+     *         alone will be present in the output.
      */
 
     public static List<String> getListOfAllFilesOnlyInTheDirectory (final String directoryPath)
     {
-        Vector<String> directoryPaths = new Vector<String> ();
+        final Vector<String> directoryPaths = new Vector<String> ();
 
         if (null != directoryPath)
         {
@@ -277,10 +291,10 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClassFilesInTheDirectory (final String directoryPath)
     {
-        Vector<String> listOfAllAvailableClassFilesInTheDirectory = new Vector<String> ();
-        List<String>   listOfAllFilesOnlyInTheDirectory           = getListOfAllFilesOnlyInTheDirectory (directoryPath);
+        final Vector<String> listOfAllAvailableClassFilesInTheDirectory = new Vector<String> ();
+        final List<String> listOfAllFilesOnlyInTheDirectory = getListOfAllFilesOnlyInTheDirectory (directoryPath);
 
-        for (String availableFileInTheDirectory : listOfAllFilesOnlyInTheDirectory)
+        for (final String availableFileInTheDirectory : listOfAllFilesOnlyInTheDirectory)
         {
             if (availableFileInTheDirectory.endsWith (".class"))
             {
@@ -294,35 +308,37 @@ public class SourceUtils
     public static List<String> getListOfAllAvailableJarFiles ()
     {
         Enumeration<URL> urlEnum;
-        Vector<String>   listOfAllJarFilesAvailable = new Vector<String> ();
+        final Vector<String> listOfAllJarFilesAvailable = new Vector<String> ();
 
-        try {
-            urlEnum = Thread.currentThread().getContextClassLoader().getResources(JarFile.MANIFEST_NAME);
+        try
+        {
+            urlEnum = Thread.currentThread ().getContextClassLoader ().getResources (JarFile.MANIFEST_NAME);
 
             while (urlEnum.hasMoreElements ())
             {
-                URL url = (URL) urlEnum.nextElement();
+                final URL url = urlEnum.nextElement ();
 
-                String urlName = url.toString ();
+                final String urlName = url.toString ();
 
-                String[] urlNameParts = urlName.split (":");
+                final String[] urlNameParts = urlName.split (":");
 
                 assert 3 == urlNameParts.length : "The JAR File Manifest location expected to have 3 parts when split using :";
 
-                //Example : jar:file:/home/sagar/CxWave/Wave/Java/resourcegenerator/build/lib/WaveResourceGenerator.jar!/META-INF/MANIFEST.MF
+                // Example :
+                // jar:file:/home/sagar/CxWave/Wave/Java/resourcegenerator/build/lib/WaveResourceGenerator.jar!/META-INF/MANIFEST.MF
 
-                String manifestLocation = urlNameParts[2];
+                final String manifestLocation = urlNameParts[2];
 
-                String[] manifestLocationParts = manifestLocation.split ("!");
+                final String[] manifestLocationParts = manifestLocation.split ("!");
 
                 assert 2 == manifestLocationParts.length : "After splitting using : the Manifest URL is supposed to have 2 parts when split by !";
 
-                String jarFilePath = manifestLocationParts[0];
+                final String jarFilePath = manifestLocationParts[0];
 
                 listOfAllJarFilesAvailable.add (jarFilePath);
             }
         }
-        catch (IOException exception2)
+        catch (final IOException exception2)
         {
             exception2.printStackTrace ();
         }
@@ -332,20 +348,20 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClassFilesFromJarFile (final String jarFilePath)
     {
-        Vector<String> listOfAllAvailableClassFromJarFile = new Vector<String> ();
+        final Vector<String> listOfAllAvailableClassFromJarFile = new Vector<String> ();
 
         if (null != jarFilePath)
         {
             try
             {
-                JarFile jarFile = new JarFile (jarFilePath);
+                final JarFile jarFile = new JarFile (jarFilePath);
 
-                Enumeration<JarEntry> jarEntries = jarFile.entries ();
+                final Enumeration<JarEntry> jarEntries = jarFile.entries ();
 
                 while (jarEntries.hasMoreElements ())
                 {
-                    JarEntry jarEntry     = jarEntries.nextElement ();
-                    String   jarEntryName = jarEntry.getName ();
+                    final JarEntry jarEntry = jarEntries.nextElement ();
+                    final String jarEntryName = jarEntry.getName ();
 
                     if (jarEntryName.endsWith (".class"))
                     {
@@ -355,10 +371,10 @@ public class SourceUtils
 
                 jarFile.close ();
             }
-            catch (IOException e)
+            catch (final IOException e)
             {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                e.printStackTrace ();
             }
         }
 
@@ -367,14 +383,14 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClassFilesFromAllAvailableJarFiles ()
     {
-        Vector<String> listOfAllAvailableClassFilesFromAllAvailableJarFiles = new Vector<String> ();
-        List<String>   allAvailableJarFiles                                 = getListOfAllAvailableJarFiles ();
+        final Vector<String> listOfAllAvailableClassFilesFromAllAvailableJarFiles = new Vector<String> ();
+        final List<String> allAvailableJarFiles = getListOfAllAvailableJarFiles ();
 
         if (null != allAvailableJarFiles)
         {
-            for (String availableJarFile : allAvailableJarFiles)
+            for (final String availableJarFile : allAvailableJarFiles)
             {
-                List<String> listOfAllAvailableClassFilesFromJarFile = getListOfAllAvailableClassFilesFromJarFile (availableJarFile);
+                final List<String> listOfAllAvailableClassFilesFromJarFile = getListOfAllAvailableClassFilesFromJarFile (availableJarFile);
 
                 if (null != listOfAllAvailableClassFilesFromJarFile)
                 {
@@ -388,14 +404,14 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClassPathDirectories ()
     {
-        Vector<String> listOfAllAvailableClassPathDirectories = new Vector <String> ();
-        List<String>   classPathCommandLineArguments          = EnvironmentUtils.getClassPathCommandLineArguments ();
+        final Vector<String> listOfAllAvailableClassPathDirectories = new Vector<String> ();
+        final List<String> classPathCommandLineArguments = EnvironmentUtils.getClassPathCommandLineArguments ();
 
-        for (String classPathCommandLineArgument : classPathCommandLineArguments)
+        for (final String classPathCommandLineArgument : classPathCommandLineArguments)
         {
             if (false == (classPathCommandLineArgument.endsWith (".jar")))
             {
-                Path classPathCommandLineArgumentPath = (FileSystems.getDefault ()).getPath (classPathCommandLineArgument);
+                final Path classPathCommandLineArgumentPath = (FileSystems.getDefault ()).getPath (classPathCommandLineArgument);
 
                 listOfAllAvailableClassPathDirectories.add (((classPathCommandLineArgumentPath.toAbsolutePath ()).normalize ()).toString ());
             }
@@ -406,12 +422,12 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClassFilesFromAllAvailableClassPathDirectories ()
     {
-        Vector<String> listOfAllAvailableClassFilesFromAllAvailableClassPathDirectories = new Vector<String> ();
-        List<String>   listOfAllAvailableClassPathDirectories                           = getListOfAllAvailableClassPathDirectories ();
+        final Vector<String> listOfAllAvailableClassFilesFromAllAvailableClassPathDirectories = new Vector<String> ();
+        final List<String> listOfAllAvailableClassPathDirectories = getListOfAllAvailableClassPathDirectories ();
 
-        for (String availableClassPathDirectory : listOfAllAvailableClassPathDirectories)
+        for (final String availableClassPathDirectory : listOfAllAvailableClassPathDirectories)
         {
-            List<String> listOfAllAvailableClassFilesInTheDirectory = getListOfAllAvailableClassFilesInTheDirectory (availableClassPathDirectory);
+            final List<String> listOfAllAvailableClassFilesInTheDirectory = getListOfAllAvailableClassFilesInTheDirectory (availableClassPathDirectory);
 
             if (null != listOfAllAvailableClassFilesInTheDirectory)
             {
@@ -424,21 +440,23 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories ()
     {
-        Vector<String> listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories = new Vector<String> ();
-        List<String>   listOfAllAvailableClassPathDirectories                                 = getListOfAllAvailableClassPathDirectories ();
+        final Vector<String> listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories = new Vector<String> ();
+        final List<String> listOfAllAvailableClassPathDirectories = getListOfAllAvailableClassPathDirectories ();
 
-        for (String availableClassPathDirectory : listOfAllAvailableClassPathDirectories)
+        for (final String availableClassPathDirectory : listOfAllAvailableClassPathDirectories)
         {
-            List<String> listOfAllAvailableClassFilesInTheDirectory = getListOfAllAvailableClassFilesInTheDirectory (availableClassPathDirectory);
+            final List<String> listOfAllAvailableClassFilesInTheDirectory = getListOfAllAvailableClassFilesInTheDirectory (availableClassPathDirectory);
 
             if (null != listOfAllAvailableClassFilesInTheDirectory)
             {
-                for (String availableClassFileInTheDirectory : listOfAllAvailableClassFilesInTheDirectory)
+                for (final String availableClassFileInTheDirectory : listOfAllAvailableClassFilesInTheDirectory)
                 {
-                    //Even if the directory hierarchy has a duplicated struture, only the first part matching the class path directory will be replaced to be functionally correct.
-                    // For Example, if class path is /a/b and the class file is /a/b/c/a/b/x.class then the result should be c/a/b/x.class
+                    // Even if the directory hierarchy has a duplicated struture, only the first part matching the class path
+                    // directory will be replaced to be functionally correct.
+                    // For Example, if class path is /a/b and the class file is /a/b/c/a/b/x.class then the result should be
+                    // c/a/b/x.class
 
-                    String availableClassFileRelativeToTheDirectory = availableClassFileInTheDirectory.replaceFirst (availableClassPathDirectory + "/", "");
+                    final String availableClassFileRelativeToTheDirectory = availableClassFileInTheDirectory.replaceFirst (availableClassPathDirectory + "/", "");
 
                     listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories.add (availableClassFileRelativeToTheDirectory);
                 }
@@ -450,22 +468,22 @@ public class SourceUtils
 
     public static List<String> getListOfAllAvailableClasses ()
     {
-        List<String> listOfAllVailableClassFilesFromAllAvailableJarFiles                    = getListOfAllAvailableClassFilesFromAllAvailableJarFiles ();
-        List<String> listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories = getListOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories ();
+        final List<String> listOfAllVailableClassFilesFromAllAvailableJarFiles = getListOfAllAvailableClassFilesFromAllAvailableJarFiles ();
+        final List<String> listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories = getListOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories ();
 
-        Set<String>  allAvailableClasses                                                    = new HashSet<String> ();
+        final Set<String> allAvailableClasses = new HashSet<String> ();
 
-        for (String availableClassFromJarFile : listOfAllVailableClassFilesFromAllAvailableJarFiles)
+        for (final String availableClassFromJarFile : listOfAllVailableClassFilesFromAllAvailableJarFiles)
         {
             allAvailableClasses.add ((availableClassFromJarFile.replaceFirst (".class$", "")).replace ('/', '.'));
         }
 
-        for (String availableClassFileRelativeToClassPathDirectory : listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories)
+        for (final String availableClassFileRelativeToClassPathDirectory : listOfAllAvailableClassFilesRelativeToAllAvailableClassPathDirectories)
         {
             allAvailableClasses.add ((availableClassFileRelativeToClassPathDirectory.replaceFirst (".class$", "")).replace ('/', '.'));
         }
 
-        Vector<String> allAvailableClassFileVector = new Vector<String> ();
+        final Vector<String> allAvailableClassFileVector = new Vector<String> ();
 
         allAvailableClassFileVector.addAll (allAvailableClasses);
 

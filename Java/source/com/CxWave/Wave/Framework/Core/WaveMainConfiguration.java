@@ -6,11 +6,15 @@ package com.CxWave.Wave.Framework.Core;
 
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
-public class WaveMainConfiguration
+public class WaveMainConfiguration extends SerializableObject
 {
+    @XmlWaveXPath (path = "wave.application.name")
     private String         m_applicationName;
+    @XmlWaveXPath (path = "wave.application.daemonize")
     private boolean        m_isADaemon;
     private boolean        m_isSysLogRequired;
     private boolean        m_isDatabaseEnabled;

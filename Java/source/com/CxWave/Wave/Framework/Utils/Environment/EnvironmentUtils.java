@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc             *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Utils.Environment;
@@ -16,23 +14,26 @@ public class EnvironmentUtils
     static List<String> s_virtualMachinecommandLineArguments;
     static List<String> s_classPathCommandLineArguments;
 
-    EnvironmentUtils ()
+    private static EnvironmentUtils s_environmentUtils = new EnvironmentUtils ();
+
+    private EnvironmentUtils ()
     {
+        recordAllCommandLineArguments ();
     }
 
     public static void recordAllCommandLineArguments ()
     {
-        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean ();
+        final RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean ();
 
         s_virtualMachinecommandLineArguments = runtimeMXBean.getInputArguments ();
 
-        String classPathCommandLineArgumentsString = System.getProperty ("java.class.path");
+        final String classPathCommandLineArgumentsString = System.getProperty ("java.class.path");
 
         s_classPathCommandLineArguments = new ArrayList<String> ();
 
         if (null != classPathCommandLineArgumentsString)
         {
-            for (String classPathComponent : classPathCommandLineArgumentsString.split (":"))
+            for (final String classPathComponent : classPathCommandLineArgumentsString.split (":"))
             {
                 s_classPathCommandLineArguments.add (classPathComponent);
             }

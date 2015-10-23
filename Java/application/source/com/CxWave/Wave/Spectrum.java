@@ -32,9 +32,9 @@ class Spectrum
     {
         WaveMainConfiguration waveMainConfiguration = new WaveMainConfiguration ();
 
-        WaveBasedApplication.waveMain (waveMainConfiguration);
+        //WaveBasedApplication.waveMain (waveMainConfiguration);
 
-        EnvironmentUtils.recordAllCommandLineArguments ();
+        //EnvironmentUtils.recordAllCommandLineArguments ();
 
         System.out.println ("Print JVM Command Line Arguments : " + (EnvironmentUtils.getVirtualMachineCommandLineArguments ()).toString ());
 
