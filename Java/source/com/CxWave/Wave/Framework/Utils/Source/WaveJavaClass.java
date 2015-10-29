@@ -14,7 +14,7 @@ import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
-public class WaveJavaClass
+public class WaveJavaClass extends WaveJavaType
 {
     private final String                          m_name;
     private final Map<String, WaveJavaInterface>  m_superInterfaces;
@@ -49,6 +49,8 @@ public class WaveJavaClass
                 WaveAssertUtils.waveAssert (null != waveJavaSuperInterface);
 
                 m_superInterfaces.put (superInterfaceName, waveJavaSuperInterface);
+
+                waveJavaSuperInterface.addChildClass (this);
             }
         }
     }
@@ -78,6 +80,11 @@ public class WaveJavaClass
         {
             if (WaveStringUtils.isNotBlank (annotationName))
             {
+                if ((annotationName.startsWith ("java.")) || (annotationName.startsWith ("javax.")))
+                {
+                    continue;
+                }
+
                 final WaveJavaAnnotation waveJavaAnnotation = WaveJavaSourceRepository.getWaveJavaAnnotation (annotationName);
 
                 WaveAssertUtils.waveAssert (null != waveJavaAnnotation);
@@ -167,6 +174,7 @@ public class WaveJavaClass
         }
     }
 
+    @Override
     public void compute ()
     {
         Class<?> reflectionClass = null;

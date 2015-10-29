@@ -197,7 +197,7 @@ public class TraceObjectManager extends WaveObjectManager
 
             for (final Object object : objects)
             {
-                newObjects[i] = objects[i - 1];
+                newObjects[i] = object;
                 i++;
             }
 

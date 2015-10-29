@@ -10,7 +10,7 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
-public class Attribute
+public abstract class Attribute
 {
     private Object              m_lastValue;
     private ReflectionAttribute m_reflectionAttribute;

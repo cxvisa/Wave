@@ -14,13 +14,13 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class WaveJavaSourceRepository
 {
-    private static WaveJavaSourceRepository s_waveJavaSourceRepository = new WaveJavaSourceRepository ();
+    private static WaveJavaSourceRepository       s_waveJavaSourceRepository = new WaveJavaSourceRepository ();
 
-    private final Map<String, WaveJavaClass>      m_classes          = new HashMap<String, WaveJavaClass> ();
-    private final Map<String, WaveJavaInterface>  m_interfaces       = new HashMap<String, WaveJavaInterface> ();
-    private final Map<String, WaveJavaEnum>       m_enums            = new HashMap<String, WaveJavaEnum> ();
-    private final Map<String, WaveJavaAnnotation> m_annotations      = new HashMap<String, WaveJavaAnnotation> ();
-    private final Map<String, WaveJavaClass>      m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
+    private final Map<String, WaveJavaClass>      m_classes                  = new HashMap<String, WaveJavaClass> ();
+    private final Map<String, WaveJavaInterface>  m_interfaces               = new HashMap<String, WaveJavaInterface> ();
+    private final Map<String, WaveJavaEnum>       m_enums                    = new HashMap<String, WaveJavaEnum> ();
+    private final Map<String, WaveJavaAnnotation> m_annotations              = new HashMap<String, WaveJavaAnnotation> ();
+    private final Map<String, WaveJavaClass>      m_anonymousClasses         = new HashMap<String, WaveJavaClass> ();
 
     private WaveJavaSourceRepository ()
     {
@@ -165,6 +165,21 @@ public class WaveJavaSourceRepository
         for (final WaveJavaClass waveJavaClass : m_classes.values ())
         {
             waveJavaClass.compute ();
+        }
+
+        for (final WaveJavaInterface wavejavaInterface : m_interfaces.values ())
+        {
+            wavejavaInterface.compute ();
+        }
+
+        for (final WaveJavaAnnotation waveJavaAnnotation : m_annotations.values ())
+        {
+            waveJavaAnnotation.compute ();
+        }
+
+        for (final WaveJavaEnum waveJavaEnum : m_enums.values ())
+        {
+            waveJavaEnum.compute ();
         }
     }
 
