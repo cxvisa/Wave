@@ -4,7 +4,7 @@
 
         <daemonize>true</daemonize>
 
-        <initial-working-directory>.</initial-working-directory>
+        <initial-working-directory>/home/sagar/CxWave/Wave/Java/application/execution</initial-working-directory>
 
         <ethernet-interface>eno16777736</ethernet-interface>
 

@@ -24,16 +24,16 @@ public class WaveObjectManager extends WaveElement
 {
     private class PrismOperationMapContext
     {
-        private WaveElement        m_waveElementThatHandlesTheMessage;
-        private WaveMessageHandler m_waveMessageHandler;
+        private final WaveElement        m_waveElementThatHandlesTheMessage;
+        private final WaveMessageHandler m_waveMessageHandler;
 
-        public PrismOperationMapContext (WaveElement waveElement, WaveMessageHandler waveMessageHandler)
+        public PrismOperationMapContext (final WaveElement waveElement, final WaveMessageHandler waveMessageHandler)
         {
             m_waveElementThatHandlesTheMessage = waveElement;
             m_waveMessageHandler = waveMessageHandler;
         }
 
-        public void executeMessageHandler (WaveMessage waveMessage)
+        public void executeMessageHandler (final WaveMessage waveMessage)
         {
             m_waveMessageHandler.execute (waveMessage, m_waveElementThatHandlesTheMessage);
         }
@@ -42,10 +42,10 @@ public class WaveObjectManager extends WaveElement
     private class WaveEventMapContext
     {
 
-        private WaveElement      m_waveElementThatHandlesTheEvent;
-        private WaveEventHandler m_waveEventHandler;
+        private final WaveElement      m_waveElementThatHandlesTheEvent;
+        private final WaveEventHandler m_waveEventHandler;
 
-        public WaveEventMapContext (WaveElement waveElement, WaveEventHandler waveEventHandler)
+        public WaveEventMapContext (final WaveElement waveElement, final WaveEventHandler waveEventHandler)
         {
             m_waveElementThatHandlesTheEvent = waveElement;
             m_waveEventHandler = waveEventHandler;
@@ -68,20 +68,20 @@ public class WaveObjectManager extends WaveElement
         private boolean                    m_isTimerStarted;
         private TimerHandle                m_timerHandle;
 
-        public WaveMessageResponseContext (WaveMessage waveMessage, WaveElement waveMessageSender, WaveMessageResponseHandler waveMessageSenderCallback, WaveGenericContext waveMessageSenderContext)
+        public WaveMessageResponseContext (final WaveMessage waveMessage, final WaveElement waveMessageSender, final WaveMessageResponseHandler waveMessageSenderCallback, final WaveGenericContext waveMessageSenderContext)
         {
         }
 
-        public void executeResponseCallback (FrameworkStatus frameworkStatus, WaveMessage waveMessage, boolean isMessageRecalled)
+        public void executeResponseCallback (final FrameworkStatus frameworkStatus, final WaveMessage waveMessage, final boolean isMessageRecalled)
         {
         }
 
-        public void executeResponseCallback (FrameworkStatus frameworkStatus)
+        public void executeResponseCallback (final FrameworkStatus frameworkStatus)
         {
 
         }
 
-        public void setIsMessageTimedOut (boolean isMessageTimedOut)
+        public void setIsMessageTimedOut (final boolean isMessageTimedOut)
         {
             m_isMessageTimedOut = isMessageTimedOut;
         }
@@ -101,7 +101,7 @@ public class WaveObjectManager extends WaveElement
             return (m_inputMessageInResponseContext);
         }
 
-        public void setInputMessageInResponseContext (WaveMessage waveMessage)
+        public void setInputMessageInResponseContext (final WaveMessage waveMessage)
         {
             m_inputMessageInResponseContext = waveMessage;
         }
@@ -129,8 +129,8 @@ public class WaveObjectManager extends WaveElement
 
     private class WaveEventListenerMapContext
     {
-        private WaveServiceId m_eventListenerSericeId;
-        private LocationId    m_eventListenerLocationId;
+        private final WaveServiceId m_eventListenerSericeId;
+        private final LocationId    m_eventListenerLocationId;
 
         public WaveEventListenerMapContext (final WaveServiceId eventListenerServiceId, final LocationId eventListenerLocationId)
         {
@@ -152,7 +152,7 @@ public class WaveObjectManager extends WaveElement
     private static WaveMutex     s_waveObjectManagerMutex     = new WaveMutex ();
     private static WaveServiceId s_nextAvailableWaveServiceId = new WaveServiceId (0);
 
-    private String                                                                 m_name;
+    private final String                                                           m_name;
     private WaveThread                                                             m_associatedWaveThread;
     private Map<BigInteger, PrismOperationMapContext>                              m_operationsMap;
     private Map<BigInteger, BigInteger>                                            m_supportedEvents;
@@ -165,9 +165,9 @@ public class WaveObjectManager extends WaveElement
     private Vector<WaveWorker>                                                     m_workers;
     private boolean                                                                m_isEnabled;
     private WaveMutex                                                              m_isEnabledMutex;
-    private TraceClientId                                                          m_traceClientId;
+    private final TraceClientId                                                    m_traceClientId;
 
-    private WaveServiceId m_serviceId;
+    private final WaveServiceId m_serviceId;
 
     protected WaveObjectManager (final String waveObjectManagerName)
     {
@@ -191,8 +191,27 @@ public class WaveObjectManager extends WaveElement
         return (false);
     }
 
+    @Override
     protected void trace (final TraceLevel requestedTraceLevel, final String stringToTrace, final boolean addNewLine, final boolean suppressPrefix)
     {
         TraceObjectManager.traceDirectly (m_traceClientId, requestedTraceLevel, stringToTrace, addNewLine, suppressPrefix);
+    }
+
+    @Override
+    protected void trace (final TraceLevel requestedTraceLevel, final String stringToTrace)
+    {
+        trace (requestedTraceLevel, stringToTrace, true, false);
+    }
+
+    @Override
+    protected void tracePrintf (final TraceLevel requestedTraceLevel, final boolean addNewLine, final boolean suppressPrefix, final String formatString, final Object... objects)
+    {
+        TraceObjectManager.tracePrintf (m_traceClientId, requestedTraceLevel, addNewLine, suppressPrefix, formatString, objects);
+    }
+
+    @Override
+    protected void tracePrintf (final TraceLevel requestedTraceLevel, final String formatString, final Object... objects)
+    {
+        tracePrintf (requestedTraceLevel, true, false, formatString, objects);
     }
 }

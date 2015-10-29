@@ -16,10 +16,10 @@ public class TraceObjectManager extends WaveObjectManager
 {
     private static TraceObjectManager s_traceObjectManager = null;
 
-    private static String        s_waveTraceFileName = null;
-    private static boolean       s_isFirstTime       = true;
-    private static WaveTraceFile s_waveTraceFile     = new WaveTraceFile ();
-    private static WaveMutex     s_mutexForTracing   = new WaveMutex ();
+    private static String             s_waveTraceFileName  = null;
+    private static boolean            s_isFirstTime        = true;
+    private static WaveTraceFile      s_waveTraceFile      = new WaveTraceFile ();
+    private static WaveMutex          s_mutexForTracing    = new WaveMutex ();
 
     public static String getClassName ()
     {
@@ -148,6 +148,78 @@ public class TraceObjectManager extends WaveObjectManager
         }
 
         s_mutexForTracing.unlock ();
+    }
+
+    public static void tracePrintf (final TraceClientId traceClientId, final TraceLevel requestedTraceLevel, final boolean addNewLine, final boolean suppressPrefix, final String formatString, final Object... objects)
+    {
+        s_mutexForTracing.lock ();
+
+        if (s_isFirstTime)
+        {
+            s_waveTraceFile.setNewFilePath (s_waveTraceFileName);
+
+            s_isFirstTime = false;
+        }
+
+        final TraceClientMap traceClientMap = TraceClientMap.getInstance ();
+
+        final TraceLevel currentTraceLevel = traceClientMap.getTraceClientLevel (traceClientId);
+
+        if (0 >= (currentTraceLevel.compareTo (requestedTraceLevel)))
+        {
+            final StringBuilder computedTraceString = new StringBuilder ();
+
+            WaveTerminalUtils.waveSetConsoleTextColor (requestedTraceLevel);
+
+            if (!suppressPrefix)
+            {
+                computedTraceString.append (getTraceTagForLevel (requestedTraceLevel));
+
+                computedTraceString.append (WaveTimeUtils.ctime ());
+
+                computedTraceString.append (" : ");
+            }
+
+            String newLineString = "";
+
+            if (addNewLine)
+            {
+                newLineString = "\n";
+            }
+
+            final String newFormatString = new String ("%s ") + formatString + newLineString;
+
+            final Object[] newObjects = new Object[objects.length + 1];
+            int i = 0;
+
+            newObjects[i] = computedTraceString;
+            i++;
+
+            for (final Object object : objects)
+            {
+                newObjects[i] = objects[i - 1];
+                i++;
+            }
+
+            s_waveTraceFile.printf (newFormatString, newObjects);
+            s_waveTraceFile.flush ();
+
+            System.out.printf (newFormatString, newObjects);
+
+            WaveTerminalUtils.waveResetConsoleTextColor ();
+        }
+
+        s_mutexForTracing.unlock ();
+    }
+
+    public static void traceDirectly (final TraceClientId traceClientId, final TraceLevel requestedTraceLevel, final String stringToTrace)
+    {
+        traceDirectly (traceClientId, requestedTraceLevel, stringToTrace, true, false);
+    }
+
+    public static void tracePrintf (final TraceClientId traceClientId, final TraceLevel requestedTraceLevel, final String formatString, final Object... objects)
+    {
+        tracePrintf (traceClientId, requestedTraceLevel, true, false, formatString, objects);
     }
 
     public static TraceClientId addClient (final TraceLevel traceLevel, final String traceClientName)

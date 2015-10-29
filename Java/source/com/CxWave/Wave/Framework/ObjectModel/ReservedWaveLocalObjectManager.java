@@ -45,4 +45,11 @@ public class ReservedWaveLocalObjectManager extends WaveLocalObjectManager
 
         trace (requestedTraceLevel, stringToTrace, addNewLine, suppressPrefix);
     }
+
+    public void tracePrintfReservedForUtils (final WaveTraceUtils._Internal_ _internal_, final TraceLevel requestedTraceLevel, final boolean addNewLine, final boolean suppressPrefix, final String formatString, final Object... objects)
+    {
+        _internal_.getClass (); // protection from bypass using null.
+
+        tracePrintf (requestedTraceLevel, addNewLine, suppressPrefix, formatString, objects);
+    }
 }

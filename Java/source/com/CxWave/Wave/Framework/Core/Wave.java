@@ -12,6 +12,8 @@ import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.SystemManagement.SystemManagementToolKit;
 
@@ -118,7 +120,11 @@ public class Wave
         WaveFrameworkObjectManager.setGlobalConfigurationFile (waveConfigurationFileDirectory + "/" + waveGlobalConfigurationFile);
         WaveFrameworkObjectManager.setLockFileForConfigurationFile (waveConfigurationFileDirectory + "/" + waveLockFileForConfigurationFile);
 
-        TraceObjectManager.setWaveTraceFileName (waveTraceFileDirectory + "/" + waveTraceFileName);
+        final String waveTraceFilePath = waveTraceFileDirectory + "/" + waveTraceFileName;
+
+        TraceObjectManager.setWaveTraceFileName (waveTraceFilePath);
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_SUCCESS, "Trace file is being set to : " + waveTraceFilePath, true, false);
 
         // Initialize Source Utils
 
