@@ -6,7 +6,9 @@ package com.CxWave.Wave.Framework.Utils.Source;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -214,5 +216,17 @@ public class WaveJavaClass extends WaveJavaType
         }
 
         addAnnotations (annotationNames);
+    }
+
+    Set<String> getAllDescendants ()
+    {
+        final Set<String> allDescendantsSet = new HashSet<String> ();
+
+        for (final String descendantName : m_childClasses.keySet ())
+        {
+            allDescendantsSet.add (descendantName);
+        }
+
+        return (allDescendantsSet);
     }
 }

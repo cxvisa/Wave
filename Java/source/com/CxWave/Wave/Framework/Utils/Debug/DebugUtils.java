@@ -1,21 +1,21 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc             *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Utils.Debug;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class DebugUtils
 {
-    public static void prettyPrint (List<?> inputList)
+    public static void prettyPrint (final List<?> inputList)
     {
-        int numberOfEntries          = inputList.size ();
+        int numberOfEntries = inputList.size ();
         int numberOfDecimalPositions = 0;
-        int i                        = 0;
+        int i = 0;
 
         while (0 != numberOfEntries)
         {
@@ -23,8 +23,8 @@ public class DebugUtils
             numberOfDecimalPositions++;
         }
 
-        Iterator<?>   iterator          = inputList.iterator ();
-        StringBuilder printFormatString = new StringBuilder ();
+        final Iterator<?> iterator = inputList.iterator ();
+        final StringBuilder printFormatString = new StringBuilder ();
 
         printFormatString.append ("[%1$0");
         printFormatString.append ((new Integer (numberOfDecimalPositions)).toString ());
@@ -37,5 +37,10 @@ public class DebugUtils
 
             i++;
         }
+    }
+
+    public static <T> void prettyPrint (final Set<T> inputSet)
+    {
+        prettyPrint (new ArrayList<T> (inputSet));
     }
 }

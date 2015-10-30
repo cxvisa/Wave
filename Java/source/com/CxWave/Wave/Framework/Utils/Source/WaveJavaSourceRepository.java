@@ -5,8 +5,10 @@
 package com.CxWave.Wave.Framework.Utils.Source;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -200,5 +202,24 @@ public class WaveJavaSourceRepository
         }
 
         compute ();
+    }
+
+    private Set<String> getAllDescendantsForClassInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.getAllDescendants ());
+        }
+        else
+        {
+            return (new HashSet<String> ());
+        }
+    }
+
+    public static Set<String> getAllDescendantsForClass (final String className)
+    {
+        return ((getInstance ()).getAllDescendantsForClassInternal (className));
     }
 }

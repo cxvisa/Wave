@@ -16,6 +16,7 @@ import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
@@ -23,7 +24,9 @@ import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Framework.Core.Wave;
 import com.CxWave.Wave.Framework.Core.WaveBasedApplication;
 import com.CxWave.Wave.Framework.Core.WaveMainConfiguration;
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 class Spectrum
@@ -95,6 +98,8 @@ class Spectrum
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_WARN,       "This is a test. H : " + TimeZoneToolKit.getTimeZoneHours ().getValue () + ", M : " + TimeZoneToolKit.getTimeZoneMinutes ().getValue () + ", DTZ : " + TimeZoneToolKit.getDefaultTimeZone ().toString (), true, false);
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "This is a test with tracePrintf : %s, %s", new String ("Successfully traced."), "3016");
+
+        DebugUtils.prettyPrint (WaveJavaSourceRepository.getAllDescendantsForClass (SerializableObject.class.getName ()));
 
         if (2 <= (commandLineArguments.length))
         {
