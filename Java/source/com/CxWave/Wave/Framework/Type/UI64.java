@@ -10,17 +10,17 @@ public class UI64
 
     public UI64 (final Long value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public UI64 (final long value)
     {
-        m_value = new Long (value);
+        setValue (value);
     }
 
-    public UI64 (final int value)
+    public UI64 (final UI64 rhs)
     {
-        m_value = new Long (value);
+        setValue (rhs);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class UI64
             return (true);
         }
 
-        UI64 rhs = (UI64) object;
+        final UI64 rhs = (UI64) object;
 
         if (m_value == (rhs.getValue ()))
         {
@@ -48,8 +48,38 @@ public class UI64
         }
     }
 
-    Long getValue ()
+    public Long getValue ()
     {
         return (m_value);
+    }
+
+    public void setValue (final long value)
+    {
+        m_value = new Long (value);
+    }
+
+    public void setValue (final Long value)
+    {
+        m_value = new Long (value);
+    }
+
+    public void setValue (final UI64 rhs)
+    {
+        m_value = new Long (rhs.getValue ());
+    }
+
+    public void increment ()
+    {
+        m_value++;
+    }
+
+    public void decrement ()
+    {
+        m_value--;
+    }
+
+    public boolean equals (final UI64 rhs)
+    {
+        return (m_value.equals (rhs.m_value));
     }
 }

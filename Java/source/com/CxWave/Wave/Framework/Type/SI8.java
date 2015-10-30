@@ -8,18 +8,21 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class SI8
 {
-    private final byte m_value;
+    private Byte m_value;
 
     public SI8 (final byte value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public SI8 (final long value)
     {
-        WaveAssertUtils.waveAssert (isValid (value));
+        setValue (value);
+    }
 
-        m_value = (byte) value;
+    public SI8 (final SI8 rhs)
+    {
+        setValue (rhs);
     }
 
     @Override
@@ -52,6 +55,23 @@ public class SI8
         return (m_value);
     }
 
+    public void setValue (final byte value)
+    {
+        m_value = new Byte (value);
+    }
+
+    public void setValue (final long value)
+    {
+        WaveAssertUtils.waveAssert (isValid (value));
+
+        m_value = (byte) value;
+    }
+
+    public void setValue (final SI8 rhs)
+    {
+        m_value = new Byte (rhs.getValue ());
+    }
+
     public boolean isValid (final long value)
     {
         if ((128 > value) && (-128 <= value))
@@ -62,5 +82,20 @@ public class SI8
         {
             return (false);
         }
+    }
+
+    public void increment ()
+    {
+        m_value++;
+    }
+
+    public void decrement ()
+    {
+        m_value--;
+    }
+
+    public boolean equals (final SI8 rhs)
+    {
+        return (m_value.equals (rhs.m_value));
     }
 }

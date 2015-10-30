@@ -14,7 +14,7 @@ public class UI32
 
     public UI32 (final Integer value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public UI32 (final long value)
@@ -24,7 +24,7 @@ public class UI32
 
     public UI32 (final UI32 rhs)
     {
-        setValue (rhs.getValue ());
+        setValue (rhs);
     }
 
     @Override
@@ -57,9 +57,19 @@ public class UI32
         return (m_value);
     }
 
+    public void setValue (final int value)
+    {
+        m_value = new Integer (value);
+    }
+
     public void setValue (final Integer value)
     {
         m_value = value;
+    }
+
+    public void setValue (final UI32 rhs)
+    {
+        m_value = new Integer (rhs.getValue ());
     }
 
     public void setValue (final long value)

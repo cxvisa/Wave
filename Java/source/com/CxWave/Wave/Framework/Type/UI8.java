@@ -8,18 +8,21 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class UI8
 {
-    private final byte m_value;
+    private Byte m_value;
 
     public UI8 (final byte value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public UI8 (final long value)
     {
-        WaveAssertUtils.waveAssert (isValid (value));
+        setValue (value);
+    }
 
-        m_value = (byte) (value - (1 << 7));
+    public UI8 (final UI8 rhs)
+    {
+        setValue (rhs);
     }
 
     @Override
@@ -47,9 +50,26 @@ public class UI8
         }
     }
 
-    public byte getValue ()
+    public Byte getValue ()
     {
         return (m_value);
+    }
+
+    public void setValue (final byte value)
+    {
+        m_value = new Byte (value);
+    }
+
+    public void setValue (final long value)
+    {
+        WaveAssertUtils.waveAssert (isValid (value));
+
+        m_value = (byte) (value - (1 << 7));
+    }
+
+    public void setValue (final UI8 rhs)
+    {
+        m_value = new Byte (rhs.getValue ());
     }
 
     public boolean isValid (final long value)
@@ -62,5 +82,20 @@ public class UI8
         {
             return (false);
         }
+    }
+
+    public void increment ()
+    {
+        m_value++;
+    }
+
+    public void decrement ()
+    {
+        m_value--;
+    }
+
+    public boolean equals (final UI8 rhs)
+    {
+        return (m_value.equals (rhs.m_value));
     }
 }

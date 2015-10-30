@@ -8,18 +8,21 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class SI32
 {
-    private final Integer m_value;
+    private Integer m_value;
 
     public SI32 (final Integer value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public SI32 (final long value)
     {
-        WaveAssertUtils.waveAssert (isValid (value));
+        setValue (value);
+    }
 
-        m_value = new Integer ((int) value);
+    public SI32 (final SI32 rhs)
+    {
+        setValue (rhs);
     }
 
     @Override
@@ -47,9 +50,26 @@ public class SI32
         }
     }
 
-    Integer getValue ()
+    public Integer getValue ()
     {
         return (m_value);
+    }
+
+    public void seValue (final int value)
+    {
+        m_value = new Integer (value);
+    }
+
+    public void setValue (final long value)
+    {
+        WaveAssertUtils.waveAssert (isValid (value));
+
+        m_value = new Integer ((int) value);
+    }
+
+    public void setValue (final SI32 rhs)
+    {
+        m_value = new Integer (rhs.getValue ());
     }
 
     public boolean isValid (final long value)
@@ -62,5 +82,20 @@ public class SI32
         {
             return (false);
         }
+    }
+
+    public void increment ()
+    {
+        m_value++;
+    }
+
+    public void decrement ()
+    {
+        m_value--;
+    }
+
+    public boolean equals (final SI32 rhs)
+    {
+        return (m_value.equals (rhs.m_value));
     }
 }

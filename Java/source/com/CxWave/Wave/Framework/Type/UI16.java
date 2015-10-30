@@ -8,18 +8,21 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class UI16
 {
-    private final short m_value;
+    private Short m_value;
 
     public UI16 (final short value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public UI16 (final long value)
     {
-        WaveAssertUtils.waveAssert (isValid (value));
+        setValue (value);
+    }
 
-        m_value = (short) (value - (1 << 15));
+    public UI16 (final UI16 rhs)
+    {
+        setValue (rhs);
     }
 
     @Override
@@ -47,9 +50,26 @@ public class UI16
         }
     }
 
-    short getValue ()
+    public Short getValue ()
     {
         return (m_value);
+    }
+
+    public void setValue (final short value)
+    {
+        m_value = new Short (value);
+    }
+
+    public void setValue (final long value)
+    {
+        WaveAssertUtils.waveAssert (isValid (value));
+
+        m_value = (short) (value - (1 << 15));
+    }
+
+    public void setValue (final UI16 rhs)
+    {
+        m_value = new Short (rhs.getValue ());
     }
 
     public boolean isValid (final long value)
@@ -62,5 +82,20 @@ public class UI16
         {
             return (false);
         }
+    }
+
+    public void increment ()
+    {
+        m_value++;
+    }
+
+    public void decrement ()
+    {
+        m_value--;
+    }
+
+    public boolean equals (final UI16 rhs)
+    {
+        return (m_value.equals (rhs.m_value));
     }
 }

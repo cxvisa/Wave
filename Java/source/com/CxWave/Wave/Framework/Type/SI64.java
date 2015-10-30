@@ -10,17 +10,22 @@ public class SI64
 
     public SI64 (final Long value)
     {
-        m_value = value;
+        setValue (value);
     }
 
     public SI64 (final long value)
     {
-        m_value = new Long (value);
+        setValue (value);
     }
 
     public SI64 (final int value)
     {
-        m_value = new Long (value);
+        setValue (value);
+    }
+
+    public SI64 (final SI64 rhs)
+    {
+        setValue (rhs);
     }
 
     @Override
@@ -36,7 +41,7 @@ public class SI64
             return (true);
         }
 
-        SI64 rhs = (SI64) object;
+        final SI64 rhs = (SI64) object;
 
         if (m_value == (rhs.getValue ()))
         {
@@ -48,8 +53,38 @@ public class SI64
         }
     }
 
-    Long getValue ()
+    public Long getValue ()
     {
         return (m_value);
+    }
+
+    public void setValue (final long value)
+    {
+        m_value = new Long (value);
+    }
+
+    public void setValue (final Long value)
+    {
+        m_value = new Long (value);
+    }
+
+    public void setValue (final SI64 rhs)
+    {
+        m_value = new Long (rhs.getValue ());
+    }
+
+    public void increment ()
+    {
+        m_value++;
+    }
+
+    public void decrement ()
+    {
+        m_value--;
+    }
+
+    public boolean equals (final SI64 rhs)
+    {
+        return (m_value.equals (rhs.m_value));
     }
 }
