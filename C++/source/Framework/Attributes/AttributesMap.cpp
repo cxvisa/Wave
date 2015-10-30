@@ -153,7 +153,8 @@ void AttributesMap::addAttribute (Attribute *pAttribute)
                 trace (TRACE_LEVEL_FATAL, string ("---------------Please, take care of it by changing the attribute name to be unique..------------------------------"));
                 // waveAssert (false, __FILE__, __LINE__);
 
-                // Pritee: This must be removed once above waveAssert are uncommented.
+                // This must be removed once above waveAssert are uncommented.
+
                 if (true == attributeName.empty())
                 {
                     // use the attributeTag as a name as push it to this map

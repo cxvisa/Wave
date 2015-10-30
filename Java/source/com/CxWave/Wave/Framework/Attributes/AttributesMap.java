@@ -4,7 +4,20 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AttributesMap
 {
+    private final Map<String, Attribute> m_attributes;
 
+    public AttributesMap ()
+    {
+        m_attributes = new HashMap<String, Attribute> ();
+    }
+
+    public void addAttribute (final Attribute attribute)
+    {
+
+    }
 }

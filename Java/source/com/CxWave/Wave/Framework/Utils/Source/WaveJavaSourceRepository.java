@@ -222,4 +222,25 @@ public class WaveJavaSourceRepository
     {
         return ((getInstance ()).getAllDescendantsForClassInternal (className));
     }
+
+    private boolean isClassAnnotatedWithInternal (final String className, final String annotationName)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.isAnnotatedWith (annotationName));
+        }
+        else
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.isClassAnnotatedWithInternal : Could not find class name %s", className);
+
+            return (false);
+        }
+    }
+
+    public static boolean isClassAnnotatedWith (final String className, final String annotationName)
+    {
+        return ((getInstance ()).isClassAnnotatedWithInternal (className, annotationName));
+    }
 }

@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.Core;
 
 import com.CxWave.Wave.Framework.Database.DatabaseObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
@@ -130,6 +131,9 @@ public class Wave
 
         SourceUtils.initialize ();
 
+        // Initialize Serialization for the System
+
+        (SerializableObjectRepository.getInstance ()).initialize ();
     }
 
     private static String getConfigurationFileDirectory ()

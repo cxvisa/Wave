@@ -6,11 +6,11 @@ package com.CxWave.Wave.Framework.Core;
 
 import java.util.Vector;
 
-import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
+import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
-public class WaveMainConfiguration extends SerializableObject
+public class WaveMainConfiguration extends WaveConfiguration
 {
     @XmlWaveXPath (path = "wave.application.name")
     private String         m_applicationName;

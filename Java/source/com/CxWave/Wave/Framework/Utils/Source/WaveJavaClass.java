@@ -222,11 +222,18 @@ public class WaveJavaClass extends WaveJavaType
     {
         final Set<String> allDescendantsSet = new HashSet<String> ();
 
-        for (final String descendantName : m_childClasses.keySet ())
+        for (final Map.Entry<String, WaveJavaClass> descendant : m_childClasses.entrySet ())
         {
-            allDescendantsSet.add (descendantName);
+            allDescendantsSet.add (descendant.getKey ());
+
+            allDescendantsSet.addAll ((descendant.getValue ()).getAllDescendants ());
         }
 
         return (allDescendantsSet);
+    }
+
+    boolean isAnnotatedWith (final String annotationName)
+    {
+        return (m_annotations.containsKey (annotationName));
     }
 }
