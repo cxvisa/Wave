@@ -13,10 +13,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Attributes.ReflectionAttribute;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -31,7 +34,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, WaveJavaClass>      m_childClasses;
     private final Map<String, WaveJavaClass>      m_anonymousClasses;
     private WaveJavaClass                         m_declaringClass;
-    private ReflectionAttributesMap               m_serializationReflectionAttributesMapForDeclaredFields;
+    private final ReflectionAttributesMap         m_serializationReflectionAttributesMapForDeclaredFields;
 
     public WaveJavaClass (final String name)
     {
@@ -40,6 +43,7 @@ public class WaveJavaClass extends WaveJavaType
         m_annotations = new HashMap<String, WaveJavaAnnotation> ();
         m_childClasses = new HashMap<String, WaveJavaClass> ();
         m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
+        m_serializationReflectionAttributesMapForDeclaredFields = new ReflectionAttributesMap ();
     }
 
     public String getName ()
@@ -234,6 +238,19 @@ public class WaveJavaClass extends WaveJavaType
             return;
         }
 
+        final Annotation annotationForNonSerializable = reflectionClass.getAnnotation (NonSerializable.class);
+
+        if (null != annotationForNonSerializable)
+        {
+            final NonSerializable nonSerializable = (NonSerializable) (annotationForNonSerializable);
+
+            WaveAssertUtils.waveAssert (null != nonSerializable);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Ignoring %s from Serialization computations since it is annotated with @NonSerializable", reflectionClass.getName ());
+
+            return;
+        }
+
         final Field[] declaredFields = reflectionClass.getDeclaredFields ();
 
         for (final Field declaredField : declaredFields)
@@ -248,8 +265,9 @@ public class WaveJavaClass extends WaveJavaType
             final String declaredFieldName = declaredField.getName ();
             String xmlWaveXPathPath = null;
             String serializableAttributeName = null;
-            final boolean serializableAttributeIsPrimary = false;
-            final boolean serializableAttributeIsOperational = false;
+            boolean serializableAttributeIsPrimary = false;
+            boolean serializableAttributeIsOperational = false;
+            UI32 serializableAttributeUserTag = new UI32 (0);
 
             if (WaveStringUtils.isNotBlank (declaredFieldName))
             {
@@ -285,11 +303,27 @@ public class WaveJavaClass extends WaveJavaType
                 {
                     serializableAttributeName = (serializableAttribute.name ()).replaceFirst ("^m_", "");
                 }
+
+                xmlWaveXPathPath = serializableAttribute.xmlWaveXPath ();
+                serializableAttributeIsPrimary = serializableAttribute.isPrimary ();
+                serializableAttributeIsOperational = serializableAttribute.isOperational ();
+                serializableAttributeUserTag = new UI32 (serializableAttribute.userTag ());
             }
 
             WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (serializableAttributeName));
 
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "    Adding Reflection Attribute : %s", serializableAttributeName);
+
+            final ReflectionAttribute reflectionAttribute = new ReflectionAttribute ();
+
+            WaveAssertUtils.waveAssert (null != reflectionAttribute);
+
+            reflectionAttribute.setAttributeName (serializableAttributeName);
+            reflectionAttribute.setAttributeFieldName (declaredFieldName);
+            reflectionAttribute.setField (declaredField);
+            reflectionAttribute.setAttributeUserTag (serializableAttributeUserTag);
+
+            m_serializationReflectionAttributesMapForDeclaredFields.addAttribute (reflectionAttribute);
         }
     }
 

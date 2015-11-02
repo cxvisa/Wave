@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 
 import com.CxWave.Wave.Framework.Type.UI32;
 
-public abstract class ReflectionAttribute
+public class ReflectionAttribute
 {
     private AttributeType m_attributeType;
     private String        m_AttributeName;
