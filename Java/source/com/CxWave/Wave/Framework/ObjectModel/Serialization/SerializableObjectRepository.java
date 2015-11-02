@@ -4,9 +4,12 @@
 
 package com.CxWave.Wave.Framework.ObjectModel.Serialization;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -16,9 +19,11 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class SerializableObjectRepository
 {
-    private static SerializableObjectRepository s_serializableObjectRepository  = new SerializableObjectRepository ();
+    private static SerializableObjectRepository         s_serializableObjectRepository  = new SerializableObjectRepository ();
 
-    private static Set<String>                  s_serializableClassesConsidered = new HashSet<String> ();
+    private static Set<String>                          s_serializableClassesConsidered = new HashSet<String> ();
+
+    private static Map<String, ReflectionAttributesMap> s_reflectionAttributesByClass   = new HashMap<String, ReflectionAttributesMap> ();
 
     private SerializableObjectRepository ()
     {

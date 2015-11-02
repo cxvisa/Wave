@@ -5,12 +5,14 @@
 package com.CxWave.Wave.Framework.Utils.Source;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -25,6 +27,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, WaveJavaClass>      m_childClasses;
     private final Map<String, WaveJavaClass>      m_anonymousClasses;
     private WaveJavaClass                         m_declaringClass;
+    private ReflectionAttributesMap               m_serializationReflectionAttributesMapForDeclaredFields;
 
     public WaveJavaClass (final String name)
     {
@@ -216,9 +219,16 @@ public class WaveJavaClass extends WaveJavaType
         }
 
         addAnnotations (annotationNames);
+
+        computeSerializationReflectionAttributesMapForDeclaredFields (reflectionClass);
     }
 
-    Set<String> getAllDescendants ()
+    private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
+    {
+        final Field[] declaredFields = reflectionClass.getDeclaredFields ();
+    }
+
+    public Set<String> getAllDescendants ()
     {
         final Set<String> allDescendantsSet = new HashSet<String> ();
 
@@ -232,8 +242,13 @@ public class WaveJavaClass extends WaveJavaType
         return (allDescendantsSet);
     }
 
-    boolean isAnnotatedWith (final String annotationName)
+    public boolean isAnnotatedWith (final String annotationName)
     {
         return (m_annotations.containsKey (annotationName));
+    }
+
+    public ReflectionAttributesMap getSerializationReflectionAttributesMapForDeclaredFields ()
+    {
+        return (m_serializationReflectionAttributesMapForDeclaredFields);
     }
 }

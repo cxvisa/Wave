@@ -11,8 +11,15 @@ import java.lang.annotation.Target;
 
 @Retention (RetentionPolicy.RUNTIME)
 @Target (ElementType.FIELD)
-public @interface XmlWaveXPath
+public @interface SerializableAttribute
 {
-    String path () default "";
+    String name ();
 
+    boolean isPrimary () default false;
+
+    int userTag () default 0;
+
+    boolean isOperational () default false;
+
+    String xmlWaveXPath () default "";
 }

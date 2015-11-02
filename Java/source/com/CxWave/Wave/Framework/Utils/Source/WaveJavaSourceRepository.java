@@ -9,8 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -242,5 +244,49 @@ public class WaveJavaSourceRepository
     public static boolean isClassAnnotatedWith (final String className, final String annotationName)
     {
         return ((getInstance ()).isClassAnnotatedWithInternal (className, annotationName));
+    }
+
+    private Vector<String> getInheritanceHeirarchyForClassLatestFirstIncludingSelfInternal (final String className)
+    {
+        final Vector<String> inheritanceHierarchy = new Vector<String> ();
+
+        if (WaveStringUtils.isBlank (className))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirst : Blank class name is not supported.");
+
+            return (inheritanceHierarchy);
+        }
+
+        WaveJavaClass waveJavaClass = getWaveJavaClassInternal (className);
+
+        if (null == waveJavaClass)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirst : %s is not known to Wave.", className);
+
+            return (inheritanceHierarchy);
+        }
+        else
+        {
+            inheritanceHierarchy.add (className);
+        }
+
+        while (null != waveJavaClass)
+        {
+            final String superClassName = waveJavaClass.getSuperClassName ();
+
+            if (null != superClassName)
+            {
+                inheritanceHierarchy.add (superClassName);
+
+                waveJavaClass = getWaveJavaClassInternal (superClassName);
+            }
+        }
+
+        return (inheritanceHierarchy);
+    }
+
+    public static Vector<String> getInheritanceHeirarchyForClassLatestFirstIncludingSelf (final String className)
+    {
+        return ((getInstance ()).getInheritanceHeirarchyForClassLatestFirstIncludingSelfInternal (className));
     }
 }
