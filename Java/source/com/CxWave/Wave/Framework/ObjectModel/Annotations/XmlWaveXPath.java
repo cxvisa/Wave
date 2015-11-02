@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target (ElementType.FIELD)
 public @interface XmlWaveXPath
 {
-    String path () default "";
+    public String path () default "";
 
 }

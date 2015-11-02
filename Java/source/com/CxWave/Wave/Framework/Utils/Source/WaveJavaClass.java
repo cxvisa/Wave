@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Utils.Source;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,6 +14,9 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -225,7 +229,68 @@ public class WaveJavaClass extends WaveJavaType
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
     {
+        if (!(isADerivativeOfSerializableObjectInternal ()))
+        {
+            return;
+        }
+
         final Field[] declaredFields = reflectionClass.getDeclaredFields ();
+
+        for (final Field declaredField : declaredFields)
+        {
+            WaveAssertUtils.waveAssert (null != declaredField);
+
+            if (0 != ((declaredField.getModifiers ()) & (Modifier.STATIC)))
+            {
+                continue;
+            }
+
+            final String declaredFieldName = declaredField.getName ();
+            String xmlWaveXPathPath = null;
+            String serializableAttributeName = null;
+            final boolean serializableAttributeIsPrimary = false;
+            final boolean serializableAttributeIsOperational = false;
+
+            if (WaveStringUtils.isNotBlank (declaredFieldName))
+            {
+                serializableAttributeName = declaredFieldName.replaceFirst ("^m_", "");
+            }
+            else
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+
+            Annotation annotation = null;
+
+            annotation = declaredField.getAnnotation (XmlWaveXPath.class);
+
+            if (null != annotation)
+            {
+                final XmlWaveXPath xmlWaveXPath = (XmlWaveXPath) (annotation);
+
+                WaveAssertUtils.waveAssert (null != xmlWaveXPath);
+
+                xmlWaveXPathPath = xmlWaveXPath.path ();
+            }
+
+            annotation = declaredField.getAnnotation (SerializableAttribute.class);
+
+            if (null != annotation)
+            {
+                final SerializableAttribute serializableAttribute = (SerializableAttribute) (annotation);
+
+                WaveAssertUtils.waveAssert (null != serializableAttribute);
+
+                if (WaveStringUtils.isNotBlank (serializableAttribute.name ()))
+                {
+                    serializableAttributeName = (serializableAttribute.name ()).replaceFirst ("^m_", "");
+                }
+            }
+
+            WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (serializableAttributeName));
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "    Adding Reflection Attribute : %s", serializableAttributeName);
+        }
     }
 
     public Set<String> getAllDescendants ()
@@ -250,5 +315,24 @@ public class WaveJavaClass extends WaveJavaType
     public ReflectionAttributesMap getSerializationReflectionAttributesMapForDeclaredFields ()
     {
         return (m_serializationReflectionAttributesMapForDeclaredFields);
+    }
+
+    public boolean isADerivativeOfSerializableObjectInternal ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (SerializableObject.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
     }
 }

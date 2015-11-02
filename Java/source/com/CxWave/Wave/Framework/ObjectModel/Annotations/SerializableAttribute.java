@@ -13,13 +13,13 @@ import java.lang.annotation.Target;
 @Target (ElementType.FIELD)
 public @interface SerializableAttribute
 {
-    String name ();
+    public String name ();
 
-    boolean isPrimary () default false;
+    public boolean isPrimary () default false;
 
-    int userTag () default 0;
+    public int userTag () default 0;
 
-    boolean isOperational () default false;
+    public boolean isOperational () default false;
 
-    String xmlWaveXPath () default "";
+    public String xmlWaveXPath () default "";
 }

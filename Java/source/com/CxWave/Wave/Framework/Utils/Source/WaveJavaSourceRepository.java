@@ -248,6 +248,8 @@ public class WaveJavaSourceRepository
 
     private Vector<String> getInheritanceHeirarchyForClassLatestFirstIncludingSelfInternal (final String className)
     {
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_DEBUG, "WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirst : %s", className);
+
         final Vector<String> inheritanceHierarchy = new Vector<String> ();
 
         if (WaveStringUtils.isBlank (className))
@@ -279,6 +281,10 @@ public class WaveJavaSourceRepository
                 inheritanceHierarchy.add (superClassName);
 
                 waveJavaClass = getWaveJavaClassInternal (superClassName);
+            }
+            else
+            {
+                break;
             }
         }
 
