@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Attributes.Attribute;
+import com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -184,6 +186,34 @@ public class WaveJavaSourceRepository
         for (final WaveJavaEnum waveJavaEnum : m_enums.values ())
         {
             waveJavaEnum.compute ();
+        }
+
+        computeAttributeSpace ();
+    }
+
+    private void computeAttributeSpace ()
+    {
+        final Set<String> allDescendantsOfAttributeClass = WaveJavaSourceRepository.getAllDescendantsForClass (Attribute.class.getName ());
+
+        for (final String attributeClassDescendant : allDescendantsOfAttributeClass)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Attribute Descendant : %s", attributeClassDescendant);
+
+            Class<?> attributeClassDescendantClass = null;
+
+            try
+            {
+                attributeClassDescendantClass = Class.forName (attributeClassDescendant);
+            }
+            catch (final ClassNotFoundException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "System could not load % class", attributeClassDescendant);
+                WaveAssertUtils.waveAssert ();
+            }
+
+            WaveAssertUtils.waveAssert (null != attributeClassDescendantClass);
+
+            AttributesFactory.addSupportedAttributeType (attributeClassDescendantClass);
         }
     }
 

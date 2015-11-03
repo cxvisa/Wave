@@ -4,7 +4,19 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
-public class AttributeSI32
-{
+import java.util.HashSet;
+import java.util.Set;
 
+public class AttributeSI32 extends Attribute
+{
+    @Override
+    public Set<Class<?>> getSupportedDataTypes ()
+    {
+        final Set<Class<?>> supportedDataTypes = new HashSet<Class<?>> ();
+
+        supportedDataTypes.add (int.class);
+        supportedDataTypes.add (Integer.class);
+
+        return (supportedDataTypes);
+    }
 }

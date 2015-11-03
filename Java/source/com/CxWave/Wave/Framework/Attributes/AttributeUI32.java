@@ -4,7 +4,16 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
-public class AttributeUI32
-{
+import java.util.HashSet;
+import java.util.Set;
 
+public class AttributeUI32 extends Attribute
+{
+    @Override
+    public Set<Class<?>> getSupportedDataTypes ()
+    {
+        final Set<Class<?>> supportedDataTypes = new HashSet<Class<?>> ();
+
+        return (supportedDataTypes);
+    }
 }

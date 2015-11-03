@@ -253,6 +253,15 @@ public class WaveJavaClass extends WaveJavaType
 
         final Field[] declaredFields = reflectionClass.getDeclaredFields ();
 
+        if (null != declaredFields)
+        {
+            Field.setAccessible (declaredFields, true);
+        }
+        else
+        {
+            return;
+        }
+
         for (final Field declaredField : declaredFields)
         {
             WaveAssertUtils.waveAssert (null != declaredField);

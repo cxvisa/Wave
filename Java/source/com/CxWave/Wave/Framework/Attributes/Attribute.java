@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.Attributes;
 
 import java.lang.reflect.Field;
+import java.util.Set;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -69,4 +70,6 @@ public abstract class Attribute
 
         return (currentValue);
     }
+
+    public abstract Set<Class<?>> getSupportedDataTypes ();
 }

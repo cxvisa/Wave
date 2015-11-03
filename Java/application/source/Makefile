@@ -32,6 +32,9 @@ $(WAVEJARFILE):
 clean:
 	rm -rf ../build/obj/* ../build/lib/* ../build/DynamicSource/*
 
+cleanall: clean
+	gmake -C ../../source clean
+
 runspectrum:
 	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
 	#java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=1024k -jar ../build/lib/libSpectrum-1.5.jar ..
