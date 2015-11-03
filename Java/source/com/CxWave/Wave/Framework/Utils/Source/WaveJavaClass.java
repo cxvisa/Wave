@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttribute;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
@@ -377,5 +378,28 @@ public class WaveJavaClass extends WaveJavaType
         }
 
         return (false);
+    }
+
+    private void getAttributesMapForInheritanceHierarchy (final AttributesMap attributesMap)
+    {
+        WaveAssertUtils.waveAssert (null != attributesMap);
+
+        if (null != m_superClass)
+        {
+            m_superClass.getAttributesMapForInheritanceHierarchy (attributesMap);
+        }
+
+        m_serializationReflectionAttributesMapForDeclaredFields.addCorrespondingAttributesToAttributesMap (attributesMap);
+    }
+
+    public AttributesMap getAttributesMapForInheritanceHierarchy ()
+    {
+        final AttributesMap attributesMap = new AttributesMap ();
+
+        WaveAssertUtils.waveAssert (null != attributesMap);
+
+        getAttributesMapForInheritanceHierarchy (attributesMap);
+
+        return (attributesMap);
     }
 }

@@ -103,7 +103,7 @@ public class AttributesFactory
         return (attribute);
     }
 
-    public Attribute createAttribute (final Class<?> attributeClass)
+    public static Attribute createAttribute (final Class<?> attributeClass)
     {
         return ((getInstance ()).createAttributeInternal (attributeClass));
     }

@@ -101,4 +101,22 @@ public class ReflectionAttributesMap
     {
         return (m_attributesByName.containsKey (attributeName));
     }
+
+    public void addCorrespondingAttributesToAttributesMap (final AttributesMap attributesMap)
+    {
+        WaveAssertUtils.waveAssert (null != attributesMap);
+
+        for (final Map.Entry<UI32, ReflectionAttribute> entry : m_attributes.entrySet ())
+        {
+            final ReflectionAttribute reflectionAttribute = entry.getValue ();
+
+            WaveAssertUtils.waveAssert (null != reflectionAttribute);
+
+            final Attribute attribute = reflectionAttribute.createCorrespondingAttribute ();
+
+            WaveAssertUtils.waveAssert (null != attribute);
+
+            attributesMap.addAttribute (attribute);
+        }
+    }
 }

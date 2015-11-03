@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
@@ -63,6 +64,13 @@ public class SerializableObjectRepository
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_WARN, true, true, "Ignored.");
             }
+        }
+
+        for (final String consideredSerializableObject : s_serializableClassesConsidered)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, false, false, "    Processing %s ... ", consideredSerializableObject);
+
+            final AttributesMap attributesMap = WaveJavaSourceRepository.getAttributesMapForInheritanceHierarchyForClass (consideredSerializableObject);
         }
     }
 }

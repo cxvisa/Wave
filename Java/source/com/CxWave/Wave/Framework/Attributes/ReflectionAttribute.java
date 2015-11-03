@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Attributes;
 
 import java.lang.reflect.Field;
 
+import com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory;
 import com.CxWave.Wave.Framework.Type.UI32;
 
 public class ReflectionAttribute
@@ -157,5 +158,14 @@ public class ReflectionAttribute
     public void setField (final Field field)
     {
         m_field = field;
+    }
+
+    public Attribute createCorrespondingAttribute ()
+    {
+        final Attribute attribute = AttributesFactory.createAttribute (m_field.getType ());
+
+        attribute.setReflectionField (this);
+
+        return (attribute);
     }
 }

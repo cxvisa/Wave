@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Attributes.Attribute;
+import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
@@ -324,5 +325,10 @@ public class WaveJavaSourceRepository
     public static Vector<String> getInheritanceHeirarchyForClassLatestFirstIncludingSelf (final String className)
     {
         return ((getInstance ()).getInheritanceHeirarchyForClassLatestFirstIncludingSelfInternal (className));
+    }
+
+    public static AttributesMap getAttributesMapForInheritanceHierarchyForClass (final String className)
+    {
+        return ((getWaveJavaClass (className)).getAttributesMapForInheritanceHierarchy ());
     }
 }

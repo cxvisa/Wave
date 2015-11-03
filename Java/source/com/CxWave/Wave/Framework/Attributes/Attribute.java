@@ -28,6 +28,11 @@ public abstract class Attribute
         m_reflectionAttribute = reflectionAttribute;
     }
 
+    public ReflectionAttribute getReflectionAttribute ()
+    {
+        return (m_reflectionAttribute);
+    }
+
     private Field getReflectionField ()
     {
         return (m_reflectionAttribute.getField ());
