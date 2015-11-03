@@ -9,6 +9,16 @@ import java.util.Set;
 
 public class AttributeUI32 extends Attribute
 {
+    public AttributeUI32 ()
+    {
+        super ();
+    }
+
+    public AttributeUI32 (final ReflectionAttribute reflectionAttribute)
+    {
+        super (reflectionAttribute);
+    }
+
     @Override
     public Set<Class<?>> getSupportedDataTypes ()
     {

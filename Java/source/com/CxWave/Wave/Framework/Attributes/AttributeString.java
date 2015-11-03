@@ -9,6 +9,16 @@ import java.util.Set;
 
 public class AttributeString extends Attribute
 {
+    public AttributeString ()
+    {
+        super ();
+    }
+
+    public AttributeString (final ReflectionAttribute reflectionAttribute)
+    {
+        super (reflectionAttribute);
+    }
+
     @Override
     public Set<Class<?>> getSupportedDataTypes ()
     {

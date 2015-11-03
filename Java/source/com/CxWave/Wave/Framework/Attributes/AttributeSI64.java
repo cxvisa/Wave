@@ -9,6 +9,16 @@ import java.util.Set;
 
 public class AttributeSI64 extends Attribute
 {
+    public AttributeSI64 ()
+    {
+        super ();
+    }
+
+    public AttributeSI64 (final ReflectionAttribute reflectionAttribute)
+    {
+        super (reflectionAttribute);
+    }
+
     @Override
     public Set<Class<?>> getSupportedDataTypes ()
     {
