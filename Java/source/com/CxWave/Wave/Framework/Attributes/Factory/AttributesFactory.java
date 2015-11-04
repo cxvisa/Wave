@@ -6,8 +6,10 @@ package com.CxWave.Wave.Framework.Attributes.Factory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.CxWave.Wave.Framework.Attributes.Attribute;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -58,8 +60,63 @@ public class AttributesFactory
         }
         else
         {
-            m_constructorsByClass.put (attributeClass, constructorWithZeroArguments);
+            try
+            {
+                final Method supportedDataTypesMethod = attributeClass.getDeclaredMethod ("getSupportedDataTypes");
+            }
+            catch (NoSuchMethodException | SecurityException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not find method \"getSupportedDataTypes\" for Attribute Type: %s", attributeClass.getName ());
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "    Please override the method and retry.");
+
+                WaveAssertUtils.waveAssert ();
+            }
+
+            try
+            {
+                final Object object = constructorWithZeroArguments.newInstance ();
+
+                Attribute attribute = null;
+
+                if (object instanceof Attribute)
+                {
+                    attribute = (Attribute) object;
+
+                    final Set<Class<?>> supportedDataTypes = attribute.getSupportedDataTypes ();
+
+                    for (final Class<?> supportedDataType : supportedDataTypes)
+                    {
+                        if (!(isAKnownSupportedDataType (supportedDataType)))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "    %s", supportedDataType.getName ());
+
+                            m_constructorsByClass.put (supportedDataType, constructorWithZeroArguments);
+                        }
+                        else
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Supported Data Type %s claimed by Attribute Type : %s is already supported by %s.  Resulted in a non Attribute Type.", supportedDataType.getName (), attributeClass.getName (), (m_constructorsByClass.get (supportedDataType).getName ()));
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Duplicate ownership detected for data type : %s", supportedDataType.getName ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                    }
+                }
+                else
+                {
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not create attribute of type : %s in order to check supported data types.  Resulted in a non Attribute Type.", attributeClass.getName ());
+                    WaveAssertUtils.waveAssert ();
+                }
+            }
+            catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not create attribute of type : %s", attributeClass.getName ());
+                WaveAssertUtils.waveAssert ();
+            }
         }
+    }
+
+    private boolean isAKnownSupportedDataType (final Class<?> dataType)
+    {
+        return (m_constructorsByClass.containsKey (dataType));
     }
 
     public static void addSupportedAttributeType (final Class<?> attributeClass)

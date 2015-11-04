@@ -112,6 +112,8 @@ public class ReflectionAttributesMap
 
             WaveAssertUtils.waveAssert (null != reflectionAttribute);
 
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "        Processing Attribute : %s", reflectionAttribute.getAttributeName ());
+
             final Attribute attribute = reflectionAttribute.createCorrespondingAttribute ();
 
             WaveAssertUtils.waveAssert (null != attribute);

@@ -187,7 +187,7 @@ public class TraceObjectManager extends WaveObjectManager
                 newLineString = "\n";
             }
 
-            final String newFormatString = new String ("%s ") + formatString + newLineString;
+            final String newFormatString = new String ("%s") + formatString + newLineString;
 
             final Object[] newObjects = new Object[objects.length + 1];
             int i = 0;

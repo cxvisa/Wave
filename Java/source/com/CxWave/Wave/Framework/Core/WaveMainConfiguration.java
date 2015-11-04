@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Core;
 
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
@@ -27,6 +28,7 @@ public class WaveMainConfiguration extends WaveConfiguration
     private String         m_ethernetInterface;
     private int            m_managementClientPort;
     private String         m_changeDirectoryTo;
+    @NonSerializable
     private Vector<String> m_yinPaths;
     private String         m_wyserTagsFilePath;
     private String         m_databaseEmptyType;

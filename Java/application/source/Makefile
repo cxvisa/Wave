@@ -37,5 +37,7 @@ cleanall: clean
 
 runspectrum:
 	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
-	#java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=1024k -jar ../build/lib/libSpectrum-1.5.jar ..
 	java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=256k -jar ../build/lib/libSpectrum-1.5.jar ..
+
+debugspectrum:
+	java -agentlib:jdwp=transport=dt_socket,address=3333,server=y,suspend=y -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=256k -jar ../build/lib/libSpectrum-1.5.jar ..

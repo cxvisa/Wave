@@ -196,6 +196,8 @@ public class WaveJavaSourceRepository
     {
         final Set<String> allDescendantsOfAttributeClass = WaveJavaSourceRepository.getAllDescendantsForClass (Attribute.class.getName ());
 
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Computing Attributes and supported Data Types.");
+
         for (final String attributeClassDescendant : allDescendantsOfAttributeClass)
         {
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Attribute Descendant : %s", attributeClassDescendant);

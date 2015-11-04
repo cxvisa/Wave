@@ -68,7 +68,7 @@ public class SerializableObjectRepository
 
         for (final String consideredSerializableObject : s_serializableClassesConsidered)
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, false, false, "    Processing %s ... ", consideredSerializableObject);
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "    Processing %s ... ", consideredSerializableObject);
 
             final AttributesMap attributesMap = WaveJavaSourceRepository.getAttributesMapForInheritanceHierarchyForClass (consideredSerializableObject);
         }
