@@ -36,6 +36,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, WaveJavaClass>      m_anonymousClasses;
     private WaveJavaClass                         m_declaringClass;
     private final ReflectionAttributesMap         m_serializationReflectionAttributesMapForDeclaredFields;
+    private String                                m_typeName;
 
     public WaveJavaClass (final String name)
     {
@@ -188,6 +189,11 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    public String getTypeName ()
+    {
+        return (m_typeName);
+    }
+
     @Override
     public void compute ()
     {
@@ -204,6 +210,8 @@ public class WaveJavaClass extends WaveJavaType
             e.printStackTrace ();
             WaveAssertUtils.waveAssert ();
         }
+
+        m_typeName = reflectionClass.getTypeName ();
 
         final Class<?> reflectionSuperClass = reflectionClass.getSuperclass ();
 
@@ -234,7 +242,7 @@ public class WaveJavaClass extends WaveJavaType
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
     {
-        if (!(isADerivativeOfSerializableObjectInternal ()))
+        if (!(isADerivativeOfSerializableObject ()))
         {
             return;
         }
@@ -272,6 +280,15 @@ public class WaveJavaClass extends WaveJavaType
                 continue;
             }
 
+            Annotation annotation = null;
+
+            annotation = declaredField.getAnnotation (NonSerializable.class);
+
+            if (null != annotation)
+            {
+                continue;
+            }
+
             final String declaredFieldName = declaredField.getName ();
             String xmlWaveXPathPath = null;
             String serializableAttributeName = null;
@@ -287,8 +304,6 @@ public class WaveJavaClass extends WaveJavaType
             {
                 WaveAssertUtils.waveAssert ();
             }
-
-            Annotation annotation = null;
 
             annotation = declaredField.getAnnotation (XmlWaveXPath.class);
 
@@ -351,6 +366,20 @@ public class WaveJavaClass extends WaveJavaType
         return (allDescendantsSet);
     }
 
+    public Set<String> getAllDescendantsTypeNames ()
+    {
+        final Set<String> allDescendantsTypeNamesSet = new HashSet<String> ();
+
+        for (final Map.Entry<String, WaveJavaClass> descendant : m_childClasses.entrySet ())
+        {
+            allDescendantsTypeNamesSet.add ((descendant.getValue ()).getTypeName ());
+
+            allDescendantsTypeNamesSet.addAll ((descendant.getValue ()).getAllDescendantsTypeNames ());
+        }
+
+        return (allDescendantsTypeNamesSet);
+    }
+
     public boolean isAnnotatedWith (final String annotationName)
     {
         return (m_annotations.containsKey (annotationName));
@@ -361,7 +390,7 @@ public class WaveJavaClass extends WaveJavaType
         return (m_serializationReflectionAttributesMapForDeclaredFields);
     }
 
-    public boolean isADerivativeOfSerializableObjectInternal ()
+    public boolean isADerivativeOfSerializableObject ()
     {
         final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
 

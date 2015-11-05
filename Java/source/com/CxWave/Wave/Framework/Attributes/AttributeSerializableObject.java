@@ -4,21 +4,17 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
-import java.util.HashSet;
 import java.util.Set;
 
-public class AttributeBoolean extends Attribute
-{
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 
+public class AttributeSerializableObject extends Attribute
+{
     @Override
     public Set<String> getSupportedDataTypes ()
     {
-        final Set<String> supportedDataTypes = new HashSet<String> ();
-
-        supportedDataTypes.add (boolean.class.getTypeName ());
-        supportedDataTypes.add (Boolean.class.getTypeName ());
-
-        return (supportedDataTypes);
+        return (WaveJavaSourceRepository.getAllDescendantsTypeNamesForClass (SerializableObject.class.getName ()));
     }
 
 }

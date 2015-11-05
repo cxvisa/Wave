@@ -258,6 +258,25 @@ public class WaveJavaSourceRepository
         return ((getInstance ()).getAllDescendantsForClassInternal (className));
     }
 
+    private Set<String> getAllDescendantsTypeNamesForClassInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.getAllDescendantsTypeNames ());
+        }
+        else
+        {
+            return (new HashSet<String> ());
+        }
+    }
+
+    public static Set<String> getAllDescendantsTypeNamesForClass (final String className)
+    {
+        return ((getInstance ()).getAllDescendantsTypeNamesForClassInternal (className));
+    }
+
     private boolean isClassAnnotatedWithInternal (final String className, final String annotationName)
     {
         final WaveJavaClass waveJavaClass = m_classes.get (className);
@@ -332,5 +351,26 @@ public class WaveJavaSourceRepository
     public static AttributesMap getAttributesMapForInheritanceHierarchyForClass (final String className)
     {
         return ((getWaveJavaClass (className)).getAttributesMapForInheritanceHierarchy ());
+    }
+
+    private boolean isAderivativeOfSerializableObjectInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.isADerivativeOfSerializableObject ());
+        }
+        else
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.isAderivativeOfSerializableObject : Could not find class name %s", className);
+
+            return (false);
+        }
+    }
+
+    public boolean isAderivativeOfSerializableObject (final String className)
+    {
+        return ((getInstance ()).isAderivativeOfSerializableObjectInternal (className));
     }
 }

@@ -76,5 +76,5 @@ public abstract class Attribute
         return (currentValue);
     }
 
-    public abstract Set<Class<?>> getSupportedDataTypes ();
+    public abstract Set<String> getSupportedDataTypes ();
 }

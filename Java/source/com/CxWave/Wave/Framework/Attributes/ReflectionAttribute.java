@@ -162,7 +162,7 @@ public class ReflectionAttribute
 
     public Attribute createCorrespondingAttribute ()
     {
-        final Attribute attribute = AttributesFactory.createAttribute (m_field.getType ());
+        final Attribute attribute = AttributesFactory.createAttribute ((m_field.getGenericType ()).getTypeName ());
 
         attribute.setReflectionField (this);
 

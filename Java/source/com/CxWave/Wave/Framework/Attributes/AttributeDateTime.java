@@ -21,11 +21,11 @@ public class AttributeDateTime extends Attribute
     }
 
     @Override
-    public Set<Class<?>> getSupportedDataTypes ()
+    public Set<String> getSupportedDataTypes ()
     {
-        final Set<Class<?>> supportedDataTypes = new HashSet<Class<?>> ();
+        final Set<String> supportedDataTypes = new HashSet<String> ();
 
-        supportedDataTypes.add (Date.class);
+        supportedDataTypes.add (Date.class.getTypeName ());
 
         return (supportedDataTypes);
     }

@@ -18,9 +18,9 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class AttributesFactory
 {
-    private static AttributesFactory            s_attributesFactory   = new AttributesFactory ();
+    private static AttributesFactory          s_attributesFactory   = new AttributesFactory ();
 
-    private final Map<Class<?>, Constructor<?>> m_constructorsByClass = new HashMap<Class<?>, Constructor<?>> ();
+    private final Map<String, Constructor<?>> m_constructorsByClass = new HashMap<String, Constructor<?>> ();
 
     private AttributesFactory ()
     {
@@ -82,20 +82,20 @@ public class AttributesFactory
                 {
                     attribute = (Attribute) object;
 
-                    final Set<Class<?>> supportedDataTypes = attribute.getSupportedDataTypes ();
+                    final Set<String> supportedDataTypes = attribute.getSupportedDataTypes ();
 
-                    for (final Class<?> supportedDataType : supportedDataTypes)
+                    for (final String supportedDataType : supportedDataTypes)
                     {
                         if (!(isAKnownSupportedDataType (supportedDataType)))
                         {
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "    %s", supportedDataType.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "    %s", supportedDataType);
 
                             m_constructorsByClass.put (supportedDataType, constructorWithZeroArguments);
                         }
                         else
                         {
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Supported Data Type %s claimed by Attribute Type : %s is already supported by %s.  Resulted in a non Attribute Type.", supportedDataType.getName (), attributeClass.getName (), (m_constructorsByClass.get (supportedDataType).getName ()));
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Duplicate ownership detected for data type : %s", supportedDataType.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Supported Data Type %s claimed by Attribute Type : %s is already supported by %s.  Resulted in a non Attribute Type.", supportedDataType, attributeClass.getName (), (m_constructorsByClass.get (supportedDataType).getName ()));
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Duplicate ownership detected for data type : %s", supportedDataType);
                             WaveAssertUtils.waveAssert ();
                         }
                     }
@@ -114,7 +114,7 @@ public class AttributesFactory
         }
     }
 
-    private boolean isAKnownSupportedDataType (final Class<?> dataType)
+    private boolean isAKnownSupportedDataType (final String dataType)
     {
         return (m_constructorsByClass.containsKey (dataType));
     }
@@ -124,15 +124,15 @@ public class AttributesFactory
         (getInstance ()).addSupportedAttributeTypeInternal (attributeClass);
     }
 
-    private Attribute createAttributeInternal (final Class<?> attributeClass)
+    private Attribute createAttributeInternal (final String attributeTypeName)
     {
         Attribute attribute = null;
 
-        if (m_constructorsByClass.containsKey (attributeClass))
+        if (m_constructorsByClass.containsKey (attributeTypeName))
         {
             try
             {
-                final Object object = (m_constructorsByClass.get (attributeClass)).newInstance ();
+                final Object object = (m_constructorsByClass.get (attributeTypeName)).newInstance ();
 
                 if (object instanceof Attribute)
                 {
@@ -140,19 +140,19 @@ public class AttributesFactory
                 }
                 else
                 {
-                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not create attribute of type : %s.  Resulted in a non Attribute Type.", attributeClass.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not create attribute of type : %s.  Resulted in a non Attribute Type.", attributeTypeName);
                     WaveAssertUtils.waveAssert ();
                 }
             }
             catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
             {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not create attribute of type : %s", attributeClass.getName ());
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not create attribute of type : %s", attributeTypeName);
                 WaveAssertUtils.waveAssert ();
             }
         }
         else
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "%s is not a supported Attribute Type", attributeClass.getName ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "%s is not a supported Attribute Type", attributeTypeName);
 
             WaveAssertUtils.waveAssert ();
         }
@@ -160,8 +160,8 @@ public class AttributesFactory
         return (attribute);
     }
 
-    public static Attribute createAttribute (final Class<?> attributeClass)
+    public static Attribute createAttribute (final String attributeTypeName)
     {
-        return ((getInstance ()).createAttributeInternal (attributeClass));
+        return ((getInstance ()).createAttributeInternal (attributeTypeName));
     }
 }

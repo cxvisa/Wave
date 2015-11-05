@@ -20,12 +20,12 @@ public class AttributeSI16 extends Attribute
     }
 
     @Override
-    public Set<Class<?>> getSupportedDataTypes ()
+    public Set<String> getSupportedDataTypes ()
     {
-        final Set<Class<?>> supportedDataTypes = new HashSet<Class<?>> ();
+        final Set<String> supportedDataTypes = new HashSet<String> ();
 
-        supportedDataTypes.add (short.class);
-        supportedDataTypes.add (Short.class);
+        supportedDataTypes.add (short.class.getTypeName ());
+        supportedDataTypes.add (Short.class.getTypeName ());
 
         return (supportedDataTypes);
     }

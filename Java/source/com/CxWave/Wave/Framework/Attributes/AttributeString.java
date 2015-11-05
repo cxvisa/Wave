@@ -20,11 +20,11 @@ public class AttributeString extends Attribute
     }
 
     @Override
-    public Set<Class<?>> getSupportedDataTypes ()
+    public Set<String> getSupportedDataTypes ()
     {
-        final Set<Class<?>> supportedDataTypes = new HashSet<Class<?>> ();
+        final Set<String> supportedDataTypes = new HashSet<String> ();
 
-        supportedDataTypes.add (String.class);
+        supportedDataTypes.add (String.class.getTypeName ());
 
         return (supportedDataTypes);
     }
