@@ -15,6 +15,7 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
+import com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
@@ -132,7 +133,9 @@ class Spectrum
             }
         }
 
-        DaemonUtils.daemonize ();
+        (new WaveLineEditor ()).getUserInputLine ("Wave>");
+
+        //DaemonUtils.daemonize ();
 
         while (true)
         {

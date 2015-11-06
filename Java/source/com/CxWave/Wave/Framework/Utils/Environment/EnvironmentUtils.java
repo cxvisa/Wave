@@ -1,6 +1,6 @@
-/***************************************************************************
- * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
- ***************************************************************************/
+/***********************************************************************************************************
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
+ ***********************************************************************************************************/
 
 package com.CxWave.Wave.Framework.Utils.Environment;
 
@@ -11,8 +11,8 @@ import java.util.List;
 
 public class EnvironmentUtils
 {
-    static List<String> s_virtualMachinecommandLineArguments;
-    static List<String> s_classPathCommandLineArguments;
+    static List<String>             s_virtualMachinecommandLineArguments;
+    static List<String>             s_classPathCommandLineArguments;
 
     private static EnvironmentUtils s_environmentUtils = new EnvironmentUtils ();
 
