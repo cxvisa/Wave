@@ -14,27 +14,30 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public class XmlElement
 {
-    private String              m_name;
-    private String              m_value;
-    private Vector<String>      m_attributes;
-    private Map<String, String> m_attributeValues;
-    private Vector<XmlElement>  m_childElements;
+    private String                          m_name;
+    private String                          m_value;
+    private Vector<String>                  m_attributes;
+    private Map<String, String>             m_attributeValues;
+    private Vector<XmlElement>              m_childElements;
+    private Map<String, Vector<XmlElement>> m_childElementsByTagName;
 
-    private static final String s_extraPaddingWhiteSpace = "    ";
+    private static final String             s_extraPaddingWhiteSpace = "    ";
 
     private void construct ()
     {
         // @formatter:off
 
-        m_name                = new String ();
-        m_value               = new String ();
-        m_attributes          = new Vector<String> ();
-        m_attributeValues     = new HashMap<String, String> ();
-        m_childElements       = new Vector<XmlElement> ();
+        m_name                   = new String ();
+        m_value                  = new String ();
+        m_attributes             = new Vector<String> ();
+        m_attributeValues        = new HashMap<String, String> ();
+        m_childElements          = new Vector<XmlElement> ();
+        m_childElementsByTagName = new HashMap<String, Vector<XmlElement>> ();
 
         // @formatter:on
     }
@@ -53,9 +56,9 @@ public class XmlElement
             m_name = element.getTagName ();
         }
 
-        NamedNodeMap attributesMap = node.getAttributes ();
+        final NamedNodeMap attributesMap = node.getAttributes ();
 
-        int numberOfNamedAttributes = attributesMap.getLength ();
+        final int numberOfNamedAttributes = attributesMap.getLength ();
         int i = 0;
 
         for (i = 0; i < numberOfNamedAttributes; i++)
@@ -67,14 +70,14 @@ public class XmlElement
             m_attributeValues.put (attribute.getNodeName (), attribute.getNodeValue ());
         }
 
-        NodeList nodeList = node.getChildNodes ();
+        final NodeList nodeList = node.getChildNodes ();
 
-        int numberOfNodes = nodeList.getLength ();
+        final int numberOfNodes = nodeList.getLength ();
 
         for (i = 0; i < numberOfNodes; i++)
         {
-            Node childNode = nodeList.item (i);
-            short childNodeType = childNode.getNodeType ();
+            final Node childNode = nodeList.item (i);
+            final short childNodeType = childNode.getNodeType ();
 
             if (Node.ELEMENT_NODE == childNodeType)
             {
@@ -83,6 +86,17 @@ public class XmlElement
                 xmlElement.loadFromDomNode (childNode);
 
                 m_childElements.add (xmlElement);
+
+                Vector<XmlElement> childElementsForTagName = m_childElementsByTagName.get (xmlElement.getName ());
+
+                if (null == childElementsForTagName)
+                {
+                    childElementsForTagName = new Vector<XmlElement> ();
+                }
+
+                childElementsForTagName.add (xmlElement);
+
+                m_childElementsByTagName.put (xmlElement.getName (), childElementsForTagName);
 
             }
             else if (Node.TEXT_NODE == childNodeType)
@@ -141,7 +155,7 @@ public class XmlElement
 
             System.out.printf ("%s=%s", attributeName, m_attributeValues.get (attributeName));
 
-            if (numberOfAttributes - 1 != i)
+            if ((numberOfAttributes - 1) != i)
             {
                 System.out.printf (", ");
             }
@@ -160,5 +174,67 @@ public class XmlElement
         {
             (m_childElements.get (i)).debugPrint (prefixWhiteSpace + s_extraPaddingWhiteSpace);
         }
+    }
+
+    public void collectAllXmlElemntsForWaveXmlXPath (final String waveXmlXPath, final Vector<XmlElement> collectedXmlElements)
+    {
+        final Vector<String> waveXmlXPathTokens = new Vector<String> ();
+
+        WaveStringUtils.tokenize (waveXmlXPath, waveXmlXPathTokens, '.');
+
+        collectAllXmlElemntsForWaveXmlXPath (waveXmlXPathTokens, collectedXmlElements);
+    }
+
+    public void collectAllXmlElemntsForWaveXmlXPath (final Vector<String> waveXmlXPathElements, final Vector<XmlElement> collectedXmlElements)
+    {
+        collectAllXmlElemntsForWaveXmlXPath (waveXmlXPathElements, 1, collectedXmlElements);
+    }
+
+    private void collectAllXmlElemntsForWaveXmlXPath (final Vector<String> waveXmlXPathElements, final int index, final Vector<XmlElement> collectedXmlElements)
+    {
+        WaveAssertUtils.waveAssert (null != waveXmlXPathElements);
+
+        WaveAssertUtils.waveAssert (null != collectedXmlElements);
+
+        final int numberOfWaveXmlXPathElements = waveXmlXPathElements.size ();
+
+        WaveAssertUtils.waveAssert (index < numberOfWaveXmlXPathElements);
+
+        final String waveXmlXPathElement = waveXmlXPathElements.get (index);
+
+        if (m_childElementsByTagName.containsKey (waveXmlXPathElement))
+        {
+            final Vector<XmlElement> xmlElements = m_childElementsByTagName.get (waveXmlXPathElement);
+
+            if ((numberOfWaveXmlXPathElements - 1) == index)
+            {
+                collectedXmlElements.addAll (xmlElements);
+            }
+            else
+            {
+                for (final XmlElement xmlElement : xmlElements)
+                {
+                    xmlElement.collectAllXmlElemntsForWaveXmlXPath (waveXmlXPathElements, index + 1, collectedXmlElements);
+                }
+            }
+        }
+    }
+
+    public Vector<String> getTextNodeValuesByWaveXmlXPath (final String waveXmlXPath)
+    {
+        final Vector<XmlElement> xmlElementsForWaveXmlXPath = new Vector<XmlElement> ();
+
+        collectAllXmlElemntsForWaveXmlXPath (waveXmlXPath, xmlElementsForWaveXmlXPath);
+
+        final Vector<String> textNodeValues = new Vector<String> ();
+
+        for (final XmlElement xmlElement : xmlElementsForWaveXmlXPath)
+        {
+            WaveAssertUtils.waveAssert (null != xmlElement);
+
+            textNodeValues.add (xmlElement.getValue ());
+        }
+
+        return (textNodeValues);
     }
 }

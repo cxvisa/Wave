@@ -38,7 +38,7 @@ classes: $(ALL_JAVA_CLASSES)
 		do \
 			echo $$i; \
 		done; \
-		javac -Xlint:unchecked -cp $(shell pwd):../build/DynamicSource -d ../build/obj -Werror $(LIST_OF_CLASSES_TO_BE_UPDATED) && \
+		javac -Xlint:unchecked -cp $(shell pwd):../build/DynamicSource -d ../build/obj -Werror -g $(LIST_OF_CLASSES_TO_BE_UPDATED) && \
 		cd ../build/obj && jar -cvf ../../source/$(JARFILE) `find . -name "*.class"`; \
 	fi
 

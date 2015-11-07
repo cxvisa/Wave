@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.ToolKits.Xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -83,7 +84,6 @@ public class XmlFile
 
     public void write (final String xmlFilePath)
     {
-
     }
 
     public void loadFromFile (final String waveXmlFilePath) throws ParserConfigurationException, SAXException, IOException
@@ -122,5 +122,10 @@ public class XmlFile
     public void debugPrint ()
     {
         m_xmlRootElement.debugPrint ("");
+    }
+
+    public Vector<String> getTextNodeValuesByWaveXmlXPath (final String waveXmlXPath)
+    {
+        return (m_xmlRootElement.getTextNodeValuesByWaveXmlXPath (waveXmlXPath));
     }
 }

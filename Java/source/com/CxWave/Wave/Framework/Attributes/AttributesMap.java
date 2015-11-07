@@ -7,8 +7,10 @@ package com.CxWave.Wave.Framework.Attributes;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
@@ -21,6 +23,7 @@ public class AttributesMap
     private final Map<String, Attribute> m_attributesByName;
     private final Map<UI32, Attribute>   m_attributesByUserTag;
     private final Map<UI32, String>      m_attributesOrderToNameMapping;
+    private SerializableObject           m_serializableObject;
 
     public AttributesMap ()
     {
@@ -102,5 +105,29 @@ public class AttributesMap
     public boolean isAKnownAttributeByName (final String attributeName)
     {
         return (m_attributesByName.containsKey (attributeName));
+    }
+
+    public void setSerializableObject (final SerializableObject serializableObject)
+    {
+        m_serializableObject = serializableObject;
+    }
+
+    public void loadFromWaveConfiguraitonFile (final String waveConfigurationFilePath)
+    {
+        WaveAssertUtils.waveAssert (null != m_serializableObject);
+
+        final WaveConfigurationFile waveConfigurationFile = new WaveConfigurationFile (waveConfigurationFilePath);
+
+        WaveAssertUtils.waveAssert (null != waveConfigurationFile);
+
+        for (final Map.Entry<UI32, Attribute> entry : m_attributes.entrySet ())
+        {
+            final Attribute attribute = entry.getValue ();
+
+            WaveAssertUtils.waveAssert (null != attribute);
+
+            attribute.loadValueFromWaveConfigurationFile (waveConfigurationFile, m_serializableObject);
+        }
+
     }
 }

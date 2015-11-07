@@ -8,7 +8,5 @@ public interface WaveConfigurationFileInterface
 {
     void load ();
 
-    WaveConfiguration getWaveConfiguration ();
-
     void reload ();
 }

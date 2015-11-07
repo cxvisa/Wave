@@ -18,8 +18,8 @@
             <directory-name></directory-name>
             <local>
                 <file-name></file-name>
-                <bckup-file-name></bckup-file-Name>
-                <lock-file-name></lock-file-Name>
+                <backup-file-name></backup-file-name>
+                <lock-file-name></lock-file-name>
             </local>
 
             <global>

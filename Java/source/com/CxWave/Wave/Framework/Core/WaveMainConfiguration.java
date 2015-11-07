@@ -25,6 +25,7 @@ public class WaveMainConfiguration extends WaveConfiguration
     private String         m_databaseLogFileName;
     private String         m_databaseSharedBuffers;
     private int            m_managementPort;
+    @XmlWaveXPath (path = "wave.application.ethernet-interface")
     private String         m_ethernetInterface;
     private int            m_managementClientPort;
     private String         m_changeDirectoryTo;

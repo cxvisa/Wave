@@ -12,6 +12,7 @@ import com.CxWave.Wave.Framework.Trace.TraceClientMap;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Trace.WaveTraceFile;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
 import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
@@ -107,6 +108,18 @@ class Spectrum
             XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
 
             xmlFile.debugPrint ();
+
+            WaveConfigurationFile waveConfigurationFile = new WaveConfigurationFile (commandLineArguments[1]);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "wave.application.name = %s", waveConfigurationFile.getConfigurationValue ("wave.application.name"));
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "wave.ras.trace.default-level = %s", waveConfigurationFile.getConfigurationValue ("wave.ras.trace.default-level"));
+
+            WaveMainConfiguration waveMainConfiguration1 = new WaveMainConfiguration ();
+
+            waveMainConfiguration1.loadFromWaveConfigurationFile (commandLineArguments[1]);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "SelectedApplication Name : %s", waveMainConfiguration1.getApplicationName ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface : %s", waveMainConfiguration1.getEthernetInterface ());
         }
 
         if (3 <= (commandLineArguments.length))
@@ -133,9 +146,19 @@ class Spectrum
             }
         }
 
-        (new WaveLineEditor ()).getUserInputLine ("Wave>");
+        WaveLineEditor waveLineEditor = new WaveLineEditor ();
 
-        //DaemonUtils.daemonize ();
+        while (true)
+        {
+            String command = waveLineEditor.getUserInputLine ("Wave");
+
+            if ("Quit".equals (command))
+            {
+                break;
+            }
+        }
+
+        DaemonUtils.daemonize ();
 
         while (true)
         {
