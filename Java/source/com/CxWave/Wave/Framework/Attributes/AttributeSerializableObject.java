@@ -35,11 +35,30 @@ public class AttributeSerializableObject extends Attribute
 
         try
         {
-            final Object object = (reflectionField.get (serializableObject));
+            Object object = (reflectionField.get (serializableObject));
+
+            if (null == object)
+            {
+                final Class<?> fieldType = reflectionField.getType ();
+
+                WaveAssertUtils.waveAssert (null != fieldType);
+
+                try
+                {
+                    object = fieldType.newInstance ();
+                }
+                catch (final InstantiationException e)
+                {
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "AttributeSerializableObject.loadValueFromWaveConfigurationFile:  Instantiating fieldType :%s failed.  Status : %s", fieldType.getName (), e.toString ());
+                    WaveAssertUtils.waveAssert ();
+                }
+            }
 
             final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
 
             WaveAssertUtils.waveAssert (null != serializableObject);
+
+            reflectionField.set (serializableObject, serializableObjectForAttribute);
 
             serializableObjectForAttribute.loadFromWaveConfigurationFile (waveConfigurationFile);
         }

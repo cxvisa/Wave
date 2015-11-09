@@ -12,7 +12,7 @@ import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 
 public class WaveMainConfiguration extends WaveConfiguration
 {
-    private final WaveMainApplication m_application = new WaveMainApplication ();
+    private final WaveMainApplication m_application = null;                                                                                                                                                                                                                                                                           // =
     private boolean                   m_isSysLogRequired;
     private boolean                   m_isDatabaseEnabled;
     private boolean                   m_isDatabaseLogEnabled;
@@ -219,7 +219,14 @@ public class WaveMainConfiguration extends WaveConfiguration
 
     public String getApplicationCompactName ()
     {
-        return (m_application.getApplicationCompactName ());
+        if (null != m_application)
+        {
+            return (m_application.getApplicationCompactName ());
+        }
+        else
+        {
+            return ("");
+        }
     }
 
     public String getGlobalConfigurationFile ()
