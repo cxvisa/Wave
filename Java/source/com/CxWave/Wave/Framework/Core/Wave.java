@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
 import com.CxWave.Wave.Framework.Database.DatabaseObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;

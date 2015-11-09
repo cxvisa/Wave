@@ -91,7 +91,7 @@ public class XmlFile
         final DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance ();
         final DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder ();
 
-        System.out.println ("Using " + waveXmlFilePath + " for reading XML Content.");
+        // System.out.println ("Using " + waveXmlFilePath + " for reading XML Content.");
 
         final File waveXmlFile = new File (waveXmlFilePath);
 

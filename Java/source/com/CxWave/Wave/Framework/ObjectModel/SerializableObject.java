@@ -7,6 +7,7 @@ package com.CxWave.Wave.Framework.ObjectModel;
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 
 public class SerializableObject
@@ -39,5 +40,12 @@ public class SerializableObject
         prepareForSerialization ();
 
         m_attributesMap.loadFromWaveConfiguraitonFile (waveConfigurationFilePath);
+    }
+
+    public void loadFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile)
+    {
+        prepareForSerialization ();
+
+        m_attributesMap.loadFromWaveConfiguraitonFile (waveConfigurationFile);
     }
 }

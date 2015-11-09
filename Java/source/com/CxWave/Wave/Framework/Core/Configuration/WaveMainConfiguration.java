@@ -2,68 +2,49 @@
  * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  *************************************************************************************************************************/
 
-package com.CxWave.Wave.Framework.Core;
+package com.CxWave.Wave.Framework.Core.Configuration;
 
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
-import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public class WaveMainConfiguration extends WaveConfiguration
 {
-    @XmlWaveXPath (path = "wave.application.name")
-    private String         m_applicationName;
-    @XmlWaveXPath (path = "wave.application.daemonize")
-    private boolean        m_isADaemon;
-    private boolean        m_isSysLogRequired;
-    private boolean        m_isDatabaseEnabled;
-    private boolean        m_isDatabaseLogEnabled;
-    private int            m_port;
-    private int            m_databasePort;
-    private String         m_databaseLogFileName;
-    private String         m_databaseSharedBuffers;
-    private int            m_managementPort;
+    private final WaveMainApplication m_application = new WaveMainApplication ();
+    private boolean                   m_isSysLogRequired;
+    private boolean                   m_isDatabaseEnabled;
+    private boolean                   m_isDatabaseLogEnabled;
+    private int                       m_port;
+    private int                       m_databasePort;
+    private String                    m_databaseLogFileName;
+    private String                    m_databaseSharedBuffers;
+    private int                       m_managementPort;
     @XmlWaveXPath (path = "wave.application.ethernet-interface")
-    private String         m_ethernetInterface;
-    private int            m_managementClientPort;
-    private String         m_changeDirectoryTo;
+    private String                    m_ethernetInterface;
+    private int                       m_managementClientPort;
+    private String                    m_changeDirectoryTo;
     @NonSerializable
-    private Vector<String> m_yinPaths;
-    private String         m_wyserTagsFilePath;
-    private String         m_databaseEmptyType;
-    private long           m_databaseEmptyTypeAutoDetectionThresholdValue;
-    private String         m_configurationFile;
-    private String         m_configurationFileDirectory;
-    private String         m_globalConfigurationFile;
-    private String         m_lockFileForConfigurationFile;
-    private String         m_traceFileDirectory;
-    private String         m_traceFileName;
-    private String         m_profileFileName;
+    private Vector<String>            m_yinPaths;
+    private String                    m_wyserTagsFilePath;
+    private String                    m_databaseEmptyType;
+    private long                      m_databaseEmptyTypeAutoDetectionThresholdValue;
+    private String                    m_configurationFile;
+    private String                    m_configurationFileDirectory;
+    private String                    m_globalConfigurationFile;
+    private String                    m_lockFileForConfigurationFile;
+    private String                    m_traceFileDirectory;
+    private String                    m_traceFileName;
+    private String                    m_profileFileName;
 
     public WaveMainConfiguration ()
     {
     }
 
-    public String getApplicationName ()
+    public WaveMainApplication getApplication ()
     {
-        return m_applicationName;
-    }
-
-    public void setApplicationName (final String applicationName)
-    {
-        m_applicationName = applicationName;
-    }
-
-    public boolean getIsADaemon ()
-    {
-        return m_isADaemon;
-    }
-
-    public void setIsADaemon (final boolean isADaemon)
-    {
-        m_isADaemon = isADaemon;
+        return m_application;
     }
 
     public boolean getIsSysLogRequired ()
@@ -238,25 +219,7 @@ public class WaveMainConfiguration extends WaveConfiguration
 
     public String getApplicationCompactName ()
     {
-        if (WaveStringUtils.isBlank (m_applicationName))
-        {
-            return ("");
-        }
-
-        final Vector<String> tokensInApplicationName = new Vector<String> ();
-
-        WaveStringUtils.tokenize (m_applicationName, tokensInApplicationName, '/');
-
-        final int numberOfTokens = tokensInApplicationName.size ();
-
-        if (0 < numberOfTokens)
-        {
-            return (tokensInApplicationName.get (numberOfTokens - 1));
-        }
-        else
-        {
-            return (new String (""));
-        }
+        return (m_application.getApplicationCompactName ());
     }
 
     public String getGlobalConfigurationFile ()

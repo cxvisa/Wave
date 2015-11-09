@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
+
 public class WaveBasedApplication
 {
 

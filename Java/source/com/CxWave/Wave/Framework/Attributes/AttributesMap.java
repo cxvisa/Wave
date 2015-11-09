@@ -112,12 +112,8 @@ public class AttributesMap
         m_serializableObject = serializableObject;
     }
 
-    public void loadFromWaveConfiguraitonFile (final String waveConfigurationFilePath)
+    public void loadFromWaveConfiguraitonFile (final WaveConfigurationFile waveConfigurationFile)
     {
-        WaveAssertUtils.waveAssert (null != m_serializableObject);
-
-        final WaveConfigurationFile waveConfigurationFile = new WaveConfigurationFile (waveConfigurationFilePath);
-
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
 
         for (final Map.Entry<UI32, Attribute> entry : m_attributes.entrySet ())
@@ -128,6 +124,16 @@ public class AttributesMap
 
             attribute.loadValueFromWaveConfigurationFile (waveConfigurationFile, m_serializableObject);
         }
+    }
 
+    public void loadFromWaveConfiguraitonFile (final String waveConfigurationFilePath)
+    {
+        WaveAssertUtils.waveAssert (null != m_serializableObject);
+
+        final WaveConfigurationFile waveConfigurationFile = new WaveConfigurationFile (waveConfigurationFilePath);
+
+        WaveAssertUtils.waveAssert (null != waveConfigurationFile);
+
+        loadFromWaveConfiguraitonFile (waveConfigurationFile);
     }
 }

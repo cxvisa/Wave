@@ -25,7 +25,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Framework.Core.Wave;
 import com.CxWave.Wave.Framework.Core.WaveBasedApplication;
-import com.CxWave.Wave.Framework.Core.WaveMainConfiguration;
+import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 
 import java.io.Serializable;
@@ -118,7 +118,7 @@ class Spectrum
 
             waveMainConfiguration1.loadFromWaveConfigurationFile (commandLineArguments[1]);
 
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "SelectedApplication Name : %s", waveMainConfiguration1.getApplicationName ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application Name : %s", (waveMainConfiguration1.getApplication ()).getApplicationName ());
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface : %s", waveMainConfiguration1.getEthernetInterface ());
         }
 

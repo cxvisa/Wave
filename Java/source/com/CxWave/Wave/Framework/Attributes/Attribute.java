@@ -96,7 +96,9 @@ public abstract class Attribute
 
         try
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Attribute.loadValueFromPlainString : Attribute loading for Field : %s, Class : %s, value : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), value);
+            // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Attribute.loadValueFromPlainString : Attribute loading
+            // for Field : %s, Class : %s, value : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass
+            // ()).getName (), value);
 
             reflectionField.set (serializableObject, value);
         }
@@ -131,7 +133,8 @@ public abstract class Attribute
 
             if (WaveStringUtils.isNotBlank (xmlWaveXPathValue))
             {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Field : %s, Class : %s, xmlWaveXPathValue : %s", m_reflectionAttribute.getAttributeName (), serializableObject.getClass ().getName (), xmlWaveXPathValue);
+                // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Field : %s, Class : %s, xmlWaveXPathValue : %s",
+                // m_reflectionAttribute.getAttributeName (), serializableObject.getClass ().getName (), xmlWaveXPathValue);
 
                 final String configurationValue = waveConfigurationFile.getConfigurationValue (xmlWaveXPathValue);
 
