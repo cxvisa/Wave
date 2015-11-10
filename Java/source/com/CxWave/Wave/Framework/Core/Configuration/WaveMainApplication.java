@@ -17,6 +17,10 @@ public class WaveMainApplication extends SerializableObject
     @XmlWaveXPath (path = "wave.application.daemonize")
     private boolean m_isADaemon;
 
+    private WaveMainApplication ()
+    {
+    }
+
     public String getApplicationName ()
     {
         return m_applicationName;

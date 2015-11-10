@@ -4,7 +4,9 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
@@ -43,14 +45,38 @@ public class AttributeSerializableObject extends Attribute
 
                 WaveAssertUtils.waveAssert (null != fieldType);
 
-                try
+                final Constructor<?>[] declaredConstructors = fieldType.getDeclaredConstructors ();
+                Constructor<?> constructorWithZeroArguments = null;
+
+                for (final Constructor<?> constructor : declaredConstructors)
                 {
-                    object = fieldType.newInstance ();
+                    if (0 == (constructor.getGenericParameterTypes ()).length)
+                    {
+                        constructorWithZeroArguments = constructor;
+                    }
                 }
-                catch (final InstantiationException e)
+
+                if (null == constructorWithZeroArguments)
                 {
-                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "AttributeSerializableObject.loadValueFromWaveConfigurationFile:  Instantiating fieldType :%s failed.  Status : %s", fieldType.getName (), e.toString ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not find constructor with 0 arguments for Field Type : %s", fieldType.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "    Please declare a constructor with no arguments and retry.");
+
                     WaveAssertUtils.waveAssert ();
+                }
+                else
+                {
+
+                    try
+                    {
+                        constructorWithZeroArguments.setAccessible (true);
+
+                        object = constructorWithZeroArguments.newInstance ();
+                    }
+                    catch (final InstantiationException | InvocationTargetException e)
+                    {
+                        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "AttributeSerializableObject.loadValueFromWaveConfigurationFile:  Instantiating fieldType :%s failed.  Status : %s", fieldType.getName (), e.toString ());
+                        WaveAssertUtils.waveAssert ();
+                    }
                 }
             }
 

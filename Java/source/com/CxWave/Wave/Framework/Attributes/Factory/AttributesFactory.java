@@ -74,6 +74,8 @@ public class AttributesFactory
 
             try
             {
+                constructorWithZeroArguments.setAccessible (true);
+
                 final Object object = constructorWithZeroArguments.newInstance ();
 
                 Attribute attribute = null;
