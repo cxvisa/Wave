@@ -10,11 +10,12 @@ import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
+@XmlWaveXPath (path = "application")
 public class WaveMainApplication extends SerializableObject
 {
-    @XmlWaveXPath (path = "wave.application.name")
+    @XmlWaveXPath (path = "name")
     private String  m_applicationName;
-    @XmlWaveXPath (path = "wave.application.daemonize")
+    @XmlWaveXPath (absolutePath = "wave.application.daemonize")
     private boolean m_isADaemon;
 
     private WaveMainApplication ()

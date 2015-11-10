@@ -24,6 +24,11 @@ public class AttributesMap
     private final Map<UI32, Attribute>   m_attributesByUserTag;
     private final Map<UI32, String>      m_attributesOrderToNameMapping;
     private SerializableObject           m_serializableObject;
+    private String                       m_xmlWaveXPathEffectiveValue;
+    private boolean                      m_isXmlWaveXPathEffectiveValueAbsolute;
+    private String                       m_xmlWaveXPathValueForClass;
+    private String                       m_waveXmlXPathViaAttribute;
+    private boolean                      m_isWaveXmlXPathViaAttributeAbsolute;
 
     public AttributesMap ()
     {
@@ -33,6 +38,8 @@ public class AttributesMap
         m_attributesByName = new HashMap<String, Attribute> ();
         m_attributesByUserTag = new HashMap<UI32, Attribute> ();
         m_attributesOrderToNameMapping = new HashMap<UI32, String> ();
+        m_isXmlWaveXPathEffectiveValueAbsolute = false;
+        m_isWaveXmlXPathViaAttributeAbsolute = false;
     }
 
     public void addAttribute (final Attribute attribute)
@@ -110,11 +117,68 @@ public class AttributesMap
     public void setSerializableObject (final SerializableObject serializableObject)
     {
         m_serializableObject = serializableObject;
+
+        WaveAssertUtils.waveAssert (null != m_serializableObject);
+
+        m_xmlWaveXPathValueForClass = m_serializableObject.computeAndGetXmlWaveXPathForClass ();
     }
 
-    public void loadFromWaveConfiguraitonFile (final WaveConfigurationFile waveConfigurationFile)
+    private void computeXmlWaveXPathEffectiveValueWithoutUsingAttributeHierarchyPrefix ()
+    {
+        if (WaveStringUtils.isNotBlank (m_waveXmlXPathViaAttribute))
+        {
+            m_xmlWaveXPathEffectiveValue = m_waveXmlXPathViaAttribute;
+
+            m_isXmlWaveXPathEffectiveValueAbsolute = m_isWaveXmlXPathViaAttributeAbsolute;
+        }
+        else
+        {
+            if (WaveStringUtils.isNotBlank (m_xmlWaveXPathValueForClass))
+            {
+                m_xmlWaveXPathEffectiveValue = m_xmlWaveXPathValueForClass;
+
+                m_isXmlWaveXPathEffectiveValueAbsolute = m_serializableObject.getIsXmlWaveXPathForClassAbsolute ();
+            }
+        }
+    }
+
+    public void loadFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final String xmlWaveXPathPrefix)
     {
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
+
+        computeXmlWaveXPathEffectiveValueWithoutUsingAttributeHierarchyPrefix ();
+
+        String effectiveXmlWaveXPathPrefix = "";
+
+        if (m_isXmlWaveXPathEffectiveValueAbsolute)
+        {
+            effectiveXmlWaveXPathPrefix = m_xmlWaveXPathEffectiveValue;
+        }
+        else
+        {
+            if (WaveStringUtils.isNotBlank (xmlWaveXPathPrefix))
+            {
+                if (WaveStringUtils.isNotBlank (m_xmlWaveXPathEffectiveValue))
+                {
+                    effectiveXmlWaveXPathPrefix = xmlWaveXPathPrefix + "." + m_xmlWaveXPathEffectiveValue;
+                }
+                else
+                {
+                    effectiveXmlWaveXPathPrefix = xmlWaveXPathPrefix;
+                }
+            }
+            else
+            {
+                if (WaveStringUtils.isNotBlank (m_xmlWaveXPathEffectiveValue))
+                {
+                    effectiveXmlWaveXPathPrefix = m_xmlWaveXPathEffectiveValue;
+                }
+                else
+                {
+                    effectiveXmlWaveXPathPrefix = "";
+                }
+            }
+        }
 
         for (final Map.Entry<UI32, Attribute> entry : m_attributes.entrySet ())
         {
@@ -122,11 +186,11 @@ public class AttributesMap
 
             WaveAssertUtils.waveAssert (null != attribute);
 
-            attribute.loadValueFromWaveConfigurationFile (waveConfigurationFile, m_serializableObject);
+            attribute.loadValueFromWaveConfigurationFile (waveConfigurationFile, m_serializableObject, effectiveXmlWaveXPathPrefix);
         }
     }
 
-    public void loadFromWaveConfiguraitonFile (final String waveConfigurationFilePath)
+    public void loadFromWaveConfigurationFile (final String waveConfigurationFilePath, final String xmlWaveXPathPrefix)
     {
         WaveAssertUtils.waveAssert (null != m_serializableObject);
 
@@ -134,6 +198,36 @@ public class AttributesMap
 
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
 
-        loadFromWaveConfiguraitonFile (waveConfigurationFile);
+        loadFromWaveConfigurationFile (waveConfigurationFile, xmlWaveXPathPrefix);
+    }
+
+    public String getXmlWaveXPathEffectiveValue ()
+    {
+        return m_xmlWaveXPathEffectiveValue;
+    }
+
+    public void setXmlWaveXPathEffectiveValue (final String xmlWaveXPathEffectiveValue)
+    {
+        m_xmlWaveXPathEffectiveValue = xmlWaveXPathEffectiveValue;
+    }
+
+    public String getWaveXmlXPathViaAttribute ()
+    {
+        return m_waveXmlXPathViaAttribute;
+    }
+
+    public void setWaveXmlXPathViaAttribute (final String waveXmlXPathViaAttribute)
+    {
+        m_waveXmlXPathViaAttribute = waveXmlXPathViaAttribute;
+    }
+
+    public boolean getIsWaveXmlXPathViaAttributeAbsolute ()
+    {
+        return m_isWaveXmlXPathViaAttributeAbsolute;
+    }
+
+    public void setIsWaveXmlXPathViaAttributeAbsolute (final boolean isWaveXmlXPathViaAttributeAbsolute)
+    {
+        m_isWaveXmlXPathViaAttributeAbsolute = isWaveXmlXPathViaAttributeAbsolute;
     }
 }

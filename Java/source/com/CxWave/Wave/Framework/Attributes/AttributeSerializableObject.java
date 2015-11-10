@@ -4,15 +4,18 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -25,7 +28,7 @@ public class AttributeSerializableObject extends Attribute
     }
 
     @Override
-    public void loadValueFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final SerializableObject serializableObject)
+    public void loadValueFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final SerializableObject serializableObject, final String xmlWaveXPathPrefix)
     {
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
 
@@ -86,12 +89,49 @@ public class AttributeSerializableObject extends Attribute
 
             reflectionField.set (serializableObject, serializableObjectForAttribute);
 
-            serializableObjectForAttribute.loadFromWaveConfigurationFile (waveConfigurationFile);
+            setXmlWaveXPathOnSerializableObject (serializableObjectForAttribute);
+
+            serializableObjectForAttribute.loadFromWaveConfigurationFile (waveConfigurationFile, xmlWaveXPathPrefix);
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "AttributeSerializableObject.loadValueFromWaveConfigurationFile : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), e.toString ());
             WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    private void setXmlWaveXPathOnSerializableObject (final SerializableObject serializableObject)
+    {
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        final Annotation annotation = reflectionField.getAnnotation (XmlWaveXPath.class);
+
+        String xmlWaveXPathValue = null;
+        String xmlWaveXPathAbsoluteValue = null;
+
+        if (null != annotation)
+        {
+            final XmlWaveXPath xmlWaveXPath = (XmlWaveXPath) annotation;
+
+            WaveAssertUtils.waveAssert (null != xmlWaveXPath);
+
+            xmlWaveXPathValue = xmlWaveXPath.path ();
+            xmlWaveXPathAbsoluteValue = xmlWaveXPath.absolutePath ();
+
+            // Give preference to absolute XML Wave XPATH.
+
+            if (WaveStringUtils.isNotBlank (xmlWaveXPathAbsoluteValue))
+            {
+                xmlWaveXPathValue = xmlWaveXPathAbsoluteValue;
+
+                serializableObject.setAttributeXmlWaveXPath (xmlWaveXPathValue, true);
+            }
+            else
+            {
+                serializableObject.setAttributeXmlWaveXPath (xmlWaveXPathValue, false);
+            }
         }
     }
 }

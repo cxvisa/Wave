@@ -4,16 +4,23 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public class SerializableObject
 {
     @NonSerializable
-    protected AttributesMap m_attributesMap = null;
+    protected AttributesMap m_attributesMap                  = null;
+    private boolean         m_isXmlWaveXPathForClassAbsolute = false;
 
     protected SerializableObject ()
     {
@@ -35,17 +42,124 @@ public class SerializableObject
         }
     }
 
+    public void setAttributeXmlWaveXPath (final String xmlWaveXPath, final boolean isAbsolute)
+    {
+        prepareForSerialization ();
+
+        WaveAssertUtils.waveAssert (null != m_attributesMap);
+
+        m_attributesMap.setWaveXmlXPathViaAttribute (xmlWaveXPath);
+        m_attributesMap.setIsWaveXmlXPathViaAttributeAbsolute (isAbsolute);
+    }
+
     public void loadFromWaveConfigurationFile (final String waveConfigurationFilePath)
     {
         prepareForSerialization ();
 
-        m_attributesMap.loadFromWaveConfiguraitonFile (waveConfigurationFilePath);
+        m_attributesMap.loadFromWaveConfigurationFile (waveConfigurationFilePath, "");
     }
 
-    public void loadFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile)
+    public void loadFromWaveConfigurationFile (final String waveConfigurationFilePath, final String xmlWaveXPathPrefix)
     {
         prepareForSerialization ();
 
-        m_attributesMap.loadFromWaveConfiguraitonFile (waveConfigurationFile);
+        m_attributesMap.loadFromWaveConfigurationFile (waveConfigurationFilePath, xmlWaveXPathPrefix);
+    }
+
+    public void loadFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final String xmlWaveXPathPrefix)
+    {
+        prepareForSerialization ();
+
+        m_attributesMap.loadFromWaveConfigurationFile (waveConfigurationFile, xmlWaveXPathPrefix);
+    }
+
+    public String computeAndGetXmlWaveXPathForClass ()
+    {
+        final Class<?> classForSerializableObject = this.getClass ();
+
+        WaveAssertUtils.waveAssert (null != classForSerializableObject);
+
+        final Annotation annotation = classForSerializableObject.getAnnotation (XmlWaveXPath.class);
+
+        String xmlWaveXPathValue = null;
+        String xmlWaveXPathAbsoluteValue = null;
+        String xmlWaveXPathEffectiveValue = null;
+
+        if (null != annotation)
+        {
+            final XmlWaveXPath xmlWaveXPath = (XmlWaveXPath) annotation;
+
+            WaveAssertUtils.waveAssert (null != xmlWaveXPath);
+
+            final Class<?> annotationClass = xmlWaveXPath.annotationType ();
+
+            WaveAssertUtils.waveAssert (null != annotationClass);
+
+            Method pathMethod = null;
+            Method absolutePathMethod = null;
+
+            try
+            {
+                pathMethod = annotationClass.getDeclaredMethod ("path");
+            }
+            catch (NoSuchMethodException | SecurityException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+
+            try
+            {
+                absolutePathMethod = annotationClass.getDeclaredMethod ("absolutePath");
+            }
+            catch (NoSuchMethodException | SecurityException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+
+            WaveAssertUtils.waveAssert (null != pathMethod);
+            WaveAssertUtils.waveAssert (null != absolutePathMethod);
+
+            try
+            {
+                xmlWaveXPathValue = (String) (pathMethod.invoke (xmlWaveXPath));
+            }
+            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+            try
+            {
+                xmlWaveXPathAbsoluteValue = (String) (absolutePathMethod.invoke (xmlWaveXPath));
+            }
+            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+        }
+
+        if (WaveStringUtils.isNotBlank (xmlWaveXPathAbsoluteValue))
+        {
+            xmlWaveXPathEffectiveValue = xmlWaveXPathAbsoluteValue;
+
+            m_isXmlWaveXPathForClassAbsolute = true;
+        }
+        else if (WaveStringUtils.isNotBlank (xmlWaveXPathValue))
+        {
+            xmlWaveXPathEffectiveValue = xmlWaveXPathValue;
+
+            m_isXmlWaveXPathForClassAbsolute = false;
+        }
+
+        return (xmlWaveXPathEffectiveValue);
+    }
+
+    public boolean getIsXmlWaveXPathForClassAbsolute ()
+    {
+        return m_isXmlWaveXPathForClassAbsolute;
+    }
+
+    public void setIsXmlWaveXPathForClassAbsolute (final boolean isXmlWaveXPathForClassAbsolute)
+    {
+        m_isXmlWaveXPathForClassAbsolute = isXmlWaveXPathForClassAbsolute;
     }
 }

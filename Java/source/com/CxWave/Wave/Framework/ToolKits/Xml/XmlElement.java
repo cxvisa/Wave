@@ -187,7 +187,42 @@ public class XmlElement
 
     public void collectAllXmlElemntsForWaveXmlXPath (final Vector<String> waveXmlXPathElements, final Vector<XmlElement> collectedXmlElements)
     {
-        collectAllXmlElemntsForWaveXmlXPath (waveXmlXPathElements, 1, collectedXmlElements);
+        if (null == waveXmlXPathElements)
+        {
+            return;
+        }
+
+        final int numberOfWaveXmlXPathElements = waveXmlXPathElements.size ();
+
+        if (1 < numberOfWaveXmlXPathElements)
+        {
+            final String firstWaveXmlXPathElement = waveXmlXPathElements.get (0);
+
+            if (firstWaveXmlXPathElement.equals (m_name))
+            {
+                collectAllXmlElemntsForWaveXmlXPath (waveXmlXPathElements, 1, collectedXmlElements);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (1 == numberOfWaveXmlXPathElements)
+            {
+                final String firstWaveXmlXPathElement = waveXmlXPathElements.get (0);
+
+                if (firstWaveXmlXPathElement.equals (m_name))
+                {
+                    collectedXmlElements.add (this);
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
     }
 
     private void collectAllXmlElemntsForWaveXmlXPath (final Vector<String> waveXmlXPathElements, final int index, final Vector<XmlElement> collectedXmlElements)

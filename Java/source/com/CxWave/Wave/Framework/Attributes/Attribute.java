@@ -109,43 +109,23 @@ public abstract class Attribute
         }
     }
 
-    public void loadValueFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final SerializableObject serializableObject)
+    public void loadValueFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final SerializableObject serializableObject, final String xmlWaveXPathPrefix)
     {
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
 
         WaveAssertUtils.waveAssert (null != serializableObject);
 
-        final Field reflectionField = m_reflectionAttribute.getField ();
+        final String xmlWaveXPathValue = getXmlWaveXPath (xmlWaveXPathPrefix);
 
-        WaveAssertUtils.waveAssert (null != reflectionField);
-
-        final Annotation annotation = reflectionField.getAnnotation (XmlWaveXPath.class);
-
-        final String xmlWaveXPathValue;
-
-        if (null != annotation)
+        if (WaveStringUtils.isNotBlank (xmlWaveXPathValue))
         {
-            final XmlWaveXPath xmlWaveXPath = (XmlWaveXPath) annotation;
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Field : %s, Class : %s, xmlWaveXPathValue : %s", m_reflectionAttribute.getAttributeName (), serializableObject.getClass ().getName (), xmlWaveXPathValue);
 
-            WaveAssertUtils.waveAssert (null != xmlWaveXPath);
+            final String configurationValue = waveConfigurationFile.getConfigurationValue (xmlWaveXPathValue);
 
-            xmlWaveXPathValue = xmlWaveXPath.path ();
-
-            if (WaveStringUtils.isNotBlank (xmlWaveXPathValue))
+            if (WaveStringUtils.isNotBlank (configurationValue))
             {
-                // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Field : %s, Class : %s, xmlWaveXPathValue : %s",
-                // m_reflectionAttribute.getAttributeName (), serializableObject.getClass ().getName (), xmlWaveXPathValue);
-
-                final String configurationValue = waveConfigurationFile.getConfigurationValue (xmlWaveXPathValue);
-
-                if (WaveStringUtils.isNotBlank (configurationValue))
-                {
-                    loadValueFromPlainString (configurationValue, serializableObject);
-                }
-                else
-                {
-                    return;
-                }
+                loadValueFromPlainString (configurationValue, serializableObject);
             }
             else
             {
@@ -156,5 +136,43 @@ public abstract class Attribute
         {
             return;
         }
+    }
+
+    public String getXmlWaveXPath (final String xmlWaveXPathPrefix)
+    {
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        final Annotation annotation = reflectionField.getAnnotation (XmlWaveXPath.class);
+
+        String xmlWaveXPathValue = null;
+        String xmlWaveXPathAbsoluteValue = null;
+
+        if (null != annotation)
+        {
+            final XmlWaveXPath xmlWaveXPath = (XmlWaveXPath) annotation;
+
+            WaveAssertUtils.waveAssert (null != xmlWaveXPath);
+
+            xmlWaveXPathValue = xmlWaveXPath.path ();
+            xmlWaveXPathAbsoluteValue = xmlWaveXPath.absolutePath ();
+
+            // Give preference to absolute XML Wave XPATH.
+
+            if (WaveStringUtils.isNotBlank (xmlWaveXPathAbsoluteValue))
+            {
+                xmlWaveXPathValue = xmlWaveXPathAbsoluteValue;
+            }
+            else if (WaveStringUtils.isNotBlank (xmlWaveXPathValue))
+            {
+                if (WaveStringUtils.isNotBlank (xmlWaveXPathPrefix))
+                {
+                    xmlWaveXPathValue = xmlWaveXPathPrefix + "." + xmlWaveXPathValue;
+                }
+            }
+        }
+
+        return (xmlWaveXPathValue);
     }
 }
