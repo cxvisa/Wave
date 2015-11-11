@@ -176,6 +176,6 @@ public class SerializableObject
     {
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s :", (getClass ()).getName ());
 
-        debugPrint ("    ");
+        debugPrint ("|-> ");
     }
 }

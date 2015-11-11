@@ -74,7 +74,7 @@ public class SI32
 
     public boolean isValid (final long value)
     {
-        if (((1 << 31) > value) && ((-(1 << 31)) <= value))
+        if ((((1L << 30) - 1) > value) && ((-(1L << 30)) <= value))
         {
             return (true);
         }
@@ -97,5 +97,11 @@ public class SI32
     public boolean equals (final SI32 rhs)
     {
         return (m_value.equals (rhs.m_value));
+    }
+
+    @Override
+    public String toString ()
+    {
+        return (m_value.toString ());
     }
 }

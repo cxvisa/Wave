@@ -160,7 +160,7 @@ public class AttributeSerializableObject extends Attribute
 
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix, m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName ());
 
-                serializableObjectForAttribute.debugPrint (prefix + "    ");
+                serializableObjectForAttribute.debugPrint ("|   " + prefix);
             }
         }
         catch (IllegalArgumentException | IllegalAccessException e)

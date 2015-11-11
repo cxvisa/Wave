@@ -110,4 +110,10 @@ public class UI32
     {
         return (m_value.equals (rhs.m_value));
     }
+
+    @Override
+    public String toString ()
+    {
+        return (m_value.toString ());
+    }
 }

@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Type;
@@ -40,5 +38,11 @@ public class TraceClientId
         m_id++;
 
         return (m_id);
+    }
+
+    @Override
+    public String toString ()
+    {
+        return ((new Long (m_id)).toString ());
     }
 }

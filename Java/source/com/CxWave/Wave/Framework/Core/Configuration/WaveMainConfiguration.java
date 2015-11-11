@@ -14,29 +14,32 @@ import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 public class WaveMainConfiguration extends WaveConfiguration
 {
     @XmlWaveXPath (path = "application")
-    private final WaveMainApplication m_application = null;
+    private WaveMainApplication m_application;
 
-    private boolean                   m_isSysLogRequired;
-    private boolean                   m_isDatabaseEnabled;
-    private boolean                   m_isDatabaseLogEnabled;
-    private int                       m_port;
-    private int                       m_databasePort;
-    private String                    m_databaseLogFileName;
-    private String                    m_databaseSharedBuffers;
-    private int                       m_managementPort;
-    private int                       m_managementClientPort;
+    @XmlWaveXPath (path = "database")
+    private WaveMainDatabase    m_database;
+
+    private boolean             m_isSysLogRequired;
+    private boolean             m_isDatabaseEnabled;
+    private boolean             m_isDatabaseLogEnabled;
+    private int                 m_port;
+    private int                 m_databasePort;
+    private String              m_databaseLogFileName;
+    private String              m_databaseSharedBuffers;
+    private int                 m_managementPort;
+    private int                 m_managementClientPort;
     @NonSerializable
-    private Vector<String>            m_yinPaths;
-    private String                    m_wyserTagsFilePath;
-    private String                    m_databaseEmptyType;
-    private long                      m_databaseEmptyTypeAutoDetectionThresholdValue;
-    private String                    m_configurationFile;
-    private String                    m_configurationFileDirectory;
-    private String                    m_globalConfigurationFile;
-    private String                    m_lockFileForConfigurationFile;
-    private String                    m_traceFileDirectory;
-    private String                    m_traceFileName;
-    private String                    m_profileFileName;
+    private Vector<String>      m_yinPaths;
+    private String              m_wyserTagsFilePath;
+    private String              m_databaseEmptyType;
+    private long                m_databaseEmptyTypeAutoDetectionThresholdValue;
+    private String              m_configurationFile;
+    private String              m_configurationFileDirectory;
+    private String              m_globalConfigurationFile;
+    private String              m_lockFileForConfigurationFile;
+    private String              m_traceFileDirectory;
+    private String              m_traceFileName;
+    private String              m_profileFileName;
 
     public WaveMainConfiguration ()
     {
@@ -45,6 +48,21 @@ public class WaveMainConfiguration extends WaveConfiguration
     public WaveMainApplication getApplication ()
     {
         return m_application;
+    }
+
+    public void setApplication (final WaveMainApplication application)
+    {
+        m_application = application;
+    }
+
+    public WaveMainDatabase getDatabase ()
+    {
+        return m_database;
+    }
+
+    public void setDatabase (final WaveMainDatabase database)
+    {
+        m_database = database;
     }
 
     public boolean getIsSysLogRequired ()

@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.CxWave.Wave.Framework.Attributes.Attribute;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -154,7 +155,9 @@ public class AttributesFactory
         }
         else
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "%s is not a supported Attribute Type", attributeTypeName);
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "%s is not a supported Attribute Type.  Supported Attribute Types are listed below", attributeTypeName);
+
+            DebugUtils.prettyPrint (m_constructorsByClass.keySet ());
 
             WaveAssertUtils.waveAssert ();
         }

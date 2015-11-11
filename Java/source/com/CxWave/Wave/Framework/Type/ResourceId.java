@@ -22,4 +22,10 @@ public class ResourceId
     {
         m_id = id;
     }
+
+    @Override
+    public String toString ()
+    {
+        return (m_id.toString ());
+    }
 }

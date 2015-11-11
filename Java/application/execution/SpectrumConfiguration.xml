@@ -35,11 +35,13 @@
     <database>
         <enable>true</enable>
 
-        <port>3016</port>
+        <port>9013</port>
 
+        <detect-corruption>true</detect-corruption>
         <handle-corruption>true</handle-corruption>
 
         <enable-log>true</enable-log>
+        <log-file></log-file>
     </database>
 
     <management>
@@ -52,7 +54,7 @@
         <client>
             <enable>true</enable>
 
-            <port>true</port>
+            <port>9710</port>
         </client>
     </management>
 
