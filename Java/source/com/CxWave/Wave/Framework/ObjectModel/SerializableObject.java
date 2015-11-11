@@ -20,6 +20,8 @@ public class SerializableObject
 {
     @NonSerializable
     protected AttributesMap m_attributesMap                  = null;
+
+    @NonSerializable
     private boolean         m_isXmlWaveXPathForClassAbsolute = false;
 
     protected SerializableObject ()
@@ -161,5 +163,15 @@ public class SerializableObject
     public void setIsXmlWaveXPathForClassAbsolute (final boolean isXmlWaveXPathForClassAbsolute)
     {
         m_isXmlWaveXPathForClassAbsolute = isXmlWaveXPathForClassAbsolute;
+    }
+
+    public void debugPrint (final String prefix)
+    {
+        m_attributesMap.debugPrint (prefix);
+    }
+
+    public void debugPrint ()
+    {
+        debugPrint ("");
     }
 }

@@ -15,8 +15,15 @@ public class WaveMainApplication extends SerializableObject
 {
     @XmlWaveXPath (path = "name")
     private String  m_applicationName;
+
     @XmlWaveXPath (absolutePath = "wave.application.daemonize")
     private boolean m_isADaemon;
+
+    @XmlWaveXPath (path = "ethernet-interface")
+    private String  m_ethernetInterface;
+
+    @XmlWaveXPath (path = "initial-working-directory")
+    private String  m_initialWorkingDirectory;
 
     private WaveMainApplication ()
     {
@@ -40,6 +47,26 @@ public class WaveMainApplication extends SerializableObject
     public void setIsADaemon (final boolean isADaemon)
     {
         m_isADaemon = isADaemon;
+    }
+
+    public String getInitialWorkingDirectory ()
+    {
+        return m_initialWorkingDirectory;
+    }
+
+    public void setInitialWorkingDirectory (final String initialWorkingDirectory)
+    {
+        m_initialWorkingDirectory = initialWorkingDirectory;
+    }
+
+    public String getEthernetInterface ()
+    {
+        return m_ethernetInterface;
+    }
+
+    public void setEthernetInterface (final String ethernetInterface)
+    {
+        m_ethernetInterface = ethernetInterface;
     }
 
     public String getApplicationCompactName ()

@@ -9,7 +9,7 @@
         <ethernet-interface>eno16777736</ethernet-interface>
 
         <environment>
-            <workind-directory>.</workind-directory>
+            <working-directory>.</working-directory>
             <language>en</language>
             <country>US</country>
         </environment>

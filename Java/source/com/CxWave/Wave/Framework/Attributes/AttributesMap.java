@@ -230,4 +230,16 @@ public class AttributesMap
     {
         m_isWaveXmlXPathViaAttributeAbsolute = isWaveXmlXPathViaAttributeAbsolute;
     }
+
+    public void debugPrint (final String prefix)
+    {
+        for (final Map.Entry<UI32, Attribute> entry : m_attributes.entrySet ())
+        {
+            final Attribute attribute = entry.getValue ();
+
+            WaveAssertUtils.waveAssert (null != attribute);
+
+            attribute.debugPrint (m_serializableObject, prefix);
+        }
+    }
 }

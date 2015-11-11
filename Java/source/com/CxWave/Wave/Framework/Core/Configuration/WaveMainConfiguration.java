@@ -14,7 +14,7 @@ import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 public class WaveMainConfiguration extends WaveConfiguration
 {
     @XmlWaveXPath (path = "application")
-    private final WaveMainApplication m_application = null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // =
+    private final WaveMainApplication m_application = null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // =
     private boolean                   m_isSysLogRequired;
     private boolean                   m_isDatabaseEnabled;
     private boolean                   m_isDatabaseLogEnabled;
@@ -23,10 +23,7 @@ public class WaveMainConfiguration extends WaveConfiguration
     private String                    m_databaseLogFileName;
     private String                    m_databaseSharedBuffers;
     private int                       m_managementPort;
-    @XmlWaveXPath (path = "application.ethernet-interface")
-    private String                    m_ethernetInterface;
     private int                       m_managementClientPort;
-    private String                    m_changeDirectoryTo;
     @NonSerializable
     private Vector<String>            m_yinPaths;
     private String                    m_wyserTagsFilePath;
@@ -129,16 +126,6 @@ public class WaveMainConfiguration extends WaveConfiguration
         m_managementPort = managementPort;
     }
 
-    public String getEthernetInterface ()
-    {
-        return m_ethernetInterface;
-    }
-
-    public void setEthernetInterface (final String ethernetInterface)
-    {
-        m_ethernetInterface = ethernetInterface;
-    }
-
     public int getManagementClientPort ()
     {
         return m_managementClientPort;
@@ -147,16 +134,6 @@ public class WaveMainConfiguration extends WaveConfiguration
     public void setManagementClientPort (final int managementClientPort)
     {
         m_managementClientPort = managementClientPort;
-    }
-
-    public String getChangeDirectoryTo ()
-    {
-        return m_changeDirectoryTo;
-    }
-
-    public void setChangeDirectoryTo (final String changeDirectoryTo)
-    {
-        m_changeDirectoryTo = changeDirectoryTo;
     }
 
     public Vector<String> getYinPaths ()

@@ -109,6 +109,39 @@ public abstract class Attribute
         }
     }
 
+    public String toPlainString (final SerializableObject serializableObject)
+    {
+        WaveAssertUtils.waveAssert (null != serializableObject);
+
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        Object object = null;
+        String plainString = "";
+
+        try
+        {
+            // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Attribute.loadValueFromPlainString : Attribute loading
+            // for Field : %s, Class : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass
+            // ()).getName ());
+
+            object = reflectionField.get (serializableObject);
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Attribute.loadValueFromPlainString : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), e.toString ());
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (null != object)
+        {
+            plainString = object.toString ();
+        }
+
+        return (plainString);
+    }
+
     public void loadValueFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final SerializableObject serializableObject, final String xmlWaveXPathPrefix)
     {
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
@@ -174,5 +207,20 @@ public abstract class Attribute
         }
 
         return (xmlWaveXPathValue);
+    }
+
+    public void debugPrint (final SerializableObject serializableObject, String prefix)
+    {
+        if (null == serializableObject)
+        {
+            return;
+        }
+
+        if (null == prefix)
+        {
+            prefix = "";
+        }
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) : %s", prefix, m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (), toPlainString (serializableObject));
     }
 }

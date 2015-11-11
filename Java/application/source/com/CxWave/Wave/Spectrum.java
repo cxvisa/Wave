@@ -120,7 +120,9 @@ class Spectrum
 
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application Name        : %s", (waveMainConfiguration1.getApplication ()).getApplicationName ());
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application CompactName : %s", waveMainConfiguration1.getApplicationCompactName ());
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface      : %s", waveMainConfiguration1.getEthernetInterface ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface      : %s", (waveMainConfiguration1.getApplication ()).getEthernetInterface ());
+
+            waveMainConfiguration1.debugPrint ();
         }
 
         if (3 <= (commandLineArguments.length))

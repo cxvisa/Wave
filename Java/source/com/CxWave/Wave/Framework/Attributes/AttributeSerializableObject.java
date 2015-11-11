@@ -85,7 +85,7 @@ public class AttributeSerializableObject extends Attribute
 
             final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
 
-            WaveAssertUtils.waveAssert (null != serializableObject);
+            WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
 
             reflectionField.set (serializableObject, serializableObjectForAttribute);
 
@@ -132,6 +132,40 @@ public class AttributeSerializableObject extends Attribute
             {
                 serializableObject.setAttributeXmlWaveXPath (xmlWaveXPathValue, false);
             }
+        }
+    }
+
+    @Override
+    public void debugPrint (final SerializableObject serializableObject, final String prefix)
+    {
+        WaveAssertUtils.waveAssert (null != serializableObject);
+
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        try
+        {
+            final Object object = (reflectionField.get (serializableObject));
+
+            if (null == object)
+            {
+
+            }
+            else
+            {
+
+                final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
+
+                WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
+
+                serializableObjectForAttribute.debugPrint (prefix + "    ");
+            }
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "AttributeSerializableObject.loadValueFromWaveConfigurationFile : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), e.toString ());
+            WaveAssertUtils.waveAssert ();
         }
     }
 }
