@@ -15,7 +15,10 @@
         </environment>
 
         <configuration>
-            <directory-name></directory-name>
+            <directory-name>config</directory-name>
+            <config-file-extension>cfg</config-file-extension>
+            <backup-file-extension>bk</backup-file-extension>
+            <temp-file-extension>tmp</temp-file-extension>
             <local>
                 <file-name></file-name>
                 <backup-file-name></backup-file-name>
@@ -24,6 +27,7 @@
 
             <global>
                 <file-name></file-name>
+                <temp-file-name></temp-file-name>
             </global>
         </configuration>
     </application>

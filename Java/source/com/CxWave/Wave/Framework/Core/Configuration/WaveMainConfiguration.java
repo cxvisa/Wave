@@ -14,7 +14,8 @@ import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 public class WaveMainConfiguration extends WaveConfiguration
 {
     @XmlWaveXPath (path = "application")
-    private final WaveMainApplication m_application = null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // =
+    private final WaveMainApplication m_application = null;
+
     private boolean                   m_isSysLogRequired;
     private boolean                   m_isDatabaseEnabled;
     private boolean                   m_isDatabaseLogEnabled;

@@ -154,10 +154,11 @@ public class AttributeSerializableObject extends Attribute
             }
             else
             {
-
                 final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
 
                 WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix, m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName ());
 
                 serializableObjectForAttribute.debugPrint (prefix + "    ");
             }

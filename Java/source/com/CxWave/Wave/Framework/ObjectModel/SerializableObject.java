@@ -15,6 +15,8 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class SerializableObject
 {
@@ -172,6 +174,8 @@ public class SerializableObject
 
     public void debugPrint ()
     {
-        debugPrint ("");
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s :", (getClass ()).getName ());
+
+        debugPrint ("    ");
     }
 }

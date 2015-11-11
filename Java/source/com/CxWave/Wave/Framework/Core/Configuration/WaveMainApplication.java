@@ -14,16 +14,22 @@ import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 public class WaveMainApplication extends SerializableObject
 {
     @XmlWaveXPath (path = "name")
-    private String  m_applicationName;
+    private String                           m_applicationName;
 
     @XmlWaveXPath (absolutePath = "wave.application.daemonize")
-    private boolean m_isADaemon;
+    private boolean                          m_isADaemon;
 
     @XmlWaveXPath (path = "ethernet-interface")
-    private String  m_ethernetInterface;
+    private String                           m_ethernetInterface;
 
     @XmlWaveXPath (path = "initial-working-directory")
-    private String  m_initialWorkingDirectory;
+    private String                           m_initialWorkingDirectory;
+
+    @XmlWaveXPath (path = "environment")
+    private WaveMainApplicationEnvironment   m_waveMainApplicationEnvironment;
+
+    @XmlWaveXPath (path = "configuration")
+    private WaveMainApplicationConfiguration m_waveMainApplicationConfiguration;
 
     private WaveMainApplication ()
     {
@@ -67,6 +73,26 @@ public class WaveMainApplication extends SerializableObject
     public void setEthernetInterface (final String ethernetInterface)
     {
         m_ethernetInterface = ethernetInterface;
+    }
+
+    public WaveMainApplicationEnvironment getWaveMainApplicationEnvironment ()
+    {
+        return m_waveMainApplicationEnvironment;
+    }
+
+    public void setWaveMainApplicationEnvironment (final WaveMainApplicationEnvironment waveMainApplicationEnvironment)
+    {
+        m_waveMainApplicationEnvironment = waveMainApplicationEnvironment;
+    }
+
+    public WaveMainApplicationConfiguration getWaveMainApplicationConfiguration ()
+    {
+        return m_waveMainApplicationConfiguration;
+    }
+
+    public void setWaveMainApplicationConfiguration (final WaveMainApplicationConfiguration waveMainApplicationConfiguration)
+    {
+        m_waveMainApplicationConfiguration = waveMainApplicationConfiguration;
     }
 
     public String getApplicationCompactName ()
