@@ -14,32 +14,29 @@ import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
 public class WaveMainConfiguration extends WaveConfiguration
 {
     @XmlWaveXPath (path = "application")
-    private WaveMainApplication m_application;
+    private WaveMainApplication         m_application;
 
     @XmlWaveXPath (path = "database")
-    private WaveMainDatabase    m_database;
+    private WaveMainDatabase            m_database = new WaveMainDatabase ();
 
-    private boolean             m_isSysLogRequired;
-    private boolean             m_isDatabaseEnabled;
-    private boolean             m_isDatabaseLogEnabled;
-    private int                 m_port;
-    private int                 m_databasePort;
-    private String              m_databaseLogFileName;
-    private String              m_databaseSharedBuffers;
-    private int                 m_managementPort;
-    private int                 m_managementClientPort;
+    @XmlWaveXPath (path = "managemenr-interface")
+    private WaveMainManagementInterface m_waveMainManagementInterface;
+
+    private boolean                     m_isSysLogRequired;
+    private int                         m_port;
+
     @NonSerializable
-    private Vector<String>      m_yinPaths;
-    private String              m_wyserTagsFilePath;
-    private String              m_databaseEmptyType;
-    private long                m_databaseEmptyTypeAutoDetectionThresholdValue;
-    private String              m_configurationFile;
-    private String              m_configurationFileDirectory;
-    private String              m_globalConfigurationFile;
-    private String              m_lockFileForConfigurationFile;
-    private String              m_traceFileDirectory;
-    private String              m_traceFileName;
-    private String              m_profileFileName;
+    private Vector<String>              m_yinPaths;
+    private String                      m_wyserTagsFilePath;
+    private String                      m_databaseEmptyType;
+    private long                        m_databaseEmptyTypeAutoDetectionThresholdValue;
+    private String                      m_configurationFile;
+    private String                      m_configurationFileDirectory;
+    private String                      m_globalConfigurationFile;
+    private String                      m_lockFileForConfigurationFile;
+    private String                      m_traceFileDirectory;
+    private String                      m_traceFileName;
+    private String                      m_profileFileName;
 
     public WaveMainConfiguration ()
     {
@@ -65,6 +62,16 @@ public class WaveMainConfiguration extends WaveConfiguration
         m_database = database;
     }
 
+    public WaveMainManagementInterface getWaveMainManagementInterface ()
+    {
+        return m_waveMainManagementInterface;
+    }
+
+    public void setWaveMainManagementInterface (final WaveMainManagementInterface waveMainManagementInterface)
+    {
+        m_waveMainManagementInterface = waveMainManagementInterface;
+    }
+
     public boolean getIsSysLogRequired ()
     {
         return m_isSysLogRequired;
@@ -75,26 +82,6 @@ public class WaveMainConfiguration extends WaveConfiguration
         m_isSysLogRequired = isSysLogRequired;
     }
 
-    public boolean getIsDatabaseEnabled ()
-    {
-        return m_isDatabaseEnabled;
-    }
-
-    public void setIsDatabaseEnabled (final boolean isDatabaseEnabled)
-    {
-        m_isDatabaseEnabled = isDatabaseEnabled;
-    }
-
-    public boolean getIsDatabaseLogEnabled ()
-    {
-        return m_isDatabaseLogEnabled;
-    }
-
-    public void setIsDatabaseLogEnabled (final boolean isDatabaseLogEnabled)
-    {
-        m_isDatabaseLogEnabled = isDatabaseLogEnabled;
-    }
-
     public int getPort ()
     {
         return m_port;
@@ -103,56 +90,6 @@ public class WaveMainConfiguration extends WaveConfiguration
     public void setPort (final int port)
     {
         m_port = port;
-    }
-
-    public int getDatabasePort ()
-    {
-        return m_databasePort;
-    }
-
-    public void setDatabasePort (final int databasePort)
-    {
-        m_databasePort = databasePort;
-    }
-
-    public String getDatabaseLogFileName ()
-    {
-        return m_databaseLogFileName;
-    }
-
-    public void setDatabaseLogFileName (final String databaseLogFileName)
-    {
-        m_databaseLogFileName = databaseLogFileName;
-    }
-
-    public String getDatabaseSharedBuffers ()
-    {
-        return m_databaseSharedBuffers;
-    }
-
-    public void setDatabaseSharedBuffers (final String databaseSharedBuffers)
-    {
-        m_databaseSharedBuffers = databaseSharedBuffers;
-    }
-
-    public int getManagementPort ()
-    {
-        return m_managementPort;
-    }
-
-    public void setManagementPort (final int managementPort)
-    {
-        m_managementPort = managementPort;
-    }
-
-    public int getManagementClientPort ()
-    {
-        return m_managementClientPort;
-    }
-
-    public void setManagementClientPort (final int managementClientPort)
-    {
-        m_managementClientPort = managementClientPort;
     }
 
     public Vector<String> getYinPaths ()

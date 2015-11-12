@@ -11,22 +11,25 @@ import com.CxWave.Wave.Framework.Type.SI32;
 public class WaveMainDatabase extends SerializableObject
 {
     @XmlWaveXPath (path = "enable")
-    private boolean m_enable;
+    private boolean m_enable           = true;
 
     @XmlWaveXPath (path = "port")
-    private SI32    m_port;
+    private SI32    m_port             = new SI32 (9013L);
 
     @XmlWaveXPath (path = "detect-corruption")
-    private boolean m_detectCorruption;
+    private boolean m_detectCorruption = true;
 
     @XmlWaveXPath (path = "handle-corruption")
-    private boolean m_handleCorruption;
+    private boolean m_handleCorruption = true;
 
     @XmlWaveXPath (path = "enable-log")
-    private boolean m_enableLog;
+    private boolean m_enableLog        = true;
 
     @XmlWaveXPath (path = "log-file")
     private String  m_logFile;
+
+    @XmlWaveXPath (path = "shared-buffers")
+    private String  m_sharedBuffers    = "128MB";
 
     public boolean getEnable ()
     {
@@ -86,5 +89,15 @@ public class WaveMainDatabase extends SerializableObject
     public void setLogFile (final String logFile)
     {
         m_logFile = logFile;
+    }
+
+    public String getSharedBuffers ()
+    {
+        return m_sharedBuffers;
+    }
+
+    public void setSharedBuffers (final String sharedBuffers)
+    {
+        m_sharedBuffers = sharedBuffers;
     }
 }

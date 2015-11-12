@@ -42,9 +42,11 @@
 
         <enable-log>true</enable-log>
         <log-file></log-file>
+
+        <shared-buffers></shared-buffers>
     </database>
 
-    <management>
+    <management-interface>
         <server>
             <enable>true</enable>
 
@@ -56,7 +58,7 @@
 
             <port>9710</port>
         </client>
-    </management>
+    </management-interface>
 
     <system-management>
         <wyser>

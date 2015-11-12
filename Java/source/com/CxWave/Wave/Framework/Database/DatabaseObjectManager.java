@@ -6,13 +6,14 @@ package com.CxWave.Wave.Framework.Database;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class DatabaseObjectManager extends WaveLocalObjectManager
 {
     private static DatabaseObjectManager s_databaseObjectManager = new DatabaseObjectManager ();
     private static boolean               s_isDatabaseEnabled     = true;
-    private static int                   s_databasePort          = 3016;
+    private static SI32                  s_databasePort          = new SI32 (9013L);
 
     private DatabaseObjectManager ()
     {
@@ -51,12 +52,12 @@ public class DatabaseObjectManager extends WaveLocalObjectManager
         s_isDatabaseEnabled = isDatabaseEnabled;
     }
 
-    public static int getDatabasePort ()
+    public static SI32 getDatabasePort ()
     {
         return s_databasePort;
     }
 
-    public static void setDatabasePort (final int databasePort)
+    public static void setDatabasePort (final SI32 databasePort)
     {
         s_databasePort = databasePort;
     }

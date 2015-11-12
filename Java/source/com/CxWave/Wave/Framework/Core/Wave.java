@@ -41,8 +41,8 @@ public class Wave
 
         // Set if the database is to be enabled.
 
-        DatabaseObjectManager.setIsDatabaseEnabled (waveMainConfiguration.getIsDatabaseEnabled ());
-        DatabaseObjectManager.setDatabasePort (waveMainConfiguration.getDatabasePort ());
+        DatabaseObjectManager.setIsDatabaseEnabled ((waveMainConfiguration.getDatabase ()).getEnable ());
+        DatabaseObjectManager.setDatabasePort ((waveMainConfiguration.getDatabase ()).getPort ());
 
         // Initialize Framework ToolKit.
 
