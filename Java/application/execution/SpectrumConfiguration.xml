@@ -63,6 +63,7 @@
     <system-management>
         <wyser>
             <yang>
+                <yin-path>wyser</yin-path>
             </yang>
         </wyser>
     </system-management>

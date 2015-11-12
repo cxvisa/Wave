@@ -17,10 +17,13 @@ public class WaveMainConfiguration extends WaveConfiguration
     private WaveMainApplication         m_application;
 
     @XmlWaveXPath (path = "database")
-    private WaveMainDatabase            m_database = new WaveMainDatabase ();
+    private WaveMainDatabase            m_database                 = new WaveMainDatabase ();
 
-    @XmlWaveXPath (path = "managemenr-interface")
+    @XmlWaveXPath (path = "management-interface")
     private WaveMainManagementInterface m_waveMainManagementInterface;
+
+    @XmlWaveXPath (path = "system-management")
+    private WaveMainSystemManagement    m_waveMainSystemManagement = new WaveMainSystemManagement ();
 
     private boolean                     m_isSysLogRequired;
     private int                         m_port;
@@ -70,6 +73,16 @@ public class WaveMainConfiguration extends WaveConfiguration
     public void setWaveMainManagementInterface (final WaveMainManagementInterface waveMainManagementInterface)
     {
         m_waveMainManagementInterface = waveMainManagementInterface;
+    }
+
+    public WaveMainSystemManagement getWaveMainSystemManagement ()
+    {
+        return m_waveMainSystemManagement;
+    }
+
+    public void setWaveMainSystemManagement (final WaveMainSystemManagement waveMainSystemManagement)
+    {
+        m_waveMainSystemManagement = waveMainSystemManagement;
     }
 
     public boolean getIsSysLogRequired ()
