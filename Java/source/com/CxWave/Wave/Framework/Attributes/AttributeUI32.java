@@ -7,6 +7,8 @@ package com.CxWave.Wave.Framework.Attributes;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.CxWave.Wave.Framework.Type.UI32;
+
 public class AttributeUI32 extends Attribute
 {
     public AttributeUI32 ()
@@ -23,6 +25,8 @@ public class AttributeUI32 extends Attribute
     public Set<String> getSupportedDataTypes ()
     {
         final Set<String> supportedDataTypes = new HashSet<String> ();
+
+        supportedDataTypes.add (UI32.class.getTypeName ());
 
         return (supportedDataTypes);
     }

@@ -92,6 +92,7 @@
            <enable>true</enable>
            <number-of-logs>100000</number-of-logs>
            <audit-log>
+               <enable>true</enable>
            </audit-log>
        </log>
     </ras>

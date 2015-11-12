@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Core.Configuration;
 
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Attributes.WaveMainCluster;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration;
@@ -25,8 +26,11 @@ public class WaveMainConfiguration extends WaveConfiguration
     @XmlWaveXPath (path = "system-management")
     private WaveMainSystemManagement    m_waveMainSystemManagement = new WaveMainSystemManagement ();
 
-    private boolean                     m_isSysLogRequired;
-    private int                         m_port;
+    @XmlWaveXPath (path = "cluster")
+    private WaveMainCluster             m_waveMainCluster          = new WaveMainCluster ();
+
+    @XmlWaveXPath (path = "ras")
+    private WaveMainRas                 m_waveMainRas              = new WaveMainRas ();
 
     @NonSerializable
     private Vector<String>              m_yinPaths;
@@ -83,26 +87,6 @@ public class WaveMainConfiguration extends WaveConfiguration
     public void setWaveMainSystemManagement (final WaveMainSystemManagement waveMainSystemManagement)
     {
         m_waveMainSystemManagement = waveMainSystemManagement;
-    }
-
-    public boolean getIsSysLogRequired ()
-    {
-        return m_isSysLogRequired;
-    }
-
-    public void setIsSysLogRequired (final boolean isSysLogRequired)
-    {
-        m_isSysLogRequired = isSysLogRequired;
-    }
-
-    public int getPort ()
-    {
-        return m_port;
-    }
-
-    public void setPort (final int port)
-    {
-        m_port = port;
     }
 
     public Vector<String> getYinPaths ()
@@ -225,5 +209,25 @@ public class WaveMainConfiguration extends WaveConfiguration
     public void setProfileFileName (final String profileFileName)
     {
         m_profileFileName = profileFileName;
+    }
+
+    public WaveMainCluster getWaveMainCluster ()
+    {
+        return m_waveMainCluster;
+    }
+
+    public void setWaveMainCluster (final WaveMainCluster waveMainCluster)
+    {
+        m_waveMainCluster = waveMainCluster;
+    }
+
+    public WaveMainRas getWaveMainRas ()
+    {
+        return m_waveMainRas;
+    }
+
+    public void setWaveMainRas (final WaveMainRas waveMainRas)
+    {
+        m_waveMainRas = waveMainRas;
     }
 }
