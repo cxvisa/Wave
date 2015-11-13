@@ -200,6 +200,9 @@ public class WaveResourceEnum extends WaveResourceGeneratorElement
         {
             writer.write ("package " + m_packageName + ";\n");
             writer.write ("\n");
+            writer.write ("import java.util.Map;");
+            writer.write ("import java.util.HashMap;");
+            writer.write ("\n");
             writer.write ("import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;\n");
             writer.write ("\n");
             writer.write ("public enum " + m_waveResourceEnumName + " implements WaveResourceEnumInterface\n");
@@ -259,7 +262,7 @@ public class WaveResourceEnum extends WaveResourceGeneratorElement
             writer.write ("    private int    m_effectiveResourceId;\n");
             writer.write ("    private String m_name;\n");
             writer.write ("    private String m_value;\n");
-
+            
             writer.write ("\n");
 
             writer.write ("    " + m_waveResourceEnumName + " (final int effectiveResourceId, final String name, final String value)\n");
@@ -289,8 +292,17 @@ public class WaveResourceEnum extends WaveResourceGeneratorElement
             writer.write ("    {\n");
             writer.write ("        return (m_value);\n");
             writer.write ("    }\n");
+            writer.write ("\n");
 
-            writer.write ("}\n\n");
+            writer.write ("    @Override\n");
+            writer.write ("    public String toString ()\n");
+            writer.write ("    {\n");
+            writer.write ("        return (m_name);\n");
+            writer.write ("    }\n");
+
+            writer.write ("}\n");
+
+            writer.write ("\n");
         }
         catch (IOException ioException)
         {
@@ -301,5 +313,10 @@ public class WaveResourceEnum extends WaveResourceGeneratorElement
     public void setDestinationPath (final String destinationPath)
     {
         m_destinationPath = destinationPath;
+    }
+
+    public Vector<WaveResource> getWaveResources ()
+    {
+        return (m_waveResources);
     }
 }

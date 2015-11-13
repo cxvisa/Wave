@@ -9,27 +9,36 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;
 
 public class WaveResourcesRepository
 {
-    private static WaveResourcesRepository s_waveResourcesRepository = new WaveResourcesRepository ();
+    private static WaveResourcesRepository               s_waveResourcesRepository = new WaveResourcesRepository ();
 
-    private Map<Integer, String>          m_resourceIdToValueMap;
-    private Map<Integer, Vector<Integer>> m_resourceEnumToResourceIdsMap;
-    private Map<Integer, String>          m_resourceIdToNameMap;
-    private Map<String, Integer>          m_nameToResourceIdMap;
+    private final Map<Integer, String>                   m_resourceIdToValueMap;
+    private final Map<Integer, Vector<Integer>>          m_resourceEnumToResourceIdsMap;
+    private final Map<Integer, Integer>                  m_resourceIdToResourceEnumMap;
+    private final Map<Integer, String>                   m_resourceIdToNameMap;
+    private final Map<String, Integer>                   m_nameToResourceIdMap;
+    private final Map<Integer, String>                   m_resourceEnumIdToNameMap;
+    private final Map<String, Integer>                   m_resourceEnumNameToIdMap;
+    private final Map<String, WaveResourceEnumInterface> m_resourceIdNameToWaveResourceEnumInterfaceMap;
 
     private WaveResourcesRepository ()
     {
         m_resourceIdToValueMap = new HashMap<Integer, String> ();
         m_resourceEnumToResourceIdsMap = new HashMap<Integer, Vector<Integer>> ();
+        m_resourceIdToResourceEnumMap = new HashMap<Integer, Integer> ();
         m_resourceIdToNameMap = new HashMap<Integer, String> ();
         m_nameToResourceIdMap = new HashMap<String, Integer> ();
+        m_resourceEnumIdToNameMap = new HashMap<Integer, String> ();
+        m_resourceEnumNameToIdMap = new HashMap<String, Integer> ();
+        m_resourceIdNameToWaveResourceEnumInterfaceMap = new HashMap<String, WaveResourceEnumInterface> ();
     }
 
     public static WaveResourcesRepository getInstance ()
     {
-        if (null != s_waveResourcesRepository)
+        if (null == s_waveResourcesRepository)
         {
             s_waveResourcesRepository = new WaveResourcesRepository ();
         }
@@ -46,6 +55,12 @@ public class WaveResourcesRepository
         m_nameToResourceIdMap.put (resourceName, resourceId);
     }
 
+    public void addResourceEnum (final String resourceEnumName, final int resourceEnumId)
+    {
+        m_resourceEnumIdToNameMap.put (new Integer (resourceEnumId), resourceEnumName);
+        m_resourceEnumNameToIdMap.put (resourceEnumName, new Integer (resourceEnumId));
+    }
+
     public void addResourceIdToResourceEnum (final int resourceId, final int resourceEnum)
     {
         if (!(m_resourceEnumToResourceIdsMap.containsKey (resourceEnum)))
@@ -54,5 +69,17 @@ public class WaveResourcesRepository
         }
 
         (m_resourceEnumToResourceIdsMap.get (resourceEnum)).add (resourceId);
+
+        m_resourceIdToResourceEnumMap.put (new Integer (resourceId), new Integer (resourceEnum));
+    }
+
+    public void setResourceIdNameToWaveResourceEnumInterface (final String resourceIdName, final WaveResourceEnumInterface waveResourceEnumInterface)
+    {
+        m_resourceIdNameToWaveResourceEnumInterfaceMap.put (resourceIdName, waveResourceEnumInterface);
+    }
+
+    public WaveResourceEnumInterface getWaveResourceEnumInterfaceByResourceIdName (final String resourceIdName)
+    {
+        return (m_resourceIdNameToWaveResourceEnumInterfaceMap.get (resourceIdName));
     }
 }

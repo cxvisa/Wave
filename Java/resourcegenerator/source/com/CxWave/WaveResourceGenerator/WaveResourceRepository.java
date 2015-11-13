@@ -154,6 +154,14 @@ public class WaveResourceRepository
             writer.write ("        return (m_value);\n");
             writer.write ("    }\n");
 
+            writer.write ("\n");
+
+            writer.write ("    @Override\n");
+            writer.write ("    public String toString ()\n");
+            writer.write ("    {\n");
+            writer.write ("        return (m_name);\n");
+            writer.write ("    }\n");
+
             writer.write ("}\n\n");
         }
         catch (IOException ioException)
@@ -213,6 +221,16 @@ public class WaveResourceRepository
                 }
             }
 
+            for (WaveResourceEnum waveResourceEnum : m_allWaveResourceEnums)
+            {
+                int lengthForWaveResourceEnumName = (waveResourceEnum.getWaveResourceEnumName ()).length ();
+
+                if (maximumLengthForWaveResourceName < lengthForWaveResourceEnumName)
+                {
+                    maximumLengthForWaveResourceName = lengthForWaveResourceEnumName;
+                }
+            }
+
             writer.write ("    private " + m_waveResourcesRespositoryPopulatorEnumName + " ()\n");
             writer.write ("    {\n");
             writer.write ("    }\n");
@@ -239,10 +257,52 @@ public class WaveResourceRepository
                     paddingString = new String ("");
                 }
 
-                writer.write ("        waveResourcesRepository.addResourceId (\"");
+                writer.write ("        waveResourcesRepository.addResourceId   (\"");
                 writer.write (waveResource.getWaveResourceName () + "\", ");
                 writer.write (paddingString);
                 writer.write ((String.format ("0x%08X", waveResource.getEffectiveResourceId ())) + ", \"" + waveResource.getWaveResourceValue () + "\");\n");
+            }
+
+            for (WaveResourceEnum waveResourceEnum : m_allWaveResourceEnums)
+            {
+                int    waveResourceNamePaddingSize = maximumLengthForWaveResourceName - (waveResourceEnum.getWaveResourceEnumName ()).length ();
+                String paddingString               = null;
+
+                if (0 < waveResourceNamePaddingSize)
+                {
+                    paddingString = new String (new char[waveResourceNamePaddingSize]);
+                    paddingString = paddingString.replace ('\0', ' ');
+                }
+                else
+                {
+                    paddingString = new String ("");
+                }
+
+                writer.write ("\n");
+
+                writer.write ("        waveResourcesRepository.addResourceEnum (\"");
+                writer.write (waveResourceEnum.getWaveResourceEnumName () + "\", ");
+                writer.write (paddingString);
+                writer.write ((String.format ("0x%08X", waveResourceEnum.getEffectiveResourceId ())) + ");\n");
+
+                Vector<WaveResource> waveResourcesForEnum = waveResourceEnum.getWaveResources ();
+
+                writer.write ("\n");
+
+                for (WaveResource waveResourceForEnum : waveResourcesForEnum)
+                {
+                    writer.write ("        waveResourcesRepository.addResourceIdToResourceEnum (");
+                    writer.write ((String.format ("0x%08X", waveResourceForEnum.getEffectiveResourceId ())) + ", ");
+                    writer.write ((String.format ("0x%08X", waveResourceEnum.getEffectiveResourceId ())) + ");\n");
+                }
+
+                writer.write ("\n");
+
+                for (WaveResource waveResourceForEnum : waveResourcesForEnum)
+                {
+                    writer.write ("        waveResourcesRepository.setResourceIdNameToWaveResourceEnumInterface (");
+                    writer.write ("\"" + waveResourceForEnum.getWaveResourceName () + "\", " + waveResourceEnum.getWaveResourceEnumName () + "." + waveResourceForEnum.getWaveResourceName () + ");\n");
+                }
             }
 
             writer.write ("    }\n");

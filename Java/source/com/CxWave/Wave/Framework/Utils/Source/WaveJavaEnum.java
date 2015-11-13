@@ -19,6 +19,7 @@ public class WaveJavaEnum extends WaveJavaType
     private final String                          m_name;
     private final Map<String, WaveJavaInterface>  m_superInterfaces;
     private final Map<String, WaveJavaAnnotation> m_annotations;
+    private String                                m_typeName;
 
     public WaveJavaEnum (final String name)
     {
@@ -32,6 +33,11 @@ public class WaveJavaEnum extends WaveJavaType
         return m_name;
     }
 
+    public String getTypeName ()
+    {
+        return (m_typeName);
+    }
+
     public void addSuperInterfaces (final Vector<String> superInterfaceNames)
     {
         for (final String superInterfaceName : superInterfaceNames)
@@ -43,6 +49,8 @@ public class WaveJavaEnum extends WaveJavaType
                 WaveAssertUtils.waveAssert (null != waveJavaSuperInterface);
 
                 m_superInterfaces.put (superInterfaceName, waveJavaSuperInterface);
+
+                waveJavaSuperInterface.addChildEnum (this);
             }
         }
     }
@@ -117,6 +125,8 @@ public class WaveJavaEnum extends WaveJavaType
             e.printStackTrace ();
             WaveAssertUtils.waveAssert ();
         }
+
+        m_typeName = reflectionClass.getTypeName ();
 
         final Class<?>[] superInterfaces = reflectionClass.getInterfaces ();
         final Vector<String> superInterfaceNames = new Vector<String> ();

@@ -3,7 +3,9 @@ package com.CxWave.Wave.Framework.Utils.Source;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -18,6 +20,8 @@ public class WaveJavaInterface extends WaveJavaType
     private final Map<String, WaveJavaAnnotation> m_annotations;
     private final Map<String, WaveJavaInterface>  m_childInterfaces;
     private final Map<String, WaveJavaClass>      m_childClasses;
+    private final Map<String, WaveJavaEnum>       m_childEnums;
+    private String                                m_typeName;
 
     public WaveJavaInterface (final String name)
     {
@@ -26,11 +30,17 @@ public class WaveJavaInterface extends WaveJavaType
         m_annotations = new HashMap<String, WaveJavaAnnotation> ();
         m_childInterfaces = new HashMap<String, WaveJavaInterface> ();
         m_childClasses = new HashMap<String, WaveJavaClass> ();
+        m_childEnums = new HashMap<String, WaveJavaEnum> ();
     }
 
     public String getName ()
     {
         return m_name;
+    }
+
+    public String getTypeName ()
+    {
+        return (m_typeName);
     }
 
     public void addSuperInterfaces (final Vector<String> superInterfaceNames)
@@ -112,6 +122,12 @@ public class WaveJavaInterface extends WaveJavaType
     public void addChildClass (final WaveJavaClass waveJavaClass)
     {
         m_childClasses.put (waveJavaClass.getName (), waveJavaClass);
+
+    }
+
+    public void addChildEnum (final WaveJavaEnum waveJavaEnum)
+    {
+        m_childEnums.put (waveJavaEnum.getName (), waveJavaEnum);
     }
 
     @Override
@@ -130,6 +146,8 @@ public class WaveJavaInterface extends WaveJavaType
             e.printStackTrace ();
             WaveAssertUtils.waveAssert ();
         }
+
+        m_typeName = reflectionClass.getTypeName ();
 
         final Class<?>[] superInterfaces = reflectionClass.getInterfaces ();
         final Vector<String> superInterfaceNames = new Vector<String> ();
@@ -150,5 +168,77 @@ public class WaveJavaInterface extends WaveJavaType
         }
 
         addAnnotations (annotationNames);
+    }
+
+    public Set<String> getAllDescendantClasses ()
+    {
+        final Set<String> allDescendantClassesSet = new HashSet<String> ();
+
+        for (final Map.Entry<String, WaveJavaClass> descendant : m_childClasses.entrySet ())
+        {
+            allDescendantClassesSet.add (descendant.getKey ());
+
+            allDescendantClassesSet.addAll ((descendant.getValue ()).getAllDescendants ());
+        }
+
+        for (final Map.Entry<String, WaveJavaInterface> descendantInterface : m_childInterfaces.entrySet ())
+        {
+            allDescendantClassesSet.addAll ((descendantInterface.getValue ()).getAllDescendantClasses ());
+        }
+
+        return (allDescendantClassesSet);
+    }
+
+    public Set<String> getAllDescendantClassesTypeNames ()
+    {
+        final Set<String> allDescendantClassesTypeNamesSet = new HashSet<String> ();
+
+        for (final Map.Entry<String, WaveJavaClass> descendant : m_childClasses.entrySet ())
+        {
+            allDescendantClassesTypeNamesSet.add ((descendant.getValue ()).getTypeName ());
+
+            allDescendantClassesTypeNamesSet.addAll ((descendant.getValue ()).getAllDescendantsTypeNames ());
+        }
+
+        for (final Map.Entry<String, WaveJavaInterface> descendantInterface : m_childInterfaces.entrySet ())
+        {
+            allDescendantClassesTypeNamesSet.addAll ((descendantInterface.getValue ()).getAllDescendantClassesTypeNames ());
+        }
+
+        return (allDescendantClassesTypeNamesSet);
+    }
+
+    public Set<String> getAllDescendantEnums ()
+    {
+        final Set<String> allDescendantEnumsSet = new HashSet<String> ();
+
+        for (final Map.Entry<String, WaveJavaEnum> descendant : m_childEnums.entrySet ())
+        {
+            allDescendantEnumsSet.add (descendant.getKey ());
+        }
+
+        for (final Map.Entry<String, WaveJavaInterface> descendantInterface : m_childInterfaces.entrySet ())
+        {
+            allDescendantEnumsSet.addAll ((descendantInterface.getValue ()).getAllDescendantEnums ());
+        }
+
+        return (allDescendantEnumsSet);
+    }
+
+    public Set<String> getAllDescendantEnumsTypeNames ()
+    {
+        final Set<String> allDescendantEnumsTypeNamesSet = new HashSet<String> ();
+
+        for (final Map.Entry<String, WaveJavaEnum> descendant : m_childEnums.entrySet ())
+        {
+            allDescendantEnumsTypeNamesSet.add ((descendant.getValue ()).getTypeName ());
+        }
+
+        for (final Map.Entry<String, WaveJavaInterface> descendantInterface : m_childInterfaces.entrySet ())
+        {
+            allDescendantEnumsTypeNamesSet.addAll ((descendantInterface.getValue ()).getAllDescendantEnumsTypeNames ());
+        }
+
+        return (allDescendantEnumsTypeNamesSet);
     }
 }

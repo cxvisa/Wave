@@ -85,7 +85,7 @@
            <file-name></file-name>
            <file-size>10MB</file-size>
            <number-of-files>5</number-of-files>
-           <default-level>INFO</default-level>
+           <default-level>TRACE_LEVEL_INFO</default-level>
        </trace>
 
        <log>

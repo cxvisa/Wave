@@ -258,6 +258,82 @@ public class WaveJavaSourceRepository
         return ((getInstance ()).getAllDescendantsForClassInternal (className));
     }
 
+    private Set<String> getAllDescendantClassesForInterfaceInternal (final String interfaceName)
+    {
+        final WaveJavaInterface waveJavaInterface = m_interfaces.get (interfaceName);
+
+        if (null != waveJavaInterface)
+        {
+            return (waveJavaInterface.getAllDescendantClasses ());
+        }
+        else
+        {
+            return (new HashSet<String> ());
+        }
+    }
+
+    public static Set<String> getAllDescendantClassesForInterface (final String interfaceName)
+    {
+        return ((getInstance ()).getAllDescendantClassesForInterfaceInternal (interfaceName));
+    }
+
+    private Set<String> getAllDescendantClassesTypeNamesForInterfaceInternal (final String interfaceName)
+    {
+        final WaveJavaInterface waveJavaInterface = m_interfaces.get (interfaceName);
+
+        if (null != waveJavaInterface)
+        {
+            return (waveJavaInterface.getAllDescendantClassesTypeNames ());
+        }
+        else
+        {
+            return (new HashSet<String> ());
+        }
+    }
+
+    public static Set<String> getAllDescendantClassesTypeNamesForInterface (final String interfaceName)
+    {
+        return ((getInstance ()).getAllDescendantClassesTypeNamesForInterfaceInternal (interfaceName));
+    }
+
+    private Set<String> getAllDescendantEnumsForInterfaceInternal (final String interfaceName)
+    {
+        final WaveJavaInterface waveJavaInterface = m_interfaces.get (interfaceName);
+
+        if (null != waveJavaInterface)
+        {
+            return (waveJavaInterface.getAllDescendantEnums ());
+        }
+        else
+        {
+            return (new HashSet<String> ());
+        }
+    }
+
+    public static Set<String> getAllDescendantEnumsForInterface (final String interfaceName)
+    {
+        return ((getInstance ()).getAllDescendantEnumsForInterfaceInternal (interfaceName));
+    }
+
+    private Set<String> getAllDescendantEnumsTypeNamesForInterfaceInternal (final String interfaceName)
+    {
+        final WaveJavaInterface waveJavaInterface = m_interfaces.get (interfaceName);
+
+        if (null != waveJavaInterface)
+        {
+            return (waveJavaInterface.getAllDescendantEnumsTypeNames ());
+        }
+        else
+        {
+            return (new HashSet<String> ());
+        }
+    }
+
+    public static Set<String> getAllDescendantEnumsTypeNamesForInterface (final String interfaceName)
+    {
+        return ((getInstance ()).getAllDescendantEnumsTypeNamesForInterfaceInternal (interfaceName));
+    }
+
     private Set<String> getAllDescendantsTypeNamesForClassInternal (final String className)
     {
         final WaveJavaClass waveJavaClass = m_classes.get (className);
