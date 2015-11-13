@@ -4,21 +4,23 @@
 
 package com.CxWave.Wave.Framework.Core.Configuration;
 
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 
 public class WaveMainSystemManagementWyserYang extends SerializableObject
 {
     @XmlWaveXPath (path = "yin-path")
-    private String m_yinPath;
+    private Vector<String> m_yinPaths;
 
-    public String getYinPath ()
+    public Vector<String> getYinPaths ()
     {
-        return m_yinPath;
+        return m_yinPaths;
     }
 
-    public void setYinPath (final String yinPath)
+    public void setYinPath (final Vector<String> yinPaths)
     {
-        m_yinPath = yinPath;
+        m_yinPaths = yinPaths;
     }
 }

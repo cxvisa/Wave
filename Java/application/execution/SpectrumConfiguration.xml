@@ -64,6 +64,8 @@
         <wyser>
             <yang>
                 <yin-path>wyser</yin-path>
+                <yin-path>wyser.yang</yin-path>
+                <yin-path>wyser.yin</yin-path>
             </yang>
         </wyser>
     </system-management>

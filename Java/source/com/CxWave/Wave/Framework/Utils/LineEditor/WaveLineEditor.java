@@ -111,9 +111,18 @@ public class WaveLineEditor
 
         while (true)
         {
+            try
+            {
+                Thread.sleep (50);
+            }
+            catch (final InterruptedException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+
             if (0 != (numberOfCharactersAvailableToRead = (getNumberOfCharactersAvailableToRead ())))
             {
-                if (3 == numberOfCharactersAvailableToRead)
+                if (3 <= numberOfCharactersAvailableToRead)
                 {
                     c1 = getchar ();
                     c2 = getchar ();
