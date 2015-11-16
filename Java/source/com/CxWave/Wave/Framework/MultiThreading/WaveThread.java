@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.MultiThreading;
@@ -16,8 +14,12 @@ import java.util.Map;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class WaveThread extends Thread
 {
@@ -56,60 +58,77 @@ public class WaveThread extends Thread
 
     private boolean                                     m_terminateThread;
 
-    private static final long                           s_defaultStackSize                          = 256 * 1024; // 256 KB
+    private static final long                           s_defaultStackSize = 256 * 1024;                                                                                                                                                                                                                                                           // 256
+                                                                                                                                                                                                                                                                                                                                                   // KB
 
-    public WaveThread (final String name)
+    public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
         super (null, null, name, s_defaultStackSize);
 
-        construct (0);
+        construct (waveServiceId);
+
+        initializeHoldCounts ();
     }
 
-    public WaveThread (final String name, final long stackSize)
+    public WaveThread (final String name, final UI32 stackSize, final WaveServiceId waveServiceId)
     {
-        super (null, null, name, stackSize);
+        super (null, null, name, stackSize.getValue ());
 
-        construct (0);
+        construct (waveServiceId);
+
+        initializeHoldCounts ();
     }
 
-    private void construct (final long waveServiceId)
+    public WaveThread (final String name, final UI32 stackSize, final WaveServiceId waveServiceId, final WaveObjectManager waveObjectManager)
+    {
+        super (null, null, name, stackSize.getValue ());
+
+        construct (waveServiceId);
+
+        addWaveObjectManager (waveObjectManager);
+
+        initializeHoldCounts ();
+    }
+
+    private void construct (final WaveServiceId waveServiceId)
     {
         m_waveServiceId = new WaveServiceId (waveServiceId);
 
-        m_messages                                  = new WaveMessageQueue<WaveMessage> ();
-        m_messageResponses                          = new WaveMessageQueue<WaveMessage> ();
-        m_highPriorityMessages                      = new WaveMessageQueue<WaveMessage> ();
-        m_highPriorityMessageResponses              = new WaveMessageQueue<WaveMessage> ();
-        m_events                                    = new WaveMessageQueue<WaveMessage> ();
-        m_timerExpirations                          = new WaveMessageQueue<WaveMessage> ();
-        m_timerExpirationResponses                  = new WaveMessageQueue<WaveMessage> ();
-        m_frameworkMessages                         = new WaveMessageQueue<WaveMessage> ();
-        m_frameworkMessageResponses                 = new WaveMessageQueue<WaveMessage> ();
-        m_frameworkResumeMessages                   = new WaveMessageQueue<WaveMessage> ();
+        m_messages = new WaveMessageQueue<WaveMessage> ();
+        m_messageResponses = new WaveMessageQueue<WaveMessage> ();
+        m_highPriorityMessages = new WaveMessageQueue<WaveMessage> ();
+        m_highPriorityMessageResponses = new WaveMessageQueue<WaveMessage> ();
+        m_events = new WaveMessageQueue<WaveMessage> ();
+        m_timerExpirations = new WaveMessageQueue<WaveMessage> ();
+        m_timerExpirationResponses = new WaveMessageQueue<WaveMessage> ();
+        m_frameworkMessages = new WaveMessageQueue<WaveMessage> ();
+        m_frameworkMessageResponses = new WaveMessageQueue<WaveMessage> ();
+        m_frameworkResumeMessages = new WaveMessageQueue<WaveMessage> ();
 
-        m_gateKeeper                                = new WaveMutex ();
-        m_wakeupCaller                              = new WaveMutex ();
-        m_wakeupCondition                           = new WaveCondition (m_wakeupCaller);
+        m_gateKeeper = new WaveMutex ();
+        m_wakeupCaller = new WaveMutex ();
+        m_wakeupCondition = new WaveCondition (m_wakeupCaller);
 
-        m_messagesMutex                             = new WaveMutex ();
-        m_messagesHoldCount                         = 0;
-        m_highPriorityMessagesMutex                 = new WaveMutex ();
-        m_highPriorityMessagesHoldCount             = 0;
-        m_eventsMutex                               = new WaveMutex ();
-        m_eventsHoldCount                           = 0;
-        m_frameworkMessagesMutex                    = new WaveMutex ();
-        m_frameworkMessagesHoldCount                = 0;
-        m_frameworkResumeMessagesMutex              = new WaveMutex ();
-        m_frameworkResumeMessagesHoldCount          = 0;
+        m_messagesMutex = new WaveMutex ();
+        m_messagesHoldCount = 0;
+        m_highPriorityMessagesMutex = new WaveMutex ();
+        m_highPriorityMessagesHoldCount = 0;
+        m_eventsMutex = new WaveMutex ();
+        m_eventsHoldCount = 0;
+        m_frameworkMessagesMutex = new WaveMutex ();
+        m_frameworkMessagesHoldCount = 0;
+        m_frameworkResumeMessagesMutex = new WaveMutex ();
+        m_frameworkResumeMessagesHoldCount = 0;
 
-        m_waveObjectManagers                        = new ArrayList<WaveObjectManager> ();
+        m_waveObjectManagers = new ArrayList<WaveObjectManager> ();
 
-        m_waveThreadIdToWaveObjectManagerMap        = new HashMap<WaveThreadId, WaveObjectManager> ();
-        m_waveThreadIdToWaveObjectManagerMapMutex   = new WaveMutex ();
+        m_waveThreadIdToWaveObjectManagerMap = new HashMap<WaveThreadId, WaveObjectManager> ();
+        m_waveThreadIdToWaveObjectManagerMapMutex = new WaveMutex ();
 
-        m_terminateThread                           = false;
+        m_terminateThread = false;
     }
 
+    @Override
     public void run ()
     {
 
@@ -119,8 +138,10 @@ public class WaveThread extends Thread
     {
         if (false == (m_frameworkResumeMessages.isEmpty ()))
         {
-            // This queue shall not be affected by the holdall call and hence we do not need to empty any mutex locking though these are messages (not responses).
-            // Replies for these messages will be submitted as normal framework messages and hence there is no corresponding reponses queue.
+            // This queue shall not be affected by the holdall call and hence we do not need to empty any mutex locking though
+            // these are messages (not responses).
+            // Replies for these messages will be submitted as normal framework messages and hence there is no corresponding
+            // responses queue.
 
             return (m_frameworkResumeMessages.removeAndGetFromFront ());
         }
@@ -134,7 +155,7 @@ public class WaveThread extends Thread
         {
             if (WAVE_MUTEX_SUCCESS == (m_frameworkMessagesMutex.tryLockWithStatus ()))
             {
-                WaveMessage waveMessage = m_frameworkMessages.removeAndGetFromFront ();
+                final WaveMessage waveMessage = m_frameworkMessages.removeAndGetFromFront ();
 
                 m_frameworkMessagesMutex.unlock ();
 
@@ -161,7 +182,7 @@ public class WaveThread extends Thread
         {
             if (WAVE_MUTEX_SUCCESS == (m_highPriorityMessagesMutex.tryLockWithStatus ()))
             {
-                WaveMessage waveMessage = m_highPriorityMessages.removeAndGetFromFront ();
+                final WaveMessage waveMessage = m_highPriorityMessages.removeAndGetFromFront ();
 
                 m_highPriorityMessagesMutex.unlock ();
 
@@ -178,7 +199,7 @@ public class WaveThread extends Thread
         {
             if (WAVE_MUTEX_SUCCESS == (m_eventsMutex.tryLockWithStatus ()))
             {
-                WaveMessage waveMessage = m_events.removeAndGetFromFront ();
+                final WaveMessage waveMessage = m_events.removeAndGetFromFront ();
 
                 m_eventsMutex.unlock ();
 
@@ -190,7 +211,7 @@ public class WaveThread extends Thread
         {
             if (WAVE_MUTEX_SUCCESS == (m_messagesMutex.tryLockWithStatus ()))
             {
-                WaveMessage waveMessage = m_messages.removeAndGetFromFront ();
+                final WaveMessage waveMessage = m_messages.removeAndGetFromFront ();
 
                 m_messagesMutex.unlock ();
 
@@ -199,5 +220,140 @@ public class WaveThread extends Thread
         }
 
         return (null);
+    }
+
+    private void addWaveObjectManager (final WaveObjectManager waveObjectManager)
+    {
+        m_waveObjectManagers.add (waveObjectManager);
+    }
+
+    private void initializeHoldCounts ()
+    {
+        m_messagesHoldCount = 0;
+        m_highPriorityMessagesHoldCount = 0;
+        m_eventsHoldCount = 0;
+        m_frameworkMessagesHoldCount = 0;
+    }
+
+    public void holdMessages ()
+    {
+        if (0 == m_messagesHoldCount)
+        {
+            m_messagesMutex.lock ();
+        }
+
+        m_messagesHoldCount++;
+    }
+
+    public void holdHighPriorityMessages ()
+    {
+        if (0 == m_highPriorityMessagesHoldCount)
+        {
+            m_highPriorityMessagesMutex.lock ();
+        }
+
+        m_highPriorityMessagesHoldCount++;
+    }
+
+    public void holdEvents ()
+    {
+        if (0 == m_eventsHoldCount)
+        {
+            m_eventsMutex.lock ();
+        }
+
+        m_eventsHoldCount++;
+    }
+
+    public void holdFrameworkMessages ()
+    {
+        if (0 == m_frameworkMessagesHoldCount)
+        {
+            m_frameworkMessagesMutex.lock ();
+        }
+
+        m_frameworkMessagesHoldCount++;
+    }
+
+    public void holdAll ()
+    {
+        holdMessages ();
+        holdHighPriorityMessages ();
+        holdEvents ();
+        holdFrameworkMessages ();
+    }
+
+    public void unholdMessages ()
+    {
+        if (0 == m_messagesHoldCount)
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "unholdMessages: trying to unhold without hold.");
+            WaveAssertUtils.waveAssert ();
+        }
+
+        m_messagesHoldCount--;
+
+        if (0 == m_messagesHoldCount)
+        {
+            m_messagesMutex.unlock ();
+        }
+    }
+
+    void unholdHighPriorityMessages ()
+    {
+        if (0 == m_highPriorityMessagesHoldCount)
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "unholdHighPriorityMessages: trying to unhold without hold.");
+            WaveAssertUtils.waveAssert ();
+        }
+        m_highPriorityMessagesHoldCount--;
+
+        if (0 == m_highPriorityMessagesHoldCount)
+        {
+            m_highPriorityMessagesMutex.unlock ();
+        }
+    }
+
+    void unholdEvents ()
+    {
+        if (0 == m_eventsHoldCount)
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "unholdEvents: trying to unhold without hold.");
+            WaveAssertUtils.waveAssert ();
+        }
+        m_eventsHoldCount--;
+
+        if (0 == m_eventsHoldCount)
+        {
+            m_eventsMutex.unlock ();
+        }
+    }
+
+    void unholdFrameworkMessages ()
+    {
+        if (0 == m_frameworkMessagesHoldCount)
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "unholdFrameworkMessages: trying to unhold without hold.");
+            WaveAssertUtils.waveAssert ();
+        }
+        m_frameworkMessagesHoldCount--;
+
+        if (0 == m_frameworkMessagesHoldCount)
+        {
+            m_frameworkMessagesMutex.unlock ();
+        }
+    }
+
+    void unholdAll ()
+    {
+        unholdMessages ();
+        unholdHighPriorityMessages ();
+        unholdEvents ();
+        unholdFrameworkMessages ();
+    }
+
+    public static UI32 getDefaultStackSize ()
+    {
+        return (new UI32 (s_defaultStackSize));
     }
 }

@@ -7,16 +7,20 @@ package com.CxWave.Wave.Framework.Core;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
-    private static WaveFrameworkObjectManager s_waveFrameworkObjectManager = new WaveFrameworkObjectManager ();
+    private static WaveFrameworkObjectManager s_waveFrameworkObjectManager           = new WaveFrameworkObjectManager ();
 
-    private static String s_frameworkConfigurationFile           = null;
-    private static String s_frameworkConfigurationBackupFile     = null;
-    private static String s_frameworkGlobalConfigurationFile     = null;
-    private static String s_frameworkGlobalConfigurationTempFile = null;
-    private static String s_lockFileForConfigurationFile         = null;
+    private static String                     s_frameworkConfigurationFile           = null;
+    private static String                     s_frameworkConfigurationBackupFile     = null;
+    private static String                     s_frameworkGlobalConfigurationFile     = null;
+    private static String                     s_frameworkGlobalConfigurationTempFile = null;
+    private static String                     s_lockFileForConfigurationFile         = null;
+
+    private static boolean                    s_isFrameworkInstantiated              = false;
+    private static WaveMutex                  s_instantiationMutex                   = new WaveMutex ();
 
     private WaveFrameworkObjectManager ()
     {
@@ -65,5 +69,27 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public static void setLockFileForConfigurationFile (final String lockFileForConfigurationFile)
     {
         s_lockFileForConfigurationFile = lockFileForConfigurationFile;
+    }
+
+    public static boolean getIsInstantiated ()
+    {
+        boolean isInstantiated = false;
+
+        s_instantiationMutex.lock ();
+
+        isInstantiated = s_isFrameworkInstantiated;
+
+        s_instantiationMutex.unlock ();
+
+        return (isInstantiated);
+    }
+
+    private static void setIsInstantiated ()
+    {
+        s_instantiationMutex.lock ();
+
+        s_isFrameworkInstantiated = true;
+
+        s_instantiationMutex.unlock ();
     }
 }

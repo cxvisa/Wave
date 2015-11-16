@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.ObjectModel;
@@ -9,9 +7,18 @@ package com.CxWave.Wave.Framework.ObjectModel;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.Type.UI32;
+
 public class WaveLocalObjectManager extends WaveObjectManager
 {
     static private Map<WaveServiceId, WaveServiceId> s_localWaveServices = new HashMap<WaveServiceId, WaveServiceId> ();
+
+    public WaveLocalObjectManager (final String waveLocalObjectManagerName, final UI32 stackSize)
+    {
+        super (waveLocalObjectManagerName, stackSize);
+
+        s_localWaveServices.put (getServiceId (), getServiceId ());
+    }
 
     public WaveLocalObjectManager (final String waveLocalObjectManagerName)
     {
@@ -20,6 +27,7 @@ public class WaveLocalObjectManager extends WaveObjectManager
         s_localWaveServices.put (getServiceId (), getServiceId ());
     }
 
+    @Override
     protected boolean isALocalWaveService ()
     {
         return (true);

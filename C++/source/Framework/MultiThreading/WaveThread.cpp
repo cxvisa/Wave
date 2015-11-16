@@ -95,7 +95,7 @@ WaveThreadStatus WaveThread::start ()
     UI32          numberOfWaveObjectManagers = m_pWaveObjectManagers.size ();
     WaveThreadId thisThreadId               = pthread_self ();
 
-    waveAssert (1 == numberOfWaveObjectManagers, __FILE__, __LINE__); // For now, enfore that there is exactly on Wave OM per thread.
+    waveAssert (1 == numberOfWaveObjectManagers, __FILE__, __LINE__); // For now, enforce that there is exactly on Wave OM per thread.
 
     while (true)
     {
