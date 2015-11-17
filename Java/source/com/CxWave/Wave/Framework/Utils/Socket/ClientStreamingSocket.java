@@ -13,7 +13,7 @@ import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
-public class ClientStreamingSocket
+public class ClientStreamingSocket implements StreamingSocket
 {
     private Socket m_socket    = null;
     private String m_host      = null;
@@ -33,6 +33,11 @@ public class ClientStreamingSocket
         try
         {
             m_socket = new Socket (host, port.getValue ());
+
+            setReuseAddress ();
+            setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
+            setTcpNoDelay ();
+            setKeepAlive ();
         }
         catch (final IOException e)
         {
