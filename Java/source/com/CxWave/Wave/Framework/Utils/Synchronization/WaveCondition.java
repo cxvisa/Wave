@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc             *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Utils.Synchronization;
@@ -10,10 +8,10 @@ import java.util.concurrent.locks.Condition;
 
 public class WaveCondition
 {
-    private WaveMutex m_waveMutex;
-    private Condition m_condition;
+    private final WaveMutex m_waveMutex;
+    private Condition       m_condition;
 
-    public WaveCondition (WaveMutex waveMutex)
+    public WaveCondition (final WaveMutex waveMutex)
     {
         m_waveMutex = waveMutex;
 
@@ -27,21 +25,21 @@ public class WaveCondition
         }
     }
 
-    WaveConditionStatus awaitUninterruptibly ()
+    public WaveConditionStatus awaitUninterruptibly ()
     {
         m_condition.awaitUninterruptibly ();
 
         return (WaveConditionStatus.WAVE_CONDITION_SUCCESS);
     }
 
-    WaveConditionStatus signal ()
+    public WaveConditionStatus signal ()
     {
         m_condition.signal ();
 
         return (WaveConditionStatus.WAVE_CONDITION_SUCCESS);
     }
 
-    WaveConditionStatus signalAll ()
+    public WaveConditionStatus signalAll ()
     {
         m_condition.signalAll ();
 

@@ -11,7 +11,7 @@ import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
-    private static WaveFrameworkObjectManager s_waveFrameworkObjectManager           = new WaveFrameworkObjectManager ();
+    private static WaveFrameworkObjectManager s_waveFrameworkObjectManager;
 
     private static String                     s_frameworkConfigurationFile           = null;
     private static String                     s_frameworkConfigurationBackupFile     = null;
@@ -25,6 +25,10 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private WaveFrameworkObjectManager ()
     {
         super (getServiceName ());
+
+        setIsInstantiated ();
+
+        setIsEnabled (true);
     }
 
     public static String getServiceName ()
@@ -32,7 +36,7 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         return ("Wave Framework");
     }
 
-    public WaveFrameworkObjectManager getInstance ()
+    public static WaveFrameworkObjectManager getInstance ()
     {
         if (null == s_waveFrameworkObjectManager)
         {

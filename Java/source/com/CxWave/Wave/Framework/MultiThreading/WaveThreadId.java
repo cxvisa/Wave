@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.MultiThreading;
@@ -59,10 +57,28 @@ public class WaveThreadId
 
         int result = 0x9101;
 
-        int hash = (int) (m_threadId ^ (m_threadId >>> 32));
+        final int hash = (int) (m_threadId ^ (m_threadId >>> 32));
 
-        result = 37 * result + hash;
+        result = (37 * result) + hash;
 
         return (result);
+    }
+
+    @Override
+    public boolean equals (final Object object)
+    {
+        if (null == object)
+        {
+            return (false);
+        }
+
+        if (!(object instanceof WaveThreadId))
+        {
+            return (false);
+        }
+
+        final WaveThreadId waveThreadId = (WaveThreadId) object;
+
+        return (m_threadId == waveThreadId.m_threadId);
     }
 }

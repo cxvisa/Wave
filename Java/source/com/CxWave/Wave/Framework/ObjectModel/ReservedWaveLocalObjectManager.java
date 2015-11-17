@@ -5,16 +5,20 @@
 package com.CxWave.Wave.Framework.ObjectModel;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class ReservedWaveLocalObjectManager extends WaveLocalObjectManager
 {
-    private static ReservedWaveLocalObjectManager s_reservedWaveLocalObjectManager = null;
+    private static ReservedWaveLocalObjectManager s_reservedWaveLocalObjectManager      = null;
+    private static WaveMutex                      s_reservedWaveLocalObjectManagerMutex = new WaveMutex ();
 
     private ReservedWaveLocalObjectManager ()
     {
         super (getClassName ());
+
+        System.out.printf ("1111111111111111\n");
     }
 
     public static String getClassName ()
@@ -24,10 +28,14 @@ public class ReservedWaveLocalObjectManager extends WaveLocalObjectManager
 
     public static ReservedWaveLocalObjectManager getInstance ()
     {
+        s_reservedWaveLocalObjectManagerMutex.lock ();
+
         if (null == s_reservedWaveLocalObjectManager)
         {
             s_reservedWaveLocalObjectManager = new ReservedWaveLocalObjectManager ();
         }
+
+        s_reservedWaveLocalObjectManagerMutex.unlock ();
 
         WaveAssertUtils.waveAssert (null != s_reservedWaveLocalObjectManager);
 

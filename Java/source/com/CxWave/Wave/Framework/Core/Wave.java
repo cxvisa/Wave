@@ -39,11 +39,6 @@ public class Wave
 
         FrameworkToolKit.setWaveManagementInterfaceRole (WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER);
 
-        // Set if the database is to be enabled.
-
-        DatabaseObjectManager.setIsDatabaseEnabled ((waveMainConfiguration.getDatabase ()).getEnable ());
-        DatabaseObjectManager.setDatabasePort ((waveMainConfiguration.getDatabase ()).getPort ());
-
         // Initialize Framework ToolKit.
 
         FrameworkToolKit.initialize ();
@@ -51,6 +46,15 @@ public class Wave
         // Initialize time zone information
 
         TimeZoneToolKit.initialize ();
+
+        // WaveFrameworkObjectManager must be the first one to be created.
+
+        WaveFrameworkObjectManager.getInstance ();
+
+        // Set if the database is to be enabled.
+
+        DatabaseObjectManager.setIsDatabaseEnabled ((waveMainConfiguration.getDatabase ()).getEnable ());
+        DatabaseObjectManager.setDatabasePort ((waveMainConfiguration.getDatabase ()).getPort ());
 
         // Setup the System Management;
 

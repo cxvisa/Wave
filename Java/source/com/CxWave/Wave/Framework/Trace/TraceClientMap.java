@@ -10,18 +10,19 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class TraceClientMap
 {
-    private Map<TraceClientId, TraceLevel> m_traceClientsAndLevels;
-    private Map<TraceClientId, String>     m_traceClientsAndNames;
-    private TraceClientId                  m_nextAvailableTraceClientId;
+    private final Map<TraceClientId, TraceLevel> m_traceClientsAndLevels;
+    private final Map<TraceClientId, String>     m_traceClientsAndNames;
+    private final TraceClientId                  m_nextAvailableTraceClientId;
 
-    private WaveMutex m_traceClientMapMutex;
+    private final WaveMutex                      m_traceClientMapMutex;
 
-    private static final TraceClientMap s_traceClientMap = new TraceClientMap ();
+    private static final TraceClientMap          s_traceClientMap = new TraceClientMap ();
 
     private TraceClientMap ()
     {
@@ -37,7 +38,7 @@ public class TraceClientMap
     {
         m_traceClientMapMutex.lock ();
 
-        boolean isKnown = m_traceClientsAndLevels.containsKey (traceClientId);
+        final boolean isKnown = m_traceClientsAndLevels.containsKey (traceClientId);
 
         m_traceClientMapMutex.unlock ();
 
@@ -48,7 +49,7 @@ public class TraceClientMap
     {
         m_traceClientMapMutex.lock ();
 
-        boolean isKnown = m_traceClientsAndNames.containsValue (traceClientName);
+        final boolean isKnown = m_traceClientsAndNames.containsValue (traceClientName);
 
         m_traceClientMapMutex.unlock ();
 
@@ -63,6 +64,8 @@ public class TraceClientMap
 
         if (m_traceClientsAndNames.containsValue (traceClientName))
         {
+            DebugUtils.prettyPrint (m_traceClientsAndNames.keySet ());
+
             m_traceClientMapMutex.unlock ();
 
             WaveAssertUtils.waveAssert ();
@@ -152,7 +155,7 @@ public class TraceClientMap
     {
         m_traceClientMapMutex.lock ();
 
-        for (Map.Entry<TraceClientId, TraceLevel> entry : m_traceClientsAndLevels.entrySet ())
+        for (final Map.Entry<TraceClientId, TraceLevel> entry : m_traceClientsAndLevels.entrySet ())
         {
             traceClients.add (entry.getKey ());
             traceLevels.add (entry.getValue ());
@@ -165,7 +168,7 @@ public class TraceClientMap
     {
         m_traceClientMapMutex.lock ();
 
-        for (Map.Entry<TraceClientId, TraceLevel> entry : m_traceClientsAndLevels.entrySet ())
+        for (final Map.Entry<TraceClientId, TraceLevel> entry : m_traceClientsAndLevels.entrySet ())
         {
             traceClientsAndLevels.put (entry.getKey (), entry.getValue ());
         }

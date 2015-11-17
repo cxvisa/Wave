@@ -56,10 +56,10 @@ public class WaveThread extends Thread
     private static Map<WaveThreadId, WaveObjectManager> m_waveThreadIdToWaveObjectManagerMap;
     private static WaveMutex                            m_waveThreadIdToWaveObjectManagerMapMutex;
 
-    private boolean                                     m_terminateThread;
+    private boolean                                     m_terminateThread  = false;
 
-    private static final long                           s_defaultStackSize = 256 * 1024;                                                                                                                                                                                                                                                           // 256
-                                                                                                                                                                                                                                                                                                                                                   // KB
+    private static final long                           s_defaultStackSize = 256 * 1024;                                                                                                                                                                                                                                                                                                                       // 256
+                                                                                                                                                                                                                                                                                                                                                                                                               // KB
 
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
@@ -131,7 +131,37 @@ public class WaveThread extends Thread
     @Override
     public void run ()
     {
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_SUCCESS, "Successfully started a Wavethread.");
 
+        WaveMessage waveMessage = null;
+
+        while (true)
+        {
+            if (true == m_terminateThread)
+            {
+                break;
+            }
+
+            m_gateKeeper.lock ();
+
+            waveMessage = getNextMessageToProcess ();
+
+            if (null == waveMessage)
+            {
+                m_wakeupCaller.lock ();
+                m_gateKeeper.unlock ();
+                m_wakeupCondition.awaitUninterruptibly ();
+                m_wakeupCaller.unlock ();
+            }
+            else
+            {
+                m_gateKeeper.unlock ();
+
+                final WaveObjectManager waveObjectManager = null;
+
+                System.out.printf ("Received a message ... :-)");
+            }
+        }
     }
 
     WaveMessage getNextMessageToProcess ()

@@ -169,8 +169,8 @@ public class WaveObjectManager extends WaveElement
     private WaveMutex                                                              m_responsesMapMutex;
     private WaveMutex                                                              m_sendReplyMutexForResponseMap;
     private Vector<WaveWorker>                                                     m_workers;
-    private boolean                                                                m_isEnabled;
-    private WaveMutex                                                              m_isEnabledMutex;
+    private boolean                                                                m_isEnabled                  = false;
+    private final WaveMutex                                                        m_isEnabledMutex             = new WaveMutex ();
     private final TraceClientId                                                    m_traceClientId;
     private final WaveServiceMode                                                  m_waveServiceMode;
 
@@ -198,6 +198,10 @@ public class WaveObjectManager extends WaveElement
         s_waveObjectManagerMutex.unlock ();
 
         final WaveThread associatedWaveThread = new WaveThread (m_name, stackSize, m_serviceId);
+
+        m_associatedWaveThread = associatedWaveThread;
+
+        m_associatedWaveThread.start ();
     }
 
     protected WaveObjectManager (final String waveObjectManagerName)
@@ -208,9 +212,10 @@ public class WaveObjectManager extends WaveElement
 
         if (!(canInstantiateServiceAtThisTime (waveObjectManagerName)))
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.WaveObjectManager : Please make sure that the WaveFrameworkObjectManager is the first Object Manager that gets instantated.");
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "                                      Trying to instantiate Service : %s", waveObjectManagerName);
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "CANOT CONTINUE.  EXITING ...");
+            System.err.printf ("WaveObjectManager.WaveObjectManager : Please make sure that the WaveFrameworkObjectManager is the first Object Manager that gets instantated.\n");
+            System.err.printf ("                                      Trying to instantiate Service : %s\n", waveObjectManagerName);
+            System.err.printf ("CANOT CONTINUE.  EXITING ...\n");
+
             WaveAssertUtils.waveAssert ();
         }
 
@@ -222,6 +227,11 @@ public class WaveObjectManager extends WaveElement
         s_waveObjectManagerMutex.unlock ();
 
         final WaveThread associatedWaveThread = new WaveThread (m_name, WaveThread.getDefaultStackSize (), m_serviceId);
+
+        m_associatedWaveThread = associatedWaveThread;
+
+        m_associatedWaveThread.start ();
+
     }
 
     public WaveServiceId getServiceId ()
@@ -308,5 +318,26 @@ public class WaveObjectManager extends WaveElement
                 WaveAssertUtils.waveAssert ();
             }
         }
+    }
+
+    public boolean getIsEnabled ()
+    {
+        boolean isEnabled = false;
+
+        m_isEnabledMutex.lock ();
+
+        isEnabled = m_isEnabled;
+
+        m_isEnabledMutex.unlock ();
+
+        return (isEnabled);
+    }
+
+    public void setIsEnabled (final boolean isEnabled)
+    {
+        m_isEnabledMutex.lock ();
+
+        m_isEnabled = isEnabled;
+        m_isEnabledMutex.unlock ();
     }
 }
