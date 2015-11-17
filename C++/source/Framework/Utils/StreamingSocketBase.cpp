@@ -24,7 +24,7 @@ StreamingSocketBase::StreamingSocketBase (const SI32 maximumNumberOfConnections)
 StreamingSocketBase::StreamingSocketBase ()
 {
     m_socket                     = -1;
-    m_maximumNumberOfConnections = 1;
+    m_maximumNumberOfConnections = 128;
     m_toMessageVersion           = "";
     m_toSerializationType        = SERIALIZE_WITH_ATTRIBUTE_NAME;
 }
