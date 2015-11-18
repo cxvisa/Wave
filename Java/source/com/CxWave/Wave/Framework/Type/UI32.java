@@ -101,9 +101,24 @@ public class UI32
         m_value++;
     }
 
+    public void increment (final int value)
+    {
+        m_value = m_value + value;
+    }
+
+    public void increment (final UI32 value)
+    {
+        m_value = m_value.intValue () + (value.getValue ()).intValue ();
+    }
+
     public void decrement ()
     {
         m_value--;
+    }
+
+    public void decrement (final int value)
+    {
+        m_value = m_value - value;
     }
 
     public boolean equals (final UI32 rhs)

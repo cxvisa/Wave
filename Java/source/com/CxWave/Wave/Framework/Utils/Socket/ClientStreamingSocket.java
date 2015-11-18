@@ -4,23 +4,73 @@
 
 package com.CxWave.Wave.Framework.Utils.Socket;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
 import com.CxWave.Wave.Framework.Type.SI32;
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class ClientStreamingSocket implements StreamingSocket
 {
-    private Socket m_socket    = null;
-    private String m_host      = null;
-    private SI32   m_port      = new SI32 (0);
-    private String m_localHost = null;
-    private SI32   m_localPort = new SI32 (0);
+    private Socket             m_socket           = null;
+    private String             m_host             = null;
+    private SI32               m_port             = new SI32 (0);
+    private String             m_localHost        = null;
+    private SI32               m_localPort        = new SI32 (0);
+
+    protected DataOutputStream m_dataOutputString = null;
+
+    private void computeAndSetDataOutputStream ()
+    {
+        if (null != m_dataOutputString)
+        {
+            return;
+        }
+
+        if (!(isValid ()))
+        {
+            return;
+        }
+
+        if (!(getIsConnected ()))
+        {
+            return;
+        }
+
+        try
+        {
+            m_dataOutputString = new DataOutputStream (m_socket.getOutputStream ());
+        }
+        catch (final IOException e)
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    private void resetDataOutputStream ()
+    {
+        if (null != m_dataOutputString)
+        {
+            try
+            {
+                m_dataOutputString.close ();
+            }
+            catch (final IOException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not reset underlying Data OutputStream.  Reason : %s", e.toString ());
+            }
+
+            m_dataOutputString = null;
+        }
+
+        return;
+    }
 
     public ClientStreamingSocket ()
     {
@@ -39,6 +89,8 @@ public class ClientStreamingSocket implements StreamingSocket
         m_port = new SI32 (m_socket.getPort ());
         m_localHost = m_socket.getLocalAddress ().getHostAddress ();
         m_localPort = new SI32 (m_socket.getLocalPort ());
+
+        computeAndSetDataOutputStream ();
     }
 
     public ClientStreamingSocket (final String host, final SI32 port)
@@ -54,6 +106,8 @@ public class ClientStreamingSocket implements StreamingSocket
             setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
             setTcpNoDelay ();
             setKeepAlive ();
+
+            computeAndSetDataOutputStream ();
         }
         catch (final IOException e)
         {
@@ -71,6 +125,13 @@ public class ClientStreamingSocket implements StreamingSocket
         try
         {
             m_socket = new Socket (host, port.getValue (), InetAddress.getByName (localHost), localPort.getValue ());
+
+            setReuseAddress ();
+            setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
+            setTcpNoDelay ();
+            setKeepAlive ();
+
+            computeAndSetDataOutputStream ();
         }
         catch (final IOException e)
         {
@@ -317,6 +378,13 @@ public class ClientStreamingSocket implements StreamingSocket
             try
             {
                 m_socket = new Socket (m_host, m_port.getValue (), InetAddress.getByName (m_localHost), m_localPort.getValue ());
+
+                setReuseAddress ();
+                setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
+                setTcpNoDelay ();
+                setKeepAlive ();
+
+                computeAndSetDataOutputStream ();
             }
             catch (final IOException e)
             {
@@ -370,6 +438,8 @@ public class ClientStreamingSocket implements StreamingSocket
             try
             {
                 m_socket.close ();
+
+                resetDataOutputStream ();
             }
             catch (final IOException e)
             {
@@ -398,5 +468,33 @@ public class ClientStreamingSocket implements StreamingSocket
     public SI32 getLocalPort ()
     {
         return (m_localPort);
+    }
+
+    public int send (final UI32 value)
+    {
+        return (send (value.getValue ()));
+    }
+
+    public int send (final int value)
+    {
+        if (!(isValid ()))
+        {
+            return (-1);
+        }
+
+        int status = 0;
+
+        try
+        {
+            m_dataOutputString.writeInt (value);
+        }
+        catch (final IOException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send integer : %s", e.toString ());
+
+            status = -1;
+        }
+
+        return (status);
     }
 }

@@ -124,8 +124,8 @@ void FixedSizeBuffer::incrementCurrentSize (const UI32 incrementSize)
 
     if (remainingSize < incrementSize)
     {
-        trace (TRACE_LEVEL_ERROR, "FixedSizeBuffer::getRemainingSize : Increment Size causes Current size to exceeded Maximum Size.  Something went wrong.");
-        trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::getRemainingSize : Not incrementing the current size.");
+        trace (TRACE_LEVEL_ERROR, "FixedSizeBuffer::incrementCurrentSize : Increment Size causes Current size to exceeded Maximum Size.  Something went wrong.");
+        trace (TRACE_LEVEL_FATAL, "FixedSizeBuffer::incrementCurrentSize : Not incrementing the current size.");
         waveAssert (false, __FILE__,__LINE__);
     }
     else
