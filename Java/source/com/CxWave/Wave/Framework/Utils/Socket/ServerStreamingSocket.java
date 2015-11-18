@@ -7,10 +7,12 @@ package com.CxWave.Wave.Framework.Utils.Socket;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -31,10 +33,13 @@ public class ServerStreamingSocket implements StreamingSocket
         try
         {
             m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+
+            setReuseAddress ();
+            setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
         }
         catch (final IOException e)
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not create server socket to host %s, port %d, number of connections : %d", m_host, port.getValue (), m_numberOfConnections.getValue ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not create server socket using host %s, port %d, number of connections : %d", m_host, port.getValue (), m_numberOfConnections.getValue ());
         }
     }
 
@@ -46,10 +51,13 @@ public class ServerStreamingSocket implements StreamingSocket
         try
         {
             m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+
+            setReuseAddress ();
+            setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
         }
         catch (final IOException e)
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not create server socket to host %s, port %d, number of connections : %d", host, port.getValue (), m_numberOfConnections.getValue ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not create server socket using host %s, port %d, number of connections : %d", host, port.getValue (), m_numberOfConnections.getValue ());
         }
     }
 
@@ -62,10 +70,13 @@ public class ServerStreamingSocket implements StreamingSocket
         try
         {
             m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+
+            setReuseAddress ();
+            setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
         }
         catch (final IOException e)
         {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not create server socket to host %s, port %d, number of connections : %d", host, port.getValue (), m_numberOfConnections.getValue ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not create server socket using host %s, port %d, number of connections : %d", host, port.getValue (), m_numberOfConnections.getValue ());
         }
     }
 
@@ -95,7 +106,7 @@ public class ServerStreamingSocket implements StreamingSocket
             }
             catch (final SocketException e)
             {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to set SO_REUSEADDR.  Remote Host : %s and port : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to set SO_REUSEADDR.  Host : %s and port : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
             }
         }
 
@@ -116,7 +127,7 @@ public class ServerStreamingSocket implements StreamingSocket
             }
             catch (final SocketException e)
             {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to clear SO_REUSEADDR.  Remote Host : %s and port : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to clear SO_REUSEADDR.  Host : %s and port : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
             }
         }
 
@@ -137,7 +148,7 @@ public class ServerStreamingSocket implements StreamingSocket
             }
             catch (final SocketException e)
             {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to set SO_SOTIMEOUT.  Remote Host : %s and port : %d. milliSeconds : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort (), milliSeconds);
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to set SO_SOTIMEOUT.  Host : %s and port : %d. milliSeconds : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort (), milliSeconds);
             }
         }
 
@@ -147,5 +158,22 @@ public class ServerStreamingSocket implements StreamingSocket
     public boolean clearSocketTimeOut ()
     {
         return (setSocketTimeOut (0));
+    }
+
+    public AcceptedStreamingSocket accept ()
+    {
+        Socket socket = null;
+
+        try
+        {
+            socket = m_serverSocket.accept ();
+        }
+        catch (final IOException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not accept connection.  Host : %s and port : %d. milliSeconds : %d", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (new AcceptedStreamingSocket (socket));
     }
 }

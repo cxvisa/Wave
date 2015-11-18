@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.CxWave.Wave.Framework.Type.SI32;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -23,6 +24,21 @@ public class ClientStreamingSocket implements StreamingSocket
 
     public ClientStreamingSocket ()
     {
+    }
+
+    public ClientStreamingSocket (final Socket socket)
+    {
+        if (null == socket)
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        m_socket = socket;
+
+        m_host = (m_socket.getInetAddress ()).getHostAddress ();
+        m_port = new SI32 (m_socket.getPort ());
+        m_localHost = m_socket.getLocalAddress ().getHostAddress ();
+        m_localPort = new SI32 (m_socket.getLocalPort ());
     }
 
     public ClientStreamingSocket (final String host, final SI32 port)
@@ -327,7 +343,7 @@ public class ClientStreamingSocket implements StreamingSocket
     {
         if (getIsConnected ())
         {
-            return (m_socket.getInetAddress ().toString ());
+            return (m_socket.getInetAddress ().getHostAddress ());
         }
         else
         {
@@ -372,5 +388,15 @@ public class ClientStreamingSocket implements StreamingSocket
         {
             return (true);
         }
+    }
+
+    public String getLocalHost ()
+    {
+        return (m_localHost);
+    }
+
+    public SI32 getLocalPort ()
+    {
+        return (m_localPort);
     }
 }
