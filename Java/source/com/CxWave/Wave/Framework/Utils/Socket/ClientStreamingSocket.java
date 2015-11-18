@@ -13,6 +13,7 @@ import java.net.SocketException;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -496,5 +497,45 @@ public class ClientStreamingSocket implements StreamingSocket
         }
 
         return (status);
+    }
+
+    int send (final FixedSizeBuffer fixedSizeBuffer)
+    {
+        if (true != (isValid ()))
+        {
+            return (-1);
+        }
+
+        final UI32 fixedSizeBufferSize = fixedSizeBuffer.getMaximumSize ();
+        final byte[] buffer = fixedSizeBuffer.getRawBuffer ();
+        int sendStatus = 0;
+
+        if (null != buffer)
+        {
+            sendStatus = send (fixedSizeBufferSize);
+
+            if (-1 == sendStatus)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "ClientStreamingSocket.send (final FixedSizeBuffer fixedSizeBuffer) : Status : %d", sendStatus);
+                return (sendStatus);
+            }
+
+            try
+            {
+                m_dataOutputString.write (fixedSizeBuffer.getRawBuffer (), 0, (fixedSizeBuffer.getCurrentSize ()).getValue ());
+            }
+            catch (final IOException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send FixedSizeBuffer : %s", e.toString ());
+
+                sendStatus = -1;
+            }
+
+            return (sendStatus);
+        }
+        else
+        {
+            return (-1);
+        }
     }
 }

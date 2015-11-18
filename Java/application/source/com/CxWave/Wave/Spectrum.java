@@ -123,6 +123,12 @@ class Spectrum
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface      : %s", (waveMainConfiguration1.getApplication ()).getEthernetInterface ());
 
             waveMainConfiguration1.debugPrint ();
+
+            StringBuffer stringBuffer = new StringBuffer ();
+
+            waveMainConfiguration1.serializeTo (stringBuffer);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration :\n%s", stringBuffer);
         }
 
         if (3 <= (commandLineArguments.length))

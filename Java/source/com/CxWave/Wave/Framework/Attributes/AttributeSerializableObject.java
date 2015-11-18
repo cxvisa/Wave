@@ -169,4 +169,53 @@ public class AttributeSerializableObject extends Attribute
             WaveAssertUtils.waveAssert ();
         }
     }
+
+    @Override
+    public void serializeTo (final SerializableObject serializableObject, final StringBuffer stringBuffer)
+    {
+        WaveAssertUtils.waveAssert (null != serializableObject);
+
+        final String name = m_reflectionAttribute.getAttributeName ();
+
+        stringBuffer.append (String.valueOf (name.length ()));
+        stringBuffer.append ("#");
+        stringBuffer.append (name);
+
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        final StringBuffer childStringBuffer = new StringBuffer ();
+
+        try
+        {
+            final Object object = (reflectionField.get (serializableObject));
+
+            if (null == object)
+            {
+
+            }
+            else
+            {
+                final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
+
+                WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
+
+                // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix,
+                // m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (),
+                // (serializableObject.getClass ()).getName ());
+
+                serializableObjectForAttribute.serializeTo (childStringBuffer);
+            }
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "AttributeSerializableObject.loadValueFromWaveConfigurationFile : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), e.toString ());
+            WaveAssertUtils.waveAssert ();
+        }
+
+        stringBuffer.append (String.valueOf (childStringBuffer.length ()));
+        stringBuffer.append ("#");
+        stringBuffer.append (childStringBuffer);
+    }
 }

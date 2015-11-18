@@ -178,4 +178,11 @@ public class SerializableObject
 
         debugPrint ("|-> ");
     }
+
+    public void serializeTo (final StringBuffer stringBuffer)
+    {
+        prepareForSerialization ();
+
+        m_attributesMap.serializeTo (stringBuffer);
+    }
 }

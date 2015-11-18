@@ -242,4 +242,16 @@ public class AttributesMap
             attribute.debugPrint (m_serializableObject, prefix);
         }
     }
+
+    public void serializeTo (final StringBuffer stringBuffer)
+    {
+        for (final Map.Entry<String, Attribute> entry : m_attributesByName.entrySet ())
+        {
+            final Attribute value = entry.getValue ();
+
+            WaveAssertUtils.waveAssert (null != value);
+
+            value.serializeTo (m_serializableObject, stringBuffer);
+        }
+    }
 }

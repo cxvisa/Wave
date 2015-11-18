@@ -223,4 +223,21 @@ public abstract class Attribute
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) : %s", prefix, m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (), toPlainString (serializableObject));
     }
+
+    public void serializeTo (final SerializableObject serializableObject, final StringBuffer stringBuffer)
+    {
+        WaveAssertUtils.waveAssert (null != serializableObject);
+
+        final String name = m_reflectionAttribute.getAttributeName ();
+
+        stringBuffer.append (String.valueOf (name.length ()));
+        stringBuffer.append ("#");
+        stringBuffer.append (name);
+
+        final String plainString = toPlainString (serializableObject);
+
+        stringBuffer.append (String.valueOf (plainString.length ()));
+        stringBuffer.append ("#");
+        stringBuffer.append (plainString);
+    }
 }
