@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Utils.Socket;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,11 +26,12 @@ public class ClientStreamingSocket implements StreamingSocket
     private String             m_localHost        = null;
     private SI32               m_localPort        = new SI32 (0);
 
-    protected DataOutputStream m_dataOutputString = null;
+    protected DataOutputStream m_dataOutputStream = null;
+    protected DataInputStream  m_dataInputStream  = null;
 
     private void computeAndSetDataOutputStream ()
     {
-        if (null != m_dataOutputString)
+        if (null != m_dataOutputStream)
         {
             return;
         }
@@ -46,7 +48,7 @@ public class ClientStreamingSocket implements StreamingSocket
 
         try
         {
-            m_dataOutputString = new DataOutputStream (m_socket.getOutputStream ());
+            m_dataOutputStream = new DataOutputStream (m_socket.getOutputStream ());
         }
         catch (final IOException e)
         {
@@ -56,18 +58,64 @@ public class ClientStreamingSocket implements StreamingSocket
 
     private void resetDataOutputStream ()
     {
-        if (null != m_dataOutputString)
+        if (null != m_dataOutputStream)
         {
             try
             {
-                m_dataOutputString.close ();
+                m_dataOutputStream.close ();
             }
             catch (final IOException e)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not reset underlying Data OutputStream.  Reason : %s", e.toString ());
             }
 
-            m_dataOutputString = null;
+            m_dataOutputStream = null;
+        }
+
+        return;
+    }
+
+    private void computeAndSetDataInputStream ()
+    {
+        if (null != m_dataInputStream)
+        {
+            return;
+        }
+
+        if (!(isValid ()))
+        {
+            return;
+        }
+
+        if (!(getIsConnected ()))
+        {
+            return;
+        }
+
+        try
+        {
+            m_dataInputStream = new DataInputStream (m_socket.getInputStream ());
+        }
+        catch (final IOException e)
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    private void resetDataInputStream ()
+    {
+        if (null != m_dataInputStream)
+        {
+            try
+            {
+                m_dataInputStream.close ();
+            }
+            catch (final IOException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Could not reset underlying Data InputStream.  Reason : %s", e.toString ());
+            }
+
+            m_dataInputStream = null;
         }
 
         return;
@@ -92,6 +140,7 @@ public class ClientStreamingSocket implements StreamingSocket
         m_localPort = new SI32 (m_socket.getLocalPort ());
 
         computeAndSetDataOutputStream ();
+        computeAndSetDataInputStream ();
     }
 
     public ClientStreamingSocket (final String host, final SI32 port)
@@ -109,6 +158,7 @@ public class ClientStreamingSocket implements StreamingSocket
             setKeepAlive ();
 
             computeAndSetDataOutputStream ();
+            computeAndSetDataInputStream ();
         }
         catch (final IOException e)
         {
@@ -133,6 +183,7 @@ public class ClientStreamingSocket implements StreamingSocket
             setKeepAlive ();
 
             computeAndSetDataOutputStream ();
+            computeAndSetDataInputStream ();
         }
         catch (final IOException e)
         {
@@ -487,7 +538,9 @@ public class ClientStreamingSocket implements StreamingSocket
 
         try
         {
-            m_dataOutputString.writeInt (value);
+            m_dataOutputStream.writeInt (value);
+
+            status = 4;
         }
         catch (final IOException e)
         {
@@ -522,7 +575,9 @@ public class ClientStreamingSocket implements StreamingSocket
 
             try
             {
-                m_dataOutputString.write (fixedSizeBuffer.getRawBuffer (), 0, (fixedSizeBuffer.getCurrentSize ()).getValue ());
+                m_dataOutputStream.write (fixedSizeBuffer.getRawBuffer (), 0, (fixedSizeBuffer.getCurrentSize ()).getValue ());
+
+                sendStatus = (fixedSizeBuffer.getCurrentSize ()).getValue ();
             }
             catch (final IOException e)
             {
@@ -537,5 +592,195 @@ public class ClientStreamingSocket implements StreamingSocket
         {
             return (-1);
         }
+    }
+
+    int send (final byte[] buffer, final int maximumBufferLength)
+    {
+        if (true != (isValid ()))
+        {
+            return (-1);
+        }
+
+        int sendStatus = 0;
+
+        if (null != buffer)
+        {
+            sendStatus = send (maximumBufferLength);
+
+            if (-1 == sendStatus)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "ClientStreamingSocket.send (final FixedSizeBuffer fixedSizeBuffer) : Status : %d", sendStatus);
+                return (sendStatus);
+            }
+
+            try
+            {
+                m_dataOutputStream.write (buffer, 0, maximumBufferLength);
+
+                sendStatus = maximumBufferLength;
+            }
+            catch (final IOException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send buffer : %s", e.toString ());
+
+                sendStatus = -1;
+            }
+
+            return (sendStatus);
+        }
+        else
+        {
+            return (-1);
+        }
+    }
+
+    int send (final byte[] buffer, final int offset, final int length)
+    {
+        if (true != (isValid ()))
+        {
+            return (-1);
+        }
+
+        int sendStatus = 0;
+
+        if (null != buffer)
+        {
+            sendStatus = send (length);
+
+            if (-1 == sendStatus)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "ClientStreamingSocket.send (final FixedSizeBuffer fixedSizeBuffer) : Status : %d", sendStatus);
+                return (sendStatus);
+            }
+
+            try
+            {
+                m_dataOutputStream.write (buffer, offset, length);
+
+                sendStatus = length;
+            }
+            catch (final IOException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send buffer : %s", e.toString ());
+
+                sendStatus = -1;
+            }
+
+            return (sendStatus);
+        }
+        else
+        {
+            return (-1);
+        }
+    }
+
+    public int send (final String value)
+    {
+        if (!(isValid ()))
+        {
+            return (-1);
+        }
+
+        int status = 0;
+
+        try
+        {
+            m_dataOutputStream.writeBytes (value);
+
+            status = value.length ();
+        }
+        catch (final IOException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send String : %s", e.toString ());
+
+            status = -1;
+        }
+
+        return (status);
+    }
+
+    public int receive (final byte[] buffer)
+    {
+        if (!(isValid ()))
+        {
+            return (-1);
+        }
+
+        int status = 0;
+
+        try
+        {
+            status = m_dataInputStream.read (buffer);
+        }
+        catch (final IOException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to read Buffer : %s", e.toString ());
+
+            status = -1;
+        }
+
+        return (status);
+    }
+
+    public int receive (final byte[] buffer, final int offset, final int length)
+    {
+        if (!(isValid ()))
+        {
+            return (-1);
+        }
+
+        int status = 0;
+
+        try
+        {
+            status = m_dataInputStream.read (buffer, offset, length);
+        }
+        catch (final IOException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to read Buffer : %s", e.toString ());
+
+            status = -1;
+        }
+
+        return (status);
+    }
+
+    public int receiveAll (final byte[] buffer)
+    {
+        if (!(isValid ()))
+        {
+            return (-1);
+        }
+
+        int status = 0;
+
+        try
+        {
+            m_dataInputStream.readFully (buffer);
+
+            status = buffer.length;
+        }
+        catch (final IOException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to read Buffer Fully : %s", e.toString ());
+
+            status = -1;
+        }
+
+        return (status);
+    }
+
+    public int receiveAll (final FixedSizeBuffer fixedSizeBuffer)
+    {
+        final int status = receiveAll (fixedSizeBuffer.getRawBuffer ());
+
+        return (status);
+    }
+
+    public int recieve (final FixedSizeBuffer fixedSizeBuffer)
+    {
+        final int status = receive (fixedSizeBuffer.getRawBuffer (), (fixedSizeBuffer.getCurrentSize ()).getValue (), (fixedSizeBuffer.getRemainingSize ()).getValue ());
+
+        return (status);
     }
 }
