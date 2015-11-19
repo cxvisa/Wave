@@ -69,8 +69,8 @@ public class WaveMessage extends SerializableObject
         }
     }
 
-    private WaveResourceId               m_type;                                                                                                                                                                                                                                                                                                                                                                                  // WaveMessageType
-    private WaveResourceId               m_priority;                                                                                                                                                                                                                                                                                                                                              // WaveMessagePriority
+    private WaveResourceId               m_type;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // WaveMessageType
+    private WaveResourceId               m_priority;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // WaveMessagePriority
     private WaveServiceId                m_serviceCode;
     private UI32                         m_operationCode;
     private UI32                         m_waveClientMessageId;
@@ -116,8 +116,8 @@ public class WaveMessage extends SerializableObject
     private String                       m_partitionName;
     private LocationId                   m_partitionLocationIdForPropagation;
     private boolean                      m_isPartitionContextPropagated;
-    private boolean                      m_isPartitionNameSetByUser;                                                                                                                                                                                              // Not
-                                                                                                                                                                                                                                                                  // serialized.
+    private boolean                      m_isPartitionNameSetByUser;                                                                                                                                                                                                                                                                                  // Not
+                                                                                                                                                                                                                                                                                                                                                      // serialized.
     // Only to prevent copy of partitionName from
     // m_pInputMessage during propagation.
 
@@ -130,6 +130,12 @@ public class WaveMessage extends SerializableObject
     private boolean                      m_disconnectFromNodeAfterReply;
     private boolean                      m_removeNodeFromKnownLocationAfterReply;
     private boolean                      m_sendForOneWayConnection;
+
+    public <E extends Enum<E>> WaveMessage (final WaveServiceId serviceCode, final E operationCode)
+    {
+        m_serviceCode = serviceCode;
+        m_operationCode = new UI32 (operationCode.ordinal ());
+    }
 
     public WaveResourceId getType ()
     {
