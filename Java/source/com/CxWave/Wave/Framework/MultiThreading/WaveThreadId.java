@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.MultiThreading;
 
+import com.CxWave.Wave.Framework.Type.UI32;
+
 public class WaveThreadId
 {
     private long m_threadId;
@@ -16,6 +18,11 @@ public class WaveThreadId
     public WaveThreadId (final long threadId)
     {
         m_threadId = threadId;
+    }
+
+    public WaveThreadId (final UI32 threadId)
+    {
+        m_threadId = threadId.getValue ();
     }
 
     public long getThreadId ()

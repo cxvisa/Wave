@@ -25,6 +25,18 @@ public class UI8
         setValue (rhs);
     }
 
+    public UI8 (final String value)
+    {
+        try
+        {
+            setValue (Long.valueOf (value));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
+    }
+
     @Override
     public boolean equals (final Object object)
     {

@@ -25,6 +25,18 @@ public class SI16
         setValue (rhs);
     }
 
+    public SI16 (final String value)
+    {
+        try
+        {
+            setValue (Long.valueOf (value));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
+    }
+
     @Override
     public boolean equals (final Object object)
     {

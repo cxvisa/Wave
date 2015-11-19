@@ -9,14 +9,16 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.MultiThreading.WaveThreadId;
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.Type.LocationId;
-import com.CxWave.Wave.Framework.Type.WaveResourceId;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.WaveResourceId;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 
-public class WaveMessage
+public class WaveMessage extends SerializableObject
 {
     private class WaveMessageBuffer
     {
@@ -67,8 +69,8 @@ public class WaveMessage
         }
     }
 
-    private WaveResourceId                   m_type;                                                                                                                                                                                                              // WaveMessageType
-    private WaveResourceId                   m_priority;                                                                                                                                                                                          // WaveMessagePriority
+    private WaveResourceId               m_type;                                                                                                                                                                                                                                                                                                                                                                                  // WaveMessageType
+    private WaveResourceId               m_priority;                                                                                                                                                                                                                                                                                                                                              // WaveMessagePriority
     private WaveServiceId                m_serviceCode;
     private UI32                         m_operationCode;
     private UI32                         m_waveClientMessageId;
@@ -79,15 +81,18 @@ public class WaveMessage
     private LocationId                   m_receiverLocationId;
     private boolean                      m_isOneWayMessage;
     private boolean                      m_isSynchronousMessage;
+    @NonSerializable
     private WaveMutex                    m_synchronizingMutex;
+    @NonSerializable
     private WaveCondition                m_synchronizingCondition;
     private boolean                      m_isLastReply;
     private boolean                      m_isACopy;
     private UI32                         m_originalMessageId;
-    private WaveResourceId                   m_completionStatus;
+    private WaveResourceId               m_completionStatus;
     private LocationId                   m_waveClientOriginatingLocationId;
     private UI32                         m_waveNativeClientId;
     private UI32                         m_waveUserClientId;
+    @NonSerializable
     private Map<UI32, WaveMessageBuffer> m_buffers;
     private boolean                      m_dropReplyAcrossLocations;
     private String                       m_messageString;
@@ -101,7 +106,7 @@ public class WaveMessage
     private boolean                      m_isMessageBeingSurrogatedFlag;
 
     private Vector<LocationId>           m_locationsForStatusPropagation;
-    private Vector<WaveResourceId>           m_completionStatusForStatusPropagation;
+    private Vector<WaveResourceId>       m_completionStatusForStatusPropagation;
     private Vector<String>               m_localizedCompletionStatusForStatusPropagation;
     private boolean                      m_isMessageSupportedWhenServiceIsPaused;
 
@@ -111,8 +116,8 @@ public class WaveMessage
     private String                       m_partitionName;
     private LocationId                   m_partitionLocationIdForPropagation;
     private boolean                      m_isPartitionContextPropagated;
-    private boolean                      m_isPartitionNameSetByUser;                                                                                                          // Not
-                                                                                                                                                                              // serialized.
+    private boolean                      m_isPartitionNameSetByUser;                                                                                                                                                                                              // Not
+                                                                                                                                                                                                                                                                  // serialized.
     // Only to prevent copy of partitionName from
     // m_pInputMessage during propagation.
 

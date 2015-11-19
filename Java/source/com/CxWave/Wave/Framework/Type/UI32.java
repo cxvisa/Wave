@@ -17,6 +17,18 @@ public class UI32
         setValue (value);
     }
 
+    public UI32 (final String value)
+    {
+        try
+        {
+            setValue (Long.valueOf (value));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
+    }
+
     public UI32 (final long value)
     {
         setValue (value);
