@@ -4,11 +4,11 @@
 
 package com.CxWave.Wave.Framework.Type;
 
-public class ResourceId
+public class WaveResourceId
 {
     private UI32 m_id;
 
-    public ResourceId (final UI32 id)
+    public WaveResourceId (final UI32 id)
     {
         m_id = id;
     }

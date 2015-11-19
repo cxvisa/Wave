@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.LocationManagement;
 
-public class Location extends LocationBase
+public class Location
 {
 
 }

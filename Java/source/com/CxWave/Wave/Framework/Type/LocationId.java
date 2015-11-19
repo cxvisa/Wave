@@ -13,6 +13,11 @@ public class LocationId
         m_id = id;
     }
 
+    public LocationId (final int id)
+    {
+        m_id = new UI32 (id);
+    }
+
     public UI32 getId ()
     {
         return m_id;

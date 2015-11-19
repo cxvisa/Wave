@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.LocationManagement;
 
-public class SubLocation
+public enum ServerStreamingSocketStatus
 {
-
+    SERVER_STREAMING_SOCKET_SUCCESS, SERVER_STREAMING_SOCKET_ERROR_COULD_NOT_BIND, SERVER_STREAMING_SOCKET_ERROR_COULD_NOT_LISTEN
 }

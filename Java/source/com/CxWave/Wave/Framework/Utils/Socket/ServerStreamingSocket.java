@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+import com.CxWave.Wave.Framework.LocationManagement.ServerStreamingSocketStatus;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -18,13 +19,15 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class ServerStreamingSocket implements StreamingSocket
 {
-    private static UI32  s_defaultNumberOfConnections = new UI32 (128);
+    private static UI32                 s_defaultNumberOfConnections = new UI32 (128);
 
-    private String       m_host                       = null;
-    private SI32         m_port                       = new SI32 (0);
-    private UI32         m_numberOfConnections        = s_defaultNumberOfConnections;
+    private String                      m_host                       = null;
+    private SI32                        m_port                       = new SI32 (0);
+    private UI32                        m_numberOfConnections        = s_defaultNumberOfConnections;
 
-    private ServerSocket m_serverSocket               = null;
+    private ServerStreamingSocketStatus m_status                     = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_ERROR_COULD_NOT_BIND;
+
+    private ServerSocket                m_serverSocket               = null;
 
     public ServerStreamingSocket (final SI32 port)
     {
@@ -33,6 +36,8 @@ public class ServerStreamingSocket implements StreamingSocket
         try
         {
             m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+
+            m_status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
 
             setReuseAddress ();
             setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
@@ -52,6 +57,8 @@ public class ServerStreamingSocket implements StreamingSocket
         {
             m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
 
+            m_status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
+
             setReuseAddress ();
             setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
         }
@@ -70,6 +77,8 @@ public class ServerStreamingSocket implements StreamingSocket
         try
         {
             m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+
+            m_status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
 
             setReuseAddress ();
             setSocketTimeOut (s_defaultSocketTimeoutInMilliSeconds.getValue ());
@@ -175,5 +184,10 @@ public class ServerStreamingSocket implements StreamingSocket
         }
 
         return (new AcceptedStreamingSocket (socket));
+    }
+
+    public ServerStreamingSocketStatus getStatus ()
+    {
+        return (m_status);
     }
 }

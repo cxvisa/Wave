@@ -522,16 +522,16 @@ public class ClientStreamingSocket implements StreamingSocket
         return (m_localPort);
     }
 
-    public int send (final UI32 value)
+    public boolean send (final UI32 value)
     {
         return (send (value.getValue ()));
     }
 
-    public int send (final int value)
+    public boolean send (final int value)
     {
         if (!(isValid ()))
         {
-            return (-1);
+            return (false);
         }
 
         int status = 0;
@@ -549,25 +549,25 @@ public class ClientStreamingSocket implements StreamingSocket
             status = -1;
         }
 
-        return (status);
+        return (status != -1 ? true : false);
     }
 
-    int send (final FixedSizeBuffer fixedSizeBuffer)
+    public boolean send (final FixedSizeBuffer fixedSizeBuffer)
     {
         if (true != (isValid ()))
         {
-            return (-1);
+            return (false);
         }
 
         final UI32 fixedSizeBufferSize = fixedSizeBuffer.getMaximumSize ();
         final byte[] buffer = fixedSizeBuffer.getRawBuffer ();
-        int sendStatus = 0;
+        boolean sendStatus = false;
 
         if (null != buffer)
         {
             sendStatus = send (fixedSizeBufferSize);
 
-            if (-1 == sendStatus)
+            if (false == sendStatus)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "ClientStreamingSocket.send (final FixedSizeBuffer fixedSizeBuffer) : Status : %d", sendStatus);
                 return (sendStatus);
@@ -577,37 +577,37 @@ public class ClientStreamingSocket implements StreamingSocket
             {
                 m_dataOutputStream.write (fixedSizeBuffer.getRawBuffer (), 0, (fixedSizeBuffer.getCurrentSize ()).getValue ());
 
-                sendStatus = (fixedSizeBuffer.getCurrentSize ()).getValue ();
+                sendStatus = true;
             }
             catch (final IOException e)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send FixedSizeBuffer : %s", e.toString ());
 
-                sendStatus = -1;
+                sendStatus = false;
             }
 
             return (sendStatus);
         }
         else
         {
-            return (-1);
+            return (false);
         }
     }
 
-    int send (final byte[] buffer, final int maximumBufferLength)
+    public boolean send (final byte[] buffer, final int maximumBufferLength)
     {
         if (true != (isValid ()))
         {
-            return (-1);
+            return (false);
         }
 
-        int sendStatus = 0;
+        boolean sendStatus = false;
 
         if (null != buffer)
         {
             sendStatus = send (maximumBufferLength);
 
-            if (-1 == sendStatus)
+            if (false == sendStatus)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "ClientStreamingSocket.send (final FixedSizeBuffer fixedSizeBuffer) : Status : %d", sendStatus);
                 return (sendStatus);
@@ -617,37 +617,37 @@ public class ClientStreamingSocket implements StreamingSocket
             {
                 m_dataOutputStream.write (buffer, 0, maximumBufferLength);
 
-                sendStatus = maximumBufferLength;
+                sendStatus = true;
             }
             catch (final IOException e)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send buffer : %s", e.toString ());
 
-                sendStatus = -1;
+                sendStatus = false;
             }
 
             return (sendStatus);
         }
         else
         {
-            return (-1);
+            return (false);
         }
     }
 
-    int send (final byte[] buffer, final int offset, final int length)
+    public boolean send (final byte[] buffer, final int offset, final int length)
     {
         if (true != (isValid ()))
         {
-            return (-1);
+            return (false);
         }
 
-        int sendStatus = 0;
+        boolean sendStatus = false;
 
         if (null != buffer)
         {
             sendStatus = send (length);
 
-            if (-1 == sendStatus)
+            if (false == sendStatus)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "ClientStreamingSocket.send (final FixedSizeBuffer fixedSizeBuffer) : Status : %d", sendStatus);
                 return (sendStatus);
@@ -657,43 +657,43 @@ public class ClientStreamingSocket implements StreamingSocket
             {
                 m_dataOutputStream.write (buffer, offset, length);
 
-                sendStatus = length;
+                sendStatus = true;
             }
             catch (final IOException e)
             {
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send buffer : %s", e.toString ());
 
-                sendStatus = -1;
+                sendStatus = false;
             }
 
             return (sendStatus);
         }
         else
         {
-            return (-1);
+            return (false);
         }
     }
 
-    public int send (final String value)
+    public boolean send (final String value)
     {
         if (!(isValid ()))
         {
-            return (-1);
+            return (false);
         }
 
-        int status = 0;
+        boolean status = false;
 
         try
         {
             m_dataOutputStream.writeBytes (value);
 
-            status = value.length ();
+            status = true;
         }
         catch (final IOException e)
         {
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to send String : %s", e.toString ());
 
-            status = -1;
+            status = false;
         }
 
         return (status);

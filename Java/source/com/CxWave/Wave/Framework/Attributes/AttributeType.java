@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
-import com.CxWave.Wave.Framework.Type.ResourceId;
+import com.CxWave.Wave.Framework.Type.WaveResourceId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Resources.ResourceEnums.AttributeTypeString;
 
@@ -92,15 +92,15 @@ public class AttributeType
     public static AttributeType s_AttributeTypeNumber                 = new AttributeType (73, AttributeTypeString.WAVE_ATTRIBUTE_TYPE_NUMBER.getResourceId ());
 
     private UI32       m_attributeTypeIndictor;
-    private ResourceId m_attributeTypeResourceId;
+    private WaveResourceId m_attributeTypeResourceId;
 
-    public AttributeType (final UI32 attributeTypeIndicator, final ResourceId attributeTypeResourceId)
+    public AttributeType (final UI32 attributeTypeIndicator, final WaveResourceId attributeTypeResourceId)
     {
         m_attributeTypeIndictor = attributeTypeIndicator;
         m_attributeTypeResourceId = attributeTypeResourceId;
     }
 
-    public AttributeType (final int attributeTypeIndicator, final ResourceId attributeTypeResourceId)
+    public AttributeType (final int attributeTypeIndicator, final WaveResourceId attributeTypeResourceId)
     {
         m_attributeTypeIndictor = new UI32 (attributeTypeIndicator);
         m_attributeTypeResourceId = attributeTypeResourceId;
@@ -116,12 +116,12 @@ public class AttributeType
         m_attributeTypeIndictor = attributeTypeIndictor;
     }
 
-    public ResourceId getAttributeTypeResourceId ()
+    public WaveResourceId getAttributeTypeResourceId ()
     {
         return m_attributeTypeResourceId;
     }
 
-    public void setAttributeTypeResourceId (final ResourceId attributeTypeResourceId)
+    public void setAttributeTypeResourceId (final WaveResourceId attributeTypeResourceId)
     {
         m_attributeTypeResourceId = attributeTypeResourceId;
     }

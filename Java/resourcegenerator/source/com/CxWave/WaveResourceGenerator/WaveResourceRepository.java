@@ -18,7 +18,7 @@ public class WaveResourceRepository
 {
     private static Vector<WaveResource>     m_allWaveResources                          = new Vector<WaveResource> ();
     private static Vector<WaveResourceEnum> m_allWaveResourceEnums                      = new Vector<WaveResourceEnum> ();
-    private static String                   m_waveResourceEnumName                      = "AllWaveResources";
+    private static String                   m_waveResourceEnumName                      = "ResourceId";
     private static String                   m_waveResourcesRespositoryPopulatorEnumName = "WaveResourcesRepositoryPopulator";
 
     public static void add (final WaveResource waveResource)

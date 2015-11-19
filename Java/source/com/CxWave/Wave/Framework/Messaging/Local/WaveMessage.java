@@ -11,7 +11,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThreadId;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
 import com.CxWave.Wave.Framework.Type.LocationId;
-import com.CxWave.Wave.Framework.Type.ResourceId;
+import com.CxWave.Wave.Framework.Type.WaveResourceId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
@@ -67,8 +67,8 @@ public class WaveMessage
         }
     }
 
-    private ResourceId                   m_type;                                                                                                                                                                                                              // WaveMessageType
-    private ResourceId                   m_priority;                                                                                                                                                                                          // WaveMessagePriority
+    private WaveResourceId                   m_type;                                                                                                                                                                                                              // WaveMessageType
+    private WaveResourceId                   m_priority;                                                                                                                                                                                          // WaveMessagePriority
     private WaveServiceId                m_serviceCode;
     private UI32                         m_operationCode;
     private UI32                         m_waveClientMessageId;
@@ -84,7 +84,7 @@ public class WaveMessage
     private boolean                      m_isLastReply;
     private boolean                      m_isACopy;
     private UI32                         m_originalMessageId;
-    private ResourceId                   m_completionStatus;
+    private WaveResourceId                   m_completionStatus;
     private LocationId                   m_waveClientOriginatingLocationId;
     private UI32                         m_waveNativeClientId;
     private UI32                         m_waveUserClientId;
@@ -101,7 +101,7 @@ public class WaveMessage
     private boolean                      m_isMessageBeingSurrogatedFlag;
 
     private Vector<LocationId>           m_locationsForStatusPropagation;
-    private Vector<ResourceId>           m_completionStatusForStatusPropagation;
+    private Vector<WaveResourceId>           m_completionStatusForStatusPropagation;
     private Vector<String>               m_localizedCompletionStatusForStatusPropagation;
     private boolean                      m_isMessageSupportedWhenServiceIsPaused;
 
@@ -126,22 +126,22 @@ public class WaveMessage
     private boolean                      m_removeNodeFromKnownLocationAfterReply;
     private boolean                      m_sendForOneWayConnection;
 
-    public ResourceId getType ()
+    public WaveResourceId getType ()
     {
         return m_type;
     }
 
-    public void setType (final ResourceId type)
+    public void setType (final WaveResourceId type)
     {
         m_type = type;
     }
 
-    public ResourceId getPriority ()
+    public WaveResourceId getPriority ()
     {
         return m_priority;
     }
 
-    public void setPriority (final ResourceId priority)
+    public void setPriority (final WaveResourceId priority)
     {
         m_priority = priority;
     }
@@ -296,12 +296,12 @@ public class WaveMessage
         m_originalMessageId = originalMessageId;
     }
 
-    public ResourceId getCompletionStatus ()
+    public WaveResourceId getCompletionStatus ()
     {
         return m_completionStatus;
     }
 
-    public void setCompletionStatus (final ResourceId completionStatus)
+    public void setCompletionStatus (final WaveResourceId completionStatus)
     {
         m_completionStatus = completionStatus;
     }
@@ -456,12 +456,12 @@ public class WaveMessage
         m_locationsForStatusPropagation = locationsForStatusPropagation;
     }
 
-    public Vector<ResourceId> getCompletionStatusForStatusPropagation ()
+    public Vector<WaveResourceId> getCompletionStatusForStatusPropagation ()
     {
         return m_completionStatusForStatusPropagation;
     }
 
-    public void setCompletionStatusForStatusPropagation (final Vector<ResourceId> completionStatusForStatusPropagation)
+    public void setCompletionStatusForStatusPropagation (final Vector<WaveResourceId> completionStatusForStatusPropagation)
     {
         m_completionStatusForStatusPropagation = completionStatusForStatusPropagation;
     }
