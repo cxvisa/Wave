@@ -16,7 +16,7 @@ namespace WaveNs
 {
 InterLocationMulticastMessage::InterLocationMulticastMessage ()
     : WaveMessage (InterLocationMessageTransportObjectManager::getWaveServiceId (), INTERLOCATION_MESSAGE_FOR_MULTICAST_SEND),
-    m_numberOfMessagesSent (0)
+    m_numberOfMessagesSentAndOutStanding (0)
 {
 }
 
@@ -26,12 +26,12 @@ InterLocationMulticastMessage::~InterLocationMulticastMessage ()
 
 string &InterLocationMulticastMessage::getSerializedStringToSend ()
 {
-    return (m_serializeString);
+    return (m_serializedStringToSend);
 }
 
 void InterLocationMulticastMessage::setSerializedStringToSend (const string &serializedString)
 {
-    m_serializeString = serializedString;
+    m_serializedStringToSend = serializedString;
 }
 
 ResourceId InterLocationMulticastMessage::getStatusForALocation (LocationId &locationId)
@@ -48,39 +48,39 @@ ResourceId InterLocationMulticastMessage::getStatusForALocation (LocationId &loc
 void InterLocationMulticastMessage::setStatusForALocation (LocationId &locationId, ResourceId &locationStatus)
 {
     lockAccess ();
- 
+
     m_locationStatus [locationId] = locationStatus;
 
     unlockAccess ();
 }
 
-void InterLocationMulticastMessage::getLocationsToSend (set<LocationId> &locationsId)
+void InterLocationMulticastMessage::getLocationIdsToSend (set<LocationId> &locationIdsToSend)
 {
-    locationsId = m_locationsId;
+    locationIdsToSend = m_locationIdsToSend;
 }
 
-void InterLocationMulticastMessage::setLocationsToSend (set<LocationId> &locationsId)
+void InterLocationMulticastMessage::setLocationIdsToSend (set<LocationId> &locationIdsToSend)
 {
-    m_locationsId = locationsId;
+    m_locationIdsToSend = locationIdsToSend;
 }
 
 InterLocationMulticastMessage &InterLocationMulticastMessage::operator ++ ()
 {
     lockAccess ();
 
-    ++m_numberOfMessagesSent;
+    ++m_numberOfMessagesSentAndOutStanding;
 
     unlockAccess ();
 
     return (*this);
 
-} 
+}
 
 InterLocationMulticastMessage &InterLocationMulticastMessage::operator -- ()
 {
     lockAccess ();
 
-    --m_numberOfMessagesSent;
+    --m_numberOfMessagesSentAndOutStanding;
 
     unlockAccess ();
 
@@ -89,12 +89,12 @@ InterLocationMulticastMessage &InterLocationMulticastMessage::operator -- ()
 
 void InterLocationMulticastMessage::setMessageIdForMessageToMulticast (const UI32 &messageId)
 {
-    m_originalMessageId = messageId;
+    m_messageIdForMessageToMulticast = messageId;
 }
 
 UI32 InterLocationMulticastMessage::getMessageIdForMessageToMulticast ()
 {
-    return (m_originalMessageId);
+    return (m_messageIdForMessageToMulticast);
 }
 
 void InterLocationMulticastMessage::lockAccess ()
@@ -107,11 +107,11 @@ void InterLocationMulticastMessage::unlockAccess ()
     m_accessMutex.unlock ();
 }
 
-bool InterLocationMulticastMessage::areAllMessageReplyReceived ()
+bool InterLocationMulticastMessage::areAllMessageRepliesReceived ()
 {
     lockAccess ();
 
-    if (0 == m_numberOfMessagesSent)
+    if (0 == m_numberOfMessagesSentAndOutStanding)
     {
         unlockAccess ();
         return (true);
@@ -135,9 +135,9 @@ bool InterLocationMulticastMessage::isMessageSentToThisLocation (const LocationI
 {
     set<LocationId>::iterator it;
 
-    it = m_locationsId.find (locationId);
+    it = m_locationIdsToSend.find (locationId);
 
-    if (it != m_locationsId.end ())
+    if (it != m_locationIdsToSend.end ())
     {
         return (true);
     }
@@ -147,8 +147,8 @@ bool InterLocationMulticastMessage::isMessageSentToThisLocation (const LocationI
 
 bool InterLocationMulticastMessage::isMessageSentToThisLocationNotReplied (const LocationId &locationId) const
 {
-    map<LocationId, LocationId>::const_iterator element    = m_locationReplied.find (locationId);
-    map<LocationId, LocationId>::const_iterator endElement = m_locationReplied.end ();
+    map<LocationId, LocationId>::const_iterator element    = m_locationsReplied.find (locationId);
+    map<LocationId, LocationId>::const_iterator endElement = m_locationsReplied.end ();
 
     if (element == endElement)
     {
@@ -160,12 +160,12 @@ bool InterLocationMulticastMessage::isMessageSentToThisLocationNotReplied (const
 
 void InterLocationMulticastMessage::setMessageRepliedToThisLocation (const LocationId &locationId)
 {
-    map<LocationId, LocationId>::iterator element    = m_locationReplied.find (locationId);
-    map<LocationId, LocationId>::iterator endElement = m_locationReplied.end ();
+    map<LocationId, LocationId>::iterator element    = m_locationsReplied.find (locationId);
+    map<LocationId, LocationId>::iterator endElement = m_locationsReplied.end ();
 
     if (element == endElement)
     {
-        m_locationReplied [locationId] = locationId;
+        m_locationsReplied [locationId] = locationId;
     }
     else
     {

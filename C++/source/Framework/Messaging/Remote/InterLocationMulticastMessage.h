@@ -14,7 +14,7 @@
 #include <string>
 #include <map>
 
-using namespace std; 
+using namespace std;
 
 namespace WaveNs
 {
@@ -22,7 +22,7 @@ namespace WaveNs
 class InterLocationMulticastMessage : public WaveMessage
 {
  public:
-    
+
                                              InterLocationMulticastMessage              ();
     virtual                                 ~InterLocationMulticastMessage              ();
 
@@ -32,14 +32,14 @@ class InterLocationMulticastMessage : public WaveMessage
             ResourceId                       getStatusForALocation                      (LocationId &locationId);
             void                             setStatusForALocation                      (LocationId &locationId, ResourceId &locationStatus);
 
-            void                             getLocationsToSend                         (set<LocationId> &locationsId);
-            void                             setLocationsToSend                         (set<LocationId> &locationsId);
+            void                             getLocationIdsToSend                       (set<LocationId> &locationIdsToSend);
+            void                             setLocationIdsToSend                       (set<LocationId> &locationIdsToSend);
             InterLocationMulticastMessage   &operator ++                                ();
             InterLocationMulticastMessage   &operator --                                ();
             void                             setMessageIdForMessageToMulticast          (const UI32 &messageId);
             UI32                             getMessageIdForMessageToMulticast          ();
-            bool                             areAllMessageReplyReceived                 ();
-            
+            bool                             areAllMessageRepliesReceived                 ();
+
             void                             messageOperationAccess                     ();
             void                             messageOperationReleaseAccess              ();
 
@@ -55,12 +55,12 @@ class InterLocationMulticastMessage : public WaveMessage
  protected:
  private:
 
-    string                          m_serializeString;
+    string                          m_serializedStringToSend;
     map<LocationId, ResourceId>     m_locationStatus;
-    map<LocationId, LocationId>     m_locationReplied;
-    set<LocationId>                 m_locationsId;
-    UI32                            m_numberOfMessagesSent;
-    UI32                            m_originalMessageId;
+    map<LocationId, LocationId>     m_locationsReplied;
+    set<LocationId>                 m_locationIdsToSend;
+    UI32                            m_numberOfMessagesSentAndOutStanding;
+    UI32                            m_messageIdForMessageToMulticast;
     WaveMutex                      m_accessMutex;
     WaveMutex                      m_messageAccessMutex;
 };

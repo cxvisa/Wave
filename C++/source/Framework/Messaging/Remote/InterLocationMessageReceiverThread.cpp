@@ -496,7 +496,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                                 pInterLocationMulticastMessage->setStatusForALocation (receiverLocationId, resourceId);
                             }
 
-                            if (true == pInterLocationMulticastMessage->areAllMessageReplyReceived ())
+                            if (true == pInterLocationMulticastMessage->areAllMessageRepliesReceived ())
                             {
                                 WaveMessage *pTempWaveMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
 

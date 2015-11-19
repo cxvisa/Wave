@@ -11129,7 +11129,7 @@ void WaveObjectManager::performSendMulticast (WaveLinearSequencerContext *pWaveL
 
         pWaveMessage->serialize2 (pInterLocationMulticastMessage->getSerializedStringToSend ());
 
-        pInterLocationMulticastMessage->setLocationsToSend (remoteLocations);
+        pInterLocationMulticastMessage->setLocationIdsToSend (remoteLocations);
         pInterLocationMulticastMessage->setMessageIdForMessageToMulticast (pWaveMessage->getMessageId ());
 
         status = send (pInterLocationMulticastMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveObjectManager::performSendMulticastRemoteCallback), pWaveLinearSequencerContext);
@@ -11218,7 +11218,7 @@ void WaveObjectManager::performSendMulticastRemoteCallback (FrameworkStatus fram
 
     --(*pWaveLinearSequencerContext);
 
-    pInterLocationMulticastMessage->getLocationsToSend (remoteLocationsId);
+    pInterLocationMulticastMessage->getLocationIdsToSend (remoteLocationsId);
 
     for (locationIterator = remoteLocationsId.begin (); locationIterator != remoteLocationsId.end (); locationIterator++)
     {

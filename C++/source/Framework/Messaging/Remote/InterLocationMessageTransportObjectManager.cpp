@@ -276,7 +276,7 @@ void InterLocationMessageTransportObjectManager::interLocationMulticastMessageTr
     UI32            originalMessageId = pInterLocationMulticastMessage->getMessageIdForMessageToMulticast ();
     set<LocationId> remoteLocations;
 
-    pInterLocationMulticastMessage->getLocationsToSend (remoteLocations);
+    pInterLocationMulticastMessage->getLocationIdsToSend (remoteLocations);
 
     status = m_remoteMessagesMap.addMessage (pInterLocationMulticastMessage, originalMessageId);
 
@@ -637,7 +637,7 @@ void InterLocationMessageTransportObjectManager::replyToRemoteMessagesPendingOnL
 
             --(*pInterLocationMulticastMessage);
 
-            if (true == pInterLocationMulticastMessage->areAllMessageReplyReceived ())
+            if (true == pInterLocationMulticastMessage->areAllMessageRepliesReceived ())
             {
                 WaveMessage *pTempWaveMessage = getPendingMessage (pInterLocationMulticastMessage->getMessageIdForMessageToMulticast ());
 
