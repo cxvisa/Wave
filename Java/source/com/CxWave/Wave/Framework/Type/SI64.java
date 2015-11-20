@@ -43,6 +43,11 @@ public class SI64
     @Override
     public boolean equals (final Object object)
     {
+        if (null == object)
+        {
+            return (false);
+        }
+
         if (!(object instanceof SI64))
         {
             return (false);
@@ -104,5 +109,11 @@ public class SI64
     public String toString ()
     {
         return (m_value.toString ());
+    }
+
+    @Override
+    public int hashCode ()
+    {
+        return (m_value.hashCode ());
     }
 }

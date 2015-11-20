@@ -33,4 +33,33 @@ public class LocationId
     {
         return (m_id.toString ());
     }
+
+    @Override
+    public int hashCode ()
+    {
+        return (m_id.hashCode ());
+    }
+
+    @Override
+    public boolean equals (final Object object)
+    {
+        if (null == object)
+        {
+            return (false);
+        }
+
+        if (!(object instanceof LocationId))
+        {
+            return (false);
+        }
+
+        if (object == this)
+        {
+            return (true);
+        }
+
+        final LocationId rhs = (LocationId) object;
+
+        return (m_id.equals (rhs.m_id));
+    }
 }

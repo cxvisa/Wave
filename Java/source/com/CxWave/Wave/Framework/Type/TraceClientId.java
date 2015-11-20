@@ -45,4 +45,33 @@ public class TraceClientId
     {
         return ((new Long (m_id)).toString ());
     }
+
+    @Override
+    public int hashCode ()
+    {
+        return ((Long.valueOf (m_id)).hashCode ());
+    }
+
+    @Override
+    public boolean equals (final Object object)
+    {
+        if (null == object)
+        {
+            return (false);
+        }
+
+        if (!(object instanceof TraceClientId))
+        {
+            return (false);
+        }
+
+        if (object == this)
+        {
+            return (true);
+        }
+
+        final TraceClientId rhs = (TraceClientId) object;
+
+        return (m_id == rhs.m_id);
+    }
 }

@@ -40,6 +40,11 @@ public class UI16
     @Override
     public boolean equals (final Object object)
     {
+        if (null == object)
+        {
+            return (false);
+        }
+
         if (!(object instanceof UI16))
         {
             return (false);
@@ -115,5 +120,11 @@ public class UI16
     public String toString ()
     {
         return (m_value.toString ());
+    }
+
+    @Override
+    public int hashCode ()
+    {
+        return (m_value.hashCode ());
     }
 }

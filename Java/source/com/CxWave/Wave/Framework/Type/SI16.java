@@ -40,6 +40,11 @@ public class SI16
     @Override
     public boolean equals (final Object object)
     {
+        if (null == object)
+        {
+            return (false);
+        }
+
         if (!(object instanceof SI16))
         {
             return (false);

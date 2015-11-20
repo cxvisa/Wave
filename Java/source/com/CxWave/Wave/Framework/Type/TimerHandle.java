@@ -45,4 +45,33 @@ public class TimerHandle
     {
         return ((new Long (m_handle)).toString ());
     }
+
+    @Override
+    public int hashCode ()
+    {
+        return ((Long.valueOf (m_handle)).hashCode ());
+    }
+
+    @Override
+    public boolean equals (final Object object)
+    {
+        if (null == object)
+        {
+            return (false);
+        }
+
+        if (!(object instanceof TimerHandle))
+        {
+            return (false);
+        }
+
+        if (object == this)
+        {
+            return (true);
+        }
+
+        final TimerHandle rhs = (TimerHandle) object;
+
+        return (m_handle == rhs.m_handle);
+    }
 }
