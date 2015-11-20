@@ -65,7 +65,7 @@ public class InterLocationMulticastMessage extends WaveMessage
         return (status);
     }
 
-    void setStatusForALocation (final LocationId locationId, final ResourceId locationStatus)
+    public void setStatusForALocation (final LocationId locationId, final ResourceId locationStatus)
     {
         lockAccess ();
 

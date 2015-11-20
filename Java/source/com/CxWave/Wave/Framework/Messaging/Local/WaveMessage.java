@@ -15,8 +15,12 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveResourceId;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public class WaveMessage extends SerializableObject
 {
@@ -69,8 +73,8 @@ public class WaveMessage extends SerializableObject
         }
     }
 
-    private WaveResourceId               m_type;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      // WaveMessageType
-    private WaveResourceId               m_priority;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  // WaveMessagePriority
+    private WaveResourceId               m_type;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        // WaveMessageType
+    private WaveResourceId               m_priority;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // WaveMessagePriority
     private WaveServiceId                m_serviceCode;
     private UI32                         m_operationCode;
     private UI32                         m_waveClientMessageId;
@@ -116,8 +120,8 @@ public class WaveMessage extends SerializableObject
     private String                       m_partitionName;
     private LocationId                   m_partitionLocationIdForPropagation;
     private boolean                      m_isPartitionContextPropagated;
-    private boolean                      m_isPartitionNameSetByUser;                                                                                                                                                                                                                                                                                  // Not
-                                                                                                                                                                                                                                                                                                                                                      // serialized.
+    private boolean                      m_isPartitionNameSetByUser;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // Not
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                // serialized.
     // Only to prevent copy of partitionName from
     // m_pInputMessage during propagation.
 
@@ -131,10 +135,16 @@ public class WaveMessage extends SerializableObject
     private boolean                      m_removeNodeFromKnownLocationAfterReply;
     private boolean                      m_sendForOneWayConnection;
 
-    public <E extends Enum<E>> WaveMessage (final WaveServiceId serviceCode, final E operationCode)
+    protected <E extends Enum<E>> WaveMessage (final WaveServiceId serviceCode, final E operationCode)
     {
         m_serviceCode = serviceCode;
         m_operationCode = new UI32 (operationCode.ordinal ());
+    }
+
+    private WaveMessage (final WaveMessage waveMessage)
+    {
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveMessage::WaveMessage : Copy Constructing a WaveMessage does not make sense and hence not allowed.");
+        WaveAssertUtils.waveAssert ();
     }
 
     public WaveResourceId getType ()
@@ -625,5 +635,83 @@ public class WaveMessage extends SerializableObject
     public void setSendForOneWayConnection (final boolean sendForOneWayConnection)
     {
         m_sendForOneWayConnection = sendForOneWayConnection;
+    }
+
+    public WaveMessageStatus addBuffer (final UI32 tag, final byte[] buffer, final boolean bufferWillBeOwnedByMessage)
+    {
+        byte[] tempBuffer = null;
+
+        if (null == buffer)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveMessage::addBuffer : Cannot add NULL buffer to a WaveMessage.");
+            WaveAssertUtils.waveAssert ();
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_ADDING_NULL_BUFFER);
+        }
+
+        tempBuffer = findBuffer (tag);
+
+        if (null != tempBuffer)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveMessage::addBuffer : A buffer already exists with the tag : %d", tag);
+            WaveAssertUtils.waveAssert ();
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_EXISTS);
+        }
+        else
+        {
+            final WaveMessageBuffer waveMessageBuffer = new WaveMessageBuffer (buffer, bufferWillBeOwnedByMessage);
+
+            m_buffers.put (tag, waveMessageBuffer);
+
+            return (WaveMessageStatus.WAVE_MESSAGE_SUCCESS);
+        }
+    }
+
+    public byte[] findBuffer (final UI32 tag)
+    {
+        final WaveMessageBuffer waveMessageBuffer = m_buffers.get (tag);
+
+        if (null != waveMessageBuffer)
+        {
+            return (waveMessageBuffer.getBuffer ());
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public byte[] transferBufferToUser (final UI32 tag)
+    {
+        final WaveMessageBuffer waveMessageBuffer = m_buffers.remove (tag);
+
+        return (waveMessageBuffer.getBuffer ());
+    }
+
+    public WaveMessageStatus removeBuffer (final UI32 tag)
+    {
+        final WaveMessageBuffer waveMessageBuffer = m_buffers.remove (tag);
+
+        if (null == waveMessageBuffer)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveMessage::addBuffer : A buffer does not exist with the tag : %s", tag.toString ());
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_BUFFER_WITH_TAG_DOES_NOT_EXIST);
+        }
+        else
+        {
+            return (WaveMessageStatus.WAVE_MESSAGE_SUCCESS);
+        }
+    }
+
+    public UI32 getNumberOfBuffers ()
+    {
+        return (new UI32 (m_buffers.size ()));
+    }
+
+    public void removeAllBuffers ()
+    {
+        m_buffers.clear ();
     }
 }

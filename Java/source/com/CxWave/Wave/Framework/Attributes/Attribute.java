@@ -240,4 +240,63 @@ public abstract class Attribute
         stringBuffer.append ("#");
         stringBuffer.append (plainString);
     }
+
+    public Object getValue (final SerializableObject serializableObject)
+    {
+        WaveAssertUtils.waveAssert (null != serializableObject);
+
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        Object object = null;
+
+        try
+        {
+            // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "AttributeStringVector.loadValueFromPlainString :
+            // Attribute loading
+            // for Field : %s, Class : %s, value : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass
+            // ()).getName (), value);
+
+            object = reflectionField.get (serializableObject);
+
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Attribute.getValue : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), e.toString ());
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (object);
+    }
+
+    public void setValue (final SerializableObject serializableObject, final Object object)
+    {
+        WaveAssertUtils.waveAssert (null != serializableObject);
+
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        try
+        {
+            reflectionField.set (serializableObject, object);
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Attribute.setValue : Failed.  Serializable Object : %s, Attribute name : %s", (serializableObject.getClass ()).getName (), m_reflectionAttribute.getAttributeName ());
+            WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    public void copyFrom (final SerializableObject thisSerializableObject, final Attribute rhsAttribute, final SerializableObject rhsSerializableObject)
+    {
+        WaveAssertUtils.waveAssert (null != thisSerializableObject);
+        WaveAssertUtils.waveAssert (null != rhsAttribute);
+        WaveAssertUtils.waveAssert (null != rhsSerializableObject);
+
+        final Object rhsValue = rhsAttribute.getValue (rhsSerializableObject);
+
+        setValue (thisSerializableObject, rhsValue);
+    }
 }

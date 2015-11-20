@@ -4,6 +4,10 @@
 
 package com.CxWave.Wave.Framework.LocationManagement;
 
+import java.util.Set;
+
+import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -183,6 +187,108 @@ public abstract class LocationBase
         {
             isSuccessful = clientStreamingSocket.send (bufferToPost);
         }
+
+        unlockAccess ();
+
+        return (true == isSuccessful ? ResourceId.WAVE_MESSAGE_SUCCESS : failureStatus);
+    }
+
+    public ResourceId postToRemoteLocation (final InterLocationMulticastMessage interLocationMulticastMessage, final Set<LocationId> locationsToSend)
+    {
+        lockAccess ();
+
+        final UI32 noOfLocationsToSent = new UI32 (locationsToSend.size ());
+        final UI32 numberOfFailures = new UI32 (0);
+        final String serializedStringToBeSent = interLocationMulticastMessage.getSerializedStringToSend ();
+
+        interLocationMulticastMessage.messageOperationAccess ();
+
+        final UI32 dataSize = new UI32 (serializedStringToBeSent.length ());
+        final UI32 numberOfBuffers = new UI32 (0);
+
+        for (final LocationId locationId : locationsToSend)
+        {
+            final ClientStreamingSocket clientStreamingSocket = getClientStreamingSocketForRemoteLocation (locationId);
+
+            final ResourceId failureStatus = (((getClusterPrimaryLocationId ()).equals (locationId)) ? ResourceId.WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION : ResourceId.WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION_DUE_TO_PRINCIPAL_FAILOVER);
+
+            if (null == clientStreamingSocket)
+            {
+                interLocationMulticastMessage.setStatusForALocation (locationId, failureStatus);
+                interLocationMulticastMessage.setMessageRepliedToThisLocation (locationId);
+
+                numberOfFailures.increment ();
+                continue;
+            }
+
+            boolean isSuccessful = false;
+
+            isSuccessful = clientStreamingSocket.send (dataSize);
+
+            if (false == isSuccessful)
+            {
+                interLocationMulticastMessage.setStatusForALocation (locationId, failureStatus);
+                interLocationMulticastMessage.setMessageRepliedToThisLocation (locationId);
+
+                numberOfFailures.increment ();
+            }
+            else
+            {
+                isSuccessful = clientStreamingSocket.send (serializedStringToBeSent);
+
+                if (false == isSuccessful)
+                {
+                    interLocationMulticastMessage.setStatusForALocation (locationId, failureStatus);
+                    interLocationMulticastMessage.setMessageRepliedToThisLocation (locationId);
+
+                    numberOfFailures.increment ();
+                }
+                else
+                {
+                    isSuccessful = clientStreamingSocket.send (numberOfBuffers);
+
+                    if (false == isSuccessful)
+                    {
+                        interLocationMulticastMessage.setStatusForALocation (locationId, failureStatus);
+                        interLocationMulticastMessage.setMessageRepliedToThisLocation (locationId);
+
+                        numberOfFailures.increment ();
+                    }
+                    else
+                    {
+                        interLocationMulticastMessage.increment ();
+                    }
+                }
+            }
+        }
+
+        interLocationMulticastMessage.messageOperationReleaseAccess ();
+
+        unlockAccess ();
+
+        return ((noOfLocationsToSent.equals (numberOfFailures)) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    ResourceId postToRemoteLocation (final WaveMessage waveMessage, final LocationId locationId)
+    {
+        lockAccess ();
+
+        final ResourceId failureStatus = ((getClusterPrimaryLocationId ()).equals (locationId)) ? ResourceId.WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION : ResourceId.WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION_DUE_TO_PRINCIPAL_FAILOVER;
+
+        final ClientStreamingSocket clientStreamingSocket = getClientStreamingSocketForRemoteLocation (locationId);
+
+        final boolean isSuccessful = false;
+
+        if (null == clientStreamingSocket)
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_DEVEL, new String ("LocationBase.postToRemoteLocation : We are not connected to this location to post the message: ") + locationId.toString ());
+
+            unlockAccess ();
+
+            return (failureStatus);
+        }
+
+        // isSuccessful = clientStreamingSocket.send (waveMessage);
 
         unlockAccess ();
 

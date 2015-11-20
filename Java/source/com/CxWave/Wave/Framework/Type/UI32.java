@@ -42,6 +42,11 @@ public class UI32
     @Override
     public boolean equals (final Object object)
     {
+        if (null == object)
+        {
+            return (false);
+        }
+
         if (!(object instanceof UI32))
         {
             return (false);
@@ -54,7 +59,7 @@ public class UI32
 
         final UI32 rhs = (UI32) object;
 
-        if (m_value == (rhs.getValue ()))
+        if (m_value.equals ((rhs.getValue ())))
         {
             return (true);
         }
@@ -93,7 +98,7 @@ public class UI32
             WaveAssertUtils.waveAssert ();
         }
 
-        m_value = new Integer ((int) (value - (1L << 31)));
+        m_value = new Integer ((int) (value - (1L << 30)));
     }
 
     public boolean isValid (final long value)
@@ -142,5 +147,11 @@ public class UI32
     public String toString ()
     {
         return (m_value.toString ());
+    }
+
+    @Override
+    public int hashCode ()
+    {
+        return (m_value.hashCode ());
     }
 }

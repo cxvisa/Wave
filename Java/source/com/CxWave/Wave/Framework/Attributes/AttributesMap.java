@@ -62,7 +62,7 @@ public class AttributesMap
 
             final UI32 attributeUserTag = reflectionAttribute.getAttributeUserTag ();
 
-            if (0 != (attributeUserTag.getValue ()))
+            if (0 != ((attributeUserTag.getValue ()) + (1L << 30))) // Adjusted to 0.
             {
                 if (!(isAKnownAttributeByUserTag (attributeUserTag)))
                 {
@@ -252,6 +252,46 @@ public class AttributesMap
             WaveAssertUtils.waveAssert (null != value);
 
             value.serializeTo (m_serializableObject, stringBuffer);
+        }
+    }
+
+    public void copyFrom (final AttributesMap attributesMap)
+    {
+        if (null == attributesMap)
+        {
+            WaveAssertUtils.waveAssert ();
+            return;
+        }
+
+        final Map<UI32, Attribute> rhsAttributes = attributesMap.m_attributes;
+
+        if (null == rhsAttributes)
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        for (final Map.Entry<UI32, Attribute> entry : m_attributes.entrySet ())
+        {
+            final UI32 attributeTag = entry.getKey ();
+            final Attribute attribute = entry.getValue ();
+
+            WaveAssertUtils.waveAssert (null != attributeTag);
+            WaveAssertUtils.waveAssert (null != attribute);
+
+            Attribute rhsAttribute = null;
+
+            if (rhsAttributes.containsKey (attributeTag))
+            {
+                rhsAttribute = rhsAttributes.get (attributeTag);
+            }
+            else
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+
+            WaveAssertUtils.waveAssert (null != rhsAttribute);
+
+            attribute.copyFrom (m_serializableObject, rhsAttribute, attributesMap.m_serializableObject);
         }
     }
 }

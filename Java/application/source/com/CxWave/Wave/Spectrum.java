@@ -27,6 +27,7 @@ import com.CxWave.Wave.Framework.Core.Wave;
 import com.CxWave.Wave.Framework.Core.WaveBasedApplication;
 import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.Type.UI32;;
 
 import java.io.Serializable;
 import java.util.Vector;
@@ -128,7 +129,40 @@ class Spectrum
 
             waveMainConfiguration1.serializeTo (stringBuffer);
 
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration :\n%s", stringBuffer);
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 1:\n%s", stringBuffer);
+
+            UI32 v1 = new UI32 (10);
+            UI32 v2 = new UI32 (10);
+            UI32 v3 = new UI32 (20);
+
+            if (v1.equals (v2))
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 equals V2");
+            }
+            else
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V2");
+            }
+
+            if (v1.equals (v3))
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 equals V3");
+            }
+            else
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V3");
+            }
+
+            WaveMainConfiguration waveMainConfiguration2 = new WaveMainConfiguration ();
+
+            waveMainConfiguration2.loadFromSerializableObject (waveMainConfiguration1);
+
+            stringBuffer.delete (0, stringBuffer.length ());
+
+            waveMainConfiguration2.serializeTo (stringBuffer);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 2:\n%s", stringBuffer);
+
         }
 
         if (3 <= (commandLineArguments.length))

@@ -50,7 +50,7 @@ public class ReflectionAttributesMap
 
             final UI32 attributeUserTag = reflectionAttribute.getAttributeUserTag ();
 
-            if (0 != (attributeUserTag.getValue ()))
+            if (0 != ((attributeUserTag.getValue ()) + (1L << 30))) // Adjusted to 0.
             {
                 if (!(isAKnownAttributeByUserTag (attributeUserTag)))
                 {
@@ -58,7 +58,7 @@ public class ReflectionAttributesMap
                 }
                 else
                 {
-                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "ReflectionAttributesMap.addAttribute : Trying to add an Attribute with a User Tag that already exists : Attribute Name : %s, Tag : %u, User Tag : %u", reflectionAttribute.getAttributeName (), (reflectionAttribute.getAttributeTag ()).getValue (), (reflectionAttribute.getAttributeUserTag ()).getValue ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "ReflectionAttributesMap.addAttribute : Trying to add an Attribute with a User Tag that already exists : Attribute Name : %s, Tag : %d, User Tag : %d", reflectionAttribute.getAttributeName (), (reflectionAttribute.getAttributeTag ()).getValue (), (reflectionAttribute.getAttributeUserTag ()).getValue ());
 
                     WaveAssertUtils.waveAssert ();
                 }

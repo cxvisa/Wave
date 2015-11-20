@@ -172,13 +172,13 @@ ResourceId LocationBase::postToRemoteLocation (WaveMessage *pWaveMessage, Locati
     return (true == isSuccessful ? WAVE_MESSAGE_SUCCESS : failureStatus);
 }
 
-ResourceId LocationBase::postToRemoteLocation (InterLocationMulticastMessage *pInterLocationMulticastMessage, set<LocationId> locationsToSent)
+ResourceId LocationBase::postToRemoteLocation (InterLocationMulticastMessage *pInterLocationMulticastMessage, set<LocationId> locationsToSend)
 {
-    lockAccess (); 
+    lockAccess ();
 
-    UI32                        noOfLocationsToSent       = locationsToSent.size ();
+    UI32                        noOfLocationsToSent       = locationsToSend.size ();
     UI32                        numberOfFailures          = 0;
-    set<LocationId>::iterator   locationIterator; 
+    set<LocationId>::iterator   locationIterator;
     string                      &serializedStringToBeSent = pInterLocationMulticastMessage->getSerializedStringToSend ();
 
     pInterLocationMulticastMessage->messageOperationAccess ();
@@ -203,7 +203,7 @@ ResourceId LocationBase::postToRemoteLocation (InterLocationMulticastMessage *pI
     serializedStringToBeSent.insert (serializedStringToBeSent.end (), 1, (char) (pNetworkBuffer[2]));
     serializedStringToBeSent.insert (serializedStringToBeSent.end (), 1, (char) (pNetworkBuffer[3]));
 
-    for (locationIterator = locationsToSent.begin (); locationIterator != locationsToSent.end (); locationIterator++)
+    for (locationIterator = locationsToSend.begin (); locationIterator != locationsToSend.end (); locationIterator++)
     {
         LocationId locationId = *locationIterator;
 
@@ -212,7 +212,7 @@ ResourceId LocationBase::postToRemoteLocation (InterLocationMulticastMessage *pI
         ResourceId failureStatus = ((getClusterPrimaryLocationId() != locationId)? WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION : WAVE_MESSAGE_ERROR_POST_TO_REMOTE_LOCATION_DUE_TO_PRINCIPAL_FAILOVER);
 
         if (NULL == pClientStreamingSocket)
-        {  
+        {
             pInterLocationMulticastMessage->setStatusForALocation (locationId, failureStatus);
             pInterLocationMulticastMessage->setMessageRepliedToThisLocation (locationId);
 
@@ -242,7 +242,7 @@ ResourceId LocationBase::postToRemoteLocation (InterLocationMulticastMessage *pI
         if (true == isSuccessful)
         {
             isSuccessful = (*pClientStreamingSocket) << serializedStringToSent;
-            
+
             if (false == isSuccessful)
             {
                 pInterLocationMulticastMessage->setStatusForALocation (locationId, failureStatus);
