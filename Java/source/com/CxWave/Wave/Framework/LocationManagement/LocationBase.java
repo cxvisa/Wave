@@ -277,7 +277,7 @@ public abstract class LocationBase
 
         final ClientStreamingSocket clientStreamingSocket = getClientStreamingSocketForRemoteLocation (locationId);
 
-        final boolean isSuccessful = false;
+        boolean isSuccessful = false;
 
         if (null == clientStreamingSocket)
         {
@@ -288,7 +288,7 @@ public abstract class LocationBase
             return (failureStatus);
         }
 
-        // isSuccessful = clientStreamingSocket.send (waveMessage);
+        isSuccessful = clientStreamingSocket.send (waveMessage);
 
         unlockAccess ();
 

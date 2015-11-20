@@ -17,8 +17,6 @@ public class ReservedWaveLocalObjectManager extends WaveLocalObjectManager
     private ReservedWaveLocalObjectManager ()
     {
         super (getClassName ());
-
-        System.out.printf ("1111111111111111\n");
     }
 
     public static String getClassName ()

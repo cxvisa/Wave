@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -594,6 +596,11 @@ public class ClientStreamingSocket implements StreamingSocket
         }
     }
 
+    public boolean send (final byte[] buffer)
+    {
+        return (send (buffer, buffer.length));
+    }
+
     public boolean send (final byte[] buffer, final int maximumBufferLength)
     {
         if (true != (isValid ()))
@@ -697,6 +704,60 @@ public class ClientStreamingSocket implements StreamingSocket
         }
 
         return (status);
+    }
+
+    public boolean send (final WaveMessage waveMessage)
+    {
+        WaveAssertUtils.waveAssert (null != waveMessage);
+
+        final StringBuffer bufferToPost = new StringBuffer ();
+
+        waveMessage.serializeTo (bufferToPost);
+
+        final UI32 bufferSize = new UI32 (bufferToPost.length ());
+        final UI32 numberOfBuffers = waveMessage.getNumberOfBuffers ();
+
+        boolean isSuccessful = false;
+
+        isSuccessful = send (bufferSize);
+
+        if (isSuccessful)
+        {
+            isSuccessful = send (bufferToPost.toString ());
+
+            if (isSuccessful)
+            {
+                isSuccessful = send (numberOfBuffers);
+            }
+        }
+
+        if (isSuccessful)
+        {
+            final Vector<UI32> bufferTags = new Vector<UI32> ();
+
+            waveMessage.getBufferTags (bufferTags);
+
+            for (final UI32 bufferTag : bufferTags)
+            {
+                isSuccessful = send (bufferTag);
+
+                if (isSuccessful)
+                {
+                    final byte[] buffer = waveMessage.findBuffer (bufferTag);
+
+                    WaveAssertUtils.waveAssert (null != buffer);
+
+                    isSuccessful = send (buffer);
+
+                    if (!isSuccessful)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return (isSuccessful);
     }
 
     public int receive (final byte[] buffer)
