@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.Core;
 
 import java.util.Map;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
@@ -18,12 +19,12 @@ public class WaveServiceMap
     private Map<String, WaveServiceId>     m_servicesIdMap;
     private WaveMutex                      m_mutex;
 
-    public void addServiceMap (WaveServiceId id, WaveThread waveThread, final String serviceName)
+    public void addServiceMap (final WaveServiceId id, final WaveThread waveThread, final String serviceName)
     {
         m_mutex.lock ();
 
-        WaveThread tempWaveThread = m_servicesMap.get (id);
-        WaveServiceId tempWaveServiceId = m_servicesIdMap.get (serviceName);
+        final WaveThread tempWaveThread = m_servicesMap.get (id);
+        final WaveServiceId tempWaveServiceId = m_servicesIdMap.get (serviceName);
 
         if (null != tempWaveThread)
         {
@@ -44,5 +45,86 @@ public class WaveServiceMap
         m_servicesIdMap.put (serviceName, id);
 
         m_mutex.unlock ();
+    }
+
+    public void removeServiceMap (final WaveServiceId waveServiceId)
+    {
+        m_mutex.lock ();
+
+        if (m_servicesMap.containsKey (waveServiceId))
+        {
+            m_servicesMap.remove (waveServiceId);
+        }
+        else
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        String serviceName = null;
+
+        if (m_servicesNameMap.containsKey (waveServiceId))
+        {
+            serviceName = m_servicesNameMap.remove (waveServiceId);
+        }
+        else
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (m_servicesIdMap.containsKey (serviceName))
+        {
+            m_servicesIdMap.remove (serviceName);
+        }
+        else
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        m_mutex.unlock ();
+    }
+
+    public void getListOfServiceIds (final Vector<WaveServiceId> serviceIds)
+    {
+        m_mutex.lock ();
+
+        for (final WaveServiceId waveServiceId : m_servicesNameMap.keySet ())
+        {
+            serviceIds.add (waveServiceId);
+        }
+
+        m_mutex.unlock ();
+    }
+
+    public WaveThread getWaveThreadForServiceId (final WaveServiceId waveServiceId)
+    {
+        m_mutex.lock ();
+
+        final WaveThread waveThread = m_servicesMap.get (waveServiceId);
+
+        m_mutex.unlock ();
+
+        return (waveThread);
+    }
+
+    public String getWaveServiceNameForServiceId (final WaveServiceId waveServiceId)
+    {
+        m_mutex.lock ();
+
+        final String waveServiceName = m_servicesNameMap.get (waveServiceId);
+
+        m_mutex.unlock ();
+
+        return (waveServiceName);
+    }
+
+    public WaveServiceId getWaveServiceIdForServiceName (final String waveServiceName)
+    {
+        m_mutex.lock ();
+
+        final WaveServiceId waveServiceId = m_servicesIdMap.get (waveServiceName);
+
+        m_mutex.unlock ();
+
+        return (waveServiceId);
     }
 }

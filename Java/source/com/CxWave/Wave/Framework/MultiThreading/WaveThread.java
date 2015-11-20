@@ -58,8 +58,8 @@ public class WaveThread extends Thread
 
     private boolean                                     m_terminateThread  = false;
 
-    private static final long                           s_defaultStackSize = 256 * 1024;                                                                                                                                                                                                                                                                                                                       // 256
-                                                                                                                                                                                                                                                                                                                                                                                                               // KB
+    private static final long                           s_defaultStackSize = 256 * 1024;                                                                                                                                                                                                                                                                                                                                 // 256
+                                                                                                                                                                                                                                                                                                                                                                                                                         // KB
 
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
@@ -131,8 +131,6 @@ public class WaveThread extends Thread
     @Override
     public void run ()
     {
-        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_SUCCESS, "Successfully started a Wavethread.");
-
         WaveMessage waveMessage = null;
 
         while (true)

@@ -12,6 +12,7 @@ import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
 import com.CxWave.Wave.Framework.Utils.Socket.ClientStreamingSocket;
 import com.CxWave.Wave.Framework.Utils.Socket.ServerStreamingSocket;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
@@ -293,5 +294,23 @@ public abstract class LocationBase
         unlockAccess ();
 
         return (true == isSuccessful ? ResourceId.WAVE_MESSAGE_SUCCESS : failureStatus);
+    }
+
+    public AcceptedStreamingSocket acceptNewConnection ()
+    {
+        AcceptedStreamingSocket acceptedStreamingSocket = null;
+
+        if (null != m_serverSocketForLocation)
+        {
+            acceptedStreamingSocket = m_serverSocketForLocation.accept ();
+        }
+        else
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_ERROR, "LocationBase.acceptNewConnection : Server Communications are not initialized yet.");
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (acceptedStreamingSocket);
     }
 }

@@ -48,6 +48,8 @@ void WaveServiceMap::addServiceMap  (WaveServiceId id, WaveThread *pWaveThread, 
 
 void WaveServiceMap::removeServiceMap (WaveServiceId id)
 {
+	m_mutex.lock ();
+
     map<WaveServiceId, WaveThread *>::iterator  element      = m_servicesMap.find (id);
     map<WaveServiceId, WaveThread *>::iterator  endElement   = m_servicesMap.end  ();
 
