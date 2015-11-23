@@ -5,7 +5,7 @@
 package com.CxWave.Wave.ManagementInterface.ClientInterface;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;

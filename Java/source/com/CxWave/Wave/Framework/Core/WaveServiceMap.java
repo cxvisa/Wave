@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 

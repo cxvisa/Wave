@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;

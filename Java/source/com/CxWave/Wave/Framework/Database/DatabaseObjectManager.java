@@ -5,8 +5,8 @@
 package com.CxWave.Wave.Framework.Database;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
 import com.CxWave.Wave.Framework.Type.SI32;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public class DatabaseObjectManager extends WaveLocalObjectManager

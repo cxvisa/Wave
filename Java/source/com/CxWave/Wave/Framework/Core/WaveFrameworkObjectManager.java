@@ -5,7 +5,7 @@
 package com.CxWave.Wave.Framework.Core;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 

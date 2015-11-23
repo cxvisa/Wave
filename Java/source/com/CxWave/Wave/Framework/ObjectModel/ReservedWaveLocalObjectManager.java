@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;

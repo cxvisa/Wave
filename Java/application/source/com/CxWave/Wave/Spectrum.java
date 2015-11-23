@@ -153,9 +153,18 @@ class Spectrum
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V3");
             }
 
-            WaveMainConfiguration waveMainConfiguration2 = new WaveMainConfiguration ();
+            WaveMainConfiguration waveMainConfiguration2 = null;
 
-            waveMainConfiguration2.loadFromSerializableObject (waveMainConfiguration1);
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "loadFromSerializableObject Test (1000000 iterations) started.");
+
+            for (int i = 0; i < 1000000; i++)
+            {
+                waveMainConfiguration2 = new WaveMainConfiguration ();
+                waveMainConfiguration2.loadFromSerializableObject (waveMainConfiguration1);
+            }
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "loadFromSerializableObject Test (1000000 iterations) End.");
+
 
             stringBuffer.delete (0, stringBuffer.length ());
 

@@ -4,10 +4,7 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -60,6 +57,8 @@ public class AtributeLocationIdVector extends Attribute
             // for Field : %s, Class : %s, value : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass
             // ()).getName (), value);
 
+            // @formatter:off
+            /*
             Object object = reflectionField.get (serializableObject);
 
             if (null == object)
@@ -113,6 +112,10 @@ public class AtributeLocationIdVector extends Attribute
             {
                 WaveAssertUtils.waveAssert ();
             }
+            */
+            // @formatter:on
+
+            reflectionField.set (serializableObject, value);
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {

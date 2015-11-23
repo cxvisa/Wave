@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 
 public class WaveLocalObjectManager extends WaveObjectManager
 {

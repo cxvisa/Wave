@@ -10,11 +10,11 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.MultiThreading.WaveThreadId;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveResourceId;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;

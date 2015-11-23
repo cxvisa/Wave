@@ -2,9 +2,7 @@
  * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
-package com.CxWave.Wave.Framework.ObjectModel;
-
-import com.CxWave.Wave.Framework.Type.UI32;
+package com.CxWave.Wave.Framework.Type;
 
 public class WaveServiceId
 {
@@ -43,5 +41,40 @@ public class WaveServiceId
     public void increment ()
     {
         m_id++;
+    }
+
+    @Override
+    public String toString ()
+    {
+        return ((new Long (m_id)).toString ());
+    }
+
+    @Override
+    public int hashCode ()
+    {
+        return ((Long.valueOf (m_id)).hashCode ());
+    }
+
+    @Override
+    public boolean equals (final Object object)
+    {
+        if (null == object)
+        {
+            return (false);
+        }
+
+        if (!(object instanceof WaveServiceId))
+        {
+            return (false);
+        }
+
+        if (object == this)
+        {
+            return (true);
+        }
+
+        final WaveServiceId rhs = (WaveServiceId) object;
+
+        return (m_id == rhs.m_id);
     }
 }

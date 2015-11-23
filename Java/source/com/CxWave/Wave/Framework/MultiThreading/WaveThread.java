@@ -13,8 +13,8 @@ import java.util.Map;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
-import com.CxWave.Wave.Framework.ObjectModel.WaveServiceId;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
