@@ -127,4 +127,9 @@ public class SI32
     {
         return (m_value.hashCode ());
     }
+
+    public int intValue ()
+    {
+        return (m_value.intValue ());
+    }
 }

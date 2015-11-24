@@ -62,4 +62,14 @@ public class LocationId
 
         return (m_id.equals (rhs.m_id));
     }
+
+    public Long getSubLocationMask ()
+    {
+        return (new Long (0x000000FF));
+    }
+
+    public boolean isASubLocation ()
+    {
+        return (0 == ((m_id.getValue ()) & (getSubLocationMask ())));
+    }
 }

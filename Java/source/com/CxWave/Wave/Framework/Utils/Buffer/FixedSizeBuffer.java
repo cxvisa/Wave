@@ -29,7 +29,7 @@ public class FixedSizeBuffer
             WaveAssertUtils.waveAssert ();
         }
 
-        m_rawBuffer = new byte[(m_maximumSize.getValue ()) + 1];
+        m_rawBuffer = new byte[(m_maximumSize.intValue ()) + 1];
         m_currentSize = new UI32 (0);
 
         if (null == m_rawBuffer)
@@ -38,7 +38,7 @@ public class FixedSizeBuffer
             WaveAssertUtils.waveAssert ();
         }
 
-        m_rawBuffer[m_maximumSize.getValue ()] = '\0';
+        m_rawBuffer[m_maximumSize.intValue ()] = '\0';
     }
 
     public FixedSizeBuffer (final UI32 maximumSize, final byte[] buffer, final boolean isBufferUsed)

@@ -11,8 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.Core.WaveServiceMap;
+import com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectManager;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -20,6 +25,8 @@ import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public class WaveThread extends Thread
 {
@@ -58,8 +65,9 @@ public class WaveThread extends Thread
 
     private boolean                                     m_terminateThread  = false;
 
-    private static final long                           s_defaultStackSize = 256 * 1024;                                                                                                                                                                                                                                                                                                                                 // 256
-                                                                                                                                                                                                                                                                                                                                                                                                                         // KB
+    private static final long                           s_defaultStackSize = 256 * 1024;
+
+    private static WaveServiceMap                       s_waveServiceMap   = new WaveServiceMap ();
 
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
@@ -383,5 +391,138 @@ public class WaveThread extends Thread
     public static UI32 getDefaultStackSize ()
     {
         return (new UI32 (s_defaultStackSize));
+    }
+
+    private WaveObjectManager getWaveObjectManagerForOperationCode (final UI32 operationCode)
+    {
+        for (final WaveObjectManager waveObjectManager : m_waveObjectManagers)
+        {
+            WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+            if (waveObjectManager.isOperationCodeSupported (operationCode))
+            {
+                return (waveObjectManager);
+            }
+        }
+
+        return (null);
+    }
+
+    public static String getWaveServiceNameForServiceId (final WaveServiceId id)
+    {
+        return (s_waveServiceMap.getWaveServiceNameForServiceId (id));
+    }
+
+    public WaveMessageStatus submitMessage (final WaveMessage waveMessage)
+    {
+        WaveAssertUtils.waveAssert (null != waveMessage);
+
+        final WaveMessagePriority messagePriority = waveMessage.getPriority ();
+
+        // Check if the message has been submitted to a wrong thread. This done by comparing this thread serviceid
+        // to the message serviceid.
+        // there is a n exception to this. If the this thread serviceid is WAVE_SERVICE_INTER_LOCATION_MESSAGE_TRANSPORT, then
+        // the thread will receive messages destined for other services since the thread has to transport to remote locations.
+
+        if ((!((InterLocationMessageTransportObjectManager.getWaveServiceId ()).equals (m_waveServiceId))) && ((!(HaPeerMessageTransportObjectManager.getWaveServiceId ()).equals (m_waveServiceId))) && (!(m_waveServiceId.equals ((waveMessage.getServiceCode ())))))
+        {
+            System.err.println ("WaveThread.submitMessage : Internal Error : Submitted message to a wrong Wave Thread.");
+            WaveAssertUtils.waveAssert (false);
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_SUBMIT_TO_INVALID_THREAD);
+        }
+
+        // Before proceeding check if the Service has been enabled to accept messages other services.
+        // We accept a few messages even before the service is enabled. We accept messages like initialize
+        // and enable messages.
+
+        final UI32 operationCode = waveMessage.getOperationCode ();
+        final WaveObjectManager waveObjectManager = getWaveObjectManagerForOperationCode (operationCode);
+
+        // by the time we reach here we must not encounter a NULL WaveObjectManager.
+
+        if (null == waveObjectManager)
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveThread.submitMessage : There is no ObjectManager registered to rceive this operation code (" + operationCode + ").");
+            WaveAssertUtils.waveAssert (false);
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_OM_TO_ACCEPT_MESSAGE);
+        }
+        else
+        {
+            if (false == (waveObjectManager.getIsEnabled ()))
+            {
+                if (true == (waveObjectManager.isOperationAllowedBeforeEnabling (operationCode)))
+                {
+                    // We cannot use trace method here. It will lead to an infinite recursion because the trace service
+                    // might not have been enabled. Also the trace statement causes invoking subMitMessage.
+
+                    // trace (TRACE_LEVEL_DEBUG, string ("WaveThread::submitMessage : Allowing the operation (") + operationCode
+                    // + ") before enabling the service.");
+                }
+                else
+                {
+                    WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_DEBUG, "WaveThread.submitMessage : The Service (" + (FrameworkToolKit.getServiceNameById (waveObjectManager.getServiceId ())) + ") is not enabled yet.  Try later.");
+                    return (WaveMessageStatus.WAVE_MESSAGE_ERROR_SERVICE_NOT_ENABLED);
+                }
+            }
+        }
+
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_SUCCESS;
+
+        m_gateKeeper.lock ();
+
+        m_wakeupCaller.lock ();
+
+        // We treat timer expirations differently. Timer expirations will be handled when they expire.
+        // Even if the messages, high priority messages and events are held for the service, still we deliver the
+        // timer expiration notifications. To achieve this we have a separate queue dedicated for for Timer Expiration
+        // notifications
+        // messages. Whenever the Timer service sends such a notification message that messages goes into a separate queue.
+        // Otherwise
+        // all the messages go into respective queues according to their priority and type.
+
+        if (((FrameworkOpCodes.WAVE_OBJECT_MANAGER_RESUME.getOperationCode ()).equals (operationCode)) || (true == waveMessage.getIsMessageSupportedWhenServiceIsPaused ()))
+        {
+            m_frameworkResumeMessages.insertAtTheBack (waveMessage);
+        }
+        else if ((FrameworkOpCodes.WAVE_OBJECT_MANAGER_PAUSE.getOperationCode ()).equals (operationCode))
+        {
+            m_frameworkMessages.insertAtTheFront (waveMessage);
+        }
+        else if ((FrameworkOpCodes.WAVE_OBJECT_MANAGER_TIMER_EXPIRED.getOperationCode ()).equals (operationCode)) // For Timer
+                                                                                                                  // Expiration
+                                                                                                                  // Messages
+        {
+            m_timerExpirations.insertAtTheBack (waveMessage); // for all the other Framework messages like initialize, enable
+                                                              // etc.,
+        }
+        else if ((operationCode.getValue ()).longValue () >= ((UI32.MAXIMUM.getValue ()) - (new Long (1001L))))
+        {
+            m_frameworkMessages.insertAtTheBack (waveMessage);
+        }
+        else
+        {
+            if (WaveMessagePriority.WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
+            {
+                m_highPriorityMessages.insertAtTheBack (waveMessage);
+            }
+            else if (WaveMessagePriority.WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
+            {
+                m_messages.insertAtTheBack (waveMessage);
+            }
+            else
+            {
+                System.err.println ("WaveThread::submitMessage : Submitting message with unknown priority (" + messagePriority + ").");
+                WaveAssertUtils.waveAssert (false);
+                status = WaveMessageStatus.WAVE_MESSAGE_ERROR_UNKNOWN_PRIORITY;
+            }
+        }
+
+        m_wakeupCondition.signal ();
+
+        m_wakeupCaller.unlock ();
+
+        m_gateKeeper.unlock ();
+
+        return (status);
     }
 }

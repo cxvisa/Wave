@@ -526,7 +526,7 @@ public class ClientStreamingSocket implements StreamingSocket
 
     public boolean send (final UI32 value)
     {
-        return (send (value.getValue ()));
+        return (send ((int) ((long) (value.getValue ()))));
     }
 
     public boolean send (final int value)
@@ -577,7 +577,7 @@ public class ClientStreamingSocket implements StreamingSocket
 
             try
             {
-                m_dataOutputStream.write (fixedSizeBuffer.getRawBuffer (), 0, (fixedSizeBuffer.getCurrentSize ()).getValue ());
+                m_dataOutputStream.write (fixedSizeBuffer.getRawBuffer (), 0, (int) ((long) ((fixedSizeBuffer.getCurrentSize ()).getValue ())));
 
                 sendStatus = true;
             }
@@ -840,7 +840,7 @@ public class ClientStreamingSocket implements StreamingSocket
 
     public int recieve (final FixedSizeBuffer fixedSizeBuffer)
     {
-        final int status = receive (fixedSizeBuffer.getRawBuffer (), (fixedSizeBuffer.getCurrentSize ()).getValue (), (fixedSizeBuffer.getRemainingSize ()).getValue ());
+        final int status = receive (fixedSizeBuffer.getRawBuffer (), (fixedSizeBuffer.getCurrentSize ()).intValue (), (fixedSizeBuffer.getRemainingSize ()).intValue ());
 
         return (status);
     }

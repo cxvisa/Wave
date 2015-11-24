@@ -10,7 +10,10 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class UI32
 {
-    private Integer m_value;
+    private Long       m_value;
+
+    public static UI32 MAXIMUM = new UI32 ((0x1L << 31) - 1L);
+    public static UI32 MINIMUM = new UI32 (0);
 
     public UI32 (final Integer value)
     {
@@ -69,24 +72,38 @@ public class UI32
         }
     }
 
-    public Integer getValue ()
+    public Long getValue ()
     {
-        return (m_value);
+        return (m_value.longValue ());
     }
 
     public void setValue (final int value)
     {
-        m_value = new Integer (value);
+        if (!(isValid (value)))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "Invalid Value : " + value, true, false);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        m_value = new Long (value);
     }
 
     public void setValue (final Integer value)
     {
-        m_value = value;
+        if (!(isValid (value)))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "Invalid Value : " + value, true, false);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        m_value = value.longValue ();
     }
 
     public void setValue (final UI32 rhs)
     {
-        m_value = new Integer (rhs.getValue ());
+        m_value = new Long (rhs.getValue ());
     }
 
     public void setValue (final long value)
@@ -98,7 +115,7 @@ public class UI32
             WaveAssertUtils.waveAssert ();
         }
 
-        m_value = new Integer ((int) (value - (1L << 30)));
+        m_value = new Long (value);
     }
 
     public boolean isValid (final long value)
@@ -125,7 +142,7 @@ public class UI32
 
     public void increment (final UI32 value)
     {
-        m_value = m_value.intValue () + (value.getValue ()).intValue ();
+        m_value = m_value.longValue () + (value.getValue ());
     }
 
     public void decrement ()
@@ -153,5 +170,10 @@ public class UI32
     public int hashCode ()
     {
         return (m_value.hashCode ());
+    }
+
+    public int intValue ()
+    {
+        return (m_value.intValue ());
     }
 }

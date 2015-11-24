@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.LocationManagement;
 
 import java.util.Set;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage;
@@ -312,5 +313,35 @@ public abstract class LocationBase
         }
 
         return (acceptedStreamingSocket);
+    }
+
+    public LocationRole getLocationRole ()
+    {
+        return m_locationRole;
+    }
+
+    public void setLocationRole (final LocationRole locationRole)
+    {
+        m_locationRole = locationRole;
+    }
+
+    public LocationId getLocationId ()
+    {
+        return m_locationId;
+    }
+
+    public abstract void resetLocationToStandAlone (final LocationId locationId);
+
+    public abstract void resetLocationToPrimary ();
+
+    public abstract void getFullyConnectedLocations (final Vector<LocationId> connectedLocationsVector);
+
+    public abstract void removeAllKnownLocations ();
+
+    public abstract void removeAllSubLocations ();
+
+    public boolean isASubLocation (final LocationId locationId)
+    {
+        return (locationId.isASubLocation ());
     }
 }

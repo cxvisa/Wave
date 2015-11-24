@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.ToolKits.Framework;
 
+import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator;
 
@@ -65,4 +67,10 @@ public class FrameworkToolKit
     {
         s_processInitialWorkingDirectory = processInitialWorkingDirectory;
     }
+
+    public static String getServiceNameById (final WaveServiceId id)
+    {
+        return (WaveThread.getWaveServiceNameForServiceId (id));
+    }
+
 }

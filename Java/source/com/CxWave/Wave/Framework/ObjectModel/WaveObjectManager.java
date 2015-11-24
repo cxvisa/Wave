@@ -5,7 +5,9 @@
 package com.CxWave.Wave.Framework.ObjectModel;
 
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
@@ -18,6 +20,7 @@ import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveGenericContext;
+import com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
@@ -28,15 +31,15 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode;
 
 public class WaveObjectManager extends WaveElement
 {
-    private class PrismOperationMapContext
+    private class WaveOperationMapContext
     {
         private final WaveElement        m_waveElementThatHandlesTheMessage;
         private final WaveMessageHandler m_waveMessageHandler;
 
-        public PrismOperationMapContext (final WaveElement waveElement, final WaveMessageHandler waveMessageHandler)
+        public WaveOperationMapContext (final WaveElement waveElement, final String waveMessageHandlerMethodName)
         {
             m_waveElementThatHandlesTheMessage = waveElement;
-            m_waveMessageHandler = waveMessageHandler;
+            m_waveMessageHandler = new WaveMessageHandler (waveMessageHandlerMethodName);
         }
 
         public void executeMessageHandler (final WaveMessage waveMessage)
@@ -155,27 +158,29 @@ public class WaveObjectManager extends WaveElement
         }
     };
 
-    private static WaveMutex                                                       s_waveObjectManagerMutex     = new WaveMutex ();
-    private static WaveServiceId                                                   s_nextAvailableWaveServiceId = new WaveServiceId (0);
-    private static WaveServiceMode                                                 s_waveServiceLaunchMode      = WaveServiceMode.WAVE_SERVICE_ACTIVE;
+    private static WaveMutex                                           s_waveObjectManagerMutex          = new WaveMutex ();
+    private static WaveServiceId                                       s_nextAvailableWaveServiceId      = new WaveServiceId (0);
+    private static WaveServiceMode                                     s_waveServiceLaunchMode           = WaveServiceMode.WAVE_SERVICE_ACTIVE;
 
-    private final String                                                           m_name;
-    private WaveThread                                                             m_associatedWaveThread;
-    private Map<BigInteger, PrismOperationMapContext>                              m_operationsMap;
-    private Map<BigInteger, BigInteger>                                            m_supportedEvents;
-    private Map<LocationId, Map<BigInteger, Map<BigInteger, WaveEventMapContext>>> m_eventsMap;
-    private Map<BigInteger, WaveMessageResponseContext>                            m_responsesMap;
-    private Map<BigInteger, Vector<WaveEventListenerMapContext>>                   m_eventListenersMap;
-    private Map<String, Vector<String>>                                            m_postbootManagedObjectNames;
-    private WaveMutex                                                              m_responsesMapMutex;
-    private WaveMutex                                                              m_sendReplyMutexForResponseMap;
-    private Vector<WaveWorker>                                                     m_workers;
-    private boolean                                                                m_isEnabled                  = false;
-    private final WaveMutex                                                        m_isEnabledMutex             = new WaveMutex ();
-    private final TraceClientId                                                    m_traceClientId;
-    private final WaveServiceMode                                                  m_waveServiceMode;
+    private static final Set<UI32>                                     s_operationsAllowedBeforeEnabling = initializeOperationsAllowedBeforeEnablingSet ();
 
-    private final WaveServiceId                                                    m_serviceId;
+    private final String                                               m_name;
+    private WaveThread                                                 m_associatedWaveThread;
+    private Map<UI32, WaveOperationMapContext>                         m_operationsMap;
+    private Map<UI32, BigInteger>                                      m_supportedEvents;
+    private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
+    private Map<UI32, WaveMessageResponseContext>                      m_responsesMap;
+    private Map<UI32, Vector<WaveEventListenerMapContext>>             m_eventListenersMap;
+    private Map<String, Vector<String>>                                m_postbootManagedObjectNames;
+    private WaveMutex                                                  m_responsesMapMutex;
+    private WaveMutex                                                  m_sendReplyMutexForResponseMap;
+    private Vector<WaveWorker>                                         m_workers;
+    private boolean                                                    m_isEnabled                       = false;
+    private final WaveMutex                                            m_isEnabledMutex                  = new WaveMutex ();
+    private final TraceClientId                                        m_traceClientId;
+    private final WaveServiceMode                                      m_waveServiceMode;
+
+    private final WaveServiceId                                        m_serviceId;
 
     protected WaveObjectManager (final String waveObjectManagerName, final UI32 stackSize)
     {
@@ -233,6 +238,19 @@ public class WaveObjectManager extends WaveElement
 
         m_associatedWaveThread.start ();
 
+    }
+
+    private static Set<UI32> initializeOperationsAllowedBeforeEnablingSet ()
+    {
+        final Set<UI32> operationsAllowedBeforeEnabling = new HashSet<UI32> ();
+
+        operationsAllowedBeforeEnabling.add (FrameworkOpCodes.WAVE_OBJECT_MANAGER_INITIALIZE.getOperationCode ());
+        operationsAllowedBeforeEnabling.add (FrameworkOpCodes.WAVE_OBJECT_MANAGER_ENABLE.getOperationCode ());
+        operationsAllowedBeforeEnabling.add (FrameworkOpCodes.WAVE_OBJECT_MANAGER_UNINITIALIZE.getOperationCode ());
+        operationsAllowedBeforeEnabling.add (FrameworkOpCodes.WAVE_OBJECT_MANAGER_DESTRUCT.getOperationCode ());
+        operationsAllowedBeforeEnabling.add (FrameworkOpCodes.WAVE_OBJECT_MANAGER_DATABASE_SANITY_CHECK.getOperationCode ());
+
+        return (operationsAllowedBeforeEnabling);
     }
 
     public WaveServiceId getServiceId ()
@@ -340,5 +358,35 @@ public class WaveObjectManager extends WaveElement
 
         m_isEnabled = isEnabled;
         m_isEnabledMutex.unlock ();
+    }
+
+    public void addOperationMap (final WaveOperationCodeInterface waveOperationCode, final String waveMessageHandlerMethodName, final WaveElement waveElement)
+    {
+        final UI32 operationCode = waveOperationCode.getOperationCode ();
+
+        WaveAssertUtils.waveAssert (null != operationCode);
+
+        if (m_operationsMap.containsKey (operationCode))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager::addOperationMap : OperationMap already found for this operation code : " + operationCode);
+
+            WaveAssertUtils.waveAssert ();
+
+            return;
+        }
+        else
+        {
+            m_operationsMap.put (operationCode, new WaveOperationMapContext (waveElement, waveMessageHandlerMethodName));
+        }
+    }
+
+    public boolean isOperationCodeSupported (final UI32 waveOperationCode)
+    {
+        return (m_operationsMap.containsKey (waveOperationCode));
+    }
+
+    public boolean isOperationAllowedBeforeEnabling (final UI32 operationCode)
+    {
+        return (s_operationsAllowedBeforeEnabling.contains (operationCode));
     }
 }

@@ -11,6 +11,7 @@ import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
+import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
@@ -62,7 +63,7 @@ public class AttributesMap
 
             final UI32 attributeUserTag = reflectionAttribute.getAttributeUserTag ();
 
-            if (0 != ((attributeUserTag.getValue ()) + (1L << 30))) // Adjusted to 0.
+            if (0 != (attributeUserTag.getValue ()))
             {
                 if (!(isAKnownAttributeByUserTag (attributeUserTag)))
                 {
@@ -286,6 +287,9 @@ public class AttributesMap
             }
             else
             {
+                DebugUtils.prettyPrint (m_attributes.keySet ());
+                DebugUtils.prettyPrint (rhsAttributes.keySet ());
+
                 WaveAssertUtils.waveAssert ();
             }
 

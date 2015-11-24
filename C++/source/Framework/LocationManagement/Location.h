@@ -60,7 +60,7 @@ class Location : public LocationBase
         map<LocationId, SubLocation *>           m_subLocations;
         map<LocationId, ClientStreamingSocket *> m_clientSocketsForSubLocations;
 
-        // Datastructures to hold the other kown locations.
+        // Datastructures to hold the other known locations.
 
         map<LocationId, Location*>               m_knownLocations;
         map<LocationId, ClientStreamingSocket *> m_clientSocketsForKnownLocations;

@@ -1,54 +1,19 @@
-/***************************************************************************
- *   Copyright (C) 2005-2013 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
- ***************************************************************************/
+/*************************************************************************************************************************
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
+ *************************************************************************************************************************/
 
-#ifndef TYPES_H
-#define TYPES_H
+package com.CxWave.Wave.Framework.ObjectModel;
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <limits.h>
-#include <assert.h>
-#include "Framework/OsLayer/WaveOsLayer.h"
-#include "WaveResourceIdEnums.h"
+import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface;
 
-namespace WaveNs
+public enum FrameworkOpCodes implements WaveOperationCodeInterface
 {
+    // @formatter:off
 
-typedef unsigned long long  int     UI64;
-typedef signed   long long  int     SI64;
-typedef unsigned            int     UI32;
-typedef unsigned short      int     UI16;
-typedef signed              int     SI32;
-typedef signed   short      int     SI16;
-typedef unsigned            char    UI8;
-typedef signed              char    SI8;
-typedef string                      WaveUnion;
-typedef UI32                        WaveServiceId;
-typedef UI32                        ResourceId;
-typedef ResourceId                  ResourceEnum;
-typedef UI32                        TraceClientId;
-typedef UI32                        SerializableObjectType;
-typedef UI32                        SerializableObjectAttributeId;
-typedef UI32                        LocationId;
-typedef UI32                        TimerHandle;
-
-typedef unsigned long       int     ULI;  // On 32 bit machines it is same as UI32 and on 64 bit machines it is UI64
-typedef          long       double  LD;
-
-extern const SI64 WAVE_LLONG_MAX;
-extern const SI64 WAVE_LLONG_MIN;
-extern const UI64 WAVE_ULLONG_MAX;
-extern const UI32 WAVE_INVALID_SLOT;
-
-typedef enum
-{
     // There cannot be more than 1000 entries here
 
-    WAVE_OBJECT_MANAGER_INITIALIZE = UINT_MAX - 1001,
+    WAVE_OBJECT_MANAGER_INITIALIZE,
     WAVE_OBJECT_MANAGER_LISTEN_FOR_EVENTS,
     WAVE_OBJECT_MANAGER_ENABLE,
     WAVE_OBJECT_MANAGER_INSTALL,
@@ -127,23 +92,26 @@ typedef enum
     // These opcodes are currently limited to be used by only
     // the remote transport service.
 
-    WAVE_OBJECT_MANAGER_ANY_OPCODE = UINT_MAX - 1,
-    WAVE_OBJECT_MANAGER_ANY_EVENT  = UINT_MAX
-} FrameworkOpcodes;
+    WAVE_OBJECT_MANAGER_ANY_OPCODE,
+    WAVE_OBJECT_MANAGER_ANY_EVENT;
 
-typedef enum {
-    WAVE_MESSAGE_SEND_TYPE_ONEWAY = 1,
-    WAVE_MESSAGE_SEND_TYPE_SYNCHRONOUS,
-    WAVE_MESSAGE_SEND_TYPE_ASYNCHRONOUS
-} WaveMessageSendType;
 
-typedef enum {
-    WAVE_MESSAGE_HISTORY_LOG_AT_SEND = 1,
-    WAVE_MESSAGE_HISTORY_LOG_AT_REPLY,
-    WAVE_MESSAGE_HISTORY_LOG_AT_HANDLE
-} WaveMessageHistoryLogType;
+    // @formatter:on
 
+    private FrameworkOpCodes ()
+    {
+    }
+
+    @Override
+    public UI32 getOperationCode ()
+    {
+        return new UI32 (((1L << 31) - 1001L) + (ordinal ()));
+    }
+
+    @Override
+    public int getOperationCodeIntValue ()
+    {
+        return (((new UI32 (((((new UI32 (0x1L << 31)).getValue ()) - 1001L)) + (ordinal ()))).getValue ()).intValue ());
+
+    }
 }
-
-#endif //TYPES_H
-

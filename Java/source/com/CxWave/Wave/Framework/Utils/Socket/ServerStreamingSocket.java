@@ -35,7 +35,7 @@ public class ServerStreamingSocket implements StreamingSocket
 
         try
         {
-            m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+            m_serverSocket = new ServerSocket (port.intValue (), m_numberOfConnections.intValue (), InetAddress.getByName (m_host));
 
             m_status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
 
@@ -55,7 +55,7 @@ public class ServerStreamingSocket implements StreamingSocket
 
         try
         {
-            m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+            m_serverSocket = new ServerSocket (port.intValue (), m_numberOfConnections.intValue (), InetAddress.getByName (m_host));
 
             m_status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
 
@@ -76,7 +76,7 @@ public class ServerStreamingSocket implements StreamingSocket
 
         try
         {
-            m_serverSocket = new ServerSocket (port.getValue (), m_numberOfConnections.getValue (), InetAddress.getByName (m_host));
+            m_serverSocket = new ServerSocket (port.intValue (), m_numberOfConnections.intValue (), InetAddress.getByName (m_host));
 
             m_status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
 

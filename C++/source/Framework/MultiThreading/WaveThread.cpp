@@ -406,7 +406,7 @@ WaveMessageStatus WaveThread::submitMessage (WaveMessage *pWaveMessage)
     // Even if the messages, high priority messages and events are held for the service, still we deliver the
     // timer expiration notifications.  To achieve this we have a separate queue dedicated for for Timer Expiration notifications
     // messages.  Whenever the Timer service sends such a notification message that messages goes into a separate queue.  Otherwise
-    // all the messages go into repective queues according to their priority and type.
+    // all the messages go into respective queues according to their priority and type.
 
     UI32 opertionCode = pWaveMessage->getOperationCode ();
 

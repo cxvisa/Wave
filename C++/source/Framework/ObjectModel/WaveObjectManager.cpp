@@ -1726,7 +1726,7 @@ WaveMessageStatus WaveObjectManager::sendOneWay (WaveMessage *pWaveMessage, cons
 
     pWaveMessage->m_receiverLocationId = (effectiveLocationId != 0) ? effectiveLocationId : thisLocationId;
 
-    // Set the field to indictae the message is a one way message so that when the receiver replies, the framework will
+    // Set the field to indicate the message is a one way message so that when the receiver replies, the framework will
     // not attempt to deliver it back to the original sender.  It will simply destroy the message.
 
     pWaveMessage->setIsOneWayMessage (true);

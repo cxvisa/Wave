@@ -50,7 +50,7 @@ public class ReflectionAttributesMap
 
             final UI32 attributeUserTag = reflectionAttribute.getAttributeUserTag ();
 
-            if (0 != ((attributeUserTag.getValue ()) + (1L << 30))) // Adjusted to 0.
+            if (0 != (attributeUserTag.getValue ()))
             {
                 if (!(isAKnownAttributeByUserTag (attributeUserTag)))
                 {
