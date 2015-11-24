@@ -4,10 +4,20 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import com.CxWave.Wave.Framework.LocationManagement.Location;
+import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+import com.CxWave.Wave.Framework.Type.LocationId;
+import com.CxWave.Wave.Framework.Type.SI32;
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
@@ -22,6 +32,13 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private static boolean                    s_isFrameworkInstantiated              = false;
     private static WaveMutex                  s_instantiationMutex                   = new WaveMutex ();
 
+    private LocationBase                      m_thisLocation                         = null;
+
+    private static String                     s_ipAddressForThisLocation             = null;
+
+    private static LocationRole               s_locationRole                         = LocationRole.LOCATION_STAND_ALONE;
+    private static SI32                       s_locationPort                         = new SI32 (3016);
+
     private WaveFrameworkObjectManager ()
     {
         super (getServiceName ());
@@ -29,6 +46,18 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         setIsInstantiated ();
 
         setIsEnabled (true);
+
+        if (LocationRole.LOCATION_STAND_ALONE == s_locationRole)
+        {
+            configureThisLocationAsLocation (s_locationPort);
+
+            System.out.printf ("Successfully configured this location as a location.");
+        }
+        else
+        {
+            System.err.printf ("Could not configure this location.  Unknown Location Role");
+            WaveAssertUtils.waveAssert ();
+        }
     }
 
     public static String getServiceName ()
@@ -95,5 +124,53 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         s_isFrameworkInstantiated = true;
 
         s_instantiationMutex.unlock ();
+    }
+
+    private void configureThisLocationAsLocation (final SI32 port)
+    {
+        if (null != m_thisLocation)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager.configureThisLocationAsLocation : This location is already configured.");
+            WaveAssertUtils.waveAssert ();
+        }
+
+        String ipAddressForThisLocation = getIpAddressForThisLocation ();
+
+        if (WaveStringUtils.isBlank (ipAddressForThisLocation))
+        {
+            ipAddressForThisLocation = FrameworkToolKit.getLoopbackIpV4AddressForThisMachine ();
+        }
+
+        final LocationId locationId = new LocationId (new UI32 (1L << 8));
+
+        m_thisLocation = new Location (locationId, ipAddressForThisLocation, port);
+
+        if (null == m_thisLocation)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager.configureThisLocationAsLocation : Could not allocate a Location.");
+
+            WaveAssertUtils.waveAssert ();
+
+            return;
+        }
+
+        m_thisLocation.setClusterPrimaryLocationId (locationId);
+        m_thisLocation.setClusterPrimaryPort (port);
+    }
+
+    public static void setIpAddressForThisLocation (final String ipAddressForThisLocation)
+    {
+        s_ipAddressForThisLocation = ipAddressForThisLocation;
+    }
+
+    public static String getIpAddressForThisLocation ()
+    {
+        return (s_ipAddressForThisLocation);
+    }
+
+    public static void configureAsLocation (final SI32 port)
+    {
+        s_locationRole = LocationRole.LOCATION_STAND_ALONE;
+        s_locationPort = port;
     }
 }

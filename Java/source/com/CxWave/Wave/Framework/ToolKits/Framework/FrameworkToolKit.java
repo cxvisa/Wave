@@ -73,4 +73,9 @@ public class FrameworkToolKit
         return (WaveThread.getWaveServiceNameForServiceId (id));
     }
 
+    public static String getLoopbackIpV4AddressForThisMachine ()
+    {
+        return ("127.0.0.1");
+    }
+
 }

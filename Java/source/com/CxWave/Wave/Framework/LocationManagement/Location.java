@@ -28,7 +28,7 @@ public class Location extends LocationBase
 
     private final ClientStreamingSocket                  m_clientSocketForHaPeer          = new ClientStreamingSocket ();
 
-    protected Location (final LocationId locationId, final String ipAddress, final SI32 port)
+    public Location (final LocationId locationId, final String ipAddress, final SI32 port)
     {
         super (locationId, ipAddress, port);
 
