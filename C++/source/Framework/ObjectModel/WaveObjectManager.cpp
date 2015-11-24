@@ -1497,7 +1497,7 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
         if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
-            LocationId myLocationId = FrameworkToolKit::getMyLocationId ();
+            LocationId myLocationId = FrameworkToolKit::getPhysicalLocationId ();
             if (effectiveLocationId == myLocationId)
             {
                 effectiveLocationId = 0;
@@ -1827,7 +1827,7 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (WaveMessage *pWaveMessag
         if (true != (FrameworkToolKit::isALocalService (pWaveMessage->getServiceCode ())))
         {
             effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
-            LocationId myLocationId = FrameworkToolKit::getMyLocationId ();
+            LocationId myLocationId = FrameworkToolKit::getPhysicalLocationId ();
             if (effectiveLocationId == myLocationId)
             {
                 effectiveLocationId = 0;

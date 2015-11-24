@@ -17,6 +17,7 @@ import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 import com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor;
+import com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
@@ -197,6 +198,46 @@ class Spectrum
                 System.out.println ("Token : " + token);
             }
         }
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "All Ip Addresses for this machine : ");
+
+        Vector<String> allIpAddresses = WaveNetworkUtils.getAllIpAddressesForThisMachine ();
+
+        DebugUtils.prettyPrint (allIpAddresses);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "All Ip Addresses That are up for this machine : ");
+
+        Vector<String> allIpAddressesThatAreUp = WaveNetworkUtils.getAllIpAddressesThatAreUpForThisMachine ();
+
+        DebugUtils.prettyPrint (allIpAddressesThatAreUp);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "All IpV4 Addresses That are up for this machine : ");
+
+        Vector<String> allIpV4AddressesThatAreUp = WaveNetworkUtils.getAllIpV4AddressesThatAreUpForThisMachine ();
+
+        DebugUtils.prettyPrint (allIpV4AddressesThatAreUp);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "All IpV6 Addresses That are up for this machine : ");
+
+        Vector<String> allIpV6AddressesThatAreUp = WaveNetworkUtils.getAllIpV6AddressesThatAreUpForThisMachine ();
+
+        DebugUtils.prettyPrint (allIpV6AddressesThatAreUp);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "All IpV4 Public Addresses That are up for this machine : ");
+
+        Vector<String> allIpV4PublicAddressesThatAreUp = WaveNetworkUtils.getAllIpV4PublicAddressesThatAreUpForThisMachine ();
+
+        DebugUtils.prettyPrint (allIpV4PublicAddressesThatAreUp);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "All IpV6 Public Addresses That are up for this machine : ");
+
+        Vector<String> allIpV6PublicAddressesThatAreUp = WaveNetworkUtils.getAllIpV6PublicAddressesThatAreUpForThisMachine ();
+
+        DebugUtils.prettyPrint (allIpV6PublicAddressesThatAreUp);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV4 Public Address that is up for this machine : %s", WaveNetworkUtils.getAIpV4PublicAddressThatIsUpForThisMachine ());
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV6 Public Address that is up for this machine : %s", WaveNetworkUtils.getAIpV6PublicAddressThatIsUpForThisMachine ());
 
         WaveLineEditor waveLineEditor = new WaveLineEditor ();
 

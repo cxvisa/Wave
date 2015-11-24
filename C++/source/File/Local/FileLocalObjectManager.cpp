@@ -768,7 +768,7 @@ namespace WaveNs
             }
 
             // Src filename is good, check if source is not this location.
-            UI32 nSrcLocationId = FrameworkToolKit::getMyLocationId(); 
+            UI32 nSrcLocationId = FrameworkToolKit::getPhysicalLocationId(); 
             vector<UI32>::iterator itr = vecDestinationList.begin();
 
             for(; itr != vecDestinationList.end() ; itr++)
@@ -800,7 +800,7 @@ namespace WaveNs
 
         FileDeleteRequestMessage *pFileDeleteRequestMessage = reinterpret_cast<FileDeleteRequestMessage *> (pWaveLinearSequencerContext->getPWaveMessage ());
 
-        FileTransferHandshakeMessage  *pHandShakeMessage = new FileTransferHandshakeMessage(this->getFileServiceVersion(), string(""), pFileDeleteRequestMessage->getDestinationFileName(), (FrameworkToolKit::getMyLocationId ()), 0, pFileDeleteRequestMessage->getFileTransferFlag());
+        FileTransferHandshakeMessage  *pHandShakeMessage = new FileTransferHandshakeMessage(this->getFileServiceVersion(), string(""), pFileDeleteRequestMessage->getDestinationFileName(), (FrameworkToolKit::getPhysicalLocationId ()), 0, pFileDeleteRequestMessage->getFileTransferFlag());
 
         WaveNs::waveAssert (NULL != pHandShakeMessage, __FILE__, __LINE__);   
 

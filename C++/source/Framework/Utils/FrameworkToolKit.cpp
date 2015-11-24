@@ -178,13 +178,13 @@ LocationBase *FrameworkToolKit::getPThisLocation ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Function Name : getMyLocationId
+//Function Name : getPhysicalLocationId
 //Objective     : This method is to get the local node's location-id. The output of this method is same  //
 //              same as of FrameworkToolKit::getThisLocationId () which is widely used and should be     //
 //              used. The two methods differ in case of surrogation and on surrogating node. In case of  //
 //              message being handled on surrogating node, FrameworkToolKit::getThisLocationId() will    //
 //              return the location-id of a disconnected node for which local node is surrogating        //
-//              whereas this method FrameworkToolKit::getMyLocationId () will return the local node's    //
+//              whereas this method FrameworkToolKit::getPhysicalLocationId () will return the local node's    //
 //              location-id only.                                                                        //
 //Output        : None                                                                                   //
 //Output        : location-id (UI32)                                                                     //
@@ -195,7 +195,7 @@ LocationBase *FrameworkToolKit::getPThisLocation ()
 //              usage.                                                                                   //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const UI32 FrameworkToolKit::getMyLocationId ()
+const UI32 FrameworkToolKit::getPhysicalLocationId ()
 {
     LocationId         locationid                           = 0;
 
@@ -209,7 +209,7 @@ const UI32 FrameworkToolKit::getMyLocationId ()
 
 const UI32 FrameworkToolKit::getThisLocationId ()
 {
-    LocationId         locationid                           = getMyLocationId ();
+    LocationId         locationid                           = getPhysicalLocationId ();
     WaveManagementInterfaceRole waveManagementInterfaceRole = getManagementInterfaceRole ();
 
     if (WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole)

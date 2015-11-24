@@ -59,7 +59,7 @@ class FrameworkToolKit
         static const string                      getLoopBackIpAddressForThisMachine         ();
         static const string                      getIpAddressForInterface                   (const string &interfaceName);
         static       LocationBase               *getPThisLocation                           ();
-        static const UI32                        getMyLocationId                            ();
+        static const UI32                        getPhysicalLocationId                            ();
         static const UI32                        getThisLocationId                          ();
         static const string                      getThisLocationIpAddress                   ();
         static const SI32                        getThisLocationPort                        ();
