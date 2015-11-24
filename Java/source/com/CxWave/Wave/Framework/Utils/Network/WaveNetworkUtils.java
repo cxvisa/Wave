@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -415,5 +416,147 @@ public class WaveNetworkUtils
         }
 
         return (aIpV6PublicIpAddressForThisMachine);
+    }
+
+    public static Vector<String> getAllIpV4PublicAddressesForInterface (final String interfaceName)
+    {
+        if (WaveStringUtils.isBlank (interfaceName))
+        {
+            return (null);
+        }
+
+        final List<InetAddress> inetAddressList = new ArrayList<InetAddress> ();
+
+        NetworkInterface networkInterface = null;
+
+        try
+        {
+            networkInterface = NetworkInterface.getByName (interfaceName);
+        }
+        catch (final SocketException e1)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could notget network interfaces : %s", e1.toString ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (null == networkInterface)
+        {
+            return (null);
+        }
+
+        final Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses ();
+
+        while (inetAddresses.hasMoreElements ())
+        {
+            final InetAddress inetAddress = inetAddresses.nextElement ();
+
+            WaveAssertUtils.waveAssert (null != inetAddress);
+
+            if (!(inetAddress.isLinkLocalAddress ()))
+            {
+                if (!(inetAddress.isLoopbackAddress ()))
+                {
+                    if (inetAddress instanceof Inet4Address)
+                    {
+                        inetAddressList.add (inetAddress);
+                    }
+                }
+            }
+        }
+
+        final Vector<String> ipAddresses = new Vector<String> ();
+
+        for (final InetAddress inetAddress1 : inetAddressList)
+        {
+            ipAddresses.add (inetAddress1.getHostAddress ());
+        }
+
+        return (ipAddresses);
+    }
+
+    public static String getAIpV4PublicAddressForInterface (final String interfaceName)
+    {
+        final Vector<String> allIpV4PublicAddressesForInterface = getAllIpV4PublicAddressesForInterface (interfaceName);
+
+        String aIpV4PublicIpAddressForInterface = null;
+
+        if ((null != allIpV4PublicAddressesForInterface) && (0 < (allIpV4PublicAddressesForInterface.size ())))
+        {
+            aIpV4PublicIpAddressForInterface = allIpV4PublicAddressesForInterface.get (0);
+        }
+
+        return (aIpV4PublicIpAddressForInterface);
+    }
+
+    public static Vector<String> getAllIpV6PublicAddressesForInterface (final String interfaceName)
+    {
+        if (WaveStringUtils.isBlank (interfaceName))
+        {
+            return (null);
+        }
+
+        final List<InetAddress> inetAddressList = new ArrayList<InetAddress> ();
+
+        NetworkInterface networkInterface = null;
+
+        try
+        {
+            networkInterface = NetworkInterface.getByName (interfaceName);
+        }
+        catch (final SocketException e1)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could notget network interfaces : %s", e1.toString ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (null == networkInterface)
+        {
+            return (null);
+        }
+
+        final Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses ();
+
+        while (inetAddresses.hasMoreElements ())
+        {
+            final InetAddress inetAddress = inetAddresses.nextElement ();
+
+            WaveAssertUtils.waveAssert (null != inetAddress);
+
+            if (!(inetAddress.isLinkLocalAddress ()))
+            {
+                if (!(inetAddress.isLoopbackAddress ()))
+                {
+                    if (inetAddress instanceof Inet6Address)
+                    {
+                        inetAddressList.add (inetAddress);
+                    }
+                }
+            }
+        }
+
+        final Vector<String> ipAddresses = new Vector<String> ();
+
+        for (final InetAddress inetAddress1 : inetAddressList)
+        {
+            ipAddresses.add (inetAddress1.getHostAddress ());
+        }
+
+        return (ipAddresses);
+    }
+
+    public static String getAIpV6PublicAddressForInterface (final String interfaceName)
+    {
+        final Vector<String> allIpV6PublicAddressesForInterface = getAllIpV6PublicAddressesForInterface (interfaceName);
+
+        String aIpV6PublicIpAddressForInterface = null;
+
+        if ((null != allIpV6PublicAddressesForInterface) && (0 < (allIpV6PublicAddressesForInterface.size ())))
+        {
+            aIpV6PublicIpAddressForInterface = allIpV6PublicAddressesForInterface.get (0);
+        }
+
+        return (aIpV6PublicIpAddressForInterface);
     }
 }

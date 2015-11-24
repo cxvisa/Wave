@@ -105,6 +105,8 @@ class Spectrum
 
         DebugUtils.prettyPrint (WaveJavaSourceRepository.getAllDescendantsForClass (SerializableObject.class.getName ()));
 
+        WaveMainConfiguration wmc = null;
+
         if (2 <= (commandLineArguments.length))
         {
             XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
@@ -173,6 +175,7 @@ class Spectrum
 
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 2:\n%s", stringBuffer);
 
+            wmc = waveMainConfiguration2;
         }
 
         if (3 <= (commandLineArguments.length))
@@ -238,6 +241,12 @@ class Spectrum
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV4 Public Address that is up for this machine : %s", WaveNetworkUtils.getAIpV4PublicAddressThatIsUpForThisMachine ());
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV6 Public Address that is up for this machine : %s", WaveNetworkUtils.getAIpV6PublicAddressThatIsUpForThisMachine ());
+
+        final String ethernetInterface = (wmc.getApplication ()).getEthernetInterface ();
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV4 Public Address for interface %s : %s",ethernetInterface,  WaveNetworkUtils.getAIpV4PublicAddressForInterface (ethernetInterface));
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV6 Public Address for interface %s : %s", ethernetInterface, WaveNetworkUtils.getAIpV6PublicAddressForInterface (ethernetInterface));
 
         WaveLineEditor waveLineEditor = new WaveLineEditor ();
 
