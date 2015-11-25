@@ -559,4 +559,9 @@ public class WaveNetworkUtils
 
         return (aIpV6PublicIpAddressForInterface);
     }
+
+    public static String getIpV4LoopbackAddress ()
+    {
+        return (new String ("127.0.0.1"));
+    }
 }

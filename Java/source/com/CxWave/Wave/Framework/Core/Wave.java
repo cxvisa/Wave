@@ -4,12 +4,14 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication;
 import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
 import com.CxWave.Wave.Framework.Database.DatabaseObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
+import com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
@@ -139,6 +141,30 @@ public class Wave
         // Initialize Serialization for the System
 
         (SerializableObjectRepository.getInstance ()).initialize ();
+
+        // Set the ip address for the system.
+
+        final WaveMainApplication waveMainApplication = waveMainConfiguration.getApplication ();
+        final String ethernetInterface = null;
+
+        if (null != waveMainApplication)
+        {
+            waveMainApplication.getEthernetInterface ();
+        }
+
+        String ipAddress = null;
+
+        if (WaveStringUtils.isNotBlank (ethernetInterface))
+        {
+            ipAddress = WaveNetworkUtils.getAIpV4PublicAddressForInterface (ethernetInterface);
+        }
+
+        if (WaveStringUtils.isBlank (ipAddress))
+        {
+            ipAddress = WaveNetworkUtils.getIpV4LoopbackAddress ();
+        }
+
+        WaveFrameworkObjectManager.setIpAddressForThisLocation (ipAddress);
     }
 
     private static String getConfigurationFileDirectory ()

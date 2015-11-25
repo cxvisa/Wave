@@ -182,6 +182,8 @@ public class WaveObjectManager extends WaveElement
 
     private final WaveServiceId                                        m_serviceId;
 
+    private WaveMessage                                                m_inputMessage;
+
     protected WaveObjectManager (final String waveObjectManagerName, final UI32 stackSize)
     {
         m_name = new String (waveObjectManagerName);
@@ -235,6 +237,8 @@ public class WaveObjectManager extends WaveElement
         final WaveThread associatedWaveThread = new WaveThread (m_name, WaveThread.getDefaultStackSize (), m_serviceId);
 
         m_associatedWaveThread = associatedWaveThread;
+
+        m_associatedWaveThread.addWaveObjectManager (this);
 
         m_associatedWaveThread.start ();
 
@@ -388,5 +392,10 @@ public class WaveObjectManager extends WaveElement
     public boolean isOperationAllowedBeforeEnabling (final UI32 operationCode)
     {
         return (s_operationsAllowedBeforeEnabling.contains (operationCode));
+    }
+
+    public WaveMessage getInputMessage ()
+    {
+        return (m_inputMessage);
     }
 }

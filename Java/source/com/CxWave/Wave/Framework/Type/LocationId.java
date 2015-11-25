@@ -4,9 +4,13 @@
 
 package com.CxWave.Wave.Framework.Type;
 
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+
 public class LocationId
 {
-    private UI32 m_id;
+    public final static LocationId NullLocationId = new LocationId (new UI32 (0));
+
+    private UI32                   m_id;
 
     public LocationId (final UI32 id)
     {
@@ -71,5 +75,10 @@ public class LocationId
     public boolean isASubLocation ()
     {
         return (0 == ((m_id.getValue ()) & (getSubLocationMask ())));
+    }
+
+    public static LocationId getThisLocationId ()
+    {
+        return (FrameworkToolKit.getThisLocationId ());
     }
 }

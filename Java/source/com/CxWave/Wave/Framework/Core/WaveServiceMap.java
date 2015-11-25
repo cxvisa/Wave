@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -14,10 +15,10 @@ import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 
 public class WaveServiceMap
 {
-    private Map<WaveServiceId, WaveThread> m_servicesMap;
-    private Map<WaveServiceId, String>     m_servicesNameMap;
-    private Map<String, WaveServiceId>     m_servicesIdMap;
-    private WaveMutex                      m_mutex;
+    private final Map<WaveServiceId, WaveThread> m_servicesMap     = new HashMap<WaveServiceId, WaveThread> ();
+    private final Map<WaveServiceId, String>     m_servicesNameMap = new HashMap<WaveServiceId, String> ();
+    private final Map<String, WaveServiceId>     m_servicesIdMap   = new HashMap<String, WaveServiceId> ();
+    private final WaveMutex                      m_mutex           = new WaveMutex ();
 
     public void addServiceMap (final WaveServiceId id, final WaveThread waveThread, final String serviceName)
     {
@@ -33,7 +34,7 @@ public class WaveServiceMap
             System.exit (1);
         }
 
-        if (0 != (tempWaveServiceId.getId ()))
+        if (null != tempWaveServiceId)
         {
             WaveAssertUtils.waveAssert (false);
             System.err.println ("Cannot proceed.  Trying to add a duplicate service name.");

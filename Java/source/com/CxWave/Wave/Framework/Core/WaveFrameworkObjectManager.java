@@ -173,4 +173,9 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         s_locationRole = LocationRole.LOCATION_STAND_ALONE;
         s_locationPort = port;
     }
+
+    public LocationBase getThisLocation ()
+    {
+        return (m_thisLocation);
+    }
 }

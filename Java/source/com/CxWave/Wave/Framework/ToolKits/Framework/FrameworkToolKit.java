@@ -4,7 +4,13 @@
 
 package com.CxWave.Wave.Framework.ToolKits.Framework;
 
+import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
+import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
+import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator;
@@ -78,4 +84,49 @@ public class FrameworkToolKit
         return ("127.0.0.1");
     }
 
+    public static LocationBase getThisLocation ()
+    {
+        return ((WaveFrameworkObjectManager.getInstance ()).getThisLocation ());
+    }
+
+    public static LocationId getPhysicalLocationId ()
+    {
+        final LocationBase locationBase = getThisLocation ();
+
+        if (null != locationBase)
+        {
+            return (locationBase.getLocationId ());
+        }
+        else
+        {
+            return (LocationId.NullLocationId);
+        }
+    }
+
+    public static WaveManagementInterfaceRole getManagementInterfaceRole ()
+    {
+        return (s_waveManagementInterfaceRole);
+    }
+
+    public static LocationId getThisLocationId ()
+    {
+        LocationId locationid = getPhysicalLocationId ();
+        final WaveManagementInterfaceRole waveManagementInterfaceRole = getManagementInterfaceRole ();
+
+        if (WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole)
+        {
+            final WaveObjectManager waveObjectManagerForCurrentThread = WaveThread.getWaveObjectManagerForCurrentThread ();
+
+            if (!((WaveThread.getSelf ()).equals ((WaveThread.getWaveThreadForServiceId (ReservedWaveLocalObjectManager.getWaveServiceId ())).getId ())))
+            {
+                final WaveMessage waveMessage = waveObjectManagerForCurrentThread.getInputMessage ();
+                if ((null != waveMessage) && (waveMessage.getIsMessageBeingSurrogatedFlag ()))
+                {
+                    locationid = waveMessage.getSurrogatingForLocationId ();
+                }
+            }
+        }
+
+        return (locationid);
+    }
 }

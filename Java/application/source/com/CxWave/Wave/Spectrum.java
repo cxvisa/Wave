@@ -21,6 +21,7 @@ import com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -247,6 +248,10 @@ class Spectrum
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV4 Public Address for interface %s : %s",ethernetInterface,  WaveNetworkUtils.getAIpV4PublicAddressForInterface (ethernetInterface));
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "A IPV6 Public Address for interface %s : %s", ethernetInterface, WaveNetworkUtils.getAIpV6PublicAddressForInterface (ethernetInterface));
+
+        LocationId thisLocationId = LocationId.getThisLocationId ();
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "This Location Id : %s", thisLocationId.toString ());
 
         WaveLineEditor waveLineEditor = new WaveLineEditor ();
 

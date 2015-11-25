@@ -88,4 +88,14 @@ public class WaveThreadId
 
         return (m_threadId == waveThreadId.m_threadId);
     }
+
+    public static WaveThreadId getWaveThreadIdForThisThread ()
+    {
+        return (new WaveThreadId ((Thread.currentThread ()).getId ()));
+    }
+
+    public static WaveThreadId getSelf ()
+    {
+        return (getWaveThreadIdForThisThread ());
+    }
 }

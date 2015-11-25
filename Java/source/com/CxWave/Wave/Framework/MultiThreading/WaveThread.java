@@ -16,6 +16,7 @@ import com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectMa
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
+import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -60,20 +61,22 @@ public class WaveThread extends Thread
 
     private List<WaveObjectManager>                     m_waveObjectManagers;
 
-    private static Map<WaveThreadId, WaveObjectManager> m_waveThreadIdToWaveObjectManagerMap;
-    private static WaveMutex                            m_waveThreadIdToWaveObjectManagerMapMutex;
+    private static Map<WaveThreadId, WaveObjectManager> s_waveThreadIdToWaveObjectManagerMap      = new HashMap<WaveThreadId, WaveObjectManager> ();
+    private static WaveMutex                            s_waveThreadIdToWaveObjectManagerMapMutex = new WaveMutex ();
 
-    private boolean                                     m_terminateThread  = false;
+    private boolean                                     m_terminateThread                         = false;
 
-    private static final long                           s_defaultStackSize = 256 * 1024;
+    private static final long                           s_defaultStackSize                        = 256 * 1024;
 
-    private static WaveServiceMap                       s_waveServiceMap   = new WaveServiceMap ();
+    private static WaveServiceMap                       s_waveServiceMap                          = new WaveServiceMap ();
 
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
         super (null, null, name, s_defaultStackSize);
 
         construct (waveServiceId);
+
+        s_waveServiceMap.addServiceMap (m_waveServiceId, this, name);
 
         initializeHoldCounts ();
     }
@@ -84,6 +87,8 @@ public class WaveThread extends Thread
 
         construct (waveServiceId);
 
+        s_waveServiceMap.addServiceMap (m_waveServiceId, this, name);
+
         initializeHoldCounts ();
     }
 
@@ -92,6 +97,8 @@ public class WaveThread extends Thread
         super (null, null, name, stackSize.getValue ());
 
         construct (waveServiceId);
+
+        s_waveServiceMap.addServiceMap (m_waveServiceId, this, name);
 
         addWaveObjectManager (waveObjectManager);
 
@@ -130,15 +137,18 @@ public class WaveThread extends Thread
 
         m_waveObjectManagers = new ArrayList<WaveObjectManager> ();
 
-        m_waveThreadIdToWaveObjectManagerMap = new HashMap<WaveThreadId, WaveObjectManager> ();
-        m_waveThreadIdToWaveObjectManagerMapMutex = new WaveMutex ();
-
         m_terminateThread = false;
     }
 
     @Override
     public void run ()
     {
+        s_waveThreadIdToWaveObjectManagerMapMutex.lock ();
+
+        s_waveThreadIdToWaveObjectManagerMap.put (WaveThreadId.getWaveThreadIdForThisThread (), m_waveObjectManagers.get (0));
+
+        s_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
+
         WaveMessage waveMessage = null;
 
         while (true)
@@ -258,7 +268,7 @@ public class WaveThread extends Thread
         return (null);
     }
 
-    private void addWaveObjectManager (final WaveObjectManager waveObjectManager)
+    public void addWaveObjectManager (final WaveObjectManager waveObjectManager)
     {
         m_waveObjectManagers.add (waveObjectManager);
     }
@@ -524,5 +534,33 @@ public class WaveThread extends Thread
         m_gateKeeper.unlock ();
 
         return (status);
+    }
+
+    public static WaveObjectManager getWaveObjectManagerForCurrentThread ()
+    {
+        WaveObjectManager waveObjectManager = null;
+
+        s_waveThreadIdToWaveObjectManagerMapMutex.lock ();
+
+        waveObjectManager = s_waveThreadIdToWaveObjectManagerMap.get (WaveThreadId.getWaveThreadIdForThisThread ());
+
+        s_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
+
+        if (null == waveObjectManager)
+        {
+            waveObjectManager = ReservedWaveLocalObjectManager.getInstance ();
+        }
+
+        return (waveObjectManager);
+    }
+
+    public static WaveThread getWaveThreadForServiceId (final WaveServiceId waveServiceId)
+    {
+        return (s_waveServiceMap.getWaveThreadForServiceId (waveServiceId));
+    }
+
+    public static WaveThreadId getSelf ()
+    {
+        return (WaveThreadId.getSelf ());
     }
 }
