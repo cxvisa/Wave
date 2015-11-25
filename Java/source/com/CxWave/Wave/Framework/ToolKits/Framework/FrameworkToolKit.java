@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
@@ -128,5 +129,24 @@ public class FrameworkToolKit
         }
 
         return (locationid);
+    }
+
+    public static boolean isALocalService (final WaveServiceId waveServiceId)
+    {
+        return (WaveLocalObjectManager.isALocalService (waveServiceId));
+    }
+
+    public static LocationId getClusterPrimaryLocationId ()
+    {
+        final LocationBase locationBase = getThisLocation ();
+
+        if (null != locationBase)
+        {
+            return (locationBase.getClusterPrimaryLocationId ());
+        }
+        else
+        {
+            return (LocationId.NullLocationId);
+        }
     }
 }

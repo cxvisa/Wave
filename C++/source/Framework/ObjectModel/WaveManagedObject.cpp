@@ -578,8 +578,8 @@ ResourceId WaveManagedObject::loadOperationalDataSynchronouslyLoadStep (LoadOper
 
     // Loading operational data should not be considered a configuration change.
 
-    message.setIsConfigurationChange (false);
-    message.setIsConfigurationTimeChange (false);
+    message.setIsConfigurationChanged (false);
+    message.setIsConfigurationTimeChanged (false);
 
     pWaveLocalManagedObjectBase = dynamic_cast<WaveLocalManagedObjectBase *> (this);
 

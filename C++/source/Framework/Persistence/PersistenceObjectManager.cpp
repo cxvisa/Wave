@@ -890,8 +890,8 @@ void PersistenceObjectManager::executeTransactionMessageHandler (PersistenceObje
 
     pPersistenceExecuteTransactionContext->setCurrentTransactionId                  (s_currentTransactionId);
 
-    pPersistenceExecuteTransactionContext->setIsConfigurationChange                 (pPersistenceObjectManagerExecuteTransactionMessage->getIsConfigurationChange ());
-    pPersistenceExecuteTransactionContext->setIsConfigurationTimeChange             (pPersistenceObjectManagerExecuteTransactionMessage->getIsConfigurationTimeChange ());
+    pPersistenceExecuteTransactionContext->setIsConfigurationChange                 (pPersistenceObjectManagerExecuteTransactionMessage->getIsConfigurationChanged ());
+    pPersistenceExecuteTransactionContext->setIsConfigurationTimeChange             (pPersistenceObjectManagerExecuteTransactionMessage->getIsConfigurationTimeChanged ());
     pPersistenceExecuteTransactionContext->setSenderServiceCode                     (pPersistenceObjectManagerExecuteTransactionMessage->getSenderServiceCode ());
     pPersistenceExecuteTransactionContext->setSenderLocationId                      (pPersistenceObjectManagerExecuteTransactionMessage->getSenderLocationId ());
 
@@ -2536,7 +2536,7 @@ void PersistenceObjectManager::addDelayedTransactionStep (WaveLinearSequencerCon
     waveAssert (NULL != pPersistenceObjectManagerAddDelayedTransactionMessage, __FILE__, __LINE__);
 
     string      sql                     = pPersistenceObjectManagerAddDelayedTransactionMessage->getSql ();
-    bool        isConfigurationChange   = pPersistenceObjectManagerAddDelayedTransactionMessage->getIsConfigurationChange ();
+    bool        isConfigurationChange   = pPersistenceObjectManagerAddDelayedTransactionMessage->getIsConfigurationChanged ();
     ResourceId  status                  = WAVE_MESSAGE_ERROR;
 
     if (true == isConfigurationChange)

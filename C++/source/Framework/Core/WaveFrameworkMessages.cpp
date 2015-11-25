@@ -531,7 +531,7 @@ WaveListenForEventsObjectManagerMessage::WaveListenForEventsObjectManagerMessage
 WaveLoadOperationalDataForManagedObjectObjectManagerMessage::WaveLoadOperationalDataForManagedObjectObjectManagerMessage ()
     : WaveMessage            (0, WAVE_OBJECT_MANAGER_LOAD_OPERATIONAL_DATA_FOR_MANAGED_OBJECT)
 {
-    setIsConfigurationChange (false);
+    setIsConfigurationChanged (false);
 }
 
 WaveLoadOperationalDataForManagedObjectObjectManagerMessage::WaveLoadOperationalDataForManagedObjectObjectManagerMessage (WaveServiceId id, ObjectId objectId, const vector<string> &operationalDataFields)
@@ -539,7 +539,7 @@ WaveLoadOperationalDataForManagedObjectObjectManagerMessage::WaveLoadOperational
       m_objectId              (objectId),
       m_operationalDataFields (operationalDataFields)
 {
-    setIsConfigurationChange (false);
+    setIsConfigurationChanged (false);
 }
 
 void WaveLoadOperationalDataForManagedObjectObjectManagerMessage::setupAttributesForSerialization ()

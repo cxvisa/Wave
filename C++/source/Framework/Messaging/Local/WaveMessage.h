@@ -142,11 +142,11 @@ class WaveMessage : virtual public SerializableObject
                 string                    getNestedSql                             () const;
                 void                      setNestedSql                             (const string &nestedSql);
                 void                      appendNestedSql                          (const string &nestedSql);
-                bool                      getIsConfigurationChange                 () const;
-                void                      setIsConfigurationChange                 (const bool &isConfigurationChanged);
+                bool                      getIsConfigurationChanged                 () const;
+                void                      setIsConfigurationChanged                 (const bool &isConfigurationChanged);
                 bool                      getIsConfigurationFlagSetByUser          () const;
-                bool                      getIsConfigurationTimeChange             () const;
-                void                      setIsConfigurationTimeChange             (const bool &isConfigurationTimeChanged);
+                bool                      getIsConfigurationTimeChanged             () const;
+                void                      setIsConfigurationTimeChanged             (const bool &isConfigurationTimeChanged);
                 void                      setSurrogatingForLocationId              (LocationId disconnectedLocation);
                 LocationId                getSurrogatingForLocationId              () const;
                 void                      setNeedSurrogateSupportFlag              (bool needSurrogateSupport);

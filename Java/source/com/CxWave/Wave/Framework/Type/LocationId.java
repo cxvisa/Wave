@@ -8,7 +8,9 @@ import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 
 public class LocationId
 {
-    public final static LocationId NullLocationId = new LocationId (new UI32 (0));
+    public static final LocationId NullLocationId   = new LocationId (new UI32 (0));
+
+    public static final Object     HaPeerLocationId = new LocationId (new UI32 (1L));
 
     private UI32                   m_id;
 
@@ -80,5 +82,22 @@ public class LocationId
     public static LocationId getThisLocationId ()
     {
         return (FrameworkToolKit.getThisLocationId ());
+    }
+
+    public static boolean isNull (final LocationId locationId)
+    {
+        if ((null == locationId) || (NullLocationId.equals (locationId)))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    public static boolean isNotNull (final LocationId locationId)
+    {
+        return (!(isNull (locationId)));
     }
 }

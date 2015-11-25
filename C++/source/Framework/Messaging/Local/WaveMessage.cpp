@@ -410,7 +410,7 @@ WaveMessageStatus WaveMessage::removeBuffer (UI32 tag)
 }
 
 void WaveMessage::setupAttributesForSerializationInAttributeOrderFormat ()
-{   
+{
     addAttributeNameForOrderToNameMapping ("waveMessageType");
     addAttributeNameForOrderToNameMapping ("messagePriority");
     addAttributeNameForOrderToNameMapping ("messageIdAtOriginatingLocation");
@@ -495,7 +495,7 @@ void WaveMessage::setupAttributesForSerialization ()
 
     addSerializableAttribute (new AttributeBool                 (&m_isConfigurationTimeChanged,                     "isConfigurationTimeChanged"));
 
-    addSerializableAttribute (new AttributeBool                 (&m_isALastConfigReplay,                            "isALastConfigReplay")); 
+    addSerializableAttribute (new AttributeBool                 (&m_isALastConfigReplay,                            "isALastConfigReplay"));
 }
 
 void WaveMessage::copyFromRemoteResponse (WaveMessage *pRemoteWaveMessageResponse)
@@ -600,7 +600,7 @@ WaveMessageType WaveMessage::getType (const string &serializedData, const UI8 se
 
     SI32 index1            = 0;
     SI32 index2            = 0;
-    string attributeTag    = ""; 
+    string attributeTag    = "";
 
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
     {
@@ -613,8 +613,8 @@ WaveMessageType WaveMessage::getType (const string &serializedData, const UI8 se
     UI32 startIndexOffset = attributeTag.size () + strlen ("<A>");
 
     index1    = serializedData.find (string ("<A") + attributeTag + string (">"));
-    index2    = serializedData.find (string ("</A") + attributeTag + string (">"));    
-    
+    index2    = serializedData.find (string ("</A") + attributeTag + string (">"));
+
     string sotString = serializedData.substr (index1 + startIndexOffset, index2 - index1 - startIndexOffset);
     //UI32   sot       = strtoul (sotString.c_str (), NULL, 10);
     //
@@ -630,7 +630,7 @@ WaveMessageType WaveMessage::getType (const string &serializedData, const UI8 se
     return (*pWaveMessageType);
 }
 
-UI32 WaveMessage::getMessageIdAtOriginatingLocation (const string &serializedData, const UI8 serializationType) 
+UI32 WaveMessage::getMessageIdAtOriginatingLocation (const string &serializedData, const UI8 serializationType)
 {
     // We now the SerializableObjectAttributeId for Message Id at Originating Location is always 3. (This cannot be changed from 3)
     // So the corresponding attribute in the serialized XML will be tagged with A3.  So look for the data
@@ -639,7 +639,7 @@ UI32 WaveMessage::getMessageIdAtOriginatingLocation (const string &serializedDat
     string  attributeTag        = "";
     SI32    index1              = 0;
     SI32    index2              = 0;
-    
+
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
     {
         attributeTag = string ("3");
@@ -659,7 +659,7 @@ UI32 WaveMessage::getMessageIdAtOriginatingLocation (const string &serializedDat
     return (sot);
 }
 
-UI32 WaveMessage::getWaveClientMessageId (const string &serializedData, const UI8 serializationType)  
+UI32 WaveMessage::getWaveClientMessageId (const string &serializedData, const UI8 serializationType)
 {
     // We now the SerializableObjectAttributeId for Message Id at WaveClient is always 6. (This cannot be changed from 6)
     // So the corresponding attribute in the serialized XML will be tagged with A6.  So look for the data
@@ -669,13 +669,13 @@ UI32 WaveMessage::getWaveClientMessageId (const string &serializedData, const UI
     SI32    index1              = 0;
     SI32    index2              = 0;
 
-    
+
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
-    {   
+    {
         attributeTag = string ("6");
     }
     else
-    {   
+    {
         attributeTag = string ("waveClientMessageId");
     }
     UI32 startIndexOffset = attributeTag.size () + strlen ("<A>");
@@ -689,9 +689,9 @@ UI32 WaveMessage::getWaveClientMessageId (const string &serializedData, const UI
     return (sot);
 }
 
-UI32 WaveMessage::getMessageCompletionStatus (const string &serializedData, const UI8 serializationType)  
+UI32 WaveMessage::getMessageCompletionStatus (const string &serializedData, const UI8 serializationType)
 {
-// Now Completion status of a message is at position 13 (This can not be changed form 13 now). 
+// Now Completion status of a message is at position 13 (This can not be changed form 13 now).
 // So the corresponding attribute in the serialized XML will be tagged with A13. So look for the data
 // tagged between <A13> and </A13>
 
@@ -701,7 +701,7 @@ UI32 WaveMessage::getMessageCompletionStatus (const string &serializedData, cons
     string  attributeTag        = "";
 
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
-    {   
+    {
         attributeTag = string ("13");
     }
     else
@@ -709,7 +709,7 @@ UI32 WaveMessage::getMessageCompletionStatus (const string &serializedData, cons
         attributeTag = string ("completionStatus");
     }
     startIndexOffset = attributeTag.size () + strlen ("<A>");
-    
+
     index1    = serializedData.find (string ("<A") + attributeTag + string (">"));
     index2    = serializedData.find (string ("</A") + attributeTag + string (">"));
 
@@ -725,20 +725,20 @@ UI32 WaveMessage::getMessageCompletionStatus (const string &serializedData, cons
     return (*pResourceId);
 }
 
-bool WaveMessage::getIsLastReply (const string &serializedData, const UI8 serializationType)  
+bool WaveMessage::getIsLastReply (const string &serializedData, const UI8 serializationType)
 {
-    SI32 index1            = 0; 
-    SI32 index2            = 0; 
+    SI32 index1            = 0;
+    SI32 index2            = 0;
     string attributeTag    = "";
 
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
-    {    
+    {
         attributeTag = string ("12");
-    }    
-    else 
-    {    
+    }
+    else
+    {
         attributeTag = string ("isLastReply");
-    }    
+    }
     UI32 startIndexOffset = attributeTag.size () + strlen ("<A>");
 
     index1    = serializedData.find (string ("<A") + attributeTag + string (">"));
@@ -747,14 +747,14 @@ bool WaveMessage::getIsLastReply (const string &serializedData, const UI8 serial
     string sotString = serializedData.substr (index1 + startIndexOffset, index2 - index1 - startIndexOffset);
 
     if (0 == sotString.compare("true"))
-    {    
+    {
         return(true);
-    }    
+    }
 
     return (false);
-}  
+}
 
-WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const string &serializedData, const WaveServiceId &assumedServiceCode, const UI8 serializationType) 
+WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const string &serializedData, const WaveServiceId &assumedServiceCode, const UI8 serializationType)
 {
     // A4 attribute corresponds to the service code and A5 attribute corresponds to the operation code.
     // We strictly depend on these numbers.  If the order in the setupAttributesForSerialization in WaveMessage
@@ -808,7 +808,7 @@ WaveMessage *WaveMessage::createAndLoadFromSerializedData2 (const string &serial
     // Prepare for serialization and load the attributes from the serialized data.
 
     pWaveMessage->prepareForSerialization ();
-    pWaveMessage->loadFromSerializedData2 (serializedData, serializationType); 
+    pWaveMessage->loadFromSerializedData2 (serializedData, serializationType);
 
     return (pWaveMessage);
 }
@@ -989,23 +989,23 @@ void WaveMessage::setMessageString(string messageString)
     m_messageString = messageString;
 }
 
-bool WaveMessage::getIsConfigurationChange () const
+bool WaveMessage::getIsConfigurationChanged () const
 {
     return (m_isConfigurationChanged);
 }
 
-void WaveMessage::setIsConfigurationChange (const bool &isConfigurationChanged)
+void WaveMessage::setIsConfigurationChanged (const bool &isConfigurationChanged)
 {
     m_isConfigurationChanged = isConfigurationChanged;
     m_isConfigurationFlagSetByUser = true;
 }
 
-bool WaveMessage::getIsConfigurationTimeChange() const
+bool WaveMessage::getIsConfigurationTimeChanged () const
 {
     return (m_isConfigurationTimeChanged);
 }
 
-void WaveMessage::setIsConfigurationTimeChange(const bool &isConfigurationTimeChanged)
+void WaveMessage::setIsConfigurationTimeChanged (const bool &isConfigurationTimeChanged)
 {
     m_isConfigurationTimeChanged = isConfigurationTimeChanged;
 }
@@ -1153,7 +1153,7 @@ void WaveMessage::addStatusPropagation (ResourceId statusResourceId, const strin
  *              This allows Partial Success errors to be propagated back to WyserEaGW.
  *
  * @param1:     pWaveSendToClusterContext : pointer to WaveSendToClusterContext
- * @param2:     overAllCompletionStatus : overall completion status for send to wave cluster. 
+ * @param2:     overAllCompletionStatus : overall completion status for send to wave cluster.
  *
  * @return:     none
  */
@@ -1489,7 +1489,7 @@ void WaveMessage::setTimeOutInMilliSeconds (const UI32 timeOutInMilliSeconds)
     m_timeOutInMilliSeconds = timeOutInMilliSeconds;
 }
 
-UI32 WaveMessage::getTimeOutInMilliSeconds () const 
+UI32 WaveMessage::getTimeOutInMilliSeconds () const
 {
     return (m_timeOutInMilliSeconds);
 }

@@ -6062,7 +6062,7 @@ void WaveFrameworkObjectManager::deleteNodesFromClusterMessageHandler (Framework
 
     pDeleteNodesFromClusterContext->setIsDeletion(true);
 
-    pDeleteNodesFromClusterContext->setIsConfigurationChange (pFrameworkObjectManagerDeleteNodesFromClusterMessage->getIsConfigurationChange ());
+    pDeleteNodesFromClusterContext->setIsConfigurationChange (pFrameworkObjectManagerDeleteNodesFromClusterMessage->getIsConfigurationChanged ());
 
     pDeleteNodesFromClusterContext->holdAll ();
     pDeleteNodesFromClusterContext->start ();

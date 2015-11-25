@@ -70,6 +70,8 @@ public class WaveThread extends Thread
 
     private static WaveServiceMap                       s_waveServiceMap                          = new WaveServiceMap ();
 
+    private WaveThreadId                                m_waveThreadId                            = null;
+
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
         super (null, null, name, s_defaultStackSize);
@@ -138,6 +140,8 @@ public class WaveThread extends Thread
         m_waveObjectManagers = new ArrayList<WaveObjectManager> ();
 
         m_terminateThread = false;
+
+        m_waveThreadId = new WaveThreadId (getId ());
     }
 
     @Override
@@ -562,5 +566,37 @@ public class WaveThread extends Thread
     public static WaveThreadId getSelf ()
     {
         return (WaveThreadId.getSelf ());
+    }
+
+    public static WaveThread getWaveThreadForMessageHaPeerTransport ()
+    {
+        return (WaveThread.getWaveThreadForServiceId (HaPeerMessageTransportObjectManager.getWaveServiceId ()));
+    }
+
+    public static WaveThread getWaveThreadForMessageRemoteTransport ()
+    {
+        return (WaveThread.getWaveThreadForServiceId (InterLocationMessageTransportObjectManager.getWaveServiceId ()));
+    }
+
+    public boolean hasWaveObjectManagers ()
+    {
+        if (0 < (m_waveObjectManagers.size ()))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    public WaveServiceId getWaveServiceId ()
+    {
+        return (m_waveServiceId);
+    }
+
+    public WaveThreadId getWaveThreadId ()
+    {
+        return (m_waveThreadId);
     }
 }

@@ -30,6 +30,18 @@ public class SerializableObject
     {
     }
 
+    public boolean getIsPreparedForSerialization ()
+    {
+        if (null != m_attributesMap)
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
     protected void prepareForSerialization ()
     {
         if (null == m_attributesMap)

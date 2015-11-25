@@ -420,7 +420,7 @@ void DistributedLogObjectManager::distributedLogAddLogEntryMessageHandler (Distr
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
-    pDistributedLogAddLogEntryMessage->setIsConfigurationChange (false);
+    pDistributedLogAddLogEntryMessage->setIsConfigurationChanged (false);
 
     DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext = new DistributedLogSynchronousLinearSequencerContext (pDistributedLogAddLogEntryMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
@@ -453,7 +453,7 @@ void DistributedLogObjectManager::distributedLogUpdateMaxLogEntriesMessageHandle
         reinterpret_cast<WaveSynchronousLinearSequencerStep> (&DistributedLogObjectManager::waveSynchronousLinearSequencerFailedStep)
     };
 
-    pDistributedLogUpdateMaxLogEntriesMessage->setIsConfigurationChange (false);
+    pDistributedLogUpdateMaxLogEntriesMessage->setIsConfigurationChanged (false);
 
     DistributedLogSynchronousLinearSequencerContext *pDistributedLogSynchronousLinearSequencerContext = new DistributedLogSynchronousLinearSequencerContext (pDistributedLogUpdateMaxLogEntriesMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 

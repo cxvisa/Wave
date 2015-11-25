@@ -1570,8 +1570,8 @@ WaveMessageStatus WaveObjectManager::send (WaveMessage *pWaveMessage, WaveMessag
     {
         // Propagate message flags from Inoming Message to Outgoing Message
 
-        pWaveMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
-        pWaveMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
+        pWaveMessage->setIsConfigurationChanged                 (m_pInputMessage->getIsConfigurationChanged ());
+        pWaveMessage->setIsConfigurationTimeChanged             (m_pInputMessage->getIsConfigurationTimeChanged ());
         pWaveMessage->setTransactionCounter                    (m_pInputMessage->getTransactionCounter ());
 
         if (false == pWaveMessage->getIsPartitionNameSetByUser ())
@@ -1733,10 +1733,10 @@ WaveMessageStatus WaveObjectManager::sendOneWay (WaveMessage *pWaveMessage, cons
 
     if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pWaveMessage->getWaveMessageCreatorThreadId ()))
     {
-        // Propagate message flags from Inoming Message to Outgoing Message
+        // Propagate message flags from Incoming Message to Outgoing Message
 
-        pWaveMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
-        pWaveMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
+        pWaveMessage->setIsConfigurationChanged                 (m_pInputMessage->getIsConfigurationChanged ());
+        pWaveMessage->setIsConfigurationTimeChanged             (m_pInputMessage->getIsConfigurationTimeChanged ());
     }
 
     addMessageToMessageHistoryCalledFromSend (pWaveMessage);
@@ -1912,8 +1912,8 @@ WaveMessageStatus WaveObjectManager::sendSynchronously (WaveMessage *pWaveMessag
         {
             // Propagate message flags from Inoming Message to Outgoing Message
 
-            pWaveMessage->setIsConfigurationChange                 (m_pInputMessage->getIsConfigurationChange ());
-            pWaveMessage->setIsConfigurationTimeChange             (m_pInputMessage->getIsConfigurationTimeChange ());
+            pWaveMessage->setIsConfigurationChanged                 (m_pInputMessage->getIsConfigurationChanged ());
+            pWaveMessage->setIsConfigurationTimeChanged             (m_pInputMessage->getIsConfigurationTimeChanged ());
             pWaveMessage->setTransactionCounter                    (m_pInputMessage->getTransactionCounter ());
 
             if (false == pWaveMessage->getIsPartitionNameSetByUser ())
@@ -8574,8 +8574,8 @@ ResourceId WaveObjectManager::executeMessageReplyDuringSurrogacy (ManagementInte
 
     if ((NULL != m_pInputMessage) && (m_pAssociatedWaveThread->getId () == pManagementInterfaceMessage->getWaveMessageCreatorThreadId ()))
     {
-        pManagementInterfaceMessage->setIsConfigurationChange (m_pInputMessage->getIsConfigurationChange ());
-        pManagementInterfaceMessage->setIsConfigurationTimeChange (m_pInputMessage->getIsConfigurationTimeChange ());
+        pManagementInterfaceMessage->setIsConfigurationChanged (m_pInputMessage->getIsConfigurationChanged ());
+        pManagementInterfaceMessage->setIsConfigurationTimeChanged (m_pInputMessage->getIsConfigurationTimeChanged ());
         pManagementInterfaceMessage->setTransactionCounter (m_pInputMessage->getTransactionCounter ());
 
         if (false == pManagementInterfaceMessage->getIsMessageBeingSurrogatedFlag ())

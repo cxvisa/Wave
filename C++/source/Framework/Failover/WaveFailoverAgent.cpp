@@ -90,7 +90,7 @@ void WaveFailoverAgent::failoverWaveServicesStep (WaveFailoverAgentSequencerCont
 
             (waveFailoverObjectManagerMessage.getFailedLocationIds ()) = failedLocationIds;
 
-            waveFailoverObjectManagerMessage.setIsConfigurationChange (isConfigurationChange);
+            waveFailoverObjectManagerMessage.setIsConfigurationChanged (isConfigurationChange);
             
             ResourceId status = sendSynchronously (&waveFailoverObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 
@@ -1603,7 +1603,7 @@ void WaveFailoverAgent::failoverForUnknownWaveNodeWaveServicesStep (WaveFailover
 
             (waveFailoverObjectManagerMessage.getFailedLocationIds ()) = failedLocationIds;
 
-            waveFailoverObjectManagerMessage.setIsConfigurationChange (isConfigurationChange);
+            waveFailoverObjectManagerMessage.setIsConfigurationChanged (isConfigurationChange);
 
             ResourceId status = sendSynchronously (&waveFailoverObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
 

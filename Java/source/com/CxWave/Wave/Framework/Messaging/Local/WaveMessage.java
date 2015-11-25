@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThreadId;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
@@ -20,6 +21,7 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
@@ -76,8 +78,8 @@ public class WaveMessage extends SerializableObject
         }
     }
 
-    private WaveMessageType              m_type;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // WaveMessageType
-    private WaveMessagePriority          m_priority;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // WaveMessagePriority
+    private WaveMessageType              m_type                                    = WaveMessageType.WAVE_MESSAGE_TYPE_REQUEST;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    // WaveMessageType
+    private WaveMessagePriority          m_priority                                = WaveMessagePriority.WAVE_MESSAGE_PRIORITY_NORMAL;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // WaveMessagePriority
     private WaveServiceId                m_serviceCode;
     private UI32                         m_operationCode;
     private UI32                         m_waveClientMessageId;
@@ -86,62 +88,72 @@ public class WaveMessage extends SerializableObject
     private WaveServiceId                m_senderServiceCode;
     private LocationId                   m_senderLocationId;
     private LocationId                   m_receiverLocationId;
-    private boolean                      m_isOneWayMessage;
-    private boolean                      m_isSynchronousMessage;
+    private boolean                      m_isOneWayMessage                         = false;;
+    private boolean                      m_isSynchronousMessage                    = false;
     @NonSerializable
-    private WaveMutex                    m_synchronizingMutex;
+    private WaveMutex                    m_synchronizingMutex                      = new WaveMutex ();
     @NonSerializable
-    private WaveCondition                m_synchronizingCondition;
-    private boolean                      m_isLastReply;
-    private boolean                      m_isACopy;
+    private WaveCondition                m_synchronizingCondition                  = new WaveCondition (m_synchronizingMutex);
+    private boolean                      m_isLastReply                             = true;
+    private boolean                      m_isACopy                                 = false;
     private UI32                         m_originalMessageId;
-    private WaveResourceId               m_completionStatus;
-    private LocationId                   m_waveClientOriginatingLocationId;
-    private UI32                         m_waveNativeClientId;
-    private UI32                         m_waveUserClientId;
+    private ResourceId                   m_completionStatus                        = ResourceId.WAVE_MESSAGE_ERROR;
+    private LocationId                   m_waveClientOriginatingLocationId         = LocationId.NullLocationId;
+    private UI32                         m_waveNativeClientId                      = new UI32 (0);
+    private UI32                         m_waveUserClientId                        = new UI32 (0);
     @NonSerializable
     private Map<UI32, WaveMessageBuffer> m_buffers;
-    private boolean                      m_dropReplyAcrossLocations;
+    private boolean                      m_dropReplyAcrossLocations                = false;
     private String                       m_messageString;
-    private boolean                      m_isConfigurationChanged;
-    private boolean                      m_isConfigurationFlagSetByUser;
+    private boolean                      m_isConfigurationChanged                  = false;
+    private boolean                      m_isConfigurationFlagSetByUser            = false;
     private String                       m_nestedSql;
-    private UI32                         m_transactionCounter;
-    private WaveThreadId                 m_waveMessageCreatorThreadId;
-    private LocationId                   m_surrogatingForLocationId;
-    private boolean                      m_needSurrogateSupportFlag;
-    private boolean                      m_isMessageBeingSurrogatedFlag;
+    private UI32                         m_transactionCounter                      = new UI32 (0);
+    private WaveThreadId                 m_waveMessageCreatorThreadId              = WaveThread.getSelf ();
+    private LocationId                   m_surrogatingForLocationId                = LocationId.NullLocationId;
+    private boolean                      m_needSurrogateSupportFlag                = false;
+    private boolean                      m_isMessageBeingSurrogatedFlag            = false;
 
     private Vector<LocationId>           m_locationsForStatusPropagation;
     private Vector<WaveResourceId>       m_completionStatusForStatusPropagation;
     private Vector<String>               m_localizedCompletionStatusForStatusPropagation;
-    private boolean                      m_isMessageSupportedWhenServiceIsPaused;
+    private boolean                      m_isMessageSupportedWhenServiceIsPaused   = false;
 
     private Vector<String>               m_xPathStringsVectorForTimestampUpdate;
 
     // Multi Partition.
     private String                       m_partitionName;
-    private LocationId                   m_partitionLocationIdForPropagation;
-    private boolean                      m_isPartitionContextPropagated;
-    private boolean                      m_isPartitionNameSetByUser;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // Not
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 // serialized.
+    private LocationId                   m_partitionLocationIdForPropagation       = LocationId.NullLocationId;
+    private boolean                      m_isPartitionContextPropagated            = false;
+    private boolean                      m_isPartitionNameSetByUser                = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          // Not
+    // serialized.
     // Only to prevent copy of partitionName from
     // m_pInputMessage during propagation.
 
-    private boolean                      m_isConfigurationTimeChanged;
+    private boolean                      m_isConfigurationTimeChanged              = false;
 
-    private boolean                      m_isAConfigurationIntent;
-    private boolean                      m_isConfigurationIntentStored;
-    private boolean                      m_isALastConfigReplay;
-    private UI32                         m_timeOutInMilliSeconds;
-    private boolean                      m_disconnectFromNodeAfterReply;
-    private boolean                      m_removeNodeFromKnownLocationAfterReply;
-    private boolean                      m_sendForOneWayConnection;
+    private boolean                      m_isAConfigurationIntent                  = false;
+    private boolean                      m_isConfigurationIntentStored             = false;
+    private boolean                      m_isALastConfigReplay                     = false;
+    private UI32                         m_timeOutInMilliSeconds                   = new UI32 (6000);
+    private boolean                      m_disconnectFromNodeAfterReply            = false;
+    private boolean                      m_removeNodeFromKnownLocationAfterReply   = false;
+    private boolean                      m_sendForOneWayConnection                 = false;
+
+    private static UI32                  s_numberOfMessagesInTheSystemSoFar        = new UI32 (0);
+    private static UI32                  s_numberOfMessagesDeletedInTheSystemSoFar = new UI32 (0);
+    private static WaveMutex             s_messageCreationMutex                    = new WaveMutex ();
 
     protected WaveMessage (final WaveServiceId serviceCode, final WaveOperationCodeInterface operationCode)
     {
         m_serviceCode = serviceCode;
         m_operationCode = operationCode.getOperationCode ();
+
+        s_messageCreationMutex.lock ();
+
+        s_numberOfMessagesInTheSystemSoFar.increment ();
+
+        s_messageCreationMutex.unlock ();
     }
 
     private WaveMessage (final WaveMessage waveMessage)
@@ -255,7 +267,7 @@ public class WaveMessage extends SerializableObject
         return m_isOneWayMessage;
     }
 
-    private void setIsOneWayMessage (final boolean isOneWayMessage)
+    public void setIsOneWayMessage (final boolean isOneWayMessage)
     {
         m_isOneWayMessage = isOneWayMessage;
     }
@@ -320,12 +332,12 @@ public class WaveMessage extends SerializableObject
         m_originalMessageId = originalMessageId;
     }
 
-    public WaveResourceId getCompletionStatus ()
+    public ResourceId getCompletionStatus ()
     {
         return m_completionStatus;
     }
 
-    public void setCompletionStatus (final WaveResourceId completionStatus)
+    public void setCompletionStatus (final ResourceId completionStatus)
     {
         m_completionStatus = completionStatus;
     }
@@ -430,7 +442,7 @@ public class WaveMessage extends SerializableObject
         m_transactionCounter = transactionCounter;
     }
 
-    private WaveThreadId getWaveMessageCreatorThreadId ()
+    public WaveThreadId getWaveMessageCreatorThreadId ()
     {
         return m_waveMessageCreatorThreadId;
     }

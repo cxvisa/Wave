@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
@@ -27,6 +28,7 @@ import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode;
 
 public class WaveObjectManager extends WaveElement
@@ -372,7 +374,7 @@ public class WaveObjectManager extends WaveElement
 
         if (m_operationsMap.containsKey (operationCode))
         {
-            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager::addOperationMap : OperationMap already found for this operation code : " + operationCode);
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addOperationMap : OperationMap already found for this operation code : " + operationCode);
 
             WaveAssertUtils.waveAssert ();
 
@@ -397,5 +399,83 @@ public class WaveObjectManager extends WaveElement
     public WaveMessage getInputMessage ()
     {
         return (m_inputMessage);
+    }
+
+    protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage, final LocationId locationId)
+    {
+        WaveThread waveThread = null;
+        final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
+        LocationId effectiveLocationId = locationId;
+
+        // FIXME : sagar : replace the 0 with NullLocationId
+
+        if (LocationId.isNull (effectiveLocationId))
+        {
+            if (true != (FrameworkToolKit.isALocalService (waveMessage.getServiceCode ())))
+            {
+                effectiveLocationId = FrameworkToolKit.getClusterPrimaryLocationId ();
+            }
+        }
+
+        if ((LocationId.isNull (effectiveLocationId)) || (thisLocationId.equals (effectiveLocationId)))
+        {
+            waveThread = WaveThread.getWaveThreadForServiceId (waveMessage.getServiceCode ());
+        }
+        else if (effectiveLocationId.equals (LocationId.HaPeerLocationId))
+        {
+            waveThread = WaveThread.getWaveThreadForMessageHaPeerTransport ();
+        }
+        else
+        {
+            waveThread = WaveThread.getWaveThreadForMessageRemoteTransport ();
+        }
+
+        if (null == waveThread)
+        {
+            // trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager.sendOneWay : No Service registered to accept this service Id
+            // ") + waveMessage->getServiceCode () + ".");
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
+        }
+
+        if (false == (waveThread.hasWaveObjectManagers ()))
+        {
+            // trace (TRACE_LEVEL_ERROR, "WaveObjectManager.sendOneWay : Service identified. But there are no Wave Object
+            // Managers registered to process any kind of requests.");
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
+        }
+
+        // Set this so the message can be returned. In fact one way messages can never be returned. This is set so that
+        // in case we need to refer it at the receiver end.
+
+        waveMessage.setSenderServiceCode (m_associatedWaveThread.getWaveServiceId ());
+
+        // Store the receiver LocationId.
+
+        waveMessage.setReceiverLocationId ((LocationId.isNotNull (effectiveLocationId)) ? effectiveLocationId : thisLocationId);
+
+        // Set the field to indicate the message is a one way message so that when the receiver replies, the framework will
+        // not attempt to deliver it back to the original sender. It will simply destroy the message.
+
+        waveMessage.setIsOneWayMessage (true);
+
+        if ((null != m_inputMessage) && ((m_associatedWaveThread.getWaveThreadId ()).equals (waveMessage.getWaveMessageCreatorThreadId ())))
+        {
+            // Propagate message flags from Incoming Message to Outgoing Message
+
+            waveMessage.setIsConfigurationChanged (m_inputMessage.getIsConfigurationChanged ());
+            waveMessage.setIsConfigurationTimeChanged (m_inputMessage.getIsConfigurationTimeChanged ());
+        }
+
+        addMessageToMessageHistoryCalledFromSend (waveMessage);
+
+        final WaveMessageStatus status = waveThread.submitMessage (waveMessage);
+
+        return (status);
+    }
+
+    private void addMessageToMessageHistoryCalledFromSend (final WaveMessage waveMessage)
+    {
+        // TODO Auto-generated method stub
     }
 }
