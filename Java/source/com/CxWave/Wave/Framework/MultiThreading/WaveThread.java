@@ -147,6 +147,31 @@ public class WaveThread extends Thread
     @Override
     public void run ()
     {
+
+        final UI32 numberOfWaveObjectManagers = new UI32 (m_waveObjectManagers.size ());
+        final WaveThreadId thisThreadId = WaveThreadId.getSelf ();
+
+        WaveAssertUtils.waveAssert (numberOfWaveObjectManagers.equals (new UI32 (1))); // For now, enforce that there is exactly
+                                                                                       // on Wave OM per thread.
+
+        while (true)
+        {
+            if (true == (FrameworkToolKit.isFrameworkReadyToBoot ()))
+            {
+                break;
+            }
+
+            try
+            {
+                Thread.sleep (10);
+            }
+            catch (final InterruptedException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace ();
+            }
+        }
+
         s_waveThreadIdToWaveObjectManagerMapMutex.lock ();
 
         s_waveThreadIdToWaveObjectManagerMap.put (WaveThreadId.getWaveThreadIdForThisThread (), m_waveObjectManagers.get (0));

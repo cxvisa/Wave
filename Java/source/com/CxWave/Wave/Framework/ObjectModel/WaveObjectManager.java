@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.ObjectModel;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -168,7 +169,7 @@ public class WaveObjectManager extends WaveElement
 
     private final String                                               m_name;
     private WaveThread                                                 m_associatedWaveThread;
-    private Map<UI32, WaveOperationMapContext>                         m_operationsMap;
+    private final Map<UI32, WaveOperationMapContext>                   m_operationsMap                   = new HashMap<UI32, WaveOperationMapContext> ();
     private Map<UI32, BigInteger>                                      m_supportedEvents;
     private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
     private Map<UI32, WaveMessageResponseContext>                      m_responsesMap;
@@ -185,6 +186,11 @@ public class WaveObjectManager extends WaveElement
     private final WaveServiceId                                        m_serviceId;
 
     private WaveMessage                                                m_inputMessage;
+
+    private void addSupportedOperations ()
+    {
+        addOperationMap (FrameworkOpCodes.WAVE_OBJECT_MANAGER_INITIALIZE, "_non_existing_", this);
+    }
 
     protected WaveObjectManager (final String waveObjectManagerName, final UI32 stackSize)
     {
@@ -210,6 +216,8 @@ public class WaveObjectManager extends WaveElement
         final WaveThread associatedWaveThread = new WaveThread (m_name, stackSize, m_serviceId);
 
         m_associatedWaveThread = associatedWaveThread;
+
+        addSupportedOperations ();
 
         m_associatedWaveThread.start ();
     }
@@ -241,6 +249,8 @@ public class WaveObjectManager extends WaveElement
         m_associatedWaveThread = associatedWaveThread;
 
         m_associatedWaveThread.addWaveObjectManager (this);
+
+        addSupportedOperations ();
 
         m_associatedWaveThread.start ();
 
@@ -399,6 +409,11 @@ public class WaveObjectManager extends WaveElement
     public WaveMessage getInputMessage ()
     {
         return (m_inputMessage);
+    }
+
+    protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage)
+    {
+        return (sendOneWay (waveMessage, LocationId.NullLocationId));
     }
 
     protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage, final LocationId locationId)

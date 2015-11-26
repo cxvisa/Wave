@@ -87,7 +87,21 @@ public class FrameworkToolKit
 
     public static LocationBase getThisLocation ()
     {
-        return ((WaveFrameworkObjectManager.getInstance ()).getThisLocation ());
+        WaveFrameworkObjectManager temp = null;
+
+        if (isFrameworkReadyToBoot ())
+        {
+            temp = WaveFrameworkObjectManager.getInstance ();
+        }
+
+        if (null != temp)
+        {
+            return (temp.getThisLocation ());
+        }
+        else
+        {
+            return (null);
+        }
     }
 
     public static LocationId getPhysicalLocationId ()
@@ -148,5 +162,10 @@ public class FrameworkToolKit
         {
             return (LocationId.NullLocationId);
         }
+    }
+
+    public static boolean isFrameworkReadyToBoot ()
+    {
+        return (WaveFrameworkObjectManager.getIsFrameworkReadyToBoot ());
     }
 }

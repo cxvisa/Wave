@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
 import com.CxWave.Wave.Framework.LocationManagement.Location;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
@@ -18,6 +19,8 @@ import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
@@ -39,13 +42,12 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private static LocationRole               s_locationRole                         = LocationRole.LOCATION_STAND_ALONE;
     private static SI32                       s_locationPort                         = new SI32 (3016);
 
+    private static final WaveMutex            s_pFrameworkReadinessMutex             = new WaveMutex ();
+    private static boolean                    s_isFrameworkReadyToBoot               = false;
+
     private WaveFrameworkObjectManager ()
     {
         super (getServiceName ());
-
-        setIsInstantiated ();
-
-        setIsEnabled (true);
 
         if (LocationRole.LOCATION_STAND_ALONE == s_locationRole)
         {
@@ -56,6 +58,30 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         else
         {
             System.err.printf ("Could not configure this location.  Unknown Location Role");
+            WaveAssertUtils.waveAssert ();
+        }
+
+        // Indicate that the Instantiation of WaveObjectManager is complete.
+
+        setIsInstantiated (true);
+        setIsEnabled (true);
+
+        // Now send a oneway initialize message to self.
+
+        // We know the service id for the Wave framework object manager must be 1. And it must not be anything else. So we use
+        // the value 1 in the next statement.
+
+        // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it will invariably fail since we are inside the
+        // getInstance method
+        // We always say it is the first time boot, but, this reason is not to be looked into in the initialize for this OM.
+
+        final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = new WaveInitializeObjectManagerMessage (new WaveServiceId (1L), WaveBootReason.WAVE_BOOT_FIRST_TIME_BOOT);
+
+        final WaveMessageStatus status = sendOneWay (waveInitializeObjectManagerMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            System.err.printf ("Cannot Initialize the Framework.  Cannot continue.  Exiting ...\n");
             WaveAssertUtils.waveAssert ();
         }
     }
@@ -117,11 +143,11 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         return (isInstantiated);
     }
 
-    private static void setIsInstantiated ()
+    private static void setIsInstantiated (final boolean isInstantiated)
     {
         s_instantiationMutex.lock ();
 
-        s_isFrameworkInstantiated = true;
+        s_isFrameworkInstantiated = isInstantiated;
 
         s_instantiationMutex.unlock ();
     }
@@ -177,5 +203,28 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public LocationBase getThisLocation ()
     {
         return (m_thisLocation);
+    }
+
+    public static boolean getIsFrameworkReadyToBoot ()
+    {
+        boolean isFrameworkReadyToBoot = false;
+
+        s_pFrameworkReadinessMutex.lock ();
+        isFrameworkReadyToBoot = s_isFrameworkReadyToBoot;
+        s_pFrameworkReadinessMutex.unlock ();
+
+        return (isFrameworkReadyToBoot);
+    }
+
+    public static void setIsFrameworkReadyToBoot (final boolean isFrameworkReadyToBoot)
+    {
+        s_pFrameworkReadinessMutex.lock ();
+        s_isFrameworkReadyToBoot = isFrameworkReadyToBoot;
+        s_pFrameworkReadinessMutex.unlock ();
+    }
+
+    public static void bootWave ()
+    {
+        setIsFrameworkReadyToBoot (true);
     }
 }

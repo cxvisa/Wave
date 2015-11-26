@@ -125,7 +125,7 @@ static string                               s_frameworkConfigurationBackupFile  
 static string                               s_frameworkGlobalConfigurationFile                               = "";
 static string                               s_frameworkGlobalConfigurationTempFile                           = "";
 
-static string                               s_lockFileForConfigurationFile                                   = "";     
+static string                               s_lockFileForConfigurationFile                                   = "";
 
 static UI32                                 s_offSetForValidationResults                                     = 0x0000FFFF;
 
@@ -144,8 +144,8 @@ static WaveMutex                           s_dbConversionStatusMutex;
 static map<WaveThreadId, WaveThreadId>    s_waveThreadIdRepository;
 static WaveMutex                           s_waveThredIdRepositoryMutex;
 
-static const UI32                           s_clusterPhase0TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
-static const UI32                           s_clusterPhase1TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000 
+static const UI32                           s_clusterPhase0TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
+static const UI32                           s_clusterPhase1TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
 static const UI32                           s_clusterPhase2TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
 static const UI32                           s_clusterPhase3TimeoutInMilliseconds                             = 900000; // 15 * 60 * 1000
 
@@ -225,10 +225,10 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
       m_isStartupValid (false),
       m_secondaryNodeClusterCreationFlag (false),
       m_primaryNodeClusterOperationFlag (false),
-      m_activationCompleted (false), 
+      m_activationCompleted (false),
       m_postBootStarted (false),
       m_postBootCompleted (false),
-      m_configReplayStarted (false),      
+      m_configReplayStarted (false),
       m_configReplayCompleted (false),
       m_nodeReadyForAllCommands (false),
       m_clusterPhaseTimerHandler (0),
@@ -310,7 +310,7 @@ WaveFrameworkObjectManager::WaveFrameworkObjectManager ()
         exit (-1);
     }
 #endif
-    // Indicate that the Instatiation of WaveObjectManager is complete.
+    // Indicate that the Instantiation of WaveObjectManager is complete.
 
     setIsInstantiated (true);
     setIsEnabled (true);
@@ -675,12 +675,12 @@ void  WaveFrameworkObjectManager::validateAndZeroizeAtBoot()
         zeroizeStream.close();
         trace(TRACE_LEVEL_INFO,"WaveFrameworkObjectManager::validateAndZeroizeAtBoot: Previous zeroize was incomplete. Clearing now..\n");
         Wave::logOperationStatus (FIPS_OPERATION_TRIGGER_CLEANUP_FOR_ZEROIZE);
-    
+
         FrameworkSequenceGenerator &frameworkSequenceGenerator = getCurrentFrameworkSequenceGenerator ();
         WaveZeroizeAgent *pZAgent = new WaveZeroizeAgent(this, frameworkSequenceGenerator,noShutdownAtZeroize);
 
         waveAssert(NULL != pZAgent, __FILE__,__LINE__);
-    
+
         ResourceId status = pZAgent->execute();
         if(status != WAVE_MESSAGE_SUCCESS)
         {
@@ -692,7 +692,7 @@ void  WaveFrameworkObjectManager::validateAndZeroizeAtBoot()
     {
         trace(TRACE_LEVEL_INFO,"WaveFrameworkObjectManager::validateAndZeroizeAtBoot: state is clean.\n");
     }
-    
+
 
 }
 
@@ -983,18 +983,18 @@ void WaveFrameworkObjectManager::removeWaveThreadId (const WaveThreadId &waveThr
     s_waveThredIdRepositoryMutex.lock ();
 
     map<WaveThreadId, WaveThreadId>::iterator  element = s_waveThreadIdRepository.find (waveThreadId);
-    map<WaveThreadId, WaveThreadId>::iterator  end     = s_waveThreadIdRepository.end (); 
+    map<WaveThreadId, WaveThreadId>::iterator  end     = s_waveThreadIdRepository.end ();
 
     if (end != element)
-    {   
+    {
         s_waveThreadIdRepository.erase (element);
     }
     else
     {
         WaveNs::trace (TRACE_LEVEL_WARN, string ("WaveFrameworkObjectManager::removeWaveThreadId This thread Id does not exist"));
-    } 
+    }
 
-    s_waveThredIdRepositoryMutex.unlock ();    
+    s_waveThredIdRepositoryMutex.unlock ();
 }
 
 void WaveFrameworkObjectManager::getAllWaveThreads (map<WaveThreadId, WaveThreadId> &waveThreadsMap)
@@ -1005,7 +1005,7 @@ void WaveFrameworkObjectManager::getAllWaveThreads (map<WaveThreadId, WaveThread
 
     s_waveThredIdRepositoryMutex.unlock ();
 }
-        
+
 void WaveFrameworkObjectManager::deleteAllWaveThreads ()
 {
     map<WaveThreadId, WaveThreadId>::iterator  threadIterator;
@@ -1016,9 +1016,9 @@ void WaveFrameworkObjectManager::deleteAllWaveThreads ()
     // Also, at the end of the function we do not unlock the mutex so that no other deleteAllWaveThreads call is made to kill the same set of threads again
 
     for (threadIterator = s_waveThreadIdRepository.begin (); threadIterator != s_waveThreadIdRepository.end (); threadIterator++)
-    {   
+    {
         retVal = pthread_cancel (threadIterator->first);
-        
+
         while (1)
         {
             retVal = pthread_kill (threadIterator->first, 0);
@@ -1032,7 +1032,7 @@ void WaveFrameworkObjectManager::deleteAllWaveThreads ()
                 waveUSleep (100000);
             }
         }
-    }   
+    }
 
     //s_waveThredIdRepositoryMutex.unlock ();
 }
@@ -1053,31 +1053,31 @@ ResourceId WaveFrameworkObjectManager::createBufferForFileToSync ( const string 
         if ( 0 < fileSize )
         {
             pBuffer = new char [fileSize];
-            waveAssert ( NULL != pBuffer, __FILE__, __LINE__ );         
+            waveAssert ( NULL != pBuffer, __FILE__, __LINE__ );
             file.seekg (0, ios::beg);
             file.read ( pBuffer, fileSize );
             pfileBuffer = pBuffer;
-            sizeOfFileBuffer= fileSize;   
+            sizeOfFileBuffer= fileSize;
         }
         else
         {
             trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createBufferForFileToSync : Empty file - \"") + filenameToSync + ("\"") );
         }
-    } 
+    }
     else
     {
         status = WAVE_MESSAGE_ERROR;
-        trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createBufferForFileToSync : Unable to open file - \"") + filenameToSync + ("\"") );    
+        trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createBufferForFileToSync : Unable to open file - \"") + filenameToSync + ("\"") );
     }
     file.close();
 
     return (status);
-} 
+}
 
 ResourceId WaveFrameworkObjectManager::createFileForSyncBuffer ( const string &filenameToSync, char* &pfileBuffer, UI32 &sizeOfFileBuffer )
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
-    
+
     waveAssert ( NULL != pfileBuffer, __FILE__, __LINE__ );
 
     trace (TRACE_LEVEL_DEVEL, string("WaveFrameworkObjectManager::createFileForSyncBuffer : filename - ") + filenameToSync );
@@ -1085,9 +1085,9 @@ ResourceId WaveFrameworkObjectManager::createFileForSyncBuffer ( const string &f
     file.open ( (filenameToSync).c_str() );
 
     if ( true == file.is_open() )
-    {   
+    {
         if ( 0 < sizeOfFileBuffer )
-        {  
+        {
             file.write ( pfileBuffer, sizeOfFileBuffer );
         }
         else
@@ -1097,7 +1097,7 @@ ResourceId WaveFrameworkObjectManager::createFileForSyncBuffer ( const string &f
     }
     else
     {
-        status = WAVE_MESSAGE_ERROR;   
+        status = WAVE_MESSAGE_ERROR;
         trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createFileForSyncBuffer : Unable to open file - \"") + filenameToSync + ("\"") );
     }
     file.close();
@@ -1171,7 +1171,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesMessageHandler (WaveCreat
 
     // Set an indication that cluster operation is in progress on primary node
     setPrimaryNodeClusterOperationFlag (true);
-    
+
     // Setting the flag here instead of setting in the context constructor to help in the following case:
     // When a primary node is becoming secondary(flag is set TRUE), primary controlled failover is done
     // followed by destroy cluster which resets the flag to FALSE in base class context (CreateClusterWithNodesContext)
@@ -1445,7 +1445,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocation
 
             if (FRAMEWORK_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocationsStep : failed to connect IP = ") + ipAddress + 
+                trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createClusterWithNodesConnectToNewKnownLocationsStep : failed to connect IP = ") + ipAddress +
                     " Port = " + port + " newLocation = " + newLocationId);
                 // Indicate that the status saying that we could not connect to the location.
                 // For this location we will not send a message to configure itself as a secondary.
@@ -1493,7 +1493,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesReplayGlobalOnlyConfigIfR
 
         status = ConfigFileManagementToolKit::replayConfigurationFile (configFilePath, configFilename, preConfigReplayCommands);
 
-        
+
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::createClusterWithNodesReplayGlobalOnlyConfigIfRequiredStep : Replay of global-only config file on principal node completed with status: " + FrameworkToolKit::localize (status));
 
         if (WAVE_MESSAGE_SUCCESS == status)
@@ -1533,11 +1533,11 @@ void WaveFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message 
         {
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message : Message to backup database failed.  Completion Status : " + FrameworkToolKit::localize (status));
             waveAssert (false, __FILE__, __LINE__);
-        }     
-        else  
-        {     
+        }
+        else
+        {
              trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::backUpDatabaseAfterSendingClusterPhase0Message : Successfully backed up the database.");
-        }     
+        }
     }
 }
 
@@ -1648,7 +1648,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     if (numberOfFailures == numberOfNewLocationIds)
     {
         resumeDatabaseOperation ();
-        
+
         pCreateClusterWithNodesContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
     }
     else
@@ -1714,7 +1714,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
                 SI32       port1          = FrameworkToolKit::getPortForLocationId (newLocationId1);
 
                 pWaveCreateClusterWithNodesMessage->setNewNodeStatus (ipAddress1, port1, frameworkStatus);
-    
+
                 removeKnownLocation (newLocationId1);
             }
         }
@@ -1764,7 +1764,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         if (numberOfFailures == numberOfNewIpAddresses)
         {
             resumeDatabaseOperation ();
-            
+
             pCreateClusterWithNodesContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
         }
         else
@@ -1793,19 +1793,19 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     vector<string>                      filenamesToSync;
     ResourceId                          status                              = WAVE_MESSAGE_SUCCESS;
     bool                                fileSyncRequired                    = false;
-    
+
     ++(*pCreateClusterWithNodesContext);
 
 
-    pWaveCreateClusterWithNodesMessage->getFilenamesToSync ( filenamesToSync );    
-    
+    pWaveCreateClusterWithNodesMessage->getFilenamesToSync ( filenamesToSync );
+
     if ( filenamesToSync.size() == numberOfNewIpAddresses )
     {
         fileSyncRequired = true ;
-    }     
-        
+    }
+
     createDatabaseBackupBuffer(pDatabaseBackupBuffer, sizeOfBackupFile);
-    
+
     for (i = 0; i < numberOfNewIpAddresses; i++)
     {
         ipAddress1     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) i);
@@ -1829,20 +1829,20 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
             {
                 trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : No Database Backup is being sent to the lcoation.");
             }
-   
+
             if ( (true == fileSyncRequired) && (false == filenamesToSync[i].empty()) )
-            {    
+            {
                 char *pfileBuffer = NULL ;
                 UI32  sizeOfFileBuffer;
 
                 trace (TRACE_LEVEL_DEVEL, string("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : Adding file buffers. FileNum - ") + i );
-                //using tag starting from 11 for now.        
+                //using tag starting from 11 for now.
                 status = createBufferForFileToSync ( filenamesToSync[i], pfileBuffer, sizeOfFileBuffer );
                 if ( WAVE_MESSAGE_SUCCESS != status )
                 {
                     trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : Unable to create buffer for file = \"") + filenamesToSync[i] + ("\"") );
                     waveAssert ( false, __FILE__, __LINE__ );
-                }                        
+                }
 
                 pMessage->addBuffer ( 11, sizeOfFileBuffer, pfileBuffer, false );
                 pMessage->setFilenameToSync ( filenamesToSync[i] );
@@ -1884,10 +1884,10 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     {
         trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocationsPhase1Step : , numberOfFailures - ") + numberOfFailures );
         resumeDatabaseOperation ();
-        
+
         if (true == pCreateClusterWithNodesContext->getIsCreateClusterContext ())
         {
-           m_pThisLocation->setLocationRole (LOCATION_STAND_ALONE);        
+           m_pThisLocation->setLocationRole (LOCATION_STAND_ALONE);
         }
 
         pCreateClusterWithNodesContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
@@ -1909,7 +1909,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     string                              ipAddress;
     SI32                                port;
 
-    --(*pCreateClusterWithNodesContext); 
+    --(*pCreateClusterWithNodesContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
     {
@@ -1988,7 +1988,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         if (numberOfFailures == numberOfNewIpAddresses)
         {
             resumeDatabaseOperation ();
-            
+
             if (true == pCreateClusterWithNodesContext->getIsCreateClusterContext ())
             {
                m_pThisLocation->setLocationRole (LOCATION_STAND_ALONE);
@@ -2000,7 +2000,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         {
             pCreateClusterWithNodesContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         }
-    }       
+    }
 }
 
 void WaveFrameworkObjectManager::resumeDatabase ()
@@ -2052,7 +2052,7 @@ void WaveFrameworkObjectManager::pausePersistence ()
 
         if (WAVE_MESSAGE_SUCCESS != status)
         {
-            trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::pausePersistence : Could not pause Persistence.  Completion Status : " + FrameworkToolKit::localize (status));            
+            trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::pausePersistence : Could not pause Persistence.  Completion Status : " + FrameworkToolKit::localize (status));
             waveAssert (false, __FILE__, __LINE__);
         }
         else
@@ -2103,7 +2103,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep (Creat
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep : Starting ...");
 
     resumeDatabaseOperation ();
-    
+
     pCreateClusterWithNodesContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
@@ -2381,8 +2381,8 @@ void WaveFrameworkObjectManager::failoverforNodesFailedInPhase2Callback (WaveFra
 
         pCreateClusterWithNodesContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
     }
-    else 
-    { 
+    else
+    {
         pCreateClusterWithNodesContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     }
 
@@ -2460,7 +2460,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     vector<LocationId>                  successfullyAddedLocationIdVector   = pCreateClusterWithNodesContext->getSuccessfullyAddedLocationIdVector ();
                  UI32                   numberOfSuccessfullyAddedNode       = successfullyAddedLocationIdVector.size ();
                  UI32                   numberOfFailures                    = 0;
-           LocationId                   locationId;    
+           LocationId                   locationId;
 
     ++(*pCreateClusterWithNodesContext);
 
@@ -2561,9 +2561,9 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = reinterpret_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
 
     waveAssert (NULL != pWaveConfigureClusterSecondaryPhase3Message, __FILE__, __LINE__);
- 
+
     LocationId locationId = pWaveConfigureClusterSecondaryPhase3Message->getReceiverLocationId ();
-    
+
     --(*pCreateClusterWithNodesContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
@@ -2603,7 +2603,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
     {
         vector<LocationId> failedLocationIdsVectorInPhase3                   = pCreateClusterWithNodesContext->getFailedLocationIdVector ();
                       UI32 numberOffailedLocationIdsVectorInPhase3           = failedLocationIdsVectorInPhase3.size ();
-        
+
         if (false == pCreateClusterWithNodesContext->getIsCreateClusterContext ())
         {
             vector<WaveManagedObject *> *pResults = querySynchronously (WaveCluster::getClassName ());
@@ -2631,7 +2631,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesConfigureNewKnownLocation
         // check if any node is failed, then trigger failover for those nodes.
         if (0 < numberOffailedLocationIdsVectorInPhase3)
         {
-            
+
             WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback), pCreateClusterWithNodesContext);
 
             for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase3; j++)
@@ -2674,7 +2674,7 @@ void WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback (WaveFra
     {
         FrameworkObjectManagerRemoveKnownLocationsMessage *pFrameworkObjectManagerRemoveKnownLocationsMessage = new FrameworkObjectManagerRemoveKnownLocationsMessage ();
 
-        
+
         pFrameworkObjectManagerRemoveKnownLocationsMessage->setFailedLocations (failedLocationIds);
 
         ResourceId status = sendOneWay (pFrameworkObjectManagerRemoveKnownLocationsMessage, connectedLocationsVector[i]);
@@ -2688,7 +2688,7 @@ void WaveFrameworkObjectManager::failoverforNodesFailedInPhase3Callback (WaveFra
 
     pCreateClusterWithNodesContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 
-    
+
 }
 
 void WaveFrameworkObjectManager::setWarmHaRecoveryPreparationInProgress (const bool &isWarmRecovery)
@@ -2789,7 +2789,7 @@ bool WaveFrameworkObjectManager::getPostBootStarted ()
 }
 
 string WaveFrameworkObjectManager::getPostBootStartedTimeStamp()
-{  
+{
     m_postBootProgressMutex.lock ();
     string postBootStartedTimeStamp = m_postBootStartedTimeStamp;
     m_postBootProgressMutex.unlock ();
@@ -2804,7 +2804,7 @@ void WaveFrameworkObjectManager::setPostBootCompleted (bool isPostBootCompleted)
     m_postBootProgressMutex.unlock();
 }
 
-bool WaveFrameworkObjectManager::getPostBootCompleted() 
+bool WaveFrameworkObjectManager::getPostBootCompleted()
 {
     m_postBootProgressMutex.lock();
     bool isPostBootCompleted = m_postBootCompleted;
@@ -2813,7 +2813,7 @@ bool WaveFrameworkObjectManager::getPostBootCompleted()
 }
 
 string WaveFrameworkObjectManager::getPostBootCompletedTimeStamp()
-{  
+{
     m_postBootProgressMutex.lock ();
     string postBootCompletedTimeStamp = m_postBootCompletedTimeStamp;
     m_postBootProgressMutex.unlock ();
@@ -2824,7 +2824,7 @@ string WaveFrameworkObjectManager::getPostBootCompletedTimeStamp()
 void  WaveFrameworkObjectManager::setFileReplayStarted (bool isFileReplayStarted)
 {
     m_fileReplayInProgressMutex.lock ();
-    
+
     m_fileReplayStarted = isFileReplayStarted;
     if (true == m_fileReplayStarted)
     {
@@ -2847,7 +2847,7 @@ bool  WaveFrameworkObjectManager::getFileReplayStarted ()
  return isFileReplayStarted;
 }
 string WaveFrameworkObjectManager::getFileReplayStartedTimeStamp()
-{  
+{
     m_fileReplayInProgressMutex.lock ();
     string fileReplayStartedTimeStamp = m_fileReplayStartedTimeStamp;
     m_fileReplayInProgressMutex.unlock ();
@@ -2880,7 +2880,7 @@ bool  WaveFrameworkObjectManager::getFileReplayCompleted ()
 }
 
 string WaveFrameworkObjectManager::getFileReplayCompletedTimeStamp()
-{  
+{
     m_fileReplayInProgressMutex.lock ();
     string fileReplayCompletedTimeStamp = m_fileReplayCompletedTimeStamp;
     m_fileReplayInProgressMutex.unlock ();
@@ -2893,7 +2893,7 @@ bool WaveFrameworkObjectManager::getFileReplayInProgress()
   m_fileReplayInProgressMutex.lock();
   bool isFileReplayInProgress =  false;
 
-  if(false == m_fileReplayCompleted &&  true == m_fileReplayStarted) 
+  if(false == m_fileReplayCompleted &&  true == m_fileReplayStarted)
   {
       isFileReplayInProgress = true;
   }
@@ -2905,7 +2905,7 @@ bool WaveFrameworkObjectManager::getFileReplayInProgress()
 
 void WaveFrameworkObjectManager::startFileReplayEndAgent ()
 {
-   // Call the File Replay End Agent. This is a synchronous call. Should this call be made from within the mutex lock ? Its not necessary since all the "copy file to running" commands are serialized from the top level. 
+   // Call the File Replay End Agent. This is a synchronous call. Should this call be made from within the mutex lock ? Its not necessary since all the "copy file to running" commands are serialized from the top level.
 
    /* Call the virtual function FileReplayEnd */
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::setFileReplayCompleted : Start the File Replay End Agent.... ");
@@ -2916,7 +2916,7 @@ void WaveFrameworkObjectManager::startFileReplayEndAgent ()
 
     delete pWaveFileReplayEnd;
 
-    // Print the FileReplay Started and Ended timestamp 
+    // Print the FileReplay Started and Ended timestamp
 
     tracePrintf (TRACE_LEVEL_INFO, false, false, "WaveFrameworkObjectManager::setFileReplayCompleted : File Replay Started Timestamp : %s \n\n", getFileReplayStartedTimeStamp().c_str ());
     tracePrintf (TRACE_LEVEL_INFO, false, false, "WaveFrameworkObjectManager::setFileReplayCompleted : File Replay Completed Timestamp : %s \n\n", (getFileReplayCompletedTimeStamp ()).c_str ());
@@ -2959,7 +2959,7 @@ bool  WaveFrameworkObjectManager::getConfigReplayStarted ()
  return isConfigreplayStarted;
 }
 string WaveFrameworkObjectManager::getConfigReplayStartedTimeStamp()
-{  
+{
     m_configReplayInProgressMutex.lock ();
     string configReplayStartedTimeStamp = m_configReplayStartedTimeStamp;
     m_configReplayInProgressMutex.unlock ();
@@ -2983,7 +2983,7 @@ bool  WaveFrameworkObjectManager::getConfigReplayCompleted ()
 }
 
 string WaveFrameworkObjectManager::getConfigReplayCompletedTimeStamp()
-{  
+{
     m_configReplayInProgressMutex.lock ();
     string configReplayCompletedTimeStamp = m_configReplayCompletedTimeStamp;
     m_configReplayInProgressMutex.unlock ();
@@ -2995,7 +2995,7 @@ bool WaveFrameworkObjectManager::getConfigReplayInProgress()
     m_configReplayInProgressMutex.lock();
     bool isConfigReplayInProgress =  false;
 
-    if (false == m_configReplayCompleted &&  true == m_configReplayStarted) 
+    if (false == m_configReplayCompleted &&  true == m_configReplayStarted)
     {
         isConfigReplayInProgress = true;
     }
@@ -3096,7 +3096,7 @@ void WaveFrameworkObjectManager::cleanupManageObject (LocationId locationId)
         tableNames = (OrmRepository::getInstance ())->getTableNames(false);
         UI32 tableSizes = tableNames.size();
         UI32 i = 0;
-        /* Go through all tables to look for Object ID that has ownerwavenodeobjectidclassid and ownerwavenodeobjectidinstanceid matched 
+        /* Go through all tables to look for Object ID that has ownerwavenodeobjectidclassid and ownerwavenodeobjectidinstanceid matched
                 * with the WaveNode Object Id */
         trace(TRACE_LEVEL_INFO, string("WaveFrameworkObjectManager::cleanupManageObject: Table size = ") + tableSizes);
         for (i = 0; i < tableSizes; i++) {
@@ -3115,7 +3115,7 @@ void WaveFrameworkObjectManager::cleanupManageObject (LocationId locationId)
             }
             deleteObjects(pMOResults);
         }
-        
+
         UI32 numberOfObjectsDeleted = deleteObjectIds.size();
         trace(TRACE_LEVEL_INFO, string("WaveFrameworkObjectManager::cleanupManageObject: Number of Delete Objects = ") + numberOfObjectsDeleted);
 
@@ -3220,13 +3220,13 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAl
 
     FrameworkToolKit::getKnownLocations (currentlyKnownLocations);
     numberOfCurrentlyKnownLocations = currentlyKnownLocations.size ();
- 
+
     FrameworkToolKit::getFullyConnectedLocations (currentlyConnectedLocations);
 
 //    ++(*pCreateClusterWithNodesContext);
 
     WaveCreateClusterWithNodesMessage *pWaveCreateClusterWithNodesMessage = 0;
-    if(pCreateClusterWithNodesContext->getPWaveMessage()) 
+    if(pCreateClusterWithNodesContext->getPWaveMessage())
     {
      pWaveCreateClusterWithNodesMessage =  dynamic_cast<WaveCreateClusterWithNodesMessage *> (pCreateClusterWithNodesContext->getPWaveMessage ());
     waveAssert(NULL != pWaveCreateClusterWithNodesMessage, __FILE__, __LINE__);
@@ -3245,20 +3245,20 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAl
             ipAddress  = FrameworkToolKit::getIpAddressForLocationId (locationId);
             port       = FrameworkToolKit::getPortForLocationId (locationId);
 
-            //determine whether info for a node  being sent in the message is 
+            //determine whether info for a node  being sent in the message is
             // for a newlyadded node
-            bool isNewlyAddedNode = false; 
-            if(pWaveCreateClusterWithNodesMessage) 
+            bool isNewlyAddedNode = false;
+            if(pWaveCreateClusterWithNodesMessage)
             {
                  UI32 numberOfNewIpAddresses = pWaveCreateClusterWithNodesMessage->getNumberOfNewNodes ();
             //Loop through each node in the message
-                for(UI32 k = 0; k <numberOfNewIpAddresses; ++k) 
+                for(UI32 k = 0; k <numberOfNewIpAddresses; ++k)
                 {
                     string      tempIpAddress     = pWaveCreateClusterWithNodesMessage->getNodeAt ((UI32) k);
                     UI32        tempPort          = pWaveCreateClusterWithNodesMessage->getNodePortAt ((UI32) k);
                     LocationId  tempLocationId = FrameworkToolKit::getLocationIdForIpAddressAndPort (tempIpAddress, tempPort);
 
-                    if((locationId == tempLocationId)  && (WAVE_MESSAGE_SUCCESS == pWaveCreateClusterWithNodesMessage->getNewNodeStatus(tempIpAddress,tempPort))) 
+                    if((locationId == tempLocationId)  && (WAVE_MESSAGE_SUCCESS == pWaveCreateClusterWithNodesMessage->getNewNodeStatus(tempIpAddress,tempPort)))
                     {
                         isNewlyAddedNode = true;
                         break;
@@ -3274,7 +3274,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAl
        pFrameworkObjectManagerUpdateListOfSecondariesMessage->setIsDeletion(pCreateClusterWithNodesContext->getIsDeletion());
 
        pFrameworkObjectManagerUpdateListOfSecondariesMessage->setLastUsedLocationId (FrameworkToolKit::getLastUsedLocationId ());
-    
+
         status = sendOneWay (pFrameworkObjectManagerUpdateListOfSecondariesMessage, currentlyKnownLocations[i]);
 
         if (WAVE_MESSAGE_SUCCESS != status)
@@ -3328,7 +3328,7 @@ void WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAl
 /// Name
 /// broadcastNewNodesAddedEventOnPrimaryStep
 /// Description
-/// Broadcasts lists of all new nodes added as part of addnode 
+/// Broadcasts lists of all new nodes added as part of addnode
 /// or create cluster
 /// Input
 /// CreateClusterWithNodesContext *: Used by the f/w
@@ -3387,7 +3387,7 @@ void WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep(Create
 void WaveFrameworkObjectManager::configureSecondaryNodeMessageHandler (WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
-    
+
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeMessageHandler: (ACTIVE)");
 
     WaveLinearSequencerStep sequencerSteps[] =
@@ -3522,7 +3522,7 @@ void WaveFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencer
 {
     LocationRole                           thisLocationRole                       = m_pThisLocation->getLocationRole ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
-        
+
     if ((LOCATION_SECONDARY_CLUSTER_PHASE_0 == thisLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_1 == thisLocationRole) || (LOCATION_SECONDARY_REJOIN_PHASE_1 == thisLocationRole) || (LOCATION_SECONDARY_REJOIN_PHASE_0 == thisLocationRole))
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rollbackNodeIfRequiredStep : Rolling back as the node is in phase 0/1");
@@ -3534,7 +3534,7 @@ void WaveFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencer
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::rollbackNodeIfRequiredStep : Roll Back should Never Fail");
             waveAssert (false, __FILE__, __LINE__);
         }
-        
+
     }
     else if ((LOCATION_SECONDARY_CLUSTER_PHASE_2 == thisLocationRole) || (LOCATION_SECONDARY_REJOIN_PHASE_2 == thisLocationRole))
     {
@@ -3555,7 +3555,7 @@ void WaveFrameworkObjectManager::rollbackNodeIfRequiredStep (WaveLinearSequencer
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::rollbackNodeIfRequiredStep : Roll Back should Never Fail");
             waveAssert (false, __FILE__, __LINE__);
         }
-        
+
     }
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
@@ -3574,7 +3574,7 @@ void WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeC
     {
         pSecondaryNodeClusterContext->executeNextStep (status);
     }
-    
+
     if ((LOCATION_SECONDARY == currentRole) || (LOCATION_PRIMARY_UNCONFIRMED == currentRole) || (LOCATION_SECONDARY_UNCONFIRMED == currentRole))
     {
         WaveLinearSequencerStep sequencerSteps[] =
@@ -3597,14 +3597,14 @@ void WaveFrameworkObjectManager::prepareNodeForAddNodeIfRequired (SecondaryNodeC
 
         pDeleteNodeOnSecondaryContext->holdAll ();
         pDeleteNodeOnSecondaryContext->start ();
-    }    
+    }
 
     if (LOCATION_PRIMARY == currentRole)
     {
         //Disconnect from all the nodes, before sending destroy cluster as in this case we do not want to unconfigure all the attached secondaries
         disconnectFromAllConnectedNodes ();
 
-        //Destroy cluster 
+        //Destroy cluster
         //Note: This will not send unconfigure to all secondary nodes
         DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = new DestroyClusterAsynchronousContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::preparePrimaryNodeForAddNodeIfRequiredCallBack), pSecondaryNodeClusterContext);
 
@@ -3660,11 +3660,11 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateDefaultConfigurat
 
     if (true == FrameworkToolKit::isConfigurationCompatibilityCheckRequired ())
     {
-        UI64      configurationTransactionId  = 0;  
+        UI64      configurationTransactionId  = 0;
         DateTime  configurationTime;
         DateTime  latestUpdateTime;
-      
-        PersistenceToolKit::getConfigurationManagedObjectInformation (configurationTransactionId, configurationTime, latestUpdateTime); 
+
+        PersistenceToolKit::getConfigurationManagedObjectInformation (configurationTransactionId, configurationTime, latestUpdateTime);
 
         if (0 != configurationTransactionId)
         {
@@ -3746,11 +3746,11 @@ void WaveFrameworkObjectManager::revertTableIdsIfRequired ()
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::revertTableIdsIfRequired: No changes in tableIds for Schema compatibility.");
         return;
     }
-    
+
     // 1. restore tableIds.
     OrmRepository * pOrmRepository = OrmRepository::getInstance();
     pOrmRepository->restoreOldTableIds ();
-    
+
     pOrmRepository->buildMoSchemaRepository ();
 
     // 2. Handle AuxilliaryTables and their constraints.
@@ -3762,9 +3762,9 @@ void WaveFrameworkObjectManager::revertTableIdsIfRequired ()
 
     DatabaseStandaloneTransaction dbStandaloneTransaction;
     if (!dbStandaloneTransaction.execute (sqlToAlterTables))
-    {   
+    {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager : Error in applying SQL to alter auxillary table names");
-        pOrmRepository->restoreOldTableIds (); 
+        pOrmRepository->restoreOldTableIds ();
     }
     else
     {
@@ -3781,19 +3781,19 @@ string WaveFrameworkObjectManager::handleConstraintsForAuxilliaryTable (string w
     // 1. get sql to drop all existing constraints
     string sqlForConstraint = sqlPrefix + " DROP CONSTRAINT " + oldAuxilliaryTableName + "_ownerclassid_fkey; \n"
                             + sqlPrefix + " DROP CONSTRAINT " + oldAuxilliaryTableName + "_ownerinstanceid_fkey;\n"
-                            + sqlPrefix + " DROP CONSTRAINT " + oldAuxilliaryTableName + "_relatedtoclassid_fkey;\n" 
-                            + sqlPrefix + " DROP CONSTRAINT " + oldAuxilliaryTableName + "_relatedtoinstanceid_fkey;\n"; 
-    
+                            + sqlPrefix + " DROP CONSTRAINT " + oldAuxilliaryTableName + "_relatedtoclassid_fkey;\n"
+                            + sqlPrefix + " DROP CONSTRAINT " + oldAuxilliaryTableName + "_relatedtoinstanceid_fkey;\n";
+
     // Add sql to add constraints.
-           sqlForConstraint += sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName + "_ownerclassid_fkey FOREIGN KEY (ownerclassid) REFERENCES " 
+           sqlForConstraint += sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName + "_ownerclassid_fkey FOREIGN KEY (ownerclassid) REFERENCES "
                             + waveSchema + "." + parentTableName + "derivations(objectidclassid) DEFERRABLE INITIALLY DEFERRED;\n"
-                            + sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName +"_ownerinstanceid_fkey FOREIGN KEY (ownerinstanceid) REFERENCES " 
+                            + sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName +"_ownerinstanceid_fkey FOREIGN KEY (ownerinstanceid) REFERENCES "
                             + waveSchema + "." + parentTableName + "derivationsinstances(objectidinstanceid) DEFERRABLE INITIALLY DEFERRED;\n"
-                            + sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName +"_relatedtoclassid_fkey FOREIGN KEY (relatedtoclassid) REFERENCES " 
+                            + sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName +"_relatedtoclassid_fkey FOREIGN KEY (relatedtoclassid) REFERENCES "
                             + waveSchema + "." + relatedToTableName + "derivations(objectidclassid) DEFERRABLE INITIALLY DEFERRED;\n"
-                            + sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName +"_relatedtoinstanceid_fkey FOREIGN KEY (relatedtoinstanceid) REFERENCES " 
+                            + sqlPrefix +" ADD CONSTRAINT "+newAuxilliaryTableName +"_relatedtoinstanceid_fkey FOREIGN KEY (relatedtoinstanceid) REFERENCES "
                             + waveSchema + "." + relatedToTableName + "derivationsinstances(objectidinstanceid) DEFERRABLE INITIALLY DEFERRED;\n";
-    
+
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::handleConstraintsForAuxilliaryTable: sql for constraints = " + sqlForConstraint);
     return (sqlForConstraint);
 }
@@ -3803,7 +3803,7 @@ string WaveFrameworkObjectManager::generateSqlToAlterAuxilliaryTableNames (vecto
     string sqlToChangeAuxilliaryTableNames;
     UI32   numberOfAuxilliaryTables         = oldAuxilliaryTableNames.size ();
 
-    for(UI32 i = 0; i<numberOfAuxilliaryTables; ++i) 
+    for(UI32 i = 0; i<numberOfAuxilliaryTables; ++i)
     {
         if (0 != oldAuxilliaryTableNames[i].compare (newAuxilliaryTableNames[i]))
         {
@@ -3851,7 +3851,7 @@ ResourceId WaveFrameworkObjectManager::updateTableIdsInOrmWithSchemaInfoReceived
 */
 bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vector<string> & managedObjectNamesForSchemaChange,const vector<string> & fieldNamesStringsForSchemaChange,const vector<string> & fieldNamesTypesForSchemaChange,const vector<UI32> & classIds,const vector<UI32>  & parentTableIds)
 {
-    //setTableIdsChangedForSchemaCompatibilityFlag (false);    
+    //setTableIdsChangedForSchemaCompatibilityFlag (false);
 
 	bool                                isCompatible            = true;
     bool                                hasTableIdsChanged      = false;
@@ -3860,7 +3860,7 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
 
     UI32 numberOfManagedObjectsInSchema  = moSchemaInfoRepository.getNumberOfInfoObjectsInRepository ();
 	UI32 numberOfElementsInPrimarySchema = managedObjectNamesForSchemaChange.size ();
-	
+
 
         tracePrintf (TRACE_LEVEL_INFO,true, false, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: number of MO in Primary = %u and this node numberOfManagedObjectsInSchema = %u.", numberOfElementsInPrimarySchema, numberOfManagedObjectsInSchema);
 
@@ -3870,16 +3870,16 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
         return (false);
     }
 
-	for(UI32 i = 0; i<numberOfElementsInPrimarySchema; ++i) 
+	for(UI32 i = 0; i<numberOfElementsInPrimarySchema; ++i)
 	{
 		string                   managedObjectName        = managedObjectNamesForSchemaChange[i];
 		ManagedObjectSchemaInfo* pManagedObjectSchemaInfo = moSchemaInfoRepository.findSchemaInfoObject(managedObjectName);
 
         trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: " + managedObjectName);
 
-		if(!pManagedObjectSchemaInfo) 
-		{		 
-			tracePrintf (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: [%s] doesn't exist in schema.", managedObjectName.c_str()); 
+		if(!pManagedObjectSchemaInfo)
+		{
+			tracePrintf (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: [%s] doesn't exist in schema.", managedObjectName.c_str());
 	        isCompatible = false;
 			break;
 		}
@@ -3913,14 +3913,14 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
             break;
         }
 
-		for (UI32 j = 0; j<fieldNamesInPrimarySchema.size(); ++j) 
+		for (UI32 j = 0; j<fieldNamesInPrimarySchema.size(); ++j)
 		{
             trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: fieldTypesInPrimarySchema : " + fieldTypesInPrimarySchema [j]);
 			 map<string,string>::iterator simpleFieldsIterator = simpleFields.find (fieldNamesInPrimarySchema[j]);
 
-			 if(simpleFieldsIterator != simpleFields.end()) 
+			 if(simpleFieldsIterator != simpleFields.end())
 			 {
-                 trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: simpleField :" + simpleFieldsIterator->second); 
+                 trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: simpleField :" + simpleFieldsIterator->second);
         		 if(simpleFieldsIterator->second != fieldTypesInPrimarySchema [j])
 	        	 {
 		            isCompatible = false;
@@ -3931,16 +3931,16 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
 			 {
 				 map<string,string>::iterator relationFieldsIterator = relationFields.find (fieldNamesInPrimarySchema[j]);
 
-				 if(relationFieldsIterator != relationFields.end()) 
+				 if(relationFieldsIterator != relationFields.end())
 				 {
-                 trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: relationField :" + relationFieldsIterator->second); 
+                 trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: relationField :" + relationFieldsIterator->second);
         			 if(relationFieldsIterator->second != fieldTypesInPrimarySchema[j])
 	        		 {
 		    			 isCompatible = false;
 		    			 break;
 		  			 }
 				 }
-				 else 
+				 else
 				 {
 		        	 isCompatible = false;
 			         break;
@@ -3948,7 +3948,7 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
 			 }
 		}
 
-		if(!isCompatible) 
+		if(!isCompatible)
 		{
             tracePrintf (TRACE_LEVEL_WARN, true, false, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: atleast a field doesn't found in [%s]", managedObjectName.c_str());
 			break;
@@ -3958,9 +3958,9 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
 /*
     // update tableIds if required.
     if (isCompatible && hasTableIdsChanged)
-    {   
+    {
         if (FRAMEWORK_SUCCESS != updateTableIdsInOrmWithSchemaInfoReceivedFromPrimary (managedObjectNamesForSchemaChange, classIds, parentTableIds))
-        {   
+        {
             trace (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: failed to update tableIds received from Primary.");
             isCompatible = false;
         }
@@ -3973,7 +3973,7 @@ bool WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible(const vec
         }
     }
 */
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: returning %u", isCompatible); 
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveFrameworkObjectManager::isSchemaReceivedFromPrimaryCompatible: returning %u", isCompatible);
     return (isCompatible);
 }
 
@@ -4014,7 +4014,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateVersionStep (Seco
     vector<UI32>    classIds;
     vector<UI32>    parentTableIds;
 
-    pWaveConfigureClusterSecondaryMessage->getSchemaChangeVectors (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds); 
+    pWaveConfigureClusterSecondaryMessage->getSchemaChangeVectors (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds);
 
     if (!isSchemaReceivedFromPrimaryCompatible (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds))
     {
@@ -4104,7 +4104,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeValidateServicesStep (Sec
 
 void WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(SecondaryNodeClusterContext *pSecondaryNodeClusterContext)
 {
-    trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep Entering"); 
+    trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep Entering");
 
     if (true == FrameworkToolKit::isConfigurationCompatibilityCheckRequired ())
     {
@@ -4131,7 +4131,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Secondar
         pWaveConfigureClusterSecondaryHaPeerMessage->copyBuffersFrom (*pWaveConfigureClusterSecondaryMessage);
 
         ResourceId haPeerSendStatus = send (pWaveConfigureClusterSecondaryHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::configureClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
-            
+
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Send to Ha Peer failed.");
@@ -4150,11 +4150,11 @@ void WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep(Secondar
     else if ((FrameworkToolKit::getSyncState () == IN_SYNC) && (false == FrameworkToolKit::getIsLiveSyncEnabled ()))
     {
         // DB previously in sync from sync dump. but live transaction sync not supported. So set out of sync and notify on sync update fail
-        trace (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Live sync disabled. Notify sync update failure on first update after sync dump."); 
+        trace (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Live sync disabled. Notify sync update failure on first update after sync dump.");
         FrameworkToolKit::notifySyncUpdateFailure(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_NOT_SUPPORTED);
     }
     else
-    {         
+    {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryNodeNotifyHaPeerStep: Ha Peer is unavailable OR live sync disabled.");
     }
 
@@ -4350,7 +4350,7 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseStep (Secondar
 void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, WaveConfigureClusterSecondaryHaPeerPhase3Message *pWaveConfigureClusterSecondaryHaPeerPhase3Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback: Begin.");
- 
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -4372,7 +4372,7 @@ void WaveFrameworkObjectManager::configureSecondaryHaPeerPostPhaseCallback (Fram
         delete pWaveConfigureClusterSecondaryHaPeerPhase3Message;
     }
 
-    SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = reinterpret_cast<SecondaryNodeClusterPhase3Context *> (pContext); 
+    SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = reinterpret_cast<SecondaryNodeClusterPhase3Context *> (pContext);
 
     if (true == pSecondaryNodeClusterPhase3Context->getClusterHaSyncInProgress ())
     {
@@ -4532,7 +4532,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDa
         status = createFileForSyncBuffer ( configMgmtFileName, pFileBuffer, sizeOfFileBuffer);
 
         if (WAVE_MESSAGE_SUCCESS != status)
-        {   
+        {
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::configureSecondaryNodeLoadDatabaseFromPrimaryDatabaseStep : Could not create file sent from primary.  Status : " + FrameworkToolKit::localize (status));
             waveAssert (false, __FILE__, __LINE__);
         }
@@ -4689,7 +4689,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodeSetLocationRoleOnStandbyS
     // Save the location role in configuration file on standby to ensure it comes in appropriate role even
     // if something unexpected happens on standby
     FrameworkToolKit::saveWaveConfiguration (false);
-    
+
     pSecondaryNodeClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
 
@@ -4756,7 +4756,7 @@ void WaveFrameworkObjectManager::secondaryNodeClusterFailureStep (SecondaryNodeC
     if (false == FrameworkToolKit::isAConnectedLocation (currentPrimaryLocationId))
     {
         ResourceId connectionStatus = m_pThisLocation->connectToRemoteLocation (currentPrimaryLocationId, 30, 30);
-    
+
         if (FRAMEWORK_SUCCESS != connectionStatus)
         {
             trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::secondaryNodeClusterFailureStep : Could not connect to Current Primary : ") + currentPrimaryIpAddress + string (", Status = ") + FrameworkToolKit::localize (connectionStatus));
@@ -4771,7 +4771,7 @@ void WaveFrameworkObjectManager::secondaryNodeClusterFailureStep (SecondaryNodeC
     if (true == getNeedNotifyClusterReadyState())
     {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::secondaryNodeClusterFailureStep: Notify on ClusterReady event for secondary join falure event");
-        bool readyState = true; 
+        bool readyState = true;
         notifyClusterReadyState (readyState);
         setNeedNotifyClusterReadyState (false);
     }
@@ -4828,7 +4828,7 @@ void WaveFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHan
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back should Never Fail");
             waveAssert (false, __FILE__, __LINE__);
         }
-        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back complete hence resetting cluster creation flag in framework");    
+        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::clusterPhaseTimerCallback : Roll Back complete hence resetting cluster creation flag in framework");
         WaveFrameworkObjectManager::setSecondaryNodeClusterCreationFlag (false);
         if (true == getNeedNotifyClusterReadyState())
         {
@@ -4844,15 +4844,15 @@ void WaveFrameworkObjectManager::clusterPhaseTimerCallback (TimerHandle timerHan
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::WaveFrameworkObjectManager::clusterPhaseTimerCallback : Timer expired as expected phase 3 is not received");
 
         ResourceId status = WAVE_MESSAGE_SUCCESS;
-    
+
         status = m_pWaveFinalizeWorker->shutdownWaveServices (WAVE_SHUTDOWN_SECONDARY_ROLLBACK);
-        
+
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::clusterPhaseTimerCallback : shutdown should Never Fail");
             waveAssert (false, __FILE__, __LINE__);
         }
-        
+
         status = m_pInitializeWorker->startWaveServices (WAVE_BOOT_PERSISTENT, WAVE_BOOT_ROLL_BACK_BOOT_PHASE_AFTER_PHASE_2);
 
         if (WAVE_MESSAGE_SUCCESS != status)
@@ -4880,7 +4880,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2MessageHandler (Wav
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateLocationRoleStepInPhase2),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),  
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPhaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::startClusterPhaseTimer),
@@ -4941,7 +4941,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPha
             waveAssert (false, __FILE__, __LINE__);
         }
     }
-    
+
 #if 0
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -4958,9 +4958,9 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2BootServicesPostPha
 /// Description
 /// This function sends a message to the local cluster service
 /// to inform of a new primary node and the local cluster service
-/// to inform of replaced node 
+/// to inform of replaced node
 ///  Input
-///  SecondaryNodeClusterContext*:Pointer to phas2context 
+///  SecondaryNodeClusterContext*:Pointer to phas2context
 /// Output
 /// none
 /// Return
@@ -4970,7 +4970,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeeded
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeededStep : Entering ...");
 
     WaveRejoinClusterSecondaryPhase2Message *pWaveRejoinClusterSecondaryPhase2Message = reinterpret_cast<WaveRejoinClusterSecondaryPhase2Message *> (pSecondaryNodeClusterPhase2Context->getPWaveMessage ());
-    ResourceId         processingStatus = WAVE_MESSAGE_SUCCESS;   
+    ResourceId         processingStatus = WAVE_MESSAGE_SUCCESS;
 
     if (true == pWaveRejoinClusterSecondaryPhase2Message->getIsReplaceRejoin ())
     {
@@ -5006,7 +5006,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeeded
     }
 
     pSecondaryNodeClusterPhase2Context->executeNextStep(processingStatus);
-   
+
 }
 
 /// Name
@@ -5015,7 +5015,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2ReplaceNodeIfNeeded
 /// This function sends a message to the local cluster service
 /// should then update its node status
 ///  Input
-///  SecondaryNodeClusterContext*:Pointer to phas2context 
+///  SecondaryNodeClusterContext*:Pointer to phas2context
 /// Output
 /// none
 /// Return
@@ -5038,7 +5038,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocati
     message.setThisNodeLocationId   (thisLocationId);
 
     WaveMessageStatus  status = sendSynchronously (&message, thisLocationId);
-    ResourceId         processingStatus = WAVE_MESSAGE_SUCCESS;   
+    ResourceId         processingStatus = WAVE_MESSAGE_SUCCESS;
 
     if (WAVE_MESSAGE_SUCCESS != status)
     {
@@ -5060,7 +5060,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase2ConfigureThisLocati
     }
 
     pSecondaryNodeClusterPhase2Context->executeNextStep(processingStatus);
-   
+
 }
 
 void WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat (SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context)
@@ -5079,11 +5079,11 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3SendStartHearBeat (
     WaveMessageStatus status =  sendSynchronously (pMessage);
     ResourceId       processingStatus = WAVE_MESSAGE_SUCCESS;
 
-    if(WAVE_MESSAGE_SUCCESS != status) 
+    if(WAVE_MESSAGE_SUCCESS != status)
     {
     processingStatus = status;
     }
-    else 
+    else
     {
         ResourceId completionStatus = pMessage->getCompletionStatus();
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
@@ -5107,7 +5107,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep
     ResourceId status = WAVE_MESSAGE_SUCCESS ;
 
     if ( NULL == m_pWaveFrameworkObjectManagerPostPersistentBootWorker )
-    {   
+    {
         trace (TRACE_LEVEL_FATAL, string("WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep : postboot worker pointer is NULL") );
         pSecondaryNodeClusterPhase3Context->executeNextStep( WAVE_MESSAGE_ERROR );
     }
@@ -5121,7 +5121,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep
     status = m_pWaveFrameworkObjectManagerPostPersistentBootWorker->triggerPostBootPassTableForAll ( pPostPersistentBootWorkerClusterContext );
 
     if ( WAVE_MESSAGE_SUCCESS != status )
-    {   
+    {
         trace (TRACE_LEVEL_FATAL, string("WaveFrameworkObjectManager::configureSecondaryNodePhase3ExecutePostBootStep : postboot failed with status -") + FrameworkToolKit::localize ( status ) );
     }
 
@@ -5276,7 +5276,7 @@ void WaveFrameworkObjectManager::configureSecondaryNodePhase3ReplayLocalOnlyConf
             // rename the local only configuration file
 
             string newLocalOnlyFilename = fullLocalOnlyFilename + "." + FrameworkToolKit::getThisLocationIpAddress () + ".backup";
-        
+
             ConfigFileManagementToolKit::renameConfigurationFile (fullLocalOnlyFilename, newLocalOnlyFilename);
         }
     }
@@ -5299,8 +5299,8 @@ void WaveFrameworkObjectManager::updateListOfSecondariesMessageHandler (Framewor
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesSetupContextStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesAddKnownLocationsStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocationsStep),        
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),  
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocationsStep),
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep),
 
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
@@ -5319,12 +5319,12 @@ void WaveFrameworkObjectManager::updateListOfSecondariesSetupContextStep (Update
     LocationRole locationRole = m_pThisLocation->getLocationRole ();
 
     if (LOCATION_SECONDARY_CLUSTER_PHASE_2 != locationRole && LOCATION_SECONDARY_REJOIN_PHASE_2 != locationRole && LOCATION_SECONDARY != locationRole)
-    {    
+    {
         trace (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::updateListOfSecondariesSetupContextStep received Message in incorrect location role, return with error");
         pUpdateListOfSecondariesContext->executeNextStep (WAVE_MESSAGE_ERROR);
 
         return;
-    }    
+    }
 
     FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = reinterpret_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPWaveMessage ());
     UI32                                                  numberOfNewSecondaryLocations                         = pFrameworkObjectManagerUpdateListOfSecondariesMessage->getNumberOfSecondaryLocations ();
@@ -5348,11 +5348,11 @@ void WaveFrameworkObjectManager::updateListOfSecondariesSetupContextStep (Update
             pUpdateListOfSecondariesContext->addSecondaryNodeDetails (locationId, ipAddress, port, isNodeNew);
         }
         //If location id  of this location matches some location id received in the message and the node is newly added
-        //then update this information in the context. Later on this information is used to populate the lists 
+        //then update this information in the context. Later on this information is used to populate the lists
         // in the broadcast event
-        else if(isNodeNew) 
+        else if(isNodeNew)
         {
-            pUpdateListOfSecondariesContext->setIsThisNodeNew(true); 
+            pUpdateListOfSecondariesContext->setIsThisNodeNew(true);
         }
     }
 
@@ -5374,7 +5374,7 @@ void WaveFrameworkObjectManager::updateListOfSecondariesAddKnownLocationsStep (U
     string     ipAddress;
     UI32       port;
     UI32       numberOfKnownLocations    = 0;
-    vector<LocationId> knownLocationIdsVector;            
+    vector<LocationId> knownLocationIdsVector;
     bool       removeFlag                    = true;
     LocationId currentPrimaryLocationId      = FrameworkToolKit::getClusterPrimaryLocationId ();
 
@@ -5425,7 +5425,7 @@ void WaveFrameworkObjectManager::updateListOfSecondariesAddKnownLocationsStep (U
 
 void WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocationsStep (UpdateListOfSecondariesContext *pUpdateListOfSecondariesContext)
 {
-                 vector<LocationId> primaryConnectedLocations;        
+                 vector<LocationId> primaryConnectedLocations;
                  UI32               i                                                = 0;
                  LocationId         locationId;
     static const UI32               maximumNumberOfRetriesToConnectToARemoteLocation = 30;
@@ -5433,7 +5433,7 @@ void WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocatio
          vector<LocationId>         remoteLocationIdsVector;
                  //UI32               numberOfRemoteLocationIds;
                  UI32               numberOfLocationConnectedToPrimary;
-    
+
     FrameworkToolKit::getConnectedLocations (remoteLocationIdsVector);
     //numberOfRemoteLocationIds = remoteLocationIdsVector.size ();
 
@@ -5456,8 +5456,8 @@ void WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocatio
 /// Name
 /// broadcastListOfNewlyAddedNodesStep
 /// Description
-/// Broadcasts (on the secondary) list of all new nodes 
-/// added as part of addnode or create cluster 
+/// Broadcasts (on the secondary) list of all new nodes
+/// added as part of addnode or create cluster
 /// Input
 /// pdateListOfSecondariesContext *: Used by the f/w
 /// Output
@@ -5467,15 +5467,15 @@ void WaveFrameworkObjectManager::updateListOfSecondariesConnectToNewKnownLocatio
 
 void WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListOfSecondariesContext *pUpdateListOfSecondariesContext)
 {
-  
-   trace(TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep: Entering.."); 
+
+   trace(TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep: Entering..");
 
    FrameworkObjectManagerUpdateListOfSecondariesMessage *pFrameworkObjectManagerUpdateListOfSecondariesMessage = dynamic_cast<FrameworkObjectManagerUpdateListOfSecondariesMessage *> (pUpdateListOfSecondariesContext->getPWaveMessage ());
 
    waveAssert( NULL != pFrameworkObjectManagerUpdateListOfSecondariesMessage, __FILE__, __LINE__);
 
    //For now broadcast is suppressed for deletion
-   if(pFrameworkObjectManagerUpdateListOfSecondariesMessage->isDeletion()) 
+   if(pFrameworkObjectManagerUpdateListOfSecondariesMessage->isDeletion())
    {
      trace(TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep:Suppressing broadcast for delete");
      pUpdateListOfSecondariesContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
@@ -5488,7 +5488,7 @@ void WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListOf
    // as well as the primary node
    if(pUpdateListOfSecondariesContext->isThisNodeNew())
    {
-     //this means that this node is also new and we need to add 
+     //this means that this node is also new and we need to add
      //the primary to the broadcast event's list.
      string     primaryIpAddress  = FrameworkToolKit::getClusterPrimaryIpAddress();
      UI32       primaryPort       = FrameworkToolKit::getClusterPrimaryPort();
@@ -5497,7 +5497,7 @@ void WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListOf
      pWaveNewNodesAddedEvent->addNewNodeDetails(primaryLocationId, primaryIpAddress, primaryPort);
 
      //We need to add all nodes
-     for(UI32 i = 0; i < numberOfNewSecondaryLocations; ++i) 
+     for(UI32 i = 0; i < numberOfNewSecondaryLocations; ++i)
       {
          LocationId locationId = pUpdateListOfSecondariesContext->getLocationIdAtIndex(i);
          string ipAddress = pUpdateListOfSecondariesContext->getIpAddressAtIndex(i);
@@ -5508,17 +5508,17 @@ void WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListOf
 
    }
 
-   //If this node is not new, then add only the nodes that have been newly added 
+   //If this node is not new, then add only the nodes that have been newly added
    else {
-       for(UI32 i = 0; i < numberOfNewSecondaryLocations; ++i) 
+       for(UI32 i = 0; i < numberOfNewSecondaryLocations; ++i)
        {
-       if(pUpdateListOfSecondariesContext->isNodeNewAtIndex(i)) 
+       if(pUpdateListOfSecondariesContext->isNodeNewAtIndex(i))
        {
           LocationId locationId = pUpdateListOfSecondariesContext->getLocationIdAtIndex(i);
           string ipAddress = pUpdateListOfSecondariesContext->getIpAddressAtIndex(i);
           UI32   port      = pUpdateListOfSecondariesContext->getPortAtIndex(i);
           pWaveNewNodesAddedEvent->addNewNodeDetails(locationId, ipAddress, port);
-           
+
        }
        }
    }
@@ -5526,7 +5526,7 @@ void WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep(UpdateListOf
 
     ResourceId status = broadcast(pWaveNewNodesAddedEvent);
 
-    if(status != WAVE_MESSAGE_SUCCESS) 
+    if(status != WAVE_MESSAGE_SUCCESS)
     {
        trace(TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::broadcastListOfNewlyAddedNodesStep: Failure during broadcast..");
        pUpdateListOfSecondariesContext->executeNextStep (status);
@@ -5624,7 +5624,7 @@ void WaveFrameworkObjectManager::addNodesToClusterMessageHandler (FrameworkObjec
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::stopClusterPhaseTimer),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),        
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rollbackNodeIfRequiredStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::addNodesToClusterValidateStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesCollectValidationDataStep), // Reuse Sequencer Step
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesPausePersistenceStep),
@@ -6045,7 +6045,7 @@ void WaveFrameworkObjectManager::addNodesToClusterConfigureNewKnownLocationsCall
 
 void WaveFrameworkObjectManager::deleteNodesFromClusterMessageHandler (FrameworkObjectManagerDeleteNodesFromClusterMessage *pFrameworkObjectManagerDeleteNodesFromClusterMessage)
 {
- 
+
     WaveLinearSequencerStep sequencerSteps[] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterValidateStep),
@@ -6053,7 +6053,7 @@ void WaveFrameworkObjectManager::deleteNodesFromClusterMessageHandler (Framework
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::deleteNodesFromClusterRunFailoverStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::saveWaveConfigurationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),        
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
@@ -6225,7 +6225,7 @@ void WaveFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep 
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::deleteNodesFromClusterRemoveKnownLocationsStep : 111 ...");
 
         // In case of deletion of a disconnected node, we need not do disconnectFromLocation again as it would have been
-        // done during HB loss itself. 
+        // done during HB loss itself.
         if (false == pFrameworkObjectManagerDeleteNodesFromClusterMessage->getIsDisconnected())
         {
             disconnectFromLocation (locationId);
@@ -6296,10 +6296,10 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryMessageHandler (Fram
 {
     WaveLinearSequencerStep sequencerSteps[] =
     {
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep),      
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryDisconnectFromKnownLocationStep),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUpdateThisLocationStep), 
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUpdateThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryNodeBootServicesStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocationStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep),
@@ -6350,7 +6350,7 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep (Delete
             trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep : Stand Alone node cannot be unconfigured from Cluster.");
             status = FRAMEWORK_ERROR_CANNOT_UNCONFIGURE_STAND_ALONE_NODE;
         }
-        else if ((LOCATION_SECONDARY_CLUSTER_PHASE_0 == currentLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_1 == currentLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_2 == currentLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_3 == currentLocationRole) || 
+        else if ((LOCATION_SECONDARY_CLUSTER_PHASE_0 == currentLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_1 == currentLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_2 == currentLocationRole) || (LOCATION_SECONDARY_CLUSTER_PHASE_3 == currentLocationRole) ||
                 (LOCATION_SECONDARY_REJOIN_PHASE_0 == currentLocationRole) || (LOCATION_SECONDARY_REJOIN_PHASE_1 == currentLocationRole) || (LOCATION_SECONDARY_REJOIN_PHASE_2 == currentLocationRole) || (LOCATION_SECONDARY_REJOIN_PHASE_3 == currentLocationRole))
         {
             trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::unconfigureClusterSecondaryValidateStep : Node is in the middle of cluster operation and cannot be unconfigured.");
@@ -6375,24 +6375,24 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat (D
     StopHeartBeatMessage *pStopHeartBeatMessage = new StopHeartBeatMessage();
     pStopHeartBeatMessage->setDstIpAddress(primaryNodeIpAddress);
     pStopHeartBeatMessage->setDstPortNumber(primaryNodePort);
-   
+
     WaveMessageStatus status = sendSynchronously(pStopHeartBeatMessage);
     ResourceId        processingStatus = WAVE_MESSAGE_SUCCESS;
 
-    if(WAVE_MESSAGE_SUCCESS != status) 
+    if(WAVE_MESSAGE_SUCCESS != status)
     {
        processingStatus = status;
     }
-    else 
+    else
     {
        ResourceId    completionStatus = pStopHeartBeatMessage->getCompletionStatus();
-       if(completionStatus != WAVE_MESSAGE_SUCCESS) 
+       if(completionStatus != WAVE_MESSAGE_SUCCESS)
        {
          processingStatus = completionStatus;
        }
     }
 
-    if(WAVE_MESSAGE_SUCCESS !=  processingStatus) 
+    if(WAVE_MESSAGE_SUCCESS !=  processingStatus)
     {
         /* log error and continue */
         trace(TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::unconfigureClusterSecondarySendStopHeartBeat:Failure sending StopHeartBeatMessage: status: " + FrameworkToolKit::localize(processingStatus));
@@ -6453,7 +6453,7 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryDisconnectFromConnec
 
     FrameworkToolKit::getKnownLocations (knownLocationsVector);
     totalNodes = knownLocationsVector.size ();
-    
+
     for (nodeCount = 0; nodeCount < totalNodes; nodeCount++)
     {
         nodeLocationId = knownLocationsVector[nodeCount];
@@ -6500,7 +6500,7 @@ void WaveFrameworkObjectManager::unconfigureClusterBroadcastLocalNodeDeletedEven
 
     ResourceId status =  broadcast(pWaveNodeLocalNodeDeletedEvent);
 
-    if (WAVE_MESSAGE_SUCCESS != status) 
+    if (WAVE_MESSAGE_SUCCESS != status)
     {
        trace(TRACE_LEVEL_ERROR, "Entering rismFrameworkObjectManager::unconfigureClusterBroadcastLocalNodeDeletedEventStep:Broadcast Failed");
     }
@@ -6543,19 +6543,19 @@ void WaveFrameworkObjectManager::unconfigureClusterSecondaryUnconfigureThisLocat
 void WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep (DeleteNodeOnSecondaryContext *pDeleteNodeOnSecondaryContext)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverStep : Entering ...");
-    
+
     WaveNode                        *pNode = NULL;
     set<LocationId>                 locationIdSet;
     set<LocationId>::iterator       it;
-    UI32                            i = 0; 
-    
+    UI32                            i = 0;
+
     WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::unconfigureClusterSecondaryRunFailoverCallback), pDeleteNodeOnSecondaryContext);
 
     waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
 
     vector<WaveManagedObject *> *pResults = querySynchronously (WaveNode::getClassName ());
-    waveAssert (NULL != pResults, __FILE__, __LINE__);    
+    waveAssert (NULL != pResults, __FILE__, __LINE__);
 
     UI32 totalWaveNodes = pResults->size ();
     vector<LocationId> locationIdVector    = pDeleteNodeOnSecondaryContext->getKnownLocationId();
@@ -6844,7 +6844,7 @@ void WaveFrameworkObjectManager::destroyClusterTerminateClientConnectionsForKnow
 
     if (true == isPreparingForAddNode)
     {
-        SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ()); 
+        SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ());
 
         WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
@@ -6877,19 +6877,19 @@ void WaveFrameworkObjectManager::destroyClusterRemoveKnownLocationsStep (Destroy
     SI32       clusterPrimaryPort       = -1;
     bool       isPreparingForAddNode    = false;
 
-    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPWaveAsynchronousContext ()); 
+    DestroyClusterAsynchronousContext *pDestroyClusterAsynchronousContext = reinterpret_cast<DestroyClusterAsynchronousContext *> (pDestroyClusterContext->getPWaveAsynchronousContext ());
 
     isPreparingForAddNode = pDestroyClusterAsynchronousContext->getIsPreparingForAddNode ();
 
     if (true == isPreparingForAddNode)
-    {    
-        SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ()); 
+    {
+        SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pDestroyClusterAsynchronousContext->getPCallerContext ());
 
-        WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ()); 
+        WaveConfigureClusterSecondaryMessage *pWaveConfigureClusterSecondaryMessage = reinterpret_cast<WaveConfigureClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
         clusterPrimaryIpAddress = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryIpAddress ();
         clusterPrimaryPort      = pWaveConfigureClusterSecondaryMessage->getClusterPrimaryPort ();
-    }    
+    }
 
     for (i = 0; i < numberOfLocationIds; i++)
     {
@@ -6984,12 +6984,12 @@ void WaveFrameworkObjectManager::destroyClusterBroadcastDeleteClusterEventStep (
 /// Name
 /// rejoinNodesToClusterMessageHandler
 /// Description
-/// This function lays down the steps for procssing (within the f/w) the Rejoin 
-/// request received from the Cluster service on the Primary. It also creates the context 
+/// This function lays down the steps for procssing (within the f/w) the Rejoin
+/// request received from the Cluster service on the Primary. It also creates the context
 /// and starts the processing.
 ///  Input
 /// FrameworkObjectManagerRejoinNodesToClusterMessage: Pointer to message
-/// received from the Global Cluster service 
+/// received from the Global Cluster service
 /// Output
 /// none
 /// Return
@@ -7008,7 +7008,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkOb
 
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesResumeDatabaseStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2Step),
-        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep), 
+        reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendValidationResultsStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::createClusterWithNodesSendListOfSecondariesToAllNodesStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::broadcastNewNodesAddedEventOnPrimaryStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::sendReplyBackToClusterGlobalService),
@@ -7031,7 +7031,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkOb
     // The flag is set here to avoid the default setting in base cluster context creation
     // which causes the previous state of the flag to be lost upon controlled failover.
     setSecondaryNodeClusterCreationFlag (false);
-    
+
     pRejoinNodesToClusterContext->holdAll ();
     pRejoinNodesToClusterContext->start ();
 }
@@ -7040,7 +7040,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkOb
 /// rejoinNodesToClusterValidateStep
 /// Description
 /// This function validates the rejoin Node request received from the cluster.
-/// It essentially looks at every node in the request and adds it to the context 
+/// It essentially looks at every node in the request and adds it to the context
 /// only if it is a know location
 ///  Input
 /// RejoinNodesToClusterContext:pointer for  context for rejoin created in
@@ -7049,14 +7049,14 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterMessageHandler (FrameworkOb
 /// none
 /// Return
 /// none
-/// 
+///
 void WaveFrameworkObjectManager::rejoinNodesToClusterValidateStep (RejoinNodesToClusterContext *pRejoinNodesToClusterContext)
 {
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
     waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
-    UI32                                               numberOfNodes                                      = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNumberOfNodes (); 
+    UI32                                               numberOfNodes                                      = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNumberOfNodes ();
     UI32                                               numberOfFailures                                   = 0;
 
     //The location of all nodes in the message should already be known to the primary
@@ -7144,7 +7144,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (RejoinN
 
     waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
-    UI32  numberOfLocationIds = pRejoinNodesToClusterContext->getNumberOfLocationIds ();    
+    UI32  numberOfLocationIds = pRejoinNodesToClusterContext->getNumberOfLocationIds ();
     UI32  numberOfFailures    = 0;
 
     for (UI32 i = 0; i< numberOfLocationIds; ++i)
@@ -7190,7 +7190,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (RejoinN
 /// Name
 /// rejoinNodesToClusterRejoinClusterSecondariesStep
 /// Description
-/// This function creates a rejoin message and sends it to the wave framework on 
+/// This function creates a rejoin message and sends it to the wave framework on
 /// every secondary node in the rejoin message. Along with the rejon message
 /// it also sends the validation data for each service and the primary Database.
 ///  Input
@@ -7204,10 +7204,10 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterConnectToNodesStep (RejoinN
 void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesStep (RejoinNodesToClusterContext *pRejoinNodesToClusterContext)
 {
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
- 
+
     waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
 
-    WaveMessageStatus status  = WAVE_MESSAGE_ERROR;  
+    WaveMessageStatus status  = WAVE_MESSAGE_ERROR;
     string waveVersionString = WaveVersion::getVersionString ();
 
     ++(*pRejoinNodesToClusterContext);
@@ -7236,7 +7236,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
         string ipAddress     = FrameworkToolKit::getIpAddressForLocationId (locationId);
         SI32 port          = FrameworkToolKit::getPortForLocationId (locationId);
 
-        // Rejoin messages sent only locations known to the primary. 
+        // Rejoin messages sent only locations known to the primary.
 
         if (true == (FrameworkToolKit::isAKnownLocation (ipAddress, port)) && (false == pFrameworkObjectManagerRejoinNodesToClusterMessage->isNewNodeStatusSet (ipAddress, port)))
         {
@@ -7251,8 +7251,8 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
                 UI64      configurationTransactionId  = 0;
                 DateTime  configurationTime;
                 DateTime  latestUpdateTime;
-                
-                PersistenceToolKit::getConfigurationManagedObjectInformation (configurationTransactionId, configurationTime, latestUpdateTime); 
+
+                PersistenceToolKit::getConfigurationManagedObjectInformation (configurationTransactionId, configurationTime, latestUpdateTime);
 
                 vector<UI64> configurationNumber;
 
@@ -7261,7 +7261,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
                 pMessage->setConfigurationNumber (configurationNumber);
             }
 
-            //For each location go through each serviceId and attach the validation data for each service 
+            //For each location go through each serviceId and attach the validation data for each service
             //to the message
             for (UI32 j = 0; j < numberOfWaveServiceIds; j++)
             {
@@ -7309,7 +7309,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
     if (numberOfFailures == numberOfLocationIds)
     {
         resumeDatabaseOperation ();
-        
+
         pRejoinNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
     }
     else
@@ -7325,7 +7325,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesSte
 /// it calls this callback.
 ///  Input
 /// FrameworkStatus: success/failure in framework
-/// FrameworkObjectManagerRejoinClusterSecondaryMessage: pointer to the message received back from the 
+/// FrameworkObjectManagerRejoinClusterSecondaryMessage: pointer to the message received back from the
 /// secondary in reply
 /// RejoinNodesToClusterContext:pointer for  context for rejoin created in
 /// the handler
@@ -7343,7 +7343,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallb
     waveAssert(NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage,__FILE__,__LINE__);
 
     tracePrintf(TRACE_LEVEL_DEVEL,"WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallback:FrameworkStatus received:0x%x",frameworkStatus);
-  
+
     --(*pRejoinNodesToClusterContext);
 
     if (FRAMEWORK_SUCCESS == frameworkStatus)
@@ -7357,7 +7357,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallb
 
         pFrameworkObjectManagerRejoinNodesToClusterMessage->setNodeStatus (ipAddress, port, completionStatus);
 
-        if (WAVE_MESSAGE_SUCCESS == completionStatus) 
+        if (WAVE_MESSAGE_SUCCESS == completionStatus)
         {
             tracePrintf(TRACE_LEVEL_DEVEL,"WaveFrameworkObjectManager:rejoinNodesToClusterRejoinClusterSecondaryCallback:Wave Success received for Location Id %d",newLocationId);
         }
@@ -7367,10 +7367,10 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallb
         }
     }
     else
-    {   
+    {
        trace(TRACE_LEVEL_DEVEL,"WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallback:Framework Failure received");
 
-        //Note that a NULL message pointer can be received in case of a timeout. 
+        //Note that a NULL message pointer can be received in case of a timeout.
         if (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage)
         {
            LocationId newLocationId    = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getLocationId ();
@@ -7389,11 +7389,11 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallb
         delete pFrameworkObjectManagerRejoinClusterSecondaryMessage;
     }
 
-    //If responses have been received from each secondary  then we are ready to evaluate 
+    //If responses have been received from each secondary  then we are ready to evaluate
     //whether the operation succeeded or not
     if (0 == (pRejoinNodesToClusterContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
     {
-        UI32 numberOfIpAddresses = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNumberOfNodes (); 
+        UI32 numberOfIpAddresses = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNumberOfNodes ();
         UI32 numberOfFailures = 0;
 
         //Loop thru all the nodes  and count the number of failures
@@ -7422,7 +7422,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondaryCallb
         if (numberOfFailures == numberOfIpAddresses)
         {
             resumeDatabaseOperation ();
-            
+
             pRejoinNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_REJOIN_ALL_LOCATIONS);
         }
         else
@@ -7472,9 +7472,9 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
             {
                 trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1Step : No Database Backup is being sent to the lcoation.");
             }
-   
+
             status = send (pMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1StepCallback), pRejoinNodesToClusterContext, s_clusterPhase1TimeoutInMilliseconds, newLocationId1);
-    
+
             if (WAVE_MESSAGE_SUCCESS != status)
             {
                 pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus (ipAddress1, port1, status);
@@ -7508,7 +7508,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
     {
         trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase1Step : numberOfFailures - ") + numberOfFailures );
         resumeDatabaseOperation ();
-        
+
         pRejoinNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
     }
     else
@@ -7601,18 +7601,18 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
                 }
             }
         }
-            
+
         if (numberOfFailures == numberOfNewIpAddresses)
         {
             resumeDatabaseOperation ();
-            
+
             pRejoinNodesToClusterContext->executeNextStep (FRAMEWORK_ERROR_FAILED_TO_CONFIGURE_ALL_NEW_LOCATIONS);
         }
         else
         {
             pRejoinNodesToClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         }
-    } 
+    }
 }
 
 /// Name
@@ -7636,7 +7636,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
     FrameworkObjectManagerRejoinNodesToClusterMessage *pFrameworkObjectManagerRejoinNodesToClusterMessage = dynamic_cast<FrameworkObjectManagerRejoinNodesToClusterMessage *> (pRejoinNodesToClusterContext->getPWaveMessage ());
 
-  
+
     waveAssert (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage, __FILE__, __LINE__);
     UI32                                numberOfFailures                    = 0;
     UI32                                numberOfNewLocationIds              = pRejoinNodesToClusterContext->getNumberOfNewLocationIds ();
@@ -7672,7 +7672,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
                 removeKnownLocation (newLocationId1);
          #endif
                 pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus (ipAddress1, port1, status);
-         
+
                 trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2Step : Not able to configure one secondary location During Phase 2: ") + newLocationId1 + string (" Status : ") + FrameworkToolKit::localize (status));
                 numberOfFailures++;
                 delete pMessage;
@@ -7715,7 +7715,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 /// whether the entire processing was scuccessful or not.
 ///  Input
 /// FrameworkStatus: success/failure in framework
-/// WaveRejoinClusterSecondaryPhase2Message: pointer to the phase 2 message 
+/// WaveRejoinClusterSecondaryPhase2Message: pointer to the phase 2 message
 /// received back from the secondary in reply
 /// RejoinNodesToClusterContext:pointer for  context for rejoin created in
 /// the handler
@@ -7743,14 +7743,14 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
         LocationId  newLocationId = pWaveRejoinClusterSecondaryPhase2Message->getReceiverLocationId ();
         string      ipAddress     = FrameworkToolKit::getIpAddressForLocationId (newLocationId);
-        SI32        port          = FrameworkToolKit::getPortForLocationId (newLocationId);       
+        SI32        port          = FrameworkToolKit::getPortForLocationId (newLocationId);
         ResourceId completionStatus = pWaveRejoinClusterSecondaryPhase2Message->getCompletionStatus ();
 
         pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus(ipAddress, port, completionStatus);
 
         if (WAVE_MESSAGE_SUCCESS != completionStatus)
         {
-            trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback : Configuring ") + ipAddress + " failed : " + completionStatus);     
+            trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase2StepCallback : Configuring ") + ipAddress + " failed : " + completionStatus);
 
             disconnectFromLocation (newLocationId);
             pRejoinNodesToClusterContext->addToFailedLocationIdVector (newLocationId);
@@ -7780,7 +7780,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
     if (0 == (pRejoinNodesToClusterContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
     {
         UI32       numberOfNewIpAddresses  = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNumberOfNewNodes ();
-      
+
         for (UI32 i = 0; i < numberOfNewIpAddresses; i++)
         {
             string     ipAddress1     = pFrameworkObjectManagerRejoinNodesToClusterMessage->getNodeAt ((UI32) i);
@@ -7824,7 +7824,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
                 {
                     pWaveFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationIdsVectorInPhase2[j]);
                 }
-      
+
                 pWaveFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_PRIMARY);
                 pWaveFrameworkFailoverWorkerContext->setFailoverReason  (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED);
 
@@ -7832,7 +7832,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
 
                 m_pWaveFrameworkFailoverWorker->executeFailover (pWaveFrameworkFailoverWorkerContext);
             }
-        }   
+        }
         else
         {
             pRejoinNodesToClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
@@ -7931,14 +7931,14 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
                 pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), status);
             }
 
-            delete pWaveRejoinClusterSecondaryPhase3Message;            
+            delete pWaveRejoinClusterSecondaryPhase3Message;
         }
         else
         {
             ++(*pRejoinNodesToClusterContext);
         }
     }
-    
+
     --(*pRejoinNodesToClusterContext);
 
     if (numberOfFailures == numberOfSuccessfullyAddedNode)
@@ -7947,7 +7947,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         vector<LocationId> failedLocationIdsVectorInPhase3           = pRejoinNodesToClusterContext->getFailedLocationIdVector ();
         UI32               numberOffailedLocationIdsVectorInPhase3   = failedLocationIdsVectorInPhase3.size ();
 
-        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback), pRejoinNodesToClusterContext); 
+        WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback), pRejoinNodesToClusterContext);
 
         for (UI32 j = 0; j < numberOffailedLocationIdsVectorInPhase3; j++)
         {
@@ -7988,7 +7988,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         {
             trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPhase3StepCallback:Failed to Rejoin Location Id ") + locationId + " status : " + completionStatus);
             disconnectFromLocation (locationId);
-            pRejoinNodesToClusterContext->addToFailedLocationIdVector (locationId);            
+            pRejoinNodesToClusterContext->addToFailedLocationIdVector (locationId);
         }
 
         if (NULL != pFrameworkObjectManagerRejoinNodesToClusterMessage)
@@ -8008,7 +8008,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
             pFrameworkObjectManagerRejoinNodesToClusterMessage->updateNewNodeStatus (FrameworkToolKit::getIpAddressForLocationId (locationId), FrameworkToolKit::getPortForLocationId (locationId), frameworkStatus);
         }
     }
-    
+
 
     if (0 == (pRejoinNodesToClusterContext->getNumberOfCallbacksBeforeAdvancingToNextStep ()))
     {
@@ -8023,7 +8023,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
             {
                 pWaveFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationIdsVectorInPhase3[j]);
             }
-            
+
             pWaveFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_PRIMARY);
             pWaveFrameworkFailoverWorkerContext->setFailoverReason  (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED);
 
@@ -8035,7 +8035,7 @@ void WaveFrameworkObjectManager::rejoinNodesToClusterRejoinClusterSecondariesPha
         {
             pRejoinNodesToClusterContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
         }
-    } 
+    }
 
     delete pWaveRejoinClusterSecondaryPhase3Message;
 }
@@ -8071,7 +8071,7 @@ void WaveFrameworkObjectManager::failoverforNodesFailedInRejoinPhase3Callback (W
 void WaveFrameworkObjectManager::rejoinClusterSecondaryMessageHandler (FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
-    
+
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryMessageHandler: (ACTIVE)");
 
     WaveLinearSequencerStep sequencerSteps[] =
@@ -8230,11 +8230,11 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNodeC
 
     if (true == FrameworkToolKit::isConfigurationCompatibilityCheckRequired ())
     {
-        UI64      configurationTransactionId  = 0;  
+        UI64      configurationTransactionId  = 0;
         DateTime  configurationTime;
         DateTime  latestUpdateTime;
-                      
-        PersistenceToolKit::getConfigurationManagedObjectInformation (configurationTransactionId, configurationTime, latestUpdateTime); 
+
+        PersistenceToolKit::getConfigurationManagedObjectInformation (configurationTransactionId, configurationTime, latestUpdateTime);
 
         vector<UI64> configurationNumber = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getConfigurationNumber ();
 
@@ -8244,7 +8244,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNodeC
         {
             trace (TRACE_LEVEL_ERROR, string ("WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep configuration mismatch primary node transaction id is ") + configurationNumber [0] + string (" This node transaction id is ") + configurationTransactionId);
 
-            status  = WAVE_MESSAGE_ERROR_CONFIGURATION_MISMATCH; 
+            status  = WAVE_MESSAGE_ERROR_CONFIGURATION_MISMATCH;
         }
     }
 
@@ -8265,7 +8265,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNodeC
         setIsPostBootNeededDuringRejoin (true);
 
         if (WAVE_MESSAGE_SUCCESS == status)
-        {        
+        {
             pSecondaryNodeClusterContext->executeNextStep (status);
             return;
         }
@@ -8338,7 +8338,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateStep (SecondaryNodeC
 /// Name
 /// rejoinSecondaryNodeValidateVersionStep
 /// Description
-/// This function compares the version received on the primary 
+/// This function compares the version received on the primary
 /// with the version received on the secondary
 /// Input
 /// SecondaryNodeClusterContext:pointer to the context
@@ -8351,7 +8351,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateVersionStep (Seconda
    FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
    waveAssert(NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
- 
+
     string                                 primaryWaveVersionString              = pFrameworkObjectManagerRejoinClusterSecondaryMessage->getClusterPrimaryWaveVersion ();
     string                                 thisLocationWavePrimaryVersionString  = WaveVersion::getVersionString ();
     ResourceId                             status                                 = WAVE_MESSAGE_SUCCESS;
@@ -8425,7 +8425,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep (Second
     for (UI32 i = 0; i < numberOfWaveServiceIds; i++)
     {
         trace (TRACE_LEVEL_DEBUG, string ("WaveFrameworkObjectManager::rejoinSecondaryNodeValidateServicesStep : Validating Service : ") + FrameworkToolKit::getServiceNameById (waveServiceIds[i]));
- 
+
         if (true == (isServiceToBeExcludedInClusterCommunications (waveServiceIds[i]))  || false == isServiceEnabled(waveServiceIds[i]))
         {
             continue;
@@ -8511,10 +8511,10 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep (SecondaryN
 
          waveAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, __FILE__, __LINE__);
 
-         pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage->copyBuffersFrom (*pFrameworkObjectManagerRejoinClusterSecondaryMessage);  
+         pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage->copyBuffersFrom (*pFrameworkObjectManagerRejoinClusterSecondaryMessage);
 
          ResourceId haPeerSendStatus = send (pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, reinterpret_cast<WaveMessageResponseHandler> (&WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback), pSecondaryNodeClusterContext, 200000, FrameworkToolKit::getHaPeerLocationId ());
- 
+
         if (WAVE_MESSAGE_SUCCESS != haPeerSendStatus)
         {
             trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep: Send to Ha Peer failed.");
@@ -8531,7 +8531,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep (SecondaryN
         }
     }
     else if ((FrameworkToolKit::getSyncState () == IN_SYNC) && (false == FrameworkToolKit::getIsLiveSyncEnabled ()))
-    { 
+    {
         // DB previously in sync from sync dump. but live transaction sync not supported. So set out of sync and notify on sync update fail
         trace (TRACE_LEVEL_WARN, "WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep: Live sync disabled. Notify sync update failure on first update after sync dump.");
         FrameworkToolKit::notifySyncUpdateFailure(WAVE_MESSAGE_ERROR_CLUSTER_DB_HASYNC_NOT_SUPPORTED);
@@ -8547,7 +8547,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeNotifyHaPeerStep (SecondaryN
 void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback (FrameworkStatus frameworkStatus, FrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage *pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback: Begin.");
- 
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -8569,7 +8569,7 @@ void WaveFrameworkObjectManager::rejoinClusterSecondaryHaPeerMessageCallback (Fr
         delete pFrameworkObjectManagerRejoinClusterSecondaryHaPeerMessage;
     }
 
-    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext); 
+    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext);
 
     if (true == pSecondaryNodeClusterContext->getClusterHaSyncInProgress ())
     {
@@ -8631,7 +8631,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Second
     FrameworkObjectManagerRejoinClusterSecondaryMessage *pFrameworkObjectManagerRejoinClusterSecondaryMessage = dynamic_cast<FrameworkObjectManagerRejoinClusterSecondaryMessage *> (pSecondaryNodeClusterContext->getPWaveMessage ());
 
     waveAssert (NULL != pFrameworkObjectManagerRejoinClusterSecondaryMessage,__FILE__, __LINE__);
-         
+
     SI32       currentPrimaryPort       = pSecondaryNodeClusterContext->getClusterPrimaryPort();
     LocationId currentPrimaryLocationId = pSecondaryNodeClusterContext->getClusterPrimaryLocationId();
     string     primaryIpAddress         = pSecondaryNodeClusterContext->getClusterPrimaryIpAddress ();
@@ -8640,12 +8640,12 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Second
     m_pThisLocation->setClusterPrimaryPort       (currentPrimaryPort);
 
     //The rejoining  node should have the primary node as one of its known locations
-    //If the node has rebooted and is then rejoining, it should get the list of 
+    //If the node has rebooted and is then rejoining, it should get the list of
     // all known locations from the persistent config.
     if (true != (isAKnownLocation (currentPrimaryLocationId)))
     {
         if (true == pFrameworkObjectManagerRejoinClusterSecondaryMessage->getIsReplaceRejoin ())
-        { 
+        {
             // If this is a replace rejoin then add the cluster primary as a known location.
 
             m_pThisLocation->addKnownLocation (currentPrimaryLocationId, primaryIpAddress, currentPrimaryPort);
@@ -8655,7 +8655,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Second
             // If a primary/secondary node in cluster is rebooted and before it comes up(can be held at boot,failed to boot etc.,)
             // a new node has joined the cluster and has become new primary(the current primary is rebooted after add node).
             // The new node will send an invite to the node which went for a reboot and is UP now.
-            // Since the other node is in primary/secondary unconfirmed role after it is up from a reboot 
+            // Since the other node is in primary/secondary unconfirmed role after it is up from a reboot
             // and is not aware of the new primary yet it should consider adding the primary to its known locations.
 
             m_pThisLocation->addKnownLocation (currentPrimaryLocationId, primaryIpAddress, currentPrimaryPort);
@@ -8707,7 +8707,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeConnectToPrimaryStep (Second
 /// Name
 /// rejoinSecondaryNodeConnectToPrimaryStep
 /// Description
-///TODO: AASHISH: This should setup fields in the 
+///TODO: AASHISH: This should setup fields in the
 /// Local Cluster Object Manager
 /// Input
 /// SecondaryNodeClusterContext:pointer to the context
@@ -8754,7 +8754,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryNodeConfigureThisLocationStep (S
 /// Name
 /// rejoinSecondaryNodeBootServicesPrePhaseStep
 /// Description
-/// This will trigger the bbot of some services 
+/// This will trigger the bbot of some services
 /// in the first phase of rejoin processing.
 /// Input
 /// SecondaryNodeClusterContext:pointer to the context
@@ -8832,9 +8832,9 @@ void WaveFrameworkObjectManager::updateLocationRoleStepInRejoinPhase2 (Secondary
 /// Name
 /// rejoinClusterSecondaryPhase2MessageHandler
 /// Description
-/// This function restarts all the services on the 
+/// This function restarts all the services on the
 /// Input
-/// SecondaryNodeClusterContext: pointer to ctxt 
+/// SecondaryNodeClusterContext: pointer to ctxt
 /// Output
 /// none
 /// Return
@@ -9005,7 +9005,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseStep (SecondaryNod
 void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryHaPeerPhase1Message *pWaveRejoinClusterSecondaryHaPeerPhase1Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback: Begin.");
-    
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -9027,7 +9027,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPrePhaseCallback (Framewor
         delete pWaveRejoinClusterSecondaryHaPeerPhase1Message;
     }
 
-    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext); 
+    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext);
 
     if (true == pSecondaryNodeClusterContext->getClusterHaSyncInProgress ())
     {
@@ -9085,7 +9085,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseStep (SecondaryNo
 void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, WaveRejoinClusterSecondaryHaPeerPhase3Message *pWaveRejoinClusterSecondaryHaPeerPhase3Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback: Begin.");
- 
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -9107,7 +9107,7 @@ void WaveFrameworkObjectManager::rejoinSecondaryHaPeerPostPhaseCallback (Framewo
         delete pWaveRejoinClusterSecondaryHaPeerPhase3Message;
     }
 
-    SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = reinterpret_cast<SecondaryNodeClusterPhase3Context *> (pContext); 
+    SecondaryNodeClusterPhase3Context *pSecondaryNodeClusterPhase3Context = reinterpret_cast<SecondaryNodeClusterPhase3Context *> (pContext);
 
     if (true == pSecondaryNodeClusterPhase3Context->getClusterHaSyncInProgress ())
     {
@@ -9498,21 +9498,21 @@ void WaveFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallbac
 {
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::lostHeartBeatSecondaryControlledFailoverCallback : Entering ...");
 
-    waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__); 
+    waveAssert (NULL != pWaveFrameworkFailoverWorkerContext, __FILE__, __LINE__);
     HeartBeatLostContext *pHeartBeatLostContext = reinterpret_cast<HeartBeatLostContext *> (pWaveFrameworkFailoverWorkerContext->getPCallerContext ());
     ResourceId            status                = pWaveFrameworkFailoverWorkerContext->getCompletionStatus ();
 
     vector<LocationId> failedLocationIds;
     UI32               numberOfFailedLocations;
 
-    pWaveFrameworkFailoverWorkerContext->getFailedLocationIds (failedLocationIds); 
+    pWaveFrameworkFailoverWorkerContext->getFailedLocationIds (failedLocationIds);
     numberOfFailedLocations = failedLocationIds.size ();
 
     for (UI32 i = 0; i < numberOfFailedLocations; i++)
     {
         removeKnownLocation (failedLocationIds [i]);
     }
-    
+
     delete pWaveFrameworkFailoverWorkerContext;
 
     waveAssert (NULL != pHeartBeatLostContext, __FILE__, __LINE__);
@@ -9559,7 +9559,7 @@ void WaveFrameworkObjectManager::startExternalStateSynchronizationHandler(Framew
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::startExternalStateSynchronizationHandler : Start the External State Synchronization .... ");
 
     int stageNumber = pFrameworkObjectManagerStartExternalStateSynchronizationMessage->getFssStageNumber();
-    
+
     ResourceId serviceType = pFrameworkObjectManagerStartExternalStateSynchronizationMessage->getServiceType();
 
     string perfTraceStr = string("ESS Bootup; stage: ") + stageNumber + string("; service-type: ") + FrameworkToolKit::localize(serviceType);
@@ -9582,13 +9582,13 @@ void WaveFrameworkObjectManager::startSlotFailoverHandler (FrameworkObjectManage
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::startSlotFailoverHandler : Start the SlotFailover Agent.... ");
 
     int slotNumber = pFrameworkObjectManagerStartSlotFailoverMessage->getSlotNumber ();
-    
+
     SlotFailoverAgent *pSlotFailoverAgent = new SlotFailoverAgent (m_pWaveObjectManager, slotNumber);
 
     pSlotFailoverAgent->execute ();
 
     delete pSlotFailoverAgent;
-    
+
     pFrameworkObjectManagerStartSlotFailoverMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
     reply (pFrameworkObjectManagerStartSlotFailoverMessage);
@@ -9598,7 +9598,7 @@ void WaveFrameworkObjectManager::startSlotFailoverHandler (FrameworkObjectManage
 void WaveFrameworkObjectManager::primaryChangedMessageHandler (FrameworkObjectManagerPrimaryChangedMessage *pFrameworkObjectManagerPrimaryChangedMessage)
 {
     SecondaryNodeClusterContext *pSecondaryNodeClusterContext = NULL;
-    
+
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedMessageHandler: Received Primary changed notification(ACTIVE).");
 
     WaveLinearSequencerStep sequencerSteps[] =
@@ -9726,7 +9726,7 @@ void WaveFrameworkObjectManager::primaryChangedValidateStep ( WaveLinearSequence
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::primaryChangedValidateStep :LC Postboot in progress. Returning error.");
         pWaveLinearSequencerContext->executeNextStep (FRAMEWORK_LINECARD_POSTBOOT_IN_PROGRESS);
         return;
-    }    
+    }
 
     LocationRole locationRole = m_pThisLocation->getLocationRole ();
 
@@ -9794,7 +9794,7 @@ void WaveFrameworkObjectManager::primaryChangedNotifyHaPeerStep ( SecondaryNodeC
 void WaveFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback (FrameworkStatus frameworkStatus, FrameworkObjectManagerPrimaryChangedHaPeerMessage *pFrameworkObjectManagerPrimaryChangedHaPeerMessage, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback: Begin.");
- 
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -9816,7 +9816,7 @@ void WaveFrameworkObjectManager::primaryChangedNotifyHaPeerMessageCallback (Fram
         delete pFrameworkObjectManagerPrimaryChangedHaPeerMessage;
     }
 
-    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext); 
+    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext);
 
     if (true == pSecondaryNodeClusterContext->getClusterHaSyncInProgress ())
     {
@@ -9875,7 +9875,7 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseStep (SecondaryNode
 void WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback (FrameworkStatus frameworkStatus, FrameworkObjectManagerPrimaryChangedHaPeerPhase1Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback: Starting.");
-    
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -9897,7 +9897,7 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPrePhaseCallback (Framework
         delete pFrameworkObjectManagerPrimaryChangedHaPeerPhase1Message;
     }
 
-    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext); 
+    SecondaryNodeClusterContext *pSecondaryNodeClusterContext = reinterpret_cast<SecondaryNodeClusterContext *> (pContext);
 
     if (true == pSecondaryNodeClusterContext->getClusterHaSyncInProgress ())
     {
@@ -9955,7 +9955,7 @@ void WaveFrameworkObjectManager::primaryChangedHaPeerPostPhaseStep (SecondaryNod
 void WaveFrameworkObjectManager::primaryChangedHaPeerPostPhaseCallback (FrameworkStatus frameworkStatus, FrameworkObjectManagerPrimaryChangedHaPeerPhase3Message *pFrameworkObjectManagerPrimaryChangedHaPeerPhase3Message, void *pContext)
 {
     //trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::primaryChangedHaPeerPostPhaseCallback: Starting.");
-    
+
     if (FRAMEWORK_SUCCESS != frameworkStatus)
     {
         trace (TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::primaryChangedHaPeerPostPhaseCallback: Failed to configure Peer, Framework Status: " + FrameworkToolKit::localize (frameworkStatus));
@@ -10034,7 +10034,7 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
         }
     }
 
-    const string    waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName (); 
+    const string    waveConfigurationfileName   = (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
     vector<string>  output;
     SI32            cmdStatus                    = 0;
 
@@ -10042,8 +10042,8 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
 
     cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + waveConfigurationfileName).c_str(), output);
 
-    if ( cmdStatus != 0 ) 
-    {            
+    if ( cmdStatus != 0 )
+    {
         trace (TRACE_LEVEL_ERROR, string("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Cmd to delete file ")+ waveConfigurationfileName + string(" failed with error message : ") + output[0]);
     }
 
@@ -10051,7 +10051,7 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
     status  = sendSynchronously (&databaseEmptyMessage);
 
     if (WAVE_MESSAGE_SUCCESS != status)
-    {         
+    {
         trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Could not send message to empty database. Status : " + FrameworkToolKit::localize (status));
         waveAssert (false, __FILE__, __LINE__);
     }
@@ -10096,9 +10096,9 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
             system ("/sbin/reboot -f");
 
             sleep (300);
-    
+
             trace (TRACE_LEVEL_FATAL, ("System is not rebooting, Manual recovery is required"));
-        
+
             waveAssert (false, __FILE__, __LINE__);
         }
         else
@@ -10145,7 +10145,7 @@ void WaveFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (Wav
     vector<UI32>    classIds;
     vector<UI32>    parentTableIds;
 
-    pFrameworkObjectManagerPrimaryChangedMessage->getSchemaChangeVectors (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds); 
+    pFrameworkObjectManagerPrimaryChangedMessage->getSchemaChangeVectors (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds);
 
     if (!isSchemaReceivedFromPrimaryCompatible (managedObjectNamesForSchemaChange,fieldNamesStringsForSchemaChange,fieldNamesTypesForSchemaChange,classIds,parentTableIds))
     {
@@ -10161,24 +10161,24 @@ void WaveFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep (Wav
     StopHeartBeatMessage *pStopHeartBeatMessage = new StopHeartBeatMessage();
     pStopHeartBeatMessage->setDstIpAddress(oldPrimaryNodeIpAddress);
     pStopHeartBeatMessage->setDstPortNumber(oldPrimaryNodePort);
-   
+
     WaveMessageStatus status = sendSynchronously(pStopHeartBeatMessage);
     ResourceId        processingStatus = WAVE_MESSAGE_SUCCESS;
 
-    if(WAVE_MESSAGE_SUCCESS != status) 
+    if(WAVE_MESSAGE_SUCCESS != status)
     {
         processingStatus = status;
     }
-    else 
+    else
     {
         ResourceId    completionStatus = pStopHeartBeatMessage->getCompletionStatus();
-        if(completionStatus != WAVE_MESSAGE_SUCCESS) 
+        if(completionStatus != WAVE_MESSAGE_SUCCESS)
         {
             processingStatus = completionStatus;
         }
     }
 
-    if(WAVE_MESSAGE_SUCCESS !=  processingStatus) 
+    if(WAVE_MESSAGE_SUCCESS !=  processingStatus)
     {
         trace(TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::primaryChangedStopHeartBeatToOldPrimayStep:Failure sending StopHeartBeatMessage: status: " + FrameworkToolKit::localize(processingStatus));
     }
@@ -10203,9 +10203,9 @@ void WaveFrameworkObjectManager::primaryChangedRemoveOldPrimaryLocationStep (Wav
     waveAssert (NULL != pFrameworkObjectManagerPrimaryChangedMessage, __FILE__, __LINE__);
     waveAssert (NULL != m_pThisLocation, __FILE__, __LINE__);
 
-    if(pFrameworkObjectManagerPrimaryChangedMessage->isPrimaryChangeDueToControlledFailover()) 
+    if(pFrameworkObjectManagerPrimaryChangedMessage->isPrimaryChangeDueToControlledFailover())
     {
-        LocationId oldPrimaryLocationId     = m_pThisLocation->getClusterPrimaryLocationId ();    
+        LocationId oldPrimaryLocationId     = m_pThisLocation->getClusterPrimaryLocationId ();
         removeKnownLocation(oldPrimaryLocationId);
         tracePrintf (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager:: primaryChangedRemoveOldPrimaryLocationStep :Removing the old primary location id %u due to controlled failover", oldPrimaryLocationId);
     }
@@ -10411,7 +10411,7 @@ void WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent (SecondaryNode
     ResourceId status = broadcast (pClusterPhase3StartEvent);
 
     if(status != WAVE_MESSAGE_SUCCESS)
-    {  
+    {
        trace(TRACE_LEVEL_ERROR, "WaveFrameworkObjectManager::broadcastClusterPhase3StartEvent: Failure during broadcast..");
        pSecondaryNodeClusterPhase3Context->executeNextStep (status);
        return;
@@ -10736,11 +10736,11 @@ ResourceId WaveFrameworkObjectManager::getDbConversionStatus () const
 /*
 void WaveFrameworkObjectManager::setTableIdsChangedForSchemaCompatibilityFlag (bool tableIdsChanged)
 {
-    m_tableIdsChangedForSchemaCompatibility = tableIdsChanged; 
+    m_tableIdsChangedForSchemaCompatibility = tableIdsChanged;
     tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveFrameworkObjectManager::setTableIdsChangedForSchemaCompatibilityFlag: flag set to %u", tableIdsChanged);
 }
 
-bool WaveFrameworkObjectManager::getTableIdsChangedForSchemaCompatibilityFlag () 
+bool WaveFrameworkObjectManager::getTableIdsChangedForSchemaCompatibilityFlag ()
 {
     return (m_tableIdsChangedForSchemaCompatibility);
 }
@@ -10750,7 +10750,7 @@ void WaveFrameworkObjectManager::setAuxilliaryTableDetailsForSchemaConversion (v
     m_oldAuxilliaryTableNamesBeforeConversion = oldAuxilliaryTables;
     m_newAuxilliaryTableNamesAfterConversion  = newAuxilliaryTables;
     m_parentTableNamesForAuxilliaryTables     = parentTables;
-    m_relatedToTableNamesForAuxilliaryTables  = relatedToTables;   
+    m_relatedToTableNamesForAuxilliaryTables  = relatedToTables;
 }
 
 void WaveFrameworkObjectManager::getAuxilliaryTableDetailsForSchemaConversion (vector<string>& oldAuxilliaryTables, vector<string>& newAuxilliaryTables, vector<string>& parentTables, vector<string>& relatedToTables)
@@ -10872,7 +10872,7 @@ void WaveFrameworkObjectManager::secondaryNodeFailureNotificationMessageHandler(
 
     pWaveLinearSequencerContext->holdAll ();
     pWaveLinearSequencerContext->start ();
-    
+
 }
 void WaveFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSequencerContext *pWaveLinearSequencerContext)
 {
@@ -10917,13 +10917,13 @@ void WaveFrameworkObjectManager::processSecondeyNodeFailureMessage(WaveLinearSeq
 
     UI32 numFailedLocationIds = failedLocationIds.size ();
 
-    for (UI32 i = 0; i < numFailedLocationIds; ++i) 
+    for (UI32 i = 0; i < numFailedLocationIds; ++i)
     {
         pWaveFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationIds[i]);
         disconnectFromLocation (failedLocationIds[i]);
         waveAssert (failedLocationIds[i] != thisLocationId, __FILE__, __LINE__);
     }
-    
+
     m_pWaveFrameworkFailoverWorker->executeFailover (pWaveFrameworkFailoverWorkerContext);
 
 }
@@ -10936,11 +10936,11 @@ void WaveFrameworkObjectManager::newPrincipalSelectedAfterFaioverMessageHandler(
     //Steps
     //1. validate
     //2. reboot global services
-    //3. Send messages to all secondaries informing them that this node 
+    //3. Send messages to all secondaries informing them that this node
     //   is the new principal
     //4. Update local WaveNode object to inform it of the new primary Selection
     //5. Update the WaveNode of the old Principal to mark it as secondary_disconnected
-    // 
+    //
 
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager:: newPrincipalSelectedAfterFaioverMessageHandler: Entering ...");
 
@@ -10955,14 +10955,14 @@ void WaveFrameworkObjectManager::newPrincipalSelectedAfterFaioverMessageHandler(
     reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterSuccessStep),
     reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::primaryNodeClusterFailureStep),
     };
-    
+
     setPrimaryNodeClusterOperationFlag (true);
 
     WaveLinearSequencerContext *pWaveLinearSequencerContext = new WaveLinearSequencerContext (pFrameworkObjectManagerNewPrincipalEstablishedMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
     pWaveLinearSequencerContext->holdAll ();
     pWaveLinearSequencerContext->start ();
-    
+
 }
 
 void WaveFrameworkObjectManager::validateNewPrincipalSelection (WaveLinearSequencerContext *pWaveLinearSequencerContext)
@@ -10970,9 +10970,9 @@ void WaveFrameworkObjectManager::validateNewPrincipalSelection (WaveLinearSequen
   trace(TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::validateNewPrincipalSelection..Entering");
 
   LocationRole locationRole = m_pThisLocation->getLocationRole ();
- 
+
   // When a node goes to UNCONFIRMED role following a rollback from rejoin cluster phases 0/1 and
-  // If there is a message pending in the queue to have this node become principal before 
+  // If there is a message pending in the queue to have this node become principal before
   // the services were shutdown we should return an error upon picking the message since it is UNCONFIRMED role.
   // Framework should act upon new principal message only if the node's current role is SECONDARY
 
@@ -11009,7 +11009,7 @@ void WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLine
    waveAssert (failedLocationId != thisLocationId, __FILE__, __LINE__);
 
    // Activate the Secondary Uncontrolled Failover Agent.
-  
+
 
     WaveFrameworkFailoverWorkerContext *pWaveFrameworkFailoverWorkerContext = new WaveFrameworkFailoverWorkerContext (this, reinterpret_cast<WaveAsynchronousCallback> (&WaveFrameworkObjectManager::lostHeartBeatSecondaryUncontrolledFailoverCallback), pWaveLinearSequencerContext);
 
@@ -11017,21 +11017,21 @@ void WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage (WaveLine
     waveAssert (NULL != m_pWaveFrameworkFailoverWorker, __FILE__, __LINE__);
 
     pWaveFrameworkFailoverWorkerContext->setThisLocationRole (LOCATION_SECONDARY);
-    if(pFrameworkObjectManagerNewPrincipalEstablishedMessage->getTriggerControlledFailover()) 
+    if(pFrameworkObjectManagerNewPrincipalEstablishedMessage->getTriggerControlledFailover())
     {
       trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage::Initiating Secondary Controlled Failover.");
       pWaveFrameworkFailoverWorkerContext->setFailoverReason (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_CONTROLLED);
       pWaveFrameworkFailoverWorkerContext->setSecondaryControlledFailoverDueToPrimaryRemoval();
 
     }
-    else 
+    else
     {
       trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::processNewPrincipalEstablishedMessage::Initiating Secondary Un-Controlled Failover.");
       pWaveFrameworkFailoverWorkerContext->setFailoverReason (FRAMEWORK_OBJECT_MANAGER_FAILOVER_REASON_UNCONTROLLED);
     }
     pWaveFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationId);
     m_pWaveFrameworkFailoverWorker->executeFailover (pWaveFrameworkFailoverWorkerContext);
- 
+
 }
 
 void WaveFrameworkObjectManager::disconnectFromAllNodesHandler (FrameworkObjectManagerDisconnectFromAllNodesMessage *pFrameworkObjectManagerDisconnectFromAllNodesMessage)
@@ -11051,7 +11051,7 @@ void WaveFrameworkObjectManager::disconnectFromAllNodesHandler (FrameworkObjectM
 
 void WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootHandler (FrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage* pFrameworkObjectManagerEstablishPrincipalAfterClusterRebootMessage)
 {
-    WaveLinearSequencerStep sequencerSteps [] = 
+    WaveLinearSequencerStep sequencerSteps [] =
     {
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerSucceededStep),
@@ -11070,7 +11070,7 @@ void WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep (WaveL
     trace (TRACE_LEVEL_DEVEL, "WaveFrameworkObjectManager::establishPrincipalAfterClusterRebootStep");
 
     resetLocationToPrimary ();
-    
+
     FrameworkToolKit::saveWaveConfiguration (true);
 
     pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
@@ -11117,9 +11117,9 @@ void WaveFrameworkObjectManager::resetNodeForClusterMergeHandler (FrameworkObjec
     {
         pFrameworkObjectManagerResetNodeToUnconfirmRole->setCompletionStatus (WAVE_MESSAGE_ERROR_CLUSTER_OPERATION_IN_PROGRESS);
         reply (pFrameworkObjectManagerResetNodeToUnconfirmRole);
-        
+
         return;
-    }    
+    }
 
     WaveLinearSequencerStep sequencerSteps[] =
     {
@@ -11159,12 +11159,12 @@ void WaveFrameworkObjectManager::triggerUncontrolledFailoverForRemainingNodes (W
 
     UI32 numFailedLocationIds = failedLocationIds.size ();
 
-    for (UI32 i = 0; i < numFailedLocationIds; ++i) 
-    {    
+    for (UI32 i = 0; i < numFailedLocationIds; ++i)
+    {
       pWaveFrameworkFailoverWorkerContext->addFailedLocationId (failedLocationIds[i]);
       waveAssert (failedLocationIds[i] != thisLocationId, __FILE__, __LINE__);
-    }    
-    
+    }
+
     m_pWaveFrameworkFailoverWorker->executeFailover (pWaveFrameworkFailoverWorkerContext);
 }
 
@@ -11207,7 +11207,7 @@ void WaveFrameworkObjectManager::configureNodeForResetAndStartServices (WaveLine
     {
         waveAssert (false, __FILE__, __LINE__);
     }
-    
+
     pWaveLinearSequencerContext->executeNextStep(WAVE_MESSAGE_SUCCESS);
 }
 
@@ -11276,7 +11276,7 @@ void WaveFrameworkObjectManager::stopHeartBeatToNode (WaveLinearSequencerContext
 
             if (WAVE_MESSAGE_SUCCESS != status)
             {
-                trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::stopHeartBeatToNode : Could not stop Heart Beat to " + ipAddress + ":" + port + ", Error = " + FrameworkToolKit::localize (status));         
+                trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::stopHeartBeatToNode : Could not stop Heart Beat to " + ipAddress + ":" + port + ", Error = " + FrameworkToolKit::localize (status));
             }
             else
             {
@@ -11355,7 +11355,7 @@ void WaveFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler 
         LocationId failedLocation = failedLocations[i];
         trace (TRACE_LEVEL_INFO, string("WaveFrameworkObjectManager::removeFailedLocationsFromKnownLocationsHandler : failedLocation = ") + failedLocation);
         removeKnownLocation (failedLocation);
-    } 
+    }
 
     pFrameworkObjectManagerRemoveKnownLocationsMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 
@@ -11382,7 +11382,7 @@ void WaveFrameworkObjectManager::setGetInstancesFunction (GetInstancesFunction g
 void WaveFrameworkObjectManager::getInstances (vector<SI32> &connectedInstanceVector)
 {
     trace (TRACE_LEVEL_DEBUG, ("WaveFrameworkObjectManager:: getInstances"));
-    
+
     waveAssert (NULL != m_getInstancesFunction, __FILE__, __LINE__);
 
     if (NULL != m_getInstancesFunction)
@@ -11417,7 +11417,7 @@ SI32 WaveFrameworkObjectManager::getThisSlotInstance ()
 {
     SI32 instnace = 0;
     trace (TRACE_LEVEL_INFO, ("WaveFrameworkObjectManager:: getSlotInstance"));
-    
+
     waveAssert (NULL != m_getThisSlotInstanceFunction, __FILE__, __LINE__);
 
     if (NULL != m_getThisSlotInstanceFunction)
@@ -11483,12 +11483,12 @@ void WaveFrameworkObjectManager::zeroizeForFIPSMessageHandler(ZeroizeForFIPSMess
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::zeroizeSuccessStep),
         reinterpret_cast<WaveLinearSequencerStep> (&WaveFrameworkObjectManager::waveLinearSequencerFailedStep),
     };
-    
+
     ZeroizeForFIPSLinearSequencerContext *pContext = new ZeroizeForFIPSLinearSequencerContext (pMessage, (WaveElement*)this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
-    
+
     pContext->holdAll ();
-    pContext->start (); 
-    return; 
+    pContext->start ();
+    return;
 }
 
 
@@ -11549,7 +11549,7 @@ void WaveFrameworkObjectManager::validateStandaloneStep(ZeroizeForFIPSLinearSequ
 
 void WaveFrameworkObjectManager::notifyAllClientSessionsStep (ZeroizeForFIPSLinearSequencerContext *pContext)
 {
-    
+
     vector<string> commandOutput;
     string          cmd = "/bin/touch " + WaveFrameworkObjectManager::getFIPSZeroizeFile();
     FrameworkToolKit::systemCommandOutput (cmd, commandOutput);
@@ -11561,7 +11561,7 @@ void WaveFrameworkObjectManager::notifyAllClientSessionsStep (ZeroizeForFIPSLine
      */
     TraceObjectManager::rotateTraceFile (true);
     trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager::notifyAllClientSessionsStep : rotateTraceFile");
-    
+
     /* Prompt all user session about zeroization */
 
     bool clusterEnabled = Wave::clusterEnabledCheck ();
@@ -11647,7 +11647,7 @@ void WaveFrameworkObjectManager::disconnectFromAllKnownLocations ()
 {
 
     (WaveFrameworkObjectManager::getInstance())->disconnectFromAllConnectedNodes ();
-    
+
     return;
 }
 
@@ -11714,7 +11714,7 @@ void WaveFrameworkObjectManager::rollbackCfgFile ()
         ResourceId status = FrameworkToolKit::changeWaveConfigurationValidity ( false );
         if ( status != WAVE_MESSAGE_SUCCESS  )
         {
-            trace (TRACE_LEVEL_FATAL, ("WaveFrameworkObjectManager::rollbackCfgFile : Removing CFG file failed in extreme Recoverycase "));        
+            trace (TRACE_LEVEL_FATAL, ("WaveFrameworkObjectManager::rollbackCfgFile : Removing CFG file failed in extreme Recoverycase "));
         }
 
         system ("/sbin/reboot -f");
@@ -11875,7 +11875,7 @@ bool WaveFrameworkObjectManager::isExternalStateSynchronizationRequired (WaveSer
             return true;
         }
     }
-    
+
     m_externalStateSynchronizationRequiredListLock.unlock ();
     return false;
 }
@@ -11979,7 +11979,7 @@ void WaveFrameworkObjectManager::storeConfigurationIntentStaticMessageHandler (F
 
     //WaveNs::trace (TRACE_LEVEL_DEBUG, string ("WaveFrameworkObjectManager::storeConfigurationIntentStaticMessageHandler : Configuration intent message id : ") + configurationIntentMessageId + string (", Configuration intent serialized message : ") + configurationIntentSerializedMessage + string (", serialized buffer size : ") + configurationIntentBufferSize + ", serialized message size : " + configurationIntentSerializedMessage.size ());
 
-    WaveConfigurationIntentRepository::addConfigurationIntent (configurationIntentMessageId, configurationIntentSerializedMessage);   
+    WaveConfigurationIntentRepository::addConfigurationIntent (configurationIntentMessageId, configurationIntentSerializedMessage);
 
     pFrameworkObjectManagerStoreConfigurationIntentMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
 }
@@ -12052,7 +12052,7 @@ void WaveFrameworkObjectManager::prepareFrameworkForHaRecoveryMessageHandler (Fr
         {
             trace (TRACE_LEVEL_FATAL, "WaveFrameworkObjectManager::prepareNodeForHASupportHandler Boot of Services should Never Fail In this case");
             waveAssert (false, __FILE__, __LINE__);
-        } 
+        }
 
         setWarmHaRecoveryPreparationInProgress (false);
     }
@@ -12095,15 +12095,15 @@ void WaveFrameworkObjectManager::replayConfigFileMessageHandler (WaveFrameworkRe
     if (true == ConfigFileManagementToolKit::isFileExisting (globalConfigFilename))
     {
         trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManager::replayConfigFileIfRequired : Replay \"") + globalConfigFilename+ "\" config file on principal node...");
- 
+
         status = ConfigFileManagementToolKit::replayConfigurationFile (configFilePath, ConfigFileManagementToolKit::getConfigFileManagementGlobalOnlyFilename (), preConfigReplayCommands);
- 
+
         trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManager::replayConfigFileIfRequired : Replay of \"") + globalConfigFilename + "\" config file on principal node completed with status: " + FrameworkToolKit::localize (status));
- 
+
         if (WAVE_MESSAGE_SUCCESS == status)
         {
             string newConfigFilename = globalConfigFilename + "." + FrameworkToolKit::getThisLocationIpAddress () + ".backup";
- 
+
             ConfigFileManagementToolKit::renameConfigurationFile (globalConfigFilename, newConfigFilename);
         }
     }
@@ -12116,15 +12116,15 @@ void WaveFrameworkObjectManager::replayConfigFileMessageHandler (WaveFrameworkRe
     if (true == ConfigFileManagementToolKit::isFileExisting (localConfigFilename))
     {
         trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManager::replayConfigFileIfRequired : Replay \"") + localConfigFilename + "\" config file on principal node...");
- 
+
         status = ConfigFileManagementToolKit::replayConfigurationFile (configFilePath, ConfigFileManagementToolKit::getConfigFileManagementLocalOnlyFilename (), preConfigReplayCommands);
-            trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManager::replayConfigFileIfRequired : Replay of \"") + localConfigFilename + "\" config file on principal node completed with status: " + FrameworkToolKit::localize (status));    
+            trace (TRACE_LEVEL_INFO, string ("WaveFrameworkObjectManager::replayConfigFileIfRequired : Replay of \"") + localConfigFilename + "\" config file on principal node completed with status: " + FrameworkToolKit::localize (status));
         if (WAVE_MESSAGE_SUCCESS == status)
         {
             string newConfigFilename = localConfigFilename + "." + FrameworkToolKit::getThisLocationIpAddress () + ".backup";
-            
+
             ConfigFileManagementToolKit::renameConfigurationFile (localConfigFilename, newConfigFilename);
-        }   
+        }
     }
     else
     {
@@ -12139,7 +12139,7 @@ void WaveFrameworkObjectManager::replayConfigFileMessageHandler (WaveFrameworkRe
 void WaveFrameworkObjectManager::resetFrameworkConfigurationToDefault ()
 {
     if (NULL == m_pThisLocation)
-    {   
+    {
         trace (TRACE_LEVEL_ERROR, "RecoverWaveBootAgent::updateFrameworkConfigurationToDefaultStep: Location config cannot be null");
         waveAssert (false, __FILE__, __LINE__);
     }

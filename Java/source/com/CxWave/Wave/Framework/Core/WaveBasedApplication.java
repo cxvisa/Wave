@@ -12,5 +12,7 @@ public class WaveBasedApplication
     public static void waveMain (final WaveMainConfiguration waveMainConfiguration)
     {
         Wave.initialize (waveMainConfiguration);
+
+        WaveFrameworkObjectManager.bootWave ();
     }
 }
