@@ -1,6 +1,6 @@
-/***************************************************************************
+/***********************************************************************************************************
  * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
- ***************************************************************************/
+ ***********************************************************************************************************/
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
@@ -15,6 +15,7 @@ import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
@@ -411,6 +412,7 @@ public class WaveObjectManager extends WaveElement
         return (m_inputMessage);
     }
 
+    @NonMessageHandler
     protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage)
     {
         return (sendOneWay (waveMessage, LocationId.NullLocationId));
@@ -489,6 +491,7 @@ public class WaveObjectManager extends WaveElement
         return (status);
     }
 
+    @NonMessageHandler
     private void addMessageToMessageHistoryCalledFromSend (final WaveMessage waveMessage)
     {
         // TODO Auto-generated method stub

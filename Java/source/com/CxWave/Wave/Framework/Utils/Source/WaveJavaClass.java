@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Utils.Source;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,7 +17,13 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttribute;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
+import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject;
+import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
@@ -37,6 +44,7 @@ public class WaveJavaClass extends WaveJavaType
     private WaveJavaClass                         m_declaringClass;
     private final ReflectionAttributesMap         m_serializationReflectionAttributesMapForDeclaredFields;
     private String                                m_typeName;
+    private final Map<Class<?>, Method>           m_messageHandlers;
 
     public WaveJavaClass (final String name)
     {
@@ -46,6 +54,7 @@ public class WaveJavaClass extends WaveJavaType
         m_childClasses = new HashMap<String, WaveJavaClass> ();
         m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
         m_serializationReflectionAttributesMapForDeclaredFields = new ReflectionAttributesMap ();
+        m_messageHandlers = new HashMap<Class<?>, Method> ();
     }
 
     public String getName ()
@@ -238,6 +247,8 @@ public class WaveJavaClass extends WaveJavaType
         addAnnotations (annotationNames);
 
         computeSerializationReflectionAttributesMapForDeclaredFields (reflectionClass);
+
+        computeMessageHandlers (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -352,6 +363,79 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    private void computeMessageHandlers (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfWaveObjectManager ()))
+        {
+            return;
+        }
+
+        final Annotation annotationForNonOM = reflectionClass.getAnnotation (NonOM.class);
+
+        if (null != annotationForNonOM)
+        {
+            final NonOM nonOM = (NonOM) annotationForNonOM;
+
+            WaveAssertUtils.waveAssert (null != nonOM);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Ignoring %s from Message Handler computations since it is annotated with @NonOM", reflectionClass.getName ());
+
+            return;
+        }
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            final Annotation annotationForNonMessageHandler = declaredMethod.getAnnotation (NonMessageHandler.class);
+
+            if (null != annotationForNonMessageHandler)
+            {
+                final NonMessageHandler nonMessageHandler = (NonMessageHandler) annotationForNonMessageHandler;
+
+                WaveAssertUtils.waveAssert (null != nonMessageHandler);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Ignoring %s : %s from Message Handler computations since it is annotated with @NonMessageHandler", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (1 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName = parameterTypes[0].getTypeName ();
+
+                final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName);
+
+                if (null != waveJavaClass)
+                {
+                    if (waveJavaClass.isADerivativeOfWaveMessage ())
+                    {
+                        if (m_messageHandlers.containsKey (parameterTypes[0]))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Trying to add a message Handler for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Already persent Message Handler method : %s", (m_messageHandlers.get (parameterTypes[0])).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            m_messageHandlers.put (parameterTypes[0], declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Added a message Handler for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public Set<String> getAllDescendants ()
     {
         final Set<String> allDescendantsSet = new HashSet<String> ();
@@ -401,6 +485,82 @@ public class WaveJavaClass extends WaveJavaType
                 break;
             }
             else if (className.equals (SerializableObject.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveObjectManager ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveObjectManager.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveMessage ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveMessage.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveWorker ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveWorker.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveManagedObject ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveManagedObject.class.getName ()))
             {
                 return (true);
             }

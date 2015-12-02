@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Utils.Source;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -448,5 +449,23 @@ public class WaveJavaSourceRepository
     public boolean isAderivativeOfSerializableObject (final String className)
     {
         return ((getInstance ()).isAderivativeOfSerializableObjectInternal (className));
+    }
+
+    public static Vector<Method> getAllMethodsInInheritanceHierarchyForClass (final String className)
+    {
+        final Vector<Method> allMethodsInInheritanceHierarchy = new Vector<Method> ();
+
+        final Vector<String> inheritanceHierarchyForClassLatestFirstIncludingSelf = getInheritanceHeirarchyForClassLatestFirstIncludingSelf (className);
+
+        WaveAssertUtils.waveAssert (null != inheritanceHierarchyForClassLatestFirstIncludingSelf);
+
+        for (final String classNameInInheritanceHierarchy : inheritanceHierarchyForClassLatestFirstIncludingSelf)
+        {
+            final WaveJavaClass waveJavaClass = getWaveJavaClass (classNameInInheritanceHierarchy);
+
+            WaveAssertUtils.waveAssert (null != waveJavaClass);
+        }
+
+        return (allMethodsInInheritanceHierarchy);
     }
 }
