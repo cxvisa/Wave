@@ -5,6 +5,8 @@ export ALL_JAVA_CLASSES = $(patsubst %.java,../build/obj/%.class,$(ALL_JAVA_SOUR
 export WAVEJARFILE = ../../build/lib/libWave-1.5.jar
 export CLASSPATH = $(WAVEJARFILE)
 
+export JVM_MEMORY_OPTIONS = -Xmx100m -Xss256k -XX:MaxMetaspaceSize=256m
+
 export JARFILE = ../build/lib/libSpectrum-1.5.jar
 
 .PHONY: all build package classes $(WAVEJARFILE)
@@ -37,10 +39,10 @@ cleanall: clean
 
 runspectrum:
 	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
-	java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=256k -jar ../build/lib/libSpectrum-1.5.jar .. SpectrumConfiguration.xml
+	java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -jar ../build/lib/libSpectrum-1.5.jar .. SpectrumConfiguration.xml
 
 jdbspectrum:
-	jdb -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=256k -sourcepath ../source:../../source -classpath ../build/obj:../../build/obj com.CxWave.Wave.Spectrum .. SpectrumConfiguration.xml
+	jdb -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -sourcepath ../source:../../source -classpath ../build/obj:../../build/obj com.CxWave.Wave.Spectrum .. SpectrumConfiguration.xml
 
 debugspectrum:
-	java -agentlib:jdwp=transport=dt_socket,address=3333,server=y,suspend=y -Duser.dir=`pwd` -Dfile.encoding=UTF-8 -XX:ThreadStackSize=256k -jar ../build/lib/libSpectrum-1.5.jar .. SpectrumConfiguration.xml
+	java -agentlib:jdwp=transport=dt_socket,address=3333,server=y,suspend=y -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -jar ../build/lib/libSpectrum-1.5.jar .. SpectrumConfiguration.xml
