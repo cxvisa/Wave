@@ -6,7 +6,9 @@ package com.CxWave.Wave.Framework.Type;
 
 public class WaveServiceId
 {
-    private long m_id;
+    public static final WaveServiceId NullServiceId = new WaveServiceId (0);
+
+    private long                      m_id;
 
     public WaveServiceId ()
     {

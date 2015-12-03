@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +24,6 @@ import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveGenericContext;
-import com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
@@ -37,18 +37,16 @@ public class WaveObjectManager extends WaveElement
 {
     private class WaveOperationMapContext
     {
-        private final WaveElement        m_waveElementThatHandlesTheMessage;
         private final WaveMessageHandler m_waveMessageHandler;
 
-        public WaveOperationMapContext (final WaveElement waveElement, final String waveMessageHandlerMethodName)
+        public WaveOperationMapContext (final WaveElement waveElement, final Method method)
         {
-            m_waveElementThatHandlesTheMessage = waveElement;
-            m_waveMessageHandler = new WaveMessageHandler (waveMessageHandlerMethodName);
+            m_waveMessageHandler = new WaveMessageHandler (method, waveElement);
         }
 
         public void executeMessageHandler (final WaveMessage waveMessage)
         {
-            m_waveMessageHandler.execute (waveMessage, m_waveElementThatHandlesTheMessage);
+            m_waveMessageHandler.execute (waveMessage);
         }
     };
 
@@ -171,6 +169,8 @@ public class WaveObjectManager extends WaveElement
     private final String                                               m_name;
     private WaveThread                                                 m_associatedWaveThread;
     private final Map<UI32, WaveOperationMapContext>                   m_operationsMap                   = new HashMap<UI32, WaveOperationMapContext> ();
+    private final Map<Class<?>, UI32>                                  m_operationsClassToIdMap          = new HashMap<Class<?>, UI32> ();
+    private final Map<UI32, Class<?>>                                  m_operationsIdToClassMap          = new HashMap<UI32, Class<?>> ();
     private Map<UI32, BigInteger>                                      m_supportedEvents;
     private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
     private Map<UI32, WaveMessageResponseContext>                      m_responsesMap;
@@ -190,7 +190,7 @@ public class WaveObjectManager extends WaveElement
 
     private void addSupportedOperations ()
     {
-        addOperationMap (FrameworkOpCodes.WAVE_OBJECT_MANAGER_INITIALIZE, "_non_existing_", this);
+        // addOperationMap (FrameworkOpCodes.WAVE_OBJECT_MANAGER_INITIALIZE, "_non_existing_", this);
     }
 
     protected WaveObjectManager (final String waveObjectManagerName, final UI32 stackSize)
@@ -377,10 +377,8 @@ public class WaveObjectManager extends WaveElement
         m_isEnabledMutex.unlock ();
     }
 
-    public void addOperationMap (final WaveOperationCodeInterface waveOperationCode, final String waveMessageHandlerMethodName, final WaveElement waveElement)
+    private void addOperationMap (final UI32 operationCode, final Method messageHandlerMethod, final WaveElement waveElement)
     {
-        final UI32 operationCode = waveOperationCode.getOperationCode ();
-
         WaveAssertUtils.waveAssert (null != operationCode);
 
         if (m_operationsMap.containsKey (operationCode))
@@ -393,7 +391,36 @@ public class WaveObjectManager extends WaveElement
         }
         else
         {
-            m_operationsMap.put (operationCode, new WaveOperationMapContext (waveElement, waveMessageHandlerMethodName));
+            m_operationsMap.put (operationCode, new WaveOperationMapContext (waveElement, messageHandlerMethod));
+        }
+    }
+
+    private void addOperationMapForMessageClass (final Class<? extends WaveMessage> messageClass, final Method messageHandlerMethod, final WaveElement waveElement)
+    {
+        final UI32 operationCode = WaveMessage.getOperationCodeForMessageClass (messageClass);
+
+        addOperationMap (operationCode, messageHandlerMethod, waveElement);
+
+        if (m_operationsClassToIdMap.containsKey (messageClass))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addOperationMapForMessageClass : OperationMap already found for this Class : " + messageClass.getName ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+        else
+        {
+            m_operationsClassToIdMap.put (messageClass, operationCode);
+        }
+
+        if (m_operationsIdToClassMap.containsKey (operationCode))
+        {
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addOperationMapForMessageClass : OperationMap already found for this OperationCode : " + operationCode.toString ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+        else
+        {
+            m_operationsIdToClassMap.put (operationCode, messageClass);
         }
     }
 

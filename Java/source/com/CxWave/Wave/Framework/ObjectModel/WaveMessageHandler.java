@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.ObjectModel;
@@ -11,76 +9,35 @@ import java.lang.reflect.Method;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
-import com.CxWave.Wave.Framework.Utils.Reflection.WaveReflectionUtils;
-import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public class WaveMessageHandler
 {
-    private final String m_methodName;
+    private final Method      m_method;
+    private final WaveElement m_waveElement;
 
-    public WaveMessageHandler (final String methodName)
+    public WaveMessageHandler (final Method method, final WaveElement waveElement)
     {
-        m_methodName = methodName;
+        m_method = method;
+        m_waveElement = waveElement;
 
-        if (WaveStringUtils.isBlank (methodName))
+        if (null == m_waveElement)
+        {
+            WaveAssertUtils.waveAssert ();
+            return;
+        }
+
+        if (null == m_method)
         {
             WaveAssertUtils.waveAssert ();
             return;
         }
     }
 
-    String getMethodName ()
+    void execute (final WaveMessage waveMessage)
     {
-        return (m_methodName);
-    }
-
-    void execute (final WaveMessage waveMessage, final WaveElement waveElement)
-    {
-        if (null == waveElement)
-        {
-            WaveAssertUtils.waveAssert ();
-            return;
-        }
-
-        Class<? extends WaveElement> waveElementClass = waveElement.getClass ();
-
-        if (null == waveElementClass)
-        {
-            WaveAssertUtils.waveAssert ();
-            return;
-        }
-
-        if (WaveStringUtils.isBlank (m_methodName))
-        {
-            return;
-        }
-
-        boolean isMethodPresent = WaveReflectionUtils.isMethodPresent (waveElement.getClass (), m_methodName, WaveMessage.class);
-
-        if (! isMethodPresent)
-        {
-            WaveAssertUtils.waveAssert ();
-            return;
-        }
-
-        Method waveElementClassMethod = null;
-
         try
         {
-            waveElementClassMethod = waveElementClass.getMethod (m_methodName, WaveMessage.class);
-        }
-        catch (NoSuchMethodException noSuchMethodEXception)
-        {
-            WaveAssertUtils.waveAssert ();
-        }
-        catch (Exception exception)
-        {
-            WaveAssertUtils.waveAssert ();
-        }
-
-        try
-        {
-            waveElementClassMethod.invoke (waveElement, waveMessage);
+            m_method.invoke (m_waveElement, waveMessage);
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {

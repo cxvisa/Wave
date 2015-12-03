@@ -5,7 +5,7 @@ export ALL_JAVA_CLASSES = $(patsubst %.java,../build/obj/%.class,$(ALL_JAVA_SOUR
 export WAVEJARFILE = ../../build/lib/libWave-1.5.jar
 export CLASSPATH = $(WAVEJARFILE)
 
-export JVM_MEMORY_OPTIONS = -Xmx100m -Xss256k -XX:MaxMetaspaceSize=256m
+export JVM_MEMORY_OPTIONS = -Xmx100m -Xss256k -XX:MaxMetaspaceSize=50m
 
 export JARFILE = ../build/lib/libSpectrum-1.5.jar
 
