@@ -22,6 +22,7 @@ import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -71,6 +72,9 @@ public class WaveThread extends Thread
     private static WaveServiceMap                       s_waveServiceMap                          = new WaveServiceMap ();
 
     private WaveThreadId                                m_waveThreadId                            = null;
+
+    private final WaveMutex                             m_isReadyForMessageSubmissionsLock        = new WaveMutex ();
+    private boolean                                     m_isReadyForMessageSubmissions            = false;
 
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
@@ -147,12 +151,41 @@ public class WaveThread extends Thread
     @Override
     public void run ()
     {
+        m_isReadyForMessageSubmissionsLock.lock ();
 
         final UI32 numberOfWaveObjectManagers = new UI32 (m_waveObjectManagers.size ());
         final WaveThreadId thisThreadId = WaveThreadId.getSelf ();
 
         WaveAssertUtils.waveAssert (numberOfWaveObjectManagers.equals (new UI32 (1))); // For now, enforce that there is exactly
                                                                                        // on Wave OM per thread.
+
+        while (true)
+        {
+            if (true == (SourceUtils.getIsInitialized ()))
+            {
+                break;
+            }
+
+            try
+            {
+                Thread.sleep (10);
+            }
+            catch (final InterruptedException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+        }
+
+        for (final WaveObjectManager waveObjectManager : m_waveObjectManagers)
+        {
+            WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+            waveObjectManager.addSupportedOperations ();
+        }
+
+        m_isReadyForMessageSubmissions = true;
+
+        m_isReadyForMessageSubmissionsLock.unlock ();
 
         while (true)
         {
@@ -167,8 +200,7 @@ public class WaveThread extends Thread
             }
             catch (final InterruptedException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace ();
+                WaveAssertUtils.waveAssert ();
             }
         }
 
@@ -202,9 +234,9 @@ public class WaveThread extends Thread
             {
                 m_gateKeeper.unlock ();
 
-                final WaveObjectManager waveObjectManager = null;
+                // final WaveObjectManager waveObjectManager = null;
 
-                System.out.printf ("Received a message ... :-)");
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Received a message ... :-)");
             }
         }
     }
@@ -454,6 +486,23 @@ public class WaveThread extends Thread
 
     public WaveMessageStatus submitMessage (final WaveMessage waveMessage)
     {
+        while (true)
+        {
+            if (getIsReadyForMessageSubmissions ())
+            {
+                break;
+            }
+
+            try
+            {
+                Thread.sleep (10);
+            }
+            catch (final InterruptedException e)
+            {
+                WaveAssertUtils.waveAssert ();
+            }
+        }
+
         WaveAssertUtils.waveAssert (null != waveMessage);
 
         final WaveMessagePriority messagePriority = waveMessage.getPriority ();
@@ -623,5 +672,25 @@ public class WaveThread extends Thread
     public WaveThreadId getWaveThreadId ()
     {
         return (m_waveThreadId);
+    }
+
+    public boolean getIsReadyForMessageSubmissions ()
+    {
+        m_isReadyForMessageSubmissionsLock.lock ();
+
+        final boolean isReadyForMessageSubmissions = m_isReadyForMessageSubmissions;
+
+        m_isReadyForMessageSubmissionsLock.unlock ();
+
+        return (isReadyForMessageSubmissions);
+    }
+
+    public void setIsReadyForMessageSubmissions (final boolean isReadyForMessageSubmissions)
+    {
+        m_isReadyForMessageSubmissionsLock.lock ();
+
+        m_isReadyForMessageSubmissions = isReadyForMessageSubmissions;
+
+        m_isReadyForMessageSubmissionsLock.unlock ();
     }
 }

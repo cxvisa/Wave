@@ -65,7 +65,10 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 
         setIsInstantiated (true);
         setIsEnabled (true);
+    }
 
+    private void bootSelfInternal ()
+    {
         // Now send a oneway initialize message to self.
 
         // We know the service id for the Wave framework object manager must be 1. And it must not be anything else. So we use
@@ -84,6 +87,11 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
             System.err.printf ("Cannot Initialize the Framework.  Cannot continue.  Exiting ...\n");
             WaveAssertUtils.waveAssert ();
         }
+    }
+
+    public static void bootSelf ()
+    {
+        (getInstance ()).bootSelfInternal ();
     }
 
     public static String getServiceName ()
@@ -226,5 +234,9 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public static void bootWave ()
     {
         setIsFrameworkReadyToBoot (true);
+    }
+
+    private void initializeMessageHandler (final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage)
+    {
     }
 }

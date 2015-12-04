@@ -426,7 +426,11 @@ public class WaveJavaClass extends WaveJavaType
                         {
                             declaredMethod.setAccessible (true);
 
-                            m_messageHandlers.put (parameterTypes[0], declaredMethod);
+                            final Class<?> waveMessageClass = parameterTypes[0];
+
+                            WaveAssertUtils.waveAssert (null != waveMessageClass);
+
+                            m_messageHandlers.put (waveMessageClass, declaredMethod);
 
                             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Added a message Handler for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
                         }
@@ -590,5 +594,33 @@ public class WaveJavaClass extends WaveJavaType
         getAttributesMapForInheritanceHierarchy (attributesMap);
 
         return (attributesMap);
+    }
+
+    private void getMessageHandlersInInheritanceHierarchyPreferringLatest (final Map<Class<?>, Method> messageHandlersInInheritanceHierarchyPreferringLatest)
+    {
+        WaveAssertUtils.waveAssert (null != messageHandlersInInheritanceHierarchyPreferringLatest);
+
+        for (final Map.Entry<Class<?>, Method> entry : m_messageHandlers.entrySet ())
+        {
+            final Method alreadyExistingMethod = messageHandlersInInheritanceHierarchyPreferringLatest.putIfAbsent (entry.getKey (), entry.getValue ());
+
+            WaveAssertUtils.waveAssert (null == alreadyExistingMethod);
+        }
+
+        if (null != m_superClass)
+        {
+            m_superClass.getMessageHandlersInInheritanceHierarchyPreferringLatest (messageHandlersInInheritanceHierarchyPreferringLatest);
+        }
+    }
+
+    public Map<Class<?>, Method> getMessageHandlersInInheritanceHierarchyPreferringLatest ()
+    {
+        final Map<Class<?>, Method> messageHandlersInInheritanceHierarchyPreferringLatest = new HashMap<Class<?>, Method> ();
+
+        WaveAssertUtils.waveAssert (null != messageHandlersInInheritanceHierarchyPreferringLatest);
+
+        getMessageHandlersInInheritanceHierarchyPreferringLatest (messageHandlersInInheritanceHierarchyPreferringLatest);
+
+        return (messageHandlersInInheritanceHierarchyPreferringLatest);
     }
 }

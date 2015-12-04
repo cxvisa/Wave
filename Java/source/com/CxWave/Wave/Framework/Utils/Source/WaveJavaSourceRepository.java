@@ -468,4 +468,23 @@ public class WaveJavaSourceRepository
 
         return (allMethodsInInheritanceHierarchy);
     }
+
+    private Map<Class<?>, Method> getMessageHandlersInInheritanceHierarchyPreferringLatestInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.getMessageHandlersInInheritanceHierarchyPreferringLatest ());
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public static Map<Class<?>, Method> getMessageHandlersInInheritanceHierarchyPreferringLatest (final String className)
+    {
+        return ((getInstance ()).getMessageHandlersInInheritanceHierarchyPreferringLatestInternal (className));
+    }
 }

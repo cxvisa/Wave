@@ -28,6 +28,18 @@ import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
 
 public class SourceUtils
 {
+    private static boolean s_isInitialized = false;
+
+    public static boolean getIsInitialized ()
+    {
+        return (s_isInitialized);
+    }
+
+    private static void setIsInitialized (final boolean isInitialized)
+    {
+        s_isInitialized = isInitialized;
+    }
+
     private static void getListOfAllFilesInTheDirectoryInternal (final File[] inputFiles, final Vector<String> allFiles)
     {
         for (final File file : inputFiles)
@@ -493,5 +505,7 @@ public class SourceUtils
     public static void initialize ()
     {
         WaveJavaSourceRepository.initialize ();
+
+        setIsInitialized (true);
     }
 }

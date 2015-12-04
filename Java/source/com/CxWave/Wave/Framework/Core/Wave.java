@@ -51,7 +51,7 @@ public class Wave
 
         // WaveFrameworkObjectManager must be the first one to be created.
 
-        WaveFrameworkObjectManager.getInstance ();
+        final WaveFrameworkObjectManager waveFrameworkObjectManager = WaveFrameworkObjectManager.getInstance ();
 
         // Set if the database is to be enabled.
 
@@ -137,6 +137,8 @@ public class Wave
         // Initialize Source Utils
 
         SourceUtils.initialize ();
+
+        WaveFrameworkObjectManager.bootSelf ();
 
         // Initialize Serialization for the System
 

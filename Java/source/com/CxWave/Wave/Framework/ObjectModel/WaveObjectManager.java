@@ -26,6 +26,7 @@ import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveGenericContext;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
@@ -188,9 +189,16 @@ public class WaveObjectManager extends WaveElement
 
     private WaveMessage                                                m_inputMessage;
 
-    private void addSupportedOperations ()
+    public void addSupportedOperations ()
     {
         // addOperationMap (FrameworkOpCodes.WAVE_OBJECT_MANAGER_INITIALIZE, "_non_existing_", this);
+
+        final Map<Class<?>, Method> messageHandlersInInheritanceHierarchyPreferringLatest = WaveJavaSourceRepository.getMessageHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getName ());
+
+        for (final Map.Entry<Class<?>, Method> entry : messageHandlersInInheritanceHierarchyPreferringLatest.entrySet ())
+        {
+            addOperationMapForMessageClass (entry.getKey (), entry.getValue (), this);
+        }
     }
 
     protected WaveObjectManager (final String waveObjectManagerName, final UI32 stackSize)
@@ -217,8 +225,6 @@ public class WaveObjectManager extends WaveElement
         final WaveThread associatedWaveThread = new WaveThread (m_name, stackSize, m_serviceId);
 
         m_associatedWaveThread = associatedWaveThread;
-
-        addSupportedOperations ();
 
         m_associatedWaveThread.start ();
     }
@@ -250,8 +256,6 @@ public class WaveObjectManager extends WaveElement
         m_associatedWaveThread = associatedWaveThread;
 
         m_associatedWaveThread.addWaveObjectManager (this);
-
-        addSupportedOperations ();
 
         m_associatedWaveThread.start ();
 
@@ -308,7 +312,11 @@ public class WaveObjectManager extends WaveElement
     {
         // This method ensures that no other service gets instantiated before the Framework Service itself gets instantiated.
 
-        if ("Wave Framework".equals (waveServiceName))
+        final Set<String> serviceNames = new HashSet<String> ();
+
+        serviceNames.add (WaveFrameworkObjectManager.getServiceName ());
+
+        if (serviceNames.contains (waveServiceName))
         {
             return (true);
         }
@@ -395,7 +403,7 @@ public class WaveObjectManager extends WaveElement
         }
     }
 
-    private void addOperationMapForMessageClass (final Class<? extends WaveMessage> messageClass, final Method messageHandlerMethod, final WaveElement waveElement)
+    private void addOperationMapForMessageClass (final Class<?> messageClass, final Method messageHandlerMethod, final WaveElement waveElement)
     {
         final UI32 operationCode = WaveMessage.getOperationCodeForMessageClass (messageClass);
 
