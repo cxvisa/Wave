@@ -1194,7 +1194,7 @@ WaveObjectManager::WaveOperationMapContext *WaveObjectManager::getWaveMessageHan
         pTemp = m_operationsMap[operationCode];
     }
 
-    // If we could not find the exeact match then look for WAVE_OBJECT_MANAGER_ANY_OPCODE opcode.
+    // If we could not find the exact match then look for WAVE_OBJECT_MANAGER_ANY_OPCODE opcode.
     // Because, e know that this specific opcode supports any WaveMessage or its derivation.
 
     if (NULL == pTemp)

@@ -30,6 +30,7 @@ import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode;
@@ -42,11 +43,16 @@ public class WaveObjectManager extends WaveElement
 
         public WaveOperationMapContext (final WaveElement waveElement, final Method method)
         {
+            WaveAssertUtils.waveAssert (null != waveElement);
+            WaveAssertUtils.waveAssert (null != method);
+
             m_waveMessageHandler = new WaveMessageHandler (method, waveElement);
         }
 
         public void executeMessageHandler (final WaveMessage waveMessage)
         {
+            WaveAssertUtils.waveAssert (null != m_waveMessageHandler);
+
             m_waveMessageHandler.execute (waveMessage);
         }
     };
@@ -485,7 +491,7 @@ public class WaveObjectManager extends WaveElement
         if (null == waveThread)
         {
             // trace (TRACE_LEVEL_ERROR, string ("WaveObjectManager.sendOneWay : No Service registered to accept this service Id
-            // ") + waveMessage->getServiceCode () + ".");
+            // ") + waveMessage.getServiceCode () + ".");
 
             return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
         }
@@ -527,7 +533,64 @@ public class WaveObjectManager extends WaveElement
     }
 
     @NonMessageHandler
+    public void handleWaveMessage (final WaveMessage waveMessage)
+    {
+        final WaveOperationMapContext waveOperationMapContext = getWaveMessageHandler (waveMessage.getOperationCode (), waveMessage.getServiceCode (), getServiceId ());
+
+        if (null != waveOperationMapContext)
+        {
+            waveAssert (null == m_inputMessage);
+            m_inputMessage = waveMessage;
+
+            addMessageToMessageHistoryCalledFromHandle (waveMessage);
+
+            waveOperationMapContext.executeMessageHandler (waveMessage);
+            m_inputMessage = null;
+        }
+        else
+        {
+            trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveObjectManager.handleWaveMessage : This type of message is not handled by this Object Manager.");
+            WaveAssertUtils.waveAssert ();
+            waveMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
+            reply (waveMessage);
+        }
+
+    }
+
+    private WaveOperationMapContext getWaveMessageHandler (final UI32 operationCode, final WaveServiceId messageHandlerServiceCode, final WaveServiceId thisServiceId)
+    {
+        WaveOperationMapContext temp = null;
+
+        if (messageHandlerServiceCode.equals (thisServiceId))
+        {
+            temp = m_operationsMap.get (operationCode);
+        }
+
+        // If we could not find the exact match then look for WAVE_OBJECT_MANAGER_ANY_OPCODE opcode.
+        // Because, e know that this specific opcode supports any WaveMessage or its derivation.
+
+        if (null == temp)
+        {
+            temp = m_operationsMap.get (FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_OPCODE);
+        }
+
+        return (temp);
+    }
+
+    @NonMessageHandler
     private void addMessageToMessageHistoryCalledFromSend (final WaveMessage waveMessage)
+    {
+        // TODO Auto-generated method stub
+    }
+
+    @NonMessageHandler
+    private void addMessageToMessageHistoryCalledFromHandle (final WaveMessage waveMessage)
+    {
+        // TODO Auto-generated method stub
+    }
+
+    @NonMessageHandler
+    public void reply (final WaveMessage waveMessage)
     {
         // TODO Auto-generated method stub
     }

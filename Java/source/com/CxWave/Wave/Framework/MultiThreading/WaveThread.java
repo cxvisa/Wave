@@ -26,6 +26,7 @@ import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
@@ -237,6 +238,40 @@ public class WaveThread extends Thread
                 // final WaveObjectManager waveObjectManager = null;
 
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Received a message ... :-)");
+
+                final WaveObjectManager waveObjectManager = null;
+
+                switch (waveMessage.getType ())
+                {
+                    case WAVE_MESSAGE_TYPE_REQUEST:
+                        final WaveObjectManager waveObjectManagerToHandleRequest = getWaveObjectManagerForOperationCode (waveMessage.getOperationCode ());
+
+                        if (null != waveObjectManagerToHandleRequest)
+                        {
+                            waveObjectManagerToHandleRequest.handleWaveMessage (waveMessage);
+                        }
+                        else
+                        {
+                            waveMessage.setCompletionStatus (ResourceId.WAVE_THREAD_ERROR_COULD_NOT_FIND_OM);
+
+                            if (0 < m_waveObjectManagers.size ())
+                            {
+                                (m_waveObjectManagers.get (0)).reply (waveMessage);
+                            }
+                            else
+                            {
+                                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "This Service does not have any object managers to handle any requests.");
+                                WaveAssertUtils.waveAssert ();
+                            }
+                        }
+                        break;
+                    case WAVE_MESSAGE_TYPE_EVENT:
+                        break;
+                    case WAVE_MESSAGE_TYPE_RESPONSE:
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }

@@ -238,5 +238,6 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 
     private void initializeMessageHandler (final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage)
     {
+        trace (TraceLevel.TRACE_LEVEL_INFO, "WaveFrameworkObjectManager.initializeMessageHandler : Entering ...");
     }
 }
