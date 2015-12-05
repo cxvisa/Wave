@@ -8,6 +8,32 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public abstract class WaveElement
 {
+    private WaveObjectManager m_waveObjectManager;
+
+    protected WaveElement ()
+    {
+    }
+
+    protected WaveElement (final WaveObjectManager waveObjectManager)
+    {
+        m_waveObjectManager = waveObjectManager;
+    }
+
+    protected WaveElement (final WaveElement waveElement)
+    {
+        m_waveObjectManager = waveElement.m_waveObjectManager;
+    }
+
+    protected WaveObjectManager getWaveObjectManager ()
+    {
+        return (m_waveObjectManager);
+    }
+
+    protected void setWaveObjectManager (final WaveObjectManager waveObjectManager)
+    {
+        m_waveObjectManager = waveObjectManager;
+    }
+
     protected abstract void trace (final TraceLevel requestedTraceLevel, final String stringToTrace, final boolean addNewLine, final boolean suppressPrefix);
 
     protected abstract void trace (final TraceLevel requestedTraceLevel, final String stringToTrace);

@@ -186,6 +186,7 @@ public class WaveObjectManager extends WaveElement
     private WaveMutex                                                  m_responsesMapMutex;
     private WaveMutex                                                  m_sendReplyMutexForResponseMap;
     private Vector<WaveWorker>                                         m_workers;
+    private final WaveMutex                                            m_workersMutex                    = new WaveMutex ();
     private boolean                                                    m_isEnabled                       = false;
     private final WaveMutex                                            m_isEnabledMutex                  = new WaveMutex ();
     private final TraceClientId                                        m_traceClientId;
@@ -209,6 +210,10 @@ public class WaveObjectManager extends WaveElement
 
     protected WaveObjectManager (final String waveObjectManagerName, final UI32 stackSize)
     {
+        super ();
+
+        setWaveObjectManager (this);
+
         m_name = new String (waveObjectManagerName);
 
         m_waveServiceMode = s_waveServiceLaunchMode;
@@ -237,6 +242,10 @@ public class WaveObjectManager extends WaveElement
 
     protected WaveObjectManager (final String waveObjectManagerName)
     {
+        super ();
+
+        setWaveObjectManager (this);
+
         m_name = new String (waveObjectManagerName);
 
         m_waveServiceMode = s_waveServiceLaunchMode;
@@ -593,5 +602,57 @@ public class WaveObjectManager extends WaveElement
     public void reply (final WaveMessage waveMessage)
     {
         // TODO Auto-generated method stub
+    }
+
+    public void addWorker (final WaveWorker waveWorker)
+    {
+        if (null == waveWorker)
+        {
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addWorker : Trying to add a NULL worker from this manager.  Will not add.");
+
+            WaveAssertUtils.waveAssert ();
+
+            return;
+        }
+
+        m_workersMutex.lock ();
+
+        if (m_workers.contains (waveWorker))
+        {
+            tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addWorker : Trying to add a duplicate Worker of type : %s", (waveWorker.getClass ()).getName ());
+            WaveAssertUtils.waveAssert ();
+        }
+        else
+        {
+            m_workers.add (waveWorker);
+        }
+
+        m_workersMutex.unlock ();
+    }
+
+    public void removeWorker (final WaveWorker waveWorker)
+    {
+        if (null == waveWorker)
+        {
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.removeWorker : Trying to remove a NULL worker from this manager.  Will not remove.");
+
+            WaveAssertUtils.waveAssert ();
+
+            return;
+        }
+
+        m_workersMutex.lock ();
+
+        if (!(m_workers.contains (waveWorker)))
+        {
+            tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.removeWorker : Trying to remove a non existing Worker of type : %s", (waveWorker.getClass ()).getName ());
+            WaveAssertUtils.waveAssert ();
+        }
+        else
+        {
+            m_workers.remove (waveWorker);
+        }
+
+        m_workersMutex.unlock ();
     }
 }

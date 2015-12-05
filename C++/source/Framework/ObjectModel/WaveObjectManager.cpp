@@ -5764,7 +5764,7 @@ void WaveObjectManager::removeWorker (WaveWorker *pWaveWorker)
     }
     else
     {
-        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addWorker : Trying to remove a NULL worker from this manager.  Will not remove.");
+        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::removeWorker : Trying to remove a NULL worker from this manager.  Will not remove.");
         waveAssert (false, __FILE__, __LINE__);
         m_workersMutex.unlock ();
         return;
