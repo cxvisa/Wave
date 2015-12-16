@@ -22,9 +22,13 @@ import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
+import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.Priority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -45,6 +49,8 @@ public class WaveJavaClass extends WaveJavaType
     private final ReflectionAttributesMap         m_serializationReflectionAttributesMapForDeclaredFields;
     private String                                m_typeName;
     private final Map<Class<?>, Method>           m_messageHandlers;
+    private final Map<String, Integer>            m_ownedWorkerClassNamesCadinalityMap;
+    private final Map<String, WaveWorkerPriority> m_ownedWorkerClassNamesPriorityMap;
 
     public WaveJavaClass (final String name)
     {
@@ -55,6 +61,8 @@ public class WaveJavaClass extends WaveJavaType
         m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
         m_serializationReflectionAttributesMapForDeclaredFields = new ReflectionAttributesMap ();
         m_messageHandlers = new HashMap<Class<?>, Method> ();
+        m_ownedWorkerClassNamesCadinalityMap = new HashMap<String, Integer> ();
+        m_ownedWorkerClassNamesPriorityMap = new HashMap<String, WaveWorkerPriority> ();
     }
 
     public String getName ()
@@ -249,6 +257,8 @@ public class WaveJavaClass extends WaveJavaType
         computeSerializationReflectionAttributesMapForDeclaredFields (reflectionClass);
 
         computeMessageHandlers (reflectionClass);
+
+        computeWorkers (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -438,6 +448,75 @@ public class WaveJavaClass extends WaveJavaType
                 }
             }
         }
+    }
+
+    private void computeWorkers (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfWaveWorker ()))
+        {
+            return;
+        }
+
+        WaveJavaClass waveJavaClassForOwnerOm = null;
+        int cardinality = 1;
+        WaveWorkerPriority priority = WaveWorkerPriority.WAVE_WORKER_PRIORITY_0;
+
+        final Annotation annotationForOwnerOM = reflectionClass.getAnnotation (OwnerOM.class);
+
+        if (null != annotationForOwnerOM)
+        {
+            final OwnerOM ownerOM = (OwnerOM) annotationForOwnerOM;
+
+            WaveAssertUtils.waveAssert (null != ownerOM);
+
+            final Class<?> ownerOmClass = ownerOM.om ();
+
+            WaveAssertUtils.waveAssert (null != ownerOmClass);
+
+            final String ownerOmClassName = ownerOmClass.getName ();
+
+            if (WaveStringUtils.isNotBlank (ownerOmClassName))
+            {
+                waveJavaClassForOwnerOm = WaveJavaSourceRepository.getWaveJavaClass (ownerOmClassName);
+
+                WaveAssertUtils.waveAssert (null != waveJavaClassForOwnerOm);
+            }
+        }
+
+        final Annotation annotationForCardinality = reflectionClass.getAnnotation (Cardinality.class);
+
+        if (null != annotationForCardinality)
+        {
+            final Cardinality cardinalityAnnotation = (Cardinality) annotationForCardinality;
+
+            WaveAssertUtils.waveAssert (null != cardinalityAnnotation);
+
+            cardinality = cardinalityAnnotation.value ();
+
+            WaveAssertUtils.waveAssert (0 != cardinality);
+        }
+
+        final Annotation annotationForPriority = reflectionClass.getAnnotation (Priority.class);
+
+        if (null != annotationForPriority)
+        {
+            final Priority priorityAnnotation = (Priority) annotationForPriority;
+
+            WaveAssertUtils.waveAssert (null != priorityAnnotation);
+
+            priority = priorityAnnotation.value ();
+        }
+
+        if (null != waveJavaClassForOwnerOm)
+        {
+            waveJavaClassForOwnerOm.addOwnedWorker (reflectionClass.getName (), cardinality, priority);
+        }
+    }
+
+    private void addOwnedWorker (final String workerClassName, final int cardinality, final WaveWorkerPriority priority)
+    {
+        m_ownedWorkerClassNamesCadinalityMap.put (workerClassName, cardinality);
+        m_ownedWorkerClassNamesPriorityMap.put (workerClassName, priority);
     }
 
     public Set<String> getAllDescendants ()
