@@ -513,10 +513,53 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    private boolean isAKnownWorker (final String workerClassName)
+    {
+        if (m_ownedWorkerClassNamesCadinalityMap.containsKey (workerClassName))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    private boolean validateWorker (final String workerClassName)
+    {
+        final boolean isKnown1 = m_ownedWorkerClassNamesCadinalityMap.containsKey (workerClassName);
+        final boolean isKnown2 = m_ownedWorkerClassNamesPriorityMap.containsKey (workerClassName);
+
+        if (isKnown1 == isKnown2)
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
     private void addOwnedWorker (final String workerClassName, final int cardinality, final WaveWorkerPriority priority)
     {
+        if (isAKnownWorker (workerClassName))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.addOwnedWorker : %s is already a known worker class name.", workerClassName);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (!(validateWorker (workerClassName)))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.addOwnedWorker : %s validation failed.", workerClassName);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
         m_ownedWorkerClassNamesCadinalityMap.put (workerClassName, cardinality);
         m_ownedWorkerClassNamesPriorityMap.put (workerClassName, priority);
+
+        WaveTraceUtils.infoTracePrintf ("    Successfully added %s worker to %s", workerClassName, m_name);
     }
 
     public Set<String> getAllDescendants ()
