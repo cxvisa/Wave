@@ -540,6 +540,19 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    private boolean validateWorkerClassEntries ()
+    {
+        for (final String workerClassName : m_ownedWorkerClassNamesCadinalityMap.keySet ())
+        {
+            if (!(m_ownedWorkerClassNamesPriorityMap.containsKey (workerClassName)))
+            {
+                return (false);
+            }
+        }
+
+        return (true);
+    }
+
     private void addOwnedWorker (final String workerClassName, final int cardinality, final WaveWorkerPriority priority)
     {
         if (isAKnownWorker (workerClassName))
@@ -744,5 +757,62 @@ public class WaveJavaClass extends WaveJavaType
         getMessageHandlersInInheritanceHierarchyPreferringLatest (messageHandlersInInheritanceHierarchyPreferringLatest);
 
         return (messageHandlersInInheritanceHierarchyPreferringLatest);
+    }
+
+    public Vector<String> getWorkerClassNames ()
+    {
+        final Vector<String> workerClassNames = new Vector<String> ();
+
+        if (!(validateWorkerClassEntries ()))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.getWorkerClassNames : validation failed.");
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        for (final String workerClassName : m_ownedWorkerClassNamesCadinalityMap.keySet ())
+        {
+            workerClassNames.add (workerClassName);
+        }
+
+        return (workerClassNames);
+    }
+
+    public int getWorkerClassCardinality (final String workerClassName)
+    {
+        if (!(validateWorker (workerClassName)))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.getWorkerClassCardinality : %s validation failed.", workerClassName);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (!(isAKnownWorker (workerClassName)))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.getWorkerClassCardinality : %s is not a known Worker to %s.", workerClassName, m_name);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (m_ownedWorkerClassNamesCadinalityMap.get (workerClassName));
+    }
+
+    public WaveWorkerPriority getWorkerClassPriority (final String workerClassName)
+    {
+        if (!(validateWorker (workerClassName)))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.WaveWorkerPriority : %s validation failed.", workerClassName);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        if (!(isAKnownWorker (workerClassName)))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.WaveWorkerPriority : %s is not a known Worker to %s.", workerClassName, m_name);
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (m_ownedWorkerClassNamesPriorityMap.get (workerClassName));
     }
 }

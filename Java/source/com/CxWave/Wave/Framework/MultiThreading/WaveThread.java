@@ -181,7 +181,7 @@ public class WaveThread extends Thread
         {
             WaveAssertUtils.waveAssert (null != waveObjectManager);
 
-            waveObjectManager.addSupportedOperations ();
+            waveObjectManager.prepareObjectManagerForAction ();
         }
 
         m_isReadyForMessageSubmissions = true;

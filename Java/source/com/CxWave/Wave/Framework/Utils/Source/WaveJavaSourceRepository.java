@@ -15,6 +15,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Attributes.Attribute;
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory;
+import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -486,5 +487,41 @@ public class WaveJavaSourceRepository
     public static Map<Class<?>, Method> getMessageHandlersInInheritanceHierarchyPreferringLatest (final String className)
     {
         return ((getInstance ()).getMessageHandlersInInheritanceHierarchyPreferringLatestInternal (className));
+    }
+
+    public static Vector<String> getWorkerClassNamesForClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (new Vector<String> ());
+        }
+
+        return (waveJavaClass.getWorkerClassNames ());
+    }
+
+    public static int getWorkerClassCardinality (final String waveJavaClassName, final String workerClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (waveJavaClass.getWorkerClassCardinality (workerClassName));
+    }
+
+    public static WaveWorkerPriority getWorkerClassProiority (final String waveJavaClassName, final String workerClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return (waveJavaClass.getWorkerClassPriority (workerClassName));
     }
 }

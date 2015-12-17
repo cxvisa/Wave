@@ -196,15 +196,37 @@ public class WaveObjectManager extends WaveElement
 
     private WaveMessage                                                m_inputMessage;
 
+    public void prepareObjectManagerForAction ()
+    {
+        addWorkers ();
+        addSupportedOperations ();
+    }
+
     public void addSupportedOperations ()
     {
-        // addOperationMap (FrameworkOpCodes.WAVE_OBJECT_MANAGER_INITIALIZE, "_non_existing_", this);
-
         final Map<Class<?>, Method> messageHandlersInInheritanceHierarchyPreferringLatest = WaveJavaSourceRepository.getMessageHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getName ());
 
         for (final Map.Entry<Class<?>, Method> entry : messageHandlersInInheritanceHierarchyPreferringLatest.entrySet ())
         {
             addOperationMapForMessageClass (entry.getKey (), entry.getValue (), this);
+        }
+    }
+
+    private void addWorkers ()
+    {
+        final String waveJavaClassName = (getClass ()).getName ();
+        final Vector<String> workerClassNames = WaveJavaSourceRepository.getWorkerClassNamesForClass (waveJavaClassName);
+
+        WaveAssertUtils.waveAssert (null != workerClassNames);
+
+        infoTracePrintf ("WaveObjectManager.addWorkers : Adding Workers for Object Manager : %s", m_name);
+
+        for (final String workerClassName : workerClassNames)
+        {
+            final int cardinality = WaveJavaSourceRepository.getWorkerClassCardinality (waveJavaClassName, workerClassName);
+            final WaveWorkerPriority priority = WaveJavaSourceRepository.getWorkerClassProiority (waveJavaClassName, workerClassName);
+
+            infoTracePrintf ("WaveObjectManager.addWorkers :     Worker : %s, Cardinality : %d, Priority : %s", workerClassName, cardinality, priority);
         }
     }
 
