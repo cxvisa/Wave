@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -27,6 +29,8 @@ import com.CxWave.Wave.Framework.Type.WaveGenericContext;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
@@ -185,7 +189,7 @@ public class WaveObjectManager extends WaveElement
     private Map<String, Vector<String>>                                m_postbootManagedObjectNames;
     private WaveMutex                                                  m_responsesMapMutex;
     private WaveMutex                                                  m_sendReplyMutexForResponseMap;
-    private Vector<WaveWorker>                                         m_workers;
+    private final Vector<WaveWorker>                                   m_workers                         = new Vector<WaveWorker> ();
     private final WaveMutex                                            m_workersMutex                    = new WaveMutex ();
     private boolean                                                    m_isEnabled                       = false;
     private final WaveMutex                                            m_isEnabledMutex                  = new WaveMutex ();
@@ -221,12 +225,102 @@ public class WaveObjectManager extends WaveElement
 
         infoTracePrintf ("WaveObjectManager.addWorkers : Adding Workers for Object Manager : %s", m_name);
 
+        final Map<WaveWorkerPriority, Vector<String>> workersByPriority = new HashMap<WaveWorkerPriority, Vector<String>> ();
+        final Map<String, Integer> workersCardinality = new HashMap<String, Integer> ();
+
         for (final String workerClassName : workerClassNames)
         {
             final int cardinality = WaveJavaSourceRepository.getWorkerClassCardinality (waveJavaClassName, workerClassName);
             final WaveWorkerPriority priority = WaveJavaSourceRepository.getWorkerClassProiority (waveJavaClassName, workerClassName);
 
             infoTracePrintf ("WaveObjectManager.addWorkers :     Worker : %s, Cardinality : %d, Priority : %s", workerClassName, cardinality, priority);
+
+            if (workersByPriority.containsKey (priority))
+            {
+                final Vector<String> workersForThisPriority = workersByPriority.get (priority);
+
+                workersForThisPriority.add (workerClassName);
+            }
+            else
+            {
+                final Vector<String> workersForThisPriority = new Vector<String> ();
+
+                workersForThisPriority.add (workerClassName);
+
+                workersByPriority.put (priority, workersForThisPriority);
+            }
+
+            workersCardinality.put (workerClassName, cardinality);
+        }
+
+        for (final Map.Entry<WaveWorkerPriority, Vector<String>> entry : workersByPriority.entrySet ())
+        {
+            final WaveWorkerPriority priority = entry.getKey ();
+            final Vector<String> workersForThisPriority = entry.getValue ();
+
+            WaveAssertUtils.waveAssert (null != workersForThisPriority);
+
+            infoTracePrintf ("WaveObjectManager.addWorkers :     Now instantiating Workers for Priority %s", priority);
+
+            for (final String workerClassName : workersForThisPriority)
+            {
+                WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (workerClassName));
+
+                infoTracePrintf ("WaveObjectManager.addWorkers :         Now instantiating Worker %s", workerClassName);
+
+                Class<?> waveWorkerClass = null;
+
+                try
+                {
+                    waveWorkerClass = Class.forName (workerClassName);
+                }
+                catch (final ClassNotFoundException e)
+                {
+                    e.printStackTrace ();
+                }
+
+                WaveAssertUtils.waveAssert (null != waveWorkerClass);
+
+                Constructor<?> constructor = null;
+
+                try
+                {
+                    constructor = waveWorkerClass.getConstructor (WaveObjectManager.class);
+                }
+                catch (NoSuchMethodException | SecurityException e)
+                {
+                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager as argument could not be found.  Details :%s", e.toString ());
+
+                    WaveAssertUtils.waveAssert ();
+                }
+
+                WaveAssertUtils.waveAssert (null != constructor);
+
+                Object object = null;
+
+                try
+                {
+                    constructor.setAccessible (true);
+
+                    WaveAssertUtils.waveAssert (null != this);
+
+                    object = constructor.newInstance (this);
+                }
+                catch (InstantiationException | IllegalAccessException | IllegalArgumentException e)
+                {
+                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager as argument could not be executed.  Details : %s", e.toString ());
+
+                    WaveAssertUtils.waveAssert ();
+                }
+                catch (final InvocationTargetException e1)
+                {
+                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager as argument could not be executed.  Details : %s", WaveStackUtils.getStackString (e1.getCause ()));
+                }
+
+                WaveAssertUtils.waveAssert (null != object);
+
+                WaveAssertUtils.waveAssert (object instanceof WaveWorker);
+            }
         }
     }
 

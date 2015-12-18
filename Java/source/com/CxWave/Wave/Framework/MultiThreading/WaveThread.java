@@ -77,6 +77,8 @@ public class WaveThread extends Thread
     private final WaveMutex                             m_isReadyForMessageSubmissionsLock        = new WaveMutex ();
     private boolean                                     m_isReadyForMessageSubmissions            = false;
 
+    private static final WaveMutex                      s_preareObjectManagersForActionMutex      = new WaveMutex ();
+
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
         super (null, null, name, s_defaultStackSize);
@@ -181,7 +183,9 @@ public class WaveThread extends Thread
         {
             WaveAssertUtils.waveAssert (null != waveObjectManager);
 
+            s_preareObjectManagersForActionMutex.lock ();
             waveObjectManager.prepareObjectManagerForAction ();
+            s_preareObjectManagersForActionMutex.unlock ();
         }
 
         m_isReadyForMessageSubmissions = true;

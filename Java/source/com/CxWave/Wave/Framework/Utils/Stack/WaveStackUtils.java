@@ -1,10 +1,11 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc             *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Utils.Stack;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public final class WaveStackUtils
 {
@@ -14,13 +15,13 @@ public final class WaveStackUtils
 
     public StackTraceElement getCallerStackTraceElement ()
     {
-        final Throwable throwable     = new Throwable ();
-        final String    thisClassName = (getClass ()).getName ();
+        final Throwable throwable = new Throwable ();
+        final String thisClassName = (getClass ()).getName ();
 
-        StackTraceElement[] stackTrace = throwable.getStackTrace ();
+        final StackTraceElement[] stackTrace = throwable.getStackTrace ();
 
-        int stackLength = stackTrace.length;
-        int i           = 0;
+        final int stackLength = stackTrace.length;
+        int i = 0;
 
         // First skip all of the stack entries that do not correspond to this class.
 
@@ -62,7 +63,7 @@ public final class WaveStackUtils
 
     public String getCallerFileName ()
     {
-        StackTraceElement stackTraceElement = getCallerStackTraceElement ();
+        final StackTraceElement stackTraceElement = getCallerStackTraceElement ();
 
         if (null != stackTraceElement)
         {
@@ -76,7 +77,7 @@ public final class WaveStackUtils
 
     public String getCallerClassName ()
     {
-        StackTraceElement stackTraceElement = getCallerStackTraceElement ();
+        final StackTraceElement stackTraceElement = getCallerStackTraceElement ();
 
         if (null != stackTraceElement)
         {
@@ -90,7 +91,7 @@ public final class WaveStackUtils
 
     public int getCallerLineNumber ()
     {
-        StackTraceElement stackTraceElement = getCallerStackTraceElement ();
+        final StackTraceElement stackTraceElement = getCallerStackTraceElement ();
 
         if (null != stackTraceElement)
         {
@@ -100,5 +101,20 @@ public final class WaveStackUtils
         {
             return (0);
         }
+    }
+
+    public static String getStackString (final Throwable throwable)
+    {
+        if (null == throwable)
+        {
+            return ("");
+        }
+
+        final StringWriter stringWriter = new StringWriter ();
+        final PrintWriter printWriter = new PrintWriter (stringWriter);
+
+        throwable.printStackTrace (printWriter);
+
+        return (stringWriter.toString ());
     }
 }
