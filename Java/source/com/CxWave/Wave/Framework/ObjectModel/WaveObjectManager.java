@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -227,6 +228,7 @@ public class WaveObjectManager extends WaveElement
 
         final Map<WaveWorkerPriority, Vector<String>> workersByPriority = new HashMap<WaveWorkerPriority, Vector<String>> ();
         final Map<String, Integer> workersCardinality = new HashMap<String, Integer> ();
+        final Vector<WaveWorkerPriority> allUsedPrioritiesForWorkers = new Vector<WaveWorkerPriority> ();
 
         for (final String workerClassName : workerClassNames)
         {
@@ -251,12 +253,15 @@ public class WaveObjectManager extends WaveElement
             }
 
             workersCardinality.put (workerClassName, cardinality);
+
+            allUsedPrioritiesForWorkers.add (priority);
         }
 
-        for (final Map.Entry<WaveWorkerPriority, Vector<String>> entry : workersByPriority.entrySet ())
+        Collections.sort (allUsedPrioritiesForWorkers);
+
+        for (final WaveWorkerPriority priority : allUsedPrioritiesForWorkers)
         {
-            final WaveWorkerPriority priority = entry.getKey ();
-            final Vector<String> workersForThisPriority = entry.getValue ();
+            final Vector<String> workersForThisPriority = workersByPriority.get (priority);
 
             WaveAssertUtils.waveAssert (null != workersForThisPriority);
 
