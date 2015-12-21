@@ -254,7 +254,10 @@ public class WaveObjectManager extends WaveElement
 
             workersCardinality.put (workerClassName, cardinality);
 
-            allUsedPrioritiesForWorkers.add (priority);
+            if (!(allUsedPrioritiesForWorkers.contains (priority)))
+            {
+                allUsedPrioritiesForWorkers.add (priority);
+            }
         }
 
         Collections.sort (allUsedPrioritiesForWorkers);

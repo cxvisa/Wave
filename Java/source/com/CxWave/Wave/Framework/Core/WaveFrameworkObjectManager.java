@@ -8,6 +8,7 @@ import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessag
 import com.CxWave.Wave.Framework.LocationManagement.Location;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.SI32;
@@ -21,7 +22,9 @@ import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK)
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
     private static WaveFrameworkObjectManager s_waveFrameworkObjectManager;

@@ -9,11 +9,11 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
-import com.CxWave.Wave.Framework.ObjectModel.Annotations.Priority;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 
 @OwnerOM (om = WaveObjectManager.class)
 @Cardinality (1)
-@Priority (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0)
+@WorkerPriority (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0)
 public class WaveInstallObjectManagerWorker extends WaveWorker
 {
     public WaveInstallObjectManagerWorker (final WaveObjectManager waveObjectManager)

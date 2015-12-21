@@ -15,7 +15,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 @Target (
     { ElementType.TYPE
     })
-public @interface Priority
+public @interface WorkerPriority
 {
     public WaveWorkerPriority value () default WaveWorkerPriority.WAVE_WORKER_PRIORITY_0;
 }

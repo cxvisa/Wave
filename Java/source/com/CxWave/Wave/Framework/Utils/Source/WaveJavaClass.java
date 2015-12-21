@@ -28,7 +28,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
-import com.CxWave.Wave.Framework.ObjectModel.Annotations.Priority;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -496,11 +496,11 @@ public class WaveJavaClass extends WaveJavaType
             WaveAssertUtils.waveAssert (0 != cardinality);
         }
 
-        final Annotation annotationForPriority = reflectionClass.getAnnotation (Priority.class);
+        final Annotation annotationForPriority = reflectionClass.getAnnotation (WorkerPriority.class);
 
         if (null != annotationForPriority)
         {
-            final Priority priorityAnnotation = (Priority) annotationForPriority;
+            final WorkerPriority priorityAnnotation = (WorkerPriority) annotationForPriority;
 
             WaveAssertUtils.waveAssert (null != priorityAnnotation);
 

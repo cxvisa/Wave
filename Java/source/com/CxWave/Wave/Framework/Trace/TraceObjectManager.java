@@ -5,13 +5,16 @@
 package com.CxWave.Wave.Framework.Trace;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils;
 import com.CxWave.Wave.Framework.Utils.Time.WaveTimeUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_TRACE)
 public class TraceObjectManager extends WaveObjectManager
 {
     private static TraceObjectManager s_traceObjectManager = null;

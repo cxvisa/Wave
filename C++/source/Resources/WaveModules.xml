@@ -3,6 +3,7 @@
 <!-- This file describes the various modules that contain Wave Resources. -->
 
 <Modules ComponentName = "Wave">
+    <Module Name = "WaveObjectManagerPriorities"                 Source = "WaveObjectManagerPriorities.xml"                   ></Module>
     <Module Name = "FrameworkCore"                               Source = "WaveFrameworkCore.xml"                             ></Module>
     <Module Name = "FrameworkMessaging"                          Source = "WaveFrameworkMessaging.xml"                        ></Module>
     <Module Name = "FrameworkLocationManagement"                 Source = "WaveFrameworkLocationManagement.xml"               ></Module>
