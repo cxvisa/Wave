@@ -521,7 +521,14 @@ public class WaveJavaClass extends WaveJavaType
         }
         else
         {
-            return (false);
+            if (null != m_superClass)
+            {
+                return (m_superClass.isAKnownWorker (workerClassName));
+            }
+            else
+            {
+                return (false);
+            }
         }
     }
 
@@ -550,7 +557,14 @@ public class WaveJavaClass extends WaveJavaType
             }
         }
 
-        return (true);
+        if (null != m_superClass)
+        {
+            return (m_superClass.validateWorkerClassEntries ());
+        }
+        else
+        {
+            return (true);
+        }
     }
 
     private void addOwnedWorker (final String workerClassName, final int cardinality, final WaveWorkerPriority priority)
@@ -775,6 +789,16 @@ public class WaveJavaClass extends WaveJavaType
             workerClassNames.add (workerClassName);
         }
 
+        if (null != m_superClass)
+        {
+            final Vector<String> workerClassNamesFromImmediteBaseClass = m_superClass.getWorkerClassNames ();
+
+            if (null != workerClassNamesFromImmediteBaseClass)
+            {
+                workerClassNames.addAll (workerClassNamesFromImmediteBaseClass);
+            }
+        }
+
         return (workerClassNames);
     }
 
@@ -794,7 +818,25 @@ public class WaveJavaClass extends WaveJavaType
             WaveAssertUtils.waveAssert ();
         }
 
-        return (m_ownedWorkerClassNamesCadinalityMap.get (workerClassName));
+        if (m_ownedWorkerClassNamesCadinalityMap.containsKey (workerClassName))
+        {
+            return (m_ownedWorkerClassNamesCadinalityMap.get (workerClassName));
+        }
+        else
+        {
+            if (null != m_superClass)
+            {
+                return (m_superClass.getWorkerClassCardinality (workerClassName));
+            }
+            else
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.getWorkerClassCardinality : %s is not a known Worker to %s.  Exhausted seraching the inheritance hierarchy.", workerClassName, m_name);
+
+                WaveAssertUtils.waveAssert ();
+
+                return (0);
+            }
+        }
     }
 
     public WaveWorkerPriority getWorkerClassPriority (final String workerClassName)
@@ -813,6 +855,24 @@ public class WaveJavaClass extends WaveJavaType
             WaveAssertUtils.waveAssert ();
         }
 
-        return (m_ownedWorkerClassNamesPriorityMap.get (workerClassName));
+        if (m_ownedWorkerClassNamesPriorityMap.containsKey (workerClassName))
+        {
+            return (m_ownedWorkerClassNamesPriorityMap.get (workerClassName));
+        }
+        else
+        {
+            if (null != m_superClass)
+            {
+                return (m_superClass.getWorkerClassPriority (workerClassName));
+            }
+            else
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.getWorkerClassPriority : %s is not a known Worker to %s.  Exhausted seraching the inheritance hierarchy.", workerClassName, m_name);
+
+                WaveAssertUtils.waveAssert ();
+
+                return (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0);
+            }
+        }
     }
 }
