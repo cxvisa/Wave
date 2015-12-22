@@ -205,4 +205,9 @@ public class SerializableObject
 
         m_attributesMap.copyFrom (serializableObject.m_attributesMap);
     }
+
+    public boolean isPreparedForSerialization ()
+    {
+        return (null != m_attributesMap);
+    }
 }

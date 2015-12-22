@@ -6,6 +6,9 @@ package com.CxWave.Wave.Framework.Utils.Stack;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Vector;
+
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public final class WaveStackUtils
 {
@@ -116,5 +119,89 @@ public final class WaveStackUtils
         throwable.printStackTrace (printWriter);
 
         return (stringWriter.toString ());
+    }
+
+    public static String getStackTraceForCurrentThread ()
+    {
+        final StringBuilder stackTraceString = new StringBuilder ();
+
+        final StackTraceElement[] stackTraceElements = Thread.currentThread ().getStackTrace ();
+
+        for (final StackTraceElement stackTraceElement : stackTraceElements)
+        {
+            stackTraceString.append (stackTraceElement.toString ());
+
+            stackTraceString.append ("\n");
+        }
+
+        return (stackTraceString.toString ());
+    }
+
+    public static boolean isMainThread ()
+    {
+        final StackTraceElement[] stackTraceElements = Thread.currentThread ().getStackTrace ();
+        final int numberOfStackTraceElements = stackTraceElements.length;
+
+        if (0 < numberOfStackTraceElements)
+        {
+            final String methodName = stackTraceElements[numberOfStackTraceElements - 1].getMethodName ();
+
+            if (methodName.equals ("main"))
+            {
+                return (true);
+            }
+            else
+            {
+                return (false);
+            }
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    public static String getMainClassNameForThisThread ()
+    {
+        final StackTraceElement[] stackTraceElements = Thread.currentThread ().getStackTrace ();
+        final int numberOfStackTraceElements = stackTraceElements.length;
+
+        if (0 < numberOfStackTraceElements)
+        {
+            final String methodName = stackTraceElements[numberOfStackTraceElements - 1].getMethodName ();
+
+            if (methodName.equals ("main"))
+            {
+                return (stackTraceElements[numberOfStackTraceElements - 1].getClassName ());
+            }
+            else
+            {
+                return ("");
+            }
+        }
+        else
+        {
+            return ("");
+        }
+    }
+
+    public static String getMainClassCompactNameForThisThread ()
+    {
+        final String mainClassNameForThisThread = getMainClassNameForThisThread ();
+
+        final Vector<String> mainClassNameForThisThreadTokens = new Vector<String> ();
+
+        WaveStringUtils.tokenize (mainClassNameForThisThread, mainClassNameForThisThreadTokens, '.');
+
+        final int numberOfTokens = mainClassNameForThisThreadTokens.size ();
+
+        String mainClassCompactNameForThisThread = "";
+
+        if (0 < numberOfTokens)
+        {
+            mainClassCompactNameForThisThread = mainClassNameForThisThreadTokens.lastElement ();
+        }
+
+        return (mainClassCompactNameForThisThread);
     }
 }

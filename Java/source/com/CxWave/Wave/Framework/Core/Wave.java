@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
+import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -31,8 +32,25 @@ public class Wave
     {
     }
 
-    public static void initialize (final WaveMainConfiguration waveMainConfiguration)
+    public static void initialize (final String waveMainConfigurationFile)
     {
+        final WaveMainConfiguration waveMainConfiguration = new WaveMainConfiguration ();
+
+        if (SourceUtils.getIsInitialized ())
+        {
+            if (WaveStringUtils.isNotBlank (waveMainConfigurationFile))
+            {
+                waveMainConfiguration.loadFromWaveConfigurationFile (waveMainConfigurationFile);
+            }
+        }
+
+        initialize (waveMainConfiguration, waveMainConfigurationFile);
+    }
+
+    public static void initialize (final WaveMainConfiguration waveMainConfiguration, final String waveMainConfigurationFile)
+    {
+        final String mainClassCompactNameForThisThread = WaveStackUtils.getMainClassCompactNameForThisThread ();
+
         // Initialize Random Generator
 
         WaveRandomGenerator.initialize ();
@@ -117,7 +135,14 @@ public class Wave
 
         if (WaveStringUtils.isBlank (waveMainConfiguration.getTraceFileName ()))
         {
-            waveTraceFileName = (waveMainConfiguration.getApplicationCompactName ()) + ".trc";
+            if (WaveStringUtils.isNotBlank (waveMainConfiguration.getApplicationCompactName ()))
+            {
+                waveTraceFileName = (waveMainConfiguration.getApplicationCompactName ()) + ".trc";
+            }
+            else
+            {
+                waveTraceFileName = mainClassCompactNameForThisThread + ".trc";
+            }
         }
         else
         {
@@ -128,7 +153,7 @@ public class Wave
         WaveFrameworkObjectManager.setGlobalConfigurationFile (waveConfigurationFileDirectory + "/" + waveGlobalConfigurationFile);
         WaveFrameworkObjectManager.setLockFileForConfigurationFile (waveConfigurationFileDirectory + "/" + waveLockFileForConfigurationFile);
 
-        final String waveTraceFilePath = waveTraceFileDirectory + "/" + waveTraceFileName;
+        String waveTraceFilePath = waveTraceFileDirectory + "/" + waveTraceFileName;
 
         TraceObjectManager.setWaveTraceFileName (waveTraceFilePath);
 
@@ -137,6 +162,97 @@ public class Wave
         // Initialize Source Utils
 
         SourceUtils.initialize ();
+
+        // If the waveMainConfiguration is already not loaded, then since we have initialized SourceUtils, we should try to
+        // reload it again
+        // In this case, initially the trace file will be .trc file and in the following if block it will be reset using the
+        // values form the WaveMainConfiguration.
+
+        if ((WaveStringUtils.isNotBlank (waveMainConfigurationFile)) && (!(waveMainConfiguration.isPreparedForSerialization ())))
+        {
+            waveMainConfiguration.loadFromWaveConfigurationFile (waveMainConfigurationFile);
+
+            if (WaveStringUtils.isBlank (waveMainConfiguration.getConfigurationFile ()))
+            {
+                waveConfigurationFile = (waveMainConfiguration.getApplicationCompactName ()) + ".cfg";
+            }
+            else
+            {
+                waveConfigurationFile = waveMainConfiguration.getConfigurationFile ();
+            }
+
+            if (WaveStringUtils.isBlank (waveMainConfiguration.getConfigurationFileDirectory ()))
+            {
+                waveConfigurationFileDirectory = getConfigurationFileDirectory ();
+            }
+            else
+            {
+                waveConfigurationFileDirectory = waveMainConfiguration.getConfigurationFileDirectory ();
+            }
+
+            if (WaveStringUtils.isBlank (waveMainConfiguration.getGlobalConfigurationFile ()))
+            {
+                waveGlobalConfigurationFile = (waveMainConfiguration.getApplicationCompactName ()) + ".global.cfg";
+            }
+            else
+            {
+                waveGlobalConfigurationFile = waveMainConfiguration.getGlobalConfigurationFile ();
+            }
+
+            if (WaveStringUtils.isBlank (waveMainConfiguration.getLockFileForConfigurationFile ()))
+            {
+                waveLockFileForConfigurationFile = (waveMainConfiguration.getApplicationCompactName ()) + ".cfg.tmp";
+            }
+            else
+            {
+                waveLockFileForConfigurationFile = waveMainConfiguration.getLockFileForConfigurationFile ();
+            }
+
+            if (WaveStringUtils.isBlank (waveMainConfiguration.getTraceFileDirectory ()))
+            {
+                waveTraceFileDirectory = getTraceFileDirectory ();
+            }
+            else
+            {
+                waveTraceFileDirectory = waveMainConfiguration.getTraceFileDirectory ();
+            }
+
+            if (WaveStringUtils.isBlank (waveMainConfiguration.getTraceFileName ()))
+            {
+                if (WaveStringUtils.isNotBlank (waveMainConfiguration.getApplicationCompactName ()))
+                {
+                    waveTraceFileName = (waveMainConfiguration.getApplicationCompactName ()) + ".trc";
+                }
+                else
+                {
+                    waveTraceFileName = mainClassCompactNameForThisThread + ".trc";
+                }
+            }
+            else
+            {
+                waveTraceFileName = waveMainConfiguration.getTraceFileName ();
+            }
+
+            WaveFrameworkObjectManager.setConfigurationFile (waveConfigurationFileDirectory + "/" + waveConfigurationFile);
+            WaveFrameworkObjectManager.setGlobalConfigurationFile (waveConfigurationFileDirectory + "/" + waveGlobalConfigurationFile);
+            WaveFrameworkObjectManager.setLockFileForConfigurationFile (waveConfigurationFileDirectory + "/" + waveLockFileForConfigurationFile);
+
+            waveTraceFilePath = waveTraceFileDirectory + "/" + waveTraceFileName;
+
+            if (!(WaveStringUtils.endsWith (waveTraceFilePath, ".trc")))
+            {
+                waveTraceFilePath = waveTraceFilePath + ".trc";
+            }
+
+            final String alreadyExistingWaveTraceFileName = TraceObjectManager.getWaveTraceFileName ();
+
+            if (!(waveTraceFilePath.equals (alreadyExistingWaveTraceFileName)))
+            {
+                TraceObjectManager.resetWaveTraceFileName (waveTraceFilePath);
+            }
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_SUCCESS, "Trace file is being set to : " + waveTraceFilePath, true, false);
+        }
 
         WaveFrameworkObjectManager.bootSelf ();
 

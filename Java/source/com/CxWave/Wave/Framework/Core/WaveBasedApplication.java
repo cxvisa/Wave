@@ -4,14 +4,12 @@
 
 package com.CxWave.Wave.Framework.Core;
 
-import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
-
 public class WaveBasedApplication
 {
 
-    public static void waveMain (final WaveMainConfiguration waveMainConfiguration)
+    public static void waveMain (final String waveMainConfigurationFile)
     {
-        Wave.initialize (waveMainConfiguration);
+        Wave.initialize (waveMainConfigurationFile);
 
         WaveFrameworkObjectManager.bootWave ();
     }

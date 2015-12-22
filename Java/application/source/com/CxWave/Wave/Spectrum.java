@@ -38,9 +38,87 @@ class Spectrum
 {
     public static void main (final String[] commandLineArguments)
     {
-        WaveMainConfiguration waveMainConfiguration = new WaveMainConfiguration ();
+        String configurationFile = null;
 
-        WaveBasedApplication.waveMain (waveMainConfiguration);
+        WaveMainConfiguration wmc = null;
+
+        if (2 <= (commandLineArguments.length))
+        {
+            configurationFile = commandLineArguments[1];
+        }
+
+        WaveBasedApplication.waveMain (configurationFile);
+
+        if (2 <= (commandLineArguments.length))
+        {
+            XmlFile xmlFile = new XmlFile (configurationFile);
+
+            xmlFile.debugPrint ();
+
+            WaveConfigurationFile waveConfigurationFile = new WaveConfigurationFile (configurationFile);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "wave.application.name = %s", waveConfigurationFile.getConfigurationValue ("wave.application.name"));
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "wave.ras.trace.default-level = %s", waveConfigurationFile.getConfigurationValue ("wave.ras.trace.default-level"));
+
+            WaveMainConfiguration waveMainConfiguration1 = new WaveMainConfiguration ();
+
+            waveMainConfiguration1.loadFromWaveConfigurationFile (configurationFile);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application Name        : %s", (waveMainConfiguration1.getApplication ()).getApplicationName ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application CompactName : %s", waveMainConfiguration1.getApplicationCompactName ());
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface      : %s", (waveMainConfiguration1.getApplication ()).getEthernetInterface ());
+
+            waveMainConfiguration1.debugPrint ();
+
+            StringBuffer stringBuffer = new StringBuffer ();
+
+            waveMainConfiguration1.serializeTo (stringBuffer);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 1:\n%s", stringBuffer);
+
+            UI32 v1 = new UI32 (10);
+            UI32 v2 = new UI32 (10);
+            UI32 v3 = new UI32 (20);
+
+            if (v1.equals (v2))
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 equals V2");
+            }
+            else
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V2");
+            }
+
+            if (v1.equals (v3))
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 equals V3");
+            }
+            else
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V3");
+            }
+
+            WaveMainConfiguration waveMainConfiguration2 = null;
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "loadFromSerializableObject Test (1000000 iterations) started.");
+
+            for (int i = 0; i < 1000000; i++)
+            {
+                waveMainConfiguration2 = new WaveMainConfiguration ();
+                waveMainConfiguration2.loadFromSerializableObject (waveMainConfiguration1);
+            }
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "loadFromSerializableObject Test (1000000 iterations) End.");
+
+
+            stringBuffer.delete (0, stringBuffer.length ());
+
+            waveMainConfiguration2.serializeTo (stringBuffer);
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 2:\n%s", stringBuffer);
+
+            wmc = waveMainConfiguration2;
+        }
 
         System.out.println ("Print JVM Command Line Arguments : " + (EnvironmentUtils.getVirtualMachineCommandLineArguments ()).toString ());
 
@@ -105,79 +183,6 @@ class Spectrum
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "This is a test with tracePrintf : %s, %s", new String ("Successfully traced."), "3016");
 
         DebugUtils.prettyPrint (WaveJavaSourceRepository.getAllDescendantsForClass (SerializableObject.class.getName ()));
-
-        WaveMainConfiguration wmc = null;
-
-        if (2 <= (commandLineArguments.length))
-        {
-            XmlFile xmlFile = new XmlFile (commandLineArguments[1]);
-
-            xmlFile.debugPrint ();
-
-            WaveConfigurationFile waveConfigurationFile = new WaveConfigurationFile (commandLineArguments[1]);
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "wave.application.name = %s", waveConfigurationFile.getConfigurationValue ("wave.application.name"));
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "wave.ras.trace.default-level = %s", waveConfigurationFile.getConfigurationValue ("wave.ras.trace.default-level"));
-
-            WaveMainConfiguration waveMainConfiguration1 = new WaveMainConfiguration ();
-
-            waveMainConfiguration1.loadFromWaveConfigurationFile (commandLineArguments[1]);
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application Name        : %s", (waveMainConfiguration1.getApplication ()).getApplicationName ());
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Application CompactName : %s", waveMainConfiguration1.getApplicationCompactName ());
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Selected Ethernet Interface      : %s", (waveMainConfiguration1.getApplication ()).getEthernetInterface ());
-
-            waveMainConfiguration1.debugPrint ();
-
-            StringBuffer stringBuffer = new StringBuffer ();
-
-            waveMainConfiguration1.serializeTo (stringBuffer);
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 1:\n%s", stringBuffer);
-
-            UI32 v1 = new UI32 (10);
-            UI32 v2 = new UI32 (10);
-            UI32 v3 = new UI32 (20);
-
-            if (v1.equals (v2))
-            {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 equals V2");
-            }
-            else
-            {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V2");
-            }
-
-            if (v1.equals (v3))
-            {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 equals V3");
-            }
-            else
-            {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "V1 not equals V3");
-            }
-
-            WaveMainConfiguration waveMainConfiguration2 = null;
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "loadFromSerializableObject Test (1000000 iterations) started.");
-
-            for (int i = 0; i < 1000000; i++)
-            {
-                waveMainConfiguration2 = new WaveMainConfiguration ();
-                waveMainConfiguration2.loadFromSerializableObject (waveMainConfiguration1);
-            }
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "loadFromSerializableObject Test (1000000 iterations) End.");
-
-
-            stringBuffer.delete (0, stringBuffer.length ());
-
-            waveMainConfiguration2.serializeTo (stringBuffer);
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Serialized Data for WaveMain Configuration 2:\n%s", stringBuffer);
-
-            wmc = waveMainConfiguration2;
-        }
 
         if (3 <= (commandLineArguments.length))
         {

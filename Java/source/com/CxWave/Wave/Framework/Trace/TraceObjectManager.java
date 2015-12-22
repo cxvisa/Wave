@@ -54,6 +54,13 @@ public class TraceObjectManager extends WaveObjectManager
         s_waveTraceFileName = waveTraceFileName;
     }
 
+    public static void resetWaveTraceFileName (final String waveTraceFileName)
+    {
+        s_waveTraceFileName = waveTraceFileName;
+
+        s_waveTraceFile.resetUsingNewFilePath (waveTraceFileName);
+    }
+
     private static String getTraceTagForLevel (final TraceLevel traceLevel)
     {
         String traceTag = null;

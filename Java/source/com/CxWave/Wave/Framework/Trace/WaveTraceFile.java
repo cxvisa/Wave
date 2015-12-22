@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2015 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2015 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.Trace;
@@ -58,10 +56,10 @@ public class WaveTraceFile
                 {
                     m_traceFileBufferedWriter.close ();
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
             }
 
@@ -71,12 +69,14 @@ public class WaveTraceFile
                 {
                     m_traceFileWriter.close ();
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
             }
+
+            m_traceFilePath = null;
         }
     }
 
@@ -90,10 +90,10 @@ public class WaveTraceFile
                 {
                     m_traceFileBufferedWriter.flush ();
                 }
-                catch (IOException e)
+                catch (final IOException e)
                 {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ();
                 }
             }
         }
@@ -108,21 +108,21 @@ public class WaveTraceFile
         }
 
         m_traceFilePath = new String (traceFilePath);
-        m_traceFile     = new File (traceFilePath);
+        m_traceFile = new File (traceFilePath);
 
         try
         {
             m_traceFileWriter = new FileWriter (m_traceFile, true);
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            e.printStackTrace ();
 
             WaveAssertUtils.waveAssert ();
         }
 
-        m_traceFileBufferedWriter      = new BufferedWriter (m_traceFileWriter);
+        m_traceFileBufferedWriter = new BufferedWriter (m_traceFileWriter);
         m_traceFileBufferedPrintWriter = new PrintWriter (m_traceFileBufferedWriter);
     }
 
