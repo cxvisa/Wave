@@ -37,6 +37,12 @@ public class WaveAsynchronousContext
         }
     }
 
+    public WaveAsynchronousContext (final WaveAsynchronousContext waveAsynchronousContext)
+    {
+        WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.WaveAsynchronousContext : Cannot copy construct a WaveAsynchronousContext.");
+        WaveAssertUtils.waveAssert ();
+    }
+
     public boolean validateAndCompute ()
     {
         if (null == m_caller)
@@ -96,7 +102,7 @@ public class WaveAsynchronousContext
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
-            WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.callback : Could not obtain the invoke callback method %s on class %s, Details : %s", m_callbackMethodName, (m_caller.getClass ()).getName (), e.toString ());
+            WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.callback : Could not invoke callback method %s on class %s, Details : %s", m_callbackMethodName, (m_caller.getClass ()).getName (), e.toString ());
             WaveAssertUtils.waveAssert ();
         }
     }

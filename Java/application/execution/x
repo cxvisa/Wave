@@ -1,0 +1,1441 @@
+Thread CPU Time Support is supported.
+Thread CPU Time Support is enabled.
+Successfully configured this location as a location.[32mSUCCESS: Tue Dec 22 15:30:29 2015 : Trace file is being set to : /home/sagar/CxWave/Wave/Java/application/execution/Spectrum.trc
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.PersistenceToolKitStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.PersistenceToolKitStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.System.WaveSystemUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.System.WaveSystemUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.LogStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LogStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.AttributeTypeString
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.AttributeTypeString : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.AttributeConcatenationOperator
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.AttributeConcatenationOperator : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveOperationMapContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveOperationMapContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.WaveJavaEnum
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.WaveJavaEnum : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Database.DatabaseObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Database.DatabaseObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceClientProcessingStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceClientProcessingStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeSI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeSI8 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.WaveServiceMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.WaveServiceMap : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveHttpContentType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveHttpContentType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils$1 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.SI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.SI64 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ClusterEnabledFlag
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterEnabledFlag : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.LocationManagement.LocationBase
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.LocationManagement.LocationBase : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmSeverity
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmSeverity : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeWaveThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeWaveThreadId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Spectrum
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Spectrum : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.WaveJavaInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.WaveJavaInterface : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveSynchronousLinearSequencerContextStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveSynchronousLinearSequencerContextStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.MultiThreading.WaveMessageQueue
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.MultiThreading.WaveMessageQueue : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.LocationManagement.ServerStreamingSocketStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.LocationManagement.ServerStreamingSocketStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.UI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.UI16 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveConnectionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveConnectionStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.LogDescriptionType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LogDescriptionType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.LocationRole
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LocationRole : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatusPropagationType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatusPropagationType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeSerializableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeSerializableObject : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectShowType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectShowType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.LogType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LogType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceClientOpCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceClientOpCode : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveMessageResponseContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveMessageResponseContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FileServiceStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FileServiceStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeLocationId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.LocationManagement.SubLocation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.LocationManagement.SubLocation : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceConnectionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceConnectionStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.UI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.UI32 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.EventHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.EventHandler : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ToolKits.Xml.XmlFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ToolKits.Xml.XmlFile : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.CommitTransactionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.CommitTransactionStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.WaveGenericContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.WaveGenericContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCDataType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCDataType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeSI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeSI16 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Trace.TraceClientMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Trace.TraceClientMap : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveElement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveElement : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.MultiThreading.WaveThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.MultiThreading.WaveThreadId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Debug.DebugUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Debug.DebugUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils$_Internal_
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils$_Internal_ : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ToolKits.Xml.XmlElement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ToolKits.Xml.XmlElement : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDataFieldType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDataFieldType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveFrameworkState
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveFrameworkState : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.TimerMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.TimerMessageStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AtributeLocationIdVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AtributeLocationIdVector : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveEventListenerMapContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveEventListenerMapContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.Local.WaveMessage$WaveMessageBuffer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Local.WaveMessage$WaveMessageBuffer : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Trace.WaveTraceFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Trace.WaveTraceFile : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.SI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.SI32 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FIPSOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FIPSOperationStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.MultiThreading.WaveThread
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.MultiThreading.WaveThread : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveHaRecoveryType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveHaRecoveryType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.CopyOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.CopyOperationStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveEventMapContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveEventMapContext : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ToolKits.Xml.XmlRootElement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ToolKits.Xml.XmlRootElement : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WavePersistableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WavePersistableObject : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Reflection.WaveReflectionUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Reflection.WaveReflectionUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Trace.TraceObjectManager$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Trace.TraceObjectManager$1 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ConfigFileManagementToolKitStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ConfigFileManagementToolKitStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverOperationStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.Local.WaveEvent
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Local.WaveEvent : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectLoadOperationalDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectLoadOperationalDataStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.DatabaseSchemaConversion
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.DatabaseSchemaConversion : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveSystemManagementReadConfigErrors
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveSystemManagementReadConfigErrors : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.Message
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.Message : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeSI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeSI32 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkDatabaseSchemaConversionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkDatabaseSchemaConversionStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceWorkerOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceWorkerOperation : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ClusterOperationErrorStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterOperationErrorStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeType : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfacePostingToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfacePostingToClientStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectListenOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectListenOperation : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveNodeStartMode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveNodeStartMode : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.WaveJavaType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.WaveJavaType : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.StartupFileType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.StartupFileType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveNodeHardwareSynchronizationState
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveNodeHardwareSynchronizationState : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.SI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.SI8 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ClusterLocalSetThisNodeIpAddressStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterLocalSetThisNodeIpAddressStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.SchemaUpgradeStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.SchemaUpgradeStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverInformSecondaryLocationsToChangePrimaryStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverInformSecondaryLocationsToChangePrimaryStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceMessageStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.TimerHandle
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.TimerHandle : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ResourceId : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.Local.WaveMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Local.WaveMessage : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceConnectionToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceConnectionToClientStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeResourceEnum
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeResourceEnum : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.MultiThreading.WaveThread$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.MultiThreading.WaveThread$1 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.MessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.MessageHandler : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectUpdateDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectUpdateDataStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface : Adding Interface.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectGenericStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectGenericStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutexStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutexStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmState
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmState : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkClusterOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkClusterOperationStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.LocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.LocationId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.Remote.InterLocationTypes
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Remote.InterLocationTypes : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveMessageHandler : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeSI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeSI64 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveDatabaseQueryStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveDatabaseQueryStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.WaveJavaAnnotation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.WaveJavaAnnotation : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.ManagementInterface.ClientInterface.WaveUserInterfaceObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.ManagementInterface.ClientInterface.WaveUserInterfaceObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Time.WaveTimeUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Time.WaveTimeUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeUI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeUI16 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveMessageBrokerStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessageBrokerStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectSpecificStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectSpecificStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.DBCorruptionRecoveryUpdate
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.DBCorruptionRecoveryUpdate : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Socket.StreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Socket.StreamingSocket : Adding Interface.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceIdVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceIdVector : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.WaveJavaClass
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.WaveJavaClass : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.WaveResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.WaveResourceId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeBoolean
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeBoolean : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ClusterStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.XPathRegistrationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.XPathRegistrationStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeStringVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeStringVector : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveEventHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveEventHandler : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ClusterCreateStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterCreateStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.SI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.SI16 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfacePostingToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfacePostingToClientStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.UI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.UI8 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Synchronization.WaveConditionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Synchronization.WaveConditionStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.SerializableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.SerializableObject : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.TraceLevel
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.TraceLevel : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.AttributeConditionOperator
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.AttributeConditionOperator : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperation : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Socket.ClientStreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Socket.ClientStreamingSocket : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.WaveBasedApplication
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.WaveBasedApplication : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath : Adding Annotation.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeUI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeUI8 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeDateTime
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeDateTime : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.String.WaveStringUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.String.WaveStringUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeString
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeString : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeUI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeUI32 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveShutDownReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveShutDownReason : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributesMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributesMap : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.SystemManagement.SystemManagementToolKit
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.SystemManagement.SystemManagementToolKit : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.FrameworkObjectManagerFailoverReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkObjectManagerFailoverReason : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface : Adding Interface.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Trace.TraceObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Trace.TraceObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveMessageResponseHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveMessageResponseHandler : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Socket.ServerStreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Socket.ServerStreamingSocket : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils$1 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.ReflectionAttribute
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.ReflectionAttribute : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.Repository.WaveResourcesRepository
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.Repository.WaveResourcesRepository : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceMessageStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.ClusterDeleteStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterDeleteStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.Wave
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Wave : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.TraceClientId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.TraceClientId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.WaveServiceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.WaveServiceId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Type.UI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.UI64 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.Attribute
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.Attribute : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveBrokerBasedMessageType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveBrokerBasedMessageType : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.WaveMainCluster
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.WaveMainCluster : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeWaveServiceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeWaveServiceId : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceServerOpCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceServerOpCode : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.LocationManagement.Location
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.LocationManagement.Location : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDeleteDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDeleteDataStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Source.SourceUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Source.SourceUtils : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperationStatus : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFileInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFileInterface : Adding Interface.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes : Adding Enum.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.Attributes.AttributeUI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.AttributeUI64 : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Adding Java Reflection Class : com.CxWave.Wave.Framework.ObjectModel.WaveWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.ObjectModel.WaveWorker : Adding Class.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : loadedDateTime
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : configurationName
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : configurationOrigin
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : description
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainSystemManagementWyser
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.System.WaveSystemUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveOperationMapContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.WaveJavaEnum
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Database.DatabaseObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeSI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.WaveServiceMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Messaging.Local.WaveMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : type
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : priority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : serviceCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : operationCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveClientMessageId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : messageId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : messageIdAtOriginatingLocation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : senderServiceCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : senderLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : receiverLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isOneWayMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isSynchronousMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isLastReply
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isACopy
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : originalMessageId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : completionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveClientOriginatingLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveNativeClientId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveUserClientId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : dropReplyAcrossLocations
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : messageString
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isConfigurationChanged
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isConfigurationFlagSetByUser
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : nestedSql
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : transactionCounter
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMessageCreatorThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : surrogatingForLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : needSurrogateSupportFlag
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isMessageBeingSurrogatedFlag
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : locationsForStatusPropagation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : completionStatusForStatusPropagation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : localizedCompletionStatusForStatusPropagation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isMessageSupportedWhenServiceIsPaused
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : xPathStringsVectorForTimestampUpdate
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : partitionName
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : partitionLocationIdForPropagation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isPartitionContextPropagated
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isPartitionNameSetByUser
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isConfigurationTimeChanged
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isAConfigurationIntent
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isConfigurationIntentStored
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isALastConfigReplay
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : timeOutInMilliSeconds
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : disconnectFromNodeAfterReply
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : removeNodeFromKnownLocationAfterReply
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : sendForOneWayConnection
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : yinPaths
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : port
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : detectCorruption
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : handleCorruption
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enableLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : logFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : sharedBuffers
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainSystemManagementWyserYang
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.SI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeResourceEnum
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.LocationManagement.LocationBase
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeWaveThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.MultiThreading.WaveThread$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : ipAddressAndPortCombinations
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Spectrum
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.WaveJavaInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.MultiThreading.WaveMessageQueue
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.LocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.UI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : directory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : file
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : size
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : numberOfFiles
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : traceLevel
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeSI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.WaveJavaAnnotation
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRasSysLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRasLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRasTrace
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.ManagementInterface.ClientInterface.WaveUserInterfaceObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Successfully added com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker worker to com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRasSysLogLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRasSysLogRemote
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Time.WaveTimeUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeUI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : applicationName
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : isADaemon
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : ethernetInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : initialWorkingDirectory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainApplicationEnvironment
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainApplicationConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceIdVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.WaveJavaClass
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeSerializableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.WaveResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeBoolean
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : workingDirectory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : languageCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : countryCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeStringVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : file
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : tempFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveMessageResponseContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveEventHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.SI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.UI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : numberOfLogs
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRasLogAuditLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Ignoring com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage from Serialization computations since it is annotated with @NonSerializable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Successfully added com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker worker to com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.LocationManagement.SubLocation
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.UI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ToolKits.Xml.XmlFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.SerializableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.WaveGenericContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeSI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Socket.ClientStreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.WaveBasedApplication
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Trace.TraceClientMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeUI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeDateTime
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveElement
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.MultiThreading.WaveThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : application
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : database
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainManagementInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainSystemManagement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainCluster
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainRas
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : wyserTagsFilePath
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : databaseEmptyType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : databaseEmptyTypeAutoDetectionThresholdValue
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : configurationFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : configurationFileDirectory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : globalConfigurationFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : lockFileForConfigurationFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : traceFileDirectory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : traceFileName
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : profileFileName
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Successfully added com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker worker to com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Debug.DebugUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.String.WaveStringUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeString
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils$_Internal_
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ToolKits.Xml.XmlElement
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeUI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AtributeLocationIdVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributesMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.SystemManagement.SystemManagementToolKit
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : reason
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : file
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : backupFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : lockFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveEventListenerMapContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Messaging.Local.WaveMessage$WaveMessageBuffer
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Trace.TraceObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveMessageResponseHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Socket.ServerStreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Trace.WaveTraceFile
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.SI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Successfully added com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker worker to com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.MultiThreading.WaveThread
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.ReflectionAttribute
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : directory
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : configFileExtension
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : backupFileExtension
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : tempFileExtension
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainApplicationConfigurationLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainApplicationConfigurationGlobal
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager$WaveEventMapContext
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ToolKits.Xml.XmlRootElement
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Successfully added com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker worker to com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WavePersistableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Resources.Repository.WaveResourcesRepository
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Reflection.WaveReflectionUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Trace.TraceObjectManager$1
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainManagementInterfaceServer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : waveMainManagementInterfaceClient
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Successfully added com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker worker to com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Wave
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Messaging.Local.WaveEvent
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.TraceClientId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveJavaClass.computeMessageHandlers : Ignoring com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager : protected com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager.sendOneWay(com.CxWave.Wave.Framework.Messaging.Local.WaveMessage) from Message Handler computations since it is annotated with @NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveJavaClass.computeMessageHandlers : Ignoring com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager : public void com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager.handleWaveMessage(com.CxWave.Wave.Framework.Messaging.Local.WaveMessage) from Message Handler computations since it is annotated with @NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveJavaClass.computeMessageHandlers : Ignoring com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager : private void com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager.addMessageToMessageHistoryCalledFromSend(com.CxWave.Wave.Framework.Messaging.Local.WaveMessage) from Message Handler computations since it is annotated with @NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveJavaClass.computeMessageHandlers : Ignoring com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager : private void com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager.addMessageToMessageHistoryCalledFromHandle(com.CxWave.Wave.Framework.Messaging.Local.WaveMessage) from Message Handler computations since it is annotated with @NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveJavaClass.computeMessageHandlers : Ignoring com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager : public void com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager.reply(com.CxWave.Wave.Framework.Messaging.Local.WaveMessage) from Message Handler computations since it is annotated with @NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.WaveServiceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.UI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.Attribute
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveJavaClass.computeMessageHandlers : Added a message Handler for Class com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager with Message Type com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage, handler method : initializeMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.WaveMainCluster
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Adding Reflection Attribute : port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeWaveServiceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeSI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Terminal.WaveTerminalUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.LocationManagement.Location
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.Factory.AttributesFactory
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.WaveJavaType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Source.SourceUtils
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.SI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Type.TimerHandle
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.Attributes.AttributeUI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ObjectModel.WaveWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Class com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Interface com.CxWave.Wave.Framework.Utils.Socket.StreamingSocket
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Interface com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFileInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Interface com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Interface com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.MessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.EventHandler
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Annotation com.CxWave.Wave.Framework.ObjectModel.Annotations.Message
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.CommitTransactionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCDataType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.PersistenceToolKitStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.LogStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.AttributeTypeString
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.AttributeConcatenationOperator
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceClientProcessingStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveHttpContentType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceConnectionToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ClusterEnabledFlag
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDataFieldType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveFrameworkState
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.TimerMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveShutDownReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmSeverity
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkObjectManagerFailoverReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectUpdateDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectGenericStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutexStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmState
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkClusterOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveSynchronousLinearSequencerContextStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Framework.LocationManagement.ServerStreamingSocketStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Framework.Messaging.Remote.InterLocationTypes
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveConnectionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveDatabaseQueryStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FIPSOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveHaRecoveryType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.CopyOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.LogDescriptionType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ClusterDeleteStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.LocationRole
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ConfigFileManagementToolKitStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveMessageBrokerStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectSpecificStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.DBCorruptionRecoveryUpdate
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatusPropagationType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectLoadOperationalDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectShowType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.DatabaseSchemaConversion
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveSystemManagementReadConfigErrors
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveBrokerBasedMessageType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ClusterStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceServerOpCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkDatabaseSchemaConversionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.LogType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceWorkerOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceClientOpCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ClusterOperationErrorStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfacePostingToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectListenOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.XPathRegistrationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveNodeStartMode
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.StartupFileType
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FileServiceStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDeleteDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveNodeHardwareSynchronizationState
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ClusterCreateStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfacePostingToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ClusterLocalSetThisNodeIpAddressStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.SchemaUpgradeStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceConnectionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Framework.Utils.Synchronization.WaveConditionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverInformSecondaryLocationsToChangePrimaryStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.TraceLevel
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.AttributeConditionOperator
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing for Java Enum com.CxWave.Wave.Resources.ResourceEnums.ResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Computing Attributes and supported Data Types.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeSI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.lang.Short
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     short
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AtributeLocationIdVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.util.Vector<com.CxWave.Wave.Framework.Type.LocationId>
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeUI16
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeWaveThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.MultiThreading.WaveThreadId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.WaveResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeStringVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.util.Vector<java.lang.String>
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeSI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     byte
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.lang.Byte
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeUI8
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeDateTime
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.util.Date
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeWaveResourceIdVector
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.util.Vector<com.CxWave.Wave.Framework.Type.WaveResourceId>
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeLocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.LocationId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeSerializableObject
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Local.WaveMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Attributes.WaveMainCluster
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeString
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.lang.String
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeSI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.lang.Long
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     long
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeBoolean
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     boolean
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.lang.Boolean
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeResourceEnum
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.CommitTransactionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCDataType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.PersistenceToolKitStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LogStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.AttributeTypeString
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.AttributeConcatenationOperator
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceClientProcessingStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveHttpContentType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceConnectionToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterEnabledFlag
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDataFieldType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveFrameworkState
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.TimerMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveShutDownReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmSeverity
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkObjectManagerFailoverReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectUpdateDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectGenericStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveAlarmState
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkClusterOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveSynchronousLinearSequencerContextStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveConnectionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveDatabaseQueryStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FIPSOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveHaRecoveryType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.CopyOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LogDescriptionType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterDeleteStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LocationRole
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ConfigFileManagementToolKitStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessageBrokerStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectSpecificStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.DBCorruptionRecoveryUpdate
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatusPropagationType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectLoadOperationalDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectShowType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.DatabaseSchemaConversion
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveSystemManagementReadConfigErrors
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveBrokerBasedMessageType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceServerOpCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkDatabaseSchemaConversionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.LogType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceWorkerOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceClientOpCode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterOperationErrorStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfacePostingToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectListenOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.XPathRegistrationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveNodeStartMode
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.StartupFileType
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FileServiceStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagedObjectDeleteDataStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperationStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveNodeHardwareSynchronizationState
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterCreateStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfacePostingToClientStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ClusterLocalSetThisNodeIpAddressStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.SchemaUpgradeStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceConnectionStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.FrameworkFailoverInformSecondaryLocationsToChangePrimaryStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveManagementClientInterfaceMessageStatus
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.TraceLevel
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.AttributeConditionOperator
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.WaveCommandLineInterfaceOperation
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Resources.ResourceEnums.ResourceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeWaveServiceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.WaveServiceId
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeUI64
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeUI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.UI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Attribute Descendant : com.CxWave.Wave.Framework.Attributes.AttributeSI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     com.CxWave.Wave.Framework.Type.SI32
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     java.lang.Integer
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     int
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers : Adding Workers for Object Manager : _Reserved For Wave Internal Purposes_
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Now instantiating Workers for Priority WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers : Adding Workers for Object Manager : Wave Framework
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Now instantiating Workers for Priority WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers : Adding Workers for Object Manager : Database
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Now instantiating Workers for Priority WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : applicationName, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : isADaemon, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.daemonize
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : ethernetInterface, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.ethernet-interface
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : initialWorkingDirectory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.initial-working-directory
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : workingDirectory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment, xmlWaveXPathValue : wave.application.environment.working-directory
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : languageCode, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment, xmlWaveXPathValue : wave.application.environment.language
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : countryCode, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment, xmlWaveXPathValue : wave.application.environment.country
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : directory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.directory-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : configFileExtension, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.config-file-extension
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : backupFileExtension, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.backup-file-extension
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : tempFileExtension, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.temp-file-extension
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : file, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal, xmlWaveXPathValue : wave.application.configuration.local.file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : backupFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal, xmlWaveXPathValue : wave.application.configuration.local.backup-file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : lockFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal, xmlWaveXPathValue : wave.application.configuration.local.lock-file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : file, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal, xmlWaveXPathValue : wave.application.configuration.global.file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : tempFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal, xmlWaveXPathValue : wave.application.configuration.global.temp-file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : detectCorruption, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.detect-corruption
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : handleCorruption, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.handle-corruption
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enableLog, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.enable-log
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : logFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.log-file
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : sharedBuffers, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.shared-buffers
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer, xmlWaveXPathValue : wave.management-interface.server.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer, xmlWaveXPathValue : wave.management-interface.server.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient, xmlWaveXPathValue : wave.management-interface.client.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient, xmlWaveXPathValue : wave.management-interface.client.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : AttributeStringVector.loadValueFromWaveConfigurationFile : Field : yinPaths, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang, xmlWaveXPathValue : wave.system-management.wyser.yang.yin-path
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Attributes.WaveMainCluster, xmlWaveXPathValue : wave.cluster.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Attributes.WaveMainCluster, xmlWaveXPathValue : wave.cluster.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog, xmlWaveXPathValue : wave.ras.sys-log.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal, xmlWaveXPathValue : wave.ras.sys-log.local.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote, xmlWaveXPathValue : wave.ras.sys-log.remote.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : AttributeStringVector.loadValueFromWaveConfigurationFile : Field : ipAddressAndPortCombinations, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote, xmlWaveXPathValue : wave.ras.sys-log.remote.ip-address-port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog, xmlWaveXPathValue : wave.ras.log.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : numberOfLogs, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog, xmlWaveXPathValue : wave.ras.log.number-of-logs
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog, xmlWaveXPathValue : wave.ras.log.audit-log.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : directory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.directory-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : file, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : size, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.file-size
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : numberOfFiles, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.number-of-files
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : traceLevel, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.default-level
+[0m[32mSUCCESS: Tue Dec 22 15:30:29 2015 : Trace file is being set to : /home/sagar/CxWave/Wave/Java/application/execution/Spectrum.trc
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers : Adding Workers for Object Manager : Remote Message Transport
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Now instantiating Workers for Priority WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Initializing Serializable Object Repository ...
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration ... [0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Messaging.Local.WaveMessage ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Attributes.WaveMainCluster ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMulticastMessage ... [0m[33mIgnored.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Considering com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog ... [0m[32mConsidered.
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Utils.Configuration.WaveConfiguration ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Messaging.Local.WaveMessage ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers : Adding Workers for Object Manager : Ha Peer Message Transport
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Worker : com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker, Cardinality : 1, Priority : WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :     Now instantiating Workers for Priority WAVE_WORKER_PRIORITY_0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveListenForEventsObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInstallObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveInitializeObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveBootObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveObjectManager.addWorkers :         Now instantiating Worker com.CxWave.Wave.Framework.ObjectModel.Workers.WaveEnableObjectManagerWorker
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Attributes.WaveMainCluster ... 
+[0mINFO   : Tue Dec 22 15:30:29 2015 :     Processing com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog ... 
+[0mwave()
+INFO   : Tue Dec 22 15:30:29 2015 : Received a message ... :-)
+[0mINFO   : Tue Dec 22 15:30:29 2015 : WaveFrameworkObjectManager.initializeMessageHandler : Entering ...
+    application()
+[0m        name()
+        daemonize()
+            true
+        initial-working-directory()
+            /home/sagar/CxWave/Wave/Java/application/execution
+        ethernet-interface()
+            eno16777736
+        environment()
+            working-directory()
+                .
+            language()
+                en
+            country()
+                US
+        configuration()
+            directory-name()
+                config
+            config-file-extension()
+                cfg
+            backup-file-extension()
+                bk
+            temp-file-extension()
+                tmp
+            local()
+                file-name()
+                backup-file-name()
+                lock-file-name()
+            global()
+                file-name()
+                temp-file-name()
+    database()
+        enable()
+            true
+        port()
+            9013
+        detect-corruption()
+            true
+        handle-corruption()
+            true
+        enable-log()
+            true
+        log-file()
+        shared-buffers()
+    management-interface()
+        server()
+            enable()
+                true
+            port()
+                9110
+        client()
+            enable()
+                true
+            port()
+                9710
+    system-management()
+        wyser()
+            yang()
+                yin-path()
+                    wyser
+                yin-path()
+                    wyser.yang
+                yin-path()
+                    wyser.yin
+    cluster()
+        enable()
+            yes
+        port()
+            3016
+    ras()
+        syslog()
+            enable()
+                true
+        trace()
+            enable()
+                true
+            directory-name()
+            file-name()
+            file-size()
+                10MB
+            number-of-files()
+                5
+            default-level()
+                TRACE_LEVEL_INFO
+        log()
+            enable()
+                true
+            number-of-logs()
+                100000
+            audit-log()
+                enable()
+                    true
+    ha()
+        enable()
+            true
+        port()
+    http()
+        enable()
+            true
+        port()
+            1100
+    orm()
+        schema()
+            detect-diff()
+                true
+    upgrade()
+        dump-db()
+            true
+    profile()
+        enable()
+            false>
+        file-name()
+INFO   : Tue Dec 22 15:30:29 2015 : wave.application.name = 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : wave.ras.trace.default-level = TRACE_LEVEL_INFO
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : applicationName, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : isADaemon, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.daemonize
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : ethernetInterface, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.ethernet-interface
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : initialWorkingDirectory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication, xmlWaveXPathValue : wave.application.initial-working-directory
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : workingDirectory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment, xmlWaveXPathValue : wave.application.environment.working-directory
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : languageCode, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment, xmlWaveXPathValue : wave.application.environment.language
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : countryCode, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationEnvironment, xmlWaveXPathValue : wave.application.environment.country
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : directory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.directory-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : configFileExtension, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.config-file-extension
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : backupFileExtension, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.backup-file-extension
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : tempFileExtension, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration, xmlWaveXPathValue : wave.application.configuration.temp-file-extension
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : file, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal, xmlWaveXPathValue : wave.application.configuration.local.file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : backupFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal, xmlWaveXPathValue : wave.application.configuration.local.backup-file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : lockFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationLocal, xmlWaveXPathValue : wave.application.configuration.local.lock-file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : file, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal, xmlWaveXPathValue : wave.application.configuration.global.file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : tempFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfigurationGlobal, xmlWaveXPathValue : wave.application.configuration.global.temp-file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : detectCorruption, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.detect-corruption
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : handleCorruption, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.handle-corruption
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enableLog, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.enable-log
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : logFile, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.log-file
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : sharedBuffers, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainDatabase, xmlWaveXPathValue : wave.database.shared-buffers
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer, xmlWaveXPathValue : wave.management-interface.server.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceServer, xmlWaveXPathValue : wave.management-interface.server.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient, xmlWaveXPathValue : wave.management-interface.client.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterfaceClient, xmlWaveXPathValue : wave.management-interface.client.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : AttributeStringVector.loadValueFromWaveConfigurationFile : Field : yinPaths, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyserYang, xmlWaveXPathValue : wave.system-management.wyser.yang.yin-path
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Attributes.WaveMainCluster, xmlWaveXPathValue : wave.cluster.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : port, Class : com.CxWave.Wave.Framework.Attributes.WaveMainCluster, xmlWaveXPathValue : wave.cluster.port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog, xmlWaveXPathValue : wave.ras.sys-log.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogLocal, xmlWaveXPathValue : wave.ras.sys-log.local.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote, xmlWaveXPathValue : wave.ras.sys-log.remote.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : AttributeStringVector.loadValueFromWaveConfigurationFile : Field : ipAddressAndPortCombinations, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLogRemote, xmlWaveXPathValue : wave.ras.sys-log.remote.ip-address-port
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog, xmlWaveXPathValue : wave.ras.log.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : numberOfLogs, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog, xmlWaveXPathValue : wave.ras.log.number-of-logs
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLogAuditLog, xmlWaveXPathValue : wave.ras.log.audit-log.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : enable, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.enable
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : directory, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.directory-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : file, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.file-name
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : size, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.file-size
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : numberOfFiles, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.number-of-files
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Field : traceLevel, Class : com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasTrace, xmlWaveXPathValue : wave.ras.trace.default-level
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Selected Application Name        : null
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Selected Application CompactName : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Selected Ethernet Interface      : eno16777736
+[0mINFO   : Tue Dec 22 15:30:29 2015 : com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_loadedDateTime (loadedDateTime) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_configurationName (configurationName) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_configurationOrigin (configurationOrigin) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_description (description) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_application (application) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_applicationName (applicationName) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_isADaemon (isADaemon) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_ethernetInterface (ethernetInterface) : eno16777736
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_initialWorkingDirectory (initialWorkingDirectory) : /home/sagar/CxWave/Wave/Java/application/execution
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainApplicationEnvironment (waveMainApplicationEnvironment) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_workingDirectory (workingDirectory) : .
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_languageCode (languageCode) : en
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_countryCode (countryCode) : US
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainApplicationConfiguration (waveMainApplicationConfiguration) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_directory (directory) : config
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_configFileExtension (configFileExtension) : cfg
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_backupFileExtension (backupFileExtension) : bk
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_tempFileExtension (tempFileExtension) : tmp
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_waveMainApplicationConfigurationLocal (waveMainApplicationConfigurationLocal) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_file (file) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> backupFile (backupFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> lockFile (lockFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_waveMainApplicationConfigurationGlobal (waveMainApplicationConfigurationGlobal) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplicationConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_file (file) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_tempFile (tempFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_database (database) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_enable (enable) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_port (port) : 9013
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_detectCorruption (detectCorruption) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_handleCorruption (handleCorruption) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_enableLog (enableLog) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_logFile (logFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_sharedBuffers (sharedBuffers) : 128MB
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_waveMainManagementInterface (waveMainManagementInterface) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainManagementInterfaceServer (waveMainManagementInterfaceServer) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_enable (enable) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_port (port) : 9110
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainManagementInterfaceClient (waveMainManagementInterfaceClient) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainManagementInterface) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_enable (enable) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_port (port) : 9710
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_waveMainSystemManagement (waveMainSystemManagement) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainSystemManagementWyser (waveMainSystemManagementWyser) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagement) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_waveMainSystemManagementWyserYang (waveMainSystemManagementWyserYang) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainSystemManagementWyser) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_yinPaths (yinPaths) : [wyser, wyser.yang, wyser.yin]
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_waveMainCluster (waveMainCluster) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_enable (enable) : false
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_port (port) : 3016
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_waveMainRas (waveMainRas) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainRasSysLog (waveMainRasSysLog) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_enable (enable) : false
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_waveMainRasSysLogLocal (waveMainRasSysLogLocal) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_enable (enable) : false
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_waveMainRasSysLogRemote (waveMainRasSysLogRemote) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasSysLog) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_enable (enable) : false
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_ipAddressAndPortCombinations (ipAddressAndPortCombinations) : []
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainRasLog (waveMainRasLog) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_enable (enable) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_numberOfLogs (numberOfLogs) : 100000
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_waveMainRasLogAuditLog (waveMainRasLogAuditLog) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainRasLog) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |   |-> m_enable (enable) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |-> m_waveMainRasTrace (waveMainRasTrace) (com.CxWave.Wave.Framework.Core.Configuration.WaveMainRas) :
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_enable (enable) : true
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_directory (directory) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_file (file) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_size (size) : 10MB
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_numberOfFiles (numberOfFiles) : 5
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |   |   |-> m_traceLevel (traceLevel) : TRACE_LEVEL_INFO
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_wyserTagsFilePath (wyserTagsFilePath) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_databaseEmptyType (databaseEmptyType) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_databaseEmptyTypeAutoDetectionThresholdValue (databaseEmptyTypeAutoDetectionThresholdValue) : 0
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_configurationFile (configurationFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_configurationFileDirectory (configurationFileDirectory) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_globalConfigurationFile (globalConfigurationFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_lockFileForConfigurationFile (lockFileForConfigurationFile) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_traceFileDirectory (traceFileDirectory) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_traceFileName (traceFileName) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : |-> m_profileFileName (profileFileName) : 
+[0mINFO   : Tue Dec 22 15:30:29 2015 : Serialized Data for WaveMain Configuration 1:
+23#globalConfigurationFile0#13#traceFileName0#17#configurationName0#11#description0#28#lockFileForConfigurationFile0#27#waveMainManagementInterface130#33#waveMainManagementInterfaceServer26#4#port4#91106#enable4#true33#waveMainManagementInterfaceClient26#4#port4#97106#enable4#true15#waveMainCluster27#4#port4#30166#enable5#false44#databaseEmptyTypeAutoDetectionThresholdValue1#014#loadedDateTime0#8#database127#4#port4#90136#enable4#true16#handleCorruption4#true13#sharedBuffers5#128MB16#detectCorruption4#true7#logFile0#9#enableLog4#true15#profileFileName0#19#configurationOrigin0#11#application523#9#isADaemon4#true17#ethernetInterface11#eno1677773632#waveMainApplicationConfiguration239#19#configFileExtension3#cfg17#tempFileExtension3#tmp37#waveMainApplicationConfigurationLocal35#8#lockFile0#4#file0#10#backupFile0#19#backupFileExtension2#bk9#directory6#config38#waveMainApplicationConfigurationGlobal20#4#file0#8#tempFile0#15#applicationName0#30#waveMainApplicationEnvironment59#16#workingDirectory1#.11#countryCode2#US12#languageCode2#en23#initialWorkingDirectory50#/home/sagar/CxWave/Wave/Java/application/execution24#waveMainSystemManagement117#29#waveMainSystemManagementWyser82#33#waveMainSystemManagementWyserYang43#8#yinPaths30#[wyser, wyser.yang, wyser.yin]11#waveMainRas380#14#waveMainRasLog79#12#numberOfLogs6#1000006#enable4#true22#waveMainRasLogAuditLog14#6#enable4#true17#waveMainRasSysLog137#6#enable5#false22#waveMainRasSysLogLocal15#6#enable5#false23#waveMainRasSysLogRemote50#6#enable5#false28#ipAddressAndPortCombinations2#[]16#waveMainRasTrace98#13#numberOfFiles1#54#file0#4#size4#10MB6#enable4#true10#traceLevel16#TRACE_LEVEL_INFO9#directory0#17#wyserTagsFilePath0#17#configurationFile0#18#traceFileDirectory0#26#configurationFileDirectory0#17#databaseEmptyType0#
+[0mINFO   : Tue Dec 22 15:30:29 2015 : V1 equals V2
+[0mINFO   : Tue Dec 22 15:30:29 2015 : V1 not equals V3
+[0mINFO   : Tue Dec 22 15:30:29 2015 : loadFromSerializableObject Test (1000000 iterations) started.
+[0mMakefile:41: recipe for target 'runspectrum' failed

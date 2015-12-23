@@ -41,20 +41,20 @@ class WaveLinearSequencerContext
 
     protected :
     public :
-                                             WaveLinearSequencerContext                   (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                             WaveLinearSequencerContext                   (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
-                                             WaveLinearSequencerContext                   (const WaveLinearSequencerContext &waveLinearSequencerContext);
-        virtual                             ~WaveLinearSequencerContext                   ();
-                WaveLinearSequencerContext &operator =                                    (const WaveLinearSequencerContext &waveLinearSequencerContext);
+                                             WaveLinearSequencerContext                    (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             WaveLinearSequencerContext                    (WaveAsynchronousContext *pWaveAsynchronousContext, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
+                                             WaveLinearSequencerContext                    (const WaveLinearSequencerContext &waveLinearSequencerContext);
+        virtual                             ~WaveLinearSequencerContext                    ();
+                WaveLinearSequencerContext &operator =                                     (const WaveLinearSequencerContext &waveLinearSequencerContext);
                 ResourceId                   getCompletionStatus                           ();
                 void                         start                                         ();
                 void                         executeNextStep                               (const ResourceId &currentStepStatus);
                 void                         executeSuccessStep                            ();
-                WaveMessage                *getPWaveMessage                              ();
-                void                         setPWaveMessage                              (WaveMessage *pWaveMessage);
-                WaveAsynchronousContext    *getPWaveAsynchronousContext                  ();
-                WaveLinearSequencerContext &operator ++                                   ();
-                WaveLinearSequencerContext &operator --                                   ();
+                WaveMessage                *getPWaveMessage                                ();
+                void                         setPWaveMessage                               (WaveMessage *pWaveMessage);
+                WaveAsynchronousContext    *getPWaveAsynchronousContext                    ();
+                WaveLinearSequencerContext &operator ++                                    ();
+                WaveLinearSequencerContext &operator --                                    ();
                 UI32                         getNumberOfCallbacksBeforeAdvancingToNextStep ();
                 void                         holdAll                                       ();
                 void                         unholdAll                                     ();
@@ -79,10 +79,10 @@ class WaveLinearSequencerContext
     // Now the data members
 
     private :
-        WaveMessage                *m_pWaveMessage;
-        WaveAsynchronousContext    *m_pWaveAsynchronousContext;
-        WaveElement                *m_pWaveElement;
-        WaveLinearSequencerStep    *m_pSteps;
+        WaveMessage                 *m_pWaveMessage;
+        WaveAsynchronousContext     *m_pWaveAsynchronousContext;
+        WaveElement                 *m_pWaveElement;
+        WaveLinearSequencerStep     *m_pSteps;
         UI32                         m_numberOfSteps;
         UI32                         m_currentStep;
         UI32                         m_numberOfCallbacksBeforeAdvancingToNextStep;
@@ -102,7 +102,7 @@ class WaveLinearSequencerContext
         SI32                         m_returnValue;
         SI32                         m_returnValueR;
         UI32                         m_operationCode;
-    
+
         bool                         m_isADelayedCommitTransaction;
 
         clockid_t                    m_clockId;

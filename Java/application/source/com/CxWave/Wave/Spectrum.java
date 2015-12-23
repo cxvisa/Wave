@@ -32,12 +32,35 @@ import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Type.UI32;;
 
 import java.io.Serializable;
+import java.lang.management.ManagementFactory;
 import java.util.Vector;
 
 class Spectrum
 {
     public static void main (final String[] commandLineArguments)
     {
+        boolean threadCpuTimeSupport = ManagementFactory.getThreadMXBean ().isThreadCpuTimeSupported ();
+
+        if (threadCpuTimeSupport)
+        {
+            System.out.println ("Thread CPU Time Support is supported.");
+        }
+        else
+        {
+            System.out.println ("Thread CPU Time Support is NOT supported.");
+        }
+
+        boolean threadCpuTimeEnabled = ManagementFactory.getThreadMXBean ().isThreadCpuTimeEnabled ();
+
+        if (threadCpuTimeEnabled)
+        {
+            System.out.println ("Thread CPU Time Support is enabled.");
+        }
+        else
+        {
+            System.out.println ("Thread CPU Time Support is NOT enabled.");
+        }
+
         String configurationFile = null;
 
         WaveMainConfiguration wmc = null;
