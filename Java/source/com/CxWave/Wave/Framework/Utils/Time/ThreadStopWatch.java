@@ -97,10 +97,11 @@ public class ThreadStopWatch
             WaveTraceUtils.warnTracePrintf ("ThreadStopWatch.stop : Could not collect current thread cpu time.  Details : %s", e.toString ());
         }
 
-        m_lapStops.add (stopThreadCpuTime);
-
-        WaveAssertUtils.waveAssert (0 != m_currentLapStart);
-        m_lapStarts.add (m_currentLapStart);
+        if (0 < m_currentLapStart)
+        {
+            m_lapStops.add (stopThreadCpuTime);
+            m_lapStarts.add (m_currentLapStart);
+        }
 
         m_currentLapStart = 0;
     }

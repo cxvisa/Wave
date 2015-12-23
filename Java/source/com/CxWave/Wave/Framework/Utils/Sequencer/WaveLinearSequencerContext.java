@@ -4,12 +4,14 @@
 
 package com.CxWave.Wave.Framework.Utils.Sequencer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveElement;
 import com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject;
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 import com.CxWave.Wave.Framework.Utils.Time.StopWatch;
@@ -26,7 +28,7 @@ public class WaveLinearSequencerContext
     private int                       m_numberOfSteps                              = 0;
     private int                       m_currentStep                                = 0;
     private int                       m_numberOfCallbacksBeforeAdvancingToNextStep = 0;
-    private final ResourceId          m_completionStatus                           = ResourceId.WAVE_MESSAGE_ERROR;
+    private ResourceId                m_completionStatus                           = ResourceId.WAVE_MESSAGE_ERROR;
     private boolean                   m_isHoldAllRequested                         = false;
     private boolean                   m_isTransactionStartedByMe                   = false;
 
@@ -38,6 +40,8 @@ public class WaveLinearSequencerContext
 
     private final StopWatch           m_wallClockTimeStopWatch                     = new StopWatch ();
     private final ThreadStopWatch     m_threadTimeStopWatch                        = new ThreadStopWatch ();
+
+    private final UI32                m_operationCode                              = new UI32 (0);
 
     private final Vector<Method>      m_methodsForSteps                            = new Vector<Method> ();
 
@@ -130,11 +134,6 @@ public class WaveLinearSequencerContext
     private void advanceCurrentStep ()
     {
         m_currentStep++;
-    }
-
-    public void executeCurrentStep ()
-    {
-
     }
 
     public ResourceId getCompletionStatus ()
@@ -238,5 +237,67 @@ public class WaveLinearSequencerContext
     public void setIsADelayedCommitTransaction (final boolean isADelayedCommitTransaction)
     {
         m_isADelayedCommitTransaction = isADelayedCommitTransaction;
+    }
+
+    public void executeCurrentStep ()
+    {
+        if (m_currentStep < (m_numberOfSteps - 2))
+        {
+            if (null != m_waveMessage)
+            {
+                m_operationCode.setValue (m_waveMessage.getOperationCode ());
+            }
+
+            m_wallClockTimeStopWatch.start ();
+            m_threadTimeStopWatch.start ();
+        }
+
+        final Method methodForCurrentStep = m_methodsForSteps.get (m_currentStep);
+
+        WaveAssertUtils.waveAssert (null != methodForCurrentStep);
+
+        WaveAssertUtils.waveAssert (null != m_waveElement);
+
+        try
+        {
+            methodForCurrentStep.invoke (m_waveElement, this);
+        }
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Details : %s", methodForCurrentStep.getName (), e.toString ());
+        }
+    }
+
+    public void start ()
+    {
+        executeCurrentStep ();
+    }
+
+    /*
+     * Note, make sure that a call to this function is followed by a return. There should be absolutely no call to
+     * "executeNextStep" after calling this function.
+     */
+
+    public void executeSuccessStep ()
+    {
+        if (m_currentStep >= (m_numberOfSteps - 2))
+        {
+            WaveTraceUtils.warnTracePrintf ("WaveLinearSequencerContext.executeSuccessStep : Invalid state for this operation. Step (%d / %d)", m_currentStep, m_numberOfSteps);
+            executeNextStep (ResourceId.WAVE_MESSAGE_SUCCESS);
+            return;
+        }
+
+        // Move step pointer to success step, set status to SUCCSSS, and then just execute the step.
+
+        m_currentStep = m_numberOfSteps - 2;
+        m_completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
+
+        executeCurrentStep ();
+        return;
+    }
+
+    public void executeNextStep (final ResourceId currentStepStatus)
+    {
+
     }
 }

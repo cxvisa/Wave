@@ -274,7 +274,7 @@ void WaveLinearSequencerContext::executeSuccessStep ()
 {
     if (m_currentStep >= (m_numberOfSteps - 2))
     {
-        cerr << "WaveLinearSequencerContext::jumpToSuccessStep : Invalid state for this operation. Step (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
+        cerr << "WaveLinearSequencerContext::executeSuccessStep : Invalid state for this operation. Step (" << m_currentStep << " / " << m_numberOfSteps << ")" << endl;
         executeNextStep(WAVE_MESSAGE_SUCCESS);
         return;
     }
