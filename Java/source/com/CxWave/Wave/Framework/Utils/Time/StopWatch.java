@@ -11,8 +11,9 @@ import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class StopWatch
 {
-    private final Vector<Long> m_lapStarts = new Vector<Long> ();
-    private final Vector<Long> m_lapStops  = new Vector<Long> ();
+    private final Vector<Long> m_lapStarts       = new Vector<Long> ();
+    private final Vector<Long> m_lapStops        = new Vector<Long> ();
+    private long               m_currentLapStart = 0;
 
     public StopWatch ()
     {
@@ -27,7 +28,7 @@ public class StopWatch
 
     public int getNumberOfLapsStarted ()
     {
-        return (m_lapStarts.size ());
+        return ((m_lapStarts.size ()) + (0 < m_currentLapStart ? 1 : 0));
     }
 
     public int getNumberOfLapsStoped ()
@@ -66,11 +67,18 @@ public class StopWatch
 
     public void start ()
     {
-        m_lapStarts.add (System.nanoTime ());
+        m_currentLapStart = System.nanoTime ();
     }
 
     public void stop ()
     {
+        // Deliberately using the order below (stop first and then add the start from already recorded variable).
+
         m_lapStops.add (System.nanoTime ());
+
+        WaveAssertUtils.waveAssert (0 != m_currentLapStart);
+        m_lapStarts.add (m_currentLapStart);
+
+        m_currentLapStart = 0;
     }
 }

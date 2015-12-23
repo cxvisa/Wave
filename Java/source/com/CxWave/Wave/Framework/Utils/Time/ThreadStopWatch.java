@@ -12,8 +12,9 @@ import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class ThreadStopWatch
 {
-    private final Vector<Long> m_lapStarts = new Vector<Long> ();
-    private final Vector<Long> m_lapStops  = new Vector<Long> ();
+    private final Vector<Long> m_lapStarts       = new Vector<Long> ();
+    private final Vector<Long> m_lapStops        = new Vector<Long> ();
+    private long               m_currentLapStart = 0;
 
     public ThreadStopWatch ()
     {
@@ -28,7 +29,7 @@ public class ThreadStopWatch
 
     public int getNumberOfLapsStarted ()
     {
-        return (m_lapStarts.size ());
+        return ((m_lapStarts.size ()) + (0 < m_currentLapStart ? 1 : 0));
     }
 
     public int getNumberOfLapsStoped ()
@@ -78,11 +79,13 @@ public class ThreadStopWatch
             WaveTraceUtils.warnTracePrintf ("ThreadStopWatch.start : Could not collect current thread cpu time.  Details : %s", e.toString ());
         }
 
-        m_lapStarts.add (startThreadCpuTime);
+        m_currentLapStart = startThreadCpuTime;
     }
 
     public void stop ()
     {
+        // Deliberately using the order below (stop first and then add the start from already recorded variable).
+
         long stopThreadCpuTime = 0;
 
         try
@@ -95,5 +98,10 @@ public class ThreadStopWatch
         }
 
         m_lapStops.add (stopThreadCpuTime);
+
+        WaveAssertUtils.waveAssert (0 != m_currentLapStart);
+        m_lapStarts.add (m_currentLapStart);
+
+        m_currentLapStart = 0;
     }
 }
