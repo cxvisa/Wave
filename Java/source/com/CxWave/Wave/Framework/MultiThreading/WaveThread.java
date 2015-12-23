@@ -445,7 +445,7 @@ public class WaveThread extends Thread
         }
     }
 
-    void unholdHighPriorityMessages ()
+    public void unholdHighPriorityMessages ()
     {
         if (0 == m_highPriorityMessagesHoldCount)
         {
@@ -460,7 +460,7 @@ public class WaveThread extends Thread
         }
     }
 
-    void unholdEvents ()
+    public void unholdEvents ()
     {
         if (0 == m_eventsHoldCount)
         {
@@ -475,7 +475,7 @@ public class WaveThread extends Thread
         }
     }
 
-    void unholdFrameworkMessages ()
+    public void unholdFrameworkMessages ()
     {
         if (0 == m_frameworkMessagesHoldCount)
         {
@@ -490,7 +490,7 @@ public class WaveThread extends Thread
         }
     }
 
-    void unholdAll ()
+    public void unholdAll ()
     {
         unholdMessages ();
         unholdHighPriorityMessages ();

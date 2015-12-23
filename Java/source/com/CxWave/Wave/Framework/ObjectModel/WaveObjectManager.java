@@ -779,4 +779,52 @@ public class WaveObjectManager extends WaveElement
 
         m_workersMutex.unlock ();
     }
+
+    @Override
+    protected void holdMessages ()
+    {
+        m_associatedWaveThread.holdMessages ();
+    }
+
+    @Override
+    protected void holdHighPriorityMessages ()
+    {
+        m_associatedWaveThread.holdHighPriorityMessages ();
+    }
+
+    @Override
+    protected void holdEvents ()
+    {
+        m_associatedWaveThread.holdEvents ();
+    }
+
+    @Override
+    public void holdAll ()
+    {
+        m_associatedWaveThread.holdAll ();
+    }
+
+    @Override
+    protected void unholdMessages ()
+    {
+        m_associatedWaveThread.unholdMessages ();
+    }
+
+    @Override
+    protected void unholdHighPriorityMessages ()
+    {
+        m_associatedWaveThread.unholdHighPriorityMessages ();
+    }
+
+    @Override
+    protected void unholdEvents ()
+    {
+        m_associatedWaveThread.unholdEvents ();
+    }
+
+    @Override
+    public void unholdAll ()
+    {
+        m_associatedWaveThread.unholdAll ();
+    }
 }

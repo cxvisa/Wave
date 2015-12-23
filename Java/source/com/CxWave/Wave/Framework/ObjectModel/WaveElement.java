@@ -8,7 +8,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public abstract class WaveElement
 {
-    private WaveObjectManager m_waveObjectManager;
+    protected WaveObjectManager m_waveObjectManager;
 
     protected WaveElement ()
     {
@@ -202,15 +202,19 @@ public abstract class WaveElement
         tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, formatString, objects);
     }
 
-    public void holdAll ()
-    {
-        // TODO Auto-generated method stub
+    protected abstract void holdMessages ();
 
-    }
+    protected abstract void holdHighPriorityMessages ();
 
-    public void unholdAll ()
-    {
-        // TODO Auto-generated method stub
+    protected abstract void holdEvents ();
 
-    }
+    public abstract void holdAll ();
+
+    protected abstract void unholdMessages ();
+
+    protected abstract void unholdHighPriorityMessages ();
+
+    protected abstract void unholdEvents ();
+
+    public abstract void unholdAll ();
 }
