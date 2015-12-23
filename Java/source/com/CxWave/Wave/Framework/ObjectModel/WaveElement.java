@@ -201,4 +201,16 @@ public abstract class WaveElement
     {
         tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, formatString, objects);
     }
+
+    public void holdAll ()
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void unholdAll ()
+    {
+        // TODO Auto-generated method stub
+
+    }
 }

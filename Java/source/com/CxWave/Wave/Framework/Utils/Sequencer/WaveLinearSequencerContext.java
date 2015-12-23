@@ -9,25 +9,37 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveElement;
+import com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
+import com.CxWave.Wave.Framework.Utils.Time.StopWatch;
+import com.CxWave.Wave.Framework.Utils.Time.ThreadStopWatch;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public class WaveLinearSequencerContext
 {
-    private WaveMessage             m_waveMessage                                = null;
-    private WaveAsynchronousContext m_waveAsynchronousContext                    = null;
-    private WaveElement             m_waveElement                                = null;
-    private String[]                m_steps                                      = null;
-    private int                     m_numberOfSteps                              = 0;
-    private int                     m_currentStep                                = 0;
-    private final int               m_numberOfCallbacksBeforeAdvancingToNextStep = 0;
-    private final ResourceId        m_completionStatus                           = ResourceId.WAVE_MESSAGE_ERROR;
-    private final boolean           m_isHoldAllRequested                         = false;
-    private final boolean           m_isTransactionStartedByMe                   = false;
+    private WaveMessage               m_waveMessage                                = null;
+    private WaveAsynchronousContext   m_waveAsynchronousContext                    = null;
+    private WaveElement               m_waveElement                                = null;
+    private String[]                  m_steps                                      = null;
+    private int                       m_numberOfSteps                              = 0;
+    private int                       m_currentStep                                = 0;
+    private int                       m_numberOfCallbacksBeforeAdvancingToNextStep = 0;
+    private final ResourceId          m_completionStatus                           = ResourceId.WAVE_MESSAGE_ERROR;
+    private boolean                   m_isHoldAllRequested                         = false;
+    private boolean                   m_isTransactionStartedByMe                   = false;
 
-    private final Vector<Method>    m_methodsForSteps                            = new Vector<Method> ();
+    private int                       m_numberOfFailures                           = 0;
+
+    private Vector<WaveManagedObject> m_queryResults                               = new Vector<WaveManagedObject> ();
+
+    private boolean                   m_isADelayedCommitTransaction                = false;
+
+    private final StopWatch           m_wallClockTimeStopWatch                     = new StopWatch ();
+    private final ThreadStopWatch     m_threadTimeStopWatch                        = new ThreadStopWatch ();
+
+    private final Vector<Method>      m_methodsForSteps                            = new Vector<Method> ();
 
     public WaveLinearSequencerContext (final WaveMessage waveMessage, final WaveElement waveElement, final String[] steps)
     {
@@ -128,5 +140,103 @@ public class WaveLinearSequencerContext
     public ResourceId getCompletionStatus ()
     {
         return (m_completionStatus);
+    }
+
+    public WaveMessage getWaveMessage ()
+    {
+        return (m_waveMessage);
+    }
+
+    public void setWaveMessage (final WaveMessage waveMessage)
+    {
+        m_waveMessage = waveMessage;
+    }
+
+    public WaveAsynchronousContext getWaveAsynchronousContext ()
+    {
+        return (m_waveAsynchronousContext);
+    }
+
+    public void incrementNumberCallbacksNeededBeforeAdvancingToNextStep ()
+    {
+        m_numberOfCallbacksBeforeAdvancingToNextStep++;
+    }
+
+    public void decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ()
+    {
+        m_numberOfCallbacksBeforeAdvancingToNextStep--;
+    }
+
+    public Vector<WaveManagedObject> getQueryResults ()
+    {
+        return (m_queryResults);
+    }
+
+    public void setQueryResults (final Vector<WaveManagedObject> queryResults)
+    {
+        m_queryResults = queryResults;
+    }
+
+    public int getNumberOfCallbacksBeforeAdvancingToNextStep ()
+    {
+        return (m_numberOfCallbacksBeforeAdvancingToNextStep);
+    }
+
+    public void holdAll ()
+    {
+        WaveAssertUtils.waveAssert (null != m_waveElement);
+
+        m_waveElement.holdAll ();
+
+        m_isHoldAllRequested = true;
+    }
+
+    public void unholdAll ()
+    {
+        WaveAssertUtils.waveAssert (null != m_waveElement);
+
+        m_waveElement.unholdAll ();
+
+        m_isHoldAllRequested = false;
+    }
+
+    public void incrementNumberOfFailures ()
+    {
+        m_numberOfFailures++;
+    }
+
+    public void setNumberOfFailures (final int numberOfFailures)
+    {
+        m_numberOfFailures = numberOfFailures;
+    }
+
+    public int getNumberOfFailures ()
+    {
+        return (m_numberOfFailures);
+    }
+
+    public boolean getIsHoldAllRequested ()
+    {
+        return (m_isHoldAllRequested);
+    }
+
+    public boolean getIsTransactionStartedByMe ()
+    {
+        return (m_isTransactionStartedByMe);
+    }
+
+    public void setIsTransctionStartedByMe (final boolean isTransactionStartedByMe)
+    {
+        m_isTransactionStartedByMe = isTransactionStartedByMe;
+    }
+
+    public boolean getIsADelayedCommitTransaction ()
+    {
+        return (m_isADelayedCommitTransaction);
+    }
+
+    public void setIsADelayedCommitTransaction (final boolean isADelayedCommitTransaction)
+    {
+        m_isADelayedCommitTransaction = isADelayedCommitTransaction;
     }
 }
