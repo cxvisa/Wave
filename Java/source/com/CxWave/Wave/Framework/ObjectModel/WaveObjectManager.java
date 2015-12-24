@@ -26,6 +26,7 @@ import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.UI64;
 import com.CxWave.Wave.Framework.Type.WaveGenericContext;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -172,17 +173,17 @@ public class WaveObjectManager extends WaveElement
         }
     };
 
-    private static WaveMutex                                           s_waveObjectManagerMutex          = new WaveMutex ();
-    private static WaveServiceId                                       s_nextAvailableWaveServiceId      = new WaveServiceId (0);
-    private static WaveServiceMode                                     s_waveServiceLaunchMode           = WaveServiceMode.WAVE_SERVICE_ACTIVE;
+    private static WaveMutex                                           s_waveObjectManagerMutex                         = new WaveMutex ();
+    private static WaveServiceId                                       s_nextAvailableWaveServiceId                     = new WaveServiceId (0);
+    private static WaveServiceMode                                     s_waveServiceLaunchMode                          = WaveServiceMode.WAVE_SERVICE_ACTIVE;
 
-    private static final Set<UI32>                                     s_operationsAllowedBeforeEnabling = initializeOperationsAllowedBeforeEnablingSet ();
+    private static final Set<UI32>                                     s_operationsAllowedBeforeEnabling                = initializeOperationsAllowedBeforeEnablingSet ();
 
     private final String                                               m_name;
     private WaveThread                                                 m_associatedWaveThread;
-    private final Map<UI32, WaveOperationMapContext>                   m_operationsMap                   = new HashMap<UI32, WaveOperationMapContext> ();
-    private final Map<Class<?>, UI32>                                  m_operationsClassToIdMap          = new HashMap<Class<?>, UI32> ();
-    private final Map<UI32, Class<?>>                                  m_operationsIdToClassMap          = new HashMap<UI32, Class<?>> ();
+    private final Map<UI32, WaveOperationMapContext>                   m_operationsMap                                  = new HashMap<UI32, WaveOperationMapContext> ();
+    private final Map<Class<?>, UI32>                                  m_operationsClassToIdMap                         = new HashMap<Class<?>, UI32> ();
+    private final Map<UI32, Class<?>>                                  m_operationsIdToClassMap                         = new HashMap<UI32, Class<?>> ();
     private Map<UI32, BigInteger>                                      m_supportedEvents;
     private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
     private Map<UI32, WaveMessageResponseContext>                      m_responsesMap;
@@ -190,16 +191,20 @@ public class WaveObjectManager extends WaveElement
     private Map<String, Vector<String>>                                m_postbootManagedObjectNames;
     private WaveMutex                                                  m_responsesMapMutex;
     private WaveMutex                                                  m_sendReplyMutexForResponseMap;
-    private final Vector<WaveWorker>                                   m_workers                         = new Vector<WaveWorker> ();
-    private final WaveMutex                                            m_workersMutex                    = new WaveMutex ();
-    private boolean                                                    m_isEnabled                       = false;
-    private final WaveMutex                                            m_isEnabledMutex                  = new WaveMutex ();
+    private final Vector<WaveWorker>                                   m_workers                                        = new Vector<WaveWorker> ();
+    private final WaveMutex                                            m_workersMutex                                   = new WaveMutex ();
+    private boolean                                                    m_isEnabled                                      = false;
+    private final WaveMutex                                            m_isEnabledMutex                                 = new WaveMutex ();
     private final TraceClientId                                        m_traceClientId;
     private final WaveServiceMode                                      m_waveServiceMode;
 
     private final WaveServiceId                                        m_serviceId;
 
     private WaveMessage                                                m_inputMessage;
+
+    Map<UI32, Map<UI32, UI64>>                                         m_nanoSecondsForMessageHandlerSequencerSteps     = new HashMap<UI32, Map<UI32, UI64>> ();
+
+    Map<UI32, Map<UI32, UI64>>                                         m_realNanoSecondsForMessageHandlerSequencerSteps = new HashMap<UI32, Map<UI32, UI64>> ();
 
     public void prepareObjectManagerForAction ()
     {
@@ -826,5 +831,65 @@ public class WaveObjectManager extends WaveElement
     public void unholdAll ()
     {
         m_associatedWaveThread.unholdAll ();
+    }
+
+    @Override
+    public void updateTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration)
+    {
+        if (m_nanoSecondsForMessageHandlerSequencerSteps.containsKey (new UI32 (operationCode)))
+        {
+            final Map<UI32, UI64> sequencerStepMapForOperationCode = m_nanoSecondsForMessageHandlerSequencerSteps.get (new UI32 (operationCode));
+
+            if (sequencerStepMapForOperationCode.containsKey (new UI32 (currentStep)))
+            {
+                final UI64 nanoSecondsForOperationCodeStep = sequencerStepMapForOperationCode.get (new UI32 (currentStep));
+
+                WaveAssertUtils.waveAssert (null != nanoSecondsForOperationCodeStep);
+
+                nanoSecondsForOperationCodeStep.increment (lastLapDuration);
+            }
+            else
+            {
+                sequencerStepMapForOperationCode.put (new UI32 (currentStep), new UI64 (lastLapDuration));
+            }
+        }
+        else
+        {
+            final Map<UI32, UI64> sequencerStepMapForOperationCode = new HashMap<UI32, UI64> ();
+
+            sequencerStepMapForOperationCode.put (new UI32 (currentStep), new UI64 (lastLapDuration));
+
+            m_nanoSecondsForMessageHandlerSequencerSteps.put (new UI32 (operationCode), sequencerStepMapForOperationCode);
+        }
+    }
+
+    @Override
+    public void updateRealTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration)
+    {
+        if (m_realNanoSecondsForMessageHandlerSequencerSteps.containsKey (new UI32 (operationCode)))
+        {
+            final Map<UI32, UI64> sequencerStepMapForOperationCode = m_realNanoSecondsForMessageHandlerSequencerSteps.get (new UI32 (operationCode));
+
+            if (sequencerStepMapForOperationCode.containsKey (new UI32 (currentStep)))
+            {
+                final UI64 nanoSecondsForOperationCodeStep = sequencerStepMapForOperationCode.get (new UI32 (currentStep));
+
+                WaveAssertUtils.waveAssert (null != nanoSecondsForOperationCodeStep);
+
+                nanoSecondsForOperationCodeStep.increment (lastLapDuration);
+            }
+            else
+            {
+                sequencerStepMapForOperationCode.put (new UI32 (currentStep), new UI64 (lastLapDuration));
+            }
+        }
+        else
+        {
+            final Map<UI32, UI64> sequencerStepMapForOperationCode = new HashMap<UI32, UI64> ();
+
+            sequencerStepMapForOperationCode.put (new UI32 (currentStep), new UI64 (lastLapDuration));
+
+            m_realNanoSecondsForMessageHandlerSequencerSteps.put (new UI32 (operationCode), sequencerStepMapForOperationCode);
+        }
     }
 }

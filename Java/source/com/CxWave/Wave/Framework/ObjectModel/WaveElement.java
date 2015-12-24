@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public abstract class WaveElement
@@ -217,4 +218,8 @@ public abstract class WaveElement
     protected abstract void unholdEvents ();
 
     public abstract void unholdAll ();
+
+    public abstract void updateTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration);
+
+    public abstract void updateRealTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration);
 }

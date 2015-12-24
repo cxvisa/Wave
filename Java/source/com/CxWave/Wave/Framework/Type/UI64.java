@@ -90,9 +90,19 @@ public class UI64
         m_value++;
     }
 
+    public void increment (final long incrementValue)
+    {
+        m_value += incrementValue;
+    }
+
     public void decrement ()
     {
         m_value--;
+    }
+
+    public void decrement (final long decrementValue)
+    {
+        m_value -= decrementValue;
     }
 
     public boolean equals (final UI64 rhs)

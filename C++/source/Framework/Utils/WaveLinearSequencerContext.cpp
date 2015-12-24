@@ -37,7 +37,7 @@ WaveLinearSequencerContext::WaveLinearSequencerContext (WaveMessage *pWaveMessag
 
     if (3 > m_numberOfSteps)
     {
-        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be atleast three steps to run a Wave Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
+        cerr << "WaveLinearSequencerContext::WaveLinearSequencerContext : There should be at least three steps to run a Wave Linear Sequencer. " << numberOfSteps << " Steps were specified." << endl;
         waveAssert (false, __FILE__, __LINE__);
         return;
     }

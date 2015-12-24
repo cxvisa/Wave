@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.ObjectModel;
 
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 @NonWorker
@@ -92,5 +93,17 @@ public class WaveWorker extends WaveElement
     public void unholdAll ()
     {
         m_waveObjectManager.unholdAll ();
+    }
+
+    @Override
+    public void updateTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration)
+    {
+        m_waveObjectManager.updateTimeConsumedInThisThread (operationCode, currentStep, lastLapDuration);
+    }
+
+    @Override
+    public void updateRealTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration)
+    {
+        m_waveObjectManager.updateRealTimeConsumedInThisThread (operationCode, currentStep, lastLapDuration);
     }
 }

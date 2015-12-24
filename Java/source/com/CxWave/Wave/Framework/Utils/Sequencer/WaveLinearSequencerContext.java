@@ -298,6 +298,41 @@ public class WaveLinearSequencerContext
 
     public void executeNextStep (final ResourceId currentStepStatus)
     {
+        if (0 != m_numberOfCallbacksBeforeAdvancingToNextStep)
+        {
+            return;
+        }
 
+        if (m_currentStep < (m_numberOfSteps - 2))
+        {
+            m_wallClockTimeStopWatch.stop ();
+            m_threadTimeStopWatch.stop ();
+
+            m_waveElement.updateTimeConsumedInThisThread (m_operationCode, m_currentStep, m_threadTimeStopWatch.getLastLapDuration ());
+            m_waveElement.updateRealTimeConsumedInThisThread (m_operationCode, m_currentStep, m_wallClockTimeStopWatch.getLastLapDuration ());
+        }
+
+        m_completionStatus = currentStepStatus;
+
+        advanceCurrentStep ();
+
+        if ((m_numberOfSteps - 2) < m_currentStep)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveLinearSequencerContext.executeNextStep : Trying to execute beyond the end of the sequencer. Step (%d / %d)", m_currentStep, m_numberOfSteps);
+            WaveAssertUtils.waveAssert ();
+            return;
+        }
+
+        if (ResourceId.WAVE_MESSAGE_SUCCESS == m_completionStatus)
+        {
+            executeCurrentStep ();
+            return;
+        }
+        else
+        {
+            m_currentStep = m_numberOfSteps - 1;
+            executeCurrentStep ();
+            return;
+        }
     }
 }
