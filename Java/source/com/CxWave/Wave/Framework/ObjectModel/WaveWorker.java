@@ -4,8 +4,12 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import java.lang.reflect.Method;
+import java.util.Map;
+
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 @NonWorker
@@ -105,5 +109,15 @@ public class WaveWorker extends WaveElement
     public void updateRealTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration)
     {
         m_waveObjectManager.updateRealTimeConsumedInThisThread (operationCode, currentStep, lastLapDuration);
+    }
+
+    public void addSupportedOperations ()
+    {
+        final Map<Class<?>, Method> messageHandlersInInheritanceHierarchyPreferringLatest = WaveJavaSourceRepository.getMessageHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getName ());
+
+        for (final Map.Entry<Class<?>, Method> entry : messageHandlersInInheritanceHierarchyPreferringLatest.entrySet ())
+        {
+            m_waveObjectManager.addOperationMapForMessageClass (entry.getKey (), entry.getValue (), this);
+        }
     }
 }

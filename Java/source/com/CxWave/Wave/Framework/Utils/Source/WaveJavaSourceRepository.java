@@ -171,24 +171,48 @@ public class WaveJavaSourceRepository
 
     private void computeInternal ()
     {
+        // Stage 1
+
         for (final WaveJavaClass waveJavaClass : m_classes.values ())
         {
-            waveJavaClass.compute ();
+            waveJavaClass.computeStage1 ();
         }
 
         for (final WaveJavaInterface wavejavaInterface : m_interfaces.values ())
         {
-            wavejavaInterface.compute ();
+            wavejavaInterface.computeStage1 ();
         }
 
         for (final WaveJavaAnnotation waveJavaAnnotation : m_annotations.values ())
         {
-            waveJavaAnnotation.compute ();
+            waveJavaAnnotation.computeStage1 ();
         }
 
         for (final WaveJavaEnum waveJavaEnum : m_enums.values ())
         {
-            waveJavaEnum.compute ();
+            waveJavaEnum.computeStage1 ();
+        }
+
+        // Stage 2
+
+        for (final WaveJavaClass waveJavaClass : m_classes.values ())
+        {
+            waveJavaClass.computeStage2 ();
+        }
+
+        for (final WaveJavaInterface wavejavaInterface : m_interfaces.values ())
+        {
+            wavejavaInterface.computeStage2 ();
+        }
+
+        for (final WaveJavaAnnotation waveJavaAnnotation : m_annotations.values ())
+        {
+            waveJavaAnnotation.computeStage2 ();
+        }
+
+        for (final WaveJavaEnum waveJavaEnum : m_enums.values ())
+        {
+            waveJavaEnum.computeStage2 ();
         }
 
         computeAttributeSpace ();

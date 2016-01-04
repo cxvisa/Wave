@@ -333,6 +333,12 @@ public class WaveObjectManager extends WaveElement
                 WaveAssertUtils.waveAssert (null != object);
 
                 WaveAssertUtils.waveAssert (object instanceof WaveWorker);
+
+                final WaveWorker waveWorker = (WaveWorker) object;
+
+                WaveAssertUtils.waveAssert (null != waveWorker);
+
+                waveWorker.addSupportedOperations ();
             }
         }
     }
@@ -365,6 +371,8 @@ public class WaveObjectManager extends WaveElement
         final WaveThread associatedWaveThread = new WaveThread (m_name, stackSize, m_serviceId);
 
         m_associatedWaveThread = associatedWaveThread;
+
+        m_associatedWaveThread.addWaveObjectManager (this);
 
         m_associatedWaveThread.start ();
     }
@@ -547,7 +555,7 @@ public class WaveObjectManager extends WaveElement
         }
     }
 
-    private void addOperationMapForMessageClass (final Class<?> messageClass, final Method messageHandlerMethod, final WaveElement waveElement)
+    void addOperationMapForMessageClass (final Class<?> messageClass, final Method messageHandlerMethod, final WaveElement waveElement)
     {
         final UI32 operationCode = WaveMessage.getOperationCodeForMessageClass (messageClass);
 

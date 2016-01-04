@@ -66,7 +66,7 @@ public class WaveJavaAnnotation extends WaveJavaType
     }
 
     @Override
-    public void compute ()
+    public void computeStage1 ()
     {
         Class<?> reflectionClass = null;
 
@@ -91,5 +91,10 @@ public class WaveJavaAnnotation extends WaveJavaType
         }
 
         addAnnotations (annotationNames);
+    }
+
+    @Override
+    public void computeStage2 ()
+    {
     }
 }

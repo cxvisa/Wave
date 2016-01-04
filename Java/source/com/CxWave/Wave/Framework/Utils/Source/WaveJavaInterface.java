@@ -131,7 +131,7 @@ public class WaveJavaInterface extends WaveJavaType
     }
 
     @Override
-    public void compute ()
+    public void computeStage1 ()
     {
         Class<?> reflectionClass = null;
 
@@ -168,6 +168,11 @@ public class WaveJavaInterface extends WaveJavaType
         }
 
         addAnnotations (annotationNames);
+    }
+
+    @Override
+    public void computeStage2 ()
+    {
     }
 
     public Set<String> getAllDescendantClasses ()

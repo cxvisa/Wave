@@ -10,6 +10,8 @@ public abstract class WaveJavaType
     {
     }
 
-    public abstract void compute ();
+    public abstract void computeStage1 ();
+
+    public abstract void computeStage2 ();
 
 }

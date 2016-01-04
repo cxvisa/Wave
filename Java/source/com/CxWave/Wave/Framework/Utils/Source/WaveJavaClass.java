@@ -28,8 +28,8 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
-import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -212,11 +212,11 @@ public class WaveJavaClass extends WaveJavaType
     }
 
     @Override
-    public void compute ()
+    public void computeStage1 ()
     {
         Class<?> reflectionClass = null;
 
-        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "Computing for Java Class " + m_name, true, false);
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "Computing for Java Class (Stage 1) " + m_name, true, false);
 
         try
         {
@@ -232,7 +232,16 @@ public class WaveJavaClass extends WaveJavaType
 
         final Class<?> reflectionSuperClass = reflectionClass.getSuperclass ();
 
-        setSuperClass (reflectionSuperClass.getName ());
+        final String reflectionSuperClassName = reflectionSuperClass.getName ();
+
+        WaveTraceUtils.infoTracePrintf ("    Super Class : %s", reflectionSuperClassName);
+
+        if (reflectionSuperClassName.equals (WaveMessage.class.getName ()))
+        {
+            WaveTraceUtils.infoTracePrintf ("    Found Message as Super Class for : %s", m_name);
+        }
+
+        setSuperClass (reflectionSuperClassName);
 
         final Class<?>[] superInterfaces = reflectionClass.getInterfaces ();
         final Vector<String> superInterfaceNames = new Vector<String> ();
@@ -254,9 +263,33 @@ public class WaveJavaClass extends WaveJavaType
 
         addAnnotations (annotationNames);
 
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "    Computing Serialization Reflection AttributesMap For Declared Fields for Java Class " + m_name, true, false);
+
         computeSerializationReflectionAttributesMapForDeclaredFields (reflectionClass);
+    }
+
+    @Override
+    public void computeStage2 ()
+    {
+        Class<?> reflectionClass = null;
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "Computing for Java Class (stage 2) " + m_name, true, false);
+
+        try
+        {
+            reflectionClass = Class.forName (m_name);
+        }
+        catch (final ClassNotFoundException e)
+        {
+            e.printStackTrace ();
+            WaveAssertUtils.waveAssert ();
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "    Computing Message Handlers for Java Class " + m_name, true, false);
 
         computeMessageHandlers (reflectionClass);
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "    Computing Workers for Java Class " + m_name, true, false);
 
         computeWorkers (reflectionClass);
     }
@@ -375,10 +408,12 @@ public class WaveJavaClass extends WaveJavaType
 
     private void computeMessageHandlers (final Class<?> reflectionClass)
     {
-        if (!(isADerivativeOfWaveObjectManager ()))
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())))
         {
             return;
         }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Message Handlers for Java Class " + m_name, true, false);
 
         final Annotation annotationForNonOM = reflectionClass.getAnnotation (NonOM.class);
 
@@ -398,6 +433,8 @@ public class WaveJavaClass extends WaveJavaType
         for (final Method declaredMethod : declaredMethods)
         {
             WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
 
             final Annotation annotationForNonMessageHandler = declaredMethod.getAnnotation (NonMessageHandler.class);
 
@@ -442,7 +479,7 @@ public class WaveJavaClass extends WaveJavaType
 
                             m_messageHandlers.put (waveMessageClass, declaredMethod);
 
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Added a message Handler for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Added a Message Handler for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
                         }
                     }
                 }
