@@ -59,7 +59,18 @@ public class WaveObjectManager extends WaveElement
         {
             WaveAssertUtils.waveAssert (null != m_waveMessageHandler);
 
-            m_waveMessageHandler.execute (waveMessage);
+            try
+            {
+                m_waveMessageHandler.execute (waveMessage);
+            }
+            catch (final Exception e)
+            {
+                errorTracePrintf ("WaveObjectManager.WaveOperationMapContext.executeMessageHandler : Could not execute message handler.  MessageType : %s, Details : %s", (waveMessage.getClass ()).getName (), e.toString ());
+
+                waveMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
+
+                reply (waveMessage);
+            }
         }
     };
 
@@ -899,5 +910,10 @@ public class WaveObjectManager extends WaveElement
 
             m_realNanoSecondsForMessageHandlerSequencerSteps.put (new UI32 (operationCode), sequencerStepMapForOperationCode);
         }
+    }
+
+    public String getName ()
+    {
+        return (m_name);
     }
 }

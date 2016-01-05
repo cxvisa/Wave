@@ -117,6 +117,8 @@ public class WaveWorker extends WaveElement
 
         for (final Map.Entry<Class<?>, Method> entry : messageHandlersInInheritanceHierarchyPreferringLatest.entrySet ())
         {
+            infoTracePrintf ("WaveWorker.addSupportedOperations :             Adding worker message handler for  %s : %s", (entry.getKey ()).getName (), (entry.getValue ()).getName ());
+
             m_waveObjectManager.addOperationMapForMessageClass (entry.getKey (), entry.getValue (), this);
         }
     }

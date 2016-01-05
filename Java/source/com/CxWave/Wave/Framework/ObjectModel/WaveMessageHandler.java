@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class WaveMessageHandler
 {
@@ -33,7 +34,7 @@ public class WaveMessageHandler
         }
     }
 
-    void execute (final WaveMessage waveMessage)
+    void execute (final WaveMessage waveMessage) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
     {
         try
         {
@@ -41,7 +42,9 @@ public class WaveMessageHandler
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
-            WaveAssertUtils.waveAssert ();
+            WaveTraceUtils.errorTracePrintf ("WaveMessageHandler.execute : Could not execute the message.  WaveElement Type : %s, Wave Message Type : %s, Details : %s", (m_waveElement.getClass ()).getName (), (waveMessage.getClass ()).getName (), e.toString ());
+
+            throw (e);
         }
     }
 }

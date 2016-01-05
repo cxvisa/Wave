@@ -11,7 +11,6 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
-import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 @OwnerOM (om = WaveObjectManager.class)
 @Cardinality (1)
@@ -25,6 +24,6 @@ public class WaveEnableObjectManagerWorker extends WaveWorker
 
     private void enableMessageHandler (final WaveEnableObjectManagerMessage waveEnableObjectManagerMessage)
     {
-        trace (TraceLevel.TRACE_LEVEL_INFO, "WaveEnableObjectManagerWorker.enableMessageHandler : Entering ...");
+        infoTracePrintf ("WaveEnableObjectManagerWorker.enableMessageHandler : Entering ... for OM %s: ", (getWaveObjectManager ()).getName ());
     }
 }

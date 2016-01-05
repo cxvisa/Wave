@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.ObjectModel.Workers;
 
+import com.CxWave.Wave.Framework.Core.Messages.WaveBootObjectManagerMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
@@ -19,5 +20,10 @@ public class WaveBootObjectManagerWorker extends WaveWorker
     public WaveBootObjectManagerWorker (final WaveObjectManager waveObjectManager)
     {
         super (waveObjectManager);
+    }
+
+    private void bootMessageHandler (final WaveBootObjectManagerMessage waveBootObjectManagerMessage)
+    {
+        infoTracePrintf ("WaveBootObjectManagerWorker.bootMessageHandler : Entering ... for OM %s: ", (getWaveObjectManager ()).getName ());
     }
 }

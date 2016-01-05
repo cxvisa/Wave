@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.ObjectModel.Workers;
 
+import com.CxWave.Wave.Framework.Core.Messages.WaveInstallObjectManagerMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
@@ -19,5 +20,10 @@ public class WaveInstallObjectManagerWorker extends WaveWorker
     public WaveInstallObjectManagerWorker (final WaveObjectManager waveObjectManager)
     {
         super (waveObjectManager);
+    }
+
+    private void installMessageHandler (final WaveInstallObjectManagerMessage waveInstallObjectManagerMessage)
+    {
+        infoTracePrintf ("WaveInstallObjectManagerWorker.installMessageHandler : Entering ... for OM %s: ", (getWaveObjectManager ()).getName ());
     }
 }

@@ -21,5 +21,4 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     {
         super (waveObjectManager);
     }
-
 }

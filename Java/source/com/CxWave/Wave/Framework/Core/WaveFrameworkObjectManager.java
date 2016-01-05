@@ -4,7 +4,10 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import com.CxWave.Wave.Framework.Core.Messages.WaveBootObjectManagerMessage;
+import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
+import com.CxWave.Wave.Framework.Core.Messages.WaveInstallObjectManagerMessage;
 import com.CxWave.Wave.Framework.LocationManagement.Location;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
@@ -79,15 +82,45 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 
         // We cannot use WaveFrameworkObjectManager::getWaveServiceId () - it will invariably fail since we are inside the
         // getInstance method
-        // We always say it is the first time boot, but, this reason is not to be looked into in the initialize for this OM.
+        // We always say it is the first time boot, but, this reason is not to be looked at in the initialize for this OM.
 
         final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = new WaveInitializeObjectManagerMessage (new WaveServiceId (1L), WaveBootReason.WAVE_BOOT_FIRST_TIME_BOOT);
 
-        final WaveMessageStatus status = sendOneWay (waveInitializeObjectManagerMessage);
+        WaveMessageStatus status = sendOneWay (waveInitializeObjectManagerMessage);
 
         if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
         {
             System.err.printf ("Cannot Initialize the Framework.  Cannot continue.  Exiting ...\n");
+            WaveAssertUtils.waveAssert ();
+        }
+
+        final WaveEnableObjectManagerMessage waveEnableObjectManagerMessage = new WaveEnableObjectManagerMessage (new WaveServiceId (1L), WaveBootReason.WAVE_BOOT_FIRST_TIME_BOOT);
+
+        status = sendOneWay (waveEnableObjectManagerMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            System.err.printf ("Cannot Enable the Framework.  Cannot continue.  Exiting ...\n");
+            WaveAssertUtils.waveAssert ();
+        }
+
+        final WaveInstallObjectManagerMessage waveInstallObjectManagerMessage = new WaveInstallObjectManagerMessage (new WaveServiceId (1L), WaveBootReason.WAVE_BOOT_FIRST_TIME_BOOT);
+
+        status = sendOneWay (waveInstallObjectManagerMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            System.err.printf ("Cannot Install the Framework.  Cannot continue.  Exiting ...\n");
+            WaveAssertUtils.waveAssert ();
+        }
+
+        final WaveBootObjectManagerMessage waveBootObjectManagerMessage = new WaveBootObjectManagerMessage (new WaveServiceId (1L), WaveBootReason.WAVE_BOOT_FIRST_TIME_BOOT);
+
+        status = sendOneWay (waveBootObjectManagerMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            System.err.printf ("Cannot Boot the Framework.  Cannot continue.  Exiting ...\n");
             WaveAssertUtils.waveAssert ();
         }
     }
@@ -237,10 +270,5 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public static void bootWave ()
     {
         setIsFrameworkReadyToBoot (true);
-    }
-
-    private void initializeMessageHandler (final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage)
-    {
-        trace (TraceLevel.TRACE_LEVEL_INFO, "WaveFrameworkObjectManager.initializeMessageHandler : Entering ...");
     }
 }
