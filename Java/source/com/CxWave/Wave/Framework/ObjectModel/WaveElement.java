@@ -310,7 +310,15 @@ public abstract class WaveElement
     protected abstract void rollbackTransaction ();
 
     @NonMessageHandler
-    protected abstract void reply (final WaveMessage waveMessage);
+    protected abstract ResourceId reply (final WaveMessage waveMessage);
 
     protected abstract ResourceId commitTransaction ();
+
+    public WaveMessage createMessageInstance (final UI32 operationCode)
+    {
+        errorTracePrintf ("WaveElement::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+        errorTracePrintf ("WaveElement::createMessageInstance : ObjectManagers and Workers MUST overwrite this virtual method.");
+
+        return (null);
+    }
 }

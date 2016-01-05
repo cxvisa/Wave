@@ -30,7 +30,7 @@ WaveMessage *WaveMessageFactory::getMessageInstance (const WaveServiceId &servic
     {
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Could not create message instance for  Service : " + FrameworkToolKit::getServiceNameById (serviceId) + ", Opcode = " + opcode + ".");
         trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Have you implemented the createMessageInstance on the object manager yet???.");
-        trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Also, Please make sure that the opcode has been registered using addOperationMap on the corresponoding Object Manager.");
+        trace (TRACE_LEVEL_FATAL, "WaveMessageFactory::getMessageInstance : Also, Please make sure that the opcode has been registered using addOperationMap on the corresponding Object Manager.");
         waveAssert (false, __FILE__, __LINE__);
     }
 

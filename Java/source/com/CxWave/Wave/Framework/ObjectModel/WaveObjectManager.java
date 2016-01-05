@@ -39,6 +39,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode;
 
 public class WaveObjectManager extends WaveElement
@@ -213,9 +214,12 @@ public class WaveObjectManager extends WaveElement
 
     private WaveMessage                                                m_inputMessage;
 
-    Map<UI32, Map<UI32, UI64>>                                         m_nanoSecondsForMessageHandlerSequencerSteps     = new HashMap<UI32, Map<UI32, UI64>> ();
+    private final Map<UI32, Map<UI32, UI64>>                           m_nanoSecondsForMessageHandlerSequencerSteps     = new HashMap<UI32, Map<UI32, UI64>> ();
 
-    Map<UI32, Map<UI32, UI64>>                                         m_realNanoSecondsForMessageHandlerSequencerSteps = new HashMap<UI32, Map<UI32, UI64>> ();
+    private final Map<UI32, Map<UI32, UI64>>                           m_realNanoSecondsForMessageHandlerSequencerSteps = new HashMap<UI32, Map<UI32, UI64>> ();
+
+    private final WaveMutex                                            m_createMessageInstanceWrapperMutex              = new WaveMutex ();
+    private final Map<UI32, WaveElement>                               m_ownersForCreatingMessageInstances              = new HashMap<UI32, WaveElement> ();
 
     public void prepareObjectManagerForAction ()
     {
@@ -564,6 +568,20 @@ public class WaveObjectManager extends WaveElement
         {
             m_operationsMap.put (operationCode, new WaveOperationMapContext (waveElement, messageHandlerMethod));
         }
+
+        m_createMessageInstanceWrapperMutex.lock ();
+
+        if (!(m_ownersForCreatingMessageInstances.containsKey (operationCode)))
+        {
+            m_ownersForCreatingMessageInstances.put (operationCode, waveElement);
+        }
+        else
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveObjectManager.addOperationMap : Trying to set duplicate Owner.  Owner for %d was already set.", operationCode.getValue ());
+            WaveAssertUtils.waveAssert (false);
+        }
+
+        m_createMessageInstanceWrapperMutex.unlock ();
     }
 
     void addOperationMapForMessageClass (final Class<?> messageClass, final Method messageHandlerMethod, final WaveElement waveElement)
@@ -748,9 +766,91 @@ public class WaveObjectManager extends WaveElement
 
     @Override
     @NonMessageHandler
-    public void reply (final WaveMessage waveMessage)
+    public ResourceId reply (final WaveMessage waveMessage)
+    {
+        // First check if we need to really deliver the reply.
+        // If the message was sent synchronously simply resume the sender thread and return.
+        // As part of resuming the sender thread we need to first lock the corresponding synchronizing
+        // WaveMutex and then resume the sender thread and then unlock the WaveMutex.
+        // Then the sending thread automatically resumes processing.
+        // If the message was sent as a one way message, simply destroy it.
+        // Do not attempt to deliver it back to the original sender.
+
+        if (true == (waveMessage.getIsSynchronousMessage ()))
+        {
+            waveAssert (true == (waveMessage.getIsLastReply ()));
+
+            addMessageToMessageHistoryCalledFromReply (waveMessage);
+
+            (waveMessage.getSynchronizingMutex ()).lock ();
+            (waveMessage.getSynchronizingCondition ()).signal ();
+            (waveMessage.getSynchronizingMutex ()).unlock ();
+
+            m_inputMessage = null;
+
+            return (ResourceId.WAVE_MESSAGE_SUCCESS);
+        }
+        else if (true == (waveMessage.getIsOneWayMessage ()))
+        {
+            waveAssert (true == (waveMessage.getIsLastReply ()));
+
+            addMessageToMessageHistoryCalledFromReply (waveMessage);
+
+            m_inputMessage = null;
+
+            return (ResourceId.WAVE_MESSAGE_SUCCESS);
+        }
+        else
+        {
+            WaveMessage tempWaveMessage = waveMessage;
+
+            if (false == (waveMessage.getIsLastReply ()))
+            {
+                tempWaveMessage = waveMessage.cloneThisMessage ();
+
+                tempWaveMessage.setMessageId (waveMessage.getMessageId ());
+                tempWaveMessage.setMessageIdAtOriginatingLocation (waveMessage.getMessageIdAtOriginatingLocation ());
+                tempWaveMessage.setOriginalMessageId (waveMessage.getOriginalMessageId ());
+                tempWaveMessage.setWaveClientMessageId (waveMessage.getWaveClientMessageId ());
+                tempWaveMessage.setSenderServiceCode (waveMessage.getSenderServiceCode ());
+            }
+
+            WaveThread waveThread = null;
+
+            waveThread = WaveThread.getWaveThreadForServiceId (tempWaveMessage.getSenderServiceCode ());
+
+            if (null == waveThread)
+            {
+                errorTrace (new String ("WaveObjectManager::reply : No Service registered to accept reply with this service Id ") + tempWaveMessage.getSenderServiceCode () + ". How did we receive this message in the first place.  May be the service went down after submitting the request.  Dropping and destroying the message.");
+
+                if (true == (tempWaveMessage.getIsLastReply ()))
+                {
+                    m_inputMessage = null;
+                }
+
+                return (ResourceId.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE_RESPONSE);
+            }
+
+            tempWaveMessage.setType (WaveMessageType.WAVE_MESSAGE_TYPE_RESPONSE);
+
+            if (true == (tempWaveMessage.getIsLastReply ()))
+            {
+                m_inputMessage = null;
+            }
+
+            addMessageToMessageHistoryCalledFromReply (tempWaveMessage);
+
+            waveThread.submitReplyMessage (tempWaveMessage);
+
+            return (ResourceId.WAVE_MESSAGE_SUCCESS);
+        }
+    }
+
+    @NonMessageHandler
+    private void addMessageToMessageHistoryCalledFromReply (final WaveMessage waveMessage)
     {
         // TODO Auto-generated method stub
+
     }
 
     public void addWorker (final WaveWorker waveWorker)
@@ -929,5 +1029,53 @@ public class WaveObjectManager extends WaveElement
     protected void rollbackTransaction ()
     {
         // TODO Auto-generated method stub
+    }
+
+    public WaveMessage createMessageInstanceWrapper (final UI32 operationCode)
+    {
+        WaveMessage waveMessage = null;
+
+        m_createMessageInstanceWrapperMutex.lock ();
+
+        if (m_ownersForCreatingMessageInstances.containsKey (operationCode))
+        {
+            final WaveElement waveElement = m_ownersForCreatingMessageInstances.get (operationCode);
+
+            if (null != waveElement)
+            {
+                waveMessage = waveElement.createMessageInstance (operationCode);
+            }
+            else
+            {
+                errorTracePrintf ("WaveObjectManager.createMessageInstanceWrapper : A null owner has been registered for operation code %d.", operationCode);
+            }
+
+            if (null == waveMessage)
+            {
+                errorTracePrintf ("WaveObjectManager::createMessageInstanceWrapper : Owner for %d has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further.", operationCode);
+            }
+        }
+        else
+        {
+            final WaveElement waveElement = m_ownersForCreatingMessageInstances.get (FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_OPCODE);
+
+            if (null != waveElement)
+            {
+                waveMessage = waveElement.createMessageInstance (operationCode);
+            }
+            else
+            {
+                errorTracePrintf ("WaveObjectManager.createMessageInstanceWrapper : A null owner has been registered for operation code WAVE_OBJECT_MANAGER_ANY_OPCODE.");
+            }
+
+            if (null == waveMessage)
+            {
+                errorTracePrintf ("WaveObjectManager::createMessageInstanceWrapper : Owner for %d via WAVE_OBJECT_MANAGER_ANY_OPCODE has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further.", operationCode);
+            }
+        }
+
+        m_createMessageInstanceWrapperMutex.unlock ();
+
+        return (waveMessage);
     }
 }

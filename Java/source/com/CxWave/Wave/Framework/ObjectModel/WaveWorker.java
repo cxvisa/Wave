@@ -128,10 +128,9 @@ public class WaveWorker extends WaveElement
 
     @Override
     @NonMessageHandler
-    protected void reply (final WaveMessage waveMessage)
+    protected ResourceId reply (final WaveMessage waveMessage)
     {
-        m_waveObjectManager.reply (waveMessage);
-
+        return (m_waveObjectManager.reply (waveMessage));
     }
 
     @Override

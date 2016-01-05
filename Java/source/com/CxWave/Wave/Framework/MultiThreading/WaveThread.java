@@ -18,6 +18,7 @@ import com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportO
 import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
 import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
@@ -503,7 +504,7 @@ public class WaveThread extends Thread
         return (new UI32 (s_defaultStackSize));
     }
 
-    private WaveObjectManager getWaveObjectManagerForOperationCode (final UI32 operationCode)
+    public WaveObjectManager getWaveObjectManagerForOperationCode (final UI32 operationCode)
     {
         for (final WaveObjectManager waveObjectManager : m_waveObjectManagers)
         {
@@ -565,7 +566,7 @@ public class WaveThread extends Thread
         final UI32 operationCode = waveMessage.getOperationCode ();
         final WaveObjectManager waveObjectManager = getWaveObjectManagerForOperationCode (operationCode);
 
-        // by the time we reach here we must not encounter a NULL WaveObjectManager.
+        // by the time we reach here we must not encounter a null WaveObjectManager.
 
         if (null == waveObjectManager)
         {
@@ -641,6 +642,72 @@ public class WaveThread extends Thread
                 System.err.println ("WaveThread::submitMessage : Submitting message with unknown priority (" + messagePriority + ").");
                 WaveAssertUtils.waveAssert (false);
                 status = WaveMessageStatus.WAVE_MESSAGE_ERROR_UNKNOWN_PRIORITY;
+            }
+        }
+
+        m_wakeupCondition.signal ();
+
+        m_wakeupCaller.unlock ();
+
+        m_gateKeeper.unlock ();
+
+        return (status);
+    }
+
+    @NonMessageHandler
+    public WaveMessageStatus submitReplyMessage (final WaveMessage waveMessage)
+    {
+        WaveAssertUtils.waveAssert (null != waveMessage);
+
+        final WaveMessagePriority messagePriority = waveMessage.getPriority ();
+
+        // FIXME : Sagar make sure that the thread is up and ready for receiving messages
+
+        final WaveServiceId senderServiceId = waveMessage.getSenderServiceCode ();
+
+        // In general a thread accepts responses only for the messages that it sent out.
+
+        if (m_waveServiceId != senderServiceId)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveThread::submitReplyMessage : Submitting reply message to a wrong Wave Thread.");
+            WaveAssertUtils.waveAssert (false);
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_SUBMIT_RESPONSE_TO_INVALID_THREAD);
+        }
+
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_SUCCESS;
+
+        m_gateKeeper.lock ();
+
+        m_wakeupCaller.lock ();
+
+        final UI32 opertionCode = waveMessage.getOperationCode ();
+
+        if ((FrameworkOpCodes.WAVE_OBJECT_MANAGER_TIMER_EXPIRED).getOperationCode () == opertionCode) // For Timer Expiration
+                                                                                                      // Message Responses
+        {
+            m_timerExpirationResponses.insertAtTheBack (waveMessage); // for Responses to all the other Framework messages like
+                                                                      // initialize, enable etc.,
+        }
+        else if ((opertionCode.getValue ()) >= ((1L << 31) - 1001L))
+        {
+            m_frameworkMessageResponses.insertAtTheBack (waveMessage);
+        }
+        else
+        {
+            if (WaveMessagePriority.WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
+            {
+                m_highPriorityMessageResponses.insertAtTheBack (waveMessage);
+            }
+            else if (WaveMessagePriority.WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
+            {
+                m_messageResponses.insertAtTheBack (waveMessage);
+            }
+            else
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveThread.submitReplyMessage : Submitting a reply message with unknown priority %d", messagePriority);
+                WaveAssertUtils.waveAssert (false);
+                status = WaveMessageStatus.WAVE_MESSAGE_ERROR_RESPONSE_UNKNOWN_PRIORITY;
             }
         }
 

@@ -13,6 +13,8 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
+import com.CxWave.Wave.Resources.Repository.WaveResourcesRepository;
+import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator;
 
@@ -167,5 +169,21 @@ public class FrameworkToolKit
     public static boolean isFrameworkReadyToBoot ()
     {
         return (WaveFrameworkObjectManager.getIsFrameworkReadyToBoot ());
+    }
+
+    public static String localize (final WaveResourceEnumInterface waveResourceEnumInterface)
+    {
+        final int effectiveResourceId = waveResourceEnumInterface.getEffectiveResourceId ();
+
+        final WaveResourcesRepository waveResourcesRepository = WaveResourcesRepository.getInstance ();
+
+        if (null != waveResourcesRepository)
+        {
+            return (waveResourcesRepository.getResourceValueById (effectiveResourceId));
+        }
+        else
+        {
+            return (null);
+        }
     }
 }

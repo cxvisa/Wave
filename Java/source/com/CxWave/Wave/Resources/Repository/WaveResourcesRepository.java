@@ -82,4 +82,14 @@ public class WaveResourcesRepository
     {
         return (m_resourceIdNameToWaveResourceEnumInterfaceMap.get (resourceIdName));
     }
+
+    public String getResourceValueById (final Integer resourceId)
+    {
+        return (m_resourceIdToValueMap.get (resourceId));
+    }
+
+    public String getResourceNameById (final Integer resourceId)
+    {
+        return (m_resourceIdToNameMap.get (resourceId));
+    }
 }

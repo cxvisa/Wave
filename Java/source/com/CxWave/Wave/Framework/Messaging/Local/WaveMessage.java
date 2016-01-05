@@ -8,10 +8,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Messaging.MessageFactory.WaveMessageFactory;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThreadId;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface;
@@ -78,7 +80,7 @@ public class WaveMessage extends SerializableObject
         }
     }
 
-    private WaveMessageType              m_type                                    = WaveMessageType.WAVE_MESSAGE_TYPE_REQUEST;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   // WaveMessageType
+    private WaveMessageType              m_type                                    = WaveMessageType.WAVE_MESSAGE_TYPE_REQUEST;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         // WaveMessageType
     private WaveMessagePriority          m_priority                                = WaveMessagePriority.WAVE_MESSAGE_PRIORITY_NORMAL;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // WaveMessagePriority
     private WaveServiceId                m_serviceCode;
     private UI32                         m_operationCode;
@@ -125,7 +127,7 @@ public class WaveMessage extends SerializableObject
     private String                       m_partitionName;
     private LocationId                   m_partitionLocationIdForPropagation       = LocationId.NullLocationId;
     private boolean                      m_isPartitionContextPropagated            = false;
-    private boolean                      m_isPartitionNameSetByUser                = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // Not
+    private boolean                      m_isPartitionNameSetByUser                = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // Not
     // serialized.
     // Only to prevent copy of partitionName from
     // m_pInputMessage during propagation.
@@ -286,7 +288,7 @@ public class WaveMessage extends SerializableObject
         m_isOneWayMessage = isOneWayMessage;
     }
 
-    private boolean getIsSynchronousMessage ()
+    public boolean getIsSynchronousMessage ()
     {
         return m_isSynchronousMessage;
     }
@@ -296,7 +298,7 @@ public class WaveMessage extends SerializableObject
         m_isSynchronousMessage = isSynchronousMessage;
     }
 
-    private WaveMutex getSynchronizingMutex ()
+    public WaveMutex getSynchronizingMutex ()
     {
         return m_synchronizingMutex;
     }
@@ -306,7 +308,7 @@ public class WaveMessage extends SerializableObject
         m_synchronizingMutex = synchronizingMutex;
     }
 
-    private WaveCondition getSynchronizingCondition ()
+    public WaveCondition getSynchronizingCondition ()
     {
         return m_synchronizingCondition;
     }
@@ -766,6 +768,8 @@ public class WaveMessage extends SerializableObject
         }
         catch (final Exception exception)
         {
+            WaveTraceUtils.fatalTracePrintf ("WaveMessage.getOperationCodeForMessageClass : %s message class could not be instantiated.  Details : %s", messageClass.getName (), exception.toString ());
+
             WaveAssertUtils.waveAssert ();
         }
 
@@ -778,5 +782,76 @@ public class WaveMessage extends SerializableObject
         WaveAssertUtils.waveAssert (null != operationCode);
 
         return (operationCode);
+    }
+
+    public WaveMessage cloneThisMessage ()
+    {
+        final WaveMessage clonedWaveMessage = WaveMessageFactory.getMessageInstance (m_serviceCode, m_operationCode);
+        final String serializedData;
+        UI32 messageIdAtOriginatingLocation = new UI32 (0);
+        UI32 originalMessageId = new UI32 (0);
+        UI32 waveClientMessageId = new UI32 (0);
+
+        WaveAssertUtils.waveAssert (null != clonedWaveMessage);
+
+        if (null == clonedWaveMessage)
+        {
+            return (null);
+        }
+
+        // Prepare for serialization on this message.
+
+        prepareForSerialization ();
+
+        // Prepare for serialization and load the attributes from this message into the cloned message.
+
+        messageIdAtOriginatingLocation = clonedWaveMessage.getMessageIdAtOriginatingLocation ();
+        originalMessageId = clonedWaveMessage.getOriginalMessageId ();
+        waveClientMessageId = clonedWaveMessage.getWaveClientMessageId ();
+
+        clonedWaveMessage.prepareForSerialization ();
+        clonedWaveMessage.loadFromSerializableObject (this);
+
+        clonedWaveMessage.setMessageIdAtOriginatingLocation (messageIdAtOriginatingLocation);
+        clonedWaveMessage.setOriginalMessageId (originalMessageId);
+        clonedWaveMessage.setWaveClientMessageId (waveClientMessageId);
+
+        clonedWaveMessage.m_isACopy = true;
+
+        clonedWaveMessage.copyBuffersFrom (this);
+
+        return (clonedWaveMessage);
+    }
+
+    void copyBuffersFrom (final WaveMessage waveMessage)
+    {
+        final Vector<UI32> bufferTagsVector = new Vector<UI32> ();
+        int numberOfBuffers = 0;
+        int i = 0;
+
+        waveMessage.getBufferTags (bufferTagsVector);
+
+        numberOfBuffers = bufferTagsVector.size ();
+
+        for (i = 0; i < numberOfBuffers; i++)
+        {
+            byte[] buffer = null;
+            int bufferSize = 0;
+            WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_ERROR;
+
+            buffer = waveMessage.findBuffer (bufferTagsVector.get (i));
+            bufferSize = buffer.length;
+
+            WaveAssertUtils.waveAssert (null != buffer);
+            WaveAssertUtils.waveAssert (0 != bufferSize);
+
+            status = addBuffer (bufferTagsVector.get (i), buffer, false);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveMessage::copyBuffersFrom : Copying a Buffer Failed.  Status : %s", (FrameworkToolKit.localize (status)));
+                WaveAssertUtils.waveAssert (false);
+            }
+        }
     }
 }
