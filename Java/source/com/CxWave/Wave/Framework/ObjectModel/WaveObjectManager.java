@@ -746,6 +746,7 @@ public class WaveObjectManager extends WaveElement
         // TODO Auto-generated method stub
     }
 
+    @Override
     @NonMessageHandler
     public void reply (final WaveMessage waveMessage)
     {
@@ -915,5 +916,18 @@ public class WaveObjectManager extends WaveElement
     public String getName ()
     {
         return (m_name);
+    }
+
+    @Override
+    protected ResourceId commitTransaction ()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected void rollbackTransaction ()
+    {
+        // TODO Auto-generated method stub
     }
 }

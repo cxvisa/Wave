@@ -4,7 +4,12 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
+import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public abstract class WaveElement
@@ -222,4 +227,90 @@ public abstract class WaveElement
     public abstract void updateTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration);
 
     public abstract void updateRealTimeConsumedInThisThread (final UI32 operationCode, final int currentStep, final long lastLapDuration);
+
+    /**
+     * Note, if any transaction was started before calling this step, and not committed, the transaction will be committed to
+     * preserve the semantics, even though if there is no db update by the step and then the reply will happen as usual.
+     */
+
+    protected void waveLinearSequencerSucceededStep (final WaveLinearSequencerContext waveLinearSequencerContext)
+    {
+        develTrace ("WaveElement.waveLinearSequencerSucceededStep : Entering ...");
+
+        final WaveMessage waveMessage = waveLinearSequencerContext.getWaveMessage ();
+        final WaveAsynchronousContext waveAsynchronousContext = waveLinearSequencerContext.getWaveAsynchronousContext ();
+
+        if (true == (waveLinearSequencerContext.getIsHoldAllRequested ()))
+        {
+            waveLinearSequencerContext.unholdAll ();
+        }
+
+        ResourceId status = ResourceId.FRAMEWORK_SUCCESS;
+
+        if (true == (waveLinearSequencerContext.getIsTransactionStartedByMe ()))
+        {
+            waveLinearSequencerContext.setIsTransactionStartedByMe (false);
+
+            // commit the transaction to preserve the semantics of the executeSuccessStep and if the transaction
+            // has no data to be committed, framework will immediately return without having to go to DB.
+            status = commitTransaction ();
+        }
+
+        if (ResourceId.FRAMEWORK_SUCCESS == status)
+        {
+            status = ResourceId.WAVE_MESSAGE_SUCCESS;
+        }
+        else
+        {
+            status = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+        }
+
+        if (null != waveMessage)
+        {
+            waveMessage.setCompletionStatus (status);
+            reply (waveMessage);
+        }
+        else if (null != waveAsynchronousContext)
+        {
+            waveAsynchronousContext.setCompletionStatus (status);
+            waveAsynchronousContext.callback ();
+        }
+    }
+
+    void waveLinearSequencerFailedStep (final WaveLinearSequencerContext waveLinearSequencerContext)
+    {
+        develTrace ("WaveElement::waveLinearSequencerFailedStep : Entering ...");
+
+        final WaveMessage waveMessage = waveLinearSequencerContext.getWaveMessage ();
+        final WaveAsynchronousContext waveAsynchronousContext = waveLinearSequencerContext.getWaveAsynchronousContext ();
+
+        if (true == (waveLinearSequencerContext.getIsHoldAllRequested ()))
+        {
+            waveLinearSequencerContext.unholdAll ();
+        }
+
+        if (true == (waveLinearSequencerContext.getIsTransactionStartedByMe ()))
+        {
+            waveLinearSequencerContext.setIsTransactionStartedByMe (false);
+            rollbackTransaction ();
+        }
+
+        if (null != waveMessage)
+        {
+            waveMessage.setCompletionStatus (waveLinearSequencerContext.getCompletionStatus ());
+            reply (waveMessage);
+        }
+        else if (null != waveAsynchronousContext)
+        {
+            waveAsynchronousContext.setCompletionStatus (waveLinearSequencerContext.getCompletionStatus ());
+            waveAsynchronousContext.callback ();
+        }
+    }
+
+    protected abstract void rollbackTransaction ();
+
+    @NonMessageHandler
+    protected abstract void reply (final WaveMessage waveMessage);
+
+    protected abstract ResourceId commitTransaction ();
 }

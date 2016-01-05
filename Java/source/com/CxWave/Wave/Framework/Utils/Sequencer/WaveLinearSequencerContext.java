@@ -111,17 +111,36 @@ public class WaveLinearSequencerContext
 
         for (final String methodNameForStep : m_steps)
         {
-            try
+            WaveTraceUtils.infoTracePrintf ("WaveLinearSequencerContext.validateAndCompute : Searching for method name : %s", methodNameForStep);
+
+            Class<?> classToSearchForTheMethod = waveElementClass;
+            Method methodForStep = null;
+
+            while (null != classToSearchForTheMethod)
             {
-                final Method methodForStep = waveElementClass.getDeclaredMethod (methodNameForStep, getClass ());
+                WaveTraceUtils.infoTracePrintf ("WaveLinearSequencerContext.validateAndCompute :     Searching in class : %s", classToSearchForTheMethod.getName ());
 
-                methodForStep.setAccessible (true);
+                try
+                {
+                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, getClass ());
 
+                    methodForStep.setAccessible (true);
+
+                    break;
+                }
+                catch (NoSuchMethodException | SecurityException e)
+                {
+                    classToSearchForTheMethod = classToSearchForTheMethod.getSuperclass ();
+                }
+            }
+
+            if (null != methodForStep)
+            {
                 m_methodsForSteps.add (methodForStep);
             }
-            catch (NoSuchMethodException | SecurityException e)
+            else
             {
-                WaveTraceUtils.fatalTracePrintf ("WaveLinearSequencerContext.validateAndCompute : Could not obtain the Step method %s on class %s, Details : %s", methodNameForStep, waveElementClass.getName (), e.toString ());
+                WaveTraceUtils.fatalTracePrintf ("WaveLinearSequencerContext.validateAndCompute : Could not obtain the Step method %s on class %s", methodNameForStep, waveElementClass.getName ());
                 WaveAssertUtils.waveAssert ();
 
                 return (false);
@@ -224,7 +243,7 @@ public class WaveLinearSequencerContext
         return (m_isTransactionStartedByMe);
     }
 
-    public void setIsTransctionStartedByMe (final boolean isTransactionStartedByMe)
+    public void setIsTransactionStartedByMe (final boolean isTransactionStartedByMe)
     {
         m_isTransactionStartedByMe = isTransactionStartedByMe;
     }

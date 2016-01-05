@@ -173,7 +173,7 @@ void WaveElement::waveLinearSequencerCommitTransactionStep (WaveLinearSequencerC
 
 /**
  * Note, if any transaction was started before calling this step, and not committed,
- * the transaction will be commited to preserve the semantics, even though if there is
+ * the transaction will be committed to preserve the semantics, even though if there is
  * no db update by the step and then the reply will happen as usual.
  */
 ResourceId WaveElement::waveSynchronousLinearSequencerSucceededStep (WaveSynchronousLinearSequencerContext *pWaveSynchronousLinearSequencerContext)

@@ -7,9 +7,12 @@ package com.CxWave.Wave.Framework.ObjectModel;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 @NonWorker
@@ -121,5 +124,25 @@ public class WaveWorker extends WaveElement
 
             m_waveObjectManager.addOperationMapForMessageClass (entry.getKey (), entry.getValue (), this);
         }
+    }
+
+    @Override
+    @NonMessageHandler
+    protected void reply (final WaveMessage waveMessage)
+    {
+        m_waveObjectManager.reply (waveMessage);
+
+    }
+
+    @Override
+    protected ResourceId commitTransaction ()
+    {
+        return (m_waveObjectManager.commitTransaction ());
+    }
+
+    @Override
+    protected void rollbackTransaction ()
+    {
+        m_waveObjectManager.rollbackTransaction ();
     }
 }
