@@ -25,7 +25,7 @@ public class WaveBootObjectManagerMessage extends WaveMessage
 
     public WaveBootObjectManagerMessage (final WaveServiceId id, final WaveBootReason reason)
     {
-        super (id, FrameworkOpCodes.WAVE_OBJECT_MANAGER_BOOT);
+        super (id);
 
         m_reason = reason;
     }

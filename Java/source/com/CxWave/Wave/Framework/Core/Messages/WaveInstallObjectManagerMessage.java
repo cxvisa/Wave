@@ -25,7 +25,7 @@ public class WaveInstallObjectManagerMessage extends WaveMessage
 
     public WaveInstallObjectManagerMessage (final WaveServiceId id, final WaveBootReason reason)
     {
-        super (id, FrameworkOpCodes.WAVE_OBJECT_MANAGER_INSTALL);
+        super (id);
 
         m_reason = reason;
     }
