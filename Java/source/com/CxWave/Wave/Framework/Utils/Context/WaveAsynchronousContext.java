@@ -59,21 +59,37 @@ public class WaveAsynchronousContext
 
         WaveAssertUtils.waveAssert (null != callerClass);
 
-        try
-        {
-            m_callbackMethod = callerClass.getDeclaredMethod (m_callbackMethodName, getClass ());
+        Method callbackMethod = null;
+        Class<?> classToSearchFor = callerClass;
 
-            m_callbackMethod.setAccessible (true);
+        while (null != classToSearchFor)
+        {
+            try
+            {
+                callbackMethod = classToSearchFor.getDeclaredMethod (m_callbackMethodName, getClass ());
+
+                callbackMethod.setAccessible (true);
+
+                break;
+            }
+            catch (NoSuchMethodException | SecurityException e)
+            {
+                classToSearchFor = classToSearchFor.getSuperclass ();
+            }
         }
-        catch (NoSuchMethodException | SecurityException e)
-        {
-            WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.validateAndCompute : Could not obtain the callback method %s on class %s, Details : %s", m_callbackMethodName, callerClass.getName (), e.toString ());
-            WaveAssertUtils.waveAssert ();
 
+        m_callbackMethod = callbackMethod;
+
+        if (null != m_callbackMethod)
+        {
+            return true;
+        }
+        else
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.validateAndCompute : Could not obtain the callback method %s on class %s hierarchy", m_callbackMethodName, callerClass.getName ());
+            WaveAssertUtils.waveAssert ();
             return (false);
         }
-
-        return (true);
     }
 
     public void setCompletionStatus (final ResourceId completionStatus)
