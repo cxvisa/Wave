@@ -316,9 +316,13 @@ public abstract class WaveElement
 
     public WaveMessage createMessageInstance (final UI32 operationCode)
     {
-        errorTracePrintf ("WaveElement::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
-        errorTracePrintf ("WaveElement::createMessageInstance : ObjectManagers and Workers MUST overwrite this virtual method.");
-
-        return (null);
+        if (null != m_waveObjectManager)
+        {
+            return (m_waveObjectManager.createMessageInstance (operationCode));
+        }
+        else
+        {
+            return (null);
+        }
     }
 }

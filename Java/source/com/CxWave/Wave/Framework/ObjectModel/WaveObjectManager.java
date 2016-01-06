@@ -1078,4 +1078,36 @@ public class WaveObjectManager extends WaveElement
 
         return (waveMessage);
     }
+
+    @Override
+    public WaveMessage createMessageInstance (final UI32 operationCode)
+    {
+        final Class<?> messageClass = m_operationsIdToClassMap.get (operationCode);
+
+        if (null != messageClass)
+        {
+            Object object = null;
+
+            try
+            {
+                object = messageClass.newInstance ();
+            }
+            catch (final Exception exception)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveObjectManager.createMessageInstance : %s message class could not be instantiated.  Details : %s", messageClass.getName (), exception.toString ());
+
+                WaveAssertUtils.waveAssert ();
+            }
+
+            final WaveMessage waveMessage = (WaveMessage) object;
+
+            WaveAssertUtils.waveAssert (null != waveMessage);
+
+            return (waveMessage);
+        }
+        else
+        {
+            return (null);
+        }
+    }
 }
