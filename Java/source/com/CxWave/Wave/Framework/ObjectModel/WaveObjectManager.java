@@ -20,6 +20,7 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
@@ -1116,5 +1117,13 @@ public class WaveObjectManager extends WaveElement
     public Vector<WaveWorker> getWorkers ()
     {
         return (m_workers);
+    }
+
+    public void initialize (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        infoTracePrintf ("WaveObjectManager.initialize : Entering for %s ...", (getClass ()).getName ());
+
+        waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        waveAsynchronousContextForBootPhases.callback ();
     }
 }

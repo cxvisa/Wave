@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -87,6 +88,9 @@ public class WaveInitializeObjectManagerWorker extends WaveWorker
         infoTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeWorkersStepCallback : Entering ...");
 
         final WaveLinearSequencerContext waveLinearSequencerContext = (WaveLinearSequencerContext) (waveAsynchronousContextForBootPhases.getCallerContext ());
+
+        waveAssert (null != waveLinearSequencerContext);
+
         ResourceId status = waveAsynchronousContextForBootPhases.getCompletionStatus ();
 
         waveLinearSequencerContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
@@ -111,6 +115,38 @@ public class WaveInitializeObjectManagerWorker extends WaveWorker
     {
         WaveTraceUtils.infoTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeSelfStep : Entering ...");
 
-        waveLinearSequencerContext.executeNextStep (ResourceId.WAVE_MESSAGE_SUCCESS);
+        final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = (WaveInitializeObjectManagerMessage) (waveLinearSequencerContext.getWaveMessage ());
+
+        waveAssert (null != waveInitializeObjectManagerMessage);
+
+        final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, "initializeInitializeSelfStepCallback", waveLinearSequencerContext);
+
+        waveAssert (null != waveAsynchronousContextForBootPhases);
+
+        waveAsynchronousContextForBootPhases.setBootReason (waveInitializeObjectManagerMessage.getReason ());
+
+        final WaveObjectManager waveObjectManager = getWaveObjectManager ();
+
+        WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+        waveObjectManager.initialize (waveAsynchronousContextForBootPhases);
+    }
+
+    private void initializeInitializeSelfStepCallback (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        infoTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeSelfStepCallback : Entering ...");
+
+        final WaveLinearSequencerContext waveLinearSequencerContext = (WaveLinearSequencerContext) (waveAsynchronousContextForBootPhases.getCallerContext ());
+
+        waveAssert (null != waveLinearSequencerContext);
+
+        final ResourceId status = waveAsynchronousContextForBootPhases.getCompletionStatus ();
+
+        if (ResourceId.WAVE_MESSAGE_SUCCESS != status)
+        {
+            errorTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeSelfStepCallback : Initializing the Object Manager (self) failed.");
+        }
+
+        waveLinearSequencerContext.executeNextStep (status);
     }
 }
