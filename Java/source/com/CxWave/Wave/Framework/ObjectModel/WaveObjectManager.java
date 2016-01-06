@@ -1134,4 +1134,12 @@ public class WaveObjectManager extends WaveElement
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
     }
+
+    public void install (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        infoTracePrintf ("WaveObjectManager.install : Entering for %s ...", (getClass ()).getName ());
+
+        waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        waveAsynchronousContextForBootPhases.callback ();
+    }
 }
