@@ -10,6 +10,7 @@ import java.util.Map;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
+import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -143,5 +144,23 @@ public class WaveWorker extends WaveElement
     protected void rollbackTransaction ()
     {
         m_waveObjectManager.rollbackTransaction ();
+    }
+
+    protected void waveAssert ()
+    {
+        m_waveObjectManager.waveAssert ();
+    }
+
+    protected void waveAssert (final boolean isAssertNotRequired)
+    {
+        m_waveObjectManager.waveAssert (isAssertNotRequired);
+    }
+
+    public void initialize (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        infoTracePrintf ("WaveWorker.initialize : Entering for %s ...", (getClass ()).getName ());
+
+        waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        waveAsynchronousContextForBootPhases.callback ();
     }
 }

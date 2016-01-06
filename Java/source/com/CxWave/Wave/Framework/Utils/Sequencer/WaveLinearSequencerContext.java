@@ -175,7 +175,7 @@ public class WaveLinearSequencerContext
         return (m_waveAsynchronousContext);
     }
 
-    public void incrementNumberCallbacksNeededBeforeAdvancingToNextStep ()
+    public void incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ()
     {
         m_numberOfCallbacksBeforeAdvancingToNextStep++;
     }

@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.ObjectModel.Workers;
 
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
@@ -11,6 +13,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
+import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -44,9 +47,64 @@ public class WaveInitializeObjectManagerWorker extends WaveWorker
 
     private void initializeInitializeWorkersStep (final WaveLinearSequencerContext waveLinearSequencerContext)
     {
-        WaveTraceUtils.infoTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeWorkersStep : Entering ...");
+        infoTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeWorkersStep : Entering ...");
+
+        final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = (WaveInitializeObjectManagerMessage) (waveLinearSequencerContext.getWaveMessage ());
+
+        waveAssert (null != waveInitializeObjectManagerMessage);
+
+        final Vector<WaveWorker> workers = m_waveObjectManager.getWorkers ();
+
+        waveAssert (null != workers);
+
+        final int numberOfWorkers = workers.size ();
+        int i = 0;
+
+        waveLinearSequencerContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        for (i = 0; i < numberOfWorkers; i++)
+        {
+            final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases = new WaveAsynchronousContextForBootPhases (this, "initializeInitializeWorkersStepCallback", waveLinearSequencerContext);
+
+            waveAssert (null != waveAsynchronousContextForBootPhases);
+
+            waveAsynchronousContextForBootPhases.setBootReason (waveInitializeObjectManagerMessage.getReason ());
+
+            waveLinearSequencerContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+            waveAssert (null != (workers.get (i)));
+
+            (workers.get (i)).initialize (waveAsynchronousContextForBootPhases);
+        }
+
+        waveLinearSequencerContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
 
         waveLinearSequencerContext.executeNextStep (ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private void initializeInitializeWorkersStepCallback (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        infoTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeWorkersStepCallback : Entering ...");
+
+        final WaveLinearSequencerContext waveLinearSequencerContext = (WaveLinearSequencerContext) (waveAsynchronousContextForBootPhases.getCallerContext ());
+        ResourceId status = waveAsynchronousContextForBootPhases.getCompletionStatus ();
+
+        waveLinearSequencerContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        if (ResourceId.WAVE_MESSAGE_SUCCESS != status)
+        {
+            errorTracePrintf ("WaveInitializeObjectManagerWorker.initializeInitializeWorkersStepCallback : Initializing one worker failed.");
+
+            waveLinearSequencerContext.incrementNumberOfFailures ();
+            // waveAssert (false);
+        }
+
+        if (0 != waveLinearSequencerContext.getNumberOfFailures ())
+        {
+            status = ResourceId.WAVE_MESSAGE_ERROR;
+        }
+
+        waveLinearSequencerContext.executeNextStep (status);
     }
 
     private void initializeInitializeSelfStep (final WaveLinearSequencerContext waveLinearSequencerContext)
