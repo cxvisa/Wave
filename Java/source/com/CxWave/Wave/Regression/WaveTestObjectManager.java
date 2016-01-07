@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Regression.Contexts.RegressionPrepare2AsynchronousContext;
 import com.CxWave.Wave.Regression.Contexts.RegressionPrepareAsynchronousContext;
 import com.CxWave.Wave.Regression.Contexts.RegressionTestAsynchronousContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -37,5 +38,11 @@ public class WaveTestObjectManager extends WaveLocalObjectManager
     {
         regressionPrepareAsynchronousContext.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         regressionPrepareAsynchronousContext.callback ();
+    }
+
+    public void handlePrepare2Request (final RegressionPrepare2AsynchronousContext regressionPrepare2AsynchronousContext)
+    {
+        regressionPrepare2AsynchronousContext.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        regressionPrepare2AsynchronousContext.callback ();
     }
 }

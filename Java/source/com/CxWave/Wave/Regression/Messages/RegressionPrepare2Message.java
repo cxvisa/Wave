@@ -13,16 +13,16 @@ import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
 
 @Message (om = WaveTestObjectManager.class)
-public class RegressionPrepareMessage2 extends WaveMessage
+public class RegressionPrepare2Message extends WaveMessage
 {
     private final Vector<String> m_inputStrings = new Vector<String> ();
 
-    public RegressionPrepareMessage2 ()
+    public RegressionPrepare2Message ()
     {
         super (WaveServiceId.NullServiceId, FrameworkOpCodes.WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2);
     }
 
-    public RegressionPrepareMessage2 (final WaveServiceId id)
+    public RegressionPrepare2Message (final WaveServiceId id)
     {
         super (id);
     }
