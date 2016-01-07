@@ -5,9 +5,10 @@
 <ModuleResources ModuleName = "ObjectManagerPriorities" ComponentName = "Wave">
     <ResourceEnum Name = "WaveObjectManagerPriority">
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK"></Resource>
-        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_DATABASE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_TRACE"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_DATABASE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_SHELL"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_REGRESSION"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_DEFAULT"></Resource>
     </ResourceEnum>
 </ModuleResources>
