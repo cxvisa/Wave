@@ -57,6 +57,12 @@ public class Prepare2RequestWorker extends WaveWorker
 
         waveAssert (null != regressionPrepare2AsynchronousContext);
 
+        final RegressionPrepare2Message regressionPrepare2Message = (RegressionPrepare2Message) waveLinearSequencerContext.getWaveMessage ();
+
+        waveAssert (null != regressionPrepare2Message);
+
+        regressionPrepare2AsynchronousContext.setInputStrings (regressionPrepare2Message.getInputStrings ());
+
         waveTestObjectManager.handlePrepare2Request (regressionPrepare2AsynchronousContext);
     }
 

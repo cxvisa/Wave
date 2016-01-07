@@ -4,13 +4,27 @@
 
 package com.CxWave.Wave.Regression.Contexts;
 
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.ObjectModel.WaveElement;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 
 public class RegressionPrepare2AsynchronousContext extends WaveAsynchronousContext
 {
+    Vector<String> m_inputStrings = new Vector<String> ();
+
     public RegressionPrepare2AsynchronousContext (final WaveElement caller, final String callbackMethodName, final Object callerContext)
     {
         super (caller, callbackMethodName, callerContext);
+    }
+
+    public Vector<String> getInputStrings ()
+    {
+        return (m_inputStrings);
+    }
+
+    public void setInputStrings (final Vector<String> inputStrings)
+    {
+        m_inputStrings = inputStrings;
     }
 }
