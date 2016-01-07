@@ -9,7 +9,6 @@ import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Message;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
-import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
 
 @Message (om = WaveTestObjectManager.class)
 public class RegressionTestMessage extends WaveMessage
@@ -19,7 +18,7 @@ public class RegressionTestMessage extends WaveMessage
         super (WaveServiceId.NullServiceId, FrameworkOpCodes.WAVE_OBJECT_MANAGER_TEST);
     }
 
-    public RegressionTestMessage (final WaveServiceId id, final WaveBootReason reason)
+    public RegressionTestMessage (final WaveServiceId id)
     {
         super (id);
     }

@@ -11,7 +11,6 @@ import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Message;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
-import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
 
 @Message (om = WaveTestObjectManager.class)
 public class RegressionPrepareMessage2 extends WaveMessage
@@ -23,7 +22,7 @@ public class RegressionPrepareMessage2 extends WaveMessage
         super (WaveServiceId.NullServiceId, FrameworkOpCodes.WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2);
     }
 
-    public RegressionPrepareMessage2 (final WaveServiceId id, final WaveBootReason reason)
+    public RegressionPrepareMessage2 (final WaveServiceId id)
     {
         super (id);
     }
