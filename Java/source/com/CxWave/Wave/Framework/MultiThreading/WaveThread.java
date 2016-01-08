@@ -799,4 +799,10 @@ public class WaveThread extends Thread
 
         m_isReadyForMessageSubmissionsLock.unlock ();
     }
+
+    public static WaveServiceId getWaveServiceIdForServiceName (final String serviceName)
+    {
+        return (s_waveServiceMap.getWaveServiceIdForServiceName (serviceName));
+
+    }
 }

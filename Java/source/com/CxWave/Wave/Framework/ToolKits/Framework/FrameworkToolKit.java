@@ -13,6 +13,8 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.ManagementInterface.ClientInterface.WaveClientTransportObjectManager;
 import com.CxWave.Wave.Resources.Repository.WaveResourcesRepository;
 import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
@@ -80,6 +82,25 @@ public class FrameworkToolKit
     public static String getServiceNameById (final WaveServiceId id)
     {
         return (WaveThread.getWaveServiceNameForServiceId (id));
+    }
+
+    public static WaveServiceId getServiceIdByName (final String serviceName)
+    {
+        WaveServiceId waveServiceId = null;
+        final WaveManagementInterfaceRole waveManagementInterfaceRole = getManagementInterfaceRole ();
+
+        if ((WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER == waveManagementInterfaceRole) || (WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_CLI == waveManagementInterfaceRole))
+        {
+            waveServiceId = WaveThread.getWaveServiceIdForServiceName (serviceName);
+        }
+        else
+        {
+            waveServiceId = WaveClientTransportObjectManager.getWaveServiceId ();
+        }
+
+        WaveTraceUtils.debugTracePrintf ("FrameworkToolKit.getServiceIdByName : Service Name : %s : %l", serviceName, waveServiceId.getId ());
+
+        return (waveServiceId);
     }
 
     public static String getLoopbackIpV4AddressForThisMachine ()
