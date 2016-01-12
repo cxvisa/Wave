@@ -1158,4 +1158,68 @@ public class WaveObjectManager extends WaveElement
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
     }
+
+    public static WaveObjectManager getInstanceByClassNameIfSingleton (final String objectManagerClassName)
+    {
+        final boolean isADerivativeOfWaveObjectManager = WaveJavaSourceRepository.isAderivativeOfWaveObjectManager (objectManagerClassName);
+
+        if (!isADerivativeOfWaveObjectManager)
+        {
+            return (null);
+        }
+
+        Class<?> classForObjectManager = null;
+
+        try
+        {
+            classForObjectManager = Class.forName (objectManagerClassName);
+        }
+        catch (final ClassNotFoundException e)
+        {
+            WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getInstanceByClassNameIfSingleton : Could not get Java Class information for %s.  Details : %s", objectManagerClassName, e.toString ());
+        }
+
+        if (null == classForObjectManager)
+        {
+            return (null);
+        }
+
+        Method getInstanceMethod = null;
+
+        try
+        {
+            getInstanceMethod = classForObjectManager.getMethod ("getInstance");
+        }
+        catch (NoSuchMethodException | SecurityException e)
+        {
+            WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getInstanceByClassNameIfSingleton : Could not get getInstance method for %s.  Details : %s", objectManagerClassName, e.toString ());
+        }
+
+        if (null == getInstanceMethod)
+        {
+            return (null);
+        }
+
+        Object objectForWaveObjectManager = null;
+
+        try
+        {
+            objectForWaveObjectManager = getInstanceMethod.invoke (null);
+        }
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        {
+            WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getInstanceByClassNameIfSingleton : Could not invoke getInstance method for %s.  Details : %s", objectManagerClassName, e.toString ());
+        }
+
+        if (null == objectForWaveObjectManager)
+        {
+            return (null);
+        }
+
+        final WaveObjectManager waveObjectManager = (WaveObjectManager) objectForWaveObjectManager;
+
+        WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+        return (waveObjectManager);
+    }
 }

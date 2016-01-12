@@ -471,9 +471,72 @@ public class WaveJavaSourceRepository
         }
     }
 
-    public boolean isAderivativeOfSerializableObject (final String className)
+    public static boolean isAderivativeOfSerializableObject (final String className)
     {
         return ((getInstance ()).isAderivativeOfSerializableObjectInternal (className));
+    }
+
+    private boolean isAderivativeOfWaveObjectManagerInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.isADerivativeOfWaveObjectManager ());
+        }
+        else
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.isAderivativeOfWaveObjectManagerInternal : Could not find class name %s", className);
+
+            return (false);
+        }
+    }
+
+    public static boolean isAderivativeOfWaveObjectManager (final String className)
+    {
+        return ((getInstance ()).isAderivativeOfWaveObjectManagerInternal (className));
+    }
+
+    private boolean isAderivativeOfWaveManagedObjectInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.isADerivativeOfWaveManagedObject ());
+        }
+        else
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.isAderivativeOfWaveManagedObjectInternal : Could not find class name %s", className);
+
+            return (false);
+        }
+    }
+
+    public static boolean isAderivativeOfWaveManagedObject (final String className)
+    {
+        return ((getInstance ()).isAderivativeOfWaveManagedObjectInternal (className));
+    }
+
+    private boolean isAderivativeOfWaveWorkerInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.isADerivativeOfWaveWorker ());
+        }
+        else
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "WaveJavaSourceRepository.isAderivativeOfWaveWorkerInternal : Could not find class name %s", className);
+
+            return (false);
+        }
+    }
+
+    public static boolean isAderivativeOfWaveWorker (final String className)
+    {
+        return ((getInstance ()).isAderivativeOfWaveWorkerInternal (className));
     }
 
     public static Vector<Method> getAllMethodsInInheritanceHierarchyForClass (final String className)

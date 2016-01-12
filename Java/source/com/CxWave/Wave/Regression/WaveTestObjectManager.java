@@ -20,6 +20,7 @@ public class WaveTestObjectManager extends WaveLocalObjectManager
 {
     private final Map<String, String> m_testParameters  = new HashMap<String, String> ();
     private final Vector<String>      m_regressionInput = new Vector<String> ();
+    private boolean                   m_isTestEnabled   = false;
 
     public WaveTestObjectManager (final String waveLocalObjectManagerName)
     {
@@ -91,5 +92,15 @@ public class WaveTestObjectManager extends WaveLocalObjectManager
 
         regressionPrepare2AsynchronousContext.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         regressionPrepare2AsynchronousContext.callback ();
+    }
+
+    public boolean getIsTestEnabled ()
+    {
+        return m_isTestEnabled;
+    }
+
+    public void setIsTestEnabled (final boolean isTestEnabled)
+    {
+        m_isTestEnabled = isTestEnabled;
     }
 }
