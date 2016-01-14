@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Regression.Workers;
 
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.Vector;
 
@@ -15,6 +16,7 @@ import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Regression.RegressionTestEntry;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
+import com.CxWave.Wave.Regression.Annotations.NonTestOM;
 import com.CxWave.Wave.Regression.Contexts.RegressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext;
 import com.CxWave.Wave.Regression.Messages.RegressionTestObjectManagerGetTestServiceEntriesMessage;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -55,7 +57,11 @@ public class RegressionTestObjectManagerGetTestServiceEntriesWorker extends Wave
         {
             waveAssert (WaveStringUtils.isNotBlank (descendantOfWaveTestObjectManager));
 
-            final WaveObjectManager waveObjectManager = WaveObjectManager.getInstanceByClassNameIfSingleton (descendantOfWaveTestObjectManager);
+            final Vector<Class<? extends Annotation>> excludingAnnotations = new Vector<Class<? extends Annotation>> ();
+
+            excludingAnnotations.add (NonTestOM.class);
+
+            final WaveObjectManager waveObjectManager = WaveObjectManager.getInstanceByClassNameIfSingleton (descendantOfWaveTestObjectManager, excludingAnnotations);
 
             waveAssert (null != waveObjectManager);
 

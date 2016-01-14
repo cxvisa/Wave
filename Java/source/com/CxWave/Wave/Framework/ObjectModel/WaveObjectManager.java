@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -1159,7 +1160,7 @@ public class WaveObjectManager extends WaveElement
         waveAsynchronousContextForBootPhases.callback ();
     }
 
-    public static WaveObjectManager getInstanceByClassNameIfSingleton (final String objectManagerClassName)
+    public static WaveObjectManager getInstanceByClassNameIfSingleton (final String objectManagerClassName, final Vector<Class<? extends Annotation>> exclusingAnnotationClasses)
     {
         final boolean isADerivativeOfWaveObjectManager = WaveJavaSourceRepository.isAderivativeOfWaveObjectManager (objectManagerClassName);
 
@@ -1182,6 +1183,20 @@ public class WaveObjectManager extends WaveElement
         if (null == classForObjectManager)
         {
             return (null);
+        }
+
+        // if any of the excluding annotations are found on this class, then return null.
+
+        for (final Class<? extends Annotation> excludingAnnotationClass : exclusingAnnotationClasses)
+        {
+            WaveAssertUtils.waveAssert (null != excludingAnnotationClass);
+
+            final Annotation annotation = classForObjectManager.getAnnotation (excludingAnnotationClass);
+
+            if (null != annotation)
+            {
+                return (null);
+            }
         }
 
         Method getInstanceMethod = null;
