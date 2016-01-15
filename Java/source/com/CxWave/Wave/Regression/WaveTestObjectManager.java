@@ -9,13 +9,17 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.Regression.Annotations.NonTestOM;
 import com.CxWave.Wave.Regression.Contexts.RegressionPrepare2AsynchronousContext;
 import com.CxWave.Wave.Regression.Contexts.RegressionPrepareAsynchronousContext;
 import com.CxWave.Wave.Regression.Contexts.RegressionTestAsynchronousContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
+@NonOM
+@NonTestOM
 public class WaveTestObjectManager extends WaveLocalObjectManager
 {
     private final Map<String, String> m_testParameters  = new HashMap<String, String> ();

@@ -7,9 +7,11 @@ package com.CxWave.Wave.Framework.ObjectModel;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 
+@NonOM
 public class WaveLocalObjectManager extends WaveObjectManager
 {
     static private Map<WaveServiceId, WaveServiceId> s_localWaveServices = new HashMap<WaveServiceId, WaveServiceId> ();

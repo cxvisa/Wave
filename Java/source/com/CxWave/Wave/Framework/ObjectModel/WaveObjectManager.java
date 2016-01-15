@@ -21,6 +21,8 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
@@ -42,6 +44,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveServiceMode;
 
 public class WaveObjectManager extends WaveElement
@@ -1236,5 +1239,87 @@ public class WaveObjectManager extends WaveElement
         WaveAssertUtils.waveAssert (null != waveObjectManager);
 
         return (waveObjectManager);
+    }
+
+    public static WaveObjectManagerPriority getObjectManagerPriorityForObjectManager (final String objectManagerClassName)
+    {
+        final boolean isADerivativeOfWaveObjectManager = WaveJavaSourceRepository.isAderivativeOfWaveObjectManager (objectManagerClassName);
+
+        if (!isADerivativeOfWaveObjectManager)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveObjectManager.getObjectManagerPriorityForObjectManager : %s is not a derivative of Wave Object Manager.", objectManagerClassName);
+
+            WaveAssertUtils.waveAssert ();
+
+            return (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_DEFAULT);
+        }
+
+        Class<?> classForObjectManager = null;
+
+        try
+        {
+            classForObjectManager = Class.forName (objectManagerClassName);
+        }
+        catch (final ClassNotFoundException e)
+        {
+            WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getObjectManagerPriorityForObjectManager : Could not get Java Class information for %s.  Details : %s", objectManagerClassName, e.toString ());
+        }
+
+        if (null == classForObjectManager)
+        {
+            return (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_DEFAULT);
+        }
+
+        final ObjectManagerPriority objectManagerPriority = classForObjectManager.getAnnotation (ObjectManagerPriority.class);
+
+        if (null != objectManagerPriority)
+        {
+            return (objectManagerPriority.value ());
+        }
+        else
+        {
+            return (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_DEFAULT);
+        }
+    }
+
+    public static boolean isAnnotatedWithNonOM (final String objectManagerClassName)
+    {
+        final boolean isADerivativeOfWaveObjectManager = WaveJavaSourceRepository.isAderivativeOfWaveObjectManager (objectManagerClassName);
+
+        if (!isADerivativeOfWaveObjectManager)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveObjectManager.isAnnotatedWithNonOM : %s is not a derivative of Wave Object Manager.", objectManagerClassName);
+
+            WaveAssertUtils.waveAssert ();
+
+            return (false);
+        }
+
+        Class<?> classForObjectManager = null;
+
+        try
+        {
+            classForObjectManager = Class.forName (objectManagerClassName);
+        }
+        catch (final ClassNotFoundException e)
+        {
+            WaveTraceUtils.errorTracePrintf ("WaveObjectManager.isAnnotatedWithNonOM : Could not get Java Class information for %s.  Details : %s", objectManagerClassName, e.toString ());
+        }
+
+        if (null == classForObjectManager)
+        {
+            return (false);
+        }
+
+        final NonOM nonOm = classForObjectManager.getAnnotation (NonOM.class);
+
+        if (null != nonOm)
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
     }
 }

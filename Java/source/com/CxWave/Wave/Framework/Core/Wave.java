@@ -4,22 +4,32 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.Core.Configuration.WaveMainApplication;
 import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
 import com.CxWave.Wave.Framework.Database.DatabaseObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Serialization.SerializableObjectRepository;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils;
 import com.CxWave.Wave.Framework.Utils.Random.WaveRandomGenerator;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 import com.CxWave.Wave.SystemManagement.SystemManagementToolKit;
 
 public class Wave
@@ -283,6 +293,8 @@ public class Wave
         }
 
         WaveFrameworkObjectManager.setIpAddressForThisLocation (ipAddress);
+
+        instantiateObjectManagers ();
     }
 
     private static String getConfigurationFileDirectory ()
@@ -323,5 +335,73 @@ public class Wave
         s_waveMutex.unlock ();
 
         return (waveTraceFileDirectory);
+    }
+
+    public static void instantiateObjectManagers ()
+    {
+        final Set<String> waveObjectManagerDescendants = WaveJavaSourceRepository.getAllDescendantsForClass (WaveObjectManager.class.getName ());
+
+        final Vector<Integer> allWaveObjectManagerPriorities = new Vector<Integer> ();
+        final Map<Integer, Vector<String>> allWaveObjectManagersMapByPriority = new HashMap<Integer, Vector<String>> ();
+
+        for (final String waveObjectManagerDescendant : waveObjectManagerDescendants)
+        {
+            WaveTraceUtils.infoTracePrintf ("Detected WOM : %s", waveObjectManagerDescendant);
+
+            final boolean isANonOm = WaveObjectManager.isAnnotatedWithNonOM (waveObjectManagerDescendant);
+
+            if (isANonOm)
+            {
+                WaveTraceUtils.infoTracePrintf ("     NonOM WOM : %s.  Ignoring ...", waveObjectManagerDescendant);
+
+                continue;
+            }
+
+            final WaveObjectManagerPriority waveObjectManagerPriority = WaveObjectManager.getObjectManagerPriorityForObjectManager (waveObjectManagerDescendant);
+
+            final Integer priority = waveObjectManagerPriority.ordinal ();
+
+            if (!(allWaveObjectManagerPriorities.contains (priority)))
+            {
+                allWaveObjectManagerPriorities.add (priority);
+            }
+
+            if (allWaveObjectManagersMapByPriority.containsKey (priority))
+            {
+                final Vector<String> waveObjectManagersForThisPriority = allWaveObjectManagersMapByPriority.get (priority);
+
+                WaveAssertUtils.waveAssert (null != waveObjectManagersForThisPriority);
+
+                waveObjectManagersForThisPriority.add (waveObjectManagerDescendant);
+            }
+            else
+            {
+                final Vector<String> waveObjectManagersForThisPriority = new Vector<String> ();
+
+                WaveAssertUtils.waveAssert (null != waveObjectManagersForThisPriority);
+
+                waveObjectManagersForThisPriority.add (waveObjectManagerDescendant);
+
+                allWaveObjectManagersMapByPriority.put (priority, waveObjectManagersForThisPriority);
+            }
+        }
+
+        Collections.sort (allWaveObjectManagerPriorities);
+
+        WaveTraceUtils.infoTracePrintf ("WOM Priority based Instantiation Schedule:");
+
+        for (final Integer priority : allWaveObjectManagerPriorities)
+        {
+            final Vector<String> waveObjectManagersForThisPriority = allWaveObjectManagersMapByPriority.get (priority);
+
+            WaveAssertUtils.waveAssert (null != waveObjectManagersForThisPriority);
+
+            WaveTraceUtils.infoTracePrintf ("    WOM Priority : %s", priority);
+
+            for (final String waveObjectManagerClassName : waveObjectManagersForThisPriority)
+            {
+                WaveTraceUtils.infoTracePrintf ("        WOM : %s", waveObjectManagerClassName);
+            }
+        }
     }
 }
