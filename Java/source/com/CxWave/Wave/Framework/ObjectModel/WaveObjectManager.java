@@ -1224,7 +1224,7 @@ public class WaveObjectManager extends WaveElement
         {
             objectForWaveObjectManager = getInstanceMethod.invoke (null);
         }
-        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NullPointerException e)
         {
             WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getInstanceByClassNameIfSingleton : Could not invoke getInstance method for %s.  Details : %s", objectManagerClassName, e.toString ());
         }

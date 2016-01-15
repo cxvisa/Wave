@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core;
 
+import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -401,6 +402,12 @@ public class Wave
             for (final String waveObjectManagerClassName : waveObjectManagersForThisPriority)
             {
                 WaveTraceUtils.infoTracePrintf ("        WOM : %s", waveObjectManagerClassName);
+
+                final WaveObjectManager waveObjectManager = WaveObjectManager.getInstanceByClassNameIfSingleton (waveObjectManagerClassName, new Vector<Class<? extends Annotation>> ());
+
+                WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+                WaveTraceUtils.successTracePrintf ("            Instantiated successfully.");
             }
         }
     }

@@ -12,7 +12,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_REGRESSION)
 public class RegressionTestObjectManager extends WaveLocalObjectManager
 {
-    private RegressionTestObjectManager s_regressionTestObjectManager = null;
+    private static RegressionTestObjectManager s_regressionTestObjectManager = null;
 
     private RegressionTestObjectManager ()
     {
@@ -24,7 +24,7 @@ public class RegressionTestObjectManager extends WaveLocalObjectManager
         return ("Regression");
     }
 
-    public RegressionTestObjectManager getInstance ()
+    public static RegressionTestObjectManager getInstance ()
     {
         if (null == s_regressionTestObjectManager)
         {
