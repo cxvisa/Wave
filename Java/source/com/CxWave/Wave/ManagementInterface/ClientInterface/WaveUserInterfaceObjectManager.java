@@ -5,11 +5,14 @@
 package com.CxWave.Wave.ManagementInterface.ClientInterface;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_USER_INTERFACE)
 public class WaveUserInterfaceObjectManager extends WaveLocalObjectManager
 {
     private static WaveUserInterfaceObjectManager s_waveUserInterfaceObjectManager = null;

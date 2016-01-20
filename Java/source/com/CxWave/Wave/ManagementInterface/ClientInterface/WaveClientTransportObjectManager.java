@@ -5,9 +5,12 @@
 package com.CxWave.Wave.ManagementInterface.ClientInterface;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_CLIENT_TRANSPORT)
 public class WaveClientTransportObjectManager extends WaveLocalObjectManager
 {
     private static WaveClientTransportObjectManager s_clientTransportObjectManager = null;
