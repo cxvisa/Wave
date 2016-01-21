@@ -147,7 +147,7 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         return (s_waveFrameworkObjectManager);
     }
 
-    public WaveServiceId getWaveServiceId ()
+    public static WaveServiceId getWaveServiceId ()
     {
         return ((getInstance ()).getWaveServiceId ());
     }

@@ -24,6 +24,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.Persistence.Local.PersistenceLocalObjectManager;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
@@ -37,6 +38,7 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
@@ -645,8 +647,6 @@ public class WaveObjectManager extends WaveElement
         final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
         LocationId effectiveLocationId = locationId;
 
-        // FIXME : sagar : replace the 0 with NullLocationId
-
         if (LocationId.isNull (effectiveLocationId))
         {
             if (true != (FrameworkToolKit.isALocalService (waveMessage.getServiceCode ())))
@@ -710,6 +710,270 @@ public class WaveObjectManager extends WaveElement
         final WaveMessageStatus status = waveThread.submitMessage (waveMessage);
 
         return (status);
+    }
+
+    WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId)
+    {
+        // NOTICE :
+        // In this method the order of lock, wait and unlock are very very important.
+        // It has been coded so that there will be no dead locks.
+        // If you are modifying the code - DON'T DO IT. But if you must modify it,
+        // PLEASE PLEASE make sure that the existing behavior is not broken.
+
+        WaveThread waveThread = null;
+        final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
+        LocationId effectiveLocationId = locationId;
+
+        if (LocationId.isNull (effectiveLocationId))
+        {
+            if (true != (FrameworkToolKit.isALocalService (waveMessage.getServiceCode ())))
+            {
+                effectiveLocationId = FrameworkToolKit.getClusterPrimaryLocationId ();
+                final LocationId myLocationId = FrameworkToolKit.getPhysicalLocationId ();
+
+                if (effectiveLocationId.equals (myLocationId))
+                {
+                    effectiveLocationId = LocationId.NullLocationId;
+                }
+            }
+        }
+
+        if ((LocationId.isNull (effectiveLocationId)) || (thisLocationId.equals (effectiveLocationId)))
+        {
+
+            if ((waveMessage.getServiceCode ()).equals (m_serviceId))
+            {
+                final String serviceName = FrameworkToolKit.getServiceNameById (m_serviceId);
+                final UI32 operationCode = waveMessage.getOperationCode ();
+
+                errorTracePrintf ("WaveObjectManager.sendSynchronously : Service [%s] cannot send message [serviceCode=%s, operationCode=%s] synchronously to itself.", serviceName, m_serviceId, operationCode);
+
+                return (WaveMessageStatus.WAVE_MESSAGE_ERROR);
+            }
+
+            waveThread = WaveThread.getWaveThreadForServiceId (waveMessage.getServiceCode ());
+        }
+        else if (effectiveLocationId.equals (new LocationId (1)))
+        {
+            waveThread = WaveThread.getWaveThreadForMessageHaPeerTransport ();
+        }
+        else
+        {
+            waveThread = WaveThread.getWaveThreadForMessageRemoteTransport ();
+        }
+
+        if (null == waveThread)
+        {
+            errorTracePrintf ("WaveObjectManager.sendSynchronously : No Service registered to accept this service Id %s.", waveMessage.getServiceCode ());
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
+        }
+
+        if (false == (waveThread.hasWaveObjectManagers ()))
+        {
+            errorTracePrintf ("WaveObjectManager.sendSynchronously : Service identified.  But there are no Wave Object Managers registered to process any kind of reqquests.");
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
+        }
+
+        // Set this so the message can be returned. In fact synchronously sent messages can never be returned. This is set so
+        // that
+        // in case we need to refer it at the receiver end.
+
+        waveMessage.m_senderServiceCode = m_associatedWaveThread.getWaveServiceId ();
+
+        // Set the filed to indicate the message is a synchronously sent message so that when the receiver replies, the
+        // framework will
+        // not attempt to deliver it back to the original sender. It will simply unlock the sending thread.
+
+        waveMessage.setIsSynchronousMessage (true);
+
+        // The following (WaveMutex creation and locking it) is done by the sending thread:
+        // Now Create a WaveMutex and a corresponding WaveCondition. Use the standard Mutex-Condition combination
+        // logic to synchronize the sender thread and the receiver thread. The Mutex-Condition logic is very similar
+        // to the POSIX equivalents.
+        // Store the created WaveMutex and WaveCondition in the WaveMessage. The receiver thread needs to use
+        // them when it does a reply on the message after processing it.
+
+        final WaveMutex synchronizingMutex = new WaveMutex ();
+
+        final WaveCondition synchronizingCondition = new WaveCondition (synchronizingMutex);
+
+        waveMessage.setSynchronizingMutex (synchronizingMutex);
+        waveMessage.setSynchronizingCondition (synchronizingCondition);
+
+        // Now lock the synchronizing mutex. So that receiver thread cannot acquire it.
+
+        synchronizingMutex.lock ();
+
+        // Store the receiver LocationId.
+
+        waveMessage.m_receiverLocationId = (LocationId.isNotNull (effectiveLocationId)) ? effectiveLocationId : thisLocationId;
+
+        if ((true == waveMessage.getIsALastConfigReplay ()) && ((m_associatedWaveThread.getWaveServiceId ()).equals (WaveFrameworkObjectManager.getWaveServiceId ())))
+        {
+            // This case is the initial start of the Last Config Replay where the WaveFrameworkPostPersistentBootWorker
+            // (WaveFrameworkObjectManager) triggers a last config replay. We do not want to propagate message flags from the
+            // input message to output message here. Otherwise, the last configuration replayed intent will have incorrect
+            // propagated flags. Only the sendSynchronously () API needs this special handling since triggering the last config
+            // replay should only be synchronously replayed.
+        }
+        else
+        {
+            if ((null != m_inputMessage) && ((m_associatedWaveThread).equals (waveMessage.getWaveMessageCreatorThreadId ())))
+            {
+                // Propagate message flags from Incoming Message to Outgoing Message
+
+                waveMessage.setIsConfigurationChanged (m_inputMessage.getIsConfigurationChanged ());
+                waveMessage.setIsConfigurationTimeChanged (m_inputMessage.getIsConfigurationTimeChanged ());
+                waveMessage.setTransactionCounter (m_inputMessage.getTransactionCounter ());
+
+                if (false == waveMessage.getIsPartitionNameSetByUser ())
+                {
+                    // Propagate the Partition name from input message
+
+                    waveMessage.setPartitionName (m_inputMessage.getPartitionName ());
+                }
+                else
+                {
+                    // pass
+                    // Do not overwrite the partition name with partitionName in m_inputMessage.
+                }
+
+                waveMessage.setPartitionLocationIdForPropagation (m_inputMessage.getPartitionLocationIdForPropagation ());
+                waveMessage.setIsPartitionContextPropagated (m_inputMessage.getIsPartitionContextPropagated ());
+
+                waveMessage.setIsALastConfigReplay (m_inputMessage.getIsALastConfigReplay ());
+                waveMessage.addXPathStringsVectorForTimestampUpdate (m_inputMessage.getXPathStringsVectorForTimestampUpdate ());  // if
+                                                                                                                                  // receiver
+                                                                                                                                  // service
+                                                                                                                                  // is
+                                                                                                                                  // "management
+                                                                                                                                  // interface",
+                                                                                                                                  // should
+                                                                                                                                  // this
+                                                                                                                                  // be
+                                                                                                                                  // skipped
+                                                                                                                                  // ?
+
+                // This is required because sendToWaveCluster also uses the send method. As send and sendToWaveCluster will be
+                // having same m_inputMessage with
+                // the flags always set to false. Even if for surrogating message sendToWaveCluster sets the flag, it will be
+                // otherwise cleared off here.
+
+                if (false == waveMessage.getIsMessageBeingSurrogatedFlag ())
+                {
+                    waveMessage.setIsMessageBeingSurrogatedFlag (m_inputMessage.getIsMessageBeingSurrogatedFlag ());
+                    waveMessage.setSurrogatingForLocationId (m_inputMessage.getSurrogatingForLocationId ());
+                }
+            }
+        }
+
+        addMessageToMessageHistoryCalledFromSend (waveMessage);
+
+        if ((true == waveMessage.getIsAConfigurationIntent ()) && (true == PersistenceLocalObjectManager.getLiveSyncEnabled ()))
+        {
+            // Send a configuration intent to the HA peer
+
+            final ResourceId configurationIntentStatus = sendOneWayForStoringConfigurationIntent (waveMessage);
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS == configurationIntentStatus)
+            {
+                waveMessage.setIsConfigurationIntentStored (true);
+            }
+            else
+            {
+                // Do not penalize the actual configuration. Flag an error for now.
+
+                errorTracePrintf ("WaveObjectManager.sendSynchronously : Failed to store the configuration intent on HA peer for messageId : %s, message operation code : %s, handled by service code : .", waveMessage.getMessageId (), waveMessage.getOperationCode (), waveMessage.getServiceCode ());
+
+                waveMessage.setIsConfigurationIntentStored (false);
+            }
+        }
+
+        // Now submit the message to the receiver thread. Even if the receiver thread finishes processing
+        // the message before we return from the method below, it is perfectly OK. The receiver thread
+        // may finish processing but cannot reply to the message as we are holding the synchronizing mutex.
+
+        final WaveMessageStatus status = waveThread.submitMessage (waveMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            // For some reason the message could not be submitted. We cannot proceed. Release the acquired
+            // Synchronizing mutex and return an error to the caller.
+
+            synchronizingMutex.unlock ();
+
+            if (true == waveMessage.getIsConfigurationIntentStored ())
+            {
+                // Remove configuration intent
+
+                final ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (waveMessage.getMessageId ());
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
+                {
+                    errorTracePrintf ("WaveObjectManager.sendSynchronously : Failed to remove the configuration intent on HA peer for messageId : %s, message operation code : %s, handled by service code : .", waveMessage.getMessageId (), waveMessage.getOperationCode (), waveMessage.getServiceCode ());
+                }
+            }
+
+            return (status);
+        }
+
+        // Now let us wait for the receiver thread to signal us to resume. The receiver thread could not
+        // have called the resume until after we call the following wait method as the receiver thread will
+        // be waiting to acquire the synchronizing mutex. It is possible that the receiver can finish processing
+        // the message before we return from the above statement but it cannot reply (signal us to continue) until
+        // after we call the following statement (wait is invoked).
+
+        synchronizingCondition.awaitUninterruptibly ();
+
+        // Now the receiver thread will be able to acquire the synchronizing mutex (since it will be released
+        // as part of the above wait call). So the receiver will be able to do a reply to the message. The receiver
+        // does a resume on the synchronizing condition in the reply processing. That causes us to get out of
+        // our wait above and also atomically locks the synchronizing mutex again.
+
+        // The following code (unlock) also is executed by the sending thread.
+
+        synchronizingMutex.unlock ();
+
+        // By now we ensured that the receiver actually processed the message and replied to it. This reply is not actually
+        // submitting the message back to the original sender.
+        // But the receiver thread simply signaled us to continue after finishing processing the message.
+        // We can return now.
+        // The caller will examine the completion status on the message to obtain the status of completion of processing
+        // the message.
+
+        if ((null != m_inputMessage) && (m_associatedWaveThread.equals (waveMessage.getWaveMessageCreatorThreadId ())))
+        {
+            m_inputMessage.appendNestedSql (waveMessage.getNestedSql ());
+        }
+
+        if (true == waveMessage.getIsConfigurationIntentStored ())
+        {
+            // Remove configuration intent
+
+            final ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (waveMessage.getMessageId ());
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
+            {
+                errorTracePrintf ("WaveObjectManager.sendSynchronously : Failed to remove the configuration intent on HA peer for messageId : %s, message operation code : %s, handled by service code : .", waveMessage.getMessageId (), waveMessage.getOperationCode (), waveMessage.getServiceCode ());
+            }
+        }
+
+        return (status);
+    }
+
+    private ResourceId sendOneWayForRemovingConfigurationIntent (final UI32 messageId)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @NonMessageHandler
+    private ResourceId sendOneWayForStoringConfigurationIntent (final WaveMessage waveMessage)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @NonMessageHandler
@@ -828,7 +1092,7 @@ public class WaveObjectManager extends WaveElement
 
             if (null == waveThread)
             {
-                errorTrace (new String ("WaveObjectManager::reply : No Service registered to accept reply with this service Id ") + tempWaveMessage.getSenderServiceCode () + ". How did we receive this message in the first place.  May be the service went down after submitting the request.  Dropping and destroying the message.");
+                errorTrace (new String ("WaveObjectManager.reply : No Service registered to accept reply with this service Id ") + tempWaveMessage.getSenderServiceCode () + ". How did we receive this message in the first place.  May be the service went down after submitting the request.  Dropping and destroying the message.");
 
                 if (true == (tempWaveMessage.getIsLastReply ()))
                 {
@@ -864,7 +1128,7 @@ public class WaveObjectManager extends WaveElement
     {
         if (null == waveWorker)
         {
-            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addWorker : Trying to add a NULL worker from this manager.  Will not add.");
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addWorker : Trying to add a null worker from this manager.  Will not add.");
 
             WaveAssertUtils.waveAssert ();
 
@@ -890,7 +1154,7 @@ public class WaveObjectManager extends WaveElement
     {
         if (null == waveWorker)
         {
-            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.removeWorker : Trying to remove a NULL worker from this manager.  Will not remove.");
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.removeWorker : Trying to remove a null worker from this manager.  Will not remove.");
 
             WaveAssertUtils.waveAssert ();
 
@@ -1059,7 +1323,7 @@ public class WaveObjectManager extends WaveElement
 
             if (null == waveMessage)
             {
-                errorTracePrintf ("WaveObjectManager::createMessageInstanceWrapper : Owner for %d has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further.", operationCode);
+                errorTracePrintf ("WaveObjectManager.createMessageInstanceWrapper : Owner for %d has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further.", operationCode);
             }
         }
         else
@@ -1077,7 +1341,7 @@ public class WaveObjectManager extends WaveElement
 
             if (null == waveMessage)
             {
-                errorTracePrintf ("WaveObjectManager::createMessageInstanceWrapper : Owner for %d via WAVE_OBJECT_MANAGER_ANY_OPCODE has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further.", operationCode);
+                errorTracePrintf ("WaveObjectManager.createMessageInstanceWrapper : Owner for %d via WAVE_OBJECT_MANAGER_ANY_OPCODE has not implemented dynamically creating the instance of this Message Type.  Implement this functionality to proceed further.", operationCode);
             }
         }
 
