@@ -120,9 +120,10 @@ public class WaveResourceRepository
                 writer.write (";\n\n");
             }
 
-            writer.write ("    private int    m_effectiveResourceId;\n");
-            writer.write ("    private String m_name;\n");
-            writer.write ("    private String m_value;\n");
+            writer.write ("    private int                       m_effectiveResourceId;\n");
+            writer.write ("    private String                    m_name;\n");
+            writer.write ("    private String                    m_value;\n");
+            writer.write ("    private static final ResourceId[] s_values = ResourceId.values ();\n");
 
             writer.write ("\n");
 
@@ -160,6 +161,13 @@ public class WaveResourceRepository
             writer.write ("    public String toString ()\n");
             writer.write ("    {\n");
             writer.write ("        return (m_name);\n");
+            writer.write ("    }\n");
+
+            writer.write ("\n");
+
+            writer.write ("    public static ResourceId getResourceIdByEffectiveResourceId (final int effectiveResourceId)\n");
+            writer.write ("    {\n");
+            writer.write ("        return (s_values[effectiveResourceId]);\n");
             writer.write ("    }\n");
 
             writer.write ("}\n\n");

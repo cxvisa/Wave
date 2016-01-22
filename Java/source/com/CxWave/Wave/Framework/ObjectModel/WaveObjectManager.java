@@ -17,6 +17,9 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
+import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerConfigurationIntentBufferId;
+import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerRemoveConfigurationIntentMessage;
+import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerStoreConfigurationIntentMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
@@ -712,6 +715,12 @@ public class WaveObjectManager extends WaveElement
         return (status);
     }
 
+    @NonMessageHandler
+    WaveMessageStatus sendSynchronously (final WaveMessage waveMessage)
+    {
+        return (sendSynchronously (waveMessage, new LocationId (0)));
+    }
+
     WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId)
     {
         // NOTICE :
@@ -963,17 +972,81 @@ public class WaveObjectManager extends WaveElement
         return (status);
     }
 
-    private ResourceId sendOneWayForRemovingConfigurationIntent (final UI32 messageId)
+    private ResourceId sendOneWayForRemovingConfigurationIntent (final UI32 configurationIntentMessageId)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final WaveThread haPeerTransportWaveThread = WaveThread.getWaveThreadForMessageHaPeerTransport ();
+
+        if (null == haPeerTransportWaveThread)
+        {
+            errorTracePrintf ("WaveObjectManager.sendOneWayForRemovingConfigurationIntent : Ha Peer Service is not registered to accept configuration intents.");
+
+            return (ResourceId.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
+        }
+
+        if (false == (haPeerTransportWaveThread.hasWaveObjectManagers ()))
+        {
+            errorTracePrintf ("WaveObjectManager::sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
+
+            return (ResourceId.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
+        }
+
+        final FrameworkObjectManagerRemoveConfigurationIntentMessage removeConfigurationIntentMessage = new FrameworkObjectManagerRemoveConfigurationIntentMessage ();
+
+        waveAssert (null != removeConfigurationIntentMessage);
+
+        removeConfigurationIntentMessage.setConfigurationIntentMessageId (configurationIntentMessageId);
+
+        removeConfigurationIntentMessage.setIsOneWayMessage (true);
+        removeConfigurationIntentMessage.m_senderServiceCode = new WaveServiceId (getServiceId ());
+        removeConfigurationIntentMessage.m_receiverLocationId = new LocationId (1);
+
+        addMessageToMessageHistoryCalledFromSend (removeConfigurationIntentMessage);
+
+        final WaveMessageStatus status = haPeerTransportWaveThread.submitMessage (removeConfigurationIntentMessage);
+
+        return (ResourceId.getResourceIdByEffectiveResourceId (status.getEffectiveResourceId ()));
     }
 
     @NonMessageHandler
     private ResourceId sendOneWayForStoringConfigurationIntent (final WaveMessage waveMessage)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final WaveThread haPeerTransportWaveThread = WaveThread.getWaveThreadForMessageHaPeerTransport ();
+        final UI32 waveMessageId = waveMessage.getMessageId ();
+        final StringBuffer serializedConfigurationIntentMessage = new StringBuffer ();
+
+        if (null == haPeerTransportWaveThread)
+        {
+            errorTracePrintf ("WaveObjectManager.sendOneWayForRemovingConfigurationIntent : Ha Peer Service is not registered to accept configuration intents.");
+
+            return (ResourceId.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
+        }
+
+        if (false == (haPeerTransportWaveThread.hasWaveObjectManagers ()))
+        {
+            errorTracePrintf ("WaveObjectManager::sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
+
+            return (ResourceId.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
+        }
+
+        final FrameworkObjectManagerStoreConfigurationIntentMessage storeConfigurationIntentMessage = new FrameworkObjectManagerStoreConfigurationIntentMessage ();
+
+        waveAssert (null != storeConfigurationIntentMessage);
+
+        storeConfigurationIntentMessage.setConfigurationIntentMessageId (waveMessageId);
+
+        waveMessage.serializeTo (serializedConfigurationIntentMessage);
+
+        storeConfigurationIntentMessage.addBuffer (new UI32 (FrameworkObjectManagerConfigurationIntentBufferId.SERIALIZED_CONFIGURATION_INTENT_BUFFER.ordinal ()), (serializedConfigurationIntentMessage.toString ()).getBytes (), false);
+
+        storeConfigurationIntentMessage.setIsOneWayMessage (true);
+        storeConfigurationIntentMessage.m_senderServiceCode = new WaveServiceId (getServiceId ());
+        storeConfigurationIntentMessage.m_receiverLocationId = new LocationId (1);
+
+        addMessageToMessageHistoryCalledFromSend (storeConfigurationIntentMessage);
+
+        final WaveMessageStatus status = haPeerTransportWaveThread.submitMessage (storeConfigurationIntentMessage);
+
+        return (ResourceId.getResourceIdByEffectiveResourceId (status.getEffectiveResourceId ()));
     }
 
     @NonMessageHandler
