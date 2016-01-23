@@ -214,6 +214,7 @@ public class WaveObjectManager extends WaveElement
     private WaveMutex                                                  m_responsesMapMutex;
     private WaveMutex                                                  m_sendReplyMutexForResponseMap;
     private final Vector<WaveWorker>                                   m_workers                                        = new Vector<WaveWorker> ();
+    private final Map<Class<? extends WaveWorker>, Vector<WaveWorker>> m_workersMapByWorkerClass                        = new HashMap<Class<? extends WaveWorker>, Vector<WaveWorker>> ();
     private final WaveMutex                                            m_workersMutex                                   = new WaveMutex ();
     private boolean                                                    m_isEnabled                                      = false;
     private final WaveMutex                                            m_isEnabledMutex                                 = new WaveMutex ();
@@ -1218,6 +1219,29 @@ public class WaveObjectManager extends WaveElement
         else
         {
             m_workers.add (waveWorker);
+
+            final Class<? extends WaveWorker> workerClass = waveWorker.getClass ();
+
+            waveAssert (null != workerClass);
+
+            if (m_workersMapByWorkerClass.containsKey (workerClass))
+            {
+                final Vector<WaveWorker> waveWorkersForThisWorkerClass = m_workersMapByWorkerClass.get (workerClass);
+
+                waveAssert (null != waveWorkersForThisWorkerClass);
+
+                waveWorkersForThisWorkerClass.add (waveWorker);
+            }
+            else
+            {
+                final Vector<WaveWorker> waveWorkersForThisWorkerClass = new Vector<WaveWorker> ();
+
+                waveAssert (null != waveWorkersForThisWorkerClass);
+
+                waveWorkersForThisWorkerClass.add (waveWorker);
+
+                m_workersMapByWorkerClass.put (workerClass, waveWorkersForThisWorkerClass);
+            }
         }
 
         m_workersMutex.unlock ();
@@ -1243,6 +1267,28 @@ public class WaveObjectManager extends WaveElement
         }
         else
         {
+            final Class<? extends WaveWorker> workerClass = waveWorker.getClass ();
+
+            waveAssert (null != workerClass);
+
+            if (m_workersMapByWorkerClass.containsKey (workerClass))
+            {
+                final Vector<WaveWorker> waveWorkersForThisWorkerClass = m_workersMapByWorkerClass.get (workerClass);
+
+                waveAssert (null != waveWorkersForThisWorkerClass);
+
+                waveWorkersForThisWorkerClass.remove (waveWorker);
+
+                if (0 == (waveWorkersForThisWorkerClass.size ()))
+                {
+                    m_workersMapByWorkerClass.remove (workerClass);
+                }
+            }
+            else
+            {
+                waveAssert ();
+            }
+
             m_workers.remove (waveWorker);
         }
 
@@ -1658,5 +1704,30 @@ public class WaveObjectManager extends WaveElement
         {
             return (false);
         }
+    }
+
+    public WaveWorker getAWaveWorkerByWorkerClass (final Class<? extends WaveWorker> workerClass)
+    {
+        waveAssert (null != workerClass);
+
+        WaveWorker waveWorker = null;
+
+        m_workersMutex.lock ();
+
+        final Vector<WaveWorker> workersForThisWorkerClass = m_workersMapByWorkerClass.get (workerClass);
+
+        if (null != workersForThisWorkerClass)
+        {
+            if (0 != (workersForThisWorkerClass.size ()))
+            {
+                waveWorker = workersForThisWorkerClass.get (0);
+
+                waveAssert (null != waveWorker);
+            }
+        }
+
+        m_workersMutex.unlock ();
+
+        return (waveWorker);
     }
 }
