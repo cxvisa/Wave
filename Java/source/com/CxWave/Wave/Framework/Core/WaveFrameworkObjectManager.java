@@ -12,6 +12,8 @@ import com.CxWave.Wave.Framework.LocationManagement.Location;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
+import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.ObjectRelationalMapping.OrmRepository;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.SI32;
@@ -22,6 +24,7 @@ import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
@@ -42,6 +45,8 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private static WaveMutex                  s_instantiationMutex                   = new WaveMutex ();
 
     private LocationBase                      m_thisLocation                         = null;
+
+    private LocationId                        m_lastUsedLocationId                   = null;
 
     private static String                     s_ipAddressForThisLocation             = null;
 
@@ -270,5 +275,32 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public static void bootWave ()
     {
         setIsFrameworkReadyToBoot (true);
+    }
+
+    @Override
+    public void boot (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        waveAsynchronousContextForBootPhases.callback ();
+
+        initializeLastUsedLocationId ();
+
+        final OrmRepository ormRepository = OrmRepository.getInstance ();
+
+        waveAssert (null != ormRepository);
+
+        ormRepository.computeTableSpace ();
+
+        validateAndZeroizeAtBoot ();
+    }
+
+    private void initializeLastUsedLocationId ()
+    {
+        m_lastUsedLocationId = new LocationId (256);
+    }
+
+    private void validateAndZeroizeAtBoot ()
+    {
+        // TBD
     }
 }
