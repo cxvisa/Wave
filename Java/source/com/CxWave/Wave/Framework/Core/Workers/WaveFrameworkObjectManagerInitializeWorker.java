@@ -25,5 +25,17 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     public void startWaveServices ()
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.startWaveServices : Entering ...");
+
+        final String[] sequencerSteps =
+            {
+                            "determineNodeBootModeStep",
+                            "chooseABootAgentStep",
+                            "runTheBootAgentStep",
+                            "saveConfigurationStep",
+                            "informServicesToInitializeBeforeBootComplete",
+                            "declareBootCompleteStep",
+                            "waveSynchronousLinearSequencerSucceededStep",
+                            "waveSynchronousLinearSequencerFailedStep"
+            };
     }
 }
