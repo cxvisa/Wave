@@ -8,9 +8,11 @@ import com.CxWave.Wave.Framework.Core.Messages.WaveBootObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInstallObjectManagerMessage;
+import com.CxWave.Wave.Framework.Core.Workers.WaveFrameworkObjectManagerInitializeWorker;
 import com.CxWave.Wave.Framework.LocationManagement.Location;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.ObjectRelationalMapping.OrmRepository;
@@ -292,6 +294,16 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         ormRepository.computeTableSpace ();
 
         validateAndZeroizeAtBoot ();
+
+        final WaveWorker waveWorker = getAWaveWorkerByWorkerClass (WaveFrameworkObjectManagerInitializeWorker.class);
+
+        waveAssert (null != waveWorker);
+
+        final WaveFrameworkObjectManagerInitializeWorker waveFrameworkObjectManagerInitializeWorker = (WaveFrameworkObjectManagerInitializeWorker) waveWorker;
+
+        waveAssert (null != waveFrameworkObjectManagerInitializeWorker);
+
+        waveFrameworkObjectManagerInitializeWorker.startWaveServices ();
     }
 
     private void initializeLastUsedLocationId ()

@@ -21,4 +21,9 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     {
         super (waveObjectManager);
     }
+
+    public void startWaveServices ()
+    {
+        infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.startWaveServices : Entering ...");
+    }
 }
