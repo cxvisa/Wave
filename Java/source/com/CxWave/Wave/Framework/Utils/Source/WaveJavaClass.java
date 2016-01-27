@@ -25,7 +25,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
-import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSequencerStep;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
@@ -53,6 +53,8 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<Class<?>, Method>           m_messageHandlers;
     private final Map<String, Integer>            m_ownedWorkerClassNamesCadinalityMap;
     private final Map<String, WaveWorkerPriority> m_ownedWorkerClassNamesPriorityMap;
+    private final Map<String, Method>             m_waveLinearSequencerSteps;
+    private final Map<String, Method>             m_waveSynchronousLinearSequencerSteps;
 
     public WaveJavaClass (final String name)
     {
@@ -65,6 +67,8 @@ public class WaveJavaClass extends WaveJavaType
         m_messageHandlers = new HashMap<Class<?>, Method> ();
         m_ownedWorkerClassNamesCadinalityMap = new HashMap<String, Integer> ();
         m_ownedWorkerClassNamesPriorityMap = new HashMap<String, WaveWorkerPriority> ();
+        m_waveLinearSequencerSteps = new HashMap<String, Method> ();
+        m_waveSynchronousLinearSequencerSteps = new HashMap<String, Method> ();
     }
 
     public String getName ()
@@ -294,6 +298,8 @@ public class WaveJavaClass extends WaveJavaType
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "    Computing Workers for Java Class " + m_name, true, false);
 
         computeWorkers (reflectionClass);
+
+        computeSequencerSteps (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -410,26 +416,26 @@ public class WaveJavaClass extends WaveJavaType
 
     private void computeMessageHandlers (final Class<?> reflectionClass)
     {
-        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())))
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())))
         {
             return;
         }
 
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Message Handlers for Java Class " + m_name, true, false);
 
-        final Annotation annotationForNonOM = reflectionClass.getAnnotation (NonOM.class);
-
-        if (null != annotationForNonOM)
-        {
-            final NonOM nonOM = (NonOM) annotationForNonOM;
-
-            WaveAssertUtils.waveAssert (null != nonOM);
-
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Ignoring %s from Message Handler computations since it is annotated with @NonOM", reflectionClass.getName ());
-
-            return;
-        }
-
+        /*
+         * final Annotation annotationForNonOM = reflectionClass.getAnnotation (NonOM.class);
+         *
+         * if (null != annotationForNonOM) { final NonOM nonOM = (NonOM) annotationForNonOM;
+         *
+         * WaveAssertUtils.waveAssert (null != nonOM);
+         *
+         * WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO,
+         * "WaveJavaClass.computeMessageHandlers : Ignoring %s from Message Handler computations since it is annotated with @NonOM"
+         * , reflectionClass.getName ());
+         *
+         * return; }
+         */
         final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
 
         for (final Method declaredMethod : declaredMethods)
@@ -549,6 +555,87 @@ public class WaveJavaClass extends WaveJavaType
         if (null != waveJavaClassForOwnerOm)
         {
             waveJavaClassForOwnerOm.addOwnedWorker (reflectionClass.getName (), cardinality, priority);
+        }
+    }
+
+    private void computeSequencerSteps (final Class<?> reflectionClass)
+    {
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Sequencer Steps for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final Annotation annotationForNonSeqeuncerStep = declaredMethod.getAnnotation (NonSequencerStep.class);
+
+            if (null != annotationForNonSeqeuncerStep)
+            {
+                final NonSequencerStep nonSequencerStep = (NonSequencerStep) annotationForNonSeqeuncerStep;
+
+                WaveAssertUtils.waveAssert (null != nonSequencerStep);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Ignoring %s : %s from Sequencer Step computations since it is annotated with @NonSequencerStep", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (1 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName = parameterTypes[0].getTypeName ();
+
+                final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName);
+
+                if (null != waveJavaClass)
+                {
+                    if (waveJavaClass.isADerivativeOfWaveLinearSequencerContext ())
+                    {
+                        if (m_waveLinearSequencerSteps.containsKey (declaredMethod.getName ()))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Trying to add a Sequencer Step for Class %s with WaveLinearSequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Already persent Sequencer Step method : %s", (m_waveLinearSequencerSteps.get (declaredMethod.getName ())).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            m_waveLinearSequencerSteps.put (declaredMethod.getName (), declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Added a Sequencer Step for Class %s with Wave Linear Sequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                        }
+                    }
+                    else if (waveJavaClass.isADerivativeOfWaveSynchronousLinearSequencerContext ())
+                    {
+                        if (m_waveSynchronousLinearSequencerSteps.containsKey (declaredMethod.getName ()))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Trying to add a Synchronous Sequencer Step for Class %s with WaveSynchronousLinearSequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Already persent Synchronous Sequencer Step method : %s", (m_waveSynchronousLinearSequencerSteps.get (declaredMethod.getName ())).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            m_waveSynchronousLinearSequencerSteps.put (declaredMethod.getName (), declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Added a Synchronous Sequencer Step for Class %s with Wave Synchronous Linear Sequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                        }
+                    }
+                }
+            }
         }
     }
 
