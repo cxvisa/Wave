@@ -4,7 +4,6 @@
 
 package com.CxWave.Wave.Framework.Core;
 
-import com.CxWave.Wave.Framework.Boot.WaveBootPhase;
 import com.CxWave.Wave.Framework.Core.Messages.WaveBootObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
@@ -304,7 +303,7 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 
         waveAssert (null != waveFrameworkObjectManagerInitializeWorker);
 
-        waveFrameworkObjectManagerInitializeWorker.startWaveServices (WaveBootMode.WAVE_BOOT_FIRST_TIME, WaveBootPhase.WAVE_BOOT_PHASE_ALL_PHASES);
+        waveFrameworkObjectManagerInitializeWorker.startWaveServices ();
     }
 
     private void initializeLastUsedLocationId ()

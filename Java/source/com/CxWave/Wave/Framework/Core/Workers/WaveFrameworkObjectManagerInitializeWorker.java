@@ -27,6 +27,11 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
         super (waveObjectManager);
     }
 
+    public void startWaveServices ()
+    {
+        startWaveServices (WaveBootMode.WAVE_BOOT_UNKNOWN, WaveBootPhase.WAVE_BOOT_PHASE_ALL_PHASES);
+    }
+
     public void startWaveServices (final WaveBootMode waveBootMode, final WaveBootPhase waveBootPhase)
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.startWaveServices : Entering ...");
