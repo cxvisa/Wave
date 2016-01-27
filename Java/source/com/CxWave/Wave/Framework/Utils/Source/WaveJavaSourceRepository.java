@@ -611,4 +611,34 @@ public class WaveJavaSourceRepository
 
         return (waveJavaClass.getWorkerClassPriority (workerClassName));
     }
+
+    public static boolean waveObjectManagerIsADerivativeOf (final String derivedFromClassName)
+    {
+        return (WaveJavaClass.waveObjectManagerIsADerivativeOf (derivedFromClassName));
+    }
+
+    public static boolean waveWorkerIsADerivativeOf (final String derivedFromClassName)
+    {
+        return (WaveJavaClass.waveWorkerIsADerivativeOf (derivedFromClassName));
+    }
+
+    public static boolean waveManagedObjectIsADerivativeOf (final String derivedFromClassName)
+    {
+        return (WaveJavaClass.waveManagedObjectIsADerivativeOf (derivedFromClassName));
+    }
+
+    public static boolean waveMessageIsADerivativeOf (final String derivedFromClassName)
+    {
+        return (WaveJavaClass.waveMessageIsADerivativeOf (derivedFromClassName));
+    }
+
+    public static boolean waveSynchronousLinearSequencerContextIsADerivativeOf (final String derivedFromClassName)
+    {
+        return (WaveJavaClass.waveSynchronousLinearSequencerContextIsADerivativeOf (derivedFromClassName));
+    }
+
+    public static boolean waveLinearSequencerContextIsADerivativeOf (final String derivedFromClassName)
+    {
+        return (WaveJavaClass.waveLinearSequencerContextIsADerivativeOf (derivedFromClassName));
+    }
 }

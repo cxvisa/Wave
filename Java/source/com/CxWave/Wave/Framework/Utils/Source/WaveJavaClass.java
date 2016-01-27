@@ -416,26 +416,13 @@ public class WaveJavaClass extends WaveJavaType
 
     private void computeMessageHandlers (final Class<?> reflectionClass)
     {
-        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())))
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())) && (!(waveObjectManagerIsADerivativeOf (m_typeName))) && (!(waveWorkerIsADerivativeOf (m_typeName))) && (!(waveManagedObjectIsADerivativeOf (m_typeName))))
         {
             return;
         }
 
         WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Message Handlers for Java Class " + m_name, true, false);
 
-        /*
-         * final Annotation annotationForNonOM = reflectionClass.getAnnotation (NonOM.class);
-         *
-         * if (null != annotationForNonOM) { final NonOM nonOM = (NonOM) annotationForNonOM;
-         *
-         * WaveAssertUtils.waveAssert (null != nonOM);
-         *
-         * WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO,
-         * "WaveJavaClass.computeMessageHandlers : Ignoring %s from Message Handler computations since it is annotated with @NonOM"
-         * , reflectionClass.getName ());
-         *
-         * return; }
-         */
         final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
 
         for (final Method declaredMethod : declaredMethods)
@@ -560,7 +547,7 @@ public class WaveJavaClass extends WaveJavaType
 
     private void computeSequencerSteps (final Class<?> reflectionClass)
     {
-        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())))
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())) && (!(waveObjectManagerIsADerivativeOf (m_typeName))) && (!(waveWorkerIsADerivativeOf (m_typeName))) && (!(waveManagedObjectIsADerivativeOf (m_typeName))))
         {
             return;
         }
@@ -791,6 +778,25 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public static boolean waveObjectManagerIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveObjectManager.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     public boolean isADerivativeOfWaveMessage ()
     {
         final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
@@ -802,6 +808,25 @@ public class WaveJavaClass extends WaveJavaType
                 break;
             }
             else if (className.equals (WaveMessage.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean waveMessageIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveMessage.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
             {
                 return (true);
             }
@@ -829,6 +854,25 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public static boolean waveWorkerIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveWorker.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     public boolean isADerivativeOfWaveManagedObject ()
     {
         final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
@@ -840,6 +884,25 @@ public class WaveJavaClass extends WaveJavaType
                 break;
             }
             else if (className.equals (WaveManagedObject.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean waveManagedObjectIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveManagedObject.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
             {
                 return (true);
             }
@@ -867,6 +930,25 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public static boolean waveLinearSequencerContextIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveLinearSequencerContext.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     public boolean isADerivativeOfWaveSynchronousLinearSequencerContext ()
     {
         final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
@@ -878,6 +960,25 @@ public class WaveJavaClass extends WaveJavaType
                 break;
             }
             else if (className.equals (WaveSynchronousLinearSequencerContext.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean waveSynchronousLinearSequencerContextIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveSynchronousLinearSequencerContext.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
             {
                 return (true);
             }
@@ -1037,6 +1138,44 @@ public class WaveJavaClass extends WaveJavaType
 
                 return (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0);
             }
+        }
+    }
+
+    public Method getMethodForWaveLinearSequencerStep (final String waveLinearSequencerStepName)
+    {
+        final Method method = m_waveLinearSequencerSteps.get (waveLinearSequencerStepName);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveLinearSequencerStep (waveLinearSequencerStepName));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveSynchronousLinearSequencerStep (final String waveSynchronousLinearSequencerStepName)
+    {
+        final Method method = m_waveSynchronousLinearSequencerSteps.get (waveSynchronousLinearSequencerStepName);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveSynchronousLinearSequencerStep (waveSynchronousLinearSequencerStepName));
+        }
+        else
+        {
+            return (null);
         }
     }
 }
