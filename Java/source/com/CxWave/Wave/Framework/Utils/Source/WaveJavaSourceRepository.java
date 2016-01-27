@@ -641,4 +641,28 @@ public class WaveJavaSourceRepository
     {
         return (WaveJavaClass.waveLinearSequencerContextIsADerivativeOf (derivedFromClassName));
     }
+
+    public static Method getMethodForWaveLinearSequencerStepInWaveJavaClass (final String waveJavaClassName, final String waveLinearSequencerStepName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveLinearSequencerStep (waveLinearSequencerStepName));
+    }
+
+    public static Method getMethodForWaveSynchronousLinearSequencerStepInWaveJavaClass (final String waveJavaClassName, final String waveSynchronousLinearSequencerStepName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveSynchronousLinearSequencerStep (waveSynchronousLinearSequencerStepName));
+    }
 }

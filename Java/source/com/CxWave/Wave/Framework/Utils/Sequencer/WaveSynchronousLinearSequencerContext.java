@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.Time.StopWatch;
 import com.CxWave.Wave.Framework.Utils.Time.ThreadStopWatch;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -98,27 +99,10 @@ public class WaveSynchronousLinearSequencerContext
         {
             WaveTraceUtils.infoTracePrintf ("WaveSynchronousLinearSequencerContext.validateAndCompute : Searching for method name : %s", methodNameForStep);
 
-            Class<?> classToSearchForTheMethod = waveElementClass;
+            final Class<?> classToSearchForTheMethod = waveElementClass;
             Method methodForStep = null;
 
-            while (null != classToSearchForTheMethod)
-            {
-                WaveTraceUtils.infoTracePrintf ("WaveSynchronousLinearSequencerContext.validateAndCompute :     Searching in class : %s", classToSearchForTheMethod.getName ());
-
-                try
-                {
-                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, getClass ());
-
-                    methodForStep.setAccessible (true);
-
-                    break;
-                }
-                catch (NoSuchMethodException | SecurityException e)
-                {
-                    WaveTraceUtils.errorTracePrintf ("    %s", e.toString ());
-                    classToSearchForTheMethod = classToSearchForTheMethod.getSuperclass ();
-                }
-            }
+            methodForStep = WaveJavaSourceRepository.getMethodForWaveSynchronousLinearSequencerStepInWaveJavaClass (classToSearchForTheMethod.getTypeName (), methodNameForStep);
 
             if (null != methodForStep)
             {
