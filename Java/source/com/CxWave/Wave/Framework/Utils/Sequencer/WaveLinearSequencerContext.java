@@ -117,7 +117,7 @@ public class WaveLinearSequencerContext
 
                 try
                 {
-                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, WaveLinearSequencerContext.class);
+                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, getClass ());
 
                     methodForStep.setAccessible (true);
 

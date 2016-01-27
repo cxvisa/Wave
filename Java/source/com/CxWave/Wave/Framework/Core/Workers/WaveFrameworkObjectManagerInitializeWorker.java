@@ -4,8 +4,6 @@
 
 package com.CxWave.Wave.Framework.Core.Workers;
 
-import java.lang.reflect.Method;
-
 import com.CxWave.Wave.Framework.Boot.WaveBootPhase;
 import com.CxWave.Wave.Framework.Core.WaveBootMode;
 import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
@@ -36,29 +34,14 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
         final String[] sequencerSteps =
             {
                             "determineNodeBootModeStep",
-                            // "chooseABootAgentStep",
-                            // "runTheBootAgentStep",
-                            // "saveConfigurationStep",
-                            // "informServicesToInitializeBeforeBootComplete",
-                            // "declareBootCompleteStep",
+                            "chooseABootAgentStep",
+                            "runTheBootAgentStep",
+                            "saveConfigurationStep",
+                            "informServicesToInitializeBeforeBootComplete",
+                            "declareBootCompleteStep",
                             "waveSynchronousLinearSequencerSucceededStep",
                             "waveSynchronousLinearSequencerFailedStep"
             };
-
-        final Method[] methods = (getClass ()).getDeclaredMethods ();
-
-        for (final Method method : methods)
-        {
-            successTracePrintf ("DECLARED METHOD : %s", method.getName ());
-
-            final Class<?>[] types = method.getParameterTypes ();
-
-            for (final Class<?> type : types)
-            {
-                successTracePrintf ("    Type : %s, %s", type.toString (), (type.getSuperclass ()).toString ());
-
-            }
-        }
 
         final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext = new WaveFrameworkInitializeWorkerStartServicesContext ((WaveAsynchronousContext) null, this, sequencerSteps);
 
@@ -108,5 +91,12 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.declareBootCompleteStep : Entering ...");
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private ResourceId waveSynchronousLinearSequencerSucceededStep (final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext)
+    {
+        infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.waveSynchronousLinearSequencerSucceededStep : Entering ...");
+
+        return (super.waveSynchronousLinearSequencerSucceededStep (waveFrameworkInitializeWorkerStartServicesContext));
     }
 }

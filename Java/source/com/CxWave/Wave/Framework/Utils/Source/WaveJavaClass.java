@@ -33,6 +33,8 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
+import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
@@ -751,6 +753,44 @@ public class WaveJavaClass extends WaveJavaType
                 break;
             }
             else if (className.equals (WaveManagedObject.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveLinearSequencerContext ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveLinearSequencerContext.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveSynchronousLinearSequencerContext ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveSynchronousLinearSequencerContext.class.getName ()))
             {
                 return (true);
             }

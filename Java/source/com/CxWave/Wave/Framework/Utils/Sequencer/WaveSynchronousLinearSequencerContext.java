@@ -107,12 +107,7 @@ public class WaveSynchronousLinearSequencerContext
 
                 try
                 {
-                    final Class<?>[] parameterTypes =
-                        {
-                                        WaveSynchronousLinearSequencerContext.class
-                        };
-
-                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, parameterTypes);
+                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, getClass ());
 
                     methodForStep.setAccessible (true);
 
@@ -120,6 +115,7 @@ public class WaveSynchronousLinearSequencerContext
                 }
                 catch (NoSuchMethodException | SecurityException e)
                 {
+                    WaveTraceUtils.errorTracePrintf ("    %s", e.toString ());
                     classToSearchForTheMethod = classToSearchForTheMethod.getSuperclass ();
                 }
             }
