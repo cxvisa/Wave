@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
+import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -239,13 +240,12 @@ public abstract class WaveElement
 
         final WaveMessage waveMessage = waveLinearSequencerContext.getWaveMessage ();
         final WaveAsynchronousContext waveAsynchronousContext = waveLinearSequencerContext.getWaveAsynchronousContext ();
+        ResourceId completionStatus = waveLinearSequencerContext.getCompletionStatus ();
 
         if (true == (waveLinearSequencerContext.getIsHoldAllRequested ()))
         {
             waveLinearSequencerContext.unholdAll ();
         }
-
-        ResourceId status = ResourceId.FRAMEWORK_SUCCESS;
 
         if (true == (waveLinearSequencerContext.getIsTransactionStartedByMe ()))
         {
@@ -253,31 +253,31 @@ public abstract class WaveElement
 
             // commit the transaction to preserve the semantics of the executeSuccessStep and if the transaction
             // has no data to be committed, framework will immediately return without having to go to DB.
-            status = commitTransaction ();
+            completionStatus = commitTransaction ();
         }
 
-        if (ResourceId.FRAMEWORK_SUCCESS == status)
+        if (ResourceId.FRAMEWORK_SUCCESS.equals (completionStatus))
         {
-            status = ResourceId.WAVE_MESSAGE_SUCCESS;
+            completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
         }
         else
         {
-            status = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+            completionStatus = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
         }
 
         if (null != waveMessage)
         {
-            waveMessage.setCompletionStatus (status);
+            waveMessage.setCompletionStatus (completionStatus);
             reply (waveMessage);
         }
         else if (null != waveAsynchronousContext)
         {
-            waveAsynchronousContext.setCompletionStatus (status);
+            waveAsynchronousContext.setCompletionStatus (completionStatus);
             waveAsynchronousContext.callback ();
         }
     }
 
-    void waveLinearSequencerFailedStep (final WaveLinearSequencerContext waveLinearSequencerContext)
+    protected void waveLinearSequencerFailedStep (final WaveLinearSequencerContext waveLinearSequencerContext)
     {
         develTrace ("WaveElement::waveLinearSequencerFailedStep : Entering ...");
 
@@ -324,5 +324,73 @@ public abstract class WaveElement
         {
             return (null);
         }
+    }
+
+    protected ResourceId waveSynchronousLinearSequencerSucceededStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
+    {
+        infoTracePrintf ("WaveElement.waveSynchronousLinearSequencerSucceededStep : Entering ...");
+
+        final WaveMessage waveMessage = waveSynchronousLinearSequencerContext.getWaveMessage ();
+        final WaveAsynchronousContext waveAsynchronousContext = waveSynchronousLinearSequencerContext.getWaveAsynchronousContext ();
+        ResourceId completionStatus = waveSynchronousLinearSequencerContext.getCompletionStatus ();
+
+        if (true == (waveSynchronousLinearSequencerContext.getIsTransactionStartedByMe ()))
+        {
+            waveSynchronousLinearSequencerContext.setIsTransactionStartedByMe (false);
+
+            // commit the transaction to preserve the semantics of the executeSuccessStep and if the transaction
+            // has no data to be committed, framework will immediately return without having to go to DB.
+            completionStatus = commitTransaction ();
+        }
+
+        if (ResourceId.FRAMEWORK_SUCCESS.equals (completionStatus))
+        {
+            completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
+        }
+        else
+        {
+            completionStatus = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+        }
+
+        if (null != waveMessage)
+        {
+            waveMessage.setCompletionStatus (completionStatus);
+            reply (waveMessage);
+        }
+        else if (null != waveAsynchronousContext)
+        {
+            waveAsynchronousContext.setCompletionStatus (completionStatus);
+            waveAsynchronousContext.callback ();
+        }
+
+        return (completionStatus);
+    }
+
+    protected ResourceId waveSynchronousLinearSequencerFailedStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
+    {
+        infoTracePrintf ("WaveElement::waveLinearSequencerFailedStep : Entering ...");
+
+        final WaveMessage waveMessage = waveSynchronousLinearSequencerContext.getWaveMessage ();
+        final WaveAsynchronousContext waveAsynchronousContext = waveSynchronousLinearSequencerContext.getWaveAsynchronousContext ();
+        final ResourceId completionStatus = waveSynchronousLinearSequencerContext.getCompletionStatus ();
+
+        if (true == (waveSynchronousLinearSequencerContext.getIsTransactionStartedByMe ()))
+        {
+            waveSynchronousLinearSequencerContext.setIsTransactionStartedByMe (false);
+            rollbackTransaction ();
+        }
+
+        if (null != waveMessage)
+        {
+            waveMessage.setCompletionStatus (completionStatus);
+            reply (waveMessage);
+        }
+        else if (null != waveAsynchronousContext)
+        {
+            waveAsynchronousContext.setCompletionStatus (completionStatus);
+            waveAsynchronousContext.callback ();
+        }
+
+        return (completionStatus);
     }
 }

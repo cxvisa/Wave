@@ -83,11 +83,6 @@ public class WaveLinearSequencerContext
 
     private boolean validateAndCompute ()
     {
-        if ((null == m_waveMessage) && (null == m_waveAsynchronousContext))
-        {
-            return (false);
-        }
-
         if (null == m_waveElement)
         {
             return (false);
@@ -122,7 +117,7 @@ public class WaveLinearSequencerContext
 
                 try
                 {
-                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, getClass ());
+                    methodForStep = classToSearchForTheMethod.getDeclaredMethod (methodNameForStep, WaveLinearSequencerContext.class);
 
                     methodForStep.setAccessible (true);
 
