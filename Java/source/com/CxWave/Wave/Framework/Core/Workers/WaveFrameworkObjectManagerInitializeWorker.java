@@ -60,6 +60,17 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.determineNodeBootModeStep : Entering ...");
 
+        WaveBootMode waveBootMode = waveFrameworkInitializeWorkerStartServicesContext.getWaveBootMode ();
+
+        if (WaveBootMode.WAVE_BOOT_UNKNOWN != waveBootMode)
+        {
+            return (ResourceId.WAVE_MESSAGE_SUCCESS);
+        }
+
+        waveBootMode = WaveBootMode.WAVE_BOOT_FIRST_TIME;
+
+        waveFrameworkInitializeWorkerStartServicesContext.setWaveBootMode (waveBootMode);
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
