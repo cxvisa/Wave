@@ -4,6 +4,15 @@
 
 package com.CxWave.Wave.Framework.Core.Workers;
 
+import com.CxWave.Wave.Framework.Boot.FirstTimeWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.HaStandbyWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.PersistentWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.PersistentWithDefaultForHABootAgent;
+import com.CxWave.Wave.Framework.Boot.PersistentWithDefaultWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.SecondaryNodeConfigureWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.SecondaryNodeRejoinWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.SecondaryNodeUnconfigureWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.WaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.WaveBootPhase;
 import com.CxWave.Wave.Framework.Core.WaveBootMode;
 import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
@@ -22,6 +31,8 @@ import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 @WorkerPriority (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0)
 public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
 {
+    private WaveBootAgent m_waveBootAgent = null;
+
     public WaveFrameworkObjectManagerInitializeWorker (final WaveObjectManager waveObjectManager)
     {
         super (waveObjectManager);
@@ -77,6 +88,55 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     private ResourceId chooseABootAgentStep (final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext)
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.chooseABootAgentStep : Entering ...");
+
+        final WaveBootMode waveBootMode = waveFrameworkInitializeWorkerStartServicesContext.getWaveBootMode ();
+
+        infoTracePrintf ("Boot Mode is %s", waveBootMode.toString ());
+
+        if (WaveBootMode.WAVE_BOOT_FIRST_TIME == waveBootMode)
+        {
+            m_waveBootAgent = new FirstTimeWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_PERSISTENT == waveBootMode)
+        {
+            m_waveBootAgent = new PersistentWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_PERSISTENT_WITH_DEFAULT == waveBootMode)
+        {
+            m_waveBootAgent = new PersistentWithDefaultWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_SECONDARY_CONFIGURE == waveBootMode)
+        {
+            m_waveBootAgent = new SecondaryNodeConfigureWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_SECONDARY_UNCONFIGURE == waveBootMode)
+        {
+            m_waveBootAgent = new SecondaryNodeUnconfigureWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_SECONDARY_REJOIN == waveBootMode)
+        {
+            m_waveBootAgent = new SecondaryNodeRejoinWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_HASTANDBY == waveBootMode)
+        {
+            m_waveBootAgent = new HaStandbyWaveBootAgent (m_waveObjectManager);
+        }
+        else if (WaveBootMode.WAVE_BOOT_PREPARE_FOR_HA_BOOT == waveBootMode)
+        {
+            m_waveBootAgent = new PersistentWithDefaultForHABootAgent (m_waveObjectManager);
+        }
+        else
+        {
+            fatalTracePrintf ("WaveFrameworkObjectManagerInitializeWorker::chooseABootAgentStep : Unknown Wave Boot Mode : %d", waveBootMode.ordinal ());
+            waveAssert ();
+        }
+
+        waveAssert (null != m_waveBootAgent);
+
+        if (null == m_waveBootAgent)
+        {
+            return (ResourceId.WAVE_MESSAGE_ERROR);
+        }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
