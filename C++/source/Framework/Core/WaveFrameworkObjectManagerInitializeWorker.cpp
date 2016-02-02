@@ -489,7 +489,6 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep (Wave
     trace (TRACE_LEVEL_DEBUG, "WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep : Entering ...");
     FrameworkSequenceGenerator &frameworkSequenceGenerator = WaveFrameworkObjectManager::getCurrentFrameworkSequenceGenerator ();
 
-    //return (m_pWaveBootAgent->execute (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ()));
     ResourceId status = m_pWaveBootAgent->execute (pWaveFrameworkInitializeWorkerStartServicesContext->getWaveBootPhase ());
     if (WAVE_MESSAGE_ERROR_DATABASE_INCONSISTENT == status)
     {

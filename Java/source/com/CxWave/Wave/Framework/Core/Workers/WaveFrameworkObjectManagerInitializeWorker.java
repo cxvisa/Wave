@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.Boot.HaStandbyWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.PersistentWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.PersistentWithDefaultForHABootAgent;
 import com.CxWave.Wave.Framework.Boot.PersistentWithDefaultWaveBootAgent;
+import com.CxWave.Wave.Framework.Boot.RecoverWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.SecondaryNodeConfigureWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.SecondaryNodeRejoinWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.SecondaryNodeUnconfigureWaveBootAgent;
@@ -23,6 +24,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
+import com.CxWave.Wave.Framework.Shutdown.WaveShutdownAgent;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
@@ -145,7 +147,46 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.runTheBootAgentStep : Entering ...");
 
-        return (ResourceId.WAVE_MESSAGE_SUCCESS);
+        ResourceId status = m_waveBootAgent.execute (waveFrameworkInitializeWorkerStartServicesContext.getWaveBootPhase ());
+
+        if (ResourceId.WAVE_MESSAGE_ERROR_DATABASE_INCONSISTENT == status)
+        {
+            final WaveShutdownAgent shutdownAgent = new WaveShutdownAgent (m_waveObjectManager);
+
+            status = shutdownAgent.execute ();
+
+            if (status != ResourceId.WAVE_MESSAGE_SUCCESS)
+            {
+                fatalTracePrintf ("WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep: Shutting down all services failed.\n");
+
+                return status;
+            }
+            else
+            {
+                infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep : Recovering now with Boot Mode %s", WaveBootMode.WAVE_BOOT_FIRST_TIME.toString ());
+
+                m_waveBootAgent = new RecoverWaveBootAgent (m_waveObjectManager);
+
+                status = m_waveBootAgent.execute (WaveBootPhase.WAVE_BOOT_PHASE_PRE_PHASE);
+
+                if (status != ResourceId.WAVE_MESSAGE_SUCCESS)
+                {
+                    fatalTracePrintf ("WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep: Shutting down all services failed.\n");
+
+                    return status;
+                }
+                else
+                {
+                    m_waveBootAgent = new RecoverWaveBootAgent (m_waveObjectManager);
+
+                    return (m_waveBootAgent.execute (WaveBootPhase.WAVE_BOOT_PHASE_POST_PHASE));
+                }
+            }
+        }
+        else
+        {
+            return status;
+        }
     }
 
     private ResourceId saveConfigurationStep (final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext)
@@ -167,12 +208,5 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.declareBootCompleteStep : Entering ...");
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
-    }
-
-    private ResourceId waveSynchronousLinearSequencerSucceededStep (final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext)
-    {
-        infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.waveSynchronousLinearSequencerSucceededStep : Entering ...");
-
-        return (super.waveSynchronousLinearSequencerSucceededStep (waveFrameworkInitializeWorkerStartServicesContext));
     }
 }
