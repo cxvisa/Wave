@@ -70,6 +70,7 @@ ResourceId WaveBootAgent::initializeWaveServicesDuringPrePhaseStep (WaveSynchron
     UI32                   numberOfServices        = 0;
 
     m_currentFrameworkSequenceGenerator.getInitializeSequenceDuringPrePhase (serviceIdsToInitialize);
+
     numberOfServices = serviceIdsToInitialize.size ();
 
     for (i = 0; i < numberOfServices; i++)
@@ -86,7 +87,7 @@ ResourceId WaveBootAgent::initializeWaveServicesDuringPrePhaseStep (WaveSynchron
                 continue;
             }
         }
-    
+
         WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
         ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
@@ -365,7 +366,7 @@ ResourceId WaveBootAgent::initializeGlobalWaveServicesDuringPrePhaseStep (WaveSy
                 trace (TRACE_LEVEL_INFO, "Initialized " + FrameworkToolKit::getServiceNameById (serviceIdsToInitialize[i]));
             }
         }
-    }    
+    }
 
     return (WAVE_MESSAGE_SUCCESS);
 }
@@ -476,7 +477,7 @@ ResourceId WaveBootAgent::bootGlobalWaveServicesDuringPrePhaseStep (WaveSynchron
         {
             continue;
         }
-        
+
         if (false == (FrameworkToolKit::isALocalService (serviceIdsToBoot[i])))
         {
             WaveBootObjectManagerMessage waveBootObjectManagerMessage (serviceIdsToBoot[i], getReason (), getRollBackFlag ());
@@ -500,7 +501,7 @@ ResourceId WaveBootAgent::bootGlobalWaveServicesDuringPrePhaseStep (WaveSynchron
             {
                 trace (TRACE_LEVEL_INFO, "Booted " + FrameworkToolKit::getServiceNameById (serviceIdsToBoot[i]));
             }
-        }        
+        }
     }
 
     return (WAVE_MESSAGE_SUCCESS);
@@ -624,7 +625,7 @@ ResourceId WaveBootAgent::initializeWaveServicesStep (WaveSynchronousLinearSeque
                 continue;
             }
         }
-    
+
         WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage (serviceIdsToInitialize[i], getReason ());
 
         ResourceId status = sendSynchronously (&waveInitializeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
@@ -1189,7 +1190,7 @@ ResourceId WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep 
     ResourceId dbConversionStatus = FrameworkToolKit::getDbConversionStatus ();
 
     if ((false == FrameworkToolKit::getDetectSchemaChange ()) && (DATABASE_SCHEMA_CONVERSION_SUCCEEDED != dbConversionStatus))
-    {   
+    {
         trace (TRACE_LEVEL_INFO, "WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep : exiting as no need for ForeignKeyConstraints application.");
         return (WAVE_MESSAGE_SUCCESS);
     }
@@ -1204,11 +1205,11 @@ ResourceId WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep 
         trace (TRACE_LEVEL_INFO, "WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep: no changes for UserDefinedKeyCombination. exiting..");
         return (WAVE_MESSAGE_SUCCESS);
     }
-    
+
     string alterSqlForCurrentSchema;
     string alterSqlForStartupSchema;
     string alterSql;
-    
+
     // 1. Sql to update userDefinedKeyCombinationValue, KeyString and OwnerKeyString.
     moSchemaInfoRepository.getSqlToUpdateUserDefinedKeyCombinationForUpgrade (alterSqlForCurrentSchema, alterSqlForStartupSchema);
 
@@ -1217,35 +1218,35 @@ ResourceId WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep 
     alterSql = alterSqlForCurrentSchema + alterSqlForStartupSchema;
 
     ResourceId      status  = WAVE_MESSAGE_SUCCESS;
-    
+
     if (alterSql != "")
-    { 
+    {
         DatabaseObjectManagerExecuteTransactionMessage message (alterSql);
         status = sendSynchronously (&message);
 
         if (WAVE_MESSAGE_SUCCESS != status)
-        {   
+        {
             trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep : Could not send message to update values for udkc. Status : " + FrameworkToolKit::localize (status));
             //waveAssert (false, __FILE__, __LINE__);
         }
         else
-        {   
+        {
             status = message.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
-            {   
+            {
                 trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep:: failed to update udkc values. Status : " + FrameworkToolKit::localize (status));
                 //waveAssert (false, __FILE__, __LINE__);
             }
             else
-            {   
+            {
                 trace (TRACE_LEVEL_INFO, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep: successfully updated the corresponding udkc values.");
             }
         }
     }
 
     if (WAVE_MESSAGE_SUCCESS != status)
-    {   
+    {
         /* This indicates DB is not in proper state. remove cfg file and reboot and come back with First time boot */
         handleUpgradeFailure (getServiceId ());
     }
@@ -1260,35 +1261,35 @@ ResourceId WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep 
     alterSql = alterSqlForCurrentSchema + alterSqlForStartupSchema;
 
     status  = WAVE_MESSAGE_SUCCESS;
-    
+
     if (alterSql != "")
-    { 
+    {
         DatabaseObjectManagerExecuteTransactionMessage message (alterSql);
         status = sendSynchronously (&message);
 
         if (WAVE_MESSAGE_SUCCESS != status)
-        {   
+        {
             trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep : Could not send message to add constraint for udkc. Status : " + FrameworkToolKit::localize (status));
             //waveAssert (false, __FILE__, __LINE__);
         }
         else
-        {   
+        {
             status = message.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
-            {   
+            {
                 trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateUserDefinedKeyCombinationConstraintsAndKeysStep:: failed to add udkc constraints. Status : " + FrameworkToolKit::localize (status));
                 //waveAssert (false, __FILE__, __LINE__);
             }
             else
-            {   
+            {
                 trace (TRACE_LEVEL_INFO, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep: successfully added udkc constraints.");
             }
         }
     }
 
     if (WAVE_MESSAGE_SUCCESS != status)
-    {   
+    {
         /* This indicates DB is not in proper state. remove cfg file and reboot and come back with First time boot */
         handleUpgradeFailure (getServiceId ());
     }
@@ -1301,8 +1302,8 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
     ResourceId dbConversionStatus = FrameworkToolKit::getDbConversionStatus ();
 
     //  FrameworkToolKit::getDetectSchemaChange () : helps in identifying the Persistent boot during FWDL case. This flag will be false during "standby Schema conversion".
-    //  During standby schema conversion, dbConversionStatus is set to NOT_ATTEMPTED in first step "configureStandbyValidateVersionStep" and will be set to 
-    //  DATABASE_SCHEMA_CONVERSION_SUCCEEDED only after successful conversion of schema. Hence, (DATABASE_SCHEMA_CONVERSION_SUCCEEDED != dbConversionStatus) check to have 
+    //  During standby schema conversion, dbConversionStatus is set to NOT_ATTEMPTED in first step "configureStandbyValidateVersionStep" and will be set to
+    //  DATABASE_SCHEMA_CONVERSION_SUCCEEDED only after successful conversion of schema. Hence, (DATABASE_SCHEMA_CONVERSION_SUCCEEDED != dbConversionStatus) check to have
     //  ForeignKeyConstraint application on successful standby schema conversion.
 
     if ((false == FrameworkToolKit::getDetectSchemaChange ()) && (DATABASE_SCHEMA_CONVERSION_SUCCEEDED != dbConversionStatus))
@@ -1326,19 +1327,19 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
     trace (TRACE_LEVEL_DEBUG, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep : Number of Modified Managed Objects : " + modifiedTablesSchemaDifference.size ());
 
     for (mIterator = modifiedTablesSchemaDifference.begin(); mIterator != modifiedTablesSchemaDifference.end(); mIterator++)
-    {   
+    {
         //(mIterator->second).printContentsForDebugging ();
 
         string modifiedManagedObjectName = mIterator->first;
 
-        //Iterate through the vector of all added relationships 
+        //Iterate through the vector of all added relationships
         vector<RelationshipInfoFromSchemaDifference> addedRelationsVector = (mIterator->second).getAddedRelations ();
         vector<RelationshipInfoFromSchemaDifference>::const_iterator relationsIterator = addedRelationsVector.begin();
 
-	    //---generate Alter statements to add NOT NULL constraints for 1:1 relationships 
-        for(;relationsIterator != addedRelationsVector.end(); ++relationsIterator) 
+	    //---generate Alter statements to add NOT NULL constraints for 1:1 relationships
+        for(;relationsIterator != addedRelationsVector.end(); ++relationsIterator)
         {
-            if(ORM_RELATION_TYPE_ONE_TO_ONE == relationsIterator->getRelationType ()) 
+            if(ORM_RELATION_TYPE_ONE_TO_ONE == relationsIterator->getRelationType ())
             {
                 OrmTable* pOrmTable = OrmRepository::getTableByName (modifiedManagedObjectName);
                 alterSqlForCurrentSchema += pOrmTable->getAlterSqlToAddNotNullForOneToOneRelationship (OrmRepository::getWaveCurrentSchema() ,relationsIterator->getRelationName());
@@ -1346,12 +1347,12 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
             }
         }
 
-        //Iterate through the vector of all changed relationships 
+        //Iterate through the vector of all changed relationships
         vector<RelationshipInfoFromSchemaDifference> changedRelationsVector = (mIterator->second).getChangedRelations ();
         vector<RelationshipInfoFromSchemaDifference>::const_iterator changedRelationsIterator = changedRelationsVector.begin();
 
-	    //---generate Alter statements to add NOT NULL constraints for 1:1 relationships 
-        for(;changedRelationsIterator != changedRelationsVector.end(); ++changedRelationsIterator) 
+	    //---generate Alter statements to add NOT NULL constraints for 1:1 relationships
+        for(;changedRelationsIterator != changedRelationsVector.end(); ++changedRelationsIterator)
         {
             if (changedRelationsIterator->isCanBeEmptyChanged ())
             {
@@ -1390,35 +1391,35 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
     trace (TRACE_LEVEL_INFO, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep : Alter SQL to add NOT NULL constraint is : " + alterSqlForCurrentSchema);
 
     ResourceId                                     status  = WAVE_MESSAGE_SUCCESS;
-    
+
     if (alterSql != "")
-    { 
+    {
         DatabaseObjectManagerExecuteTransactionMessage message (alterSql);
         status = sendSynchronously (&message);
 
         if (WAVE_MESSAGE_SUCCESS != status)
-        {   
+        {
             trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep : Could not send message to alter 1:1 relationship constraints. Status : " + FrameworkToolKit::localize (status));
             //waveAssert (false, __FILE__, __LINE__);
         }
         else
-        {   
+        {
             status = message.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
-            {   
+            {
                 trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep:: failed to update 1:1 relationship constraints. Status : " + FrameworkToolKit::localize (status));
                 //waveAssert (false, __FILE__, __LINE__);
             }
             else
-            {   
+            {
                 trace (TRACE_LEVEL_INFO, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep: updated 1:1 relationship constraints.");
             }
         }
         /*
         DatabaseStandaloneTransaction dbStandaloneTransaction;
         if (!dbStandaloneTransaction.execute (alterSql))
-        {   
+        {
             trace (TRACE_LEVEL_ERROR, "WaveBootAgent::updateDatabaseForeignKeyConstraintsStep : Error in applying SQL to database");
             status = WAVE_MESSAGE_ERROR;
         }
@@ -1426,7 +1427,7 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
     }
 
     if (WAVE_MESSAGE_SUCCESS != status)
-    {   
+    {
         /* This indicates DB is not in proper state. remove cfg file and reboot and come back with First time boot */
         handleUpgradeFailure (getServiceId ());
     }
@@ -1550,7 +1551,7 @@ ResourceId  WaveBootAgent::upgradeWaveServicesDuringPrePhaseStep (WaveSynchronou
     {
         return (WAVE_MESSAGE_SUCCESS);
     }
-    
+
     vector<WaveServiceId> serviceIdsToEnable;
     UI32                   i                       = 0;
     UI32                   numberOfServices        = 0;
@@ -1568,7 +1569,7 @@ ResourceId  WaveBootAgent::upgradeWaveServicesDuringPrePhaseStep (WaveSynchronou
             }
         }
 
-        /* DO WE NEED THIS ?? SINCE UPGRADE IS CALLED ONLY FOR PERSISTENT SYSTEM BOOT UP CASE AND NOT THE CLUSTER BASED PHASES 
+        /* DO WE NEED THIS ?? SINCE UPGRADE IS CALLED ONLY FOR PERSISTENT SYSTEM BOOT UP CASE AND NOT THE CLUSTER BASED PHASES
         if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable[i])))
         {
             continue;
@@ -1601,12 +1602,12 @@ ResourceId  WaveBootAgent::upgradeWaveServicesDuringPrePhaseStep (WaveSynchronou
 
     return (WAVE_MESSAGE_SUCCESS);
 }
- 
+
 void WaveBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
 {
     trace (TRACE_LEVEL_WARN, "WaveBootAgent::handleUpgradeFailure: upgrade failed for service : [" + FrameworkToolKit::getServiceNameById (serviceId) + "]");
 
-    // 1. Configuration file will be removed and 2. system will be rebooted. 
+    // 1. Configuration file will be removed and 2. system will be rebooted.
     // This will bring system in first time boot and configuration will be regained by config replay.");
 
     // 1.
@@ -1617,7 +1618,7 @@ void WaveBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
     trace (TRACE_LEVEL_WARN, "DatabaseObjectManager::handleUpgradeFailure: deleting file " + waveConfigurationfileName);
 
     cmdStatus = FrameworkToolKit::systemCommandOutput ((string ("/bin/rm -rf ") + waveConfigurationfileName).c_str(), output);
-    
+
     if (0 != cmdStatus)
     {
         if (0 < output.size())
@@ -1625,7 +1626,7 @@ void WaveBootAgent::handleUpgradeFailure (const WaveServiceId &serviceId)
             trace (TRACE_LEVEL_ERROR, string("DatabaseObjectManager::handleUpgradeFailure: cmd to deleted file ")+ waveConfigurationfileName + string(" failed with error message : ") + output[0]);
         }
     }
-    
+
 
     // 2.
     //Wave::logOperationStatus (REBOOT_FOR_SERVICE_UPGRADE_FAILURE_AUTO_RECOVERY);
@@ -1660,7 +1661,7 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesDuringPrePhaseStep (WaveSync
 
     for (i = 0; i < numberOfServices; i++)
     {
-        /* DO WE NEED THIS ?? SINCE UPGRADE IS CALLED ONLY FOR PERSISTENT SYSTEM BOOT UP CASE AND NOT THE CLUSTER BASED PHASES 
+        /* DO WE NEED THIS ?? SINCE UPGRADE IS CALLED ONLY FOR PERSISTENT SYSTEM BOOT UP CASE AND NOT THE CLUSTER BASED PHASES
         if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable[i])))
         {
             continue;
@@ -1678,7 +1679,7 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesDuringPrePhaseStep (WaveSync
 
                 return (status);
             }
-    
+
             status = waveUpgradeObjectManagerMessage.getCompletionStatus ();
 
             if (WAVE_MESSAGE_SUCCESS != status)
@@ -1732,7 +1733,7 @@ ResourceId  WaveBootAgent::upgradeLocalWaveServicesStep (WaveSynchronousLinearSe
             {
                 continue;
             }
-        
+
             WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
             ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
@@ -1797,7 +1798,7 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesStep (WaveSynchronousLinearS
             {
                 continue;
             }
-    
+
             WaveUpgradeObjectManagerMessage waveUpgradeObjectManagerMessage (serviceIdsToEnable[i], getReason ());
 
             ResourceId status = sendSynchronously (&waveUpgradeObjectManagerMessage, FrameworkToolKit::getThisLocationId ());
@@ -1815,7 +1816,7 @@ ResourceId  WaveBootAgent::upgradeGlobalWaveServicesStep (WaveSynchronousLinearS
             {
                 trace (TRACE_LEVEL_FATAL, string ("WaveBootAgent::upgradeGlobalWaveServicesStep : Could not Upgrade a service : ") + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]) + ", Status : " + FrameworkToolKit::localize (status));
 
-                
+
                 if (false == FrameworkToolKit::isSchemaConversionDisabledByUser ())
                 {
                     handleUpgradeFailure (serviceIdsToEnable[i]);
@@ -1859,7 +1860,7 @@ ResourceId  WaveBootAgent::upgradeWaveServicesStep (WaveSynchronousLinearSequenc
             }
         }
 
-        /* DO WE NEED THIS ?? SINCE UPGRADE IS CALLED ONLY FOR PERSISTENT SYSTEM BOOT UP CASE AND NOT THE CLUSTER BASED PHASES 
+        /* DO WE NEED THIS ?? SINCE UPGRADE IS CALLED ONLY FOR PERSISTENT SYSTEM BOOT UP CASE AND NOT THE CLUSTER BASED PHASES
         if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable[i])))
         {
             continue;

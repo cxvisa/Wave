@@ -6,9 +6,12 @@
     <ResourceEnum Name = "WaveObjectManagerPriority">
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_RESERVED"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_TIMER"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_TIMER_SIGNAL"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_TRACE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_DATABASE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_PERSISTENCE_LOCAL"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_PERSISTENCE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_INTER_LOCATION_MESSAGE_TRANSPORT"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_CLIENT_TRANSPORT"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_HA_PEER_MESSAGE_TRANSPORT"></Resource>
