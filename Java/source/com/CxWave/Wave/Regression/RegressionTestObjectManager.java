@@ -5,10 +5,12 @@
 package com.CxWave.Wave.Regression;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@NativeService
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_REGRESSION)
 public class RegressionTestObjectManager extends WaveLocalObjectManager
 {

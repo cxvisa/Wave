@@ -5,13 +5,15 @@
 package com.CxWave.Wave.Framework.Persistence;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
-import com.CxWave.Wave.Framework.ObjectModel.Annotations.PrePhase;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.PrePhaseService;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
-@PrePhase
+@PrePhaseService
+@NativeService
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_PERSISTENCE)
 public class PersistenceObjectManager extends WaveObjectManager
 {

@@ -13,7 +13,9 @@ import com.CxWave.Wave.Framework.LocationManagement.Location;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.PrePhaseService;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.ObjectRelationalMapping.OrmRepository;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
@@ -32,6 +34,8 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@PrePhaseService
+@NativeService
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK)
 public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 {
