@@ -5,17 +5,17 @@
 package com.CxWave.Wave.Framework.Boot;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
-import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
-public class WaveBootAgent extends WaveWorker
+public class RecoverWaveBootAgent extends FirstTimeWaveBootAgent
 {
-    public WaveBootAgent (final WaveObjectManager waveObjectManager)
+
+    public RecoverWaveBootAgent (final WaveObjectManager waveObjectManager)
     {
         super (waveObjectManager);
     }
 
-    public ResourceId execute (final WaveBootPhase waveBootPhase)
+    public ResourceId execute ()
     {
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
