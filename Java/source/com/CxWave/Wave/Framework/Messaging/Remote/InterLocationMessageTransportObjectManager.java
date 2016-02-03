@@ -5,11 +5,13 @@
 package com.CxWave.Wave.Framework.Messaging.Remote;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@NativeService
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_INTER_LOCATION_MESSAGE_TRANSPORT)
 public class InterLocationMessageTransportObjectManager extends WaveLocalObjectManager
 {
