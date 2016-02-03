@@ -4,10 +4,13 @@
 
 package com.CxWave.Wave.Framework.Boot;
 
+import java.util.Set;
+
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public class WaveBootAgent extends WaveWorker
@@ -23,6 +26,7 @@ public class WaveBootAgent extends WaveWorker
 
         final String[] synchronousSequencerSteps =
             {
+                            "computeInstantiableServicesStep",
                             "initializeWaveServicesDuringPrePhaseStep",
                             "enableWaveServicesDuringPrePhaseStep",
                             "listenForEventsWaveServicesDuringPrePhaseStep",
@@ -50,6 +54,40 @@ public class WaveBootAgent extends WaveWorker
         final ResourceId status = waveSynchronousLinearSequencerContext.execute ();
 
         return (status);
+    }
+
+    private ResourceId computeInstantiableServicesStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
+    {
+        infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Entering ...");
+
+        final Set<String> prePhaseServices = WaveJavaSourceRepository.getAllInstantiablePrePhaseObjectManagerClassNames ();
+
+        infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Pre Phase Services :");
+
+        for (final String prePhaseService : prePhaseServices)
+        {
+            infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep :     %s", prePhaseService);
+        }
+
+        final Set<String> nonPrePhaseNativeServices = WaveJavaSourceRepository.getAllInstantiableNonPrePhaseNativeObjectManagerClassNames ();
+
+        infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Non Pre Phase Native Services :");
+
+        for (final String nonPrePhaseNativeService : nonPrePhaseNativeServices)
+        {
+            infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep :     %s", nonPrePhaseNativeService);
+        }
+
+        final Set<String> nonPrePhaseNonNativeServices = WaveJavaSourceRepository.getAllInstantiableNonPrePhaseNonNativeObjectManagerClassNames ();
+
+        infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Non Pre Phase Non Native Services :");
+
+        for (final String nonPrePhaseNonNativeService : nonPrePhaseNonNativeServices)
+        {
+            infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep :     %s", nonPrePhaseNonNativeService);
+        }
+
+        return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
     private ResourceId initializeWaveServicesDuringPrePhaseStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)

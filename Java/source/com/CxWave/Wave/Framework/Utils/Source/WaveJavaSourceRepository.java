@@ -698,7 +698,7 @@ public class WaveJavaSourceRepository
                 WaveAssertUtils.waveAssert ();
             }
 
-            if (waveJavaClassForWaveObjectManagerDescendant.isAnnotatedWith (NonOM.class.getName ()))
+            if (!(waveJavaClassForWaveObjectManagerDescendant.isAnnotatedWith (NonOM.class.getName ())))
             {
                 allInstantiableDescendantsForWaveObjectManager.add (descendantForWaveObjectManager);
             }
@@ -750,14 +750,11 @@ public class WaveJavaSourceRepository
                 WaveAssertUtils.waveAssert ();
             }
 
-            if (waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ()))
+            if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ())))
             {
-                if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ())))
+                if (waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (NativeService.class.getName ()))
                 {
-                    if (waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (NativeService.class.getName ()))
-                    {
-                        allInstantiableNonPrePhaseNativeDescendantsForWaveObjectManager.add (instantiableDescendantForWaveObjectManager);
-                    }
+                    allInstantiableNonPrePhaseNativeDescendantsForWaveObjectManager.add (instantiableDescendantForWaveObjectManager);
                 }
             }
         }
@@ -782,14 +779,11 @@ public class WaveJavaSourceRepository
                 WaveAssertUtils.waveAssert ();
             }
 
-            if (waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ()))
+            if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ())))
             {
-                if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ())))
+                if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (NativeService.class.getName ())))
                 {
-                    if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (NativeService.class.getName ())))
-                    {
-                        allInstantiableNonPrePhaseNonNativeDescendantsForWaveObjectManager.add (instantiableDescendantForWaveObjectManager);
-                    }
+                    allInstantiableNonPrePhaseNonNativeDescendantsForWaveObjectManager.add (instantiableDescendantForWaveObjectManager);
                 }
             }
         }
