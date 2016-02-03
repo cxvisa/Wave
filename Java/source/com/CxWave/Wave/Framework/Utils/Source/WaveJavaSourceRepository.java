@@ -760,6 +760,32 @@ public class WaveJavaSourceRepository
         return (allInstantiablePrePhaseDescendantsForWaveObjectManager);
     }
 
+    public static Set<String> getAllInstantiableNonPrePhaseObjectManagerClassNames ()
+    {
+        final Set<String> allInstantiableDescendantsForWaveObjectManager = getAllInstantiableObjectManagerClassNames ();
+
+        final Set<String> allInstantiableNonPrePhaseDescendantsForWaveObjectManager = new HashSet<String> ();
+
+        for (final String instantiableDescendantForWaveObjectManager : allInstantiableDescendantsForWaveObjectManager)
+        {
+            final WaveJavaClass waveJavaClassForInstantiableWaveObjectManagerDescendant = getWaveJavaClass (instantiableDescendantForWaveObjectManager);
+
+            if (null == waveJavaClassForInstantiableWaveObjectManagerDescendant)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveJavaSourceRepository.getAllInstantiableNonPrePhaseObjectManagerClassNames : %s class could not be found.", instantiableDescendantForWaveObjectManager);
+
+                WaveAssertUtils.waveAssert ();
+            }
+
+            if (!(waveJavaClassForInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ())))
+            {
+                allInstantiableNonPrePhaseDescendantsForWaveObjectManager.add (instantiableDescendantForWaveObjectManager);
+            }
+        }
+
+        return (allInstantiableNonPrePhaseDescendantsForWaveObjectManager);
+    }
+
     public static Set<String> getAllAutoInstantiablePrePhaseObjectManagerClassNames ()
     {
         final Set<String> allAutoInstantiableDescendantsForWaveObjectManager = getAllAutoInstantiableObjectManagerClassNames ();
@@ -784,6 +810,32 @@ public class WaveJavaSourceRepository
         }
 
         return (allAutoInstantiablePrePhaseDescendantsForWaveObjectManager);
+    }
+
+    public static Set<String> getAllAutoInstantiableNonPrePhaseObjectManagerClassNames ()
+    {
+        final Set<String> allAutoInstantiableDescendantsForWaveObjectManager = getAllAutoInstantiableObjectManagerClassNames ();
+
+        final Set<String> allAutoInstantiableNonPrePhaseDescendantsForWaveObjectManager = new HashSet<String> ();
+
+        for (final String autoInstantiableDescendantForWaveObjectManager : allAutoInstantiableDescendantsForWaveObjectManager)
+        {
+            final WaveJavaClass waveJavaClassForAutoInstantiableWaveObjectManagerDescendant = getWaveJavaClass (autoInstantiableDescendantForWaveObjectManager);
+
+            if (null == waveJavaClassForAutoInstantiableWaveObjectManagerDescendant)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveJavaSourceRepository.getAllAutoInstantiableNonPrePhaseObjectManagerClassNames : %s class could not be found.", autoInstantiableDescendantForWaveObjectManager);
+
+                WaveAssertUtils.waveAssert ();
+            }
+
+            if (!(waveJavaClassForAutoInstantiableWaveObjectManagerDescendant.isAnnotatedWith (PrePhaseService.class.getName ())))
+            {
+                allAutoInstantiableNonPrePhaseDescendantsForWaveObjectManager.add (autoInstantiableDescendantForWaveObjectManager);
+            }
+        }
+
+        return (allAutoInstantiableNonPrePhaseDescendantsForWaveObjectManager);
     }
 
     public static Set<String> getAllInstantiableNonPrePhaseNativeObjectManagerClassNames ()

@@ -15,6 +15,10 @@ import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public class WaveBootAgent extends WaveWorker
 {
+    private Set<String> m_prePhaseServices;
+    private Set<String> m_nonPrePhaseNativeServices;
+    private Set<String> m_nonPrePhaseNonNativeServices;
+
     public WaveBootAgent (final WaveObjectManager waveObjectManager)
     {
         super (waveObjectManager);

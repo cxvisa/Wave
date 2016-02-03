@@ -58,7 +58,7 @@ class FrameworkSequenceGenerator
         virtual void  addWaveServiceIdToFailover         (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
         virtual void  addWaveServiceIdToZeroize 		  (const WaveServiceId &waveServiceId, const bool &isForNormalPhase = true);
 
-    // Nowe the data members
+    // Now the data members
 
     private :
     protected :
