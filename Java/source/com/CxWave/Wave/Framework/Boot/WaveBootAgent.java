@@ -60,7 +60,7 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Entering ...");
 
-        final Set<String> prePhaseServices = WaveJavaSourceRepository.getAllInstantiablePrePhaseObjectManagerClassNames ();
+        final Set<String> prePhaseServices = WaveJavaSourceRepository.getAllAutoInstantiablePrePhaseObjectManagerClassNames ();
 
         infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Pre Phase Services :");
 
@@ -69,7 +69,7 @@ public class WaveBootAgent extends WaveWorker
             infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep :     %s", prePhaseService);
         }
 
-        final Set<String> nonPrePhaseNativeServices = WaveJavaSourceRepository.getAllInstantiableNonPrePhaseNativeObjectManagerClassNames ();
+        final Set<String> nonPrePhaseNativeServices = WaveJavaSourceRepository.getAllAutoInstantiableNonPrePhaseNativeObjectManagerClassNames ();
 
         infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Non Pre Phase Native Services :");
 
@@ -78,7 +78,7 @@ public class WaveBootAgent extends WaveWorker
             infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep :     %s", nonPrePhaseNativeService);
         }
 
-        final Set<String> nonPrePhaseNonNativeServices = WaveJavaSourceRepository.getAllInstantiableNonPrePhaseNonNativeObjectManagerClassNames ();
+        final Set<String> nonPrePhaseNonNativeServices = WaveJavaSourceRepository.getAllAutoInstantiableNonPrePhaseNonNativeObjectManagerClassNames ();
 
         infoTracePrintf ("WaveBootAgent.computeInstantiableServicesStep : Non Pre Phase Non Native Services :");
 
