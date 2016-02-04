@@ -387,6 +387,12 @@ public class Wave
             }
         }
 
+        final Set<String> allAutoInstantiablePrePhaseServices = WaveJavaSourceRepository.getAllAutoInstantiablePrePhaseObjectManagerClassNames ();
+        final FrameworkSequenceGenerator frameworkSequenceGenerator = WaveFrameworkObjectManager.getCurrentFrameworkSequenceGenerator ();
+
+        WaveAssertUtils.waveAssert (null != allAutoInstantiablePrePhaseServices);
+        WaveAssertUtils.waveAssert (null != frameworkSequenceGenerator);
+
         Collections.sort (allWaveObjectManagerPriorities);
 
         WaveTraceUtils.infoTracePrintf ("WOM Priority based Instantiation Schedule:");
@@ -408,6 +414,15 @@ public class Wave
                 WaveAssertUtils.waveAssert (null != waveObjectManager);
 
                 WaveTraceUtils.successTracePrintf ("            Instantiated successfully.");
+
+                if (allAutoInstantiablePrePhaseServices.contains ((waveObjectManager.getClass ()).getName ()))
+                {
+                    frameworkSequenceGenerator.addWaveServiceIdToAll (waveObjectManager.getServiceId (), false);
+                }
+                else
+                {
+                    frameworkSequenceGenerator.addWaveServiceIdToAll (waveObjectManager.getServiceId ());
+                }
             }
         }
     }
