@@ -6,12 +6,14 @@ package com.CxWave.Wave.Framework.ObjectModel;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
+import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public abstract class WaveElement
 {
@@ -253,16 +255,17 @@ public abstract class WaveElement
 
             // commit the transaction to preserve the semantics of the executeSuccessStep and if the transaction
             // has no data to be committed, framework will immediately return without having to go to DB.
-            completionStatus = commitTransaction ();
-        }
 
-        if (ResourceId.FRAMEWORK_SUCCESS.equals (completionStatus))
-        {
-            completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
-        }
-        else
-        {
-            completionStatus = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+            completionStatus = commitTransaction ();
+
+            if (ResourceId.FRAMEWORK_SUCCESS.equals (completionStatus))
+            {
+                completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
+            }
+            else
+            {
+                completionStatus = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+            }
         }
 
         if (null != waveMessage)
@@ -340,16 +343,17 @@ public abstract class WaveElement
 
             // commit the transaction to preserve the semantics of the executeSuccessStep and if the transaction
             // has no data to be committed, framework will immediately return without having to go to DB.
-            completionStatus = commitTransaction ();
-        }
 
-        if (ResourceId.FRAMEWORK_SUCCESS.equals (completionStatus))
-        {
-            completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
-        }
-        else
-        {
-            completionStatus = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+            completionStatus = commitTransaction ();
+
+            if (ResourceId.FRAMEWORK_SUCCESS.equals (completionStatus))
+            {
+                completionStatus = ResourceId.WAVE_MESSAGE_SUCCESS;
+            }
+            else
+            {
+                completionStatus = ResourceId.WAVE_COMMIT_TRANSACTION_FAILED;
+            }
         }
 
         if (null != waveMessage)
@@ -393,4 +397,15 @@ public abstract class WaveElement
 
         return (completionStatus);
     }
+
+    @NonMessageHandler
+    protected abstract WaveMessageStatus sendOneWay (final WaveMessage waveMessage);
+
+    protected abstract WaveMessageStatus sendOneWay (final WaveMessage waveMessage, final LocationId locationId);
+
+    @NonMessageHandler
+    protected abstract WaveMessageStatus sendSynchronously (final WaveMessage waveMessage);
+
+    protected abstract WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId);
+
 }

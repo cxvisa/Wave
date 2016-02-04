@@ -5,25 +5,33 @@
 package com.CxWave.Wave.Framework.Boot;
 
 import java.util.Set;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
+import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveBootReason;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public class WaveBootAgent extends WaveWorker
 {
-    private Set<String>                m_prePhaseServices;
-    private Set<String>                m_nonPrePhaseNativeServices;
-    private Set<String>                m_nonPrePhaseNonNativeServices;
-    private FrameworkSequenceGenerator m_frameFrameworkSequenceGenerator;
+    private Set<String>                      m_prePhaseServices;
+    private Set<String>                      m_nonPrePhaseNativeServices;
+    private Set<String>                      m_nonPrePhaseNonNativeServices;
+    private final FrameworkSequenceGenerator m_frameworkSequenceGenerator;
 
     public WaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
         super (waveObjectManager);
+
+        m_frameworkSequenceGenerator = frameworkSequenceGenerator;
     }
 
     public ResourceId execute (final WaveBootPhase waveBootPhase)
@@ -100,7 +108,66 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToInitialize = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_frameworkSequenceGenerator.getInitializeSequenceDuringPrePhase (serviceIdsToInitialize);
+
+        numberOfServices = serviceIdsToInitialize.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (true == isToBeExcludedFromInitializeDuringPrePhase (serviceIdsToInitialize.get (i)))
+            {
+                continue;
+            }
+
+            if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+            {
+                if (true != (FrameworkToolKit.isALocalService (serviceIdsToInitialize.get (i))))
+                {
+                    continue;
+                }
+            }
+
+            final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = new WaveInitializeObjectManagerMessage (serviceIdsToInitialize.get (i), getReason ());
+
+            final WaveMessageStatus status = sendSynchronously (waveInitializeObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Initialize a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (status));
+
+                return (ResourceId.WAVE_MESSAGE_SUCCESS);
+            }
+
+            final ResourceId completionStatus = waveInitializeObjectManagerMessage.getCompletionStatus ();
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not Initialize a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                return (completionStatus);
+            }
+            else
+            {
+                infoTracePrintf ("Initialized %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)));
+            }
+        }
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
+
+    }
+
+    private boolean isAPersistentBoot ()
+    {
+        return false;
+    }
+
+    private boolean willBeAPrimaryLocation ()
+    {
+        return ((FrameworkToolKit.isStandAloneLocation ()) || (FrameworkToolKit.isPrimaryLocation ()));
     }
 
     private ResourceId enableWaveServicesDuringPrePhaseStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
@@ -199,5 +266,15 @@ public class WaveBootAgent extends WaveWorker
         infoTracePrintf ("WaveBootAgent.bootGlobalWaveServicesStep : Entering ...");
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private WaveBootReason getReason ()
+    {
+        return (WaveBootReason.WAVE_BOOT_FIRST_TIME_BOOT);
+    }
+
+    private boolean isToBeExcludedFromInitializeDuringPrePhase (final WaveServiceId waveServiceId)
+    {
+        return (false);
     }
 }

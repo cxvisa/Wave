@@ -639,12 +639,14 @@ public class WaveObjectManager extends WaveElement
         return (m_inputMessage);
     }
 
+    @Override
     @NonMessageHandler
     protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage)
     {
         return (sendOneWay (waveMessage, LocationId.NullLocationId));
     }
 
+    @Override
     protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage, final LocationId locationId)
     {
         WaveThread waveThread = null;
@@ -716,13 +718,15 @@ public class WaveObjectManager extends WaveElement
         return (status);
     }
 
+    @Override
     @NonMessageHandler
-    WaveMessageStatus sendSynchronously (final WaveMessage waveMessage)
+    protected WaveMessageStatus sendSynchronously (final WaveMessage waveMessage)
     {
         return (sendSynchronously (waveMessage, new LocationId (0)));
     }
 
-    WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId)
+    @Override
+    protected WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId)
     {
         // NOTICE :
         // In this method the order of lock, wait and unlock are very very important.

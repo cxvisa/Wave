@@ -17,6 +17,7 @@ import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.ManagementInterface.ClientInterface.WaveClientTransportObjectManager;
 import com.CxWave.Wave.Resources.Repository.WaveResourcesRepository;
 import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;
+import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator;
 
@@ -206,5 +207,29 @@ public class FrameworkToolKit
         {
             return (null);
         }
+    }
+
+    public static boolean isStandAloneLocation ()
+    {
+        return (LocationRole.LOCATION_STAND_ALONE == (getThisLocationRole ()));
+    }
+
+    public static LocationRole getThisLocationRole ()
+    {
+        final LocationBase thisLocation = getThisLocation ();
+
+        if (null != thisLocation)
+        {
+            return (thisLocation.getLocationRole ());
+        }
+        else
+        {
+            return (LocationRole.LOCATION_STAND_ALONE);
+        }
+    }
+
+    public static boolean isPrimaryLocation ()
+    {
+        return ((LocationRole.LOCATION_PRIMARY == (getThisLocationRole ())) || (LocationRole.LOCATION_PRIMARY_UNCONFIRMED == (getThisLocationRole ())) || (LocationRole.LOCATION_SECONDARY_UNCONFIRMED == (getThisLocationRole ())));
     }
 }

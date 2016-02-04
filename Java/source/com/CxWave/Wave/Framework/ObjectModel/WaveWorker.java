@@ -11,10 +11,12 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 @NonWorker
 public class WaveWorker extends WaveElement
@@ -194,5 +196,31 @@ public class WaveWorker extends WaveElement
 
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
+    }
+
+    @NonMessageHandler
+    @Override
+    protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage)
+    {
+        return (m_waveObjectManager.sendOneWay (waveMessage));
+    }
+
+    @Override
+    protected WaveMessageStatus sendOneWay (final WaveMessage waveMessage, final LocationId locationId)
+    {
+        return (m_waveObjectManager.sendOneWay (waveMessage, locationId));
+    }
+
+    @NonMessageHandler
+    @Override
+    protected WaveMessageStatus sendSynchronously (final WaveMessage waveMessage)
+    {
+        return (m_waveObjectManager.sendSynchronously (waveMessage));
+    }
+
+    @Override
+    protected WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId)
+    {
+        return (m_waveObjectManager.sendSynchronously (waveMessage, locationId));
     }
 }
