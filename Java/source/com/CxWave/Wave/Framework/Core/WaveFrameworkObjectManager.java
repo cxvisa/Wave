@@ -64,6 +64,8 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private static final WaveMutex            s_pFrameworkReadinessMutex             = new WaveMutex ();
     private static boolean                    s_isFrameworkReadyToBoot               = false;
 
+    private static FrameworkSequenceGenerator s_curentFrameworkSequenceGenerator     = new FrameworkSequenceGenerator ();
+
     private WaveFrameworkObjectManager ()
     {
         super (getServiceName ());
@@ -320,5 +322,10 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private void validateAndZeroizeAtBoot ()
     {
         // TBD
+    }
+
+    public static FrameworkSequenceGenerator getCurrentFrameworkSequenceGenerator ()
+    {
+        return (s_curentFrameworkSequenceGenerator);
     }
 }

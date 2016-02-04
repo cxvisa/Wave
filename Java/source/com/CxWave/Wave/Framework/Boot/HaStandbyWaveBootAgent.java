@@ -4,12 +4,13 @@
 
 package com.CxWave.Wave.Framework.Boot;
 
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 
 public class HaStandbyWaveBootAgent extends WaveBootAgent
 {
-    public HaStandbyWaveBootAgent (final WaveObjectManager waveObjectManager)
+    public HaStandbyWaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
-        super (waveObjectManager);
+        super (waveObjectManager, frameworkSequenceGenerator);
     }
 }

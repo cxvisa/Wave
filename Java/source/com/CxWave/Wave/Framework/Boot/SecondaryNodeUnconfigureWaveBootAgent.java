@@ -4,12 +4,13 @@
 
 package com.CxWave.Wave.Framework.Boot;
 
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 
 public class SecondaryNodeUnconfigureWaveBootAgent extends WaveBootAgent
 {
-    public SecondaryNodeUnconfigureWaveBootAgent (final WaveObjectManager waveObjectManager)
+    public SecondaryNodeUnconfigureWaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
-        super (waveObjectManager);
+        super (waveObjectManager, frameworkSequenceGenerator);
     }
 }

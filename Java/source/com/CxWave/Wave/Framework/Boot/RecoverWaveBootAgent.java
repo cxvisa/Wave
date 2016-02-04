@@ -4,15 +4,16 @@
 
 package com.CxWave.Wave.Framework.Boot;
 
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public class RecoverWaveBootAgent extends FirstTimeWaveBootAgent
 {
 
-    public RecoverWaveBootAgent (final WaveObjectManager waveObjectManager)
+    public RecoverWaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
-        super (waveObjectManager);
+        super (waveObjectManager, frameworkSequenceGenerator);
     }
 
     public ResourceId execute ()

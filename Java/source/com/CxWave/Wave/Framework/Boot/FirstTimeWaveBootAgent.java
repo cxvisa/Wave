@@ -4,12 +4,13 @@
 
 package com.CxWave.Wave.Framework.Boot;
 
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 
 public class FirstTimeWaveBootAgent extends WaveBootAgent
 {
-    public FirstTimeWaveBootAgent (final WaveObjectManager waveObjectManager)
+    public FirstTimeWaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
-        super (waveObjectManager);
+        super (waveObjectManager, frameworkSequenceGenerator);
     }
 }

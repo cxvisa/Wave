@@ -15,6 +15,7 @@ import com.CxWave.Wave.Framework.Boot.SecondaryNodeRejoinWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.SecondaryNodeUnconfigureWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.WaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.WaveBootPhase;
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.Core.WaveBootMode;
 import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
 import com.CxWave.Wave.Framework.Core.Contexts.WaveFrameworkInitializeWorkerStartServicesContext;
@@ -93,39 +94,43 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
 
         final WaveBootMode waveBootMode = waveFrameworkInitializeWorkerStartServicesContext.getWaveBootMode ();
 
+        final FrameworkSequenceGenerator frameworkSequenceGenerator = WaveFrameworkObjectManager.getCurrentFrameworkSequenceGenerator ();
+
+        waveAssert (null != frameworkSequenceGenerator);
+
         infoTracePrintf ("Boot Mode is %s", waveBootMode.toString ());
 
         if (WaveBootMode.WAVE_BOOT_FIRST_TIME == waveBootMode)
         {
-            m_waveBootAgent = new FirstTimeWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new FirstTimeWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_PERSISTENT == waveBootMode)
         {
-            m_waveBootAgent = new PersistentWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new PersistentWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_PERSISTENT_WITH_DEFAULT == waveBootMode)
         {
-            m_waveBootAgent = new PersistentWithDefaultWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new PersistentWithDefaultWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_SECONDARY_CONFIGURE == waveBootMode)
         {
-            m_waveBootAgent = new SecondaryNodeConfigureWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new SecondaryNodeConfigureWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_SECONDARY_UNCONFIGURE == waveBootMode)
         {
-            m_waveBootAgent = new SecondaryNodeUnconfigureWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new SecondaryNodeUnconfigureWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_SECONDARY_REJOIN == waveBootMode)
         {
-            m_waveBootAgent = new SecondaryNodeRejoinWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new SecondaryNodeRejoinWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_HASTANDBY == waveBootMode)
         {
-            m_waveBootAgent = new HaStandbyWaveBootAgent (m_waveObjectManager);
+            m_waveBootAgent = new HaStandbyWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else if (WaveBootMode.WAVE_BOOT_PREPARE_FOR_HA_BOOT == waveBootMode)
         {
-            m_waveBootAgent = new PersistentWithDefaultForHABootAgent (m_waveObjectManager);
+            m_waveBootAgent = new PersistentWithDefaultForHABootAgent (m_waveObjectManager, frameworkSequenceGenerator);
         }
         else
         {
@@ -147,6 +152,8 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.runTheBootAgentStep : Entering ...");
 
+        final FrameworkSequenceGenerator frameworkSequenceGenerator = WaveFrameworkObjectManager.getCurrentFrameworkSequenceGenerator ();
+
         ResourceId status = m_waveBootAgent.execute (waveFrameworkInitializeWorkerStartServicesContext.getWaveBootPhase ());
 
         if (ResourceId.WAVE_MESSAGE_ERROR_DATABASE_INCONSISTENT == status)
@@ -165,7 +172,7 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
             {
                 infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker::runTheBootAgentStep : Recovering now with Boot Mode %s", WaveBootMode.WAVE_BOOT_FIRST_TIME.toString ());
 
-                m_waveBootAgent = new RecoverWaveBootAgent (m_waveObjectManager);
+                m_waveBootAgent = new RecoverWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
 
                 status = m_waveBootAgent.execute (WaveBootPhase.WAVE_BOOT_PHASE_PRE_PHASE);
 
@@ -177,7 +184,7 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
                 }
                 else
                 {
-                    m_waveBootAgent = new RecoverWaveBootAgent (m_waveObjectManager);
+                    m_waveBootAgent = new RecoverWaveBootAgent (m_waveObjectManager, frameworkSequenceGenerator);
 
                     return (m_waveBootAgent.execute (WaveBootPhase.WAVE_BOOT_PHASE_POST_PHASE));
                 }

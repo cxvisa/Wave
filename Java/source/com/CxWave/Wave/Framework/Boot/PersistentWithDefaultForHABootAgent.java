@@ -4,12 +4,13 @@
 
 package com.CxWave.Wave.Framework.Boot;
 
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 
 public class PersistentWithDefaultForHABootAgent extends WaveBootAgent
 {
-    public PersistentWithDefaultForHABootAgent (final WaveObjectManager waveObjectManager)
+    public PersistentWithDefaultForHABootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
-        super (waveObjectManager);
+        super (waveObjectManager, frameworkSequenceGenerator);
     }
 }

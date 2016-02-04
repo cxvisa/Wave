@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Boot;
 
 import java.util.Set;
 
+import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
@@ -15,11 +16,12 @@ import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public class WaveBootAgent extends WaveWorker
 {
-    private Set<String> m_prePhaseServices;
-    private Set<String> m_nonPrePhaseNativeServices;
-    private Set<String> m_nonPrePhaseNonNativeServices;
+    private Set<String>                m_prePhaseServices;
+    private Set<String>                m_nonPrePhaseNativeServices;
+    private Set<String>                m_nonPrePhaseNonNativeServices;
+    private FrameworkSequenceGenerator m_frameFrameworkSequenceGenerator;
 
-    public WaveBootAgent (final WaveObjectManager waveObjectManager)
+    public WaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
         super (waveObjectManager);
     }
