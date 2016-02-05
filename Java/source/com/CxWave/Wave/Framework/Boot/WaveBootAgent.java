@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
+import com.CxWave.Wave.Framework.Core.Messages.WaveInstallObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveListenForEventsObjectManagerMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
@@ -274,6 +275,53 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.installWaveServicesDuringPrePhaseStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToInstall = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_frameworkSequenceGenerator.getInstallSequenceDuringPrePhase (serviceIdsToInstall);
+        numberOfServices = serviceIdsToInstall.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+            {
+                if (true != (FrameworkToolKit.isALocalService (serviceIdsToInstall.get (i))))
+                {
+                    continue;
+                }
+            }
+
+            if (true == (isToBeExcludedFromInstallDuringPrePhase (serviceIdsToInstall.get (i))))
+            {
+                continue;
+            }
+
+            final WaveInstallObjectManagerMessage waveInstallObjectManagerMessage = new WaveInstallObjectManagerMessage (serviceIdsToInstall.get (i), getReason ());
+
+            final WaveMessageStatus status = sendSynchronously (waveInstallObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                fatalTracePrintf ("WaveBootAgent.installWaveServicesDuringPrePhaseStep : Could not send a message toInstall a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i)), FrameworkToolKit.localize (status));
+
+                return (ResourceId.WAVE_MESSAGE_ERROR);
+            }
+
+            final ResourceId completionStatus = waveInstallObjectManagerMessage.getCompletionStatus ();
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                fatalTracePrintf ("WaveBootAgent.installWaveServicesDuringPrePhaseStep : Could not Install a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                return (completionStatus);
+            }
+            else
+            {
+                infoTracePrintf ("Install " + (FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i))));
+            }
+        }
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
@@ -377,5 +425,10 @@ public class WaveBootAgent extends WaveWorker
     private boolean isToBeExcludedForEnableAndBoot (final WaveServiceId waveServiceId)
     {
         return (false);
+    }
+
+    private boolean isToBeExcludedFromInstallDuringPrePhase (final WaveServiceId waveServiceId)
+    {
+        return false;
     }
 }
