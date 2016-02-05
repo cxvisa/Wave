@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
+import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
@@ -139,7 +140,7 @@ public class WaveBootAgent extends WaveWorker
             {
                 fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Initialize a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (status));
 
-                return (ResourceId.WAVE_MESSAGE_SUCCESS);
+                return (ResourceId.WAVE_MESSAGE_ERROR);
             }
 
             final ResourceId completionStatus = waveInitializeObjectManagerMessage.getCompletionStatus ();
@@ -160,21 +161,59 @@ public class WaveBootAgent extends WaveWorker
 
     }
 
-    private boolean isAPersistentBoot ()
-    {
-        return false;
-    }
-
-    private boolean willBeAPrimaryLocation ()
-    {
-        return ((FrameworkToolKit.isStandAloneLocation ()) || (FrameworkToolKit.isPrimaryLocation ()));
-    }
-
     private ResourceId enableWaveServicesDuringPrePhaseStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
     {
         infoTracePrintf ("WaveBootAgent.enableWaveServicesDuringPrePhaseStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToEnable = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_frameworkSequenceGenerator.getEnableSequenceDuringPrePhase (serviceIdsToEnable);
+        numberOfServices = serviceIdsToEnable.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+            {
+                if (true != (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+                {
+                    continue;
+                }
+            }
+
+            if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable.get (i))))
+            {
+                continue;
+            }
+
+            final WaveEnableObjectManagerMessage waveEnableObjectManagerMessage = new WaveEnableObjectManagerMessage (serviceIdsToEnable.get (i), getReason ());
+
+            final WaveMessageStatus status = sendSynchronously (waveEnableObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Initialize a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
+
+                return (ResourceId.WAVE_MESSAGE_ERROR);
+            }
+
+            final ResourceId completionStatus = waveEnableObjectManagerMessage.getCompletionStatus ();
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not Enable a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                return (completionStatus);
+            }
+            else
+            {
+                infoTracePrintf ("Enabled " + (FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i))));
+            }
+        }
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
+
     }
 
     private ResourceId listenForEventsWaveServicesDuringPrePhaseStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
@@ -274,6 +313,21 @@ public class WaveBootAgent extends WaveWorker
     }
 
     private boolean isToBeExcludedFromInitializeDuringPrePhase (final WaveServiceId waveServiceId)
+    {
+        return (false);
+    }
+
+    private boolean isAPersistentBoot ()
+    {
+        return false;
+    }
+
+    private boolean willBeAPrimaryLocation ()
+    {
+        return ((FrameworkToolKit.isStandAloneLocation ()) || (FrameworkToolKit.isPrimaryLocation ()));
+    }
+
+    private boolean isToBeExcludedForEnableAndBoot (final WaveServiceId waveServiceId)
     {
         return (false);
     }
