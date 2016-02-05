@@ -10,6 +10,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
 import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
+import com.CxWave.Wave.Framework.Core.Messages.WaveListenForEventsObjectManagerMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
@@ -193,7 +194,7 @@ public class WaveBootAgent extends WaveWorker
 
             if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
             {
-                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Initialize a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Enable a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
 
                 return (ResourceId.WAVE_MESSAGE_ERROR);
             }
@@ -213,12 +214,58 @@ public class WaveBootAgent extends WaveWorker
         }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
-
     }
 
     private ResourceId listenForEventsWaveServicesDuringPrePhaseStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
     {
-        infoTracePrintf ("WaveBootAgent.enableWaveServicesDuringPrePhaseStep : Entering ...");
+        infoTracePrintf ("WaveBootAgent.listenForEventsWaveServicesDuringPrePhaseStep : Entering ...");
+
+        final Vector<WaveServiceId> serviceIdsToEnable = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_frameworkSequenceGenerator.getEnableSequenceDuringPrePhase (serviceIdsToEnable);
+        numberOfServices = serviceIdsToEnable.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+            {
+                if (true != (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+                {
+                    continue;
+                }
+            }
+
+            if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable.get (i))))
+            {
+                continue;
+            }
+
+            final WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage = new WaveListenForEventsObjectManagerMessage (serviceIdsToEnable.get (i), getReason ());
+
+            final WaveMessageStatus status = sendSynchronously (waveListenForEventsObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                fatalTracePrintf ("WaveBootAgent.listenForEventsWaveServicesDuringPrePhaseStep : Could not send a message to Listen for Events from a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
+
+                return (ResourceId.WAVE_MESSAGE_ERROR);
+            }
+
+            final ResourceId completionStatus = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                fatalTracePrintf ("WaveBootAgent.listenForEventsWaveServicesDuringPrePhaseStep : Could not Listen for Events from a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                return (completionStatus);
+            }
+            else
+            {
+                infoTracePrintf ("Listen for Events " + (FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i))));
+            }
+        }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }

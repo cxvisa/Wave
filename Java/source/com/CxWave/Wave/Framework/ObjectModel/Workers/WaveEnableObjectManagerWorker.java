@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -146,7 +147,34 @@ public class WaveEnableObjectManagerWorker extends WaveWorker
         {
             errorTracePrintf ("WaveEnableObjectManagerWorker.enableEnableSelfStepCallback : Initializing the Object Manager (self) failed.");
         }
+        else
+        {
+            // Indicate that now we are ready to accept Messages to provide services.
+
+            setIsEnabled (true);
+
+            // Add it to the services that are enabled.
+
+            final WaveServiceId thisServiceId = getServiceId ();
+
+            addServiceToEnabledServicesList (thisServiceId);
+        }
 
         waveLinearSequencerContext.executeNextStep (status);
+    }
+
+    private void addServiceToEnabledServicesList (final WaveServiceId waveServiceId)
+    {
+        m_waveObjectManager.addServiceToEnabledServicesList (waveServiceId);
+    }
+
+    protected WaveServiceId getServiceId ()
+    {
+        return (m_waveObjectManager.getServiceId ());
+    }
+
+    protected void setIsEnabled (final boolean isEnabled)
+    {
+        m_waveObjectManager.setIsEnabled (isEnabled);
     }
 }

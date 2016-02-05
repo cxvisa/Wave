@@ -119,6 +119,15 @@ public class WaveAsynchronousContext
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
             WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.callback : Could not invoke callback method %s on class %s, Details : %s", m_callbackMethodName, (m_caller.getClass ()).getName (), e.toString ());
+
+            final Throwable cause = e.getCause ();
+
+            if (null != e)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.callback : cause :");
+                WaveTraceUtils.fatalTracePrintf ("WaveAsynchronousContext.callback : %s", cause.toString ());
+            }
+
             WaveAssertUtils.waveAssert ();
         }
     }

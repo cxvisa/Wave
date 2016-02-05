@@ -232,6 +232,9 @@ public class WaveObjectManager extends WaveElement
     private final WaveMutex                                            m_createMessageInstanceWrapperMutex              = new WaveMutex ();
     private final Map<UI32, WaveElement>                               m_ownersForCreatingMessageInstances              = new HashMap<UI32, WaveElement> ();
 
+    private static WaveMutex                                           s_enabledServicesMutex                           = new WaveMutex ();
+    private static Map<WaveServiceId, WaveServiceId>                   s_enabledServices                                = new HashMap<WaveServiceId, WaveServiceId> ();
+
     public void prepareObjectManagerForAction ()
     {
         addWorkers ();
@@ -1733,5 +1736,44 @@ public class WaveObjectManager extends WaveElement
         m_workersMutex.unlock ();
 
         return (waveWorker);
+    }
+
+    public void addServiceToEnabledServicesList (final WaveServiceId waveServiceId)
+    {
+        s_enabledServicesMutex.lock ();
+        s_enabledServices.put (waveServiceId, waveServiceId);
+        s_enabledServicesMutex.unlock ();
+    }
+
+    public void removeServiceFromEnabledServicesList (final WaveServiceId waveServiceId)
+    {
+        s_enabledServicesMutex.lock ();
+
+        if (s_enabledServices.containsKey (waveServiceId))
+        {
+            s_enabledServices.remove (waveServiceId);
+        }
+
+        s_enabledServicesMutex.unlock ();
+    }
+
+    public void getListOfEnabledServices (final Vector<WaveServiceId> enabledServices)
+    {
+        s_enabledServicesMutex.lock ();
+
+        enabledServices.addAll (s_enabledServices.keySet ());
+
+        s_enabledServicesMutex.unlock ();
+    }
+
+    public boolean isServiceEnabled (final WaveServiceId waveServiceId)
+    {
+        s_enabledServicesMutex.lock ();
+
+        final boolean serviceEnabled = s_enabledServices.containsKey (waveServiceId);
+
+        s_enabledServicesMutex.unlock ();
+
+        return (serviceEnabled);
     }
 }
