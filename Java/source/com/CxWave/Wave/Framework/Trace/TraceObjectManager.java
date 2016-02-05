@@ -21,12 +21,21 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_TRACE)
 public class TraceObjectManager extends WaveObjectManager
 {
-    private static TraceObjectManager s_traceObjectManager = null;
+    private static TraceObjectManager        s_traceObjectManager = null;
 
-    private static String             s_waveTraceFileName  = null;
-    private static boolean            s_isFirstTime        = true;
-    private static WaveTraceFile      s_waveTraceFile      = new WaveTraceFile ();
-    private static WaveMutex          s_mutexForTracing    = new WaveMutex ();
+    private static String                    s_waveTraceFileName  = null;
+    private static boolean                   s_isFirstTime        = true;
+    private static WaveTraceFile             s_waveTraceFile      = new WaveTraceFile ();
+    private static WaveMutex                 s_mutexForTracing    = new WaveMutex ();
+
+    private static final ThreadLocal<String> s_threadIdentifier   = new ThreadLocal<String> ()
+                                                                  {
+                                                                      @Override
+                                                                      protected String initialValue ()
+                                                                      {
+                                                                          return (String.format ("%05d", ((Thread.currentThread ()).getId ())));
+                                                                      }
+                                                                  };
 
     public static String getClassName ()
     {
@@ -144,6 +153,12 @@ public class TraceObjectManager extends WaveObjectManager
                 computedTraceString.append (WaveTimeUtils.ctime ());
 
                 computedTraceString.append (" : ");
+
+                computedTraceString.append ("T-");
+
+                computedTraceString.append (s_threadIdentifier.get ());
+
+                computedTraceString.append (" : ");
             }
 
             String newLineString = "";
@@ -190,6 +205,12 @@ public class TraceObjectManager extends WaveObjectManager
                 computedTraceString.append (getTraceTagForLevel (requestedTraceLevel));
 
                 computedTraceString.append (WaveTimeUtils.ctime ());
+
+                computedTraceString.append (" : ");
+
+                computedTraceString.append ("T-");
+
+                computedTraceString.append (s_threadIdentifier.get ());
 
                 computedTraceString.append (" : ");
             }
