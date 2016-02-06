@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.FrameworkSequenceGenerator;
+import com.CxWave.Wave.Framework.Core.Messages.WaveBootObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveEnableObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInitializeObjectManagerMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveInstallObjectManagerMessage;
@@ -318,7 +319,7 @@ public class WaveBootAgent extends WaveWorker
             }
             else
             {
-                infoTracePrintf ("Install " + (FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i))));
+                infoTracePrintf ("Installed " + (FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i))));
             }
         }
 
@@ -329,6 +330,52 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.bootWaveServicesDuringPrePhaseStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToBoot = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_frameworkSequenceGenerator.getBootSequenceDuringPrePhase (serviceIdsToBoot);
+        numberOfServices = serviceIdsToBoot.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+            {
+                if (true != (FrameworkToolKit.isALocalService (serviceIdsToBoot.get (i))))
+                {
+                    continue;
+                }
+            }
+
+            if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToBoot.get (i))))
+            {
+                continue;
+            }
+
+            final WaveBootObjectManagerMessage waveBootObjectManagerMessage = new WaveBootObjectManagerMessage (serviceIdsToBoot.get (i), getReason ());
+
+            final WaveMessageStatus status = sendSynchronously (waveBootObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Boot a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (status));
+
+                return (ResourceId.WAVE_MESSAGE_ERROR);
+            }
+
+            final ResourceId completionStatus = waveBootObjectManagerMessage.getCompletionStatus ();
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not Boot a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                return (completionStatus);
+            }
+            else
+            {
+                infoTracePrintf ("Booted " + (FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i))));
+            }
+        }
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
