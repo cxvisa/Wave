@@ -4,9 +4,9 @@
 
 package com.CxWave.Wave.Framework.Attributes;
 
-import com.CxWave.Wave.Framework.Type.WaveResourceId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Resources.ResourceEnums.AttributeTypeString;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public class AttributeType
 {
@@ -91,16 +91,16 @@ public class AttributeType
     public static AttributeType s_AttributeTypeUri                    = new AttributeType (72, AttributeTypeString.WAVE_ATTRIBUTE_TYPE_URI.getResourceId ());
     public static AttributeType s_AttributeTypeNumber                 = new AttributeType (73, AttributeTypeString.WAVE_ATTRIBUTE_TYPE_NUMBER.getResourceId ());
 
-    private UI32       m_attributeTypeIndictor;
-    private WaveResourceId m_attributeTypeResourceId;
+    private UI32                m_attributeTypeIndictor;
+    private ResourceId          m_attributeTypeResourceId;
 
-    public AttributeType (final UI32 attributeTypeIndicator, final WaveResourceId attributeTypeResourceId)
+    public AttributeType (final UI32 attributeTypeIndicator, final ResourceId attributeTypeResourceId)
     {
         m_attributeTypeIndictor = attributeTypeIndicator;
         m_attributeTypeResourceId = attributeTypeResourceId;
     }
 
-    public AttributeType (final int attributeTypeIndicator, final WaveResourceId attributeTypeResourceId)
+    public AttributeType (final int attributeTypeIndicator, final ResourceId attributeTypeResourceId)
     {
         m_attributeTypeIndictor = new UI32 (attributeTypeIndicator);
         m_attributeTypeResourceId = attributeTypeResourceId;
@@ -116,12 +116,12 @@ public class AttributeType
         m_attributeTypeIndictor = attributeTypeIndictor;
     }
 
-    public WaveResourceId getAttributeTypeResourceId ()
+    public ResourceId getAttributeTypeResourceId ()
     {
         return m_attributeTypeResourceId;
     }
 
-    public void setAttributeTypeResourceId (final WaveResourceId attributeTypeResourceId)
+    public void setAttributeTypeResourceId (final ResourceId attributeTypeResourceId)
     {
         m_attributeTypeResourceId = attributeTypeResourceId;
     }

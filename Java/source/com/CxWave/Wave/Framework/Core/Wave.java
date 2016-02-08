@@ -388,6 +388,8 @@ public class Wave
         }
 
         final Set<String> allAutoInstantiablePrePhaseServices = WaveJavaSourceRepository.getAllAutoInstantiablePrePhaseObjectManagerClassNames ();
+        final Set<String> allAutoInstantiableNonPrePhaseServices = WaveJavaSourceRepository.getAllAutoInstantiableNonPrePhaseObjectManagerClassNames ();
+
         final FrameworkSequenceGenerator frameworkSequenceGenerator = WaveFrameworkObjectManager.getCurrentFrameworkSequenceGenerator ();
 
         WaveAssertUtils.waveAssert (null != allAutoInstantiablePrePhaseServices);
@@ -421,7 +423,10 @@ public class Wave
                 }
                 else
                 {
-                    frameworkSequenceGenerator.addWaveServiceIdToAll (waveObjectManager.getServiceId ());
+                    if (allAutoInstantiableNonPrePhaseServices.contains ((waveObjectManager.getClass ()).getName ()))
+                    {
+                        frameworkSequenceGenerator.addWaveServiceIdToAll (waveObjectManager.getServiceId ());
+                    }
                 }
             }
         }

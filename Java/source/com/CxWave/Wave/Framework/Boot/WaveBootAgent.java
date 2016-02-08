@@ -29,13 +29,13 @@ public class WaveBootAgent extends WaveWorker
     private Set<String>                      m_prePhaseServices;
     private Set<String>                      m_nonPrePhaseNativeServices;
     private Set<String>                      m_nonPrePhaseNonNativeServices;
-    private final FrameworkSequenceGenerator m_frameworkSequenceGenerator;
+    private final FrameworkSequenceGenerator m_currentFrameworkSequenceGenerator;
 
     public WaveBootAgent (final WaveObjectManager waveObjectManager, final FrameworkSequenceGenerator frameworkSequenceGenerator)
     {
         super (waveObjectManager);
 
-        m_frameworkSequenceGenerator = frameworkSequenceGenerator;
+        m_currentFrameworkSequenceGenerator = frameworkSequenceGenerator;
     }
 
     public ResourceId execute (final WaveBootPhase waveBootPhase)
@@ -116,7 +116,7 @@ public class WaveBootAgent extends WaveWorker
         int i = 0;
         int numberOfServices = 0;
 
-        m_frameworkSequenceGenerator.getInitializeSequenceDuringPrePhase (serviceIdsToInitialize);
+        m_currentFrameworkSequenceGenerator.getInitializeSequenceDuringPrePhase (serviceIdsToInitialize);
 
         numberOfServices = serviceIdsToInitialize.size ();
 
@@ -172,7 +172,7 @@ public class WaveBootAgent extends WaveWorker
         int i = 0;
         int numberOfServices = 0;
 
-        m_frameworkSequenceGenerator.getEnableSequenceDuringPrePhase (serviceIdsToEnable);
+        m_currentFrameworkSequenceGenerator.getEnableSequenceDuringPrePhase (serviceIdsToEnable);
         numberOfServices = serviceIdsToEnable.size ();
 
         for (i = 0; i < numberOfServices; i++)
@@ -226,7 +226,7 @@ public class WaveBootAgent extends WaveWorker
         int i = 0;
         int numberOfServices = 0;
 
-        m_frameworkSequenceGenerator.getEnableSequenceDuringPrePhase (serviceIdsToEnable);
+        m_currentFrameworkSequenceGenerator.getEnableSequenceDuringPrePhase (serviceIdsToEnable);
         numberOfServices = serviceIdsToEnable.size ();
 
         for (i = 0; i < numberOfServices; i++)
@@ -280,7 +280,7 @@ public class WaveBootAgent extends WaveWorker
         int i = 0;
         int numberOfServices = 0;
 
-        m_frameworkSequenceGenerator.getInstallSequenceDuringPrePhase (serviceIdsToInstall);
+        m_currentFrameworkSequenceGenerator.getInstallSequenceDuringPrePhase (serviceIdsToInstall);
         numberOfServices = serviceIdsToInstall.size ();
 
         for (i = 0; i < numberOfServices; i++)
@@ -334,7 +334,7 @@ public class WaveBootAgent extends WaveWorker
         int i = 0;
         int numberOfServices = 0;
 
-        m_frameworkSequenceGenerator.getBootSequenceDuringPrePhase (serviceIdsToBoot);
+        m_currentFrameworkSequenceGenerator.getBootSequenceDuringPrePhase (serviceIdsToBoot);
         numberOfServices = serviceIdsToBoot.size ();
 
         for (i = 0; i < numberOfServices; i++)
@@ -382,6 +382,54 @@ public class WaveBootAgent extends WaveWorker
     private ResourceId initializeLocalWaveServicesStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
     {
         infoTracePrintf ("WaveBootAgent.initializeLocalWaveServicesStep : Entering ...");
+
+        final Vector<WaveServiceId> serviceIdsToInitialize = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getInitializeSequence (serviceIdsToInitialize);
+
+        numberOfServices = serviceIdsToInitialize.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (true == (isToBeExcludedFromInitializePhase (serviceIdsToInitialize.get (i))))
+            {
+                continue;
+            }
+
+            if (true == (isToBeExcludedFromCurrentBootPhase (serviceIdsToInitialize.get (i))))
+            {
+                continue;
+            }
+
+            if (true == (FrameworkToolKit.isALocalService (serviceIdsToInitialize.get (i))))
+            {
+                final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = new WaveInitializeObjectManagerMessage (serviceIdsToInitialize.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveInitializeObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.initializeLocalWaveServicesStep : Could not send a message to Initialize a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (status));
+
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveInitializeObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.initializeLocalWaveServicesStep : Could not Initialize a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Initialized %s", (FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i))));
+                }
+            }
+        }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
@@ -477,5 +525,17 @@ public class WaveBootAgent extends WaveWorker
     private boolean isToBeExcludedFromInstallDuringPrePhase (final WaveServiceId waveServiceId)
     {
         return false;
+    }
+
+    private boolean isToBeExcludedFromInitializePhase (final WaveServiceId waveServiceId)
+    {
+        return (false);
+
+    }
+
+    private boolean isToBeExcludedFromCurrentBootPhase (final WaveServiceId waveServiceId)
+    {
+        return (false);
+
     }
 }

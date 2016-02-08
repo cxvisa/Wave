@@ -4,8 +4,7 @@
 
 package com.CxWave.Wave.Resources.ResourceEnum;
 
-import com.CxWave.Wave.Framework.Type.WaveResourceId;
-import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 public interface WaveResourceEnumInterface
 {
@@ -15,8 +14,8 @@ public interface WaveResourceEnumInterface
 
     public String getValue ();
 
-    public default WaveResourceId getResourceId ()
+    public default ResourceId getResourceId ()
     {
-        return (new WaveResourceId (new UI32 (getEffectiveResourceId ())));
+        return (ResourceId.getResourceIdByEffectiveResourceId (getEffectiveResourceId ()));
     }
 }
