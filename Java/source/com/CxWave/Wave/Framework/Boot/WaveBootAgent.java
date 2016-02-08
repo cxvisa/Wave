@@ -438,6 +438,56 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.enableLocalWaveServicesStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToEnable = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getEnableSequence (serviceIdsToEnable);
+        numberOfServices = serviceIdsToEnable.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (true == (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+            {
+                if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+                {
+                    if (true != (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+                    {
+                        continue;
+                    }
+                }
+
+                if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable.get (i))))
+                {
+                    continue;
+                }
+
+                final WaveEnableObjectManagerMessage waveEnableObjectManagerMessage = new WaveEnableObjectManagerMessage (serviceIdsToEnable.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveEnableObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.enableLocalWaveServicesStep : Could not send a message to Enable a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
+
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveEnableObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.enableLocalWaveServicesStep : Could not Enable a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Enabled %s", (FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i))));
+                }
+            }
+        }
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
