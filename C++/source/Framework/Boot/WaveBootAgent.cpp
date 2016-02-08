@@ -804,7 +804,7 @@ ResourceId WaveBootAgent::listenForEventsGlobalWaveServicesStep (WaveSynchronous
             }
             else
             {
-                trace (TRACE_LEVEL_INFO, "Listen For Events  " + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]));
+                trace (TRACE_LEVEL_INFO, "Listen For Events " + FrameworkToolKit::getServiceNameById (serviceIdsToEnable[i]));
             }
         }
     }
@@ -1336,7 +1336,7 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
         vector<RelationshipInfoFromSchemaDifference> addedRelationsVector = (mIterator->second).getAddedRelations ();
         vector<RelationshipInfoFromSchemaDifference>::const_iterator relationsIterator = addedRelationsVector.begin();
 
-	    //---generate Alter statements to add NOT NULL constraints for 1:1 relationships
+        //---generate Alter statements to add NOT NULL constraints for 1:1 relationships
         for(;relationsIterator != addedRelationsVector.end(); ++relationsIterator)
         {
             if(ORM_RELATION_TYPE_ONE_TO_ONE == relationsIterator->getRelationType ())
@@ -1351,7 +1351,7 @@ ResourceId WaveBootAgent::updateDatabaseForeignKeyConstraintsStep (WaveSynchrono
         vector<RelationshipInfoFromSchemaDifference> changedRelationsVector = (mIterator->second).getChangedRelations ();
         vector<RelationshipInfoFromSchemaDifference>::const_iterator changedRelationsIterator = changedRelationsVector.begin();
 
-	    //---generate Alter statements to add NOT NULL constraints for 1:1 relationships
+        //---generate Alter statements to add NOT NULL constraints for 1:1 relationships
         for(;changedRelationsIterator != changedRelationsVector.end(); ++changedRelationsIterator)
         {
             if (changedRelationsIterator->isCanBeEmptyChanged ())

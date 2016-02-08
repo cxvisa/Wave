@@ -443,6 +443,7 @@ public class WaveBootAgent extends WaveWorker
         int numberOfServices = 0;
 
         m_currentFrameworkSequenceGenerator.getEnableSequence (serviceIdsToEnable);
+
         numberOfServices = serviceIdsToEnable.size ();
 
         for (i = 0; i < numberOfServices; i++)
@@ -494,6 +495,56 @@ public class WaveBootAgent extends WaveWorker
     private ResourceId listenForEventsLocalWaveServicesStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
     {
         infoTracePrintf ("WaveBootAgent.listenForEventsLocalWaveServicesStep : Entering ...");
+
+        final Vector<WaveServiceId> serviceIdsToEnable = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getEnableSequence (serviceIdsToEnable);
+        numberOfServices = serviceIdsToEnable.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (true == (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+            {
+                if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+                {
+                    if (true != (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+                    {
+                        continue;
+                    }
+                }
+
+                if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable.get (i))))
+                {
+                    continue;
+                }
+
+                final WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage = new WaveListenForEventsObjectManagerMessage (serviceIdsToEnable.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveListenForEventsObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.listenForEventsLocalWaveServicesStep : Could not send a message to Listen For Events from a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
+
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.listenForEventsLocalWaveServicesStep : Could not Listen For Events from a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Listen For Events %s", (FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i))));
+                }
+            }
+        }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
