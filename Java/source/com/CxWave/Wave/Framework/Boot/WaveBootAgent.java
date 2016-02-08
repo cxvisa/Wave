@@ -674,6 +674,49 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.initializeGlobalWaveServicesStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToInitialize = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getInitializeSequence (serviceIdsToInitialize);
+
+        numberOfServices = serviceIdsToInitialize.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (true == (isToBeExcludedFromInitializePhase (serviceIdsToInitialize.get (i))))
+            {
+                continue;
+            }
+
+            if (false == (FrameworkToolKit.isALocalService (serviceIdsToInitialize.get (i))))
+            {
+                final WaveInitializeObjectManagerMessage waveInitializeObjectManagerMessage = new WaveInitializeObjectManagerMessage (serviceIdsToInitialize.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveInitializeObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.bootLocalWaveServicesStep : Could not send a message to Initialize a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (status));
+
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveInitializeObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.bootLocalWaveServicesStep : Could not Initialize a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Initialized %s", (FrameworkToolKit.getServiceNameById (serviceIdsToInitialize.get (i))));
+                }
+            }
+        }
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
