@@ -358,7 +358,7 @@ public class WaveBootAgent extends WaveWorker
 
             if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
             {
-                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not send a message to Boot a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (status));
+                fatalTracePrintf ("WaveBootAgent.bootWaveServicesDuringPrePhaseStep : Could not send a message to Boot a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (status));
 
                 return (ResourceId.WAVE_MESSAGE_ERROR);
             }
@@ -367,7 +367,7 @@ public class WaveBootAgent extends WaveWorker
 
             if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
             {
-                fatalTracePrintf ("WaveBootAgent.initializeWaveServicesDuringPrePhaseStep : Could not Boot a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (completionStatus));
+                fatalTracePrintf ("WaveBootAgent.bootWaveServicesDuringPrePhaseStep : Could not Boot a service : %s, Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (completionStatus));
 
                 return (completionStatus);
             }
@@ -781,12 +781,111 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.listenForEventsGlobalWaveServicesStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToEnable = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getEnableSequence (serviceIdsToEnable);
+
+        numberOfServices = serviceIdsToEnable.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (false == (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+            {
+                if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+                {
+                    if (true != (FrameworkToolKit.isALocalService (serviceIdsToEnable.get (i))))
+                    {
+                        continue;
+                    }
+                }
+
+                if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToEnable.get (i))))
+                {
+                    continue;
+                }
+
+                final WaveListenForEventsObjectManagerMessage waveListenForEventsObjectManagerMessage = new WaveListenForEventsObjectManagerMessage (serviceIdsToEnable.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveListenForEventsObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.listenForEventsGlobalWaveServicesStep : Could not send a message to Listen For Events From a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (status));
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveListenForEventsObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.listenForEventsGlobalWaveServicesStep : Could not Listen For Events from a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Listen For Events %s", FrameworkToolKit.getServiceNameById (serviceIdsToEnable.get (i)));
+                }
+            }
+        }
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
     private ResourceId installGlobalWaveServicesStep (final WaveSynchronousLinearSequencerContext waveSynchronousLinearSequencerContext)
     {
         infoTracePrintf ("WaveBootAgent.installGlobalWaveServicesStep : Entering ...");
+
+        final Vector<WaveServiceId> serviceIdsToInstall = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getInstallSequence (serviceIdsToInstall);
+
+        numberOfServices = serviceIdsToInstall.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (false == (FrameworkToolKit.isALocalService (serviceIdsToInstall.get (i))))
+            {
+                if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+                {
+                    if (true != (FrameworkToolKit.isALocalService (serviceIdsToInstall.get (i))))
+                    {
+                        continue;
+                    }
+                }
+
+                if (true == (isToBeExcludedFromInstall (serviceIdsToInstall.get (i))))
+                {
+                    continue;
+                }
+
+                final WaveInstallObjectManagerMessage waveInstallObjectManagerMessage = new WaveInstallObjectManagerMessage (serviceIdsToInstall.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveInstallObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.installGlobalWaveServicesStep : Could not send a message to Install a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i)), FrameworkToolKit.localize (status));
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveInstallObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.installGlobalWaveServicesStep : Could not Install a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Installed %s", FrameworkToolKit.getServiceNameById (serviceIdsToInstall.get (i)));
+                }
+            }
+        }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
