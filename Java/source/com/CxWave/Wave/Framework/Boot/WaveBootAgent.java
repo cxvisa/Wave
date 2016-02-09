@@ -894,6 +894,56 @@ public class WaveBootAgent extends WaveWorker
     {
         infoTracePrintf ("WaveBootAgent.bootGlobalWaveServicesStep : Entering ...");
 
+        final Vector<WaveServiceId> serviceIdsToBoot = new Vector<WaveServiceId> ();
+        int i = 0;
+        int numberOfServices = 0;
+
+        m_currentFrameworkSequenceGenerator.getBootSequence (serviceIdsToBoot);
+
+        numberOfServices = serviceIdsToBoot.size ();
+
+        for (i = 0; i < numberOfServices; i++)
+        {
+            if (false == (FrameworkToolKit.isALocalService (serviceIdsToBoot.get (i))))
+            {
+                if ((true == (isAPersistentBoot ())) && (true != (willBeAPrimaryLocation ())))
+                {
+                    if (true != (FrameworkToolKit.isALocalService (serviceIdsToBoot.get (i))))
+                    {
+                        continue;
+                    }
+                }
+
+                if (true == (isToBeExcludedForEnableAndBoot (serviceIdsToBoot.get (i))))
+                {
+                    continue;
+                }
+
+                final WaveBootObjectManagerMessage waveBootObjectManagerMessage = new WaveBootObjectManagerMessage (serviceIdsToBoot.get (i), getReason ());
+
+                final WaveMessageStatus status = sendSynchronously (waveBootObjectManagerMessage, FrameworkToolKit.getThisLocationId ());
+
+                if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+                {
+                    fatalTracePrintf ("WaveBootAgent.bootGlobalWaveServicesStep : Could not send a message to Boot a service : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (status));
+                    return (status.getResourceId ());
+                }
+
+                final ResourceId completionStatus = waveBootObjectManagerMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    fatalTracePrintf ("WaveBootAgent.bootGlobalWaveServicesStep : Could not Enable a Boot : %s,  Status : %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)), FrameworkToolKit.localize (completionStatus));
+
+                    return (completionStatus);
+                }
+                else
+                {
+                    infoTracePrintf ("Booted %s", FrameworkToolKit.getServiceNameById (serviceIdsToBoot.get (i)));
+                }
+            }
+        }
+
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 
