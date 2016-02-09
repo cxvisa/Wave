@@ -1,6 +1,6 @@
-/***************************************************************************
+/***********************************************************************************************************
  * Copyright (C) 2015-2016 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
- ***************************************************************************/
+ ***********************************************************************************************************/
 
 package com.CxWave.Wave.Framework.MultiThreading;
 
@@ -27,6 +27,7 @@ import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority;
@@ -269,12 +270,32 @@ public class WaveThread extends Thread
                                 WaveAssertUtils.waveAssert ();
                             }
                         }
+
                         break;
+
+                    case WAVE_MESSAGE_TYPE_RESPONSE:
+
+                        final WaveObjectManager waveObjectManagerToHandleResponse = getWaveObjectManagerForWaveMessageId (waveMessage.getMessageId ());
+
+                        if (null != waveObjectManagerToHandleResponse)
+                        {
+                            waveObjectManagerToHandleResponse.handleWaveMessageResponse (FrameworkStatus.FRAMEWORK_SUCCESS, waveMessage);
+                        }
+                        else
+                        {
+                            WaveTraceUtils.fatalTracePrintf ("Failed to deliver response : Could not find corresponding Wave Object Manager.");
+                            WaveTraceUtils.fatalTracePrintf ("ServiceCode = %s, OperationCode = %s, MessageId = %s", (waveMessage.getServiceCode ()).toString (), (waveMessage.getOperationCode ()).toString (), (waveMessage.getMessageId ()).toString ());
+
+                            WaveAssertUtils.waveAssert ();
+                        }
+
+                        break;
+
                     case WAVE_MESSAGE_TYPE_EVENT:
                         break;
-                    case WAVE_MESSAGE_TYPE_RESPONSE:
-                        break;
+
                     default:
+                        WaveAssertUtils.waveAssert ();
                         break;
                 }
             }
@@ -803,6 +824,20 @@ public class WaveThread extends Thread
     public static WaveServiceId getWaveServiceIdForServiceName (final String serviceName)
     {
         return (s_waveServiceMap.getWaveServiceIdForServiceName (serviceName));
+    }
 
+    private WaveObjectManager getWaveObjectManagerForWaveMessageId (final UI32 waveMessageId)
+    {
+        for (final WaveObjectManager waveObjectManager : m_waveObjectManagers)
+        {
+            WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+            if (waveObjectManager.isAKnownMessage (waveMessageId))
+            {
+                return (waveObjectManager);
+            }
+        }
+
+        return (null);
     }
 }

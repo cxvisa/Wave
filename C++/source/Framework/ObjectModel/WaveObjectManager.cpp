@@ -1333,7 +1333,7 @@ WaveObjectManager::WaveMessageResponseContext *WaveObjectManager::getResponseCon
 bool WaveObjectManager::isAKnownMessage (UI32 waveMessageId)
 {
     // Please refer to the comment in the send method just above the corresponding locking
-    // method.  The corresponssing lock line looks just like the line below
+    // method.  The corresponding lock line looks just like the line below
 
     m_sendReplyMutexForResponseMap.lock ();
 
@@ -9146,18 +9146,18 @@ void WaveObjectManager::printfToWaveClientSession (const WaveClientSessionContex
 
         if (0 < numberOfCharacters)
         {
-			message = messageBuffer;
+            message = messageBuffer;
 
-			// Send message to Wave Client Session on the appropriate location.
+            // Send message to Wave Client Session on the appropriate location.
 
-			TraceObjectManagerPrintToWaveClientSessionMessage *pTraceObjectManagerPrintToWaveClientSessionMessage = new TraceObjectManagerPrintToWaveClientSessionMessage (waveClientOriginatingLocationId, waveNativeClientId, waveUserClientId, message);
+            TraceObjectManagerPrintToWaveClientSessionMessage *pTraceObjectManagerPrintToWaveClientSessionMessage = new TraceObjectManagerPrintToWaveClientSessionMessage (waveClientOriginatingLocationId, waveNativeClientId, waveUserClientId, message);
 
-			status = sendOneWay (pTraceObjectManagerPrintToWaveClientSessionMessage, waveClientOriginatingLocationId);
+            status = sendOneWay (pTraceObjectManagerPrintToWaveClientSessionMessage, waveClientOriginatingLocationId);
 
-			if (WAVE_MESSAGE_SUCCESS != status)
-			{
-				trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::printfToWaveClientSession : Could not send message.  Status : " + FrameworkToolKit::localize (status));
-			}
+            if (WAVE_MESSAGE_SUCCESS != status)
+            {
+                trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::printfToWaveClientSession : Could not send message.  Status : " + FrameworkToolKit::localize (status));
+            }
         }
     }
 
@@ -9193,18 +9193,18 @@ void WaveObjectManager::printfToAllWaveClientSessions (const WaveClientSessionCo
 
     if (0 < numberOfCharacters)
     {
-		message = messageBuffer;
+        message = messageBuffer;
 
-		// Send message to Wave Client Session on the appropriate location.
+        // Send message to Wave Client Session on the appropriate location.
 
-		TraceObjectManagerPrintToAllWaveClientSessionsMessage *pTraceObjectManagerPrintToAllWaveClientSessionsMessage = new TraceObjectManagerPrintToAllWaveClientSessionsMessage (waveClientOriginatingLocationId, message);
+        TraceObjectManagerPrintToAllWaveClientSessionsMessage *pTraceObjectManagerPrintToAllWaveClientSessionsMessage = new TraceObjectManagerPrintToAllWaveClientSessionsMessage (waveClientOriginatingLocationId, message);
 
-		status = sendOneWay (pTraceObjectManagerPrintToAllWaveClientSessionsMessage, waveClientOriginatingLocationId);
+        status = sendOneWay (pTraceObjectManagerPrintToAllWaveClientSessionsMessage, waveClientOriginatingLocationId);
 
-		if (WAVE_MESSAGE_SUCCESS != status)
-		{
-			trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::printfToAllWaveClientSessions : Could not send message.  Status : " + FrameworkToolKit::localize (status));
-		}
+        if (WAVE_MESSAGE_SUCCESS != status)
+        {
+            trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::printfToAllWaveClientSessions : Could not send message.  Status : " + FrameworkToolKit::localize (status));
+        }
     }
 
     return;
@@ -11726,6 +11726,11 @@ void WaveObjectManager::endOfLifeService (WaveServiceId waveServiceId)
     }
 
     delete pWaveDestructObjectManagerMessage;
+}
+
+protected boolean isAKnownMessage (final UI32 waveMessageId)
+{
+
 }
 
 void WaveObjectManager::bootStrapService (WaveServiceId waveServiceId)

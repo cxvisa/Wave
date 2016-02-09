@@ -212,7 +212,7 @@ public class WaveObjectManager extends WaveElement
     private Map<UI32, Vector<WaveEventListenerMapContext>>             m_eventListenersMap;
     private Map<String, Vector<String>>                                m_postbootManagedObjectNames;
     private final WaveMutex                                            m_responsesMapMutex                              = new WaveMutex ();
-    private WaveMutex                                                  m_sendReplyMutexForResponseMap;
+    private final WaveMutex                                            m_sendReplyMutexForResponseMap                   = new WaveMutex ();
     private final Vector<WaveWorker>                                   m_workers                                        = new Vector<WaveWorker> ();
     private final Map<Class<? extends WaveWorker>, Vector<WaveWorker>> m_workersMapByWorkerClass                        = new HashMap<Class<? extends WaveWorker>, Vector<WaveWorker>> ();
     private final WaveMutex                                            m_workersMutex                                   = new WaveMutex ();
@@ -1799,6 +1799,39 @@ public class WaveObjectManager extends WaveElement
         return (waveMessageResponseContext);
     }
 
+    public boolean isAKnownMessage (final UI32 waveMessageId)
+    {
+        // Please refer to the comment in the send method just above the corresponding locking
+        // method. The corresponding lock line looks just like the line below
+
+        m_sendReplyMutexForResponseMap.lock ();
+
+        final WaveMessageResponseContext waveMessageResponseContext = getResponseContext (waveMessageId);
+        boolean isKnown = false;
+
+        if (null != waveMessageResponseContext)
+        {
+            isKnown = true;
+        }
+
+        m_sendReplyMutexForResponseMap.unlock ();
+
+        return (isKnown);
+    }
+
+    protected WaveMessageResponseContext removeResponseMap (final UI32 waveMessageId)
+    {
+        WaveMessageResponseContext waveMessageResponseContext = null;
+
+        m_responsesMapMutex.lock ();
+
+        waveMessageResponseContext = m_responsesMap.remove (waveMessageId);
+
+        m_responsesMapMutex.unlock ();
+
+        return (waveMessageResponseContext);
+    }
+
     protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final WaveGenericContext waveMessageContext, final int timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
     {
         if (null == waveMessage)
@@ -2004,6 +2037,7 @@ public class WaveObjectManager extends WaveElement
             {
                 final TimerHandle timerHandle = null;
 
+                // FIXME
                 // final ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds,
                 // reinterpret_cast<WaveTimerExpirationHandler> (WaveObjectManager.sendTimerExpiredCallback),
                 // reinterpret_cast<void *> (waveMessageId));
@@ -2025,5 +2059,72 @@ public class WaveObjectManager extends WaveElement
         m_sendReplyMutexForResponseMap.unlock ();
 
         return (status);
+    }
+
+    public void handleWaveMessageResponse (final FrameworkStatus frameworkStatus, final WaveMessage waveMessage)
+    {
+        handleWaveMessageResponse (frameworkStatus, waveMessage, false);
+    }
+
+    public void handleWaveMessageResponse (final FrameworkStatus frameworkStatus, final WaveMessage waveMessage, final boolean isMessageRecalled)
+    {
+        final UI32 waveMessageId = waveMessage.getMessageId ();
+        final boolean isLastReply = waveMessage.getIsLastReply ();
+        WaveMessageResponseContext waveMessageResponseContext = null;
+
+        addMessageToMessageHistoryCalledFromHandle (waveMessage);
+
+        // if (((FrameworkStatus.FRAMEWORK_TIME_OUT != frameworkStatus) && (true == isLastReply)) ||
+        // ((FrameworkStatus.FRAMEWORK_TIME_OUT ==
+        // frameworkStatus) && (true == isMessageRecalled)))
+        if (true == isLastReply)
+        {
+            waveMessageResponseContext = removeResponseMap (waveMessageId);
+        }
+        else
+        {
+            waveMessageResponseContext = getResponseContext (waveMessageId);
+        }
+
+        if (null != waveMessageResponseContext)
+        {
+            if (true == (waveMessageResponseContext.getIsTimerStarted ()))
+            {
+                // FIXME
+                // deleteTimer (waveMessageResponseContext.getTimerHandle ());
+            }
+
+            waveAssert (null == m_inputMessage);
+
+            if (false == (waveMessageResponseContext.getIsMessageTimedOut ()))
+            {
+                m_inputMessage = waveMessageResponseContext.getInputMessageInResponseContext ();
+            }
+
+            if (null != m_inputMessage)
+            {
+                m_inputMessage.appendNestedSql (waveMessage.getNestedSql ());
+            }
+
+            if ((true == isLastReply) && (true == waveMessage.getIsConfigurationIntentStored ()))
+            {
+                // Remove configuration intent
+
+                final ResourceId configurationIntentStatus = sendOneWayForRemovingConfigurationIntent (waveMessage.getMessageId ());
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
+                {
+                    errorTracePrintf ("WaveObjectManager::handleWaveMessageResponse : Failed to remove the configuration intent from HA peer for messageId : %s, handled by service code : %s.", (waveMessage.getMessageId ()).toString (), (waveMessage.getServiceCode ()).toString ());
+                }
+            }
+
+            waveMessageResponseContext.executeResponseCallback (frameworkStatus, waveMessage, isMessageRecalled);
+
+            m_inputMessage = null;
+        }
+        else
+        {
+            waveAssert ();
+        }
     }
 }
