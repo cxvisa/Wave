@@ -208,10 +208,10 @@ public class WaveObjectManager extends WaveElement
     private final Map<UI32, Class<?>>                                  m_operationsIdToClassMap                         = new HashMap<UI32, Class<?>> ();
     private Map<UI32, BigInteger>                                      m_supportedEvents;
     private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
-    private Map<UI32, WaveMessageResponseContext>                      m_responsesMap;
+    private final Map<UI32, WaveMessageResponseContext>                m_responsesMap                                   = new HashMap<UI32, WaveMessageResponseContext> ();
     private Map<UI32, Vector<WaveEventListenerMapContext>>             m_eventListenersMap;
     private Map<String, Vector<String>>                                m_postbootManagedObjectNames;
-    private WaveMutex                                                  m_responsesMapMutex;
+    private final WaveMutex                                            m_responsesMapMutex                              = new WaveMutex ();
     private WaveMutex                                                  m_sendReplyMutexForResponseMap;
     private final Vector<WaveWorker>                                   m_workers                                        = new Vector<WaveWorker> ();
     private final Map<Class<? extends WaveWorker>, Vector<WaveWorker>> m_workersMapByWorkerClass                        = new HashMap<Class<? extends WaveWorker>, Vector<WaveWorker>> ();
@@ -993,7 +993,7 @@ public class WaveObjectManager extends WaveElement
 
         if (false == (haPeerTransportWaveThread.hasWaveObjectManagers ()))
         {
-            errorTracePrintf ("WaveObjectManager::sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
+            errorTracePrintf ("WaveObjectManager.sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
 
             return (ResourceId.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
         }
@@ -1031,7 +1031,7 @@ public class WaveObjectManager extends WaveElement
 
         if (false == (haPeerTransportWaveThread.hasWaveObjectManagers ()))
         {
-            errorTracePrintf ("WaveObjectManager::sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
+            errorTracePrintf ("WaveObjectManager.sendOneWayForRemovingConfigurationIntent : Service identified.  But Ha Peer Transport in not registered to process any kind of requests.");
 
             return (ResourceId.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
         }
@@ -1775,5 +1775,255 @@ public class WaveObjectManager extends WaveElement
         s_enabledServicesMutex.unlock ();
 
         return (serviceEnabled);
+    }
+
+    protected void addResponseMap (final UI32 waveMessageId, final WaveMessageResponseContext waveMessageResponseContext)
+    {
+        m_responsesMapMutex.lock ();
+
+        m_responsesMap.put (waveMessageId, waveMessageResponseContext);
+
+        m_responsesMapMutex.unlock ();
+    }
+
+    protected WaveMessageResponseContext getResponseContext (final UI32 waveMessageId)
+    {
+        WaveMessageResponseContext waveMessageResponseContext = null;
+
+        m_responsesMapMutex.lock ();
+
+        waveMessageResponseContext = m_responsesMap.get (waveMessageId);
+
+        m_responsesMapMutex.unlock ();
+
+        return (waveMessageResponseContext);
+    }
+
+    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final WaveGenericContext waveMessageContext, final int timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
+    {
+        if (null == waveMessage)
+        {
+            trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveObjectManager.send : Trying to send a message with null message.");
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NULL_MESSAGE);
+        }
+
+        if ((null == waveMessage) || ((null) == waveMessageCallback))
+        {
+            trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveObjectManager.send : Trying to send a message with null callback.  If you do not want to register a callback send it as a one way message.");
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NULL_CALLBACK);
+        }
+
+        WaveThread waveThread = null;
+
+        final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
+        LocationId effectiveLocationId = locationId;
+
+        // FIXME : declare a NullLocationId instead of using 0
+
+        if (LocationId.NullLocationId.equals (effectiveLocationId))
+        {
+            if (true != (FrameworkToolKit.isALocalService (waveMessage.getServiceCode ())))
+            {
+                effectiveLocationId = FrameworkToolKit.getClusterPrimaryLocationId ();
+                final LocationId myLocationId = FrameworkToolKit.getPhysicalLocationId ();
+                if (effectiveLocationId == myLocationId)
+                {
+                    effectiveLocationId = new LocationId (0);
+                }
+            }
+        }
+
+        if ((!(LocationId.NullLocationId.equals (effectiveLocationId))) && (!(effectiveLocationId.equals (thisLocationId))) && (false == FrameworkToolKit.isAKnownLocation (effectiveLocationId)) && (!(effectiveLocationId.equals (LocationId.HaPeerLocationId))))
+
+        {
+            errorTracePrintf ("WaveObjectManager.send: Location is invalid: Loc : %s", locationId.toString ());
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR);
+        }
+
+        if ((LocationId.NullLocationId.equals (effectiveLocationId)) || (thisLocationId.equals (effectiveLocationId)))
+        {
+            waveThread = WaveThread.getWaveThreadForServiceId (waveMessage.getServiceCode ());
+        }
+        else if (effectiveLocationId.equals (LocationId.HaPeerLocationId))
+        {
+            waveThread = WaveThread.getWaveThreadForMessageHaPeerTransport ();
+        }
+        else
+        {
+            waveThread = WaveThread.getWaveThreadForMessageRemoteTransport ();
+        }
+
+        if (null == waveThread)
+        {
+            errorTracePrintf ("WaveObjectManager.send : No Service registered to accept this service Id %s.", (waveMessage.getServiceCode ()).toString ());
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
+        }
+
+        if (false == (waveThread.hasWaveObjectManagers ()))
+        {
+            trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveObjectManager.send : Service identified.  But there are no Wave Object Managers registered to process any kind of requests.");
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_OMS_FOR_SERVICE);
+        }
+
+        // Set this so that the message can be returned after getting processed.
+
+        waveMessage.m_senderServiceCode = getServiceId ();
+
+        // Store the receiver LocationId.
+
+        final UI32 waveMessageId = waveMessage.getMessageId ();
+
+        waveMessage.m_receiverLocationId = (!(effectiveLocationId.equals (LocationId.NullLocationId))) ? effectiveLocationId : thisLocationId;
+
+        if (null != (getResponseContext (waveMessageId)))
+        {
+            errorTracePrintf ("WaveObjectManager.send : This message (with id : %s was already registered.", waveMessageId.toString ());
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_DUPLICATE_MESSAGE_SEND);
+        }
+
+        addMessageToMessageHistoryCalledFromSend (waveMessage);
+
+        // The following lock is used so that the response for the submitted message does not arrive before we finish adding the
+        // messages
+        // Response context. If the message response arrive before we add the response context, we will fail the response
+        // delivery.
+        // This does not happen in normal cases since the same thread is submitting the messages and the same thread picks up
+        // the response
+        // for processing. But in some cases, Multiple threads use the send of the same object manager's send. In this case the
+        // threads
+        // are typically different the the object manager's thread. But the reply is received on the object manager's thread. If
+        // there is
+        // no co-ordination between the send and reply threads for the same message, it is possible that we can receive a
+        // response before
+        // the message response context has been added to the response map. It is very rare but we have already seen it happen
+        // under heavy
+        // stress on the system.
+
+        m_sendReplyMutexForResponseMap.lock ();
+
+        if ((null != m_inputMessage) && (m_associatedWaveThread.equals (waveMessage.getWaveMessageCreatorThreadId ())))
+        {
+            // Propagate message flags from Incoming Message to Outgoing Message
+
+            waveMessage.setIsConfigurationChanged (m_inputMessage.getIsConfigurationChanged ());
+            waveMessage.setIsConfigurationTimeChanged (m_inputMessage.getIsConfigurationTimeChanged ());
+            waveMessage.setTransactionCounter (m_inputMessage.getTransactionCounter ());
+
+            if (false == waveMessage.getIsPartitionNameSetByUser ())
+            {
+                waveMessage.setPartitionName (m_inputMessage.getPartitionName ()); // Propagate the Partition name from Input
+                                                                                   // Message.
+            }
+            else
+            {
+                // pass
+                // Do not overwrite the partition name with partitionName in m_inputMessage.
+            }
+
+            waveMessage.setPartitionLocationIdForPropagation (m_inputMessage.getPartitionLocationIdForPropagation ());
+            waveMessage.setIsPartitionContextPropagated (m_inputMessage.getIsPartitionContextPropagated ());
+
+            waveMessage.setIsALastConfigReplay (m_inputMessage.getIsALastConfigReplay ());
+            waveMessage.addXPathStringsVectorForTimestampUpdate (m_inputMessage.getXPathStringsVectorForTimestampUpdate ());  // if
+                                                                                                                              // receiver
+                                                                                                                              // service
+                                                                                                                              // is
+                                                                                                                              // "management
+                                                                                                                              // interface",
+                                                                                                                              // should
+                                                                                                                              // this
+                                                                                                                              // be
+                                                                                                                              // skipped
+                                                                                                                              // ?
+
+            // This is required because sendToWaveCluster also uses the send method. As send and sendToWaveCluster will be
+            // having same m_inputMessage with
+            // the flags always set to false. Even if for surrogating message sendToWaveCluster sets the flag, it will be
+            // otherwise cleared off here.
+
+            if (false == waveMessage.getIsMessageBeingSurrogatedFlag ())
+            {
+                waveMessage.setIsMessageBeingSurrogatedFlag (m_inputMessage.getIsMessageBeingSurrogatedFlag ());
+                waveMessage.setSurrogatingForLocationId (m_inputMessage.getSurrogatingForLocationId ());
+            }
+        }
+
+        if ((true == waveMessage.getIsAConfigurationIntent ()) && (true == PersistenceLocalObjectManager.getLiveSyncEnabled ()))
+        {
+            // Send a configuration intent to the HA peer
+
+            final ResourceId configurationIntentStatus = sendOneWayForStoringConfigurationIntent (waveMessage);
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS == configurationIntentStatus)
+            {
+                waveMessage.setIsConfigurationIntentStored (true);
+            }
+            else
+            {
+                // Do not penalize the actual configuration. Flag an error for now.
+
+                errorTracePrintf ("WaveObjectManager.send : Failed to store the configuration intent on HA peer for messageId : %s, handled by service code : %s.", (waveMessage.getMessageId ()).toString (), (waveMessage.getServiceCode ()).toString ());
+
+                waveMessage.setIsConfigurationIntentStored (false);
+            }
+        }
+
+        WaveMessageStatus status = waveThread.submitMessage (waveMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == status)
+        {
+            // Now store the details related to callback so that we can call the appropriate callback when the reply to this
+            // message arrives.
+
+            final WaveMessageResponseContext waveMessageResponseContext = new WaveMessageResponseContext (waveMessage, waveMessageSender != null ? waveMessageSender : this, waveMessageCallback, waveMessageContext);
+
+            waveAssert (null != waveMessageResponseContext);
+
+            if (m_associatedWaveThread.equals (waveMessage.getWaveMessageCreatorThreadId ()))
+            {
+                waveMessageResponseContext.setInputMessageInResponseContext (m_inputMessage);
+            }
+
+            if (null == waveMessageResponseContext)
+            {
+                status = WaveMessageStatus.WAVE_MESSAGE_ERROR_MEMORY_EXHAUSTED;
+            }
+            else
+            {
+                addResponseMap (waveMessageId, waveMessageResponseContext);
+            }
+
+            // If user requested for a message timeout then start the timer.
+
+            if (0 != timeOutInMilliSeconds)
+            {
+                final TimerHandle timerHandle = null;
+
+                // final ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds,
+                // reinterpret_cast<WaveTimerExpirationHandler> (WaveObjectManager.sendTimerExpiredCallback),
+                // reinterpret_cast<void *> (waveMessageId));
+
+                final ResourceId timeStatus = ResourceId.FRAMEWORK_SUCCESS;
+
+                if (ResourceId.FRAMEWORK_SUCCESS != timeStatus)
+                {
+                    waveAssert (false);
+                }
+                else
+                {
+                    waveMessageResponseContext.setIsTimerStarted (true);
+                    waveMessageResponseContext.setTimerHandle (timerHandle);
+                }
+            }
+        }
+
+        m_sendReplyMutexForResponseMap.unlock ();
+
+        return (status);
     }
 }

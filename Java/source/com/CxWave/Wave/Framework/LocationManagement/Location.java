@@ -113,6 +113,38 @@ public class Location extends LocationBase
     }
 
     @Override
+    public boolean isAKnownLocation (final LocationId locationId)
+    {
+        lockAccess ();
+
+        final boolean knownLocation = m_knownLocations.containsKey (locationId);
+
+        unlockAccess ();
+
+        return (knownLocation);
+    }
+
+    @Override
+    public boolean isAConnectedLocation (final LocationId locationId)
+    {
+        lockAccess ();
+
+        boolean knownLocation = m_knownLocations.containsKey (locationId);
+
+        if (knownLocation)
+        {
+            if (null == (m_clientSocketsForKnownLocations.get (locationId)))
+            {
+                knownLocation = false;
+            }
+        }
+
+        unlockAccess ();
+
+        return (knownLocation);
+    }
+
+    @Override
     public void initializeClientCommunications ()
     {
         // TODO Auto-generated method stub

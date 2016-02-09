@@ -232,4 +232,18 @@ public class FrameworkToolKit
     {
         return ((LocationRole.LOCATION_PRIMARY == (getThisLocationRole ())) || (LocationRole.LOCATION_PRIMARY_UNCONFIRMED == (getThisLocationRole ())) || (LocationRole.LOCATION_SECONDARY_UNCONFIRMED == (getThisLocationRole ())));
     }
+
+    public static boolean isAKnownLocation (final LocationId locationId)
+    {
+        final LocationBase thisLocation = getThisLocation ();
+
+        if (null != thisLocation)
+        {
+            return (thisLocation.isAConnectedLocation (locationId));
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

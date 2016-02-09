@@ -132,4 +132,18 @@ public class SubLocation extends LocationBase
 
     }
 
+    @Override
+    public boolean isAKnownLocation (final LocationId locationId)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isAConnectedLocation (final LocationId locationId)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

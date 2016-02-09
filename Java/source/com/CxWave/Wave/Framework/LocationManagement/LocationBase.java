@@ -344,4 +344,8 @@ public abstract class LocationBase
     {
         return (locationId.isASubLocation ());
     }
+
+    public abstract boolean isAKnownLocation (final LocationId locationId);
+
+    public abstract boolean isAConnectedLocation (final LocationId locationId);
 }
