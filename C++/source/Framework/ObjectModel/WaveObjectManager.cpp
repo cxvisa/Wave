@@ -171,7 +171,7 @@ void WaveObjectManager::WaveMessageResponseContext::executeResponseCallback (Fra
     }
     else
     {
-        // We treat timed out messages differently.  If a message is timed out we sinply mark this context
+        // We treat timed out messages differently.  If a message is timed out we simply mark this context
         // to indicate the time out and execute the user callback with a Null Message pointer.
 
         if (FRAMEWORK_TIME_OUT !=frameworkStatus)

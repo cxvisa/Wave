@@ -24,6 +24,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageCallback;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSequencerStep;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
@@ -37,6 +38,7 @@ import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 public class WaveJavaClass extends WaveJavaType
@@ -55,6 +57,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, WaveWorkerPriority> m_ownedWorkerClassNamesPriorityMap;
     private final Map<String, Method>             m_waveLinearSequencerSteps;
     private final Map<String, Method>             m_waveSynchronousLinearSequencerSteps;
+    private final Map<String, Method>             m_waveMessageCallbacks;
 
     public WaveJavaClass (final String name)
     {
@@ -69,6 +72,7 @@ public class WaveJavaClass extends WaveJavaType
         m_ownedWorkerClassNamesPriorityMap = new HashMap<String, WaveWorkerPriority> ();
         m_waveLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveSynchronousLinearSequencerSteps = new HashMap<String, Method> ();
+        m_waveMessageCallbacks = new HashMap<String, Method> ();
     }
 
     public String getName ()
@@ -300,6 +304,8 @@ public class WaveJavaClass extends WaveJavaType
         computeWorkers (reflectionClass);
 
         computeSequencerSteps (reflectionClass);
+
+        computeWaveMessageCallbacks (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -619,6 +625,77 @@ public class WaveJavaClass extends WaveJavaType
                             m_waveSynchronousLinearSequencerSteps.put (declaredMethod.getName (), declaredMethod);
 
                             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeSequencerSteps : Added a Synchronous Sequencer Step for Class %s with Wave Synchronous Linear Sequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void computeWaveMessageCallbacks (final Class<?> reflectionClass)
+    {
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())) && (!(waveObjectManagerIsADerivativeOf (m_typeName))) && (!(waveWorkerIsADerivativeOf (m_typeName))) && (!(waveManagedObjectIsADerivativeOf (m_typeName))))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Wave Message Callbacks for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final Annotation annotationForNonMessageCallback = declaredMethod.getAnnotation (NonMessageCallback.class);
+
+            if (null != annotationForNonMessageCallback)
+            {
+                final NonMessageCallback nonMessageCallback = (NonMessageCallback) annotationForNonMessageCallback;
+
+                WaveAssertUtils.waveAssert (null != nonMessageCallback);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Ignoring %s : %s from Message Callback computations since it is annotated with @NonMessageCallback", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (3 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName0 = parameterTypes[0].getTypeName ();
+
+                if (!(parameterClassTypeName0.equals (FrameworkStatus.class.getTypeName ())))
+                {
+                    continue;
+                }
+
+                final String parameterClassTypeName1 = parameterTypes[1].getTypeName ();
+
+                final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName1);
+
+                if (null != waveJavaClass)
+                {
+                    if (waveJavaClass.isADerivativeOfWaveMessage ())
+                    {
+                        if (m_waveMessageCallbacks.containsKey (declaredMethod.getName ()))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Trying to add a Mesage Callback for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName1, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Already persent Message Callback method : %s", (m_waveMessageCallbacks.get (declaredMethod.getName ())).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            m_waveMessageCallbacks.put (declaredMethod.getName (), declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Added a Message Callback for Class %s with Wacve Message Type %s, handler method : %s", m_typeName, parameterClassTypeName1, declaredMethod.getName ());
                         }
                     }
                 }
@@ -1172,6 +1249,25 @@ public class WaveJavaClass extends WaveJavaType
         if (null != m_superClass)
         {
             return (m_superClass.getMethodForWaveSynchronousLinearSequencerStep (waveSynchronousLinearSequencerStepName));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveMessageCallback (final String waveMessageCallbackName)
+    {
+        final Method method = m_waveMessageCallbacks.get (waveMessageCallbackName);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveMessageCallback (waveMessageCallbackName));
         }
         else
         {

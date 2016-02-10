@@ -671,6 +671,18 @@ public class WaveJavaSourceRepository
         return (waveJavaClass.getMethodForWaveSynchronousLinearSequencerStep (waveSynchronousLinearSequencerStepName));
     }
 
+    public static Method getMethodForWaveMessageCallbackInWaveJavaClass (final String waveJavaClassName, final String waveMessageCallbackName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveMessageCallback (waveMessageCallbackName));
+    }
+
     public static Set<String> getAllObjectManagerClassNames ()
     {
         final WaveJavaClass waveJavaClass = getWaveJavaClass (WaveObjectManager.class.getName ());

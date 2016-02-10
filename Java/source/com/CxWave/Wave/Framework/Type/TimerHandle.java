@@ -1,12 +1,14 @@
-/***************************************************************************
+/*******************************************************************************************************************
  * Copyright (C) 2015-2016 Vhandleyasagara Guntaka * All rights reserved. * Author : Vhandleyasagara Reddy Guntaka *
- ***************************************************************************/
+ *******************************************************************************************************************/
 
 package com.CxWave.Wave.Framework.Type;
 
 public class TimerHandle
 {
-    private long m_handle;
+    public static final TimerHandle NullTimerHandle = new TimerHandle (0);
+
+    private long                    m_handle;
 
     public TimerHandle (final long handle)
     {

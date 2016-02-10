@@ -35,7 +35,6 @@ import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.UI64;
-import com.CxWave.Wave.Framework.Type.WaveGenericContext;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
@@ -105,26 +104,95 @@ public class WaveObjectManager extends WaveElement
 
     private class WaveMessageResponseContext
     {
-        private WaveMessage                m_waveMessage;
-        private WaveElement                m_waveMessageSender;
-        private WaveMessageResponseHandler m_waveMessageSenderCallback;
-        private WaveGenericContext         m_waveMessageSenderContext;
-        private boolean                    m_isMessageTimedOut;
-        private WaveMessage                m_inputMessageInResponseContext;
-        private boolean                    m_isTimerStarted;
-        private TimerHandle                m_timerHandle;
+        private final WaveMessage                m_waveMessage;
+        private final WaveElement                m_waveMessageSender;
+        private final WaveMessageResponseHandler m_waveMessageSenderCallback;
+        private final Object                     m_waveMessageSenderContext;
+        private boolean                          m_isMessageTimedOut             = false;
+        private WaveMessage                      m_inputMessageInResponseContext = null;
+        private boolean                          m_isTimerStarted                = false;
+        private TimerHandle                      m_timerHandle                   = TimerHandle.NullTimerHandle;
 
-        public WaveMessageResponseContext (final WaveMessage waveMessage, final WaveElement waveMessageSender, final WaveMessageResponseHandler waveMessageSenderCallback, final WaveGenericContext waveMessageSenderContext)
+        public WaveMessageResponseContext (final WaveMessage waveMessage, final WaveElement waveMessageSender, final WaveMessageResponseHandler waveMessageSenderCallback, final Object waveMessageSenderContext)
         {
+            m_waveMessage = waveMessage;
+            m_waveMessageSender = waveMessageSender;
+            m_waveMessageSenderCallback = waveMessageSenderCallback;
+            m_waveMessageSenderContext = waveMessageSenderContext;
+
+            m_waveMessageSenderCallback.validateAndCompute (m_waveMessageSender);
         }
 
         public void executeResponseCallback (final FrameworkStatus frameworkStatus, final WaveMessage waveMessage, final boolean isMessageRecalled)
         {
+            if (null == m_waveMessageSenderCallback)
+            {
+                // Nothing to do.
+            }
+            else
+            {
+                // We treat timed out messages differently. If a message is timed out we simply mark this context
+                // to indicate the time out and execute the user callback with a Null Message pointer.
+
+                if (FrameworkStatus.FRAMEWORK_TIME_OUT != frameworkStatus)
+                {
+                    // We take waveMessage input so that multiple replies with messages copies is also possible. But the current
+                    // methodology that we decided to follow is this: If there are multiple replies for a message then the
+                    // message
+                    // must not be deleted upon receiving intermediate replies. It must be deleted only after receiving the last
+                    // reply. Though we have the infrastructure to support multiple replies with message copies, currently we do
+                    // not copy the message for the purpose of multiple replies. So when the response comes back it must always
+                    // be
+                    // the original message. The following waveAssert enforces that.
+
+                    // Update to the above comment (at the time of implementing support for multiple replies feature):
+                    // The below enforcement is only done in case of last reply.
+
+                    if (true == (waveMessage.getIsLastReply ()))
+                    {
+                        WaveAssertUtils.waveAssert (waveMessage == m_waveMessage);
+
+                        if (waveMessage != m_waveMessage)
+                        {
+                            return;
+                        }
+                    }
+
+                    // If we decide to support the multiple replies using message copies then the above waveAssert and if block
+                    // must be removed.
+
+                    // If the context was previously marked with timed out status, then we must not execute the user context.
+                    // We must simply delete the message.
+
+                    if (false == (getIsMessageTimedOut ()))
+                    {
+                        m_waveMessageSenderCallback.execute (frameworkStatus, waveMessage, m_waveMessageSenderContext);
+                    }
+                }
+                else
+                {
+                    setIsMessageTimedOut (true);
+
+                    if (true == isMessageRecalled)
+                    {
+                        m_waveMessageSenderCallback.execute (frameworkStatus, waveMessage, m_waveMessageSenderContext);
+                    }
+                    else
+                    {
+                        m_waveMessageSenderCallback.execute (frameworkStatus, null, m_waveMessageSenderContext);
+                    }
+                }
+            }
+        }
+
+        public void executeResponseCallback (final FrameworkStatus frameworkStatus, final WaveMessage waveMessage)
+        {
+            executeResponseCallback (frameworkStatus, waveMessage, false);
         }
 
         public void executeResponseCallback (final FrameworkStatus frameworkStatus)
         {
-
+            executeResponseCallback (frameworkStatus, m_waveMessage);
         }
 
         public void setIsMessageTimedOut (final boolean isMessageTimedOut)
@@ -1832,7 +1900,7 @@ public class WaveObjectManager extends WaveElement
         return (waveMessageResponseContext);
     }
 
-    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final WaveGenericContext waveMessageContext, final int timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
+    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final int timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
     {
         if (null == waveMessage)
         {
