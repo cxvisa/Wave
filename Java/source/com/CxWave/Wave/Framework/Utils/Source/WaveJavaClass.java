@@ -86,6 +86,11 @@ public class WaveJavaClass extends WaveJavaType
         {
             if (WaveStringUtils.isNotBlank (superInterfaceName))
             {
+                if ((superInterfaceName.startsWith ("java.")) || (superInterfaceName.startsWith ("javax.")))
+                {
+                    continue;
+                }
+
                 final WaveJavaInterface waveJavaSuperInterface = WaveJavaSourceRepository.getWaveJavaInterface (superInterfaceName);
 
                 WaveAssertUtils.waveAssert (null != waveJavaSuperInterface);
