@@ -675,6 +675,36 @@ public class WaveJavaClass extends WaveJavaType
                     continue;
                 }
 
+                final String parameterClassTypeName2 = parameterTypes[2].getTypeName ();
+
+                Class<?> classForParameter2 = null;
+
+                try
+                {
+                    classForParameter2 = Class.forName (parameterClassTypeName2);
+                }
+                catch (final ClassNotFoundException e)
+                {
+                    WaveTraceUtils.errorTracePrintf ("WaveJavaClass.computeWaveMessageCallbacks : %s class could not be found and hence skipping %s", parameterClassTypeName2, declaredMethod.getName ());
+
+                    continue;
+                }
+
+                if (null == classForParameter2)
+                {
+                    continue;
+                }
+
+                if (!(Object.class.isAssignableFrom (classForParameter2)))
+                {
+                    continue;
+                }
+
+                if (!(parameterClassTypeName2.equals (FrameworkStatus.class.getTypeName ())))
+                {
+                    continue;
+                }
+
                 final String parameterClassTypeName1 = parameterTypes[1].getTypeName ();
 
                 final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName1);
@@ -695,7 +725,7 @@ public class WaveJavaClass extends WaveJavaType
 
                             m_waveMessageCallbacks.put (declaredMethod.getName (), declaredMethod);
 
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Added a Message Callback for Class %s with Wacve Message Type %s, handler method : %s", m_typeName, parameterClassTypeName1, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Added a Message Callback for Class %s with Wave Message Type %s, handler method : %s", m_typeName, parameterClassTypeName1, declaredMethod.getName ());
                         }
                     }
                 }
