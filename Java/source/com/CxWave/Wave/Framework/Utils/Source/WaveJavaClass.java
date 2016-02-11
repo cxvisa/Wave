@@ -28,10 +28,12 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageCallback;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSequencerStep;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonTimerExpirationHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.SerializableAttribute;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.XmlWaveXPath;
+import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
@@ -58,6 +60,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, Method>             m_waveLinearSequencerSteps;
     private final Map<String, Method>             m_waveSynchronousLinearSequencerSteps;
     private final Map<String, Method>             m_waveMessageCallbacks;
+    private final Map<String, Method>             m_waveTimerExpirationHandlers;
 
     public WaveJavaClass (final String name)
     {
@@ -73,6 +76,7 @@ public class WaveJavaClass extends WaveJavaType
         m_waveLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveSynchronousLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveMessageCallbacks = new HashMap<String, Method> ();
+        m_waveTimerExpirationHandlers = new HashMap<String, Method> ();
     }
 
     public String getName ()
@@ -311,6 +315,8 @@ public class WaveJavaClass extends WaveJavaType
         computeSequencerSteps (reflectionClass);
 
         computeWaveMessageCallbacks (reflectionClass);
+
+        computeWaveTimerExpirationHandlers (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -705,11 +711,6 @@ public class WaveJavaClass extends WaveJavaType
                     continue;
                 }
 
-                if (!(parameterClassTypeName2.equals (FrameworkStatus.class.getTypeName ())))
-                {
-                    continue;
-                }
-
                 final String parameterClassTypeName1 = parameterTypes[1].getTypeName ();
 
                 final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName1);
@@ -731,6 +732,95 @@ public class WaveJavaClass extends WaveJavaType
                             m_waveMessageCallbacks.put (declaredMethod.getName (), declaredMethod);
 
                             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveMessageCallbacks : Added a Message Callback for Class %s with Wave Message Type %s, handler method : %s", m_typeName, parameterClassTypeName1, declaredMethod.getName ());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void computeWaveTimerExpirationHandlers (final Class<?> reflectionClass)
+    {
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())) && (!(waveObjectManagerIsADerivativeOf (m_typeName))) && (!(waveWorkerIsADerivativeOf (m_typeName))) && (!(waveManagedObjectIsADerivativeOf (m_typeName))))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Timer Expiration Handlers for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final Annotation annotationForNonTimerExpirationHandler = declaredMethod.getAnnotation (NonTimerExpirationHandler.class);
+
+            if (null != annotationForNonTimerExpirationHandler)
+            {
+                final NonTimerExpirationHandler nonTimerExpirationHandler = (NonTimerExpirationHandler) annotationForNonTimerExpirationHandler;
+
+                WaveAssertUtils.waveAssert (null != nonTimerExpirationHandler);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveTimerExpirationHandlers : Ignoring %s : %s from Timer Expiration Handler computations since it is annotated with @NonTimerExpirationHandler", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (2 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName1 = parameterTypes[1].getTypeName ();
+
+                Class<?> classForParameter1 = null;
+
+                try
+                {
+                    classForParameter1 = Class.forName (parameterClassTypeName1);
+                }
+                catch (final ClassNotFoundException e)
+                {
+                    WaveTraceUtils.errorTracePrintf ("WaveJavaClass.computeWaveTimerExpirationHandlers : %s class could not be found and hence skipping %s", parameterClassTypeName1, declaredMethod.getName ());
+
+                    continue;
+                }
+
+                if (null == classForParameter1)
+                {
+                    continue;
+                }
+
+                if (!(Object.class.isAssignableFrom (classForParameter1)))
+                {
+                    continue;
+                }
+
+                final String parameterClassTypeName = parameterTypes[0].getTypeName ();
+
+                final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName);
+
+                if (null != waveJavaClass)
+                {
+                    if (waveJavaClass.isADerivativeOfTimerHandle ())
+                    {
+                        if (m_waveTimerExpirationHandlers.containsKey (declaredMethod.getName ()))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveTimerExpirationHandlers : Trying to add a Timer Expiration Handler for Class %s with TimerHandle Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveTimerExpirationHandlers : Already persent Timer Expiration Handler method : %s", (m_waveTimerExpirationHandlers.get (declaredMethod.getName ())).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            m_waveTimerExpirationHandlers.put (declaredMethod.getName (), declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveTimerExpirationHandlers : Added a Timer Expiration Handler for Class %s with Wave Linear Sequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
                         }
                     }
                 }
@@ -1099,6 +1189,44 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public boolean isADerivativeOfTimerHandle ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (TimerHandle.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean timerHandleIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (TimerHandle.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     private void getAttributesMapForInheritanceHierarchy (final AttributesMap attributesMap)
     {
         WaveAssertUtils.waveAssert (null != attributesMap);
@@ -1303,6 +1431,25 @@ public class WaveJavaClass extends WaveJavaType
         if (null != m_superClass)
         {
             return (m_superClass.getMethodForWaveMessageCallback (waveMessageCallbackName));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveTimerExpirationHandler (final String waveTimerExpirationHandlerName)
+    {
+        final Method method = m_waveTimerExpirationHandlers.get (waveTimerExpirationHandlerName);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveTimerExpirationHandler (waveTimerExpirationHandlerName));
         }
         else
         {
