@@ -6,7 +6,7 @@ package com.CxWave.Wave.Framework.Type;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
-public class UI16
+public class UI16 implements Comparable<UI16>
 {
     private Short m_value;
 
@@ -126,5 +126,11 @@ public class UI16
     public int hashCode ()
     {
         return (m_value.hashCode ());
+    }
+
+    @Override
+    public int compareTo (final UI16 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

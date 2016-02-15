@@ -8,7 +8,7 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
-public class UI32
+public class UI32 implements Comparable<UI32>
 {
     private Long       m_value;
 
@@ -175,5 +175,11 @@ public class UI32
     public int intValue ()
     {
         return (m_value.intValue ());
+    }
+
+    @Override
+    public int compareTo (final UI32 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

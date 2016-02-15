@@ -6,7 +6,7 @@ package com.CxWave.Wave.Framework.Type;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
-public class SI16
+public class SI16 implements Comparable<SI16>
 {
     private Short m_value;
 
@@ -120,5 +120,11 @@ public class SI16
     public String toString ()
     {
         return (m_value.toString ());
+    }
+
+    @Override
+    public int compareTo (final SI16 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

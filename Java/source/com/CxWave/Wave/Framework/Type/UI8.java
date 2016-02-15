@@ -6,7 +6,7 @@ package com.CxWave.Wave.Framework.Type;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
-public class UI8
+public class UI8 implements Comparable<UI8>
 {
     private Byte m_value;
 
@@ -126,5 +126,11 @@ public class UI8
     public int hashCode ()
     {
         return (m_value.hashCode ());
+    }
+
+    @Override
+    public int compareTo (final UI8 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

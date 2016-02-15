@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.Type;
 
-public class TraceClientId
+public class TraceClientId implements Comparable<TraceClientId>
 {
     private long m_id;
 
@@ -73,5 +73,11 @@ public class TraceClientId
         final TraceClientId rhs = (TraceClientId) object;
 
         return (m_id == rhs.m_id);
+    }
+
+    @Override
+    public int compareTo (final TraceClientId rhs)
+    {
+        return ((new Long (m_id)).compareTo (rhs.m_id));
     }
 }

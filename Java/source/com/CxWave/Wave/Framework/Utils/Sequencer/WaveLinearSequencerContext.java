@@ -116,6 +116,8 @@ public class WaveLinearSequencerContext
 
             if (null != methodForStep)
             {
+                methodForStep.setAccessible (true);
+
                 m_methodsForSteps.add (methodForStep);
             }
             else
@@ -264,6 +266,13 @@ public class WaveLinearSequencerContext
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
             WaveTraceUtils.fatalTracePrintf ("WaveLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Details : %s", methodForCurrentStep.getName (), e.toString ());
+
+            final Throwable throwable = e.getCause ();
+
+            if (null != throwable)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Cause : %s", methodForCurrentStep.getName (), throwable.toString ());
+            }
         }
     }
 

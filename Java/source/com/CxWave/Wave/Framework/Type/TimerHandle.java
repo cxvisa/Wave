@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.Type;
 
-public class TimerHandle
+public class TimerHandle implements Comparable<TimerHandle>
 {
     public static final TimerHandle NullTimerHandle = new TimerHandle (0);
 
@@ -75,5 +75,11 @@ public class TimerHandle
         final TimerHandle rhs = (TimerHandle) object;
 
         return (m_handle == rhs.m_handle);
+    }
+
+    @Override
+    public int compareTo (final TimerHandle rhs)
+    {
+        return ((new Long (m_handle)).compareTo (rhs.m_handle));
     }
 }

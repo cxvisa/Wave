@@ -106,6 +106,8 @@ public class WaveSynchronousLinearSequencerContext
 
             if (null != methodForStep)
             {
+                methodForStep.setAccessible (true);
+
                 m_methodsForSteps.add (methodForStep);
             }
             else
@@ -158,6 +160,13 @@ public class WaveSynchronousLinearSequencerContext
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
             WaveTraceUtils.fatalTracePrintf ("WaveSynchronousLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Details : %s", methodForCurrentStep.getName (), e.toString ());
+
+            final Throwable throwable = e.getCause ();
+
+            if (null != throwable)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveSynchronousLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Cause : %s", methodForCurrentStep.getName (), throwable.toString ());
+            }
         }
 
         final ResourceId status = (ResourceId) returnValueObject;

@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.Type;
 
-public class UI64
+public class UI64 implements Comparable<UI64>
 {
     private Long m_value;
 
@@ -120,5 +120,11 @@ public class UI64
     public int hashCode ()
     {
         return (m_value.hashCode ());
+    }
+
+    @Override
+    public int compareTo (final UI64 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

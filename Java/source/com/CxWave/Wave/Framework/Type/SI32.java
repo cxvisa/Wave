@@ -6,7 +6,7 @@ package com.CxWave.Wave.Framework.Type;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
-public class SI32
+public class SI32 implements Comparable<SI32>
 {
     private Integer m_value;
 
@@ -131,5 +131,11 @@ public class SI32
     public int intValue ()
     {
         return (m_value.intValue ());
+    }
+
+    @Override
+    public int compareTo (final SI32 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

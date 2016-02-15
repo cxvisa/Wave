@@ -8,8 +8,11 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.PrePhaseService;
+import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
 @PrePhaseService
@@ -44,5 +47,14 @@ public class TimerSignalObjectManager extends WaveLocalObjectManager
     public static WaveServiceId getWaveServiceId ()
     {
         return ((getInstance ()).getServiceId ());
+    }
+
+    @Override
+    public void boot (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    {
+        trace (TraceLevel.TRACE_LEVEL_DEVEL, "TimerSignalObjectManager::boot : Entering ...");
+
+        waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        waveAsynchronousContextForBootPhases.callback ();
     }
 }

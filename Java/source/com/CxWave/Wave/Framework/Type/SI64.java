@@ -4,7 +4,7 @@
 
 package com.CxWave.Wave.Framework.Type;
 
-public class SI64
+public class SI64 implements Comparable<SI64>
 {
     private Long m_value;
 
@@ -115,5 +115,11 @@ public class SI64
     public int hashCode ()
     {
         return (m_value.hashCode ());
+    }
+
+    @Override
+    public int compareTo (final SI64 rhs)
+    {
+        return (m_value.compareTo (rhs.m_value));
     }
 }

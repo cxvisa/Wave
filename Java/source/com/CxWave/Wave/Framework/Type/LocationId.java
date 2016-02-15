@@ -6,7 +6,7 @@ package com.CxWave.Wave.Framework.Type;
 
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 
-public class LocationId
+public class LocationId implements Comparable<LocationId>
 {
     public static final LocationId NullLocationId   = new LocationId (new UI32 (0));
 
@@ -99,5 +99,11 @@ public class LocationId
     public static boolean isNotNull (final LocationId locationId)
     {
         return (!(isNull (locationId)));
+    }
+
+    @Override
+    public int compareTo (final LocationId rhs)
+    {
+        return (m_id.compareTo (rhs.m_id));
     }
 }
