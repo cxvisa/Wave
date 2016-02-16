@@ -1,6 +1,6 @@
-/*******************************************************************************************************************
- * Copyright (C) 2015-2016 Vhandleyasagara Guntaka * All rights reserved. * Author : Vhandleyasagara Reddy Guntaka *
- *******************************************************************************************************************/
+/***********************************************************************************************************
+ * Copyright (C) 2015-2016 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
+ ***********************************************************************************************************/
 
 package com.CxWave.Wave.Framework.Type;
 
@@ -12,12 +12,17 @@ public class TimerHandle implements Comparable<TimerHandle>
 
     public TimerHandle (final long handle)
     {
-        m_handle = handle;
+        setValue (handle);
     }
 
     public TimerHandle (final TimerHandle timerHandle)
     {
-        m_handle = timerHandle.getHandle ();
+        setValue (timerHandle.getHandle ());
+    }
+
+    public TimerHandle (final String timerHandle)
+    {
+        setValue (timerHandle);
     }
 
     public TimerHandle ()
@@ -30,9 +35,26 @@ public class TimerHandle implements Comparable<TimerHandle>
         return (m_handle);
     }
 
-    public void setHandle (final long handle)
+    public void setValue (final long value)
     {
-        m_handle = handle;
+        m_handle = new Long (value);
+    }
+
+    public void setValue (final Long value)
+    {
+        m_handle = new Long (value);
+    }
+
+    public void setValue (final String timerHandle)
+    {
+        try
+        {
+            setValue (Long.valueOf (timerHandle));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
     }
 
     public long increment ()

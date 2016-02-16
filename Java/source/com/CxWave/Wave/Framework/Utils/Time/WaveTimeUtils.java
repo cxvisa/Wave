@@ -8,6 +8,8 @@ import java.lang.management.ManagementFactory;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.CxWave.Wave.Framework.Type.TimeValue;
+
 public class WaveTimeUtils
 {
     private WaveTimeUtils ()
@@ -71,5 +73,12 @@ public class WaveTimeUtils
         final String formattedDateTime = localDateTime.format (dateTimeFormatter);
 
         return (formattedDateTime);
+    }
+
+    public TimeValue getCurrentTimeValue ()
+    {
+        final TimeValue currentTimeValue = new TimeValue ();
+
+        return (currentTimeValue);
     }
 }

@@ -763,7 +763,7 @@ void TimerWorker::removeAllTimers ()
  * processTimeOut()
  *      This function is called when the system timer is expired.
  *      When this happen we notify who register for this timer by
- *      sendiung expiration message. We also start the next timer
+ *      sending expiration message. We also start the next timer
  *      in the timer list.
  *
  */

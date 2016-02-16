@@ -6,11 +6,11 @@ package com.CxWave.Wave.Framework.Type;
 
 public class TimeValue implements Comparable<TimeValue>
 {
-    private long             m_milliSeconds = 0;
-    private int              m_nanoSeconds  = 0;
+    private long            m_milliSeconds = 0;
+    private int             m_nanoSeconds  = 0;
 
-    public static final long NANOS_IN_MILLI = 1000000;
-    public static final long MAX_NANOS      = NANOS_IN_MILLI - 1;
+    public static final int NANOS_IN_MILLI = 1000000;
+    public static final int MAX_NANOS      = NANOS_IN_MILLI - 1;
 
     public TimeValue ()
     {
@@ -91,5 +91,18 @@ public class TimeValue implements Comparable<TimeValue>
                 return (0);
             }
         }
+    }
+
+    public void resetToCurrent ()
+    {
+        final long nanos = System.nanoTime ();
+
+        m_milliSeconds = nanos / NANOS_IN_MILLI;
+        m_nanoSeconds = (int) (nanos % NANOS_IN_MILLI);
+    }
+
+    public long getValueInNanos ()
+    {
+        return ((m_milliSeconds * NANOS_IN_MILLI) + m_nanoSeconds);
     }
 }
