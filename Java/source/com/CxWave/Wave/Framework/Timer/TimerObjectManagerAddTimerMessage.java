@@ -15,7 +15,7 @@ public class TimerObjectManagerAddTimerMessage extends WaveMessage
     private TimeValue                  m_startInterval;
     private TimeValue                  m_periodicInterval;
     private TimeValue                  m_startTime;
-    private TimerHandle                m_timeHandle;
+    private TimerHandle                m_timerId;
     private WaveTimerExpirationHandler m_waveTimerExpirationCallback;
     private Object                     m_waveTimerExpirationContext;
     private WaveElement                m_waveTimerSender;
@@ -37,73 +37,74 @@ public class TimerObjectManagerAddTimerMessage extends WaveMessage
         m_waveTimerSender = waveTimerSender;
     }
 
-    public TimeValue getM_startInterval ()
+    public TimeValue getStartInterval ()
     {
         return m_startInterval;
     }
 
-    public void setM_startInterval (final TimeValue m_startInterval)
+    public void setStartInterval (final TimeValue startInterval)
     {
-        this.m_startInterval = m_startInterval;
+        m_startInterval = startInterval;
     }
 
-    public TimeValue getM_periodicInterval ()
+    public TimeValue getPeriodicInterval ()
     {
         return m_periodicInterval;
     }
 
-    public void setM_periodicInterval (final TimeValue m_periodicInterval)
+    public void setPeriodicInterval (final TimeValue periodicInterval)
     {
-        this.m_periodicInterval = m_periodicInterval;
+        m_periodicInterval = periodicInterval;
     }
 
-    public TimeValue getM_startTime ()
+    public TimeValue getStartTime ()
     {
         return m_startTime;
     }
 
-    public void setM_startTime (final TimeValue m_startTime)
+    public void setStartTime (final TimeValue startTime)
     {
-        this.m_startTime = m_startTime;
+        m_startTime = startTime;
     }
 
-    public TimerHandle getM_timeHandle ()
+    public TimerHandle getTimerId ()
     {
-        return m_timeHandle;
+        return m_timerId;
     }
 
-    public void setM_timeHandle (final TimerHandle m_timeHandle)
+    public void setTimerId (final TimerHandle timerId)
     {
-        this.m_timeHandle = m_timeHandle;
+        m_timerId = timerId;
     }
 
-    public WaveTimerExpirationHandler getM_waveTimerExpirationCallback ()
+    public WaveTimerExpirationHandler getWaveTimerExpirationCallback ()
     {
         return m_waveTimerExpirationCallback;
     }
 
-    public void setM_waveTimerExpirationCallback (final WaveTimerExpirationHandler m_waveTimerExpirationCallback)
+    public void setWaveTimerExpirationCallback (final WaveTimerExpirationHandler waveTimerExpirationCallback)
     {
-        this.m_waveTimerExpirationCallback = m_waveTimerExpirationCallback;
+        m_waveTimerExpirationCallback = waveTimerExpirationCallback;
     }
 
-    public Object getM_waveTimerExpirationContext ()
+    public Object getWaveTimerExpirationContext ()
     {
         return m_waveTimerExpirationContext;
     }
 
-    public void setM_waveTimerExpirationContext (final Object m_waveTimerExpirationContext)
+    public void setWaveTimerExpirationContext (final Object waveTimerExpirationContext)
     {
-        this.m_waveTimerExpirationContext = m_waveTimerExpirationContext;
+        m_waveTimerExpirationContext = waveTimerExpirationContext;
     }
 
-    public WaveElement getM_waveTimerSender ()
+    public WaveElement getWaveTimerSender ()
     {
         return m_waveTimerSender;
     }
 
-    public void setM_waveTimerSender (final WaveElement m_waveTimerSender)
+    public void setWaveTimerSender (final WaveElement waveTimerSender)
     {
-        this.m_waveTimerSender = m_waveTimerSender;
+        m_waveTimerSender = waveTimerSender;
     }
+
 }

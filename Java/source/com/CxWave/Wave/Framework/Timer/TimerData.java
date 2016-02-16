@@ -26,4 +26,73 @@ public class TimerData implements Comparable<TimerData>
         return (m_expirationTime.compareTo (rhs.m_expirationTime));
     }
 
+    public TimeValue getPeriodicInterval ()
+    {
+        return m_periodicInterval;
+    }
+
+    public void setPeriodicInterval (final TimeValue periodicInterval)
+    {
+        m_periodicInterval = periodicInterval;
+    }
+
+    public TimeValue getExpirationTime ()
+    {
+        return m_expirationTime;
+    }
+
+    public void setExpirationTime (final TimeValue expirationTime)
+    {
+        m_expirationTime = expirationTime;
+    }
+
+    public TimerHandle getTimerId ()
+    {
+        return m_timerId;
+    }
+
+    public void setTimerId (final TimerHandle timerId)
+    {
+        m_timerId = timerId;
+    }
+
+    public WaveTimerExpirationHandler getWaveTimerExpirationCallback ()
+    {
+        return m_waveTimerExpirationCallback;
+    }
+
+    public void setWaveTimerExpirationCallback (final WaveTimerExpirationHandler waveTimerExpirationCallback)
+    {
+        m_waveTimerExpirationCallback = waveTimerExpirationCallback;
+    }
+
+    public Object getWaveTimerExpirationContext ()
+    {
+        return m_waveTimerExpirationContext;
+    }
+
+    public void setWaveTimerExpirationContext (final Object waveTimerExpirationContext)
+    {
+        m_waveTimerExpirationContext = waveTimerExpirationContext;
+    }
+
+    public WaveElement getWaveTimerSender ()
+    {
+        return m_waveTimerSender;
+    }
+
+    public void setWaveTimerSender (final WaveElement waveTimerSender)
+    {
+        m_waveTimerSender = waveTimerSender;
+    }
+
+    public WaveServiceId getServiceId ()
+    {
+        return m_serviceId;
+    }
+
+    public void setServiceId (final WaveServiceId serviceId)
+    {
+        m_serviceId = serviceId;
+    }
 }

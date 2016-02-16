@@ -6,6 +6,9 @@ package com.CxWave.Wave.Framework.Utils.Synchronization;
 
 import java.util.concurrent.locks.Condition;
 
+import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+
 public class WaveCondition
 {
     private final WaveMutex m_waveMutex;
@@ -27,21 +30,70 @@ public class WaveCondition
 
     public WaveConditionStatus awaitUninterruptibly ()
     {
-        m_condition.awaitUninterruptibly ();
+        try
+        {
+            m_condition.awaitUninterruptibly ();
+        }
+        catch (final IllegalMonitorStateException illegalMonitorStateException)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveCondition.awaitUninterruptibly : When awaitUninterruptibly was called, corresponding mutex was not locked.");
+
+            return (WaveConditionStatus.WAVE_CONDITION_ILLEGAL_STATE);
+        }
+
+        return (WaveConditionStatus.WAVE_CONDITION_SUCCESS);
+    }
+
+    public WaveConditionStatus awaitNanos (final long nanos)
+    {
+        try
+        {
+            m_condition.awaitNanos (nanos);
+        }
+        catch (final InterruptedException e)
+        {
+            WaveTraceUtils.warnTracePrintf ("WaveCondition.awaitNanos : %s", WaveStackUtils.getStackString (e));
+
+            return (WaveConditionStatus.WAVE_CONDITION_INTERRUPTED);
+        }
+        catch (final IllegalMonitorStateException illegalMonitorStateException)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveCondition.awaitNanos : When awaitNanos was called, corresponding mutex was not locked.");
+
+            return (WaveConditionStatus.WAVE_CONDITION_ILLEGAL_STATE);
+        }
 
         return (WaveConditionStatus.WAVE_CONDITION_SUCCESS);
     }
 
     public WaveConditionStatus signal ()
     {
-        m_condition.signal ();
+        try
+        {
+            m_condition.signal ();
+        }
+        catch (final IllegalMonitorStateException illegalMonitorStateException)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveCondition.signal : When signal was called, corresponding mutex was not locked.");
+
+            return (WaveConditionStatus.WAVE_CONDITION_ILLEGAL_STATE);
+        }
 
         return (WaveConditionStatus.WAVE_CONDITION_SUCCESS);
     }
 
     public WaveConditionStatus signalAll ()
     {
-        m_condition.signalAll ();
+        try
+        {
+            m_condition.signalAll ();
+        }
+        catch (final IllegalMonitorStateException illegalMonitorStateException)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveCondition.signalAll : When signaAlll was called, corresponding mutex was not locked.");
+
+            return (WaveConditionStatus.WAVE_CONDITION_ILLEGAL_STATE);
+        }
 
         return (WaveConditionStatus.WAVE_CONDITION_SUCCESS);
     }

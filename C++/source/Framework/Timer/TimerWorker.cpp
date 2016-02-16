@@ -459,7 +459,7 @@ void TimerWorker::deleteTimer (TimerObjectManagerDeleteTimerMessage *pMessage)
     itimerval                       timerVal;
 
     trace (TRACE_LEVEL_DEVEL, "TimerWorker::deleteTimer : Entering ...");
-    
+
     m_mutex.lock ();
 
     // Stop current running timer (if any).
@@ -588,7 +588,7 @@ void TimerWorker::deleteAllTimersForService (TimerObjectManagerDeleteAllTimersFo
     itimerval                       timerVal;
 
     trace (TRACE_LEVEL_DEVEL, "TimerWorker::deleteAllTimersForService : Entering ...");
-  
+
     m_mutex.lock ();
 
     // Stop current running timer (if any).
@@ -649,7 +649,7 @@ ResourceId TimerWorker::removeAllTimersForService (UI32 serviceId)
     ResourceId                                  status          = TIMER_SUCCESS;
 
     pWaveThread = WaveThread::getWaveThreadForServiceId (serviceId);
-    
+
     if (NULL == pWaveThread)
     {
         trace (TRACE_LEVEL_FATAL, "TimerWorker::removeAllTimersForService : Calling thread for delete timer is NULL");
@@ -673,7 +673,7 @@ ResourceId TimerWorker::removeAllTimersForService (UI32 serviceId)
 
                 break;
             }
-        }   
+        }
     }
 
     return (status);

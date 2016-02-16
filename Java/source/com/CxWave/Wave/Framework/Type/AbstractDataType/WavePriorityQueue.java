@@ -13,7 +13,7 @@ public class WavePriorityQueue<T extends Comparable<T>> extends LinkedList<T>
 {
     private static final long serialVersionUID = 1L;
 
-    WavePriorityQueue ()
+    public WavePriorityQueue ()
     {
     }
 
