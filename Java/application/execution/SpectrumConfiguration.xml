@@ -88,6 +88,10 @@
            <file-size>10MB</file-size>
            <number-of-files>5</number-of-files>
            <default-level>TRACE_LEVEL_INFO</default-level>
+           <thread-info>
+               <enable>true</enable>
+               <number-of-digits-in-thread-id>5</number-of-digits-in-thread-id>
+           </thread-info>
        </trace>
 
        <log>

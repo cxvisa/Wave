@@ -75,13 +75,13 @@ class TimerData
     private :
     protected :
     public :
-                timeval                         m_periodicInterval;
-                timeval                         m_expirationTime;
-                UI32                            m_timerId;
-                WaveTimerExpirationHandler     m_pWaveTimerExpirationCallback;
-                void                           *m_pWaveTimerExpirationContext;
-                WaveElement                   *m_pWaveTimerSender;
-                WaveServiceId                  m_serviceId;
+                timeval                     m_periodicInterval;
+                timeval                     m_expirationTime;
+                UI32                        m_timerId;
+                WaveTimerExpirationHandler  m_pWaveTimerExpirationCallback;
+                void                       *m_pWaveTimerExpirationContext;
+                WaveElement                *m_pWaveTimerSender;
+                WaveServiceId               m_serviceId;
 };
 
 }
