@@ -105,4 +105,37 @@ public class TimeValue implements Comparable<TimeValue>
     {
         return ((m_milliSeconds * NANOS_IN_MILLI) + m_nanoSeconds);
     }
+
+    public boolean isValid ()
+    {
+        normalize ();
+
+        if ((0 <= m_milliSeconds) && (0 <= m_nanoSeconds) && (NANOS_IN_MILLI >= m_nanoSeconds))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    public boolean isNonImmediate ()
+    {
+        if (!(isValid ()))
+        {
+            return (false);
+        }
+        else
+        {
+            if ((0 != m_milliSeconds) || (0 != m_nanoSeconds))
+            {
+                return (true);
+            }
+            else
+            {
+                return (false);
+            }
+        }
+    }
 }

@@ -104,4 +104,14 @@ public class TimerHandle implements Comparable<TimerHandle>
     {
         return ((new Long (m_handle)).compareTo (rhs.m_handle));
     }
+
+    public void setHandle (final TimerHandle timerId)
+    {
+        setValue (timerId.getHandle ());
+    }
+
+    public void setHandle (final long value)
+    {
+        setValue (value);
+    }
 }

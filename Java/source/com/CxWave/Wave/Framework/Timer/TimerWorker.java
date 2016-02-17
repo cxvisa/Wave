@@ -33,7 +33,7 @@ public class TimerWorker extends WaveWorker
         super (waveObjectManager);
     }
 
-    private void addTimer (final TimerObjectManagerAddTimerMessage timerObjectManagerAddTimerMessage)
+    private void addTimerMessageHandler (final TimerObjectManagerAddTimerMessage timerObjectManagerAddTimerMessage)
     {
         m_mutex.lock ();
 
@@ -102,6 +102,9 @@ public class TimerWorker extends WaveWorker
         //
         // return;
         // }
+
+        timerObjectManagerAddTimerMessage.setCompletionStatus (ResourceId.TIMER_SUCCESS);
+        reply (timerObjectManagerAddTimerMessage);
 
         m_mutex.unlock ();
     }

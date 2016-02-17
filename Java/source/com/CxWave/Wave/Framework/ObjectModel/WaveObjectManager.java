@@ -28,9 +28,11 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Persistence.Local.PersistenceLocalObjectManager;
+import com.CxWave.Wave.Framework.Timer.TimerObjectManagerAddTimerMessage;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
+import com.CxWave.Wave.Framework.Type.TimeValue;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -2193,6 +2195,61 @@ public class WaveObjectManager extends WaveElement
         else
         {
             waveAssert ();
+        }
+    }
+
+    protected ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final TimeValue periodicInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
+    {
+        final TimeValue currentTimeValue = new TimeValue ();
+
+        currentTimeValue.resetToCurrent ();
+
+        if (!(currentTimeValue.isValid ()))
+        {
+            errorTracePrintf ("WaveObjectManager::startTimer : error getting current time.");
+
+            return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_START);
+        }
+
+        if (!(startInterval.isNonImmediate ()))
+        {
+            return (ResourceId.FRAMEWORK_TIMER_INVALID_START_INTERVAL);
+        }
+
+        if (!(periodicInterval.isNonImmediate ()))
+        {
+            return (ResourceId.FRAMEWORK_TIMER_INVALID_PERIODIC_INTERVAL);
+        }
+
+        if (null == waveTimerExpirationCallback)
+        {
+            return (ResourceId.FRAMEWORK_TIMER_INVALID_CALLBACK);
+        }
+
+        final TimerObjectManagerAddTimerMessage startTimerMessage = new TimerObjectManagerAddTimerMessage (startInterval, periodicInterval, currentTimeValue, waveTimerExpirationCallback, waveTimerExpirationContext, (null == waveTimerSender) ? this : waveTimerSender);
+
+        waveAssert (null != startTimerMessage);
+
+        final WaveMessageStatus status = sendSynchronously (startTimerMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            errorTracePrintf ("WaveObjectManager::startTimer : TimerObjectManagerAddTimerMessage failed.  Status : %s", FrameworkToolKit.localize (status));
+
+            return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_START);
+        }
+
+        if (ResourceId.TIMER_SUCCESS == (startTimerMessage.getCompletionStatus ()))
+        {
+            timerHandle.setHandle (startTimerMessage.getTimerId ());
+
+            return (ResourceId.FRAMEWORK_SUCCESS);
+        }
+        else
+        {
+            timerHandle.setValue (0);
+
+            return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_START);
         }
     }
 }
