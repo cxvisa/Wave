@@ -2216,7 +2216,7 @@ public class WaveObjectManager extends WaveElement
             return (ResourceId.FRAMEWORK_TIMER_INVALID_START_INTERVAL);
         }
 
-        if (!(periodicInterval.isNonImmediate ()))
+        if (!(periodicInterval.isValid ()))
         {
             return (ResourceId.FRAMEWORK_TIMER_INVALID_PERIODIC_INTERVAL);
         }
@@ -2251,5 +2251,18 @@ public class WaveObjectManager extends WaveElement
 
             return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_START);
         }
+    }
+
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final long periodicIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
+    {
+        final TimeValue startInterval = new TimeValue (startIntervalMilliSeconds, 0);
+        final TimeValue periodicInterval = new TimeValue (periodicIntervalMilliSeconds, 0);
+
+        return (startTimer (timerHandle, startInterval, periodicInterval, waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
+    }
+
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
+    {
+        return (startTimer (timerHandle, startIntervalMilliSeconds, 0, waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
     }
 }

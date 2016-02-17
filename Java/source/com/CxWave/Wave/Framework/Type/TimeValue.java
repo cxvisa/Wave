@@ -6,11 +6,13 @@ package com.CxWave.Wave.Framework.Type;
 
 public class TimeValue implements Comparable<TimeValue>
 {
-    private long            m_milliSeconds = 0;
-    private int             m_nanoSeconds  = 0;
+    private long                  m_milliSeconds = 0;
+    private int                   m_nanoSeconds  = 0;
 
-    public static final int NANOS_IN_MILLI = 1000000;
-    public static final int MAX_NANOS      = NANOS_IN_MILLI - 1;
+    public static final int       NANOS_IN_MILLI = 1000000;
+    public static final int       MAX_NANOS      = NANOS_IN_MILLI - 1;
+
+    public static final TimeValue IMMEDIATE      = new TimeValue (0, 0);
 
     public TimeValue ()
     {
@@ -137,5 +139,28 @@ public class TimeValue implements Comparable<TimeValue>
                 return (false);
             }
         }
+    }
+
+    @Override
+    public boolean equals (final Object object)
+    {
+        if (null == object)
+        {
+            return (false);
+        }
+
+        if (!(object instanceof TimeValue))
+        {
+            return (false);
+        }
+
+        if (object == this)
+        {
+            return (true);
+        }
+
+        final TimeValue rhs = (TimeValue) object;
+
+        return ((m_milliSeconds == rhs.m_milliSeconds) && (m_nanoSeconds == rhs.m_nanoSeconds));
     }
 }

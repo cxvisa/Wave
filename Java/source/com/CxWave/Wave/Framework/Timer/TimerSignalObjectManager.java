@@ -56,5 +56,7 @@ public class TimerSignalObjectManager extends WaveLocalObjectManager
 
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
+
+        TimerWorker.processTimeout ();
     }
 }

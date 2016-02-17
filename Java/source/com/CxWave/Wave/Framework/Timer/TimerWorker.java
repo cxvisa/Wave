@@ -72,7 +72,7 @@ public class TimerWorker extends WaveWorker
             m_currentTimerId.increment ();
         }
 
-        timerInfo.setTimerId (m_currentTimerId);
+        timerInfo.setTimerId (new TimerHandle (m_currentTimerId));
 
         timerObjectManagerAddTimerMessage.setTimerId (timerInfo.getTimerId ());
 
@@ -156,14 +156,20 @@ public class TimerWorker extends WaveWorker
                 {
                     errorTracePrintf ("TimerWorker.restartTimer : Could not send a notification to service %s about a timer expiration with timer handle %s", FrameworkToolKit.getServiceNameById (timerInfo.getServiceId ()), (timerInfo.getTimerId ()).toString ());
                 }
+                else
+                {
+                    successTracePrintf ("TimerWorker.restartTimer : Successfully sent a notification to service %s about a timer expiration with timer handle %s", FrameworkToolKit.getServiceNameById (timerInfo.getServiceId ()), (timerInfo.getTimerId ()).toString ());
+                }
 
                 final TimeValue periodicInterval = timerInfo.getPeriodicInterval ();
 
-                if (!(TimerHandle.NullTimerHandle.equals (timerInfo.getPeriodicInterval ())))
+                if (!(TimeValue.IMMEDIATE.equals (timerInfo.getPeriodicInterval ())))
                 {
                     expirationTime.add (periodicInterval);
 
                     addTimerToList (timerInfo);
+
+                    infoTracePrintf ("TimerWorker.restartTimer : Added a periodic Timer.");
                 }
             }
             else
