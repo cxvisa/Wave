@@ -5,6 +5,7 @@
 package com.CxWave.Wave.Framework.Core.Messages;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
 import com.CxWave.Wave.Framework.ObjectModel.WaveElement;
 import com.CxWave.Wave.Framework.ObjectModel.WaveTimerExpirationHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSerializable;
@@ -21,9 +22,14 @@ public class WaveTimerExpiredObjectManagerMessage extends WaveMessage
     @NonSerializable
     private WaveElement                m_waveTimerSender;
 
+    public WaveTimerExpiredObjectManagerMessage ()
+    {
+        super (WaveServiceId.NullServiceId, FrameworkOpCodes.WAVE_OBJECT_MANAGER_TIMER_EXPIRED);
+    }
+
     public WaveTimerExpiredObjectManagerMessage (final WaveServiceId serviceCode, final TimerHandle timerId, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
     {
-        super (serviceCode);
+        super (serviceCode, FrameworkOpCodes.WAVE_OBJECT_MANAGER_TIMER_EXPIRED);
 
         m_timerId = timerId;
         m_waveTimerExpirationCallback = waveTimerExpirationCallback;
