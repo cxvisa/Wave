@@ -165,7 +165,7 @@ public class TraceObjectManager extends WaveObjectManager
 
             if (addNewLine)
             {
-                newLineString = "\n";
+                newLineString = "\r\n";
             }
 
             s_waveTraceFile.printf ("%s%s%s", computedTraceString, stringToTrace, newLineString);
@@ -219,7 +219,7 @@ public class TraceObjectManager extends WaveObjectManager
 
             if (addNewLine)
             {
-                newLineString = "\n";
+                newLineString = "\r\n";
             }
 
             final String newFormatString = new String ("%s") + formatString + newLineString;

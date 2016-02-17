@@ -2228,6 +2228,7 @@ public class WaveObjectManager extends WaveElement
         }
     }
 
+    @NonMessageHandler
     protected WaveMessageStatus recallButDoNotDeleteResponseMap (final WaveMessage waveMessage)
     {
         if (null == waveMessage)
@@ -2268,6 +2269,7 @@ public class WaveObjectManager extends WaveElement
         return (waveThread.recallMessage (waveMessage));
     }
 
+    @NonMessageHandler
     WaveMessageStatus recall (final WaveMessage waveMessage)
     {
         final WaveMessageStatus recallStatus = recallButDoNotDeleteResponseMap (waveMessage);

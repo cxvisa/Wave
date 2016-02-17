@@ -41,7 +41,6 @@ public class WaveProcessTimerExpirationObjectManagerWorker extends WaveWorker
         waveAssert (null != timerId);
         waveAssert (null != timerSender);
         waveAssert (null != timerExpirationHandler);
-        waveAssert (null != timerExpirationContext);
 
         waveTimerExpiredObjectManagerMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         reply (waveTimerExpiredObjectManagerMessage);

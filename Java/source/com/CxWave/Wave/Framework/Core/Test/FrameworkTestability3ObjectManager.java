@@ -55,7 +55,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
 
         final TimerHandle timerHandle = new TimerHandle ();
 
-        final ResourceId status = startTimer (timerHandle, 5000, new WaveTimerExpirationHandler ("timerExpirationCallbak"), waveAsynchronousContextForBootPhases, this);
+        final ResourceId status = startTimer (timerHandle, 5000, new WaveTimerExpirationHandler ("timerExpirationCallback"), waveAsynchronousContextForBootPhases, this);
 
         if (ResourceId.FRAMEWORK_SUCCESS != status)
         {
@@ -63,18 +63,43 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
 
             waveAsynchronousContextForBootPhases.setCompletionStatus (status);
             waveAsynchronousContextForBootPhases.callback ();
+
+            return;
         }
         else
         {
             successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle.toString ());
         }
+
+        final TimerHandle timerHandle2 = new TimerHandle ();
+
+        final ResourceId status2 = startTimer (timerHandle2, 7000, 7000, new WaveTimerExpirationHandler ("timerExpirationCallback2"), null, this);
+
+        if (ResourceId.FRAMEWORK_SUCCESS != status2)
+        {
+            errorTracePrintf ("FrameworkTestability3ObjectManager.boot : Failed to arm a periodic timer ...");
+
+            waveAsynchronousContextForBootPhases.setCompletionStatus (status);
+            waveAsynchronousContextForBootPhases.callback ();
+
+            return;
+        }
+        else
+        {
+            successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle2.toString ());
+        }
     }
 
-    private void timerExpirationCallbak (final TimerHandle timerHandle, final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
+    private void timerExpirationCallback (final TimerHandle timerHandle, final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
     {
-        infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallbak : Entering ...");
+        infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback : Entering ...");
 
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
+    }
+
+    private void timerExpirationCallback2 (final TimerHandle timerHandle, final Object object)
+    {
+        infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback2 : Entering for Timer Handle %s", timerHandle.toString ());
     }
 }
