@@ -20,6 +20,7 @@ import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -864,5 +865,12 @@ public class WaveThread extends Thread
         }
 
         return (status);
+    }
+
+    public int recallTimerExpirationMessagesForTimer (final TimerHandle timerHandle)
+    {
+        // We need not lock in this method since the message queues have built in locking mechanism.
+
+        return (m_timerExpirations.removeTimerExpirationsForTimer (timerHandle));
     }
 }

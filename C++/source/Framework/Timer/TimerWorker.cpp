@@ -517,9 +517,9 @@ void TimerWorker::deleteTimer (TimerObjectManagerDeleteTimerMessage *pMessage)
  *          timerId: Id of the timer to be removed.
  *
  * Outputs:
- *          0 on sucess and 1 if the timer was not found.
+ *          0 on success and 1 if the timer was not found.
  *
- * Describtion:
+ * Description:
  *          Search for a timer using timer Id and remove it from the timer list.
  *
  */

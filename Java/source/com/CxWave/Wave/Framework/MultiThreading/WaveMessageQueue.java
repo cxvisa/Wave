@@ -1,7 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2015-2016 Vidyasagara Guntaka                           *
- *   All rights reserved.                                                  *
- *   Author : Vidyasagara Reddy Guntaka                                    *
+ * Copyright (C) 2015-2016 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  ***************************************************************************/
 
 package com.CxWave.Wave.Framework.MultiThreading;
@@ -10,23 +8,27 @@ import static com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus.WAVE_MES
 import static com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus.WAVE_MESSAGE_SUCCESS;
 
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.CxWave.Wave.Framework.Core.Messages.WaveTimerExpiredObjectManagerMessage;
+import com.CxWave.Wave.Framework.Type.TimerHandle;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public class WaveMessageQueue<T>
 {
-    private Deque<T> m_messageQueue;
-    WaveMutex        m_waveMutex;
+    private final Deque<T> m_messageQueue;
+    WaveMutex              m_waveMutex;
 
     WaveMessageQueue ()
     {
         m_messageQueue = new LinkedList<T> ();
-        m_waveMutex    = new WaveMutex     ();
+        m_waveMutex = new WaveMutex ();
     }
 
-    public void insertAtTheBack (T element)
+    public void insertAtTheBack (final T element)
     {
         m_waveMutex.lock ();
 
@@ -35,7 +37,7 @@ public class WaveMessageQueue<T>
         m_waveMutex.unlock ();
     }
 
-    public void insertAtTheFront (T element)
+    public void insertAtTheFront (final T element)
     {
         m_waveMutex.lock ();
 
@@ -53,13 +55,13 @@ public class WaveMessageQueue<T>
         m_waveMutex.unlock ();
     }
 
-    public WaveMessageStatus remove (T element)
+    public WaveMessageStatus remove (final T element)
     {
         WaveMessageStatus status = WAVE_MESSAGE_ERROR_UNKNOWN_MESSAGE;
 
         m_waveMutex.lock ();
 
-        boolean elementPresent = m_messageQueue.removeFirstOccurrence (element);
+        final boolean elementPresent = m_messageQueue.removeFirstOccurrence (element);
 
         m_waveMutex.unlock ();
 
@@ -75,7 +77,7 @@ public class WaveMessageQueue<T>
     {
         m_waveMutex.lock ();
 
-        T element = m_messageQueue.peekFirst ();
+        final T element = m_messageQueue.peekFirst ();
 
         m_waveMutex.unlock ();
 
@@ -86,7 +88,7 @@ public class WaveMessageQueue<T>
     {
         m_waveMutex.lock ();
 
-        T element = m_messageQueue.pollFirst ();
+        final T element = m_messageQueue.pollFirst ();
 
         m_waveMutex.unlock ();
 
@@ -97,7 +99,7 @@ public class WaveMessageQueue<T>
     {
         m_waveMutex.lock ();
 
-        long numberOfEntriesInTheMessageQueue = m_messageQueue.size ();
+        final long numberOfEntriesInTheMessageQueue = m_messageQueue.size ();
 
         m_waveMutex.unlock ();
 
@@ -116,5 +118,40 @@ public class WaveMessageQueue<T>
         m_waveMutex.unlock ();
 
         return (isMessageQueueEmpty);
+    }
+
+    public int removeTimerExpirationsForTimer (final TimerHandle timerHandle)
+    {
+        m_waveMutex.lock ();
+
+        int numberOfExpirationsEncountered = 0;
+
+        final Iterator<T> iterator = m_messageQueue.iterator ();
+
+        while (iterator.hasNext ())
+        {
+            final T element = iterator.next ();
+
+            WaveAssertUtils.waveAssert (null != element);
+
+            final WaveTimerExpiredObjectManagerMessage waveTimerExpiredObjectManagerMessage = (WaveTimerExpiredObjectManagerMessage) element;
+
+            WaveAssertUtils.waveAssert (null != waveTimerExpiredObjectManagerMessage);
+
+            final TimerHandle timerId = waveTimerExpiredObjectManagerMessage.getTimerId ();
+
+            WaveAssertUtils.waveAssert (null != timerId);
+
+            if (timerHandle.equals (timerId))
+            {
+                iterator.remove ();
+
+                numberOfExpirationsEncountered++;
+            }
+        }
+
+        m_waveMutex.lock ();
+
+        return numberOfExpirationsEncountered;
     }
 }

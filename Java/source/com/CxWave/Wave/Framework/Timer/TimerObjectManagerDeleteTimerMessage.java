@@ -11,15 +11,25 @@ public class TimerObjectManagerDeleteTimerMessage extends WaveMessage
 {
     private TimerHandle m_timerId;
 
-    protected TimerObjectManagerDeleteTimerMessage ()
+    public TimerObjectManagerDeleteTimerMessage ()
     {
         super (TimerObjectManager.getWaveServiceId (), TimerOpCodes.TIMER_DELETE_TIMER);
     }
 
-    protected TimerObjectManagerDeleteTimerMessage (final TimerHandle timerId)
+    public TimerObjectManagerDeleteTimerMessage (final TimerHandle timerId)
     {
         super (TimerObjectManager.getWaveServiceId (), TimerOpCodes.TIMER_DELETE_TIMER);
 
+        m_timerId = timerId;
+    }
+
+    public TimerHandle getTimerId ()
+    {
+        return m_timerId;
+    }
+
+    public void setTimerId (final TimerHandle timerId)
+    {
         m_timerId = timerId;
     }
 }

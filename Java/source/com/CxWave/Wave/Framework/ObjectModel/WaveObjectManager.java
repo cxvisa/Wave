@@ -29,6 +29,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Persistence.Local.PersistenceLocalObjectManager;
 import com.CxWave.Wave.Framework.Timer.TimerObjectManagerAddTimerMessage;
+import com.CxWave.Wave.Framework.Timer.TimerObjectManagerDeleteTimerMessage;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
@@ -2362,6 +2363,43 @@ public class WaveObjectManager extends WaveElement
     protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
     {
         return (startTimer (timerHandle, startIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+    }
 
+    protected ResourceId deleteTimer (final TimerHandle timerHandle)
+    {
+        ResourceId returnCode;
+
+        final TimerObjectManagerDeleteTimerMessage timerObjectManagerDeleteTimerMessage = new TimerObjectManagerDeleteTimerMessage (timerHandle);
+
+        if (null == timerObjectManagerDeleteTimerMessage)
+        {
+            errorTracePrintf ("WaveObjectManager::deleteTimer : Error allocating delete Timer Msg.");
+
+            return (ResourceId.FRAMEWORK_TIMER_NO_MEMORY);
+        }
+
+        final WaveMessageStatus status = sendSynchronously (timerObjectManagerDeleteTimerMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+        {
+            errorTracePrintf ("WaveObjectManager::deleteTimer : delete timer message failed.");
+
+            return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_DELETE);
+        }
+        else
+        {
+            returnCode = timerObjectManagerDeleteTimerMessage.getCompletionStatus ();
+
+            if (ResourceId.TIMER_SUCCESS != returnCode)
+            {
+                return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_DELETE);
+            }
+            else
+            {
+                returnCode = ResourceId.FRAMEWORK_SUCCESS;
+            }
+
+            return (returnCode);
+        }
     }
 }

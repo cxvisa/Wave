@@ -19,7 +19,8 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 @ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY3)
 public class FrameworkTestability3ObjectManager extends WaveObjectManager
 {
-    private static FrameworkTestability3ObjectManager s_frameworkTestability3ObjectManager = null;
+    private static FrameworkTestability3ObjectManager s_frameworkTestability3ObjectManager    = null;
+    private static int                                s_numberOfPeriodicTimerCallbackReceived = 0;
 
     protected FrameworkTestability3ObjectManager ()
     {
@@ -101,5 +102,12 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
     private void timerExpirationCallback2 (final TimerHandle timerHandle, final Object object)
     {
         infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback2 : Entering for Timer Handle %s", timerHandle.toString ());
+
+        s_numberOfPeriodicTimerCallbackReceived++;
+
+        if (10 == s_numberOfPeriodicTimerCallbackReceived)
+        {
+            deleteTimer (timerHandle);
+        }
     }
 }

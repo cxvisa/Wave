@@ -4,7 +4,10 @@
 
 package com.CxWave.Wave.Framework.Timer;
 
+import java.util.Iterator;
+
 import com.CxWave.Wave.Framework.Core.Messages.WaveTimerExpiredObjectManagerMessage;
+import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
@@ -41,7 +44,7 @@ public class TimerWorker extends WaveWorker
 
         if (WaveConditionStatus.WAVE_CONDITION_SUCCESS != status)
         {
-            fatalTracePrintf ("TimerWorker.addTimer : Current Timer could not be cancelled.");
+            fatalTracePrintf ("TimerWorker.addTimerMessageHandler : Current Timer could not be cancelled.");
 
             waveAssert ();
 
@@ -89,7 +92,7 @@ public class TimerWorker extends WaveWorker
         //
         // if (0 != result)
         // {
-        // fatalTracePrintf ("TimerWorker.addTimer : Timer queue could not be restarted.");
+        // fatalTracePrintf ("TimerWorker.addTimerMessageHandler : Timer queue could not be restarted.");
         //
         // waveAssert ();
         //
@@ -192,6 +195,118 @@ public class TimerWorker extends WaveWorker
         }
 
         return (0);
+    }
+
+    private void deleteTimerMessageHandler (final TimerObjectManagerDeleteTimerMessage timerObjectManagerDeleteTimerMessage)
+    {
+        m_mutex.lock ();
+
+        final WaveConditionStatus status = m_condition.signal ();
+
+        if (WaveConditionStatus.WAVE_CONDITION_SUCCESS != status)
+        {
+            fatalTracePrintf ("TimerWorker.deleteTimerMessageHandler : Current Timer could not be cancelled.");
+
+            waveAssert ();
+
+            timerObjectManagerDeleteTimerMessage.setCompletionStatus (ResourceId.TIMER_ERROR_CAN_NOT_CANCEL_SYS_TIMER);
+
+            m_mutex.unlock ();
+
+            reply (timerObjectManagerDeleteTimerMessage);
+
+            return;
+        }
+
+        if (1 == removeTimer (timerObjectManagerDeleteTimerMessage, timerObjectManagerDeleteTimerMessage.getTimerId ()))
+        {
+            timerObjectManagerDeleteTimerMessage.setCompletionStatus (ResourceId.TIMER_SUCCESS);
+        }
+        else
+        {
+            warnTracePrintf ("TimerWorker::deleteTimerMessageHandler : Invalid Handle.");
+
+            timerObjectManagerDeleteTimerMessage.setCompletionStatus (ResourceId.TIMER_ERROR_INVALID_HANDLE);
+        }
+
+        // final int result = restartTimer ();
+        //
+        // if (0 != result)
+        // {
+        // fatalTracePrintf ("TimerWorker.deleteTimerMessageHandler : Timer queue could not be restarted.");
+        //
+        // waveAssert ();
+        //
+        // timerObjectManagerAddTimerMessage.setTimerId (new TimerHandle (0));
+        // timerObjectManagerAddTimerMessage.setCompletionStatus (ResourceId.TIMER_ERROR_CAN_NOT_RESTART_SYS_TIMER);
+        //
+        // m_mutex.unlock ();
+        //
+        // reply (timerObjectManagerAddTimerMessage);
+        //
+        // return;
+        // }
+
+        reply (timerObjectManagerDeleteTimerMessage);
+
+        m_mutex.unlock ();
+    }
+
+    /*
+     * removeTimer Remove a timer from the timer list.
+     *
+     * Inputs: timerId: Id of the timer to be removed.
+     *
+     * Outputs: 0 on success and 1 if the timer was not found.
+     *
+     * Description: Search for a timer using timer Id and remove it from the timer list.
+     *
+     */
+
+    int removeTimer (final TimerObjectManagerDeleteTimerMessage timerObjectManagerDeleteTimerMessage, final TimerHandle timerId)
+    {
+        int found = 0;
+        WaveThread waveThread = null;
+        int nTimersRecalled;
+
+        final Iterator<TimerData> iterator = m_timerList.iterator ();
+
+        while (iterator.hasNext ())
+        {
+            final TimerData timerInfo = iterator.next ();
+
+            waveAssert (null != timerInfo);
+
+            final TimerHandle tempTimerId = timerInfo.getTimerId ();
+
+            waveAssert (null != tempTimerId);
+
+            if (timerId.equals (tempTimerId))
+            {
+                iterator.remove ();
+
+                found = 1;
+                break;
+            }
+        }
+
+        waveThread = WaveThread.getWaveThreadForServiceId (timerObjectManagerDeleteTimerMessage.getSenderServiceCode ());
+
+        if (null == waveThread)
+        {
+            fatalTracePrintf ("TimerWorker::removeTimer : Calling thread for delete timer is null");
+            waveAssert (false);
+            return 0;
+        }
+
+        nTimersRecalled = waveThread.recallTimerExpirationMessagesForTimer (timerId);
+
+        if (0 != nTimersRecalled)
+        {
+            found = 1;
+        }
+
+        return (found);
     }
 
     private void processTimeoutInternal ()
