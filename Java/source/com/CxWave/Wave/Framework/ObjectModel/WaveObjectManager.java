@@ -1902,7 +1902,7 @@ public class WaveObjectManager extends WaveElement
         return (waveMessageResponseContext);
     }
 
-    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final int timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
+    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final long timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
     {
         if (null == waveMessage)
         {
@@ -2105,17 +2105,14 @@ public class WaveObjectManager extends WaveElement
 
             if (0 != timeOutInMilliSeconds)
             {
-                final TimerHandle timerHandle = null;
+                final TimerHandle timerHandle = new TimerHandle ();
 
-                // FIXME
-                // final ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds,
-                // reinterpret_cast<WaveTimerExpirationHandler> (WaveObjectManager.sendTimerExpiredCallback),
-                // reinterpret_cast<void *> (waveMessageId));
-
-                final ResourceId timeStatus = ResourceId.FRAMEWORK_SUCCESS;
+                final ResourceId timeStatus = startTimer (timerHandle, timeOutInMilliSeconds, new WaveTimerExpirationHandler ("sendTimerExpiredCallback"), waveMessageId);
 
                 if (ResourceId.FRAMEWORK_SUCCESS != timeStatus)
                 {
+                    fatalTracePrintf ("WaveObjectManager.send : Could not arm a timer to enforce send timeout.  Status : %s", FrameworkToolKit.localize (timeStatus));
+
                     waveAssert (false);
                 }
                 else
@@ -2261,8 +2258,19 @@ public class WaveObjectManager extends WaveElement
         return (startTimer (timerHandle, startInterval, periodicInterval, waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
     }
 
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final long periodicIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
+    {
+        return (startTimer (timerHandle, startIntervalMilliSeconds, periodicIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+    }
+
     protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
     {
         return (startTimer (timerHandle, startIntervalMilliSeconds, 0, waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
+    }
+
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
+    {
+        return (startTimer (timerHandle, startIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+
     }
 }
