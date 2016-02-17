@@ -604,7 +604,7 @@ public class WaveThread extends Thread
                     // We cannot use trace method here. It will lead to an infinite recursion because the trace service
                     // might not have been enabled. Also the trace statement causes invoking subMitMessage.
 
-                    // trace (TRACE_LEVEL_DEBUG, string ("WaveThread::submitMessage : Allowing the operation (") + operationCode
+                    // trace (TRACE_LEVEL_DEBUG, string ("WaveThread.submitMessage : Allowing the operation (") + operationCode
                     // + ") before enabling the service.");
                 }
                 else
@@ -660,7 +660,7 @@ public class WaveThread extends Thread
             }
             else
             {
-                System.err.println ("WaveThread::submitMessage : Submitting message with unknown priority (" + messagePriority + ").");
+                System.err.println ("WaveThread.submitMessage : Submitting message with unknown priority (" + messagePriority + ").");
                 WaveAssertUtils.waveAssert (false);
                 status = WaveMessageStatus.WAVE_MESSAGE_ERROR_UNKNOWN_PRIORITY;
             }
@@ -690,7 +690,7 @@ public class WaveThread extends Thread
 
         if (m_waveServiceId != senderServiceId)
         {
-            WaveTraceUtils.fatalTracePrintf ("WaveThread::submitReplyMessage : Submitting reply message to a wrong Wave Thread.");
+            WaveTraceUtils.fatalTracePrintf ("WaveThread.submitReplyMessage : Submitting reply message to a wrong Wave Thread.");
             WaveAssertUtils.waveAssert (false);
 
             return (WaveMessageStatus.WAVE_MESSAGE_ERROR_SUBMIT_RESPONSE_TO_INVALID_THREAD);
@@ -839,5 +839,30 @@ public class WaveThread extends Thread
         }
 
         return (null);
+    }
+
+    public WaveMessageStatus recallMessage (final WaveMessage waveMessage)
+    {
+        // We need not lock in this method since the message queues have built in locking mechanism.
+
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_SUCCESS;
+        final WaveMessagePriority messagePriority = waveMessage.getPriority ();
+
+        if (WaveMessagePriority.WAVE_MESSAGE_PRIORITY_HIGH == messagePriority)
+        {
+            status = m_highPriorityMessageResponses.remove (waveMessage);
+        }
+        else if (WaveMessagePriority.WAVE_MESSAGE_PRIORITY_NORMAL == messagePriority)
+        {
+            status = m_messages.remove (waveMessage);
+        }
+        else
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveThread.recallMessage : Recalling a message with unknown priority (%s)", FrameworkToolKit.localize (messagePriority.getResourceId ()));
+            WaveAssertUtils.waveAssert ();
+            status = WaveMessageStatus.WAVE_MESSAGE_ERROR_RESPONSE_UNKNOWN_PRIORITY;
+        }
+
+        return (status);
     }
 }

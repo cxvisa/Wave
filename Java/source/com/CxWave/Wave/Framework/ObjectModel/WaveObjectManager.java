@@ -2181,7 +2181,7 @@ public class WaveObjectManager extends WaveElement
 
                 if (ResourceId.WAVE_MESSAGE_SUCCESS != configurationIntentStatus)
                 {
-                    errorTracePrintf ("WaveObjectManager::handleWaveMessageResponse : Failed to remove the configuration intent from HA peer for messageId : %s, handled by service code : %s.", (waveMessage.getMessageId ()).toString (), (waveMessage.getServiceCode ()).toString ());
+                    errorTracePrintf ("WaveObjectManager.handleWaveMessageResponse : Failed to remove the configuration intent from HA peer for messageId : %s, handled by service code : %s.", (waveMessage.getMessageId ()).toString (), (waveMessage.getServiceCode ()).toString ());
                 }
             }
 
@@ -2195,6 +2195,95 @@ public class WaveObjectManager extends WaveElement
         }
     }
 
+    private void handleWaveMessageResponseWhenTimeOutExpired (final FrameworkStatus frameworkStatus, final UI32 waveMessageId)
+    {
+        final WaveMessageResponseContext waveMessageResponseContext = getResponseContext (waveMessageId);
+
+        if (null != waveMessageResponseContext)
+        {
+            waveMessageResponseContext.setIsTimerStarted (false);
+            waveMessageResponseContext.setTimerHandle (TimerHandle.NullTimerHandle);
+
+            final WaveMessage waveMessage = waveMessageResponseContext.getWaveMessage ();
+            final WaveMessageStatus status = recallButDoNotDeleteResponseMap (waveMessage);
+            final WaveMessage tempInputMessage = m_inputMessage;
+
+            m_inputMessage = null;
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == status)
+            {
+                waveMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_ERROR_RECALLED_DUE_TO_TIME_OUT);
+                handleWaveMessageResponse (frameworkStatus, waveMessage, true); // Indicate that message has been recalled
+            }
+            else
+            {
+                waveMessageResponseContext.executeResponseCallback (frameworkStatus);
+            }
+
+            m_inputMessage = tempInputMessage;
+        }
+        else
+        {
+            // Nothing to be done. The response must have arrived earlier.
+        }
+    }
+
+    protected WaveMessageStatus recallButDoNotDeleteResponseMap (final WaveMessage waveMessage)
+    {
+        if (null == waveMessage)
+        {
+            errorTracePrintf ("WaveObjectManager.recall : Trying to recall a null message.");
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NULL_MESSAGE);
+        }
+
+        WaveThread waveThread = null;
+        final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
+        final LocationId locationId = waveMessage.getReceiverLocationId ();
+        LocationId effectiveLocationId = locationId;
+
+        if (LocationId.NullLocationId.equals (effectiveLocationId))
+        {
+            if (true != (FrameworkToolKit.isALocalService (waveMessage.getServiceCode ())))
+            {
+                effectiveLocationId = FrameworkToolKit.getClusterPrimaryLocationId ();
+            }
+        }
+
+        if ((LocationId.NullLocationId.equals (effectiveLocationId)) || (thisLocationId.equals (effectiveLocationId)))
+        {
+            waveThread = WaveThread.getWaveThreadForServiceId (waveMessage.getServiceCode ());
+        }
+        else
+        {
+            waveThread = WaveThread.getWaveThreadForMessageRemoteTransport ();
+        }
+
+        if (null == waveThread)
+        {
+            errorTracePrintf ("WaveObjectManager.recall : No Service registered to accept this service Id %s.", (waveMessage.getServiceCode ()).toString ());
+
+            return (WaveMessageStatus.WAVE_MESSAGE_ERROR_NO_SERVICE_TO_ACCEPT_MESSAGE);
+        }
+
+        return (waveThread.recallMessage (waveMessage));
+    }
+
+    WaveMessageStatus recall (final WaveMessage waveMessage)
+    {
+        final WaveMessageStatus recallStatus = recallButDoNotDeleteResponseMap (waveMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == recallStatus)
+        {
+            WaveMessageResponseContext waveMessageResponseContext = null;
+
+            waveMessageResponseContext = removeResponseMap (waveMessage.getMessageId ());
+
+            waveAssert (null != waveMessageResponseContext);
+        }
+
+        return (recallStatus);
+    }
+
     protected ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final TimeValue periodicInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
     {
         final TimeValue currentTimeValue = new TimeValue ();
@@ -2203,7 +2292,7 @@ public class WaveObjectManager extends WaveElement
 
         if (!(currentTimeValue.isValid ()))
         {
-            errorTracePrintf ("WaveObjectManager::startTimer : error getting current time.");
+            errorTracePrintf ("WaveObjectManager.startTimer : error getting current time.");
 
             return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_START);
         }
@@ -2231,7 +2320,7 @@ public class WaveObjectManager extends WaveElement
 
         if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
         {
-            errorTracePrintf ("WaveObjectManager::startTimer : TimerObjectManagerAddTimerMessage failed.  Status : %s", FrameworkToolKit.localize (status));
+            errorTracePrintf ("WaveObjectManager.startTimer : TimerObjectManagerAddTimerMessage failed.  Status : %s", FrameworkToolKit.localize (status));
 
             return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_START);
         }
