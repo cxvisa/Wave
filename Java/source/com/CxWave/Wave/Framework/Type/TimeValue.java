@@ -67,6 +67,27 @@ public class TimeValue implements Comparable<TimeValue>
         normalize ();
     }
 
+    public void resetToDiff (final TimeValue timeValue)
+    {
+        m_milliSeconds -= timeValue.m_milliSeconds;
+        m_nanoSeconds -= timeValue.m_nanoSeconds;
+
+        if ((m_milliSeconds > 0) && (m_nanoSeconds < 0))
+        {
+            m_milliSeconds -= 1;
+            m_nanoSeconds += NANOS_IN_MILLI;
+        }
+        else if ((m_milliSeconds < 0) && (m_nanoSeconds < 0))
+        {
+            m_milliSeconds *= -1;
+            m_nanoSeconds *= -1;
+        }
+        else if ((m_milliSeconds == 0) && (m_nanoSeconds < 0))
+        {
+            m_nanoSeconds *= -1;
+        }
+    }
+
     @Override
     public int compareTo (final TimeValue rhs)
     {
@@ -162,5 +183,11 @@ public class TimeValue implements Comparable<TimeValue>
         final TimeValue rhs = (TimeValue) object;
 
         return ((m_milliSeconds == rhs.m_milliSeconds) && (m_nanoSeconds == rhs.m_nanoSeconds));
+    }
+
+    @Override
+    public String toString ()
+    {
+        return (String.format ("%d:%06d", m_milliSeconds, m_nanoSeconds));
     }
 }

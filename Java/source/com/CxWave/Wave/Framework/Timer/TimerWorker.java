@@ -20,6 +20,7 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveConditionStatus;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
@@ -27,10 +28,10 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 public class TimerWorker extends WaveWorker
 {
     private final WavePriorityQueue<TimerData> m_timerList      = new WavePriorityQueue<TimerData> ();
-    private final WaveMutex                    m_mutex          = new WaveMutex ();
+    private static final WaveMutex             m_mutex          = new WaveMutex ();
     private final TimerHandle                  m_currentTimerId = new TimerHandle (1);
-    private final TimeValue                    m_maxDelay       = new TimeValue ();
-    private final WaveCondition                m_condition      = new WaveCondition (m_mutex);
+    private static TimeValue                   m_maxDelay       = new TimeValue ();
+    private static final WaveCondition         m_condition      = new WaveCondition (m_mutex);
 
     public TimerWorker (final WaveObjectManager waveObjectManager)
     {
@@ -156,6 +157,16 @@ public class TimerWorker extends WaveWorker
 
                 final WaveMessageStatus sendStatus = sendOneWay (waveTimerExpiredObjectManagerMessage);
 
+                final TimeValue delayInterval = new TimeValue ();
+
+                delayInterval.resetToCurrent ();
+                delayInterval.resetToDiff (expirationTime);
+
+                if (1 == (delayInterval.compareTo (m_maxDelay)))
+                {
+                    m_maxDelay = delayInterval;
+                }
+
                 if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != sendStatus)
                 {
                     errorTracePrintf ("TimerWorker.restartTimer : Could not send a notification to service %s about a timer expiration with timer handle %s", FrameworkToolKit.getServiceNameById (timerInfo.getServiceId ()), (timerInfo.getTimerId ()).toString ());
@@ -173,10 +184,11 @@ public class TimerWorker extends WaveWorker
 
                     addTimerToList (timerInfo);
 
-                    final TimeValue tempCurrentTime = new TimeValue ();
-
-                    tempCurrentTime.resetToCurrent ();
-                    infoTracePrintf ("TimerWorker.restartTimer : Added a periodic Timer.  Expiration Time %d : %d, current time : %d : %d", expirationTime.getMilliSeconds (), expirationTime.getNanoSeconds (), tempCurrentTime.getMilliSeconds (), tempCurrentTime.getNanoSeconds ());
+                    // final TimeValue tempCurrentTime = new TimeValue ();
+                    // tempCurrentTime.resetToCurrent ();
+                    // infoTracePrintf ("TimerWorker.restartTimer : Added a periodic Timer. Expiration Time %d : %d, current
+                    // time : %d : %d", expirationTime.getMilliSeconds (), expirationTime.getNanoSeconds (),
+                    // tempCurrentTime.getMilliSeconds (), tempCurrentTime.getNanoSeconds ());
                 }
             }
             else
@@ -341,6 +353,8 @@ public class TimerWorker extends WaveWorker
         timerObjectManagerDeleteAllTimersForServiceMessage.setCompletionStatus (removalStatus);
 
         reply (timerObjectManagerDeleteAllTimersForServiceMessage);
+
+        m_mutex.unlock ();
     }
 
     private ResourceId removeAllTimersForService (final WaveServiceId waveServiceId)
@@ -382,6 +396,33 @@ public class TimerWorker extends WaveWorker
         return (status);
     }
 
+    private void deleteAllTimers ()
+    {
+        m_mutex.lock ();
+
+        final WaveConditionStatus status = m_condition.signal ();
+
+        if (WaveConditionStatus.WAVE_CONDITION_SUCCESS != status)
+        {
+            fatalTracePrintf ("TimerWorker.deleteAllTimers : Current Timer could not be cancelled.");
+
+            waveAssert ();
+
+            m_mutex.unlock ();
+
+            return;
+        }
+
+        removeAllTimers ();
+
+        m_mutex.unlock ();
+    }
+
+    private void removeAllTimers ()
+    {
+        m_timerList.clear ();
+    }
+
     private void processTimeoutInternal ()
     {
         m_mutex.lock ();
@@ -411,5 +452,22 @@ public class TimerWorker extends WaveWorker
         WaveAssertUtils.waveAssert (null != timerWorker);
 
         timerWorker.processTimeoutInternal ();
+    }
+
+    public static void resetMaxDelay ()
+    {
+        m_mutex.lock ();
+
+        m_maxDelay = new TimeValue ();
+
+        m_mutex.unlock ();
+    }
+
+    public static void showMaxDelay ()
+    {
+        m_mutex.lock ();
+
+        WaveTraceUtils.infoTracePrintf ("TimerWorker.showMaxDelay : Timer Max Delay : %s", m_maxDelay.toString ());
+        m_mutex.unlock ();
     }
 }

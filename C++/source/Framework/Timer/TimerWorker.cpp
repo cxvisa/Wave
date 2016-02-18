@@ -215,14 +215,14 @@ UI32 TimerWorker::binarySearch (int first, int last, timeval &key)
         }
     }
 
-    // did not find key. retun position to insert it.
+    // did not find key. return position to insert it.
     return first;
 }
 /*
  * resetMaxDelay:
  *          Set Max Delay variable to 0.
  *
- * Describtion:
+ * Description:
  *     This is a static function that sets Max Delay variable to 0. This variable measures the
  *     difference between when the timer should expire and when it expires.
  *
@@ -240,7 +240,7 @@ void TimerWorker::resetMaxDelay ()
  * showMaxDelay:
  *          Display the max delay.
  *
- * Describtion:
+ * Description:
  *          This is a static function that can be used to show the max delay
  *          happened for any timer that was running.
  *
@@ -262,8 +262,8 @@ void TimerWorker::showMaxDelay ()
  *          0 in success
  *          -1 otherwise.
  *
- * Describtion:
- *     restert the system timer based on the first timer in the timer list.
+ * Description:
+ *     restart the system timer based on the first timer in the timer list.
  *     If the time should have been expired send the expiration message,
  *     remove the timer from the list and check the new first timer in the
  *     list.
@@ -446,7 +446,7 @@ void TimerWorker::timerSendOneWay (WaveMessage *pWaveMessage)
  * Outputs:
  *      Message status is success if the timer is removed.
  *      If the timer was not found appropriate error code will be set.
- * Describtion:
+ * Description:
  *     Remove a timer from the timer list.
  *     NOTE: If the timer is deleted successfully the caller will never
  *           get expiration message even if the message was sent before

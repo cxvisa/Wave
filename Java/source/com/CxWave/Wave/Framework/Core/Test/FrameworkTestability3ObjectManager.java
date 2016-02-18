@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveTimerExpirationHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.Timer.TimerWorker;
 import com.CxWave.Wave.Framework.Type.TimeValue;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
@@ -114,7 +115,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
         final TimeValue tempCurrentTime = new TimeValue ();
 
         tempCurrentTime.resetToCurrent ();
-        infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback : current-time : %d : %d", tempCurrentTime.getMilliSeconds (), tempCurrentTime.getNanoSeconds ());
-
+        infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback : current-time : %s", tempCurrentTime.toString ());
+        TimerWorker.showMaxDelay ();
     }
 }
