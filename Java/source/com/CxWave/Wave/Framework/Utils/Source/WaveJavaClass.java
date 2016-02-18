@@ -17,6 +17,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttribute;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
+import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ObjectModel.WaveManagedObject;
@@ -24,6 +25,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageCallback;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSequencerStep;
@@ -61,6 +63,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, Method>             m_waveSynchronousLinearSequencerSteps;
     private final Map<String, Method>             m_waveMessageCallbacks;
     private final Map<String, Method>             m_waveTimerExpirationHandlers;
+    private final Map<String, Method>             m_waveEventHandlers;
 
     public WaveJavaClass (final String name)
     {
@@ -77,6 +80,7 @@ public class WaveJavaClass extends WaveJavaType
         m_waveSynchronousLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveMessageCallbacks = new HashMap<String, Method> ();
         m_waveTimerExpirationHandlers = new HashMap<String, Method> ();
+        m_waveEventHandlers = new HashMap<String, Method> ();
     }
 
     public String getName ()
@@ -317,6 +321,8 @@ public class WaveJavaClass extends WaveJavaType
         computeWaveMessageCallbacks (reflectionClass);
 
         computeWaveTimerExpirationHandlers (reflectionClass);
+
+        computeWaveEventHandlers (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -828,6 +834,70 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    private void computeWaveEventHandlers (final Class<?> reflectionClass)
+    {
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())) && (!(waveObjectManagerIsADerivativeOf (m_typeName))) && (!(waveWorkerIsADerivativeOf (m_typeName))) && (!(waveManagedObjectIsADerivativeOf (m_typeName))))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Event Handlers for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final Annotation annotationForNonEventHandler = declaredMethod.getAnnotation (NonEventHandler.class);
+
+            if (null != annotationForNonEventHandler)
+            {
+                final NonEventHandler nonEventHandler = (NonEventHandler) annotationForNonEventHandler;
+
+                WaveAssertUtils.waveAssert (null != nonEventHandler);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveEventHandlers : Ignoring %s : %s from Event Handler computations since it is annotated with @NonEventHandler", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (1 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName = parameterTypes[0].getTypeName ();
+
+                final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName);
+
+                if (null != waveJavaClass)
+                {
+                    if (waveJavaClass.isADerivativeOfWaveEvent ())
+                    {
+                        if (m_waveEventHandlers.containsKey (declaredMethod.getName ()))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveEventHandlers : Trying to add a Event Handler for Class %s with Event Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveEventHandlers : Already persent Event Handler method : %s", (m_waveEventHandlers.get (declaredMethod.getName ())).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            m_waveEventHandlers.put (declaredMethod.getName (), declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveEventHandlers : Added a Timer Expiration Handler for Class %s with Wave Linear Sequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private boolean isAKnownWorker (final String workerClassName)
     {
         if (m_ownedWorkerClassNamesCadinalityMap.containsKey (workerClassName))
@@ -1227,6 +1297,44 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public boolean isADerivativeOfWaveEvent ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveEvent.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean waveEventIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveEvent.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     private void getAttributesMapForInheritanceHierarchy (final AttributesMap attributesMap)
     {
         WaveAssertUtils.waveAssert (null != attributesMap);
@@ -1450,6 +1558,25 @@ public class WaveJavaClass extends WaveJavaType
         if (null != m_superClass)
         {
             return (m_superClass.getMethodForWaveTimerExpirationHandler (waveTimerExpirationHandlerName));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveEventHandler (final String waveEventHandlerName)
+    {
+        final Method method = m_waveEventHandlers.get (waveEventHandlerName);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveEventHandler (waveEventHandlerName));
         }
         else
         {

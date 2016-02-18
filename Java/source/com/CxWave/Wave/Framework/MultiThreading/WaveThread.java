@@ -760,6 +760,27 @@ public class WaveThread extends Thread
         return (waveObjectManager);
     }
 
+    public static WaveServiceId getWaveServiceIdForCurrentThread ()
+    {
+        WaveObjectManager waveObjectManager = null;
+        WaveServiceId waveServiceId = null;
+
+        s_waveThreadIdToWaveObjectManagerMapMutex.lock ();
+
+        waveObjectManager = s_waveThreadIdToWaveObjectManagerMap.get (WaveThreadId.getWaveThreadIdForThisThread ());
+
+        s_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
+
+        if (null == waveObjectManager)
+        {
+            waveObjectManager = ReservedWaveLocalObjectManager.getInstance ();
+        }
+
+        waveServiceId = waveObjectManager.getServiceId ();
+
+        return (waveServiceId);
+    }
+
     public static WaveThread getWaveThreadForServiceId (final WaveServiceId waveServiceId)
     {
         return (s_waveServiceMap.getWaveThreadForServiceId (waveServiceId));

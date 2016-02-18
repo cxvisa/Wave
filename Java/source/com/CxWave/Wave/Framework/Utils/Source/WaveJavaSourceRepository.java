@@ -695,6 +695,18 @@ public class WaveJavaSourceRepository
         return (waveJavaClass.getMethodForWaveTimerExpirationHandler (waveTimerExpirationHandlerName));
     }
 
+    public static Method getMethodForWaveEventHandlerInWaveJavaClass (final String waveJavaClassName, final String waveEventHandlerName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveEventHandler (waveEventHandlerName));
+    }
+
     public static Set<String> getAllObjectManagerClassNames ()
     {
         final WaveJavaClass waveJavaClass = getWaveJavaClass (WaveObjectManager.class.getName ());

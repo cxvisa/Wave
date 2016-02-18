@@ -97,11 +97,18 @@ public class WaveObjectManager extends WaveElement
         {
             m_waveElementThatHandlesTheEvent = waveElement;
             m_waveEventHandler = waveEventHandler;
+
+            WaveAssertUtils.waveAssert (null != m_waveElementThatHandlesTheEvent);
+            WaveAssertUtils.waveAssert (null != m_waveEventHandler);
+
+            m_waveEventHandler.validateAndCompute (m_waveElementThatHandlesTheEvent);
         }
 
         public void executeEventHandler (final WaveEvent waveEvent)
         {
-            m_waveEventHandler.execute (waveEvent, m_waveElementThatHandlesTheEvent);
+            WaveAssertUtils.waveAssert (null != waveEvent);
+
+            m_waveEventHandler.execute (waveEvent);
         }
     };
 
