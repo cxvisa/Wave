@@ -2371,12 +2371,12 @@ public class WaveObjectManager extends WaveElement
 
         final TimerObjectManagerDeleteTimerMessage timerObjectManagerDeleteTimerMessage = new TimerObjectManagerDeleteTimerMessage (timerHandle);
 
-        if (null == timerObjectManagerDeleteTimerMessage)
-        {
-            errorTracePrintf ("WaveObjectManager::deleteTimer : Error allocating delete Timer Msg.");
-
-            return (ResourceId.FRAMEWORK_TIMER_NO_MEMORY);
-        }
+        // if (null == timerObjectManagerDeleteTimerMessage)
+        // {
+        // errorTracePrintf ("WaveObjectManager::deleteTimer : Error allocating delete Timer Msg.");
+        //
+        // return (ResourceId.FRAMEWORK_TIMER_NO_MEMORY);
+        // }
 
         final WaveMessageStatus status = sendSynchronously (timerObjectManagerDeleteTimerMessage);
 

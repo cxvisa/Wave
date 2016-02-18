@@ -9,7 +9,7 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 public class TimerObjectManagerDeleteAllTimersForServiceMessage extends WaveMessage
 {
 
-    protected TimerObjectManagerDeleteAllTimersForServiceMessage ()
+    public TimerObjectManagerDeleteAllTimersForServiceMessage ()
     {
         super (TimerObjectManager.getWaveServiceId (), TimerOpCodes.TIMER_DELETE_ALL_TIMERS_FOR_SERVICE);
     }

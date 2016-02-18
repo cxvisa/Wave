@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.TimeValue;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Type.AbstractDataType.WavePriorityQueue;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveCondition;
@@ -172,7 +173,10 @@ public class TimerWorker extends WaveWorker
 
                     addTimerToList (timerInfo);
 
-                    infoTracePrintf ("TimerWorker.restartTimer : Added a periodic Timer.");
+                    final TimeValue tempCurrentTime = new TimeValue ();
+
+                    tempCurrentTime.resetToCurrent ();
+                    infoTracePrintf ("TimerWorker.restartTimer : Added a periodic Timer.  Expiration Time %d : %d, current time : %d : %d", expirationTime.getMilliSeconds (), expirationTime.getNanoSeconds (), tempCurrentTime.getMilliSeconds (), tempCurrentTime.getNanoSeconds ());
                 }
             }
             else
@@ -307,6 +311,75 @@ public class TimerWorker extends WaveWorker
         }
 
         return (found);
+    }
+
+    private void deleteAllTimersForServiceMessageHandler (final TimerObjectManagerDeleteAllTimersForServiceMessage timerObjectManagerDeleteAllTimersForServiceMessage)
+    {
+        m_mutex.lock ();
+
+        final WaveConditionStatus status = m_condition.signal ();
+
+        if (WaveConditionStatus.WAVE_CONDITION_SUCCESS != status)
+        {
+            fatalTracePrintf ("TimerWorker.deleteAllTimersForServiceMessageHandler : Current Timer could not be cancelled.");
+
+            waveAssert ();
+
+            timerObjectManagerDeleteAllTimersForServiceMessage.setCompletionStatus (ResourceId.TIMER_ERROR_CAN_NOT_CANCEL_SYS_TIMER);
+
+            m_mutex.unlock ();
+
+            reply (timerObjectManagerDeleteAllTimersForServiceMessage);
+
+            return;
+        }
+
+        final WaveServiceId waveServiceId = timerObjectManagerDeleteAllTimersForServiceMessage.getSenderServiceCode ();
+
+        final ResourceId removalStatus = removeAllTimersForService (waveServiceId);
+
+        timerObjectManagerDeleteAllTimersForServiceMessage.setCompletionStatus (removalStatus);
+
+        reply (timerObjectManagerDeleteAllTimersForServiceMessage);
+    }
+
+    private ResourceId removeAllTimersForService (final WaveServiceId waveServiceId)
+    {
+        WaveThread waveThread = null;
+        final ResourceId status = ResourceId.TIMER_SUCCESS;
+
+        waveThread = WaveThread.getWaveThreadForServiceId (waveServiceId);
+
+        if (null == waveThread)
+        {
+            fatalTracePrintf ("TimerWorker.removeAllTimersForService : Calling thread for delete timer is null");
+
+            waveAssert (false);
+
+            return ResourceId.TIMER_ERROR_TIMER_SHUTDOWN;
+        }
+
+        final Iterator<TimerData> iterator = m_timerList.iterator ();
+
+        while (iterator.hasNext ())
+        {
+            final TimerData timerInfo = iterator.next ();
+
+            waveAssert (null != timerInfo);
+
+            final WaveServiceId waveServiceIdForTimer = timerInfo.getServiceId ();
+
+            waveAssert (null != waveServiceIdForTimer);
+
+            if (waveServiceId.equals (waveServiceIdForTimer))
+            {
+                iterator.remove ();
+
+                break;
+            }
+        }
+
+        return (status);
     }
 
     private void processTimeoutInternal ()

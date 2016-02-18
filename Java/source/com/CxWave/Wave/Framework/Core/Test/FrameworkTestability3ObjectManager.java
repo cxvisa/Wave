@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveTimerExpirationHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
+import com.CxWave.Wave.Framework.Type.TimeValue;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -74,7 +75,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
 
         final TimerHandle timerHandle2 = new TimerHandle ();
 
-        final ResourceId status2 = startTimer (timerHandle2, 7000, 7000, new WaveTimerExpirationHandler ("timerExpirationCallback2"), null, this);
+        final ResourceId status2 = startTimer (timerHandle2, 7000, 2000, new WaveTimerExpirationHandler ("timerExpirationCallback2"), null, this);
 
         if (ResourceId.FRAMEWORK_SUCCESS != status2)
         {
@@ -105,9 +106,15 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
 
         s_numberOfPeriodicTimerCallbackReceived++;
 
-        if (10 == s_numberOfPeriodicTimerCallbackReceived)
+        if (100 == s_numberOfPeriodicTimerCallbackReceived)
         {
             deleteTimer (timerHandle);
         }
+
+        final TimeValue tempCurrentTime = new TimeValue ();
+
+        tempCurrentTime.resetToCurrent ();
+        infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback : current-time : %d : %d", tempCurrentTime.getMilliSeconds (), tempCurrentTime.getNanoSeconds ());
+
     }
 }

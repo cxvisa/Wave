@@ -165,13 +165,13 @@ public class TraceObjectManager extends WaveObjectManager
 
             if (addNewLine)
             {
-                newLineString = "\r\n";
+                newLineString = "\n";
             }
 
             s_waveTraceFile.printf ("%s%s%s", computedTraceString, stringToTrace, newLineString);
             s_waveTraceFile.flush ();
 
-            System.out.printf ("%s%s%s", computedTraceString, stringToTrace, newLineString);
+            System.out.printf ("%s%s\r%s", computedTraceString, stringToTrace, newLineString);
 
             WaveTerminalUtils.waveResetConsoleTextColor ();
         }
@@ -219,7 +219,7 @@ public class TraceObjectManager extends WaveObjectManager
 
             if (addNewLine)
             {
-                newLineString = "\r\n";
+                newLineString = "\n";
             }
 
             final String newFormatString = new String ("%s") + formatString + newLineString;
@@ -239,7 +239,7 @@ public class TraceObjectManager extends WaveObjectManager
             s_waveTraceFile.printf (newFormatString, newObjects);
             s_waveTraceFile.flush ();
 
-            System.out.printf (newFormatString, newObjects);
+            System.out.printf (newFormatString + "\r", newObjects);
 
             WaveTerminalUtils.waveResetConsoleTextColor ();
         }
