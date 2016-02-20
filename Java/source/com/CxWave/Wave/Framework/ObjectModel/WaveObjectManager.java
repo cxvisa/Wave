@@ -8,7 +8,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -284,7 +283,8 @@ public class WaveObjectManager extends WaveElement
     private final Map<UI32, WaveOperationMapContext>                   m_operationsMap                                  = new HashMap<UI32, WaveOperationMapContext> ();
     private final Map<Class<?>, UI32>                                  m_operationsClassToIdMap                         = new HashMap<Class<?>, UI32> ();
     private final Map<UI32, Class<?>>                                  m_operationsIdToClassMap                         = new HashMap<UI32, Class<?>> ();
-    private Map<UI32, BigInteger>                                      m_supportedEvents;
+    private final Map<UI32, UI32>                                      m_supportedEvents                                = new HashMap<UI32, UI32> ();
+    private final WaveMutex                                            m_supportedEventsMutex                           = new WaveMutex ();
     private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
     private final Map<UI32, WaveMessageResponseContext>                m_responsesMap                                   = new HashMap<UI32, WaveMessageResponseContext> ();
     private Map<UI32, Vector<WaveEventListenerMapContext>>             m_eventListenersMap;
@@ -317,6 +317,7 @@ public class WaveObjectManager extends WaveElement
     {
         addWorkers ();
         addSupportedOperations ();
+        addSupportedEvents ();
     }
 
     public void addSupportedOperations ()
@@ -327,6 +328,62 @@ public class WaveObjectManager extends WaveElement
         {
             addOperationMapForMessageClass (entry.getKey (), entry.getValue (), this);
         }
+    }
+
+    private void addEventType (final UI32 eventOperationCode)
+    {
+        m_supportedEventsMutex.lock ();
+
+        m_supportedEvents.put (eventOperationCode, eventOperationCode);
+
+        m_supportedEventsMutex.unlock ();
+    }
+
+    protected boolean isEventOperationCodeSupported (final UI32 eventOperationCode)
+    {
+        m_supportedEventsMutex.lock ();
+
+        final boolean isSupported = m_supportedEvents.containsKey (eventOperationCode);
+
+        m_supportedEventsMutex.unlock ();
+
+        return (isSupported);
+    }
+
+    public void addSupportedEvents ()
+    {
+        final String waveJavaClassName = (getClass ()).getName ();
+        final Set<String> eventClassNames = WaveJavaSourceRepository.getEventClassNamesForClass (waveJavaClassName);
+
+        WaveAssertUtils.waveAssert (null != eventClassNames);
+
+        for (final String eventClassName : eventClassNames)
+        {
+            Class<?> eventClass = null;
+
+            try
+            {
+                eventClass = Class.forName (eventClassName);
+            }
+            catch (final ClassNotFoundException e)
+            {
+                fatalTracePrintf ("WaveObjectManager.addSupportedEvents : %s event class could not be found.", eventClassName);
+
+                waveAssert ();
+            }
+
+            if (null != eventClass)
+            {
+                final UI32 operationCode = WaveEvent.getOperationCodeForEventClass (eventClass);
+
+                addEventType (operationCode);
+            }
+        }
+    }
+
+    public void listenForEventsDefaultImplementation ()
+    {
+        infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Entering ...");
     }
 
     private void addWorkers ()
@@ -713,6 +770,20 @@ public class WaveObjectManager extends WaveElement
     public boolean isOperationAllowedBeforeEnabling (final UI32 operationCode)
     {
         return (s_operationsAllowedBeforeEnabling.contains (operationCode));
+    }
+
+    void addOperationMapForEventClass (final Class<?> eventClass, final Method eventHandlerMethod, final WaveElement waveElement)
+    {
+        final UI32 operationCode = WaveEvent.getOperationCodeForEventClass (eventClass);
+        final WaveServiceId serviceCode = WaveEvent.getServiceCodeForEventClass (eventClass);
+
+        listenForEvent (serviceCode, operationCode, eventHandlerMethod, waveElement, FrameworkToolKit.getThisLocationId ());
+    }
+
+    private void listenForEvent (final WaveServiceId waveServiceCode, final UI32 sourceOperationCode, final Method waveEventHandler, final WaveElement waveElement, final LocationId sourceLocationId)
+    {
+        // TODO Auto-generated method stub
+
     }
 
     public WaveMessage getInputMessage ()

@@ -581,6 +581,25 @@ public class WaveJavaSourceRepository
         return ((getInstance ()).getMessageHandlersInInheritanceHierarchyPreferringLatestInternal (className));
     }
 
+    private Map<Class<?>, Method> getEventHandlersInInheritanceHierarchyPreferringLatestInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.getEventHandlersInInheritanceHierarchyPreferringLatest ());
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public static Map<Class<?>, Method> getEventHandlersInInheritanceHierarchyPreferringLatest (final String className)
+    {
+        return ((getInstance ()).getEventHandlersInInheritanceHierarchyPreferringLatestInternal (className));
+    }
+
     public static Vector<String> getWorkerClassNamesForClass (final String waveJavaClassName)
     {
         final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
@@ -615,6 +634,18 @@ public class WaveJavaSourceRepository
         }
 
         return (waveJavaClass.getWorkerClassPriority (workerClassName));
+    }
+
+    public static Set<String> getEventClassNamesForClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (new HashSet<String> ());
+        }
+
+        return (waveJavaClass.getOwnedEventClassNames ());
     }
 
     public static boolean waveObjectManagerIsADerivativeOf (final String derivedFromClassName)

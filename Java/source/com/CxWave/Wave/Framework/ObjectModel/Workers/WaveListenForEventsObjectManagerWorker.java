@@ -129,6 +129,12 @@ public class WaveListenForEventsObjectManagerWorker extends WaveWorker
 
         WaveAssertUtils.waveAssert (null != waveObjectManager);
 
+        // First do the auto registration. C++ variant does not do this at present.
+
+        waveObjectManager.listenForEventsDefaultImplementation ();
+
+        // Second give a chance to add service specific events
+
         waveObjectManager.listenForEvents (waveAsynchronousContextForBootPhases);
     }
 

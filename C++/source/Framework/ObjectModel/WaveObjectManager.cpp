@@ -911,7 +911,7 @@ void WaveObjectManager::listenForEvent (WaveServiceId waveServiceCode, UI32 sour
         (*(m_eventsMap[effectiveLocationId]))[waveServiceId] = new map<UI32, WaveEventMapContext *>;
     }
 
-    // FIXME : currently if same entry is added multiple times, only the final entry remains in effect.  May be we ned to assert if we encounter mutiple additions.
+    // FIXME : currently if same entry is added multiple times, only the final entry remains in effect.  May be we need to assert if we encounter mutiple additions.
 
     (*((*(m_eventsMap[effectiveLocationId]))[waveServiceId]))[sourceOperationCode] = new WaveEventMapContext (pWaveElement, pWaveEventHandler);
 

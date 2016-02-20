@@ -57,8 +57,10 @@ public class WaveJavaClass extends WaveJavaType
     private final ReflectionAttributesMap         m_serializationReflectionAttributesMapForDeclaredFields;
     private String                                m_typeName;
     private final Map<Class<?>, Method>           m_messageHandlers;
+    private final Map<Class<?>, Method>           m_eventHandlers;
     private final Map<String, Integer>            m_ownedWorkerClassNamesCadinalityMap;
     private final Map<String, WaveWorkerPriority> m_ownedWorkerClassNamesPriorityMap;
+    private final Set<String>                     m_ownedEventClasses;
     private final Map<String, Method>             m_waveLinearSequencerSteps;
     private final Map<String, Method>             m_waveSynchronousLinearSequencerSteps;
     private final Map<String, Method>             m_waveMessageCallbacks;
@@ -74,8 +76,10 @@ public class WaveJavaClass extends WaveJavaType
         m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
         m_serializationReflectionAttributesMapForDeclaredFields = new ReflectionAttributesMap ();
         m_messageHandlers = new HashMap<Class<?>, Method> ();
+        m_eventHandlers = new HashMap<Class<?>, Method> ();
         m_ownedWorkerClassNamesCadinalityMap = new HashMap<String, Integer> ();
         m_ownedWorkerClassNamesPriorityMap = new HashMap<String, WaveWorkerPriority> ();
+        m_ownedEventClasses = new HashSet<String> ();
         m_waveLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveSynchronousLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveMessageCallbacks = new HashMap<String, Method> ();
@@ -323,6 +327,8 @@ public class WaveJavaClass extends WaveJavaType
         computeWaveTimerExpirationHandlers (reflectionClass);
 
         computeWaveEventHandlers (reflectionClass);
+
+        computeSupportedEvents (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -479,7 +485,7 @@ public class WaveJavaClass extends WaveJavaType
 
                 if (null != waveJavaClass)
                 {
-                    if (waveJavaClass.isADerivativeOfWaveMessage ())
+                    if ((waveJavaClass.isADerivativeOfWaveMessage ()) && (!(waveJavaClass.isADerivativeOfWaveEvent ())))
                     {
                         if (m_messageHandlers.containsKey (parameterTypes[0]))
                         {
@@ -898,6 +904,40 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    private void computeSupportedEvents (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfWaveEvent ()))
+        {
+            return;
+        }
+
+        WaveJavaClass waveJavaClassForOwnerOm = null;
+
+        final Annotation annotationForOwnerOM = reflectionClass.getAnnotation (OwnerOM.class);
+
+        if (null != annotationForOwnerOM)
+        {
+            final OwnerOM ownerOM = (OwnerOM) annotationForOwnerOM;
+
+            WaveAssertUtils.waveAssert (null != ownerOM);
+
+            final Class<?> ownerOmClass = ownerOM.om ();
+
+            WaveAssertUtils.waveAssert (null != ownerOmClass);
+
+            final String ownerOmClassName = ownerOmClass.getName ();
+
+            if (WaveStringUtils.isNotBlank (ownerOmClassName))
+            {
+                waveJavaClassForOwnerOm = WaveJavaSourceRepository.getWaveJavaClass (ownerOmClassName);
+
+                WaveAssertUtils.waveAssert (null != waveJavaClassForOwnerOm);
+
+                waveJavaClassForOwnerOm.addOwnedEvent (reflectionClass.getName ());
+            }
+        }
+    }
+
     private boolean isAKnownWorker (final String workerClassName)
     {
         if (m_ownedWorkerClassNamesCadinalityMap.containsKey (workerClassName))
@@ -972,6 +1012,41 @@ public class WaveJavaClass extends WaveJavaType
         m_ownedWorkerClassNamesPriorityMap.put (workerClassName, priority);
 
         WaveTraceUtils.infoTracePrintf ("    Successfully added %s worker to %s", workerClassName, m_name);
+    }
+
+    private boolean isAKnownEvent (final String eventClassName)
+    {
+        if (m_ownedEventClasses.contains (eventClassName))
+        {
+            return (true);
+        }
+        else
+        {
+            if (null != m_superClass)
+            {
+                return (m_superClass.isAKnownEvent (eventClassName));
+            }
+            else
+            {
+                return (false);
+            }
+        }
+    }
+
+    private void addOwnedEvent (final String eventClassName)
+    {
+        if (isAKnownEvent (eventClassName))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.addOwnedEvent : %s is already a known event class name.", eventClassName);
+
+            WaveAssertUtils.waveAssert ();
+
+            return;
+        }
+
+        m_ownedEventClasses.add (eventClassName);
+
+        WaveTraceUtils.infoTracePrintf ("    Successfully added %s event to %s", eventClassName, m_name);
     }
 
     public Set<String> getAllDescendants ()
@@ -1386,6 +1461,34 @@ public class WaveJavaClass extends WaveJavaType
         return (messageHandlersInInheritanceHierarchyPreferringLatest);
     }
 
+    private void getEventHandlersInInheritanceHierarchyPreferringLatest (final Map<Class<?>, Method> eventHandlersInInheritanceHierarchyPreferringLatest)
+    {
+        WaveAssertUtils.waveAssert (null != eventHandlersInInheritanceHierarchyPreferringLatest);
+
+        for (final Map.Entry<Class<?>, Method> entry : m_eventHandlers.entrySet ())
+        {
+            final Method alreadyExistingMethod = eventHandlersInInheritanceHierarchyPreferringLatest.putIfAbsent (entry.getKey (), entry.getValue ());
+
+            WaveAssertUtils.waveAssert (null == alreadyExistingMethod);
+        }
+
+        if (null != m_superClass)
+        {
+            m_superClass.getMessageHandlersInInheritanceHierarchyPreferringLatest (eventHandlersInInheritanceHierarchyPreferringLatest);
+        }
+    }
+
+    public Map<Class<?>, Method> getEventHandlersInInheritanceHierarchyPreferringLatest ()
+    {
+        final Map<Class<?>, Method> eventHandlersInInheritanceHierarchyPreferringLatest = new HashMap<Class<?>, Method> ();
+
+        WaveAssertUtils.waveAssert (null != eventHandlersInInheritanceHierarchyPreferringLatest);
+
+        getEventHandlersInInheritanceHierarchyPreferringLatest (eventHandlersInInheritanceHierarchyPreferringLatest);
+
+        return (eventHandlersInInheritanceHierarchyPreferringLatest);
+    }
+
     public Vector<String> getWorkerClassNames ()
     {
         final Vector<String> workerClassNames = new Vector<String> ();
@@ -1487,6 +1590,15 @@ public class WaveJavaClass extends WaveJavaType
                 return (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0);
             }
         }
+    }
+
+    public Set<String> getOwnedEventClassNames ()
+    {
+        final Set<String> ownedEventClassNames = new HashSet<String> ();
+
+        ownedEventClassNames.addAll (m_ownedEventClasses);
+
+        return (ownedEventClassNames);
     }
 
     public Method getMethodForWaveLinearSequencerStep (final String waveLinearSequencerStepName)
