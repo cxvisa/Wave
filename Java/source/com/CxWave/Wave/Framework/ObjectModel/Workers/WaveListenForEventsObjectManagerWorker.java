@@ -75,6 +75,8 @@ public class WaveListenForEventsObjectManagerWorker extends WaveWorker
 
             waveAssert (null != (workers.get (i)));
 
+            (workers.get (i)).listenForEventsDefaultImplementation ();
+
             (workers.get (i)).listenForEvents (waveAsynchronousContextForBootPhases);
         }
 

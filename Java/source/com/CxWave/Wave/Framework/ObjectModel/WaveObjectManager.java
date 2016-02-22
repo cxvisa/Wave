@@ -384,6 +384,21 @@ public class WaveObjectManager extends WaveElement
     public void listenForEventsDefaultImplementation ()
     {
         infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Entering ...");
+
+        final Map<Class<?>, Method> eventHandlersForThisClass = WaveJavaSourceRepository.getEventHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getTypeName ());
+
+        for (final Map.Entry<Class<?>, Method> entry : eventHandlersForThisClass.entrySet ())
+        {
+            final Class<?> eventClass = entry.getKey ();
+            final Method eventHandlerMethod = entry.getValue ();
+
+            waveAssert (null != eventClass);
+            waveAssert (null != eventHandlerMethod);
+
+            infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Event Handler in OM : %s, for Event : %s, using : %s", m_name, eventClass.getTypeName (), (getClass ()).getTypeName ());
+
+            addOperationMapForEventClass (eventClass, eventHandlerMethod, this);
+        }
     }
 
     private void addWorkers ()
@@ -772,7 +787,7 @@ public class WaveObjectManager extends WaveElement
         return (s_operationsAllowedBeforeEnabling.contains (operationCode));
     }
 
-    void addOperationMapForEventClass (final Class<?> eventClass, final Method eventHandlerMethod, final WaveElement waveElement)
+    public void addOperationMapForEventClass (final Class<?> eventClass, final Method eventHandlerMethod, final WaveElement waveElement)
     {
         final UI32 operationCode = WaveEvent.getOperationCodeForEventClass (eventClass);
         final WaveServiceId serviceCode = WaveEvent.getServiceCodeForEventClass (eventClass);

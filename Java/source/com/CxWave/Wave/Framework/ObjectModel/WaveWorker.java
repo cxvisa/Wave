@@ -223,4 +223,29 @@ public class WaveWorker extends WaveElement
     {
         return (m_waveObjectManager.sendSynchronously (waveMessage, locationId));
     }
+
+    public void listenForEventsDefaultImplementation ()
+    {
+        infoTracePrintf ("WaveWorker.listenForEventsDefaultImplementation : Entering ...");
+
+        final Map<Class<?>, Method> eventHandlersForThisClass = WaveJavaSourceRepository.getEventHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getTypeName ());
+
+        for (final Map.Entry<Class<?>, Method> entry : eventHandlersForThisClass.entrySet ())
+        {
+            final Class<?> eventClass = entry.getKey ();
+            final Method eventHandlerMethod = entry.getValue ();
+
+            waveAssert (null != eventClass);
+            waveAssert (null != eventHandlerMethod);
+
+            infoTracePrintf ("WaveWorker.listenForEventsDefaultImplementation : Adding Event Handler in OM : %s, for Event : %s using %s", m_waveObjectManager.getName (), eventClass.getTypeName (), (getClass ()).getTypeName ());
+
+            addOperationMapForEventClass (eventClass, eventHandlerMethod, this);
+        }
+    }
+
+    private void addOperationMapForEventClass (final Class<?> eventClass, final Method eventHandlerMethod, final WaveWorker waveWorker)
+    {
+        m_waveObjectManager.addOperationMapForEventClass (eventClass, eventHandlerMethod, waveWorker);
+    }
 }
