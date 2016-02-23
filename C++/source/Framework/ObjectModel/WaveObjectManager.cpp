@@ -779,7 +779,7 @@ void WaveObjectManager::addEventListener (const UI32 &eventOperationCode, const 
 
     (m_eventListenersMap[eventOperationCode])->push_back (new WaveEventListenerMapContext (listenerWaveServiceId, listenerLocationId));
 
-    trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::addEventListener : Number Of Event Liusteners For Event : ") + eventOperationCode + string (" are : ") + (m_eventListenersMap[eventOperationCode])->size () + " on Service " + m_name);
+    trace (TRACE_LEVEL_DEBUG, string ("WaveObjectManager::addEventListener : Number Of Event Listeners For Event : ") + eventOperationCode + string (" are : ") + (m_eventListenersMap[eventOperationCode])->size () + " on Service " + m_name);
 
     s_mutexForAddingEventListener.unlock ();
 }

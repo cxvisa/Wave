@@ -55,4 +55,19 @@ public class WaveMessageFactory
 
         return (waveObjectManager);
     }
+
+    public static WaveObjectManager getWaveObjectManagerForEvent (final WaveServiceId serviceId, final UI32 eventOpcode)
+    {
+        WaveThread waveThread = null;
+        WaveObjectManager waveObjectManager = null;
+
+        waveThread = WaveThread.getWaveThreadForServiceId (serviceId);
+
+        if (null != waveThread)
+        {
+            waveObjectManager = waveThread.getWaveObjectManagerForEventOperationCode (eventOpcode);
+        }
+
+        return (waveObjectManager);
+    }
 }

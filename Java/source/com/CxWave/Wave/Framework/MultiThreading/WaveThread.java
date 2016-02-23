@@ -896,4 +896,19 @@ public class WaveThread extends Thread
 
         return (m_timerExpirations.removeTimerExpirationsForTimer (timerHandle));
     }
+
+    public WaveObjectManager getWaveObjectManagerForEventOperationCode (final UI32 eventOpcode)
+    {
+        for (final WaveObjectManager waveObjectManager : m_waveObjectManagers)
+        {
+            WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+            if (waveObjectManager.isEventOperationCodeSupported (eventOpcode))
+            {
+                return (waveObjectManager);
+            }
+        }
+
+        return (null);
+    }
 }

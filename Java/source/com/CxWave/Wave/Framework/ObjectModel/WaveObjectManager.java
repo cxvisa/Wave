@@ -19,8 +19,10 @@ import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerConfigurationIntentBufferId;
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerRemoveConfigurationIntentMessage;
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerStoreConfigurationIntentMessage;
+import com.CxWave.Wave.Framework.Core.Messages.WaveObjectManagerRegisterEventListenerMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.Messaging.MessageFactory.WaveMessageFactory;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
@@ -272,46 +274,47 @@ public class WaveObjectManager extends WaveElement
         }
     };
 
-    private static WaveMutex                                           s_waveObjectManagerMutex                         = new WaveMutex ();
-    private static WaveServiceId                                       s_nextAvailableWaveServiceId                     = new WaveServiceId (0);
-    private static WaveServiceMode                                     s_waveServiceLaunchMode                          = WaveServiceMode.WAVE_SERVICE_ACTIVE;
+    private static WaveMutex                                                          s_waveObjectManagerMutex                         = new WaveMutex ();
+    private static WaveServiceId                                                      s_nextAvailableWaveServiceId                     = new WaveServiceId (0);
+    private static WaveServiceMode                                                    s_waveServiceLaunchMode                          = WaveServiceMode.WAVE_SERVICE_ACTIVE;
 
-    private static final Set<UI32>                                     s_operationsAllowedBeforeEnabling                = initializeOperationsAllowedBeforeEnablingSet ();
+    private static final Set<UI32>                                                    s_operationsAllowedBeforeEnabling                = initializeOperationsAllowedBeforeEnablingSet ();
+    private static final WaveMutex                                                    s_mutexForAddingEventListener                    = new WaveMutex ();
 
-    private final String                                               m_name;
-    private WaveThread                                                 m_associatedWaveThread;
-    private final Map<UI32, WaveOperationMapContext>                   m_operationsMap                                  = new HashMap<UI32, WaveOperationMapContext> ();
-    private final Map<Class<?>, UI32>                                  m_operationsClassToIdMap                         = new HashMap<Class<?>, UI32> ();
-    private final Map<UI32, Class<?>>                                  m_operationsIdToClassMap                         = new HashMap<UI32, Class<?>> ();
-    private final Map<UI32, UI32>                                      m_supportedEvents                                = new HashMap<UI32, UI32> ();
-    private final WaveMutex                                            m_supportedEventsMutex                           = new WaveMutex ();
-    private Map<LocationId, Map<UI32, Map<UI32, WaveEventMapContext>>> m_eventsMap;
-    private final Map<UI32, WaveMessageResponseContext>                m_responsesMap                                   = new HashMap<UI32, WaveMessageResponseContext> ();
-    private Map<UI32, Vector<WaveEventListenerMapContext>>             m_eventListenersMap;
-    private Map<String, Vector<String>>                                m_postbootManagedObjectNames;
-    private final WaveMutex                                            m_responsesMapMutex                              = new WaveMutex ();
-    private final WaveMutex                                            m_sendReplyMutexForResponseMap                   = new WaveMutex ();
-    private final Vector<WaveWorker>                                   m_workers                                        = new Vector<WaveWorker> ();
-    private final Map<Class<? extends WaveWorker>, Vector<WaveWorker>> m_workersMapByWorkerClass                        = new HashMap<Class<? extends WaveWorker>, Vector<WaveWorker>> ();
-    private final WaveMutex                                            m_workersMutex                                   = new WaveMutex ();
-    private boolean                                                    m_isEnabled                                      = false;
-    private final WaveMutex                                            m_isEnabledMutex                                 = new WaveMutex ();
-    private final TraceClientId                                        m_traceClientId;
-    private final WaveServiceMode                                      m_waveServiceMode;
+    private final String                                                              m_name;
+    private WaveThread                                                                m_associatedWaveThread;
+    private final Map<UI32, WaveOperationMapContext>                                  m_operationsMap                                  = new HashMap<UI32, WaveOperationMapContext> ();
+    private final Map<Class<?>, UI32>                                                 m_operationsClassToIdMap                         = new HashMap<Class<?>, UI32> ();
+    private final Map<UI32, Class<?>>                                                 m_operationsIdToClassMap                         = new HashMap<UI32, Class<?>> ();
+    private final Map<UI32, UI32>                                                     m_supportedEvents                                = new HashMap<UI32, UI32> ();
+    private final WaveMutex                                                           m_supportedEventsMutex                           = new WaveMutex ();
+    private final Map<LocationId, Map<WaveServiceId, Map<UI32, WaveEventMapContext>>> m_eventsMap                                      = new HashMap<LocationId, Map<WaveServiceId, Map<UI32, WaveEventMapContext>>> ();
+    private final Map<UI32, WaveMessageResponseContext>                               m_responsesMap                                   = new HashMap<UI32, WaveMessageResponseContext> ();
+    private final Map<UI32, Vector<WaveEventListenerMapContext>>                      m_eventListenersMap                              = new HashMap<UI32, Vector<WaveEventListenerMapContext>> ();
+    private Map<String, Vector<String>>                                               m_postbootManagedObjectNames;
+    private final WaveMutex                                                           m_responsesMapMutex                              = new WaveMutex ();
+    private final WaveMutex                                                           m_sendReplyMutexForResponseMap                   = new WaveMutex ();
+    private final Vector<WaveWorker>                                                  m_workers                                        = new Vector<WaveWorker> ();
+    private final Map<Class<? extends WaveWorker>, Vector<WaveWorker>>                m_workersMapByWorkerClass                        = new HashMap<Class<? extends WaveWorker>, Vector<WaveWorker>> ();
+    private final WaveMutex                                                           m_workersMutex                                   = new WaveMutex ();
+    private boolean                                                                   m_isEnabled                                      = false;
+    private final WaveMutex                                                           m_isEnabledMutex                                 = new WaveMutex ();
+    private final TraceClientId                                                       m_traceClientId;
+    private final WaveServiceMode                                                     m_waveServiceMode;
 
-    private final WaveServiceId                                        m_serviceId;
+    private final WaveServiceId                                                       m_serviceId;
 
-    private WaveMessage                                                m_inputMessage;
+    private WaveMessage                                                               m_inputMessage;
 
-    private final Map<UI32, Map<UI32, UI64>>                           m_nanoSecondsForMessageHandlerSequencerSteps     = new HashMap<UI32, Map<UI32, UI64>> ();
+    private final Map<UI32, Map<UI32, UI64>>                                          m_nanoSecondsForMessageHandlerSequencerSteps     = new HashMap<UI32, Map<UI32, UI64>> ();
 
-    private final Map<UI32, Map<UI32, UI64>>                           m_realNanoSecondsForMessageHandlerSequencerSteps = new HashMap<UI32, Map<UI32, UI64>> ();
+    private final Map<UI32, Map<UI32, UI64>>                                          m_realNanoSecondsForMessageHandlerSequencerSteps = new HashMap<UI32, Map<UI32, UI64>> ();
 
-    private final WaveMutex                                            m_createMessageInstanceWrapperMutex              = new WaveMutex ();
-    private final Map<UI32, WaveElement>                               m_ownersForCreatingMessageInstances              = new HashMap<UI32, WaveElement> ();
+    private final WaveMutex                                                           m_createMessageInstanceWrapperMutex              = new WaveMutex ();
+    private final Map<UI32, WaveElement>                                              m_ownersForCreatingMessageInstances              = new HashMap<UI32, WaveElement> ();
 
-    private static WaveMutex                                           s_enabledServicesMutex                           = new WaveMutex ();
-    private static Map<WaveServiceId, WaveServiceId>                   s_enabledServices                                = new HashMap<WaveServiceId, WaveServiceId> ();
+    private static WaveMutex                                                          s_enabledServicesMutex                           = new WaveMutex ();
+    private static Map<WaveServiceId, WaveServiceId>                                  s_enabledServices                                = new HashMap<WaveServiceId, WaveServiceId> ();
 
     public void prepareObjectManagerForAction ()
     {
@@ -339,7 +342,7 @@ public class WaveObjectManager extends WaveElement
         m_supportedEventsMutex.unlock ();
     }
 
-    protected boolean isEventOperationCodeSupported (final UI32 eventOperationCode)
+    public boolean isEventOperationCodeSupported (final UI32 eventOperationCode)
     {
         m_supportedEventsMutex.lock ();
 
@@ -792,12 +795,11 @@ public class WaveObjectManager extends WaveElement
         final UI32 operationCode = WaveEvent.getOperationCodeForEventClass (eventClass);
         final WaveServiceId serviceCode = WaveEvent.getServiceCodeForEventClass (eventClass);
 
-        listenForEvent (serviceCode, operationCode, eventHandlerMethod, waveElement, FrameworkToolKit.getThisLocationId ());
+        listenForEvent (serviceCode, operationCode, eventHandlerMethod.getName (), waveElement, FrameworkToolKit.getThisLocationId ());
     }
 
-    private void listenForEvent (final WaveServiceId waveServiceCode, final UI32 sourceOperationCode, final Method waveEventHandler, final WaveElement waveElement, final LocationId sourceLocationId)
+    private void listenForEvent (final WaveServiceId waveServiceCode, final UI32 sourceOperationCode, final String waveEventHandlerMethodName, WaveElement waveElement, final LocationId sourceLocationId)
     {
-        /*
         WaveServiceId waveServiceId = waveServiceCode;
 
         if (null == waveElement)
@@ -805,75 +807,90 @@ public class WaveObjectManager extends WaveElement
             waveElement = this;
         }
 
-        // If we are listening for WAVE_OBJECT_MANAGER_ANY_EVENT then we do not care about the service code.  We treat that we are listening to
+        // If we are listening for WAVE_OBJECT_MANAGER_ANY_EVENT then we do not care about the service code. We treat that we
+        // are listening to
         // null service.
 
-        if (WAVE_OBJECT_MANAGER_ANY_EVENT == sourceOperationCode)
+        if ((FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_EVENT.getOperationCode ()).equals (sourceOperationCode))
         {
-            waveServiceId = 0;
+            waveServiceId = WaveServiceId.NullServiceId;
         }
 
-        final LocationId thisLocationId      = FrameworkToolKit::getThisLocationId ();
+        final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
         LocationId effectiveLocationId = sourceLocationId;
-
-        // FIXME : declare a NullLocationId instead of using 0
 
         // We will change the effectiveLocationId only if the event is not WAVE_OBJECT_MANAGER_ANY_EVENT
 
-        if (WAVE_OBJECT_MANAGER_ANY_EVENT != sourceOperationCode)
+        if (!((FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_EVENT.getOperationCode ()).equals (sourceOperationCode)))
         {
-            if (0 == effectiveLocationId)
+            if (LocationId.NullLocationId.equals (effectiveLocationId))
             {
-                if (true != (FrameworkToolKit::isALocalService (waveServiceId)))
+                if (true != (FrameworkToolKit.isALocalService (waveServiceId)))
                 {
-                    effectiveLocationId = FrameworkToolKit::getClusterPrimaryLocationId ();
+                    effectiveLocationId = FrameworkToolKit.getClusterPrimaryLocationId ();
                 }
             }
         }
 
-        if (0 == effectiveLocationId)
+        if (LocationId.NullLocationId.equals (effectiveLocationId))
         {
             effectiveLocationId = thisLocationId;
         }
+
         // Add an event map so that when the event arrives we can execute the corresponding event handler.
 
-        map <LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>::iterator element = m_eventsMap.find (effectiveLocationId);
-        map <LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>::iterator end     = m_eventsMap.end ();
-
-        if (end == element)
+        if (!(m_eventsMap.containsKey (effectiveLocationId)))
         {
-            m_eventsMap[effectiveLocationId] = new map<UI32, map<UI32, WaveEventMapContext *> *>;
+            m_eventsMap.put (effectiveLocationId, new HashMap<WaveServiceId, Map<UI32, WaveEventMapContext>> ());
         }
 
-        map<UI32, map<UI32, WaveEventMapContext *> *>::iterator element1 = (m_eventsMap[effectiveLocationId]).find (waveServiceId);
-        map<UI32, map<UI32, WaveEventMapContext *> *>::iterator end1     = (m_eventsMap[effectiveLocationId]).end ();
+        final Map<WaveServiceId, Map<UI32, WaveEventMapContext>> eventsMapEntryForEffectiveLocationId = m_eventsMap.get (effectiveLocationId);
 
-        if (end1 == element1)
+        waveAssert (null != eventsMapEntryForEffectiveLocationId);
+
+        if (!(eventsMapEntryForEffectiveLocationId.containsKey (waveServiceId)))
         {
-            (*(m_eventsMap[effectiveLocationId]))[waveServiceId] = new map<UI32, WaveEventMapContext *>;
+            eventsMapEntryForEffectiveLocationId.put (waveServiceId, new HashMap<UI32, WaveEventMapContext> ());
         }
 
-        // FIXME : currently if same entry is added multiple times, only the final entry remains in effect.  May be we need to assert if we encounter mutiple additions.
+        final Map<UI32, WaveEventMapContext> eventsMapEntryForEffectiveLocationIdAndWaveServiceId = eventsMapEntryForEffectiveLocationId.get (waveServiceId);
 
-        (*((*(m_eventsMap[effectiveLocationId]))[waveServiceId]))[sourceOperationCode] = new WaveEventMapContext (waveElement, pWaveEventHandler);
+        waveAssert (null != eventsMapEntryForEffectiveLocationIdAndWaveServiceId);
+
+        if (eventsMapEntryForEffectiveLocationIdAndWaveServiceId.containsKey (sourceOperationCode))
+        {
+            fatalTracePrintf ("WaveObjectManager.listenForEvent : OM : %s, already Listening for Event %s", m_name, sourceOperationCode.toString ());
+            waveAssert ();
+        }
+        else
+        {
+            final WaveEventHandler waveEventHandler = new WaveEventHandler (waveEventHandlerMethodName);
+
+            final WaveEventMapContext waveEventMapContext = new WaveEventMapContext (waveElement, waveEventHandler);
+
+            eventsMapEntryForEffectiveLocationIdAndWaveServiceId.put (sourceOperationCode, waveEventMapContext);
+        }
 
         // Update the event source service that we are interested to receive the particular events.
-        // If the ObjectManager exists locally (meaning event source exists on this location) we simply execute a method on the source object manager.
+        // If the ObjectManager exists locally (meaning event source exists on this location) we simply execute a method on the
+        // source object manager.
         // Otherwise we send a message to the remote event source object manager.
 
-        if (thisLocationId == effectiveLocationId)
+        if (thisLocationId.equals (effectiveLocationId))
         {
-            WaveObjectManager *waveObjectManager = null;
+            WaveObjectManager waveObjectManager = null;
 
-            waveObjectManager = WaveMessageFactory::getWaveObjectManagerForEvent (waveServiceId, sourceOperationCode);
+            waveObjectManager = WaveMessageFactory.getWaveObjectManagerForEvent (waveServiceId, sourceOperationCode);
 
-            // The remote transport service listens for any events.  The way it achieves listeneing for any event is that it sytart listening
-            // for any event that is generated by the null service.  So the remote transport service does not have to specify a valid service with an object manager.
+            // The remote transport service listens for any events. The way it achieves listening for any event is that it start
+            // listening
+            // for any event that is generated by the null service. So the remote transport service does not have to specify a
+            // valid service with an object manager.
 
-            if (((0 != waveServiceId) || (WAVE_OBJECT_MANAGER_ANY_EVENT != sourceOperationCode)) && (null == waveObjectManager))
+            if (((!(WaveServiceId.NullServiceId.equals (waveServiceId))) || ((!(FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_EVENT.getOperationCode ()).equals (sourceOperationCode)))) && (null == waveObjectManager))
             {
-                trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::listenForEvent : There is no Object Manager to generate the specified event. ServiceId = ") + waveServiceId + ", Source OperationCode = " + sourceOperationCode + ".");
-                waveAssert (false, __FILE__, __LINE__);
+                fatalTracePrintf ("WaveObjectManager.listenForEvent : There is no Object Manager to generate the specified event. ServiceId = %s, Source OperationCode = %s.", waveServiceId.toString (), sourceOperationCode.toString ());
+                waveAssert ();
                 return;
             }
 
@@ -881,31 +898,54 @@ public class WaveObjectManager extends WaveElement
 
             if (null != waveObjectManager)
             {
-                waveObjectManager.addEventListener (sourceOperationCode, getServiceId (), FrameworkToolKit::getThisLocationId ());
+                waveObjectManager.addEventListener (sourceOperationCode, getServiceId (), FrameworkToolKit.getThisLocationId ());
             }
         }
         else
         {
-            // If the event that we are listening to is anything other than WAVE_OBJECT_MANAGER_ANY_EVENT then only send the remote message.
-            // If the event to listen is WAVE_OBJECT_MANAGER_ANY_EVENT then it can be never on a remote location.  This event is only used
+            // If the event that we are listening to is anything other than WAVE_OBJECT_MANAGER_ANY_EVENT then only send the
+            // remote message.
+            // If the event to listen is WAVE_OBJECT_MANAGER_ANY_EVENT then it can be never on a remote location. This event is
+            // only used
             // by the remote transport service to accept all events so that it can transport to remote location.
 
-            if ((WAVE_OBJECT_MANAGER_ANY_EVENT == sourceOperationCode) && (thisLocationId != effectiveLocationId))
+            if (((FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_EVENT.getOperationCode ()).equals (sourceOperationCode)) && (!(thisLocationId.equals (effectiveLocationId))))
             {
-                trace (TRACE_LEVEL_FATAL, "WaveObjectManager::listenForEvent : We can never listen for WAVE_OBJECT_MANAGER_ANY_EVENT from remote locations.");
-                waveAssert (false, __FILE__, __LINE__);
+                fatalTracePrintf ("WaveObjectManager.listenForEvent : We can never listen for WAVE_OBJECT_MANAGER_ANY_EVENT from remote locations.");
+                waveAssert ();
             }
 
-            if (WAVE_OBJECT_MANAGER_ANY_EVENT != sourceOperationCode)
+            if ((!(FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_EVENT.getOperationCode ()).equals (sourceOperationCode)))
             {
-                WaveObjectManagerRegisterEventListenerMessage *pMessage = new WaveObjectManagerRegisterEventListenerMessage (waveServiceId, sourceOperationCode, getServiceId (), thisLocationId);
+                final WaveObjectManagerRegisterEventListenerMessage waveObjectManagerRegisterEventListenerMessage = new WaveObjectManagerRegisterEventListenerMessage (waveServiceId, sourceOperationCode, getServiceId (), thisLocationId);
 
-                WaveMessageStatus status = sendOneWay (pMessage);
+                final WaveMessageStatus status = sendOneWay (waveObjectManagerRegisterEventListenerMessage);
 
-                waveAssert (WAVE_MESSAGE_SUCCESS == status, __FILE__, __LINE__);
+                waveAssert (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == status);
             }
         }
-*/
+    }
+
+    private void addEventListener (final UI32 eventOperationCode, final WaveServiceId listenerWaveServiceId, final LocationId listenerWaveLocationId)
+    {
+        s_mutexForAddingEventListener.lock ();
+
+        if (!(m_eventListenersMap.containsKey (eventOperationCode)))
+        {
+            m_eventListenersMap.put (eventOperationCode, new Vector<WaveEventListenerMapContext> ());
+        }
+
+        final Vector<WaveEventListenerMapContext> waveEventListenerMapContextsForEventOperationCode = m_eventListenersMap.get (eventOperationCode);
+
+        waveAssert (null != waveEventListenerMapContextsForEventOperationCode);
+
+        final WaveEventListenerMapContext waveEventListenerMapContext = new WaveEventListenerMapContext (listenerWaveServiceId, listenerWaveLocationId);
+
+        waveEventListenerMapContextsForEventOperationCode.add (waveEventListenerMapContext);
+
+        debugTracePrintf ("WaveObjectManager::addEventListener : Number Of Event Listeners For Event : %s : %s on Service %s", eventOperationCode.toString (), waveEventListenerMapContextsForEventOperationCode.size (), m_name);
+
+        s_mutexForAddingEventListener.unlock ();
     }
 
     public WaveMessage getInputMessage ()
@@ -2573,7 +2613,7 @@ public class WaveObjectManager extends WaveElement
 
         // if (null == timerObjectManagerDeleteTimerMessage)
         // {
-        // errorTracePrintf ("WaveObjectManager::deleteTimer : Error allocating delete Timer Msg.");
+        // errorTracePrintf ("WaveObjectManager.deleteTimer : Error allocating delete Timer Msg.");
         //
         // return (ResourceId.FRAMEWORK_TIMER_NO_MEMORY);
         // }
@@ -2582,7 +2622,7 @@ public class WaveObjectManager extends WaveElement
 
         if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
         {
-            errorTracePrintf ("WaveObjectManager::deleteTimer : delete timer message failed.");
+            errorTracePrintf ("WaveObjectManager.deleteTimer : delete timer message failed.");
 
             return (ResourceId.FRAMEWORK_TIMER_CAN_NOT_DELETE);
         }
