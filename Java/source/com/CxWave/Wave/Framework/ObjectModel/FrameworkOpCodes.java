@@ -97,8 +97,8 @@ public enum FrameworkOpCodes implements WaveOperationCodeInterface
     WAVE_OBJECT_MANAGER_ANY_EVENT;
 
 
-    private static final int s_numberOfValues = (values ()).length;
-    private static final int s_maximumNumberOfOpCodes = 1000;
+    private static final long s_numberOfValues = (values ()).length;
+    public static final long s_maximumNumberOfOpCodes = 1000;
 
     // @formatter:on
 
