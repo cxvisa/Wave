@@ -398,7 +398,7 @@ public class WaveObjectManager extends WaveElement
             waveAssert (null != eventClass);
             waveAssert (null != eventHandlerMethod);
 
-            infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Event Handler in OM : %s, for Event : %s, using : %s", m_name, eventClass.getTypeName (), (getClass ()).getTypeName ());
+            infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Event Handler %s in OM : %s, for Event : %s, using : %s", eventHandlerMethod.getName (), m_name, eventClass.getTypeName (), (getClass ()).getTypeName ());
 
             addOperationMapForEventClass (eventClass, eventHandlerMethod, this);
         }
@@ -946,6 +946,19 @@ public class WaveObjectManager extends WaveElement
         debugTracePrintf ("WaveObjectManager::addEventListener : Number Of Event Listeners For Event : %s : %s on Service %s", eventOperationCode.toString (), waveEventListenerMapContextsForEventOperationCode.size (), m_name);
 
         s_mutexForAddingEventListener.unlock ();
+    }
+
+    private void registerEventListenerHandler (final WaveObjectManagerRegisterEventListenerMessage waveObjectManagerRegisterEventListenerMessage)
+    {
+        final UI32 operationCodeToListenFor = waveObjectManagerRegisterEventListenerMessage.getOperationCodeToListenFor ();
+        final WaveServiceId listenerWaveServiceId = waveObjectManagerRegisterEventListenerMessage.getListenerWaveServiceId ();
+        final LocationId listenerLocationId = waveObjectManagerRegisterEventListenerMessage.getListenerLocationId ();
+
+        addEventListener (operationCodeToListenFor, listenerWaveServiceId, listenerLocationId);
+
+        waveObjectManagerRegisterEventListenerMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+
+        reply (waveObjectManagerRegisterEventListenerMessage);
     }
 
     public WaveMessage getInputMessage ()

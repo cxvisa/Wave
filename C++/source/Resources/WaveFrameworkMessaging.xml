@@ -6,6 +6,7 @@
     <ResourceEnum Name = "WaveMessageStatus">
         <Resource Name = "WAVE_MESSAGE_SUCCESS">Succeeded</Resource>
         <Resource Name = "WAVE_MESSAGE_ERROR">Message Generic Error</Resource>
+        <Resource Name = "WAVE_MESSAGE_ERROR_INTERNAL">Message Generic Error for Internal Processing errors</Resource>
         <Resource Name = "WAVE_MESSAGE_ERROR_UNKNOWN_MESSAGE">Unknown Wave Message</Resource>
         <Resource Name = "WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED">Operation Not Supported</Resource>
         <Resource Name = "WAVE_MESSAGE_ERROR_SUBMIT_TO_INVALID_THREAD">Submitting message to invalid thread</Resource>

@@ -15,6 +15,7 @@ import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.Time.StopWatch;
 import com.CxWave.Wave.Framework.Utils.Time.ThreadStopWatch;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -161,11 +162,22 @@ public class WaveSynchronousLinearSequencerContext
         {
             WaveTraceUtils.fatalTracePrintf ("WaveSynchronousLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Details : %s", methodForCurrentStep.getName (), e.toString ());
 
+            WaveTraceUtils.errorTracePrintf ("WaveSynchronousLinearSequencerContext.executeCurrentStep : Error in executing the current step %s\n%s", methodForCurrentStep.getName (), WaveStackUtils.getStackString (e));
+
             final Throwable throwable = e.getCause ();
 
             if (null != throwable)
             {
                 WaveTraceUtils.fatalTracePrintf ("WaveSynchronousLinearSequencerContext.executeCurrentStep : Failed to invoke method : %s, Cause : %s", methodForCurrentStep.getName (), throwable.toString ());
+            }
+
+            if (e instanceof InvocationTargetException)
+            {
+                returnValueObject = ResourceId.WAVE_MESSAGE_ERROR_INTERNAL;
+            }
+            else
+            {
+                WaveAssertUtils.waveAssert ();
             }
         }
 

@@ -13,7 +13,7 @@ public class WaveObjectManagerRegisterEventListenerMessage extends WaveMessage
     private WaveServiceId m_listenerWaveServiceId;
     private LocationId    m_listenerLocationId;
 
-    protected WaveObjectManagerRegisterEventListenerMessage ()
+    public WaveObjectManagerRegisterEventListenerMessage ()
     {
         super (WaveServiceId.NullServiceId, FrameworkOpCodes.WAVE_OBJECT_MANAGER_REGISTER_EVENT_LISTENER);
     }

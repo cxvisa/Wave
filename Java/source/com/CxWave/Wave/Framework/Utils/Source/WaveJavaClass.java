@@ -1474,7 +1474,7 @@ public class WaveJavaClass extends WaveJavaType
 
         if (null != m_superClass)
         {
-            m_superClass.getMessageHandlersInInheritanceHierarchyPreferringLatest (eventHandlersInInheritanceHierarchyPreferringLatest);
+            m_superClass.getEventHandlersInInheritanceHierarchyPreferringLatest (eventHandlersInInheritanceHierarchyPreferringLatest);
         }
     }
 
