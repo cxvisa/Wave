@@ -12,7 +12,7 @@ public class UI32 implements Comparable<UI32>
 {
     private Long       m_value;
 
-    public static UI32 MAXIMUM = new UI32 ((0x1L << 31) - 1L);
+    public static UI32 MAXIMUM = new UI32 ((0x1L << 32) - 1L);
     public static UI32 MINIMUM = new UI32 (0);
 
     public UI32 (final Integer value)
@@ -120,7 +120,7 @@ public class UI32 implements Comparable<UI32>
 
     public boolean isValid (final long value)
     {
-        if ((0 <= value) && ((1L << 31) > value))
+        if ((0 <= value) && ((1L << 32) > value))
         {
             return (true);
         }

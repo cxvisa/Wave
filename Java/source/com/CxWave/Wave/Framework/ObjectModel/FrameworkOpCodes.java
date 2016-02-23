@@ -105,13 +105,13 @@ public enum FrameworkOpCodes implements WaveOperationCodeInterface
     @Override
     public UI32 getOperationCode ()
     {
-        return new UI32 (((1L << 31) - 1001L) + (ordinal ()));
+        return new UI32 (((1L << 32) - 1000L) + (ordinal ()));
     }
 
     @Override
     public int getOperationCodeIntValue ()
     {
-        return (((new UI32 (((((new UI32 (0x1L << 31)).getValue ()) - 1001L)) + (ordinal ()))).getValue ()).intValue ());
+        return (((new UI32 (((((new UI32 (0x1L << 32)).getValue ()) - 1000L)) + (ordinal ()))).getValue ()).intValue ());
 
     }
 }
