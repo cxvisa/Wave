@@ -645,7 +645,7 @@ public class WaveThread extends Thread
             m_timerExpirations.insertAtTheBack (waveMessage); // for all the other Framework messages like initialize, enable
                                                               // etc.,
         }
-        else if ((operationCode.getValue ()).longValue () >= ((UI32.MAXIMUM.getValue ()) - (new Long (1000L))))
+        else if ((operationCode.getValue ()).longValue () >= (UI32.MAXIMUM_LONG_VALUE - 1000L))
         {
             m_frameworkMessages.insertAtTheBack (waveMessage);
 
@@ -713,7 +713,7 @@ public class WaveThread extends Thread
             m_timerExpirationResponses.insertAtTheBack (waveMessage); // for Responses to all the other Framework messages like
                                                                       // initialize, enable etc.,
         }
-        else if ((opertionCode.getValue ()) >= ((1L << 32) - 1000L))
+        else if ((opertionCode.getValue ()) >= (UI32.MAXIMUM_LONG_VALUE - 1000L))
         {
             m_frameworkMessageResponses.insertAtTheBack (waveMessage);
         }

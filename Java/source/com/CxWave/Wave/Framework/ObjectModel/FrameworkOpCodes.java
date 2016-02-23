@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.ObjectModel;
 
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 
 public enum FrameworkOpCodes implements WaveOperationCodeInterface
 {
@@ -97,6 +98,7 @@ public enum FrameworkOpCodes implements WaveOperationCodeInterface
 
 
     private static final int s_numberOfValues = (values ()).length;
+    private static final int s_maximumNumberOfOpCodes = 1000;
 
     // @formatter:on
 
@@ -107,17 +109,19 @@ public enum FrameworkOpCodes implements WaveOperationCodeInterface
     @Override
     public UI32 getOperationCode ()
     {
+        WaveAssertUtils.waveAssert (s_numberOfValues <= s_maximumNumberOfOpCodes);
+
         if ((ordinal ()) == (s_numberOfValues - 1))
         {
             return (UI32.MAXIMUM);
         }
         else if ((ordinal ()) == (s_numberOfValues - 2))
         {
-            return (new UI32 ((UI32.MAXIMUM.getValue ()) - 1));
+            return (new UI32 (UI32.MAXIMUM_LONG_VALUE - 1));
         }
         else
         {
-            return new UI32 (((UI32.MAXIMUM.getValue ()) - 1000) + (ordinal ()));
+            return new UI32 ((UI32.MAXIMUM_LONG_VALUE - s_maximumNumberOfOpCodes) + (ordinal ()));
         }
     }
 
