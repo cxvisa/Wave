@@ -96,6 +96,8 @@ public enum FrameworkOpCodes implements WaveOperationCodeInterface
     WAVE_OBJECT_MANAGER_ANY_EVENT;
 
 
+    private static final int s_numberOfValues = (values ()).length;
+
     // @formatter:on
 
     private FrameworkOpCodes ()
@@ -105,13 +107,24 @@ public enum FrameworkOpCodes implements WaveOperationCodeInterface
     @Override
     public UI32 getOperationCode ()
     {
-        return new UI32 (((1L << 32) - 1000L) + (ordinal ()));
+        if ((ordinal ()) == (s_numberOfValues - 1))
+        {
+            return (UI32.MAXIMUM);
+        }
+        else if ((ordinal ()) == (s_numberOfValues - 2))
+        {
+            return (new UI32 ((UI32.MAXIMUM.getValue ()) - 1));
+        }
+        else
+        {
+            return new UI32 (((UI32.MAXIMUM.getValue ()) - 1000) + (ordinal ()));
+        }
     }
 
     @Override
     public int getOperationCodeIntValue ()
     {
-        return (((new UI32 (((((new UI32 (0x1L << 32)).getValue ()) - 1000L)) + (ordinal ()))).getValue ()).intValue ());
+        return (((getOperationCode ()).getValue ()).intValue ());
 
     }
 }
