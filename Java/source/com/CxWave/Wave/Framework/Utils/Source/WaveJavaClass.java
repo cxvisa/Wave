@@ -894,9 +894,12 @@ public class WaveJavaClass extends WaveJavaType
                         {
                             declaredMethod.setAccessible (true);
 
-                            m_waveEventHandlers.put (declaredMethod.getName (), declaredMethod);
+                            final Class<?> waveEventClass = parameterTypes[0];
 
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveEventHandlers : Added a Timer Expiration Handler for Class %s with Wave Linear Sequencer Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            m_waveEventHandlers.put (declaredMethod.getName (), declaredMethod);
+                            m_eventHandlers.put (waveEventClass, declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveEventHandlers : Added a Event Handler for Class %s with Event Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
                         }
                     }
                 }
@@ -1592,11 +1595,22 @@ public class WaveJavaClass extends WaveJavaType
         }
     }
 
+    public void getOwnedEventClassNames (final Set<String> ownedEventClassNames)
+    {
+        ownedEventClassNames.addAll (m_ownedEventClasses);
+
+        if (null != m_superClass)
+        {
+            m_superClass.getOwnedEventClassNames (ownedEventClassNames);
+        }
+
+    }
+
     public Set<String> getOwnedEventClassNames ()
     {
         final Set<String> ownedEventClassNames = new HashSet<String> ();
 
-        ownedEventClassNames.addAll (m_ownedEventClasses);
+        getOwnedEventClassNames (ownedEventClassNames);
 
         return (ownedEventClassNames);
     }

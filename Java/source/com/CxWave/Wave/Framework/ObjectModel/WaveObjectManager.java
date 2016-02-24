@@ -386,7 +386,7 @@ public class WaveObjectManager extends WaveElement
 
     public void listenForEventsDefaultImplementation ()
     {
-        infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Entering ...");
+        infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Entering for : %s", (getClass ()).getTypeName ());
 
         final Map<Class<?>, Method> eventHandlersForThisClass = WaveJavaSourceRepository.getEventHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getTypeName ());
 

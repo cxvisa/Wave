@@ -164,7 +164,7 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 
     public static WaveServiceId getWaveServiceId ()
     {
-        return ((getInstance ()).getWaveServiceId ());
+        return ((getInstance ()).getServiceId ());
     }
 
     public static void setConfigurationFile (final String configurationFile)

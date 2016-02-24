@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core.Test;
 
+import com.CxWave.Wave.Framework.Boot.BootCompleteForThisLocationEvent;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveTimerExpirationHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
@@ -117,5 +118,10 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
         tempCurrentTime.resetToCurrent ();
         infoTracePrintf ("FrameworkTestability3ObjectManager.timerExpirationCallback : current-time : %s", tempCurrentTime.toString ());
         TimerWorker.showMaxDelay ();
+    }
+
+    private void bootCompleteEventHandler (final BootCompleteForThisLocationEvent bootCompleteForThisLocationEvent)
+    {
+        infoTracePrintf ("FrameworkTestability3ObjectManager.bootCompleteEventHandler : Entering ...");
     }
 }
