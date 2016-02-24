@@ -1069,6 +1069,19 @@ public class WaveObjectManager extends WaveElement
         return (WaveMessageStatus.WAVE_MESSAGE_SUCCESS);
     }
 
+    @NonEventHandler
+    WaveMessageStatus reply (final WaveEvent waveEvent)
+    {
+        // When all the listeners are done with the event, delete the event.
+
+        if (0 == (waveEvent.decrementReferenceCountForEventNotifications ()))
+        {
+            // Nothing to do;
+        }
+
+        return (WaveMessageStatus.WAVE_MESSAGE_SUCCESS);
+    }
+
     public WaveMessage getInputMessage ()
     {
         return (m_inputMessage);
@@ -1514,6 +1527,35 @@ public class WaveObjectManager extends WaveElement
 
     }
 
+    @NonEventHandler
+    public void handleWaveEvent (final WaveEvent waveEvent)
+    {
+        final WaveEventMapContext waveEventMapContext = getWaveEventHandler (waveEvent.getSenderLocationId (), waveEvent.getServiceCode (), waveEvent.getOperationCode ());
+
+        if (null != waveEventMapContext)
+        {
+            waveAssert (null == m_inputMessage);
+
+            m_inputMessage = null;
+
+            waveEventMapContext.executeEventHandler (waveEvent);
+
+            m_inputMessage = null;
+        }
+        else
+        {
+            errorTracePrintf ("WaveObjectManager::handleWaveEvent : This type of event is not handled by this Object Manager.");
+            waveAssert (false);
+
+            // waveEvent.setCompletionStatus (WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED); // No one examines the
+            // completionStatus for events.
+
+            // We must reply to the event so that it decrements the reference count for listeners.
+
+            reply (waveEvent);
+        }
+    }
+
     private WaveOperationMapContext getWaveMessageHandler (final UI32 operationCode, final WaveServiceId messageHandlerServiceCode, final WaveServiceId thisServiceId)
     {
         WaveOperationMapContext temp = null;
@@ -1532,6 +1574,34 @@ public class WaveObjectManager extends WaveElement
         }
 
         return (temp);
+    }
+
+    private WaveEventMapContext getWaveEventHandler (final LocationId eventSourceLocationId, final WaveServiceId eventSourceServiceId, final UI32 eventOperationCode)
+    {
+        WaveServiceId effectiveEventSourceServiceId = eventSourceServiceId;
+
+        if (FrameworkOpCodes.WAVE_OBJECT_MANAGER_ANY_EVENT.equals (eventOperationCode))
+        {
+            effectiveEventSourceServiceId = WaveServiceId.NullServiceId;
+        }
+
+        final Map<WaveServiceId, Map<UI32, WaveEventMapContext>> eventsForLocationId = m_eventsMap.get (eventSourceLocationId);
+
+        if (null == eventsForLocationId)
+        {
+            return (null);
+        }
+
+        final Map<UI32, WaveEventMapContext> eventsForLocationIdAndServiceId = eventsForLocationId.get (eventSourceServiceId);
+
+        if (null == eventsForLocationIdAndServiceId)
+        {
+            return (null);
+        }
+
+        final WaveEventMapContext waveEventMapContext = eventsForLocationIdAndServiceId.get (eventOperationCode);
+
+        return (waveEventMapContext);
     }
 
     @NonMessageHandler

@@ -221,6 +221,7 @@ public class WaveThread extends Thread
         s_waveThreadIdToWaveObjectManagerMapMutex.unlock ();
 
         WaveMessage waveMessage = null;
+        WaveEvent waveEvent = null;
 
         while (true)
         {
@@ -248,7 +249,7 @@ public class WaveThread extends Thread
 
                 WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Received a message ... :-)");
 
-                final WaveObjectManager waveObjectManager = null;
+                WaveObjectManager waveObjectManager = null;
 
                 switch (waveMessage.getType ())
                 {
@@ -295,6 +296,21 @@ public class WaveThread extends Thread
                         break;
 
                     case WAVE_MESSAGE_TYPE_EVENT:
+                        waveEvent = (WaveEvent) waveMessage;
+                        WaveAssertUtils.waveAssert (null != waveEvent);
+
+                        waveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (waveEvent.getSenderLocationId (), waveEvent.getServiceCode (), waveEvent.getOperationCode ());
+
+                        if (null != waveObjectManager)
+                        {
+                            waveObjectManager.handleWaveEvent (waveEvent);
+                        }
+                        else
+                        {
+                            WaveTraceUtils.fatalTracePrintf ("This Service does not have any object managers to handle any events.");
+                            WaveAssertUtils.waveAssert ();
+                        }
+
                         break;
 
                     default:
