@@ -14,7 +14,7 @@ import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class WaveEvent extends WaveMessage
 {
-    int             m_referenceCountForEventNotifications      = 0;
+    int             m_referenceCountForEventNotifications      = 1;
     final WaveMutex m_referenceCountForEventNotificationsMutex = new WaveMutex ();
 
     protected WaveEvent (final WaveServiceId serviceCode, final WaveOperationCodeInterface operationCode)
@@ -74,7 +74,7 @@ public class WaveEvent extends WaveMessage
         }
         catch (final Exception exception)
         {
-            WaveTraceUtils.fatalTracePrintf ("WaveEvent.getOperationCodeForMessageClass : %s message class could not be instantiated.  Details : %s", eventClass.getName (), exception.toString ());
+            WaveTraceUtils.fatalTracePrintf ("WaveEvent.getOperationCodeForEventClass : %s message class could not be instantiated.  Details : %s", eventClass.getName (), exception.toString ());
 
             WaveAssertUtils.waveAssert ();
         }

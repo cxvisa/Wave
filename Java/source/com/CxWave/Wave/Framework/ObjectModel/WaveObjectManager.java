@@ -24,6 +24,7 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.MessageFactory.WaveMessageFactory;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
@@ -943,7 +944,7 @@ public class WaveObjectManager extends WaveElement
 
         waveEventListenerMapContextsForEventOperationCode.add (waveEventListenerMapContext);
 
-        debugTracePrintf ("WaveObjectManager::addEventListener : Number Of Event Listeners For Event : %s : %s on Service %s", eventOperationCode.toString (), waveEventListenerMapContextsForEventOperationCode.size (), m_name);
+        debugTracePrintf ("WaveObjectManager.addEventListener : Number Of Event Listeners For Event : %s : %s on Service %s", eventOperationCode.toString (), waveEventListenerMapContextsForEventOperationCode.size (), m_name);
 
         s_mutexForAddingEventListener.unlock ();
     }
@@ -959,6 +960,113 @@ public class WaveObjectManager extends WaveElement
         waveObjectManagerRegisterEventListenerMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
 
         reply (waveObjectManagerRegisterEventListenerMessage);
+    }
+
+    @NonEventHandler
+    WaveMessageStatus broadcast (final WaveEvent waveEvent)
+    {
+        final UI32 eventOperationCode = waveEvent.getOperationCode ();
+        final Vector<WaveEventListenerMapContext> eventListeners;
+        int numberOfEventListeners = 0;
+        int i = 0;
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_SUCCESS;
+
+        s_mutexForAddingEventListener.lock ();
+
+        eventListeners = m_eventListenersMap.get (eventOperationCode);
+
+        if (null != eventListeners)
+        {
+            s_mutexForAddingEventListener.unlock ();
+
+            // delete mem if we don't have any listeners
+            // DO NOT CALL reply(waveEvent) AS THIS MAY SEND REPLY FOR WaveMessage!!!
+            if (0 == (waveEvent.decrementReferenceCountForEventNotifications ()))
+            {
+                // Nothing to do.
+            }
+
+            return (WaveMessageStatus.WAVE_MESSAGE_SUCCESS);
+        }
+
+        numberOfEventListeners = eventListeners.size ();
+
+        debugTracePrintf ("WaveObjectManager.broadcast : Number Of Event Listeners for Event : %s are %d on Service : %s", eventOperationCode.toString (), numberOfEventListeners, m_name);
+
+        waveEvent.m_senderServiceCode = m_associatedWaveThread.getWaveServiceId ();
+
+        // Set the field to indicate the message is a one way message so that when the receiver replies, the framework will
+        // not attempt to deliver it back to the original sender. It will simply destroy the event.
+
+        waveEvent.setIsOneWayMessage (true);
+
+        // Set the number of event listeners for the event. This will be used to reference count and delete it when all the
+        // listeners are done.
+
+        waveEvent.setReferenceCountForEventNotifications (numberOfEventListeners);
+
+        for (i = 0; i < numberOfEventListeners; i++)
+        {
+            final WaveEventListenerMapContext waveEventListenerContext = eventListeners.get (i);
+
+            waveAssert (null != waveEventListenerContext);
+
+            WaveThread waveThread = null;
+            final LocationId thisLocationId = FrameworkToolKit.getThisLocationId ();
+            final WaveServiceId listenerServiceId = waveEventListenerContext.getEventListenerServiceId ();
+            LocationId effectiveLocationId = waveEventListenerContext.getEventListenerLocationId ();
+
+            // FIXME : sagar : replace the 0 with NullLocationId
+
+            if (LocationId.NullLocationId.equals (effectiveLocationId))
+            {
+                if (true != (FrameworkToolKit.isALocalService (listenerServiceId)))
+                {
+                    effectiveLocationId = FrameworkToolKit.getClusterPrimaryLocationId ();
+                }
+            }
+
+            if ((LocationId.NullLocationId.equals (effectiveLocationId)) || (thisLocationId.equals (effectiveLocationId)))
+            {
+                waveThread = WaveThread.getWaveThreadForServiceId (listenerServiceId);
+            }
+            else
+            {
+                waveThread = WaveThread.getWaveThreadForMessageRemoteTransport ();
+            }
+
+            if (null == waveThread)
+            {
+                errorTracePrintf ("WaveObjectManager.broadcast : No Service registered to accept this service Id %s", listenerServiceId.toString ());
+                reply (waveEvent);
+                continue;
+            }
+
+            if (false == (waveThread.hasWaveObjectManagers ()))
+            {
+                errorTracePrintf ("WaveObjectManager.broadcast : Service identified.  But there are no Wave Object Managers registered to process any kind of requests.");
+                reply (waveEvent);
+                continue;
+            }
+
+            // Store the receiver LocationId.
+            // Though we store the locationid, this gets overwritten in the next iteraton of the loop.
+
+            waveEvent.m_receiverLocationId = (!(LocationId.NullLocationId.equals (effectiveLocationId))) ? effectiveLocationId : thisLocationId;
+
+            status = waveThread.submitEvent (waveEvent);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                // Reply so that the event reference count decrements and eventually gets deleted.
+
+                reply (waveEvent);
+            }
+        }
+
+        s_mutexForAddingEventListener.unlock ();
+
+        return (WaveMessageStatus.WAVE_MESSAGE_SUCCESS);
     }
 
     public WaveMessage getInputMessage ()
@@ -2654,5 +2762,12 @@ public class WaveObjectManager extends WaveElement
 
             return (returnCode);
         }
+    }
+
+    public boolean isEventAllowedBeforeEnabling (final UI32 eventOperationCode)
+    {
+        // At present we do not allow any events to be passed to any service with out enabling the service.
+
+        return (false);
     }
 }

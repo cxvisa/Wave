@@ -13,6 +13,7 @@ import java.util.Map;
 
 import com.CxWave.Wave.Framework.Core.WaveServiceMap;
 import com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectManager;
+import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.Remote.InterLocationMessageTransportObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.FrameworkOpCodes;
@@ -20,6 +21,7 @@ import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
@@ -904,6 +906,81 @@ public class WaveThread extends Thread
             WaveAssertUtils.waveAssert (null != waveObjectManager);
 
             if (waveObjectManager.isEventOperationCodeSupported (eventOpcode))
+            {
+                return (waveObjectManager);
+            }
+        }
+
+        return (null);
+    }
+
+    public WaveMessageStatus submitEvent (final WaveEvent waveEvent)
+    {
+        WaveAssertUtils.waveAssert (null != waveEvent);
+
+        // Before proceeding check if the Service has been enabled to accept messages other services.
+        // We accept a few messages even before the service is enabled. We accept messages like initialize
+        // and enable messages.
+
+        final WaveServiceId eventSourceServiceId = waveEvent.getServiceCode ();
+        final UI32 eventOperationCode = waveEvent.getOperationCode ();
+        final LocationId eventSourceLocationId = waveEvent.getSenderLocationId ();
+        final WaveObjectManager waveObjectManager = getWaveObjectManagerForEventOperationCodeForListening (eventSourceLocationId, eventSourceServiceId, eventOperationCode);
+
+        // by the time we reach here we must not encounter a null WaveObjectManager.
+
+        if (null == waveObjectManager)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveThread.submitEvent : There is no ObjectManager registered to rceive this event operation code (%s).", eventOperationCode.toString ());
+            WaveAssertUtils.waveAssert ();
+            return (WaveMessageStatus.WAVE_EVENT_ERROR_NO_OM_TO_ACCEPT_MESSAGE);
+        }
+        else
+        {
+            if (false == (waveObjectManager.getIsEnabled ()))
+            {
+                if (true == (waveObjectManager.isEventAllowedBeforeEnabling (eventOperationCode)))
+                {
+                    // We cannot use trace method here. It will lead to an infinite recursion because the trace service
+                    // might not have been enabled. Also the trace statement causes invoking subMitMessage.
+
+                    // trace (TRACE_LEVEL_DEBUG, string ("WaveThread.submitMessage : Allowing the operation (") +
+                    // eventOperationCode + ") before enabling the service.");
+                }
+                else
+                {
+                    WaveTraceUtils.debugTracePrintf ("WaveThread.submitEvent : The Service (%s) is not enabled yet.  Try later.", FrameworkToolKit.getServiceNameById (waveObjectManager.getServiceId ()));
+                    return (WaveMessageStatus.WAVE_MESSAGE_ERROR_SERVICE_NOT_ENABLED);
+                }
+            }
+        }
+
+        final WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_SUCCESS;
+
+        m_gateKeeper.lock ();
+
+        m_wakeupCaller.lock ();
+
+        final WaveMessage waveMessage = waveEvent;
+
+        m_events.insertAtTheBack (waveMessage);
+
+        m_wakeupCondition.signal ();
+
+        m_wakeupCaller.unlock ();
+
+        m_gateKeeper.unlock ();
+
+        return (status);
+    }
+
+    private WaveObjectManager getWaveObjectManagerForEventOperationCodeForListening (final LocationId eventSourceLocationId, final WaveServiceId eventSourceServiceId, final UI32 eventOperationCode)
+    {
+        for (final WaveObjectManager waveObjectManager : m_waveObjectManagers)
+        {
+            WaveAssertUtils.waveAssert (null != waveObjectManager);
+
+            if (waveObjectManager.isEventOperationCodeSupported (eventOperationCode))
             {
                 return (waveObjectManager);
             }
