@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Type.LocationId;
+import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -256,5 +257,35 @@ public class WaveWorker extends WaveElement
     protected WaveMessageStatus broadcast (final WaveEvent waveEvent)
     {
         return (m_waveObjectManager.broadcast (waveEvent));
+    }
+
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final long periodicIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
+    {
+        return (m_waveObjectManager.startTimer (timerHandle, startIntervalMilliSeconds, periodicIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
+    }
+
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final long periodicIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
+    {
+        return (m_waveObjectManager.startTimer (timerHandle, startIntervalMilliSeconds, periodicIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+    }
+
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
+    {
+        return (m_waveObjectManager.startTimer (timerHandle, startIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
+    }
+
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
+    {
+        return (m_waveObjectManager.startTimer (timerHandle, startIntervalMilliSeconds, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+    }
+
+    @Override
+    protected ResourceId deleteTimer (final TimerHandle timerHandle)
+    {
+        return (m_waveObjectManager.deleteTimer (timerHandle));
     }
 }
