@@ -1,6 +1,6 @@
-/***************************************************************************
- * Copyright (C) 2015-2016 Vidyasagara Guntaka * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
- ***************************************************************************/
+/*************************************************************************************************************************
+ * Copyright (C) 2015-2016 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
+ *************************************************************************************************************************/
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
@@ -423,4 +423,6 @@ public abstract class WaveElement
     protected abstract ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext);
 
     protected abstract ResourceId deleteTimer (final TimerHandle timerHandle);
+
+    protected abstract void unlistenEvents ();
 }

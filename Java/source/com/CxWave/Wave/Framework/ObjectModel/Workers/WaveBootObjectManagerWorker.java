@@ -7,6 +7,7 @@ package com.CxWave.Wave.Framework.ObjectModel.Workers;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.Messages.WaveBootObjectManagerMessage;
+import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManagerForUserSpecificTasks;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
@@ -145,6 +146,18 @@ public class WaveBootObjectManagerWorker extends WaveWorker
         if (ResourceId.WAVE_MESSAGE_SUCCESS != status)
         {
             errorTracePrintf ("WaveBootObjectManagerWorker.bootBootSelfStepCallback : Initializing the Object Manager (self) failed.");
+        }
+
+        if (true == (WaveLocalObjectManagerForUserSpecificTasks.isAUserSpecificService (getServiceId ())))
+        {
+            // However some special OMs would like to listen to the BOOT Completion event and then unlisten for themselves. If
+            // we unlisten at the boot phase itself,
+            // they will never get a chance to receive the boot completion event.
+
+            if (true == (getAllowAutomaticallyUnlistenForEvents ()))
+            {
+                unlistenEvents ();
+            }
         }
 
         waveLinearSequencerContext.executeNextStep (status);

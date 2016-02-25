@@ -167,14 +167,4 @@ public class WaveEnableObjectManagerWorker extends WaveWorker
     {
         m_waveObjectManager.addServiceToEnabledServicesList (waveServiceId);
     }
-
-    protected WaveServiceId getServiceId ()
-    {
-        return (m_waveObjectManager.getServiceId ());
-    }
-
-    protected void setIsEnabled (final boolean isEnabled)
-    {
-        m_waveObjectManager.setIsEnabled (isEnabled);
-    }
 }

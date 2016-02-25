@@ -123,5 +123,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
     private void bootCompleteEventHandler (final BootCompleteForThisLocationEvent bootCompleteForThisLocationEvent)
     {
         infoTracePrintf ("FrameworkTestability3ObjectManager.bootCompleteEventHandler : Entering ...");
+
+        reply (bootCompleteForThisLocationEvent);
     }
 }

@@ -16,6 +16,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBoot
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.UI32;
+import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
@@ -287,5 +288,26 @@ public class WaveWorker extends WaveElement
     protected ResourceId deleteTimer (final TimerHandle timerHandle)
     {
         return (m_waveObjectManager.deleteTimer (timerHandle));
+    }
+
+    public WaveServiceId getServiceId ()
+    {
+        return (m_waveObjectManager.getServiceId ());
+    }
+
+    public boolean getAllowAutomaticallyUnlistenForEvents ()
+    {
+        return (m_waveObjectManager.getAllowAutomaticallyUnlistenForEvents ());
+    }
+
+    @Override
+    protected void unlistenEvents ()
+    {
+        m_waveObjectManager.unlistenEvents ();
+    }
+
+    protected void setIsEnabled (final boolean isEnabled)
+    {
+        m_waveObjectManager.setIsEnabled (isEnabled);
     }
 }
