@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
@@ -44,28 +45,31 @@ import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Shell.Annotations.ShellCommand;
 
 public class WaveJavaClass extends WaveJavaType
 {
-    private final String                          m_name;
-    private final Map<String, WaveJavaInterface>  m_superInterfaces;
-    private final Map<String, WaveJavaAnnotation> m_annotations;
-    private WaveJavaClass                         m_superClass;
-    private final Map<String, WaveJavaClass>      m_childClasses;
-    private final Map<String, WaveJavaClass>      m_anonymousClasses;
-    private WaveJavaClass                         m_declaringClass;
-    private final ReflectionAttributesMap         m_serializationReflectionAttributesMapForDeclaredFields;
-    private String                                m_typeName;
-    private final Map<Class<?>, Method>           m_messageHandlers;
-    private final Map<Class<?>, Method>           m_eventHandlers;
-    private final Map<String, Integer>            m_ownedWorkerClassNamesCadinalityMap;
-    private final Map<String, WaveWorkerPriority> m_ownedWorkerClassNamesPriorityMap;
-    private final Set<String>                     m_ownedEventClasses;
-    private final Map<String, Method>             m_waveLinearSequencerSteps;
-    private final Map<String, Method>             m_waveSynchronousLinearSequencerSteps;
-    private final Map<String, Method>             m_waveMessageCallbacks;
-    private final Map<String, Method>             m_waveTimerExpirationHandlers;
-    private final Map<String, Method>             m_waveEventHandlers;
+    private final String                              m_name;
+    private final Map<String, WaveJavaInterface>      m_superInterfaces;
+    private final Map<String, WaveJavaAnnotation>     m_annotations;
+    private WaveJavaClass                             m_superClass;
+    private final Map<String, WaveJavaClass>          m_childClasses;
+    private final Map<String, WaveJavaClass>          m_anonymousClasses;
+    private WaveJavaClass                             m_declaringClass;
+    private final ReflectionAttributesMap             m_serializationReflectionAttributesMapForDeclaredFields;
+    private String                                    m_typeName;
+    private final Map<Class<?>, Method>               m_messageHandlers;
+    private final Map<Class<?>, Method>               m_eventHandlers;
+    private final Map<String, Integer>                m_ownedWorkerClassNamesCadinalityMap;
+    private final Map<String, WaveWorkerPriority>     m_ownedWorkerClassNamesPriorityMap;
+    private final Set<String>                         m_ownedEventClasses;
+    private final Map<String, Method>                 m_waveLinearSequencerSteps;
+    private final Map<String, Method>                 m_waveSynchronousLinearSequencerSteps;
+    private final Map<String, Method>                 m_waveMessageCallbacks;
+    private final Map<String, Method>                 m_waveTimerExpirationHandlers;
+    private final Map<String, Method>                 m_waveEventHandlers;
+
+    private static Map<Class<?>, Map<String, Method>> s_shellCommandHandlerMethodsByClass = new HashMap<Class<?>, Map<String, Method>> ();
 
     public WaveJavaClass (final String name)
     {
@@ -329,6 +333,8 @@ public class WaveJavaClass extends WaveJavaType
         computeWaveEventHandlers (reflectionClass);
 
         computeSupportedEvents (reflectionClass);
+
+        computeShellCommandHandlers (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -1707,6 +1713,93 @@ public class WaveJavaClass extends WaveJavaType
         else
         {
             return (null);
+        }
+    }
+
+    private void addShellCommandHandlerMethodForClass (final Class<?> classForShellCommandHandler, final Method methodForShellCommandHandler, final String shellCommand)
+    {
+        Map<String, Method> shellCommandHandlersForClass = s_shellCommandHandlerMethodsByClass.get (classForShellCommandHandler);
+
+        if (null == shellCommandHandlersForClass)
+        {
+            shellCommandHandlersForClass = new TreeMap<String, Method> ();
+
+            s_shellCommandHandlerMethodsByClass.put (classForShellCommandHandler, shellCommandHandlersForClass);
+        }
+
+        final Method shellCommandHandlerMethod = shellCommandHandlersForClass.get (shellCommand);
+
+        if (null == shellCommandHandlerMethod)
+        {
+            shellCommandHandlersForClass.put (shellCommand, methodForShellCommandHandler);
+        }
+        else
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.addShellCommandHandlerMethodForClass : %s command is already present for class %s", shellCommand, classForShellCommandHandler.toString ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    private void computeShellCommandHandlers (final Class<?> reflectionClass)
+    {
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Shell Command Handlers for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        final Vector<String> temp = new Vector<String> ();
+        final String knownClassTypeName = (temp.getClass ()).getTypeName ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final Annotation annotationForShellCommand = declaredMethod.getAnnotation (ShellCommand.class);
+
+            if (null == annotationForShellCommand)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellCommandHandlers : Ignoring %s : %s from Shell Command Handler computations since it is not annotated with @ShellCommand", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final ShellCommand shellCommand = (ShellCommand) annotationForShellCommand;
+
+            WaveAssertUtils.waveAssert (null != shellCommand);
+
+            final int modifiers = declaredMethod.getModifiers ();
+
+            if (0 == (Modifier.STATIC & modifiers))
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellCommandHandlers : Ignoring %s : %s from Shell Command Handler computations since it is not static", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (1 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName = parameterTypes[0].getTypeName ();
+
+                if (knownClassTypeName.equals (parameterClassTypeName))
+                {
+                    String shellCommandToken = shellCommand.token ();
+
+                    if (WaveStringUtils.isBlank (shellCommandToken))
+                    {
+                        shellCommandToken = declaredMethod.getName ();
+                    }
+
+                    addShellCommandHandlerMethodForClass (reflectionClass, declaredMethod, shellCommandToken);
+
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellCommandHandlers : Adding a Shell Command Handler for Class %s with argument Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                }
+            }
         }
     }
 }
