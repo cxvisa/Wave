@@ -4,7 +4,9 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -408,4 +410,6 @@ public abstract class WaveElement
 
     protected abstract WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId);
 
+    @NonEventHandler
+    protected abstract WaveMessageStatus broadcast (final WaveEvent waveEvent);
 }

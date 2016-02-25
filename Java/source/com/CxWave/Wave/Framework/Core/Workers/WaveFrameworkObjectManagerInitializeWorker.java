@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core.Workers;
 
+import com.CxWave.Wave.Framework.Boot.BootCompleteForThisLocationEvent;
 import com.CxWave.Wave.Framework.Boot.FirstTimeWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.HaStandbyWaveBootAgent;
 import com.CxWave.Wave.Framework.Boot.PersistentWaveBootAgent;
@@ -213,6 +214,8 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
     private ResourceId declareBootCompleteStep (final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext)
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.declareBootCompleteStep : Entering ...");
+
+        broadcast (new BootCompleteForThisLocationEvent ());
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
     }

@@ -354,6 +354,18 @@ public class WaveObjectManager extends WaveElement
         return (isSupported);
     }
 
+    public boolean isEventOperationCodeSupportedForListening (final LocationId eventSourceLocationId, final WaveServiceId eventSourceServiceId, final UI32 eventOperationCode)
+    {
+        if (null != (getWaveEventHandler (eventSourceLocationId, eventSourceServiceId, eventOperationCode)))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
     public void addSupportedEvents ()
     {
         final String waveJavaClassName = (getClass ()).getName ();
@@ -379,6 +391,8 @@ public class WaveObjectManager extends WaveElement
             if (null != eventClass)
             {
                 final UI32 operationCode = WaveEvent.getOperationCodeForEventClass (eventClass);
+
+                infoTracePrintf ("WaveObjectManager.addSupportedEvents : %s event class with %s operation code is added to OM : %s", eventClassName, operationCode.toString (), m_name);
 
                 addEventType (operationCode);
             }
@@ -944,7 +958,7 @@ public class WaveObjectManager extends WaveElement
 
         waveEventListenerMapContextsForEventOperationCode.add (waveEventListenerMapContext);
 
-        debugTracePrintf ("WaveObjectManager.addEventListener : Number Of Event Listeners For Event : %s : %s on Service %s", eventOperationCode.toString (), waveEventListenerMapContextsForEventOperationCode.size (), m_name);
+        infoTracePrintf ("WaveObjectManager.addEventListener : Number Of Event Listeners For Event : %s : %s on Service %s", eventOperationCode.toString (), waveEventListenerMapContextsForEventOperationCode.size (), m_name);
 
         s_mutexForAddingEventListener.unlock ();
     }
@@ -962,8 +976,9 @@ public class WaveObjectManager extends WaveElement
         reply (waveObjectManagerRegisterEventListenerMessage);
     }
 
+    @Override
     @NonEventHandler
-    WaveMessageStatus broadcast (final WaveEvent waveEvent)
+    protected WaveMessageStatus broadcast (final WaveEvent waveEvent)
     {
         final UI32 eventOperationCode = waveEvent.getOperationCode ();
         final Vector<WaveEventListenerMapContext> eventListeners;
@@ -975,7 +990,7 @@ public class WaveObjectManager extends WaveElement
 
         eventListeners = m_eventListenersMap.get (eventOperationCode);
 
-        if (null != eventListeners)
+        if (null == eventListeners)
         {
             s_mutexForAddingEventListener.unlock ();
 

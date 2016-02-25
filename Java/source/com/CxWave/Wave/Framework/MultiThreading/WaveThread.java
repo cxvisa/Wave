@@ -84,9 +84,13 @@ public class WaveThread extends Thread
 
     private static final WaveMutex                      s_preareObjectManagersForActionMutex      = new WaveMutex ();
 
+    private final String                                m_name;
+
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
         super (null, null, name, s_defaultStackSize);
+
+        m_name = name;
 
         construct (waveServiceId);
 
@@ -99,6 +103,8 @@ public class WaveThread extends Thread
     {
         super (null, null, name, stackSize.getValue ());
 
+        m_name = name;
+
         construct (waveServiceId);
 
         s_waveServiceMap.addServiceMap (m_waveServiceId, this, name);
@@ -109,6 +115,8 @@ public class WaveThread extends Thread
     public WaveThread (final String name, final UI32 stackSize, final WaveServiceId waveServiceId, final WaveObjectManager waveObjectManager)
     {
         super (null, null, name, stackSize.getValue ());
+
+        m_name = name;
 
         construct (waveServiceId);
 
@@ -296,6 +304,8 @@ public class WaveThread extends Thread
                         break;
 
                     case WAVE_MESSAGE_TYPE_EVENT:
+                        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Now servicing an event ...");
+
                         waveEvent = (WaveEvent) waveMessage;
                         WaveAssertUtils.waveAssert (null != waveEvent);
 
@@ -996,7 +1006,7 @@ public class WaveThread extends Thread
         {
             WaveAssertUtils.waveAssert (null != waveObjectManager);
 
-            if (waveObjectManager.isEventOperationCodeSupported (eventOperationCode))
+            if (waveObjectManager.isEventOperationCodeSupportedForListening (eventSourceLocationId, eventSourceServiceId, eventOperationCode))
             {
                 return (waveObjectManager);
             }

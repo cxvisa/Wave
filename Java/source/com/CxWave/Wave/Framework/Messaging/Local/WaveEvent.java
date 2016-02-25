@@ -11,6 +11,7 @@ import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageType;
 
 public class WaveEvent extends WaveMessage
 {
@@ -20,11 +21,15 @@ public class WaveEvent extends WaveMessage
     protected WaveEvent (final WaveServiceId serviceCode, final WaveOperationCodeInterface operationCode)
     {
         super (serviceCode, operationCode);
+
+        setType (WaveMessageType.WAVE_MESSAGE_TYPE_EVENT);
     }
 
     protected WaveEvent (final WaveOperationCodeInterface operationCode)
     {
         super (WaveThread.getWaveServiceIdForCurrentThread (), operationCode);
+
+        setType (WaveMessageType.WAVE_MESSAGE_TYPE_EVENT);
     }
 
     public int incrementReferenceCountForEventNotifications ()

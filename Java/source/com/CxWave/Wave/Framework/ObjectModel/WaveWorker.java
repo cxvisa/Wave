@@ -7,7 +7,9 @@ package com.CxWave.Wave.Framework.ObjectModel;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
@@ -247,5 +249,12 @@ public class WaveWorker extends WaveElement
     private void addOperationMapForEventClass (final Class<?> eventClass, final Method eventHandlerMethod, final WaveWorker waveWorker)
     {
         m_waveObjectManager.addOperationMapForEventClass (eventClass, eventHandlerMethod, waveWorker);
+    }
+
+    @Override
+    @NonEventHandler
+    protected WaveMessageStatus broadcast (final WaveEvent waveEvent)
+    {
+        return (m_waveObjectManager.broadcast (waveEvent));
     }
 }
