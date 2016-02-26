@@ -75,5 +75,9 @@ public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTas
         infoTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Entering ...");
 
         reply (bootCompleteForThisLocationEvent);
+
+        // Get the Root Shell and instantiate it.
+
+        // Then execute the root shell
     }
 }

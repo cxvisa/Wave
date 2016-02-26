@@ -4,22 +4,16 @@
 
 package com.CxWave.Wave.Shell;
 
-public class ShellBase
+public class ShellWave extends ShellBase
 {
-    final String m_name;
-
-    public ShellBase (final String name)
+    public ShellWave (final String name)
     {
-        m_name = name;
+        super (name);
     }
 
-    public String getName ()
-    {
-        return (m_name);
-    }
-
+    @Override
     public boolean isRootShell ()
     {
-        return (false);
+        return (true);
     }
 }

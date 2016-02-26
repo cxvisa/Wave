@@ -47,6 +47,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Shell.ShellBase;
 import com.CxWave.Wave.Shell.Annotations.ShellCommand;
+import com.CxWave.Wave.Shell.Annotations.ShellRoot;
 import com.CxWave.Wave.Shell.Annotations.ShellSubordinate;
 
 public class WaveJavaClass extends WaveJavaType
@@ -73,6 +74,8 @@ public class WaveJavaClass extends WaveJavaType
 
     private static Map<Class<?>, Map<String, Method>>   s_shellCommandHandlerMethodsByClass = new HashMap<Class<?>, Map<String, Method>> ();
     private static Map<Class<?>, Map<String, Class<?>>> s_shellSubordinatesByClass          = new HashMap<Class<?>, Map<String, Class<?>>> ();
+
+    private static Class<?>                             s_shellRootClass                    = null;
 
     public WaveJavaClass (final String name)
     {
@@ -340,6 +343,8 @@ public class WaveJavaClass extends WaveJavaType
         computeShellCommandHandlers (reflectionClass);
 
         computeShellSubordinates (reflectionClass);
+
+        computeShellRoot (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -1909,10 +1914,56 @@ public class WaveJavaClass extends WaveJavaType
 
         final String subordinateToken = shellSubordinate.token ();
 
-        WaveAssertUtils.waveAssert (null != subordinateToken);
+        WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (subordinateToken));
 
         addShellSubordinateForClass (subordinateParentShellClass, reflectionClass, subordinateToken);
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellSubordinates : Adding a Shell subordinate for Class : %s, subordinate class : %s", subordinateParentShellClass.getTypeName (), m_typeName);
+    }
+
+    public static Map<String, Method> getShellCommandHandlerMethodsForClass (final Class<?> classForShell)
+    {
+        return (s_shellCommandHandlerMethodsByClass.get (classForShell));
+    }
+
+    public static Map<String, Class<?>> getShellSubordinnatesForClass (final Class<?> classForShell)
+    {
+        return (s_shellSubordinatesByClass.get (classForShell));
+    }
+
+    private void computeShellRoot (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfShellBase ()))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Shell Sroot for Java Class " + m_name, true, false);
+
+        final Annotation annotationForShellRoot = reflectionClass.getAnnotation (ShellRoot.class);
+
+        if (null == annotationForShellRoot)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellRoot : Ignoring %s from Shell Root computations since it is not annotated with @ShellRoot", m_typeName);
+
+            return;
+        }
+
+        final ShellRoot shellRoot = (ShellRoot) annotationForShellRoot;
+
+        WaveAssertUtils.waveAssert (null != shellRoot);
+
+        if (null == s_shellRootClass)
+        {
+            s_shellRootClass = reflectionClass;
+
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellRoot : Set the Shell Root as : %s", m_typeName);
+        }
+        else
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveJavaClass.computeShellRoot : Shell Root is already set as : %s", s_shellRootClass.getTypeName ());
+
+            WaveAssertUtils.waveAssert ();
+        }
     }
 }

@@ -2,24 +2,18 @@
  * Copyright (C) 2015-2016 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  *************************************************************************************************************************/
 
-package com.CxWave.Wave.Shell;
+package com.CxWave.Wave.Shell.Annotations;
 
-public class ShellBase
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention (RetentionPolicy.RUNTIME)
+@Target (
+    {
+                    ElementType.TYPE
+    })
+public @interface ShellRoot
 {
-    final String m_name;
-
-    public ShellBase (final String name)
-    {
-        m_name = name;
-    }
-
-    public String getName ()
-    {
-        return (m_name);
-    }
-
-    public boolean isRootShell ()
-    {
-        return (false);
-    }
 }

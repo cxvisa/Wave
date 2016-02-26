@@ -14,7 +14,7 @@ import com.CxWave.Wave.Shell.ShellDebug;
 @Retention (RetentionPolicy.RUNTIME)
 @Target (
     {
-                    ElementType.METHOD
+                    ElementType.TYPE
     })
 public @interface ShellSubordinate
 {

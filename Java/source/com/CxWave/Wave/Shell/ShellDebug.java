@@ -4,7 +4,13 @@
 
 package com.CxWave.Wave.Shell;
 
+import com.CxWave.Wave.Shell.Annotations.ShellSubordinate;
+
+@ShellSubordinate (shell = ShellWave.class, token = "debug")
 public class ShellDebug extends ShellBase
 {
-
+    public ShellDebug (final String name)
+    {
+        super (name);
+    }
 }
