@@ -45,31 +45,34 @@ import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Shell.ShellBase;
 import com.CxWave.Wave.Shell.Annotations.ShellCommand;
+import com.CxWave.Wave.Shell.Annotations.ShellSubordinate;
 
 public class WaveJavaClass extends WaveJavaType
 {
-    private final String                              m_name;
-    private final Map<String, WaveJavaInterface>      m_superInterfaces;
-    private final Map<String, WaveJavaAnnotation>     m_annotations;
-    private WaveJavaClass                             m_superClass;
-    private final Map<String, WaveJavaClass>          m_childClasses;
-    private final Map<String, WaveJavaClass>          m_anonymousClasses;
-    private WaveJavaClass                             m_declaringClass;
-    private final ReflectionAttributesMap             m_serializationReflectionAttributesMapForDeclaredFields;
-    private String                                    m_typeName;
-    private final Map<Class<?>, Method>               m_messageHandlers;
-    private final Map<Class<?>, Method>               m_eventHandlers;
-    private final Map<String, Integer>                m_ownedWorkerClassNamesCadinalityMap;
-    private final Map<String, WaveWorkerPriority>     m_ownedWorkerClassNamesPriorityMap;
-    private final Set<String>                         m_ownedEventClasses;
-    private final Map<String, Method>                 m_waveLinearSequencerSteps;
-    private final Map<String, Method>                 m_waveSynchronousLinearSequencerSteps;
-    private final Map<String, Method>                 m_waveMessageCallbacks;
-    private final Map<String, Method>                 m_waveTimerExpirationHandlers;
-    private final Map<String, Method>                 m_waveEventHandlers;
+    private final String                                m_name;
+    private final Map<String, WaveJavaInterface>        m_superInterfaces;
+    private final Map<String, WaveJavaAnnotation>       m_annotations;
+    private WaveJavaClass                               m_superClass;
+    private final Map<String, WaveJavaClass>            m_childClasses;
+    private final Map<String, WaveJavaClass>            m_anonymousClasses;
+    private WaveJavaClass                               m_declaringClass;
+    private final ReflectionAttributesMap               m_serializationReflectionAttributesMapForDeclaredFields;
+    private String                                      m_typeName;
+    private final Map<Class<?>, Method>                 m_messageHandlers;
+    private final Map<Class<?>, Method>                 m_eventHandlers;
+    private final Map<String, Integer>                  m_ownedWorkerClassNamesCadinalityMap;
+    private final Map<String, WaveWorkerPriority>       m_ownedWorkerClassNamesPriorityMap;
+    private final Set<String>                           m_ownedEventClasses;
+    private final Map<String, Method>                   m_waveLinearSequencerSteps;
+    private final Map<String, Method>                   m_waveSynchronousLinearSequencerSteps;
+    private final Map<String, Method>                   m_waveMessageCallbacks;
+    private final Map<String, Method>                   m_waveTimerExpirationHandlers;
+    private final Map<String, Method>                   m_waveEventHandlers;
 
-    private static Map<Class<?>, Map<String, Method>> s_shellCommandHandlerMethodsByClass = new HashMap<Class<?>, Map<String, Method>> ();
+    private static Map<Class<?>, Map<String, Method>>   s_shellCommandHandlerMethodsByClass = new HashMap<Class<?>, Map<String, Method>> ();
+    private static Map<Class<?>, Map<String, Class<?>>> s_shellSubordinatesByClass          = new HashMap<Class<?>, Map<String, Class<?>>> ();
 
     public WaveJavaClass (final String name)
     {
@@ -335,6 +338,8 @@ public class WaveJavaClass extends WaveJavaType
         computeSupportedEvents (reflectionClass);
 
         computeShellCommandHandlers (reflectionClass);
+
+        computeShellSubordinates (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -1419,6 +1424,44 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public boolean isADerivativeOfShellBase ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (ShellBase.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean shellBaseIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (ShellBase.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     private void getAttributesMapForInheritanceHierarchy (final AttributesMap attributesMap)
     {
         WaveAssertUtils.waveAssert (null != attributesMap);
@@ -1718,6 +1761,10 @@ public class WaveJavaClass extends WaveJavaType
 
     private void addShellCommandHandlerMethodForClass (final Class<?> classForShellCommandHandler, final Method methodForShellCommandHandler, final String shellCommand)
     {
+        WaveAssertUtils.waveAssert (null != classForShellCommandHandler);
+        WaveAssertUtils.waveAssert (null != methodForShellCommandHandler);
+        WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (shellCommand));
+
         Map<String, Method> shellCommandHandlersForClass = s_shellCommandHandlerMethodsByClass.get (classForShellCommandHandler);
 
         if (null == shellCommandHandlersForClass)
@@ -1788,6 +1835,8 @@ public class WaveJavaClass extends WaveJavaType
 
                 if (knownClassTypeName.equals (parameterClassTypeName))
                 {
+                    final Class<?> classForShellCommandHandler = shellCommand.shell ();
+
                     String shellCommandToken = shellCommand.token ();
 
                     if (WaveStringUtils.isBlank (shellCommandToken))
@@ -1795,11 +1844,75 @@ public class WaveJavaClass extends WaveJavaType
                         shellCommandToken = declaredMethod.getName ();
                     }
 
-                    addShellCommandHandlerMethodForClass (reflectionClass, declaredMethod, shellCommandToken);
+                    addShellCommandHandlerMethodForClass (classForShellCommandHandler, declaredMethod, shellCommandToken);
 
-                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellCommandHandlers : Adding a Shell Command Handler for Class %s with argument Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellCommandHandlers : Adding a Shell Command Handler for Class %s with argument Type %s, handler method : %s from class %s", classForShellCommandHandler.getTypeName (), parameterClassTypeName, declaredMethod.getName (), m_typeName);
                 }
             }
         }
+    }
+
+    private void addShellSubordinateForClass (final Class<?> classForShell, final Class<?> classForSubordinate, final String subordinateToken)
+    {
+        WaveAssertUtils.waveAssert (null != classForShell);
+        WaveAssertUtils.waveAssert (null != classForSubordinate);
+        WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (subordinateToken));
+
+        Map<String, Class<?>> subordinates = s_shellSubordinatesByClass.get (classForShell);
+
+        if (null == subordinates)
+        {
+            subordinates = new TreeMap<String, Class<?>> ();
+
+            s_shellSubordinatesByClass.put (classForShell, subordinates);
+        }
+
+        final Class<?> existingClassForSubordinate = subordinates.get (subordinateToken);
+
+        if (null == existingClassForSubordinate)
+        {
+            subordinates.put (subordinateToken, classForSubordinate);
+        }
+        else
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.addShellSubordinateForClass : %s subordinate is already present for class %s", subordinateToken, classForShell.toString ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    private void computeShellSubordinates (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfShellBase ()))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing Shell Subordinates for Java Class " + m_name, true, false);
+
+        final Annotation annotationForShellSubordinate = reflectionClass.getAnnotation (ShellSubordinate.class);
+
+        if (null == annotationForShellSubordinate)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellSubordinates : Ignoring %s from Shell Subordinate computations since it is not annotated with @ShellSubordinate", m_typeName);
+
+            return;
+        }
+
+        final ShellSubordinate shellSubordinate = (ShellSubordinate) annotationForShellSubordinate;
+
+        WaveAssertUtils.waveAssert (null != shellSubordinate);
+
+        final Class<?> subordinateParentShellClass = shellSubordinate.shell ();
+
+        WaveAssertUtils.waveAssert (null != subordinateParentShellClass);
+
+        final String subordinateToken = shellSubordinate.token ();
+
+        WaveAssertUtils.waveAssert (null != subordinateToken);
+
+        addShellSubordinateForClass (subordinateParentShellClass, reflectionClass, subordinateToken);
+
+        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeShellSubordinates : Adding a Shell subordinate for Class : %s, subordinate class : %s", subordinateParentShellClass.getTypeName (), m_typeName);
     }
 }
