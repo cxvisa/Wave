@@ -1931,6 +1931,11 @@ public class WaveJavaClass extends WaveJavaType
         return (s_shellSubordinatesByClass.get (classForShell));
     }
 
+    public static Class<?> getShellRootClass ()
+    {
+        return (s_shellRootClass);
+    }
+
     private void computeShellRoot (final Class<?> reflectionClass)
     {
         if (!(isADerivativeOfShellBase ()))

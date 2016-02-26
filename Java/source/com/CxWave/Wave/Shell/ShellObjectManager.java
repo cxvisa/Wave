@@ -4,12 +4,16 @@
 
 package com.CxWave.Wave.Shell;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import com.CxWave.Wave.Framework.Boot.BootCompleteForThisLocationEvent;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManagerForUserSpecificTasks;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
@@ -17,6 +21,8 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTasks
 {
     private static ShellObjectManager s_shellObjectManager = null;
+
+    private static String             s_shellRootPrompt    = "Wave";
 
     public ShellObjectManager ()
     {
@@ -78,6 +84,60 @@ public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTas
 
         // Get the Root Shell and instantiate it.
 
-        // Then execute the root shell
+        final Class<?> shellRootClass = WaveJavaSourceRepository.getShellRootClass ();
+
+        if (null != shellRootClass)
+        {
+            infoTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Shell Root is handled by class : %s", shellRootClass.getTypeName ());
+        }
+        else
+        {
+            warnTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Shell Root is not available and hence not spawning Shell.");
+
+            return;
+        }
+
+        // Then instantiate and execute the root shell
+
+        final Constructor<?>[] declaredConstructors = shellRootClass.getDeclaredConstructors ();
+        Constructor<?> declaredConstructorWithNameParamerter = null;
+
+        for (final Constructor<?> declaredConstructor : declaredConstructors)
+        {
+            if (1 == (declaredConstructor.getParameterCount ()))
+            {
+                declaredConstructorWithNameParamerter = declaredConstructor;
+
+                break;
+            }
+        }
+
+        if (null == declaredConstructorWithNameParamerter)
+        {
+            fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Shell Root clould not be instantiated sicne there is not constructor which takes name parameter.");
+            waveAssert ();
+        }
+
+        Object shellObject = null;
+
+        try
+        {
+            shellObject = declaredConstructorWithNameParamerter.newInstance (s_shellRootPrompt);
+        }
+        catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        {
+            fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Could not instantiate shell root class : %s.  Details : %s", shellRootClass.getTypeName (), e.toString ());
+
+            final Throwable cause = e.getCause ();
+
+            if (null != cause)
+            {
+                fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Cause : %s", cause.toString ());
+            }
+
+            waveAssert ();
+        }
+
+        final ShellBase shellBaseForRoot = (ShellBase) shellObject;
     }
 }

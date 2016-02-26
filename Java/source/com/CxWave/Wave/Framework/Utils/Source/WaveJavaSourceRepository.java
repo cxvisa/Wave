@@ -1020,4 +1020,19 @@ public class WaveJavaSourceRepository
 
         return (allAutoInstantiableNonPrePhaseNonNativeDescendantsForWaveObjectManager);
     }
+
+    public static Class<?> getShellRootClass ()
+    {
+        return (WaveJavaClass.getShellRootClass ());
+    }
+
+    public static Map<String, Method> getShellCommandHandlerMethodsForClass (final Class<?> classForShell)
+    {
+        return (WaveJavaClass.getShellCommandHandlerMethodsForClass (classForShell));
+    }
+
+    public static Map<String, Class<?>> getShellSubordinnatesForClass (final Class<?> classForShell)
+    {
+        return (WaveJavaClass.getShellSubordinnatesForClass (classForShell));
+    }
 }

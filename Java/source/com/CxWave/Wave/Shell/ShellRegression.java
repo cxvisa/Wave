@@ -4,19 +4,13 @@
 
 package com.CxWave.Wave.Shell;
 
-import com.CxWave.Wave.Shell.Annotations.ShellRoot;
+import com.CxWave.Wave.Shell.Annotations.ShellSubordinate;
 
-@ShellRoot
-public class ShellWave extends ShellBase
+@ShellSubordinate (shell = ShellWave.class, token = "regression")
+public class ShellRegression extends ShellBase
 {
-    public ShellWave (final String name)
+    public ShellRegression (final String name)
     {
         super (name);
-    }
-
-    @Override
-    public boolean isRootShell ()
-    {
-        return (true);
     }
 }

@@ -76,7 +76,7 @@ void ShellObjectManager::listenForEvents (WaveAsynchronousContextForBootPhases *
 
 void ShellObjectManager::bootCompleteForThisLocationEventHandler (const BootCompleteForThisLocationEvent *&pBootCompleteForThisLocationEvent)
 {
-    // Since we told framework not to unlistenEvents, we must explicitly unlisten for evnets since we asre going to go into an infinite while loop.
+    // Since we told framework not to unlistenEvents, we must explicitly unlisten for events since we are going to go into an infinite while loop.
 
     unlistenEvents ();
 

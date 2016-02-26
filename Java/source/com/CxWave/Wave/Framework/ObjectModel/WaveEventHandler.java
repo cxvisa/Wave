@@ -58,6 +58,13 @@ public class WaveEventHandler
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
             WaveTraceUtils.fatalTracePrintf ("WaveEventHandler.execute : Failed to invoke method : %s, Details : %s", m_method.getName (), e.toString ());
+
+            final Throwable cause = e.getCause ();
+
+            if (null != cause)
+            {
+                WaveTraceUtils.fatalTracePrintf ("WaveEventHandler.execute : Cause : %s", cause.toString ());
+            }
         }
     }
 }

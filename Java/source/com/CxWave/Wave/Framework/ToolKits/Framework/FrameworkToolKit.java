@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.ToolKits.Framework;
 
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.Core.WaveFrameworkObjectManager;
 import com.CxWave.Wave.Framework.LocationManagement.LocationBase;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
@@ -20,6 +22,8 @@ import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;
 import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator;
+import com.CxWave.Wave.Shell.ShellDebug;
+import com.CxWave.Wave.Shell.Annotations.ShellCommand;
 
 public class FrameworkToolKit
 {
@@ -245,5 +249,10 @@ public class FrameworkToolKit
         {
             return false;
         }
+    }
+
+    @ShellCommand (shell = ShellDebug.class)
+    public static void localize (final Vector<String> arguments)
+    {
     }
 }
