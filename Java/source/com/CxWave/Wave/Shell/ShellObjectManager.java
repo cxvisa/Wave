@@ -139,5 +139,7 @@ public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTas
         }
 
         final ShellBase shellBaseForRoot = (ShellBase) shellObject;
+
+        shellBaseForRoot.shellExecuteHanler ();
     }
 }

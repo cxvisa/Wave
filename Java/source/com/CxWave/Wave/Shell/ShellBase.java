@@ -10,12 +10,15 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
+import com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public class ShellBase extends WaveWorker
 {
-    final String m_name;
+    private final String                m_name;
+    private final Map<String, Method>   m_commandHandlersMap = null;
+    private final Map<String, Class<?>> m_subordinatesMap    = null;
 
     public ShellBase (final String name)
     {
@@ -36,14 +39,14 @@ public class ShellBase extends WaveWorker
 
         infoTracePrintf ("ShellBase.ShellBase : Name : %s", m_name);
 
-        final Map<String, Method> commandHandlersMap = WaveJavaSourceRepository.getShellCommandHandlerMethodsForClass (thisShellClass);
-        final Map<String, Class<?>> subordinatesMap = WaveJavaSourceRepository.getShellSubordinnatesForClass (thisShellClass);
+        final Map<String, Method> m_commandHandlersMap = WaveJavaSourceRepository.getShellCommandHandlerMethodsForClass (thisShellClass);
+        final Map<String, Class<?>> m_subordinatesMap = WaveJavaSourceRepository.getShellSubordinnatesForClass (thisShellClass);
 
         infoTracePrintf ("ShellBase.ShellBase : %s Command Handlers :", m_name);
 
-        if (null != commandHandlersMap)
+        if (null != m_commandHandlersMap)
         {
-            for (final Map.Entry<String, Method> commandHandlerEntry : commandHandlersMap.entrySet ())
+            for (final Map.Entry<String, Method> commandHandlerEntry : m_commandHandlersMap.entrySet ())
             {
                 final String commandHandlerToken = commandHandlerEntry.getKey ();
                 final Method commandHandlerMethod = commandHandlerEntry.getValue ();
@@ -57,9 +60,9 @@ public class ShellBase extends WaveWorker
 
         infoTracePrintf ("ShellBase.ShellBase : %s Subordinate Shells :", m_name);
 
-        if (null != subordinatesMap)
+        if (null != m_subordinatesMap)
         {
-            for (final Map.Entry<String, Class<?>> subordinateShellEntry : subordinatesMap.entrySet ())
+            for (final Map.Entry<String, Class<?>> subordinateShellEntry : m_subordinatesMap.entrySet ())
             {
                 final String shellToken = subordinateShellEntry.getKey ();
                 final Class<?> shellClass = subordinateShellEntry.getValue ();
@@ -121,5 +124,54 @@ public class ShellBase extends WaveWorker
     public boolean isRootShell ()
     {
         return (false);
+    }
+
+    public void shellExecuteHanler ()
+    {
+        final WaveLineEditor waveLineEditor = new WaveLineEditor ();
+
+        waveAssert (null != waveLineEditor);
+
+        if (null != m_commandHandlersMap)
+        {
+            for (final Map.Entry<String, Method> commandHandlerEntry : m_commandHandlersMap.entrySet ())
+            {
+                final String commandHandlerToken = commandHandlerEntry.getKey ();
+                final Method commandHandlerMethod = commandHandlerEntry.getValue ();
+
+                waveAssert (WaveStringUtils.isNotBlank (commandHandlerToken));
+                waveAssert (null != commandHandlerMethod);
+
+                waveLineEditor.addValidCommand (commandHandlerToken);
+            }
+        }
+
+        infoTracePrintf ("ShellBase.ShellBase : %s Subordinate Shells :", m_name);
+
+        if (null != m_subordinatesMap)
+        {
+            for (final Map.Entry<String, Class<?>> subordinateShellEntry : m_subordinatesMap.entrySet ())
+            {
+                final String shellToken = subordinateShellEntry.getKey ();
+                final Class<?> shellClass = subordinateShellEntry.getValue ();
+
+                waveAssert (WaveStringUtils.isNotBlank (shellToken));
+                waveAssert (null != shellClass);
+
+                waveLineEditor.addValidCommand (shellToken);
+            }
+        }
+
+        while (true)
+        {
+            final String commandLine = waveLineEditor.getUserInputLine (m_name);
+
+            System.out.println (commandLine + "\r");
+
+            if ("Quit".equals (commandLine))
+            {
+                return;
+            }
+        }
     }
 }

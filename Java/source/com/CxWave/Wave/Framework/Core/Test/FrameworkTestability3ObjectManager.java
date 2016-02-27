@@ -75,6 +75,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
             successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle.toString ());
         }
 
+        /*
         final TimerHandle timerHandle2 = new TimerHandle ();
 
         final ResourceId status2 = startTimer (timerHandle2, 7000, 2000, new WaveTimerExpirationHandler ("timerExpirationCallback2"), null, this);
@@ -92,6 +93,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
         {
             successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle2.toString ());
         }
+        */
     }
 
     private void timerExpirationCallback (final TimerHandle timerHandle, final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)

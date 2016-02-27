@@ -33,7 +33,7 @@ public class DebugUtils
         while (iterator.hasNext ())
         {
             System.out.format (printFormatString.toString (), i, (iterator.next ()).toString ());
-            System.out.println ();
+            System.out.println ("\r");
 
             i++;
         }

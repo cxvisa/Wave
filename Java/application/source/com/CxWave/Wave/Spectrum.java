@@ -273,6 +273,7 @@ class Spectrum
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "This Location Id : %s", thisLocationId.toString ());
 
+/*
         final WaveLineEditor waveLineEditor = new WaveLineEditor ();
 
         while (true)
@@ -284,14 +285,15 @@ class Spectrum
                 break;
             }
         }
+*/
 
-        DaemonUtils.daemonize ();
+        //DaemonUtils.daemonize ();
 
         while (true)
         {
             try
             {
-                System.out.println ("After Daemonize ...");
+                //System.out.println ("After Daemonize ...");
                 Thread.sleep (1000);
             }
             catch (final Exception exception)
