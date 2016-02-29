@@ -29,6 +29,7 @@ import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.Shutdown.WaveShutdownAgent;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
+import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 @OwnerOM (om = WaveFrameworkObjectManager.class)
 @Cardinality (1)
@@ -47,7 +48,7 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
         startWaveServices (WaveBootMode.WAVE_BOOT_UNKNOWN, WaveBootPhase.WAVE_BOOT_PHASE_ALL_PHASES);
     }
 
-    public void startWaveServices (final WaveBootMode waveBootMode, final WaveBootPhase waveBootPhase)
+    public ResourceId startWaveServices (final WaveBootMode waveBootMode, final WaveBootPhase waveBootPhase)
     {
         infoTracePrintf ("WaveFrameworkObjectManagerInitializeWorker.startWaveServices : Entering ...");
 
@@ -68,7 +69,27 @@ public class WaveFrameworkObjectManagerInitializeWorker extends WaveWorker
         waveFrameworkInitializeWorkerStartServicesContext.setWaveBootMode (waveBootMode);
         waveFrameworkInitializeWorkerStartServicesContext.setWaveBootPhase (waveBootPhase);
 
-        waveFrameworkInitializeWorkerStartServicesContext.execute ();
+        final ResourceId status = waveFrameworkInitializeWorkerStartServicesContext.execute ();
+
+        // Indicate Framework bring up is completed;
+
+        WaveFrameworkObjectManager.releaseBootSynchronizationMutex ();
+
+        if (ResourceId.WAVE_MESSAGE_SUCCESS == status)
+        {
+            infoTracePrintf ("Wave is now ready to serve.");
+        }
+        else
+        {
+            fatalTracePrintf ("WaveFrameworkObjectManagerInitializeWorker:.startWaveServices : Wave failed to come up.  Exiting ...");
+            // waveAssert (false, __FILE__, __LINE__);
+        }
+
+        // (WaveFrameworkObjectManager.getInstance ()).setTraceLevel (TRACE_LEVEL_INFO);
+
+        trace (TraceLevel.TRACE_LEVEL_PERF_END, "Wave Bootup.");
+
+        return (status);
     }
 
     private ResourceId determineNodeBootModeStep (final WaveFrameworkInitializeWorkerStartServicesContext waveFrameworkInitializeWorkerStartServicesContext)

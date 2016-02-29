@@ -62,6 +62,8 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private static SI32                       s_locationPort                         = new SI32 (3016);
 
     private static final WaveMutex            s_pFrameworkReadinessMutex             = new WaveMutex ();
+
+    private static final WaveMutex            s_bootSynchronizationMutex             = new WaveMutex ();
     private static boolean                    s_isFrameworkReadyToBoot               = false;
 
     private static FrameworkSequenceGenerator s_curentFrameworkSequenceGenerator     = new FrameworkSequenceGenerator ();
@@ -69,6 +71,8 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     private WaveFrameworkObjectManager ()
     {
         super (getServiceName ());
+
+        // acquireBootSynchronizationMutex ();
 
         if (LocationRole.LOCATION_STAND_ALONE == s_locationRole)
         {
@@ -90,7 +94,7 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
 
     private void bootSelfInternal ()
     {
-        // Now send a oneway initialize message to self.
+        // Now send a one way initialize message to self.
 
         // We know the service id for the Wave framework object manager must be 1. And it must not be anything else. So we use
         // the value 1 in the next statement.
@@ -293,6 +297,8 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
 
+        acquireBootSynchronizationMutex ();
+
         initializeLastUsedLocationId ();
 
         final OrmRepository ormRepository = OrmRepository.getInstance ();
@@ -327,5 +333,15 @@ public class WaveFrameworkObjectManager extends WaveLocalObjectManager
     public static FrameworkSequenceGenerator getCurrentFrameworkSequenceGenerator ()
     {
         return (s_curentFrameworkSequenceGenerator);
+    }
+
+    public static void acquireBootSynchronizationMutex ()
+    {
+        s_bootSynchronizationMutex.lock ();
+    }
+
+    public static void releaseBootSynchronizationMutex ()
+    {
+        s_bootSynchronizationMutex.unlock ();
     }
 }

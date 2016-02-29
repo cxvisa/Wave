@@ -279,7 +279,10 @@ public class WaveLinearSequencerContext
 
             if (e instanceof InvocationTargetException)
             {
-                executeNextStep (ResourceId.WAVE_MESSAGE_ERROR_INTERNAL);
+                m_completionStatus = ResourceId.WAVE_MESSAGE_ERROR_INTERNAL;
+                m_currentStep = m_numberOfSteps - 1;
+                executeCurrentStep ();
+                return;
             }
             else
             {
