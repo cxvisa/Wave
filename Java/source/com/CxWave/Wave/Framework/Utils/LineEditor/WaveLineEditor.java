@@ -102,7 +102,10 @@ public class WaveLineEditor
         final Vector<String> matchingCommands = new Vector<String> ();
 
         final String[] cmds =
-            { "/bin/sh", "-c", "stty raw -echo isig </dev/tty"
+            {
+                            "/bin/sh",
+                            "-c",
+                            "stty raw -echo isig </dev/tty"
             };
         WaveSystemUtils.runSystemCommand (cmds);
 
@@ -210,7 +213,10 @@ public class WaveLineEditor
                     if (4 == c)
                     {
                         final String[] resetCommands =
-                            { "/bin/sh", "-c", "stty cooked echo </dev/tty"
+                            {
+                                            "/bin/sh",
+                                            "-c",
+                                            "stty cooked echo </dev/tty"
                             };
 
                         WaveSystemUtils.runSystemCommand (resetCommands);
@@ -368,7 +374,10 @@ public class WaveLineEditor
                     }
 
                     final String[] resetCommands =
-                        { "/bin/sh", "-c", "stty cooked echo </dev/tty"
+                        {
+                                        "/bin/sh",
+                                        "-c",
+                                        "stty cooked echo </dev/tty"
                         };
 
                     WaveSystemUtils.runSystemCommand (resetCommands);
@@ -378,12 +387,5 @@ public class WaveLineEditor
                 currentlyTypingCommand = command;
             }
         }
-        /*
-         * final String[] resetCommands = { "/bin/sh", "-c", "stty cooked echo </dev/tty" };
-         *
-         * WaveSystemUtils.runSystemCommand (resetCommands);
-         *
-         * return (new String (""));
-         */
     }
 }

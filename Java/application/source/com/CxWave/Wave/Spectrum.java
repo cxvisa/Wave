@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.WaveBasedApplication;
 import com.CxWave.Wave.Framework.Core.Configuration.WaveMainConfiguration;
+import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.ToolKits.TimeZone.TimeZoneToolKit;
 import com.CxWave.Wave.Framework.ToolKits.Xml.XmlFile;
@@ -17,10 +18,8 @@ import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Configuration.WaveConfigurationFile;
-import com.CxWave.Wave.Framework.Utils.Daemon.DaemonUtils;
 import com.CxWave.Wave.Framework.Utils.Debug.DebugUtils;
 import com.CxWave.Wave.Framework.Utils.Environment.EnvironmentUtils;
-import com.CxWave.Wave.Framework.Utils.LineEditor.WaveLineEditor;
 import com.CxWave.Wave.Framework.Utils.Network.WaveNetworkUtils;
 import com.CxWave.Wave.Framework.Utils.Source.SourceUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
@@ -273,36 +272,10 @@ class Spectrum
 
         WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "This Location Id : %s", thisLocationId.toString ());
 
-/*
-        final WaveLineEditor waveLineEditor = new WaveLineEditor ();
+        // DaemonUtils.daemonize ();
 
-        while (true)
-        {
-            final String command = waveLineEditor.getUserInputLine ("Wave");
+        WaveThread.joinAllThreads ();
 
-            if ("Quit".equals (command))
-            {
-                break;
-            }
-        }
-*/
-
-        //DaemonUtils.daemonize ();
-
-        while (true)
-        {
-            try
-            {
-                //System.out.println ("After Daemonize ...");
-                Thread.sleep (1000);
-            }
-            catch (final Exception exception)
-            {
-                System.out.println ("Failed to sleep.");
-                break;
-            }
-        }
-
-        WaveAssertUtils.waveAssert (false);
+        WaveAssertUtils.waveAssert ();
     }
 }

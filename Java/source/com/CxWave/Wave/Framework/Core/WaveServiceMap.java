@@ -5,13 +5,17 @@
 package com.CxWave.Wave.Framework.Core;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Synchronization.WaveMutex;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus;
 
 public class WaveServiceMap
 {
@@ -127,5 +131,43 @@ public class WaveServiceMap
         m_mutex.unlock ();
 
         return (waveServiceId);
+    }
+
+    public WaveThreadStatus joinAllThreads ()
+    {
+        m_mutex.lock ();
+
+        final Set<Map.Entry<WaveServiceId, WaveThread>> servicesEntries = m_servicesMap.entrySet ();
+
+        m_mutex.unlock ();
+
+        final Iterator<Map.Entry<WaveServiceId, WaveThread>> iterator = servicesEntries.iterator ();
+
+        while (iterator.hasNext ())
+        {
+            final Map.Entry<WaveServiceId, WaveThread> serviceEntry = iterator.next ();
+            final WaveServiceId waveServiceId = serviceEntry.getKey ();
+            final WaveThread waveThread = serviceEntry.getValue ();
+
+            try
+            {
+                waveThread.join ();
+            }
+            catch (final InterruptedException e)
+            {
+                WaveTraceUtils.errorTracePrintf ("WaveServiceMap.joinAllThreads : Failed to wait for joning a thread %s (%s).  Details : %s", waveThread.toString (), WaveThread.getWaveServiceNameForServiceId (waveServiceId), e.toString ());
+
+                try
+                {
+                    Thread.sleep (10000);
+                }
+                catch (final InterruptedException e1)
+                {
+                    WaveAssertUtils.waveAssert ();
+                }
+            }
+        }
+
+        return (WaveThreadStatus.WAVE_THREAD_SUCCESS);
     }
 }

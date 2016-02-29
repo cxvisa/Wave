@@ -35,6 +35,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus;
 
 public class WaveThread extends Thread
 {
@@ -1013,5 +1014,10 @@ public class WaveThread extends Thread
         }
 
         return (null);
+    }
+
+    public static WaveThreadStatus joinAllThreads ()
+    {
+        return (s_waveServiceMap.joinAllThreads ());
     }
 }

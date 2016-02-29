@@ -166,8 +166,6 @@ public class ShellBase extends WaveWorker
         {
             final String commandLine = waveLineEditor.getUserInputLine (m_name);
 
-            System.out.println (commandLine + "\r");
-
             if ("Quit".equals (commandLine))
             {
                 return;
