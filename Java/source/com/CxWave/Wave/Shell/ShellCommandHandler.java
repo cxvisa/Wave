@@ -6,6 +6,7 @@ package com.CxWave.Wave.Shell;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -25,11 +26,11 @@ public class ShellCommandHandler
         WaveAssertUtils.waveAssert (null != handlerMethod);
     }
 
-    public ResourceId execute ()
+    public ResourceId execute (final Vector<String> arguments)
     {
         try
         {
-            m_handlerMethod.invoke (null);
+            m_handlerMethod.invoke (null, arguments);
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {

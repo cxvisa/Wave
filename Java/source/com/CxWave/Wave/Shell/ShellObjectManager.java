@@ -114,7 +114,7 @@ public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTas
 
         if (null == declaredConstructorWithNameParamerter)
         {
-            fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Shell Root clould not be instantiated sicne there is not constructor which takes name parameter.");
+            fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Shell Root clould not be instantiated sicne there is no constructor which takes name parameter.");
             waveAssert ();
         }
 
@@ -132,7 +132,7 @@ public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTas
 
             if (null != cause)
             {
-                fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Cause : %s", cause.toString ());
+                fatalTracePrintf ("ShellObjectManager.bootCompleteForThisLocationEventHandler : Cause : %s:\n\r%s", cause.toString ());
             }
 
             waveAssert ();
@@ -140,6 +140,6 @@ public class ShellObjectManager extends WaveLocalObjectManagerForUserSpecificTas
 
         final ShellBase shellBaseForRoot = (ShellBase) shellObject;
 
-        shellBaseForRoot.shellExecuteHanler ();
+        shellBaseForRoot.shellExecuteHanler (null);
     }
 }
