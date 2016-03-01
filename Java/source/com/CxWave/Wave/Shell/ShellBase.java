@@ -7,6 +7,7 @@ package com.CxWave.Wave.Shell;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -24,6 +25,7 @@ public class ShellBase extends WaveWorker
     private final String                           m_name;
     private final Map<String, ShellCommandHandler> m_commandHandlersMap = new HashMap<String, ShellCommandHandler> ();
     private final Map<String, ShellBase>           m_subordinatesMap    = new HashMap<String, ShellBase> ();
+    private final WaveLineEditor                   m_waveLineEditor     = new WaveLineEditor ();
 
     public ShellBase (final String name)
     {
@@ -123,6 +125,36 @@ public class ShellBase extends WaveWorker
                 m_subordinatesMap.put (shellToken, shellBase);
             }
         }
+
+        waveAssert (null != m_waveLineEditor);
+
+        if (null != m_commandHandlersMap)
+        {
+            for (final Map.Entry<String, ShellCommandHandler> commandHandlerEntry : m_commandHandlersMap.entrySet ())
+            {
+                final String commandHandlerToken = commandHandlerEntry.getKey ();
+                final ShellCommandHandler commandHandler = commandHandlerEntry.getValue ();
+
+                waveAssert (WaveStringUtils.isNotBlank (commandHandlerToken));
+                waveAssert (null != commandHandler);
+
+                m_waveLineEditor.addValidCommand (commandHandlerToken);
+            }
+        }
+
+        if (null != m_subordinatesMap)
+        {
+            for (final Map.Entry<String, ShellBase> subordinateShellEntry : m_subordinatesMap.entrySet ())
+            {
+                final String shellToken = subordinateShellEntry.getKey ();
+                final ShellBase shellBase = subordinateShellEntry.getValue ();
+
+                waveAssert (WaveStringUtils.isNotBlank (shellToken));
+                waveAssert (null != shellBase);
+
+                m_waveLineEditor.addValidCommand (shellToken);
+            }
+        }
     }
 
     public String getName ()
@@ -144,45 +176,13 @@ public class ShellBase extends WaveWorker
             numberOfIncomingArguments = incomingArguments.size ();
         }
 
-        final WaveLineEditor waveLineEditor = new WaveLineEditor ();
-
-        waveAssert (null != waveLineEditor);
-
-        if (null != m_commandHandlersMap)
-        {
-            for (final Map.Entry<String, ShellCommandHandler> commandHandlerEntry : m_commandHandlersMap.entrySet ())
-            {
-                final String commandHandlerToken = commandHandlerEntry.getKey ();
-                final ShellCommandHandler commandHandler = commandHandlerEntry.getValue ();
-
-                waveAssert (WaveStringUtils.isNotBlank (commandHandlerToken));
-                waveAssert (null != commandHandler);
-
-                waveLineEditor.addValidCommand (commandHandlerToken);
-            }
-        }
-
-        if (null != m_subordinatesMap)
-        {
-            for (final Map.Entry<String, ShellBase> subordinateShellEntry : m_subordinatesMap.entrySet ())
-            {
-                final String shellToken = subordinateShellEntry.getKey ();
-                final ShellBase shellBase = subordinateShellEntry.getValue ();
-
-                waveAssert (WaveStringUtils.isNotBlank (shellToken));
-                waveAssert (null != shellBase);
-
-                waveLineEditor.addValidCommand (shellToken);
-            }
-        }
-
         while (true)
         {
             final Vector<String> commandLineTokens = new Vector<String> ();
 
             if (0 == numberOfIncomingArguments)
             {
-                final String commandLine = waveLineEditor.getUserInputLine (m_name);
+                final String commandLine = m_waveLineEditor.getUserInputLine (m_name);
 
                 if (WaveStringUtils.isBlank (commandLine))
                 {
@@ -209,9 +209,15 @@ public class ShellBase extends WaveWorker
                 continue;
             }
 
-            if ("Quit".equals (commandToken))
+            if ("Quit".equalsIgnoreCase (commandToken))
             {
                 return;
+            }
+
+            if ("Help".equalsIgnoreCase (commandToken))
+            {
+                displayHelp ();
+                continue;
             }
 
             if (m_subordinatesMap.containsKey (commandToken))
@@ -240,6 +246,46 @@ public class ShellBase extends WaveWorker
             }
 
             numberOfIncomingArguments = 0;
+        }
+    }
+
+    private void displayHelp ()
+    {
+        final Vector<String> allCommandsInThisShell = new Vector<String> ();
+
+        if (null != m_commandHandlersMap)
+        {
+            for (final Map.Entry<String, ShellCommandHandler> commandHandlerEntry : m_commandHandlersMap.entrySet ())
+            {
+                final String commandHandlerToken = commandHandlerEntry.getKey ();
+                final ShellCommandHandler commandHandler = commandHandlerEntry.getValue ();
+
+                waveAssert (WaveStringUtils.isNotBlank (commandHandlerToken));
+                waveAssert (null != commandHandler);
+
+                allCommandsInThisShell.add (commandHandlerToken);
+            }
+        }
+
+        if (null != m_subordinatesMap)
+        {
+            for (final Map.Entry<String, ShellBase> subordinateShellEntry : m_subordinatesMap.entrySet ())
+            {
+                final String shellToken = subordinateShellEntry.getKey ();
+                final ShellBase shellBase = subordinateShellEntry.getValue ();
+
+                waveAssert (WaveStringUtils.isNotBlank (shellToken));
+                waveAssert (null != shellBase);
+
+                allCommandsInThisShell.add (shellToken);
+            }
+        }
+
+        Collections.sort (allCommandsInThisShell);
+
+        for (final String command : allCommandsInThisShell)
+        {
+            WaveTraceUtils.successTracePrintf (true, true, "%s", command);
         }
     }
 }

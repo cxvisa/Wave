@@ -15,11 +15,13 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.ManagementInterface.ClientInterface.WaveClientTransportObjectManager;
 import com.CxWave.Wave.Resources.Repository.WaveResourcesRepository;
 import com.CxWave.Wave.Resources.ResourceEnum.WaveResourceEnumInterface;
 import com.CxWave.Wave.Resources.ResourceEnums.LocationRole;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveManagementInterfaceRole;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveResourcesRepositoryPopulator;
 import com.CxWave.Wave.Shell.ShellDebug;
@@ -254,5 +256,49 @@ public class FrameworkToolKit
     @ShellCommand (shell = ShellDebug.class)
     public static void localize (final Vector<String> arguments)
     {
+        if (null == arguments)
+        {
+            return;
+        }
+
+        for (final String argument : arguments)
+        {
+            if (WaveStringUtils.isBlank (argument))
+            {
+                continue;
+            }
+
+            int effectiveResourceId = 0;
+
+            if (argument.startsWith ("0x"))
+            {
+                final String modifiedArgument = argument.replaceFirst ("0x", "");
+
+                effectiveResourceId = Integer.parseInt (modifiedArgument, 16);
+            }
+            else if (argument.startsWith ("0X"))
+            {
+                final String modifiedArgument = argument.replaceFirst ("0X", "");
+
+                effectiveResourceId = Integer.parseInt (modifiedArgument, 16);
+            }
+            else
+            {
+                effectiveResourceId = Integer.parseInt (argument);
+            }
+
+            final ResourceId resourceId = ResourceId.getResourceIdByEffectiveResourceId (effectiveResourceId);
+
+            if (null != resourceId)
+            {
+                final String localizedResourceId = FrameworkToolKit.localize (resourceId);
+
+                WaveTraceUtils.infoTracePrintf (true, true, "0x%08x - %s", effectiveResourceId, localizedResourceId);
+            }
+            else
+            {
+                WaveTraceUtils.infoTracePrintf (true, true, "0x%08x - %s", effectiveResourceId, "U n k n o w n  R e s o u r c e I d");
+            }
+        }
     }
 }

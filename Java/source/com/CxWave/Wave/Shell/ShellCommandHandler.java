@@ -40,7 +40,7 @@ public class ShellCommandHandler
 
             if (null != cause)
             {
-                WaveTraceUtils.fatalTracePrintf ("ShellCommandHandler.execute : Cause : %s", m_handlerName, e.toString ());
+                WaveTraceUtils.fatalTracePrintf ("ShellCommandHandler.execute : Cause : %s", cause.toString ());
             }
 
             return (ResourceId.WAVE_MESSAGE_ERROR);
