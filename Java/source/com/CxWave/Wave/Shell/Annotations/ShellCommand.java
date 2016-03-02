@@ -21,4 +21,6 @@ public @interface ShellCommand
     public String token () default "";
 
     public Class shell () default ShellDebug.class;
+
+    public String briefHelp () default "";
 }

@@ -253,7 +253,7 @@ public class FrameworkToolKit
         }
     }
 
-    @ShellCommand (shell = ShellDebug.class)
+    @ShellCommand (shell = ShellDebug.class, briefHelp = "Localizes a ResourceId in Decimal / Hex format and prints out the corresponding String.")
     public static void localize (final Vector<String> arguments)
     {
         if (null == arguments)
@@ -299,6 +299,22 @@ public class FrameworkToolKit
             {
                 WaveTraceUtils.infoTracePrintf (true, true, "0x%08x - %s", effectiveResourceId, "U n k n o w n  R e s o u r c e I d");
             }
+        }
+    }
+
+    @ShellCommand (shell = ShellDebug.class, briefHelp = "Prints brief infromation about currently loaded services.")
+    public static void printServices (final Vector<String> arguments)
+    {
+        final Vector<WaveServiceId> waveServiceIds = new Vector<WaveServiceId> ();
+        int numberOfWaveServices;
+        int i;
+
+        WaveThread.getListOfServiceIds (waveServiceIds);
+        numberOfWaveServices = waveServiceIds.size ();
+
+        for (i = 0; i < numberOfWaveServices; i++)
+        {
+            WaveTraceUtils.infoTracePrintf (false, true, "%5d:%50s:%10s:%10s\n", waveServiceIds.get (i).getId (), getServiceNameById (waveServiceIds.get (i)), WaveObjectManager.isServiceEnabled (waveServiceIds.get (i)) ? "Enabled" : "Disabled", isALocalService (waveServiceIds.get (i)) ? "Local" : "Global");
         }
     }
 }

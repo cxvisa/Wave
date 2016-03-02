@@ -11,6 +11,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
+import com.CxWave.Wave.Shell.Annotations.ShellCommand;
 
 public class ShellCommandHandler
 {
@@ -47,5 +48,19 @@ public class ShellCommandHandler
         }
 
         return (ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    public String getBriefHelp ()
+    {
+        if (null == m_handlerMethod)
+        {
+            return (null);
+        }
+
+        final ShellCommand shellCommand = m_handlerMethod.getAnnotation (ShellCommand.class);
+
+        WaveAssertUtils.waveAssert (null != shellCommand);
+
+        return (shellCommand.briefHelp ());
     }
 }

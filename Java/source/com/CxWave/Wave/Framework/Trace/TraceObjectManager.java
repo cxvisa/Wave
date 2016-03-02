@@ -239,7 +239,14 @@ public class TraceObjectManager extends WaveObjectManager
             s_waveTraceFile.printf (newFormatString, newObjects);
             s_waveTraceFile.flush ();
 
-            System.out.printf (newFormatString + "\r", newObjects);
+            if (addNewLine)
+            {
+                System.out.printf (newFormatString + "\r", newObjects);
+            }
+            else
+            {
+                System.out.printf (newFormatString, newObjects);
+            }
 
             WaveTerminalUtils.waveResetConsoleTextColor ();
         }

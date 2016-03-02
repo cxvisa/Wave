@@ -641,4 +641,46 @@ public class WaveStringUtils
 
         return (tempString.toString ());
     }
+
+    public static int maximumLength (final Vector<String> inputStrings)
+    {
+        if (null == inputStrings)
+        {
+            return (0);
+        }
+
+        int maximumLength = 0;
+        int length = 0;
+
+        for (final String eachString : inputStrings)
+        {
+            if (null != eachString)
+            {
+                length = eachString.length ();
+            }
+            else
+            {
+                length = 0;
+            }
+
+            if (length > maximumLength)
+            {
+                maximumLength = length;
+            }
+        }
+
+        return (maximumLength);
+    }
+
+    public static String spaces (final int numberOfSpaces)
+    {
+        final StringBuffer spacesBuffer = new StringBuffer ();
+
+        for (int i = 0; i < numberOfSpaces; i++)
+        {
+            spacesBuffer.append (' ');
+        }
+
+        return (spacesBuffer.toString ());
+    }
 }

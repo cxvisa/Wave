@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
@@ -252,6 +253,7 @@ public class ShellBase extends WaveWorker
     private void displayHelp ()
     {
         final Vector<String> allCommandsInThisShell = new Vector<String> ();
+        final Vector<String> briefHelpForAllCommandsInThisShell = new Vector<String> ();
 
         if (null != m_commandHandlersMap)
         {
@@ -264,6 +266,7 @@ public class ShellBase extends WaveWorker
                 waveAssert (null != commandHandler);
 
                 allCommandsInThisShell.add (commandHandlerToken);
+                briefHelpForAllCommandsInThisShell.add (commandHandler.getBriefHelp ());
             }
         }
 
@@ -278,14 +281,21 @@ public class ShellBase extends WaveWorker
                 waveAssert (null != shellBase);
 
                 allCommandsInThisShell.add (shellToken);
+                briefHelpForAllCommandsInThisShell.add ("");
             }
         }
 
         Collections.sort (allCommandsInThisShell);
 
+        final Iterator<String> iterator = briefHelpForAllCommandsInThisShell.iterator ();
+
+        final int maximumLength = WaveStringUtils.maximumLength (allCommandsInThisShell);
+
         for (final String command : allCommandsInThisShell)
         {
-            WaveTraceUtils.successTracePrintf (true, true, "%s", command);
+            WaveTraceUtils.successTracePrintf (false, true, "%s%s", command, WaveStringUtils.spaces (maximumLength - (command.length ())));
+            WaveTraceUtils.infoTracePrintf (true, true, " - %s", iterator.next ());
+
         }
     }
 }

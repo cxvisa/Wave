@@ -2287,7 +2287,7 @@ public class WaveObjectManager extends WaveElement
         s_enabledServicesMutex.unlock ();
     }
 
-    public boolean isServiceEnabled (final WaveServiceId waveServiceId)
+    public static boolean isServiceEnabled (final WaveServiceId waveServiceId)
     {
         s_enabledServicesMutex.lock ();
 

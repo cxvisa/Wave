@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Core.WaveServiceMap;
 import com.CxWave.Wave.Framework.Messaging.HaPeer.HaPeerMessageTransportObjectManager;
@@ -1019,5 +1020,13 @@ public class WaveThread extends Thread
     public static WaveThreadStatus joinAllThreads ()
     {
         return (s_waveServiceMap.joinAllThreads ());
+    }
+
+    public static void getListOfServiceIds (final Vector<WaveServiceId> waveServiceIds)
+    {
+        if (null != s_waveServiceMap)
+        {
+            s_waveServiceMap.getListOfServiceIds (waveServiceIds);
+        }
     }
 }
