@@ -79,7 +79,7 @@ UI32 ShellRegression::listServices (UI32 argc, vector<string> argv)
                 RegressionTestEntry regressionTestEntry (message.getTestServiceEntryAt (index));
                 id                  = regressionTestEntry.getTestServiceId ();
                 testServiceState    = regressionTestEntry.getIsTestEnabled ();
-                serviceState        = ((1 == testServiceState)? "enable" : "disble");
+                serviceState        = ((1 == testServiceState)? "Enabled" : "Disabled");
                 serviceName         = FrameworkToolKit::getServiceNameById (id);
                 printf ("%3d- %-40s: %s\n", index, serviceName.c_str (),  serviceState);
             }

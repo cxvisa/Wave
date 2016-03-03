@@ -257,7 +257,7 @@ public class WaveThread extends Thread
 
                 // final WaveObjectManager waveObjectManager = null;
 
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Received a message ... :-)");
+                // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_DEBUG, "Received a message ... :-)");
 
                 WaveObjectManager waveObjectManager = null;
 

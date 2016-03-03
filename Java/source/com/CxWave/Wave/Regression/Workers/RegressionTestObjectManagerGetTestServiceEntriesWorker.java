@@ -10,17 +10,25 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
+import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Regression.RegressionTestEntry;
+import com.CxWave.Wave.Regression.RegressionTestObjectManager;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
 import com.CxWave.Wave.Regression.Annotations.NonTestOM;
 import com.CxWave.Wave.Regression.Contexts.RegressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext;
 import com.CxWave.Wave.Regression.Messages.RegressionTestObjectManagerGetTestServiceEntriesMessage;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
+@OwnerOM (om = RegressionTestObjectManager.class)
+@Cardinality (1)
+@WorkerPriority (WaveWorkerPriority.WAVE_WORKER_PRIORITY_0)
 public class RegressionTestObjectManagerGetTestServiceEntriesWorker extends WaveWorker
 {
     public RegressionTestObjectManagerGetTestServiceEntriesWorker (final WaveObjectManager waveObjectManager)
@@ -30,13 +38,13 @@ public class RegressionTestObjectManagerGetTestServiceEntriesWorker extends Wave
 
     private void getTestServiceEntriesRequestHandler (final RegressionTestObjectManagerGetTestServiceEntriesMessage regressionTestObjectManagerGetTestServiceEntriesMessage)
     {
-        infoTracePrintf ("RegressionTestObjectManagerGetTestServiceEntriesWorker.getTestServiceEntriesRequestHandler : Entering ...");
+        develTracePrintf ("RegressionTestObjectManagerGetTestServiceEntriesWorker.getTestServiceEntriesRequestHandler : Entering ...");
 
         final String[] sequencerSteps =
             {
                             "getTestServiceEntriesComputeStep",
                             "getTestServiceEntriesSetOutputStep",
-                            "waveLinearSequencerSuceededStep",
+                            "waveLinearSequencerSucceededStep",
                             "waveLinearSequencerFailedStep"
             };
 
@@ -49,7 +57,7 @@ public class RegressionTestObjectManagerGetTestServiceEntriesWorker extends Wave
 
     private void getTestServiceEntriesComputeStep (final RegressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext regressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext)
     {
-        infoTracePrintf ("RegressionTestObjectManagerGetTestServiceEntriesWorker.getTestServiceEntriesComputeStep : Entering ...");
+        develTracePrintf ("RegressionTestObjectManagerGetTestServiceEntriesWorker.getTestServiceEntriesComputeStep : Entering ...");
 
         final Set<String> allDescendantsOfWaveTestObjectManager = WaveJavaSourceRepository.getAllDescendantsForClass (WaveTestObjectManager.class.getName ());
 
@@ -80,7 +88,7 @@ public class RegressionTestObjectManagerGetTestServiceEntriesWorker extends Wave
 
     private void getTestServiceEntriesSetOutputStep (final RegressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext regressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext)
     {
-        infoTracePrintf ("RegressionTestObjectManagerGetTestServiceEntriesWorker.getTestServiceEntriesSetOutputStep : Entering ...");
+        develTracePrintf ("RegressionTestObjectManagerGetTestServiceEntriesWorker.getTestServiceEntriesSetOutputStep : Entering ...");
 
         final Vector<WaveServiceId> testServiceIds = regressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext.getTestServiceIds ();
         final Vector<Boolean> testServiceStates = regressionTestObjectManagerGetTestServiceEntriesLinearSequencerContext.getTestServiceStates ();

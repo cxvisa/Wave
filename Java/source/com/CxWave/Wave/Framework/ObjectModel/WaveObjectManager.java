@@ -1639,7 +1639,7 @@ public class WaveObjectManager extends WaveElement
     @NonMessageHandler
     public ResourceId reply (final WaveMessage waveMessage)
     {
-        infoTracePrintf ("WaveObjectManager.reply : Replying to a message ...");
+        // debugTracePrintf ("WaveObjectManager.reply : Replying to a message ...");
 
         // First check if we need to really deliver the reply.
         // If the message was sent synchronously simply resume the sender thread and return.
