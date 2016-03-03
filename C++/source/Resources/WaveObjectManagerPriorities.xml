@@ -21,6 +21,8 @@
 
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY3"></Resource>
 
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_CORE_TEST"></Resource>
+
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_DEFAULT"></Resource>
     </ResourceEnum>
 </ModuleResources>
