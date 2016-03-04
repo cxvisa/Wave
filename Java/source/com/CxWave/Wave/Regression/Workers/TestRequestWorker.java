@@ -27,7 +27,7 @@ public class TestRequestWorker extends WaveWorker
 
     private void testRequestHandler (final RegressionTestMessage regressionTestMessage)
     {
-        infoTracePrintf ("TestRequestWorker.testRequestHandler : Entering ...");
+        // develTracePrintf ("TestRequestWorker.testRequestHandler : Entering ...");
 
         final String[] sequencerSteps =
             {
@@ -45,7 +45,7 @@ public class TestRequestWorker extends WaveWorker
 
     private void testRequestHandleTestStep (final WaveLinearSequencerContext waveLinearSequencerContext)
     {
-        infoTracePrintf ("TestRequestWorker.testRequestHandleTestStep : Entering ...");
+        // develTracePrintf ("TestRequestWorker.testRequestHandleTestStep : Entering ...");
 
         final WaveObjectManager waveObjectManager = getWaveObjectManager ();
 
@@ -62,7 +62,7 @@ public class TestRequestWorker extends WaveWorker
 
     private void testRequestHandleTestCallback (final RegressionTestAsynchronousContext regressionTestAsynchronousContext)
     {
-        infoTracePrintf ("TestRequestWorker.testRequestHandleTestCallback : Entering ...");
+        // develTracePrintf ("TestRequestWorker.testRequestHandleTestCallback : Entering ...");
 
         final WaveLinearSequencerContext waveLinearSequencerContext = (WaveLinearSequencerContext) regressionTestAsynchronousContext.getCallerContext ();
 

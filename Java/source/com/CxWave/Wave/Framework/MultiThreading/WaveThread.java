@@ -679,7 +679,7 @@ public class WaveThread extends Thread
         {
             m_frameworkMessages.insertAtTheBack (waveMessage);
 
-            WaveTraceUtils.infoTracePrintf ("WaveThread.submitMessage : Submitting a Framework Message.");
+            // WaveTraceUtils.debugTracePrintf ("WaveThread.submitMessage : Submitting a Framework Message.");
         }
         else
         {
