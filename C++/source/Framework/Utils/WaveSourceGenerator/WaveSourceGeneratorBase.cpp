@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2008 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -67,7 +67,7 @@ string WaveSourceGeneratorBase::generateHHeaderMacroName () const
 string WaveSourceGeneratorBase::generateHCopyRightNotice () const
 {
     string copyRightNotice = "/***************************************************************************\n"
-                             " *   Copyright (C) 2005-2008 Vidyasagara Guntaka                           *\n"
+                             " *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *\n"
                              " *   All rights reserved.                                                  *\n"
                              " *   Author : Vidyasagara Reddy Guntaka                                    *\n"
                              " ***************************************************************************/\n"

@@ -11728,11 +11728,6 @@ void WaveObjectManager::endOfLifeService (WaveServiceId waveServiceId)
     delete pWaveDestructObjectManagerMessage;
 }
 
-protected boolean isAKnownMessage (final UI32 waveMessageId)
-{
-
-}
-
 void WaveObjectManager::bootStrapService (WaveServiceId waveServiceId)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;

@@ -3,3 +3,4 @@ build/
 source/Resources/resources
 application/WaveDatabase
 projects/eclipse/.*
+execution/

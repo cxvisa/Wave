@@ -45,6 +45,10 @@
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceReceiverObjectManager.h"
 
 #include "Policy/PolicyObjectManager.h"
+#include "ServiceManagement/Global/ServiceManagementObjectManager.h"
+#include "ServiceManagement/Local/ServiceManagementLocalObjectManager.h"
+#include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingObjectManager.h"
+#include "Sharding/NetworkDeviceWrite/NetworkDeviceWriteShardingObjectManager.h"
 
 #include <time.h>
 #include <stdlib.h>
@@ -372,7 +376,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableBuiltInSelfTestSupport)
     {
-		registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability6ObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability6ObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedLogTestObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FileLocalMessagingTestObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PersistenceTestObjectManager::getInstance));
@@ -396,6 +400,12 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PolicyObjectManager::getInstance));
 
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (NetworkDeviceWriteShardingObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (NetworkDeviceReadShardingObjectManager::getInstance));
+
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ServiceManagementObjectManager::getInstance));
+    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ServiceManagementLocalObjectManager::getInstance));
+
     if (true == m_enableSystemManagementSupport)
     {
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (CommandLineInterfaceReceiverObjectManager::getInstance));
@@ -410,7 +420,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableClusteringSupport)
     {
-		registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedDebugGlobalObjectManager::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedDebugGlobalObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedDebugLocalObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LockManagementObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (InterLocationMessageReceiverObjectManager::getInstance));
