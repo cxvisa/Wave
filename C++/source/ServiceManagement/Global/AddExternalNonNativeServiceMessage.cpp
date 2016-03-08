@@ -16,6 +16,18 @@ AddExternalNonNativeServiceMessage::AddExternalNonNativeServiceMessage ()
 {
 }
 
+AddExternalNonNativeServiceMessage::AddExternalNonNativeServiceMessage (const string &applicationName)
+    : ManagementInterfaceMessage (ServiceManagementObjectManager::getServiceName (), SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE)
+{
+        m_applicationNames.push_back (applicationName);
+}
+
+AddExternalNonNativeServiceMessage::AddExternalNonNativeServiceMessage (const vector<string> &applicationNames)
+    : ManagementInterfaceMessage (ServiceManagementObjectManager::getServiceName (), SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE)
+{
+        m_applicationNames = applicationNames;
+}
+
 AddExternalNonNativeServiceMessage::~AddExternalNonNativeServiceMessage ()
 {
 }
@@ -26,7 +38,17 @@ void AddExternalNonNativeServiceMessage::setupAttributesForSerialization ()
 
     // This class Specific Attributes below
 
-    addSerializableAttribute (new AttributeString (&m_name, "name"));
+    addSerializableAttribute (new AttributeStringVector (&m_applicationNames, "applicationNames"));
+}
+
+const vector<string> &AddExternalNonNativeServiceMessage::getApplicationNames () const
+{
+    return (m_applicationNames);
+}
+
+void AddExternalNonNativeServiceMessage::setApplicationNames (const vector<string> &applicationNames)
+{
+    m_applicationNames = applicationNames;
 }
 
 }

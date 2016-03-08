@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "AddExternalNonNativeServiceContext.h"
+#include "ServiceManagement/Global/AddExternalNonNativeServiceContext.h"
 
 namespace WaveNs
 {
@@ -16,6 +16,16 @@ AddExternalNonNativeServiceContext::AddExternalNonNativeServiceContext (WaveMess
 
 AddExternalNonNativeServiceContext::~AddExternalNonNativeServiceContext ()
 {
+}
+
+const vector<string> &AddExternalNonNativeServiceContext::getApplicationNames () const
+{
+    return (m_applicationNames);
+}
+
+void AddExternalNonNativeServiceContext::setApplicationNames (const vector<string> &applicationNames)
+{
+    m_applicationNames = applicationNames;
 }
 
 }

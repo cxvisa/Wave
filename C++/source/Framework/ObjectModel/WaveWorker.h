@@ -125,7 +125,7 @@ class WaveWorker : public WaveElement
         virtual void                          deleteMultipleWaveManagedObjects          (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion);
         virtual void                          deleteManagedObjectCompositions           (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion, const set<string> relationsSet = set<string>());
         virtual void                          deleteManagedObjectCompositions           (const ObjectId &objectId, const set<string> relationsSet = set<string>());
-	virtual void                          deletePartialManagedObjectCompositions    (const string &parentClassName, const string &compositionName, WaveManagedObjectSynchronousQueryContextForDeletion *pQueryContextForDeletionOnChildMO);
+    virtual void                          deletePartialManagedObjectCompositions    (const string &parentClassName, const string &compositionName, WaveManagedObjectSynchronousQueryContextForDeletion *pQueryContextForDeletionOnChildMO);
         virtual bool                          isManagedClassSupported                   (const string &managedClass);
 
         virtual void                          addRelationship                           (const string &parentClassName, const string &childClassName, const string &relationshipName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
@@ -144,10 +144,13 @@ class WaveWorker : public WaveElement
         virtual ResourceId                   querySynchronouslyForCount                 (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext, UI32 &count);
         virtual ResourceId                   querySynchronouslyForCount                 (const string &managedClassName, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual ResourceId                   querySynchronouslyForCount                 (const string &managedClassName, const string &fieldName, const string &range, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                   querySynchronouslyForCountForManagedObjectByName (const string &managedClassName, const string &nameValue, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+
         virtual vector<WaveManagedObject *> *querySynchronously                         (const string &managedClassName, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual vector<WaveManagedObject *> *querySynchronously                         (const string &managedClassName, vector<ObjectId> &objectIds, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual vector<WaveManagedObject *> *querySynchronouslyByName                   (const string &managedClassName, const string &managedObjectName, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual WaveManagedObject           *queryManagedObject                         (const ObjectId &managedObjectId, const string &schema = OrmRepository::getWaveCurrentSchema ());
+
         virtual vector<WaveManagedObject *> *queryManagedObjectAssociatedWithSlot       (const string &managedClassName, UI32 slotNumber, LocationId locationId = 0, const string &schema = OrmRepository::getWaveCurrentSchema ());
 
         virtual TraceClientId                  getTraceClientId                         ();
@@ -216,7 +219,7 @@ class WaveWorker : public WaveElement
     // Now the data members
 
     private :
-		bool m_linkWorkerToParentObjectManager;
+        bool m_linkWorkerToParentObjectManager;
 
     protected :
     public :

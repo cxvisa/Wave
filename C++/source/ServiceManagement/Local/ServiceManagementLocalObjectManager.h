@@ -12,6 +12,8 @@
 namespace WaveNs
 {
 
+class AddExternalNonNativeServiceInstanceWorker;
+
 class ServiceManagementLocalObjectManager : public WaveObjectManager
 {
     private:
@@ -28,6 +30,8 @@ class ServiceManagementLocalObjectManager : public WaveObjectManager
         // Now the Data Members
 
     private:
+        AddExternalNonNativeServiceInstanceWorker *m_pAddExternalNonNativeServiceInstanceWorker;
+
     protected:
     public:
 };

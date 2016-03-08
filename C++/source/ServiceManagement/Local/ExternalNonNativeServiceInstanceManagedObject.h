@@ -17,10 +17,13 @@ class ExternalNonNativeServiceInstanceManagedObject : public WaveLocalManagedObj
     private :
         void setupAttributesForPersistence ();
         void setupAttributesForCreate      ();
+        void setupKeys                     ();
 
     protected :
     public :
                  ExternalNonNativeServiceInstanceManagedObject (WaveObjectManager *pWaveObjectManager);
+                 ExternalNonNativeServiceInstanceManagedObject (WaveObjectManager *pWaveObjectManager, const string &applicationInstanceName);
+
         virtual ~ExternalNonNativeServiceInstanceManagedObject ();
 
         static string getClassName ();

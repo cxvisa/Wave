@@ -12,7 +12,7 @@
 #include "Framework/ObjectRelationalMapping/ManagedObjectSchemaInfoRepository.h"
 #include "Framework/ObjectRelationalMapping/OrmRelation.h"
 #include "Framework/ObjectRelationalMapping/OrmView.h"
-#include "Mathematics/Z2/Z2.h" 
+#include "Mathematics/Z2/Z2.h"
 
 #include <string>
 #include <vector>
@@ -63,7 +63,7 @@ class OrmRepository
         static       string                     getSqlToDeleteAllEntriesFromAuxilliaryTable   (const string &tableName, const string &waveSchema);
         static       string                     getSqlToTruncateFromAuxilliaryTable           (const string &tableName, const string &waveSchema);
         static       string                     getSqlToRemoveEntriesFromAuxilliaryTable      (const string &tableName, const UI32 classid, const string &waveSchema);
-        static       string                     getSqlToRemoveAuxilliaryTableEntriesForToEnd  (const UI32 fromTableId, const string& relation, const UI32 relatedToTableId, const UI32 tableIdTobeRemoved, const string& waveSchema); 
+        static       string                     getSqlToRemoveAuxilliaryTableEntriesForToEnd  (const UI32 fromTableId, const string& relation, const UI32 relatedToTableId, const UI32 tableIdTobeRemoved, const string& waveSchema);
         static       string                     getSqlToDropAuxilliaryTable                   (const string &tableName, const string &waveSchema);
         static       string                     getSqlForDerivedTable                         (const string &tableName, const UI32 &tableId, const string &waveSchema);
         static       OrmTable                  *getMostBaseTable                              (const string &tableName);
@@ -120,6 +120,7 @@ class OrmRepository
                      void                       getSchemaChangeVectors                        (vector<string>   & managedObjectNamesForSchemaChange,vector<string>   & fieldNamesStringsForSchemaChange,vector<string> & fieldNamesTypesForSchemaChange,vector<UI32>   & classIds,vector<UI32> & m_parentTableIds);
 
         static       bool                       isFieldOfIntegerType                          (const string &tableName, const string &columnName);
+        static       bool                       isFieldOfStringType                           (const string &tableName, const string &columnName);
         static       void                       getAllCompositionTableName                    (set<string> &allCompositionTableNames);
 
                      vector<string>             getTableNames                                 (bool checkEmptyNeeded = false);

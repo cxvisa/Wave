@@ -8087,6 +8087,20 @@ ResourceId WaveObjectManager::querySynchronouslyForCount (const string &managedC
     return (querySynchronouslyForCount (&waveManagedObjectSynchronousQueryContext, count));
 }
 
+ResourceId WaveObjectManager::querySynchronouslyForCountForManagedObjectByName(const string &managedClassName, const string &nameValue, UI32 &count, const string &schema)
+{
+    if (false == OrmRepository::isFieldOfStringType (managedClassName, "name"))
+    {
+        return (WAVE_MESSAGE_ERROR_COUNT_QUERY_NOT_SUPPORTED_ON_NON_INTEGER_RANGE);
+    }
+
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    waveManagedObjectSynchronousQueryContext.addAndAttribute (new AttributeString (nameValue, "name"));
+
+    return (querySynchronouslyForCount (&waveManagedObjectSynchronousQueryContext, count));
+}
+
 vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext)
 {
     WaveManagedObjectSynchronousInnerQueryContext *pInnerQueryContext = dynamic_cast<WaveManagedObjectSynchronousInnerQueryContext *> (pWaveManagedObjectSynchronousQueryContext);

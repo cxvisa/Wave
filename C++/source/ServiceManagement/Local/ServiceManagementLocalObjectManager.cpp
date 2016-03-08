@@ -5,6 +5,7 @@
  ***************************************************************************/
 
 #include "ServiceManagement/Local/ServiceManagementLocalObjectManager.h"
+#include "ServiceManagement/Local/AddExternalNonNativeServiceInstanceWorker.h"
 #include "ServiceManagement/Local/ExternalNonNativeServiceInstanceManagedObject.h"
 
 namespace WaveNs
@@ -13,15 +14,17 @@ namespace WaveNs
 ServiceManagementLocalObjectManager::ServiceManagementLocalObjectManager ()
     : WaveObjectManager (getServiceName ())
 {
-    ExternalNonNativeServiceInstanceManagedObject externalNonNativeServiceInstanceManagedObject (this);
+    m_pAddExternalNonNativeServiceInstanceWorker = new AddExternalNonNativeServiceInstanceWorker (this);
 
-    externalNonNativeServiceInstanceManagedObject.setupOrm ();
-
-    addManagedClass (ExternalNonNativeServiceInstanceManagedObject::getClassName());
+    waveAssert (NULL != m_pAddExternalNonNativeServiceInstanceWorker, __FILE__, __LINE__);
 }
 
 ServiceManagementLocalObjectManager::~ServiceManagementLocalObjectManager ()
 {
+    if (NULL != m_pAddExternalNonNativeServiceInstanceWorker)
+    {
+        delete m_pAddExternalNonNativeServiceInstanceWorker;
+    }
 }
 
 ServiceManagementLocalObjectManager *ServiceManagementLocalObjectManager:: getInstance ()

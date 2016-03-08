@@ -41,6 +41,7 @@ class OrmTable
         bool                        isAKnownColumn                         (const string &columnName) const;
         bool                        isAKnownColumnInHierarchy              (const string &columnName) const;
         bool                        isAnIntegerColumn                      (const string &columnName);
+        bool                        isAStringColumn                        (const string &columnName);
         void                        addColumn                              (OrmColumn *pOrmColumn);
         bool                        isAKnownRelation                       (const string &relationName) const;
         bool                        isAKnownRelationInHierarchy            (const string &relationName, OrmRelationType &ormRelationType) const;
@@ -91,7 +92,7 @@ class OrmTable
         string                      getSqlToDrop                           (const string &schema) const;
 
         string                      getSqlTypeForAField                    (const string& fieldName);
- 
+
         void                        getAuxilliaryTableNames                (vector<string> &auxilliaryTableNames) const;
         void                        getAuxilliaryTableNamesAppended        (vector<string> &auxilliaryTableNames) const;
         void                        getAuxilliaryTableDetailsAppended      (vector<string> &auxilliaryTableNames, vector<string> &parentTableNames, vector<string> &relatedToTableNames) const;
@@ -130,10 +131,10 @@ class OrmTable
         const vector<string> &      getFieldTypesForUpgrade                () const;
         const vector<string> &      getDbFieldTypesForUpgrade              () const;
         const vector<string>        getExtendedFieldTypesForUpgrade        ();
-        
+
         const vector<string>        getUserDefinedFieldNamesForUpgrade     ();
         const vector<string>        getUserDefinedFieldTypesForUpgrade     ();
-        
+
         void                        setUpgradeStrings                      ();
         void                        addManagedObjectAttributes             (Attribute *attribute);
         Attribute*                  getAttributeForFieldNameInManagedObject (const string &fieldName);

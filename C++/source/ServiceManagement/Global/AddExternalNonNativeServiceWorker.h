@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef ADDEXTERNALNONNATIVESERVICEWORKERWORKER_H
-#define ADDEXTERNALNONNATIVESERVICEWORKERWORKER_H
+#ifndef ADDEXTERNALNONNATIVESERVICEWORKER_H
+#define ADDEXTERNALNONNATIVESERVICEWORKER_H
 
 #include "Framework/ObjectModel/WaveWorker.h"
 
@@ -18,6 +18,9 @@ class AddExternalNonNativeServiceContext;
 class AddExternalNonNativeServiceWorker : public WaveWorker
 {
     private :
+        WaveMessage       *createMessageInstance       (const UI32 &operationCode);
+        WaveManagedObject *createManagedObjectInstance (const string &managedClassName);
+
         void addExternalNonNativeServiceRequestHandler (AddExternalNonNativeServiceMessage *pAddExternalNonNativeServiceMessage);
         void validateStep                              (AddExternalNonNativeServiceContext *pAddExternalNonNativeServiceContext);
         void createStep                                (AddExternalNonNativeServiceContext *pAddExternalNonNativeServiceContext);
@@ -36,4 +39,4 @@ class AddExternalNonNativeServiceWorker : public WaveWorker
 
 }
 
-#endif // ADDEXTERNALNONNATIVESERVICEWORKERWORKER_H
+#endif // ADDEXTERNALNONNATIVESERVICEWORKER_H

@@ -638,27 +638,27 @@ class WaveObjectManager : public WaveElement
 
         virtual bool                                             isBeingSurrogated                            ();
 
-		/**
-		 @addtogroup PartialSuccess
+        /**
+         @addtogroup PartialSuccess
          @{
-		 */
+         */
 
-		/**
-		 @brief sendToWaveCluster sends the message to all the nodes in the cluster. The message to be sent can be set
-				in WaveSendToClusterContext. Similarly partialSuccess flag can be set to true in WaveSendToClusterContext
-				before calling sendToWaveCluster.\n
+        /**
+         @brief sendToWaveCluster sends the message to all the nodes in the cluster. The message to be sent can be set
+                in WaveSendToClusterContext. Similarly partialSuccess flag can be set to true in WaveSendToClusterContext
+                before calling sendToWaveCluster.\n
 
          <b>Update</b>: Return status is now enhanced based on new flag m_returnSuccessForPartialSuccessFlag see below
-			for more details.\n
+            for more details.\n
 
-		 @return if m_returnSuccessForPartialSuccessFlag is set then\n\n
-				 WAVE_MESSAGE_SUCCES is returned if all or any node succeeds.\n
-				 WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES is returned if all nodes fail.\n\n
-				 If m_returnSuccessForPartialSuccessFlag is not set then\n
-				 WAVE_MESSAGE_SUCCESS is returned only if all nodes succeed else returns WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES.\n
+         @return if m_returnSuccessForPartialSuccessFlag is set then\n\n
+                 WAVE_MESSAGE_SUCCES is returned if all or any node succeeds.\n
+                 WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES is returned if all nodes fail.\n\n
+                 If m_returnSuccessForPartialSuccessFlag is not set then\n
+                 WAVE_MESSAGE_SUCCESS is returned only if all nodes succeed else returns WAVE_MESSAGE_ERROR_FAILED_ON_ALL_NODES.\n
 
-		 @see WaveSendToClusterContext
-		 */
+         @see WaveSendToClusterContext
+         */
         virtual void                                             sendToWaveCluster                                  (WaveSendToClusterContext *pWaveSendToClusterContext);
 
         virtual void                                             sendMulticast                                      (WaveSendMulticastContext *pWaveSendMulticastContext);
@@ -666,9 +666,9 @@ class WaveObjectManager : public WaveElement
                 void                                             performSendMulticastLocalCallback                  (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
                 void                                             performSendMulticastRemoteCallback                 (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 
-		/**
-		 @}
-		 */
+        /**
+         @}
+         */
         virtual void                                             sendOneWayToWaveCluster                            (WaveSendToClusterContext *pWaveSendToClusterContext);
 
         virtual WaveMessageStatus                                recall                                             (WaveMessage *pWaveMessage);
@@ -764,6 +764,8 @@ class WaveObjectManager : public WaveElement
         virtual ResourceId                                       querySynchronouslyForCount                         (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext, UI32 &count);
         virtual ResourceId                                       querySynchronouslyForCount                         (const string &managedClassName, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual ResourceId                                       querySynchronouslyForCount                         (const string &managedClassName, const string &fieldName, const string &range, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                                       querySynchronouslyForCountForManagedObjectByName   (const string &managedClassName, const string &nameValue, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+
         virtual vector<WaveManagedObject *>                     *queryManagedObjectAssociatedWithSlot               (const string &managedClassName, UI32 slotNumber, LocationId locationId = 0, const string &schema = OrmRepository::getWaveCurrentSchema ());
 
         virtual pthread_t                                        getPthreadId                                       ();
@@ -1007,7 +1009,7 @@ class WaveObjectManager : public WaveElement
     friend class ApplicationServiceUtils;
     friend class WaveManagedObjectFactory;
     friend class DatabaseObjectManagerExecuteQueryWorker;
-	friend class DatabaseQueryCursor;
+    friend class DatabaseQueryCursor;
     friend class WavePostbootWorker;
     friend class WaveDebugInformationWorker;
     friend class WaveCliTraceShell;

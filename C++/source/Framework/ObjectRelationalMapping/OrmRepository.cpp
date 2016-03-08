@@ -233,7 +233,7 @@ void  OrmRepository::generateSqlToPopulateUpgradeTable(string & sqlForUpgradeTab
 
     // 1. iterate through all the objects in the schemaChange vectors maintained by OrmRepository.
     // 2. For each object, tokenize the fields like field names, types, extended types etc. to form the vector
-    // 3. initialize these to AttributeStringVector as need to be pushed to the database. 
+    // 3. initialize these to AttributeStringVector as need to be pushed to the database.
     // 4. form the sql using toEscapedString.
     for (UI32 i = 0; i < numberOfTables; i++)
     {
@@ -262,7 +262,7 @@ void  OrmRepository::generateSqlToPopulateUpgradeTable(string & sqlForUpgradeTab
         tokenize (userDefinedFieldNamesString, userDefinedFieldNames, ':');
         tokenize (userDefinedFieldTypesString, userDefinedFieldTypes, ':');
         tokenize (extendedFiledTypesString, extendedFieldTypes, ':');
-        
+
         AttributeStringVector fieldNameAttr (fieldNames);
         AttributeStringVector fieldTypeAttr (fieldTypes);
         AttributeStringVector userDefinedFieldNameAttr (userDefinedFieldNames);
@@ -285,8 +285,8 @@ void  OrmRepository::generateSqlToPopulateUpgradeTable(string & sqlForUpgradeTab
         sqlForUpgradeTablePopulation += parentTableId + string (",");
         sqlForUpgradeTablePopulation += string("'") + extendedFiledTypesString + string("',");
         sqlForUpgradeTablePopulation += string("'") + userDefinedFieldNamesString + string("',");
-        sqlForUpgradeTablePopulation += string("'") + userDefinedFieldTypesString + string("',"); 
-        sqlForUpgradeTablePopulation += string("'") + localManagedObjectInfo + string("',"); 
+        sqlForUpgradeTablePopulation += string("'") + userDefinedFieldTypesString + string("',");
+        sqlForUpgradeTablePopulation += string("'") + localManagedObjectInfo + string("',");
         sqlForUpgradeTablePopulation += string("'") + derivedFromClassName + string("');");
     }
 
@@ -391,7 +391,7 @@ UI32 OrmRepository::getUniqueTableIdForTableName (const string &tableName)
     MultiByteWord fingerPrintValue;
 
     m_z2.computeFingerPrint (fingerPrintValue, tableName);
-    
+
     string tableIdString = fingerPrintValue.toHexString();
 
     UI32 uniqueTableId = strtoul (tableIdString.c_str(), NULL, 16);
@@ -403,7 +403,7 @@ UI32 OrmRepository::getUniqueTableIdForTableName (const string &tableName)
     }
 
     trace (TRACE_LEVEL_DEBUG, "OrmRepository::getUniqueTableIdForTableName : className \'" + tableName + "\' uniqueTableId :" + uniqueTableId);
-    return uniqueTableId;    
+    return uniqueTableId;
 }
 
 UI32 OrmRepository::getNextTableId ()
@@ -465,8 +465,8 @@ void OrmRepository::buildMoSchemaRepository ()
     {
         trace (TRACE_LEVEL_INFO, "OrmRepository::buildMoSchemaRepository: updating table-ids for Orm form Upgrade MO.");
         DatabaseStandaloneTransaction dbStandaloneTransaction;
-        vector<pair<string, UI32> >   tableIds;          
-    
+        vector<pair<string, UI32> >   tableIds;
+
         UI32 numOfTablesFromUpgradeMO = dbStandaloneTransaction.getTableIdsFromUpgradeMO (tableIds);
 
         if (numOfTablesFromUpgradeMO != m_managedObjectNamesForSchemaChange.size())
@@ -477,7 +477,7 @@ void OrmRepository::buildMoSchemaRepository ()
         updateTableId (tableIds);
     }
 */
-    
+
     UI32      numberOfTables  = m_tables.size ();
     ManagedObjectSchemaInfoRepository &moUpgradeRepository = getMOSchemaInfoRepository ();
 
@@ -518,21 +518,21 @@ void OrmRepository::buildMoSchemaRepository ()
             // For each field, get the value of "disableValidations" and "canBeEmpty" by calling helper functions
             disableValidations   = getValueForDisableValidations (pOrmTable, fields[idx], types[idx]);
             canBeEmpty           = getValueForCanBeEmpty         (pOrmTable, fields[idx], types[idx]);
-            
+
             dataType = types[idx] + "|" + dbtypes[idx] + "|" + disableValidations + "|" + canBeEmpty;
-            
+
             pSchemaInfoObj->addFieldTypeTuple (fields[idx], dataType);
 
             strFieldNames += fields[idx] + ":";
             strFieldTypes += types[idx] + ":";
             strFieldExpandedTypes += dataType + ":";
         }
-        
-        // For User Defined Key Combinations 
+
+        // For User Defined Key Combinations
         string strUserDefinedFieldNames, strUserDefinedFieldTypes;
-        const vector<string> & userDefinedFields = pOrmTable->getUserDefinedFieldNamesForUpgrade (); 
-        const vector<string> & userDefinedTypes  = pOrmTable->getUserDefinedFieldTypesForUpgrade (); 
-        
+        const vector<string> & userDefinedFields = pOrmTable->getUserDefinedFieldNamesForUpgrade ();
+        const vector<string> & userDefinedTypes  = pOrmTable->getUserDefinedFieldTypesForUpgrade ();
+
         waveAssert (userDefinedFields.size () == userDefinedTypes.size (), __FILE__, __LINE__);
         for (size_t uidx = 0; uidx < userDefinedFields.size (); ++uidx)
         {
@@ -541,7 +541,7 @@ void OrmRepository::buildMoSchemaRepository ()
             strUserDefinedFieldNames += userDefinedFields[uidx] + ":";
             strUserDefinedFieldTypes += userDefinedTypes[uidx] + ":";
         }
-        
+
         trace (TRACE_LEVEL_DEVEL, "OrmRepository::buildMoSchemaRepository : Added class \'" + pOrmTable->getName () + "\' parent id " + parentTableId + " to MO upgrade repository with " + fields.size () + " fields");
 
         m_managedObjectNamesForSchemaChange.push_back (m_tables[i]->getName ());
@@ -665,7 +665,7 @@ void OrmRepository::computeTableSpace ()
 
         vector<string> vectorOfEntityNamesInHierarhy;
         pOrmTable->getAllEntityNamesInHierarchy (vectorOfEntityNamesInHierarhy);
-        
+
         set<string>    setOfEntityNamesInHierarhy (vectorOfEntityNamesInHierarhy.begin (), vectorOfEntityNamesInHierarhy.end ());
 
         if (vectorOfEntityNamesInHierarhy.size () != setOfEntityNamesInHierarhy.size ())
@@ -895,7 +895,7 @@ ResourceId OrmRepository::printOrmDebugShellWrapper (UI32 argc, vector<string> a
     ResourceId status = printOrm (argc, argv, ormOutput);
 
     trace (TRACE_LEVEL_INFO, string ("OrmRepository::printOrmDebugShellWrapper : Object Relational Mapping:") + ormOutput);
-    
+
     return (status);
 }
 
@@ -913,7 +913,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
     OrmTable *pMostBaseTable                = NULL;
     string    isALocalManagedObjectString   = "false";
 
-  
+
     // Argument parsing variables
     UI32                numberOfArguments               = argv.size ();
     bool                isDotFormatEnabled              = false;
@@ -933,7 +933,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
             }
 
             tokenize (argv[i + 1], filteredManagedObjectsVector, ',');
-            
+
             numberOfFilteredManagedObjects  = filteredManagedObjectsVector.size ();
             if (0 < numberOfFilteredManagedObjects)
             {
@@ -970,7 +970,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
         pOrmTable = pOrmRepository->m_tables[i];
 
         waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
-        
+
         // Print ORM table information when no filtering is given or only if when a specified filtering matches
 
         if ((0 == numberOfFilteredManagedObjects) || (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())))
@@ -1030,7 +1030,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
 
             // Print ORM table information when no filtering is given or only if when a specified filtering matches
 
-            if ((0 == numberOfFilteredManagedObjects) || 
+            if ((0 == numberOfFilteredManagedObjects) ||
                 (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                 (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getDerivedFromClassName ())) )
             {
@@ -1053,7 +1053,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
                 {
                     if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
                     {
-                        if ((0 == numberOfFilteredManagedObjects) || 
+                        if ((0 == numberOfFilteredManagedObjects) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
                         {
@@ -1063,7 +1063,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
                     }
                     else
                     {
-                        if ((0 == numberOfFilteredManagedObjects) || 
+                        if ((0 == numberOfFilteredManagedObjects) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
                         {
@@ -1076,7 +1076,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
                 {
                     if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
                     {
-                        if ((0 == numberOfFilteredManagedObjects) || 
+                        if ((0 == numberOfFilteredManagedObjects) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
                         {
@@ -1086,7 +1086,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
                     }
                     else
                     {
-                        if ((0 == numberOfFilteredManagedObjects) || 
+                        if ((0 == numberOfFilteredManagedObjects) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
                         {
@@ -1099,7 +1099,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
                 {
                     if (ORM_RELATION_TYPE_ONE_TO_ONE == relationTypes[j])
                     {
-                        if ((0 == numberOfFilteredManagedObjects) || 
+                        if ((0 == numberOfFilteredManagedObjects) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
                         {
@@ -1109,7 +1109,7 @@ ResourceId OrmRepository::printOrm (UI32 argc, vector<string> argv, string &ormO
                     }
                     else
                     {
-                        if ((0 == numberOfFilteredManagedObjects) || 
+                        if ((0 == numberOfFilteredManagedObjects) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (pOrmTable->getName ())) ||
                             (filteredManagedObjectsMap.end () != filteredManagedObjectsMap.find (relatedToTables[j])) )
                         {
@@ -1249,11 +1249,11 @@ void OrmRepository::getAllSqlsToCountAllEntriesInDatabase (vector <string> &sqlS
         for (j = 0; j < numberOfAuxilliaryTables; j++)
         {
             string countSqlString;
-    
+
             getSqlToCountNumberOfEntriesInTable (auxilliaryTableNames[j], waveSchema, countSqlString);
 
             sqlStrings.push_back (countSqlString);
-        }        
+        }
     }
 
     for (i = numberOfTables - 1; i >= 0; i--)
@@ -1261,7 +1261,7 @@ void OrmRepository::getAllSqlsToCountAllEntriesInDatabase (vector <string> &sqlS
         string countSqlString;
 
         (m_tables[i])->getSqlToCountNumberOfEntriesInTable (waveSchema, countSqlString);
-        
+
         sqlStrings.push_back (countSqlString);
     }
 
@@ -1344,7 +1344,7 @@ string OrmRepository::generateSqlToTruncateDatabaseSchemaForGivenTables (const s
 
     return (sqlForTruncate);
 }
-        
+
 string OrmRepository::generateSqlToSelectivelyEmptyOrmDatabase (const string &waveSchema)
 {
     UI32           numberOfTables        = m_tables.size ();
@@ -1569,7 +1569,7 @@ vector<string> OrmRepository::getTableNames (bool checkEmptyNeeded)
     {
         for (i = 0; i < ((SI32) numberOfTables); i++)
         {
-            if (true == m_tables[i]->getEmptyNeededOnPersistentBoot ()) 
+            if (true == m_tables[i]->getEmptyNeededOnPersistentBoot ())
             {
                 tableNames.push_back (m_tables[i]->getName ());
             }
@@ -1994,7 +1994,7 @@ const vector<string> &   OrmRepository::getFieldNamesTypesForSchemaChange () con
 {
     return m_fieldNamesTypesForSchemaChange;
 }
-               
+
 const vector<string>  &  OrmRepository::getFieldNamesExpandedTypesForSchemaChange () const
 {
     return m_fieldNamesExpandedTypesForSchemaChange;
@@ -2037,11 +2037,20 @@ ManagedObjectSchemaInfoRepository & OrmRepository::getMOSchemaInfoRepository()
 
 bool OrmRepository::isFieldOfIntegerType (const string &tableName, const string &columnName)
 {
-    OrmTable  *pTableName = getTableByName (tableName);    
-    
+    OrmTable  *pTableName = getTableByName (tableName);
+
     waveAssert (NULL != pTableName, __FILE__, __LINE__);
 
     return (pTableName->isAnIntegerColumn (columnName));
+}
+
+bool OrmRepository::isFieldOfStringType (const string &tableName, const string &columnName)
+{
+    OrmTable  *pTableName = getTableByName (tableName);
+
+    waveAssert (NULL != pTableName, __FILE__, __LINE__);
+
+    return (pTableName->isAStringColumn (columnName));
 }
 
 void OrmRepository::getSqlToDeleteAllEntriesInTable (const string &tableName, string &sqlString)
@@ -2054,12 +2063,12 @@ void OrmRepository::getSqlToDeleteAllEntriesInTable (const string &tableName, st
 
     pOrmTable->getAllAuxilliaryTableNames (auxilliaryTableNames);
 
-    numberOfauxilliaryTables = auxilliaryTableNames.size ();    
+    numberOfauxilliaryTables = auxilliaryTableNames.size ();
 
     for (UI32 i = 0; i < numberOfauxilliaryTables; i++)
     {
         sqlString += "DELETE FROM " + OrmRepository::m_waveCurrentSchema + "." + auxilliaryTableNames [i] + ";\n";
-    }    
+    }
 
     sqlString += "DELETE FROM " + OrmRepository::m_waveCurrentSchema + "." + tableName + ";\n";
     sqlString += "DELETE FROM " + OrmRepository::m_waveCurrentSchema + "." + tableName + "DerivationsInstances;\n";
@@ -2086,7 +2095,7 @@ void OrmRepository::getOrmRelationTypeAndOrmRelationUmlType (const string &table
 
     waveAssert (NULL != pOrmTable, __FILE__, __LINE__);
 
-    pOrmTable->getOrmRelationTypeAndOrmRelationUmlType (entityName, ormRelationType, ormRelationUmlType);    
+    pOrmTable->getOrmRelationTypeAndOrmRelationUmlType (entityName, ormRelationType, ormRelationUmlType);
 }
 
 bool OrmRepository::isASimpleObjectIdColumn (const string &tableName, const string &entityName)
@@ -2098,7 +2107,7 @@ bool OrmRepository::isASimpleObjectIdColumn (const string &tableName, const stri
     return (pOrmTable->isASimpleObjectIdColumn (entityName));
 }
 
-                     
+
 string OrmRepository::getSqlStringForAttributeTypeString (const string &attributeTypeString)
 {
     map<string, string>::iterator strIter;
@@ -2109,27 +2118,27 @@ string OrmRepository::getSqlStringForAttributeTypeString (const string &attribut
     {
         return (strIter->second);
     }
-    else 
+    else
     {
         tracePrintf (TRACE_LEVEL_ERROR, false, false, "OrmRepository::getSqlStringForAttributeTypeString : Not able to get Sql String for Attribute String '%s'\n", attributeTypeString.c_str());
     }
 
     return ("");
 }
-                     
+
 bool OrmRepository::isTypeConversionSupported (const string &from, const string &to)
 {
     map<string, map<string, string> >::iterator mapStringToMapStringIter = m_attributeSupportedConversionsMap.find (from);
 
     if (mapStringToMapStringIter != m_attributeSupportedConversionsMap.end ())
     {
-        map<string, string> supportedConversionsMap = mapStringToMapStringIter->second; 
+        map<string, string> supportedConversionsMap = mapStringToMapStringIter->second;
 
         map<string, string>::iterator mapStringToStringIter = supportedConversionsMap.find (to);
 
         if (mapStringToStringIter != supportedConversionsMap.end ())
         {
-            return (true);    
+            return (true);
         }
         else
         {
@@ -2223,7 +2232,7 @@ void OrmRepository::buildAttributeTypeToSqlTypeMap ()
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_UUID"] = "varchar";
     m_attributeTypeToSqlTypeMap["WAVE_ATTRIBUTE_TYPE_URI"] = "varchar";
 }
-                     
+
 void OrmRepository::buildAttributeSupportedConversionsMap ()
 {
     // UI32
@@ -2307,7 +2316,7 @@ void OrmRepository::buildAttributeSupportedConversionsMap ()
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_UUID"] = AttributeUUID::getSupportedConversions ();
     m_attributeSupportedConversionsMap["WAVE_ATTRIBUTE_TYPE_URI"] = AttributeUri::getSupportedConversions ();
 
-} 
+}
 
 string OrmRepository::getSqlToRemoveAuxilliaryTableEntriesForToEnd (const UI32 fromTableId, const string& relation, const UI32 relatedToTableId, const UI32 tableIdTobeRemoved, const string& waveSchema)
 {
@@ -2315,7 +2324,7 @@ string OrmRepository::getSqlToRemoveAuxilliaryTableEntriesForToEnd (const UI32 f
     tracePrintf (TRACE_LEVEL_INFO, true, false, "OrmRepository::getSqlToRemoveAuxilliaryTableEntriesForToEnd : auxilliaryTable = [%s]", auxillaryTableName.c_str());
 
     return (string ("DELETE FROM ") + waveSchema + string(".") + auxillaryTableName + string (" WHERE relatedtoclassid = ") + tableIdTobeRemoved + string (";"));
-} 
+}
 
 void OrmRepository::getSchemaChangeVectors (vector<string>   & managedObjectNamesForSchemaChange,vector<string>   & fieldNamesStringsForSchemaChange,vector<string> & fieldNamesTypesForSchemaChange,vector<UI32>   & classIds,vector<UI32> & parentTableIds)
 {
@@ -2335,18 +2344,18 @@ ResourceId OrmRepository::updateTableIdsWithTableIdsReceivedFromPrimary (const v
     UI32                        numElemsInPrimarySchema = managedObjectNamesForSchemaChange.size();
 
     //Get all auxilliary table names for all OrmTables
-    for (UI32 i = 0; i<numElemsInPrimarySchema; ++i) 
+    for (UI32 i = 0; i<numElemsInPrimarySchema; ++i)
     {
         vector<UI32> parentsForOldAuxilliaryTables;
         vector<UI32> relatedToForOldAuxilliaryTables;
         map<string, OrmTable *>::const_iterator mapIter =  m_tablesMapByName.find (managedObjectNamesForSchemaChange[i]);
 
         if (mapIter != m_tablesMapByName.end())
-        {   
+        {
             OrmTable* pOrmTable = mapIter->second;
             pOrmTable->getAuxilliaryTableNamesAppended (oldAuxilliaryTableNames);
             tableClassIdTuples.push_back (pair<string,UI32> (managedObjectNamesForSchemaChange[i], classIds[i]));
-        }   
+        }
         else
         {
             tracePrintf (TRACE_LEVEL_FATAL, "OrmRepository::updateTableIdsWithTableIdsReceivedFromPrimary: [%s] doesnt exists in Schema.", managedObjectNamesForSchemaChange[i].c_str());
@@ -2357,24 +2366,24 @@ ResourceId OrmRepository::updateTableIdsWithTableIdsReceivedFromPrimary (const v
     updateTableId (tableClassIdTuples);
 
     // Now calling the auxilliary table APIs will get us the names of the AuxilliaryTables with new classIds
-    for(UI32 i = 0; i<numElemsInPrimarySchema; ++i) 
+    for(UI32 i = 0; i<numElemsInPrimarySchema; ++i)
     {
         map<string, OrmTable *>::const_iterator mapIter =  m_tablesMapByName.find (managedObjectNamesForSchemaChange[i]);
 
         if(mapIter != m_tablesMapByName.end())
-        {   
-	        OrmTable* pOrmTable = mapIter->second;
-	        pOrmTable->getAuxilliaryTableDetailsAppended(newAuxilliaryTableNames, parentsForAuxilliaryTables, relatedToTables);
-        }   
+        {
+            OrmTable* pOrmTable = mapIter->second;
+            pOrmTable->getAuxilliaryTableDetailsAppended(newAuxilliaryTableNames, parentsForAuxilliaryTables, relatedToTables);
+        }
     }
 
     return FRAMEWORK_SUCCESS;
 }
 */
 
-const string OrmRepository::getSchemaUpgradeTableName ()                                                                                                                         
-{                                                                                                                                                                                
-    return ("MoSchemaInfoManagedObject");                                                                                                                                        
+const string OrmRepository::getSchemaUpgradeTableName ()
+{
+    return ("MoSchemaInfoManagedObject");
 }
 
 void OrmRepository::getAllTableNames (set<string> &allTableNames)

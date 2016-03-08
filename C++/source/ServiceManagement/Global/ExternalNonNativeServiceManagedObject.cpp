@@ -17,6 +17,14 @@ ExternalNonNativeServiceManagedObject::ExternalNonNativeServiceManagedObject (Wa
 {
 }
 
+ExternalNonNativeServiceManagedObject::ExternalNonNativeServiceManagedObject (WaveObjectManager *pWaveObjectManager, const string &name)
+    : WaveElement                (pWaveObjectManager),
+      WavePersistableObject      (ExternalNonNativeServiceManagedObject::getClassName (), WaveManagedObject::getClassName ()),
+      WaveManagedObject          (pWaveObjectManager)
+{
+    setName (name);
+}
+
 ExternalNonNativeServiceManagedObject::~ExternalNonNativeServiceManagedObject ()
 {
 }
@@ -42,7 +50,15 @@ void ExternalNonNativeServiceManagedObject::setupAttributesForCreate ()
     // This class Specific Attributes below
 
     addPersistableAttributeForCreate (new AttributeObjectIdVectorAssociation (&m_serviceInstances, "serviceInstances", getClassName (), getObjectId (), ExternalNonNativeServiceInstanceManagedObject::getClassName ()));
+}
 
+void ExternalNonNativeServiceManagedObject::setupKeys ()
+{
+    vector<string> userDefinedKeyCombination;
+
+    userDefinedKeyCombination.push_back ("name");
+
+    setUserDefinedKeyCombination (userDefinedKeyCombination);
 }
 
 }

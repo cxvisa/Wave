@@ -20,9 +20,14 @@ class AddExternalNonNativeServiceContext : public WaveLinearSequencerContext
                  AddExternalNonNativeServiceContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~AddExternalNonNativeServiceContext ();
 
+        const vector<string> &getApplicationNames () const;
+              void            setApplicationNames (const vector <string> &applicationNames);
+
     // Now the Data Members
 
     private :
+        vector<string> m_applicationNames;
+
     protected :
     public :
 };

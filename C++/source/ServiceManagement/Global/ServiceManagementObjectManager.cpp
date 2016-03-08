@@ -16,15 +16,12 @@ namespace WaveNs
 ServiceManagementObjectManager::ServiceManagementObjectManager ()
     : WaveObjectManager (getServiceName ())
 {
-    ExternalNonNativeServiceManagedObject externalNonNativeServiceManagedObject (this);
     ShardableResourceCategory shardableResourceCategory (this);
     ShardData shardData (this);
 
-    externalNonNativeServiceManagedObject.setupOrm ();
     shardableResourceCategory.setupOrm ();
     shardData.setupOrm ();
 
-    addManagedClass (ExternalNonNativeServiceManagedObject::getClassName ());
     addManagedClass (ShardableResourceCategory::getClassName ());
     addManagedClass (ShardData::getClassName ());
 

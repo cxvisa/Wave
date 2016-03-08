@@ -532,6 +532,11 @@ ResourceId WaveWorker::querySynchronouslyForCount (const string &managedClassNam
     return (m_pWaveObjectManager->querySynchronouslyForCount (managedClassName, fieldName, range, count, schema));
 }
 
+ResourceId WaveWorker::querySynchronouslyForCountForManagedObjectByName (const string &managedClassName, const string &nameValue, UI32 &count, const string &schema)
+{
+    return (m_pWaveObjectManager->querySynchronouslyForCountForManagedObjectByName (managedClassName, nameValue, count, schema));
+}
+
 vector<WaveManagedObject *> *WaveWorker::querySynchronously (const string &managedClassName, const string &schema)
 {
     return (m_pWaveObjectManager->querySynchronously (managedClassName, schema));

@@ -16,6 +16,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
+#include "Shell/WaveCliGrapevineRootShell.h"
 
 namespace WaveNs
 {
@@ -44,13 +45,14 @@ WaveCliShell *WaveCliShell::getInstance (WaveClientSynchronousConnection &connec
     {
         pWaveCliShell = new WaveCliShell (connection);
 
-        WaveCliRegressionShell *pRegressionShell = new WaveCliRegressionShell (connection);
-        WaveCliServiceShell    *pServiceShell    = new WaveCliServiceShell    (connection);
-        WaveCliClusterShell    *pClusterShell    = new WaveCliClusterShell    (connection);
-        WaveCliWyserShell      *pWyserShell      = new WaveCliWyserShell      (connection);
-        WaveCliDebugShell      *pDebugShell      = new WaveCliDebugShell      (connection);
-        WaveCliTraceShell      *pTraceShell      = new WaveCliTraceShell      (connection);
-        WaveCliShowShell       *pShowShell       = new WaveCliShowShell       (connection);
+        WaveCliRegressionShell    *pRegressionShell           = new WaveCliRegressionShell    (connection);
+        WaveCliServiceShell       *pServiceShell              = new WaveCliServiceShell       (connection);
+        WaveCliClusterShell       *pClusterShell              = new WaveCliClusterShell       (connection);
+        WaveCliWyserShell         *pWyserShell                = new WaveCliWyserShell         (connection);
+        WaveCliDebugShell         *pDebugShell                = new WaveCliDebugShell         (connection);
+        WaveCliTraceShell         *pTraceShell                = new WaveCliTraceShell         (connection);
+        WaveCliShowShell          *pShowShell                 = new WaveCliShowShell          (connection);
+        WaveCliGrapevineRootShell *pWaveCliGrapevineRootShell = new WaveCliGrapevineRootShell (connection);
 
         pWaveCliShell->addSubShell (pRegressionShell);
         pWaveCliShell->addSubShell (pServiceShell);
@@ -59,6 +61,7 @@ WaveCliShell *WaveCliShell::getInstance (WaveClientSynchronousConnection &connec
         pWaveCliShell->addSubShell (pDebugShell);
         pWaveCliShell->addSubShell (pTraceShell);
         pWaveCliShell->addSubShell (pShowShell);
+        pWaveCliShell->addSubShell (pWaveCliGrapevineRootShell);
     }
 
     return (pWaveCliShell);

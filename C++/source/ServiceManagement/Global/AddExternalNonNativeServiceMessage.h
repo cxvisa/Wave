@@ -4,8 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef CREATEEXTERNALNONNATIVESERVICEMESSAGEMESSAGE_H
-#define CREATEEXTERNALNONNATIVESERVICEMESSAGEMESSAGE_H
+#ifndef ADDEXTERNALNONNATIVESERVICEMESSAGEMESSAGE_H
+#define ADDEXTERNALNONNATIVESERVICEMESSAGEMESSAGE_H
 
 #include "ManagementInterface/ManagementInterfaceMessage.h"
 
@@ -20,12 +20,17 @@ class AddExternalNonNativeServiceMessage : public ManagementInterfaceMessage
     protected :
     public :
                  AddExternalNonNativeServiceMessage ();
+                 AddExternalNonNativeServiceMessage (const string &applicationName);
+                 AddExternalNonNativeServiceMessage (const vector<string> &applicationNames);
         virtual ~AddExternalNonNativeServiceMessage ();
+
+        const vector<string> &getApplicationNames () const;
+              void            setApplicationNames (const vector <string> &applicationNames);
 
     // Now the Data Members
 
     private :
-        string m_name;
+        vector<string> m_applicationNames;
 
     protected :
     public :
@@ -33,4 +38,4 @@ class AddExternalNonNativeServiceMessage : public ManagementInterfaceMessage
 
 }
 
-#endif // CREATEEXTERNALNONNATIVESERVICEMESSAGEMESSAGE_H
+#endif // ADDEXTERNALNONNATIVESERVICEMESSAGEMESSAGE_H

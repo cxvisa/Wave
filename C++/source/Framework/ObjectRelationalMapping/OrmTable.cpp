@@ -14,9 +14,9 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
-#include "Framework/Attributes/Attributes.h" 
-#include "Framework/Attributes/AttributeManagedObjectVectorCompositionTemplateBase.h" 
-#include "Framework/Attributes/AttributeManagedObjectOneToOneRelationBase.h" 
+#include "Framework/Attributes/Attributes.h"
+#include "Framework/Attributes/AttributeManagedObjectVectorCompositionTemplateBase.h"
+#include "Framework/Attributes/AttributeManagedObjectOneToOneRelationBase.h"
 
 namespace WaveNs
 {
@@ -131,6 +131,28 @@ bool OrmTable::isAnIntegerColumn (const string &columnName)
             string sqlType  = m_columns[i]->getSqlType ();
 
             if (("integer" == sqlType) || ( "bigint" == sqlType))
+            {
+                return (true);
+            }
+
+            break;
+        }
+    }
+
+    return (false);
+}
+
+bool OrmTable::isAStringColumn (const string &columnName)
+{
+    UI32 columnVectorSize = m_columns.size ();
+
+    for (UI32 i = 0; i < columnVectorSize; i++)
+    {
+        if (columnName == m_columns[i]->getName ())
+        {
+            string sqlType  = m_columns[i]->getSqlType ();
+
+            if ("varchar" == sqlType)
             {
                 return (true);
             }
@@ -643,7 +665,7 @@ void OrmTable::getAuxilliaryTableDetailsAppended (vector<string> &auxilliaryTabl
     OrmRelation *pOrmRelation         = NULL;
 
     for (i = 0; i < numberOfRelations; i++)
-    {   
+    {
         pOrmRelation = m_relations[i];
 
         waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
@@ -794,7 +816,7 @@ void OrmTable::getCompositionFieldNamesInHierarchy (vector<string> &compositionF
     for (i = 0; i < numberOfRelations; i++)
     {
         pOrmRelation = m_relations[i];
-    
+
         waveAssert (NULL != pOrmRelation, __FILE__, __LINE__);
 
         if (ORM_RELATION_UML_TYPE_COMPOSITION == pOrmRelation->getRelationUmlType ())
@@ -1009,16 +1031,16 @@ map<string, Attribute*> OrmTable::getUserDefinedKeyCombinationWithTypes (vector<
     return (m_userDefinedKeyCombinationWithTypes);
 }
 
-const vector<string> OrmTable::getUserDefinedFieldNamesForUpgrade () 
+const vector<string> OrmTable::getUserDefinedFieldNamesForUpgrade ()
 {
     return (m_userDefinedKeyCombination);
 }
 
-const vector<string> OrmTable::getUserDefinedFieldTypesForUpgrade () 
+const vector<string> OrmTable::getUserDefinedFieldTypesForUpgrade ()
 {
     map<string, Attribute*>::iterator   iter;
     vector<string>                      userDefinedFieldTypes;
-    
+
     for (UI32 keyNo = 0; keyNo < m_userDefinedKeyCombination.size (); keyNo++)
     {
         iter = m_userDefinedKeyCombinationWithTypes.find(m_userDefinedKeyCombination[keyNo]);
@@ -1039,7 +1061,7 @@ const vector<string> OrmTable::getUserDefinedFieldTypesForUpgrade ()
         {
             userDefinedFieldTypes.push_back ("NO_TYPE");
         }
-    }        
+    }
     return (userDefinedFieldTypes);
 }
 
@@ -1215,14 +1237,14 @@ void OrmTable::setUpgradeStrings ()
         addFieldNameToUpgradeString (entity->getName ());
         addFieldSqlTypeToUpgradeString (entity->getTypeForUpgradeMO ());
 
-        // Dynamic cast the OrmEntity to a OrmColumn .. 
+        // Dynamic cast the OrmEntity to a OrmColumn ..
         // If not null then get the sql type otherwise its a relations and thus the type should be "r"
         OrmColumn *column = dynamic_cast<OrmColumn *> (entity);
         if (NULL != column)
         {
             addDbFieldSqlTypeToUpgradeString (column->getSqlType ());
         }
-        else 
+        else
         {
             addDbFieldSqlTypeToUpgradeString ("r");
         }
@@ -1443,16 +1465,16 @@ string OrmTable::getSqlToDropDerivationTables(const std::string& schema, const s
             sqlForDrop += "DROP TABLE IF EXISTS " + schema + "." + tableName + "derivationsinstances CASCADE;\n";
 
         }
-		else 
+        else
         {
             sqlForDrop += "DELETE FROM "+ schema +"." + references[i] + (" WHERE ownermanagedobjectidclassid=")+  getTableId () + ";\n";
-        } 
+        }
     }
     trace (TRACE_LEVEL_INFO, "Reference OrmTable::getSqlToDropDerivationTables Schema:" + schema +  " Table:" + tableName + sqlForDrop );
 
     return (sqlForDrop);
-    
-    
+
+
 
 }
 
@@ -1468,7 +1490,7 @@ string OrmTable::getSqlForRemoveTables(const std::string& schema, const std::str
     trace (TRACE_LEVEL_INFO, "OrmTable::getSqlForRemoveTables Schema:" + schema +  " Table:" + m_name);
 
     sqlForDrop += getSqlToDropDerivationTables(schema, tableName);
-    
+
     OrmTable *pParent = this;
     /* Delete References from Parent where owner class id is from table to be removed*/
     while ( (pParent = pParent->getPParentTable()))
@@ -1500,7 +1522,7 @@ string OrmTable::getSqlForRemoveTables(const std::string& schema, const std::str
 
 string  OrmTable::getAlterSqlForOneToOneRelationship(const string &schema,const string & relationName) const
 {
-   string sqlForOneToOneRelationship = ""; 
+   string sqlForOneToOneRelationship = "";
    map<string,OrmRelation*>::const_iterator relationIterator = m_relationsByNames.find(relationName);
 
    if(relationIterator!=m_relationsByNames.end())
@@ -1516,7 +1538,7 @@ string  OrmTable::getAlterSqlForOneToOneRelationship(const string &schema,const 
 string  OrmTable::getAlterSqlToDisableValidationForOneToManyRelationship (const string &schema, const string & relationName) const
 {
    string name = getName ();
-   string sqlForOneToManyRelationship = ""; 
+   string sqlForOneToManyRelationship = "";
    map<string,OrmRelation*>::const_iterator relationIterator = m_relationsByNames.find(relationName);
 
    if(relationIterator!=m_relationsByNames.end())
@@ -1524,7 +1546,7 @@ string  OrmTable::getAlterSqlToDisableValidationForOneToManyRelationship (const 
        OrmRelation* pRelation = relationIterator->second;
        if (ORM_RELATION_UML_TYPE_COMPOSITION == pRelation->getRelationUmlType ())
        {
-            // Dynamic cast the OrmRelation to a OrmComposition .. 
+            // Dynamic cast the OrmRelation to a OrmComposition ..
             // If not null then get the sql for disable/enable validation
             OrmComposition *pComposition = dynamic_cast<OrmComposition *> (pRelation);
             if (NULL != pComposition)
@@ -1541,7 +1563,7 @@ string  OrmTable::getAlterSqlToDisableValidationForOneToManyRelationship (const 
 string  OrmTable::getAlterSqlToEnableValidationForOneToManyRelationship (const string &schema, const string & relationName) const
 {
    string name = getName ();
-   string sqlForOneToManyRelationship = ""; 
+   string sqlForOneToManyRelationship = "";
    map<string,OrmRelation*>::const_iterator relationIterator = m_relationsByNames.find(relationName);
 
    if(relationIterator!=m_relationsByNames.end())
@@ -1549,7 +1571,7 @@ string  OrmTable::getAlterSqlToEnableValidationForOneToManyRelationship (const s
        OrmRelation* pRelation = relationIterator->second;
        if (ORM_RELATION_UML_TYPE_COMPOSITION == pRelation->getRelationUmlType ())
        {
-            // Dynamic cast the OrmRelation to a OrmComposition .. 
+            // Dynamic cast the OrmRelation to a OrmComposition ..
             // If not null then get the sql for disable/enable validation
             OrmComposition *pComposition = dynamic_cast<OrmComposition *> (pRelation);
             if (NULL != pComposition)
@@ -1564,7 +1586,7 @@ string  OrmTable::getAlterSqlToEnableValidationForOneToManyRelationship (const s
 }
 string  OrmTable::getAlterSqlToAddNotNullForOneToOneRelationship(const string &schema,const string & relationName) const
 {
-   string sqlForOneToOneRelationship = ""; 
+   string sqlForOneToOneRelationship = "";
    map<string,OrmRelation*>::const_iterator relationIterator = m_relationsByNames.find(relationName);
 
    if(relationIterator!=m_relationsByNames.end())
@@ -1579,7 +1601,7 @@ string  OrmTable::getAlterSqlToAddNotNullForOneToOneRelationship(const string &s
 
 string  OrmTable::getAlterSqlToDropNotNullForOneToOneRelationship(const string &schema,const string & relationName) const
 {
-   string sqlForOneToOneRelationship = ""; 
+   string sqlForOneToOneRelationship = "";
    map<string,OrmRelation*>::const_iterator relationIterator = m_relationsByNames.find(relationName);
 
    if(relationIterator!=m_relationsByNames.end())
@@ -1595,7 +1617,7 @@ string  OrmTable::getAlterSqlToDropNotNullForOneToOneRelationship(const string &
 void OrmTable::getOrmRelationTypeAndOrmRelationUmlType (const string &entityName, OrmRelationType &ormRelationType, OrmRelationUmlType &ormRelationUmlType)
 {
     bool isAColumn   = isAKnownColumnInHierarchy   (entityName);
-    
+
     isAColumn = isAKnownColumnInHierarchy   (entityName);
 
     if (false == isAColumn)
@@ -1622,7 +1644,7 @@ void OrmTable::getOrmRelationTypeAndOrmRelationUmlType (const string &entityName
     }
     else
     {
-        WaveNs::waveAssert (false, __FILE__, __LINE__);        
+        WaveNs::waveAssert (false, __FILE__, __LINE__);
     }
 }
 
@@ -1637,7 +1659,7 @@ bool OrmTable::getValueForDisableValidations (const string &fieldName)
 
         return (pAttributeManagedObjectVectorCompositionTemplateBase->getDisableValidations ());
     }
-    
+
     return (false);
 }
 
@@ -1650,7 +1672,7 @@ bool OrmTable::getValueForCanBeEmpty (const string &fieldName)
         AttributeManagedObjectOneToOneRelationBase *pAttributeManagedObjectOneToOneRelationBase = dynamic_cast<AttributeManagedObjectOneToOneRelationBase *> (pAttribute);
         waveAssert (NULL != pAttributeManagedObjectOneToOneRelationBase, __FILE__, __LINE__);
         return (pAttributeManagedObjectOneToOneRelationBase->getCanBeEmpty ());
-    }   
+    }
     else if (AttributeType::AttributeTypeObjectId == pAttribute->getAttributeType ())
     {
         AttributeObjectIdAssociation *pAttributeObjectIdAssociation = dynamic_cast<AttributeObjectIdAssociation *> (pAttribute);
@@ -1671,7 +1693,7 @@ bool OrmTable::getEmptyNeededOnPersistentBootWithDefault () const
     return (m_emptyNeededOnPersistentBootWithDefault);
 }
 
-const vector<string> OrmTable::getExtendedFieldTypesForUpgrade () 
+const vector<string> OrmTable::getExtendedFieldTypesForUpgrade ()
 {
     vector<string> extendedFieldTypes;
     const vector<string>& fields = m_fieldNamesForUpgrade;
@@ -1687,12 +1709,12 @@ const vector<string> OrmTable::getExtendedFieldTypesForUpgrade ()
         bool  canBeEmpty         = false;
 
         if ((fieldType[1] == '-' && fieldType[3] == '-'))
-        {   
+        {
             if (fieldType[2] == 'm')
-            {  
-                disableValidations = getValueForDisableValidations (fieldName); 
+            {
+                disableValidations = getValueForDisableValidations (fieldName);
             }
-            
+
             if (fieldType[2] == '1')
             {
                 canBeEmpty = getValueForCanBeEmpty (fieldName);
@@ -1702,7 +1724,7 @@ const vector<string> OrmTable::getExtendedFieldTypesForUpgrade ()
         string dataType = types[idx] + "|" + dbtypes[idx] + "|" + disableValidations + "|" + canBeEmpty;
 
         extendedFieldTypes.push_back (dataType);
-        trace (TRACE_LEVEL_DEBUG, "OrmTable::getExtendedFieldTypesForUpgrade: field:" +fieldName+ ", dataType = " + dataType); 
+        trace (TRACE_LEVEL_DEBUG, "OrmTable::getExtendedFieldTypesForUpgrade: field:" +fieldName+ ", dataType = " + dataType);
     }
     return (extendedFieldTypes);
 }
@@ -1841,11 +1863,11 @@ void OrmTable::getUserDefinedKeyCombination (vector<string> &userDefinedKeyCombi
 
 void OrmTable::computeKeyStringAndUDKCValueExpression (string& keyStringExpression, string& userDefinedKeyCombinationExpression)
 {
-    UI32 numberOfKeys = m_userDefinedKeyCombination.size (); 
+    UI32 numberOfKeys = m_userDefinedKeyCombination.size ();
 
     // Compute keyString and userDefinedKeyCombinationValue expressions which will update all the rows in a table.
     userDefinedKeyCombinationExpression = "";
-    keyStringExpression                 = string("\'") + m_name + string("\'"); 
+    keyStringExpression                 = string("\'") + m_name + string("\'");
 
     for (UI32 keyNumber = 0; keyNumber < numberOfKeys; keyNumber++)
     {
@@ -1885,75 +1907,75 @@ void OrmTable::getSqlForATableToUpdateUDKCRelatedColumns (vector<string>& compos
 
     computeKeyStringAndUDKCValueExpression (keyStringExpression, userDefinedKeyCombinationExpression);
 
-    sqlForCurrentSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveCurrentSchema() + string(".") + m_name + string (" SET keystring = ") + keyStringExpression 
+    sqlForCurrentSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveCurrentSchema() + string(".") + m_name + string (" SET keystring = ") + keyStringExpression
                         + string (" WHERE ownermanagedobjectidclassid = 0;\n");
-    sqlForStartupSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveStartSchema() + string(".") + m_name + string (" SET keystring = ") + keyStringExpression 
+    sqlForStartupSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveStartSchema() + string(".") + m_name + string (" SET keystring = ") + keyStringExpression
                         + string (" WHERE ownermanagedobjectidclassid = 0;\n");
 
     if (0 != m_userDefinedKeyCombination.size ())
     {
-        sqlForCurrentSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveCurrentSchema() + string(".") + m_name + string (" SET userdefinedkeycombinationvalue = ") 
+        sqlForCurrentSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveCurrentSchema() + string(".") + m_name + string (" SET userdefinedkeycombinationvalue = ")
                             + userDefinedKeyCombinationExpression + string (" WHERE ownermanagedobjectidclassid = 0;\n");
-        sqlForStartupSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveStartSchema() + string(".") + m_name + string (" SET userdefinedkeycombinationvalue = ") 
+        sqlForStartupSchema += string ("UPDATE ONLY ")+OrmRepository::getWaveStartSchema() + string(".") + m_name + string (" SET userdefinedkeycombinationvalue = ")
                             + userDefinedKeyCombinationExpression + string (" WHERE ownermanagedobjectidclassid = 0;\n");
     }
-   
-    // 2. for composed children - 
+
+    // 2. for composed children -
     for (UI32 i = 0; i < compositionChildrenForATable.size (); i++)
     {
         string composedChildTableName   = compositionChildrenForATable[i];
 
-        trace (TRACE_LEVEL_INFO, "OrmTable::getSqlForATableToUpdateUDKCRelatedColumns: composed child table [" + composedChildTableName + "]"); 
+        trace (TRACE_LEVEL_INFO, "OrmTable::getSqlForATableToUpdateUDKCRelatedColumns: composed child table [" + composedChildTableName + "]");
 
         userDefinedKeyCombinationExpression = "";
         keyStringExpression                 = "";
-    
+
         OrmTable* pChildTable = OrmRepository::getTableByName (composedChildTableName);
 
         waveAssert (NULL != pChildTable, __FILE__, __LINE__);
-        
+
         pChildTable->computeKeyStringAndUDKCValueExpression (keyStringExpression, userDefinedKeyCombinationExpression);
 
         //1. update ownerKeyString first
 
-        sqlForCurrentSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveCurrentSchema() + string(".") + composedChildTableName 
-                            + string (" AS o SET ownerkeystring=(select keystring from ") + OrmRepository::getWaveCurrentSchema() + "." + m_name + " where objectidclassid = " 
+        sqlForCurrentSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveCurrentSchema() + string(".") + composedChildTableName
+                            + string (" AS o SET ownerkeystring=(select keystring from ") + OrmRepository::getWaveCurrentSchema() + "." + m_name + " where objectidclassid = "
                             + getTableId () + " AND objectidinstanceid = o.ownermanagedobjectidinstanceid) where o.ownermanagedobjectidclassid = " + getTableId () + ";\n";
 
-        sqlForStartupSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveStartSchema() + string(".") + composedChildTableName 
-                            + string (" AS o SET ownerkeystring=(select keystring from ") + OrmRepository::getWaveStartSchema() + "." + m_name + " where objectidclassid = " 
+        sqlForStartupSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveStartSchema() + string(".") + composedChildTableName
+                            + string (" AS o SET ownerkeystring=(select keystring from ") + OrmRepository::getWaveStartSchema() + "." + m_name + " where objectidclassid = "
                             + getTableId () + " AND objectidinstanceid = o.ownermanagedobjectidinstanceid) where o.ownermanagedobjectidclassid = " + getTableId () + ";\n";
 
         //2. Now update keyString and userDefinedKeyCombinationValue columns.
 
-        sqlForCurrentSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveCurrentSchema() + string(".") + composedChildTableName 
+        sqlForCurrentSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveCurrentSchema() + string(".") + composedChildTableName
                             + string (" SET keystring = ownerkeystring || '.' || ") + keyStringExpression + string (" where ownermanagedobjectidclassid = ") + getTableId () + ";\n";
-        sqlForStartupSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveStartSchema() + string(".") + composedChildTableName 
+        sqlForStartupSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveStartSchema() + string(".") + composedChildTableName
                             + string (" SET keystring = ownerkeystring || '.' || ") + keyStringExpression + string (" where ownermanagedobjectidclassid = ") + getTableId () + ";\n";
 
-        
+
         vector<string> keys;
         pChildTable->getUserDefinedKeyCombination (keys);
 
         if (0 != keys.size())
         {
-            sqlForCurrentSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveCurrentSchema() + string(".") + composedChildTableName + string (" SET userdefinedkeycombinationvalue = ") 
+            sqlForCurrentSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveCurrentSchema() + string(".") + composedChildTableName + string (" SET userdefinedkeycombinationvalue = ")
                                 + userDefinedKeyCombinationExpression + string (" where ownermanagedobjectidclassid = ") + getTableId () + string (";\n");
-            sqlForStartupSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveStartSchema() + string(".") + composedChildTableName + string (" SET userdefinedkeycombinationvalue = ") 
-                                + userDefinedKeyCombinationExpression + string (" where ownermanagedobjectidclassid = ") + getTableId () + string (";\n"); 
+            sqlForStartupSchema += string ("UPDATE ONLY ") + OrmRepository::getWaveStartSchema() + string(".") + composedChildTableName + string (" SET userdefinedkeycombinationvalue = ")
+                                + userDefinedKeyCombinationExpression + string (" where ownermanagedobjectidclassid = ") + getTableId () + string (";\n");
         }
     }
-                    
+
 }
 
 void OrmTable::getSqlToDropUserDefinedKeyUniqueConstraint (string & schemaUpdateSqlForCurrentSchema, string & schemaUpdateSqlForStartSchema)
 {
     if (false == m_userDefinedKeyCombination.empty ())
     {
-        schemaUpdateSqlForCurrentSchema += string ("ALTER TABLE ") + OrmRepository::getWaveCurrentSchema() + string (".") + m_name + string (" DROP CONSTRAINT IF EXISTS ") 
-                                        + m_name + string("_unique;\n"); 
-        schemaUpdateSqlForStartSchema   += string ("ALTER TABLE ") + OrmRepository::getWaveStartSchema() + string (".") + m_name + string (" DROP CONSTRAINT IF EXISTS ") 
-                                        + m_name + string("_unique;\n"); 
+        schemaUpdateSqlForCurrentSchema += string ("ALTER TABLE ") + OrmRepository::getWaveCurrentSchema() + string (".") + m_name + string (" DROP CONSTRAINT IF EXISTS ")
+                                        + m_name + string("_unique;\n");
+        schemaUpdateSqlForStartSchema   += string ("ALTER TABLE ") + OrmRepository::getWaveStartSchema() + string (".") + m_name + string (" DROP CONSTRAINT IF EXISTS ")
+                                        + m_name + string("_unique;\n");
     }
 
 }
@@ -1984,7 +2006,7 @@ void OrmTable::getSqlToAddUserDefinedKeyUniqueConstraint (string & schemaUpdateS
 
         udkcKeyWithTypes = getUserDefinedKeyCombinationWithTypes (udkcInOrder);
 
-        UI32            keyNumber   = 0; 
+        UI32            keyNumber   = 0;
 
         for (;keyNumber < udkcInOrder.size (); keyNumber++)
         {
@@ -2014,20 +2036,20 @@ void OrmTable::getSqlToAddUserDefinedKeyUniqueConstraint (string & schemaUpdateS
                 sqlForUniqueConstraint += userDefinedKeyField;
             }
         }
-        
+
         // Add ownerpartitionManagedObjectId to unique key constraints.
-        
+
         string ownerPartitionMOObjectIdFieldName = "ownerPartitionManagedObjectId";
-        
+
         sqlForUniqueConstraint +=  ", " + ownerPartitionMOObjectIdFieldName + "ClassId, " + ownerPartitionMOObjectIdFieldName + "InstanceId";
-        
+
         if (true == m_isALocalManagedObject)
-        {   
+        {
             string ownerWaveNodeObjectIdFieldName = "ownerWaveNodeObjectId";
-            
+
             sqlForUniqueConstraint +=  ", " + ownerWaveNodeObjectIdFieldName + "ClassId, " + ownerWaveNodeObjectIdFieldName + "InstanceId";
         }
-        
+
         schemaUpdateSqlForCurrentSchema += string("ALTER TABLE ") + OrmRepository::getWaveCurrentSchema() + string(".") + m_name + string (" ADD CONSTRAINT ") + m_name + string("_unique UNIQUE (")+ sqlForUniqueConstraint + ");\n";
         schemaUpdateSqlForStartSchema   += string("ALTER TABLE ") + OrmRepository::getWaveStartSchema() + string(".") + m_name + string (" ADD CONSTRAINT ") + m_name + string("_unique UNIQUE (")+ sqlForUniqueConstraint + ");\n";
     }
@@ -2045,7 +2067,7 @@ string OrmTable::getSqlTypeForAField (const string& fieldName)
         {
             OrmColumn *column = dynamic_cast<OrmColumn *> (entity);
             if (NULL != column)
-            {   
+            {
                 return (column->getSqlType ());
             }
             else
@@ -2060,7 +2082,7 @@ string OrmTable::getSqlTypeForAField (const string& fieldName)
 
     return ("");
 }
-        
-            
+
+
 }
 

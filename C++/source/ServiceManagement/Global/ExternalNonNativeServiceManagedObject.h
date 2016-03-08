@@ -22,9 +22,12 @@ class ExternalNonNativeServiceManagedObject : public WaveManagedObject
         void setupAttributesForPersistence ();
         void setupAttributesForCreate      ();
 
+        void setupKeys ();
+
     protected :
     public :
                  ExternalNonNativeServiceManagedObject (WaveObjectManager *pWaveObjectManager);
+                 ExternalNonNativeServiceManagedObject (WaveObjectManager *pWaveObjectManager, const string &name);
         virtual ~ExternalNonNativeServiceManagedObject ();
 
         static string getClassName ();

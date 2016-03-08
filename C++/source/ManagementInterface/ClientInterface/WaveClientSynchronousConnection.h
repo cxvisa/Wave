@@ -123,8 +123,8 @@ class WaveClientSynchronousConnection
         // Change WaveConfiguration Validity
         ResourceId            setWaveConfigurationValid                              (const bool &validity , const string schemaFile = "");
 
-	    // Running Debug Script on all nodes
-	    ResourceId            runDebugScript                                          (DistributedDebugParameters &distributedDebugParameters);
+        // Running Debug Script on all nodes
+        ResourceId            runDebugScript                                          (DistributedDebugParameters &distributedDebugParameters);
 
         ResourceId            copyFile                                                (const string &sourceFileName, const string &destinationFileName, UI32 &copyFileFlag, const vector<string> &vectorOfDestinationIpAddressesAndPorts);
         ResourceId            copyFileToHaPeer                                        (const string &sourceFileName, const string &destinationFileName);
@@ -151,6 +151,15 @@ class WaveClientSynchronousConnection
         ResourceId            getEmptyDatabaseParameter                               (UI32 &thresholdValue, UI32 &numberOfEntriesInDatabase);
         ResourceId            configureEmptyDatabaseParameter                         (const UI32 &thresholdValue);
         ResourceId            setControllerIpAddress                                  (const string &ipAddress, const SI32 &port);
+
+        // APIC-EM - Related
+
+        ResourceId            registerExternalNonNativeService                        (const string &name);
+        ResourceId            registerExternalNonNativeServices                       (const vector<string> &names);
+
+        ResourceId            registerExternalNonNativeServiceInstance                (const string &serviceName, const string &serviceInstanceName);
+        ResourceId            registerExternalNonNativeServiceInstances               (const string &serviceName, const vector<string> &serviceInstanceNames);
+
     // Now the data members
 
     private :
