@@ -12,6 +12,8 @@
 namespace WaveNs
 {
 
+class NetworkDeviceReadShardWorker;
+
 class NetworkDeviceReadShardingObjectManager : public WaveObjectManager
 {
     private:
@@ -28,6 +30,8 @@ class NetworkDeviceReadShardingObjectManager : public WaveObjectManager
         // Now the Data Members
 
     private:
+        NetworkDeviceReadShardWorker *m_pNetworkDeviceReadShardWorker;
+
     protected:
     public:
 };

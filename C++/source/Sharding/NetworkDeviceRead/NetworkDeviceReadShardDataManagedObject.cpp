@@ -7,6 +7,7 @@
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardDataManagedObject.h"
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingCategoryManagedObject.h"
 #include "ServiceManagement/Local/ExternalNonNativeServiceInstanceManagedObject.h"
+#include "ServiceManagement/Global/ExternalNonNativeServiceManagedObject.h"
 
 namespace WaveNs
 {

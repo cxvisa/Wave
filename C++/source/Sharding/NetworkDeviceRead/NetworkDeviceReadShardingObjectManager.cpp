@@ -5,8 +5,7 @@
  ***************************************************************************/
 
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingObjectManager.h"
-#include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingCategoryManagedObject.h"
-#include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardDataManagedObject.h"
+#include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardWorker.h"
 
 namespace WaveNs
 {
@@ -14,18 +13,17 @@ namespace WaveNs
 NetworkDeviceReadShardingObjectManager::NetworkDeviceReadShardingObjectManager ()
     : WaveObjectManager (getServiceName ())
 {
-    NetworkDeviceReadShardingCategoryManagedObject networkDeviceReadShardingCategoryManagedObject (this);
-    NetworkDeviceReadShardDataManagedObject networkDeviceReadShardDataManagedObject (this);
+    m_pNetworkDeviceReadShardWorker = new NetworkDeviceReadShardWorker (this);
 
-    networkDeviceReadShardingCategoryManagedObject.setupOrm ();
-    networkDeviceReadShardDataManagedObject.setupOrm ();
-
-    addManagedClass (NetworkDeviceReadShardingCategoryManagedObject::getClassName());
-    addManagedClass (NetworkDeviceReadShardDataManagedObject::getClassName());
+    waveAssert (NULL != m_pNetworkDeviceReadShardWorker, __FILE__, __LINE__);
 }
 
 NetworkDeviceReadShardingObjectManager::~NetworkDeviceReadShardingObjectManager ()
 {
+    if (NULL != m_pNetworkDeviceReadShardWorker)
+    {
+        delete m_pNetworkDeviceReadShardWorker;
+    }
 }
 
 NetworkDeviceReadShardingObjectManager *NetworkDeviceReadShardingObjectManager:: getInstance ()

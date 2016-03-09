@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains the resources for Wave Framework File Service Module. -->
+
+<ModuleResources ModuleName = "ExternalServiceSharding" ComponentName = "Wave">
+     <ResourceEnum Name = "ExternalServiceShardingCategories">
+          <Resource Name = "WAVE_EXTERNAL_SERVICE_SHARD_CATEGORY_NETWORK_DEVICE_READ">Network Device Read Sharding Category</Resource>
+          <Resource Name = "WAVE_EXTERNAL_SERVICE_SHARD_CATEGORY_NETWORK_DEVICE_WRITE">Network Device Write Sharding Category</Resource>
+     </ResourceEnum>
+
+     <ResourceEnum Name = "ExternalServiceShardingCategoryTokens">
+          <Resource Name = "WAVE_EXTERNAL_SERVICE_SHARD_CATEGORY_TOKEN_NETWORK_DEVICE_READ">NDR</Resource>
+          <Resource Name = "WAVE_EXTERNAL_SERVICE_SHARD_CATEGORY_TOKEN_NETWORK_DEVICE_WRITE">NDW</Resource>
+     </ResourceEnum>
+</ModuleResources>

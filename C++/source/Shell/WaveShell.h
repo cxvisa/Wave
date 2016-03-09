@@ -41,6 +41,7 @@ class WaveShell
         virtual        ~WaveShell          ();
 
                 string  getShellName       () const;
+                void    setShellName       (const string &shellName);
 
                 void    addCommandfunction (const string &command, WaveShellCommandFunction commandFunction, const string &commandBriefHelp, WaveShellCommandHelpFunction commandHelpFunction = NULL, WaveShell *pCommandFunctionOwner = NULL);
                 void    addSubShell        (WaveShell *pSubshell);

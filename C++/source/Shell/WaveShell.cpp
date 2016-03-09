@@ -27,6 +27,11 @@ string WaveShell::getShellName () const
     return (m_shellName);
 }
 
+void WaveShell::setShellName (const string &shellName)
+{
+    m_shellName = shellName;
+}
+
 bool WaveShell::isAKnownCommand (const string &command)
 {
     map<string, WaveShell *>::iterator              subShellElement    = m_subShells.find (command);

@@ -5,6 +5,7 @@
  ***************************************************************************/
 
 #include "Sharding/NetworkDeviceWrite/NetworkDeviceWriteShardingObjectManager.h"
+#include "Sharding/NetworkDeviceWrite/NetworkDeviceWriteShardWorker.h"
 #include "Sharding/NetworkDeviceWrite/NetworkDeviceWriteShardingCategoryManagedObject.h"
 #include "Sharding/NetworkDeviceWrite/NetworkDeviceWriteShardDataManagedObject.h"
 
@@ -14,18 +15,17 @@ namespace WaveNs
 NetworkDeviceWriteShardingObjectManager::NetworkDeviceWriteShardingObjectManager ()
     : WaveObjectManager (getServiceName ())
 {
-    NetworkDeviceWriteShardingCategoryManagedObject networkDeviceWriteShardingCategoryManagedObject (this);
-    NetworkDeviceWriteShardDataManagedObject networkDeviceWriteShardDataManagedObject (this);
+    m_pNetworkDeviceWriteShardWorker = new NetworkDeviceWriteShardWorker (this);
 
-    networkDeviceWriteShardingCategoryManagedObject.setupOrm ();
-    networkDeviceWriteShardDataManagedObject.setupOrm ();
-
-    addManagedClass (NetworkDeviceWriteShardingCategoryManagedObject::getClassName());
-    addManagedClass (NetworkDeviceWriteShardDataManagedObject::getClassName());
+    waveAssert (NULL != m_pNetworkDeviceWriteShardWorker, __FILE__, __LINE__);
 }
 
 NetworkDeviceWriteShardingObjectManager::~NetworkDeviceWriteShardingObjectManager ()
 {
+    if (NULL != m_pNetworkDeviceWriteShardWorker)
+    {
+        delete m_pNetworkDeviceWriteShardWorker;
+    }
 }
 
 NetworkDeviceWriteShardingObjectManager *NetworkDeviceWriteShardingObjectManager:: getInstance ()

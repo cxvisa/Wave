@@ -25,7 +25,7 @@ AddExternalNonNativeServiceInstanceWorker::AddExternalNonNativeServiceInstanceWo
 
     addManagedClass (ExternalNonNativeServiceInstanceManagedObject::getClassName (), this);
 
-    addOperationMap (SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE, reinterpret_cast<WaveMessageHandler> (&AddExternalNonNativeServiceInstanceWorker::addExternalNonNativeServiceInstanceRequestHandler));
+    addOperationMap (SERVCIE_MANAGEMENT_LOCAL_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE, reinterpret_cast<WaveMessageHandler> (&AddExternalNonNativeServiceInstanceWorker::addExternalNonNativeServiceInstanceRequestHandler));
 }
 
 AddExternalNonNativeServiceInstanceWorker::~AddExternalNonNativeServiceInstanceWorker ()
@@ -38,7 +38,7 @@ WaveMessage *AddExternalNonNativeServiceInstanceWorker::createMessageInstance (c
 
     switch (operationCode)
     {
-        case SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE :
+        case SERVCIE_MANAGEMENT_LOCAL_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE :
             pWaveMessage = new AddExternalNonNativeServiceInstanceMessage;
             break;
 

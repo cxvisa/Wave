@@ -31,4 +31,5 @@
     <Module Name = "SystemInitialization"                        Source = "WaveFrameworkSystemInitialization.xml"             ></Module>
     <Module Name = "FrameworkState"                              Source = "WaveFrameworkState.xml"                            ></Module>
     <Module Name = "FrameworkMessagingBrokerBasedMessagignBus"   Source = "WaveFrameworkMessagingBrokerBasedMessagingBus.xml" ></Module>
+    <Module Name = "ExternalServiceSharding"                     Source = "ExternalServiceSharding.xml"                       ></Module>
 </Modules>

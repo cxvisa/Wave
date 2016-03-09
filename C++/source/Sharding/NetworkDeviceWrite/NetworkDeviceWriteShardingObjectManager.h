@@ -12,6 +12,8 @@
 namespace WaveNs
 {
 
+class NetworkDeviceWriteShardWorker;
+
 class NetworkDeviceWriteShardingObjectManager : public WaveObjectManager
 {
     private:
@@ -28,6 +30,8 @@ class NetworkDeviceWriteShardingObjectManager : public WaveObjectManager
         // Now the Data Members
 
     private:
+        NetworkDeviceWriteShardWorker *m_pNetworkDeviceWriteShardWorker;
+
     protected:
     public:
 };

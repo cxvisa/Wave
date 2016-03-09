@@ -12,6 +12,8 @@
 namespace WaveNs
 {
 
+class NetworkDeviceReadShardWorker;
+
 class NetworkDeviceReadShardDataManagedObject : public ShardData
 {
     private :
@@ -37,7 +39,6 @@ class NetworkDeviceReadShardDataManagedObject : public ShardData
         ObjectId m_networkDeviceReadShardingCategory;
         ObjectId m_service;
         ObjectId m_serviceInstance;
-        vector<String> m_
 
     protected :
     public :

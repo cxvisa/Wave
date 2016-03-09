@@ -12,19 +12,19 @@ namespace WaveNs
 {
 
 AddExternalNonNativeServiceInstanceMessage::AddExternalNonNativeServiceInstanceMessage ()
-    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE)
+    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_LOCAL_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE)
 {
 }
 
 AddExternalNonNativeServiceInstanceMessage::AddExternalNonNativeServiceInstanceMessage (const string &applicationName, const string &applicationInstanceName)
-    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE)
+    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_LOCAL_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE)
 {
     m_applicationName = applicationName;
     m_applicationInstanceNames.push_back (applicationInstanceName);
 }
 
 AddExternalNonNativeServiceInstanceMessage::AddExternalNonNativeServiceInstanceMessage (const string &applicationName, const vector<string> &applicationInstanceNames)
-    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE)
+    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_LOCAL_ADD_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE)
 {
     m_applicationName          = applicationName;
     m_applicationInstanceNames = applicationInstanceNames;
