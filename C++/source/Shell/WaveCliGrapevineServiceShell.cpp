@@ -117,21 +117,49 @@ ResourceId WaveCliGrapevineServiceShell::getShardOwnerForResource (const vector<
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
 
-    if (2 > (arguments.size ()))
+    if (3 > (arguments.size ()))
     {
         getShardOwnerForResourceHelp ();
 
         return (status);
     }
 
-    const string shardingCategory = arguments[0];
-    const string resourceName     = arguments[1];
+    const string    shardingCategory   = arguments[0];
+    const string    resourceNamePrefix = arguments[1];
+    const string    resourceRange      = arguments[2];
+    const UI32Range range                (resourceRange);
+          UI32      i                  = 0;
 
-    status = connection.requestForShardOwnerForResource (shardingCategory, resourceName);
+          vector<UI32> rangeVector;
+
+    range.getUI32RangeVector (rangeVector);
+
+    const UI32 numberofValuesInRange = rangeVector.size ();
+
+    vector<string> generatedResourceNames;
+
+    for (i = 0; i < numberofValuesInRange; i++)
+    {
+        generatedResourceNames.push_back (resourceNamePrefix + rangeVector[i]);
+    }
+
+    vector<string> serviceInstanceNames;
+
+    status = connection.requestForShardOwnerForResources (shardingCategory, generatedResourceNames, serviceInstanceNames);
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
         trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineServiceShell::getShardOwnerForResource : Successfully requested for shard owner." ));
+
+        const UI32 numberOfResourcesNames       = generatedResourceNames.size ();
+        const UI32 numberOfServiceInstanceNames = serviceInstanceNames.size   ();
+
+        waveAssert (numberOfResourcesNames == numberOfServiceInstanceNames, __FILE__, __LINE__);
+
+        for (i = 0; i < numberOfResourcesNames; i++)
+        {
+            tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveCliGrapevineServiceShell::getShardOwnerForResource : Shard Owner for %s : %s", generatedResourceNames[i].c_str (), serviceInstanceNames[i].c_str ());
+        }
     }
     else
     {

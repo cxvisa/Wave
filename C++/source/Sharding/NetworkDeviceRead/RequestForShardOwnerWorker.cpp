@@ -51,13 +51,14 @@ void RequestForShardOwnerWorker::requestForShardOwnerRequestHandler (RequestForS
                     reinterpret_cast<WaveLinearSequencerStep> (&RequestForShardOwnerWorker::waveLinearSequencerStartTransactionStep),
                     reinterpret_cast<WaveLinearSequencerStep> (&RequestForShardOwnerWorker::createStep),
                     reinterpret_cast<WaveLinearSequencerStep> (&RequestForShardOwnerWorker::waveLinearSequencerCommitTransactionStep),
+                    reinterpret_cast<WaveLinearSequencerStep> (&RequestForShardOwnerWorker::setOutputStep),
                     reinterpret_cast<WaveLinearSequencerStep> (&RequestForShardOwnerWorker::waveLinearSequencerSucceededStep),
                     reinterpret_cast<WaveLinearSequencerStep> (&RequestForShardOwnerWorker::waveLinearSequencerFailedStep),
             };
 
     RequestForShardOwnerContext *pRequestForShardOwnerContext = new RequestForShardOwnerContext (pRequestForShardOwnerMessage, this, sequencerSteps, sizeof (sequencerSteps) / sizeof (sequencerSteps[0]));
 
-    pRequestForShardOwnerContext->setResourceName     (pRequestForShardOwnerMessage->getResourceName     ());
+    pRequestForShardOwnerContext->setResourceNames    (pRequestForShardOwnerMessage->getResourceNames     ());
     pRequestForShardOwnerContext->setShardingCategory (pRequestForShardOwnerMessage->getShardingCategory ());
 
     pRequestForShardOwnerContext->holdAll ();
@@ -68,8 +69,8 @@ void RequestForShardOwnerWorker::validateStep (RequestForShardOwnerContext *pReq
 {
     trace (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::validateStep : Entering ...");
 
-    const string     resourceName             = pRequestForShardOwnerContext->getResourceName     ();
-    const ResourceId shardingCategory         = pRequestForShardOwnerContext->getShardingCategory ();
+    const vector<string> resourceNames    = pRequestForShardOwnerContext->getResourceNames    ();
+    const ResourceId     shardingCategory = pRequestForShardOwnerContext->getShardingCategory ();
 
     if (0 == shardingCategory)
     {
@@ -82,8 +83,6 @@ void RequestForShardOwnerWorker::validateStep (RequestForShardOwnerContext *pReq
 
     pRequestForShardOwnerContext->setShardingCategoryObjectId (shardingCategoryObjectId);
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "RequestForShardOwnerWorker::validateStep : %s : %s : %s", resourceName.c_str (), shardingCategoryToken.c_str (), (shardingCategoryObjectId.toString ()).c_str ());
-
     if (ObjectId::NullObjectId == shardingCategoryObjectId)
     {
         trace (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::validateStep : Could not find sharding category.");
@@ -92,35 +91,19 @@ void RequestForShardOwnerWorker::validateStep (RequestForShardOwnerContext *pReq
         return;
     }
 
-    const ObjectId applicationInstanceObjectId = ShardingCapabilitiesToolKit::getServiceInstanceObjectIdByshardableResourceCategoryAndReosurce (shardingCategoryObjectId, resourceName);
+    map<string, ObjectId> &applicationInstanceObjectIdByResourceNameMap = pRequestForShardOwnerContext->getApplicationInstanceObjectIdByResourceNameMap ();
 
-    if (ObjectId::NullObjectId != applicationInstanceObjectId)
+    ShardingCapabilitiesToolKit::getServiceInstanceObjectIdsByshardableResourceCategoryAndReosurces (shardingCategoryObjectId, resourceNames, applicationInstanceObjectIdByResourceNameMap);
+
+    if ((resourceNames.size ()) == (applicationInstanceObjectIdByResourceNameMap.size ()))
     {
-        tracePrintf (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::validateStep : Sharding owner already exists : %s", (applicationInstanceObjectId.toString ()).c_str ());
-
-        WaveManagedObject *pWaveManagedObject = queryManagedObject (applicationInstanceObjectId);
-
-        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
-
-        tracePrintf (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::validateStep : Sharding owner already existing application instance name : %s", (pWaveManagedObject->getName ()).c_str ());
-
-        pRequestForShardOwnerContext->setApplicationInstanceName     (pWaveManagedObject->getName ());
-        pRequestForShardOwnerContext->setApplicationInstanceObjectId (pWaveManagedObject->getObjectId ());
-
-        pRequestForShardOwnerContext->addManagedObjectForGarbageCollection (pWaveManagedObject);
-
-        RequestForShardOwnerMessage *pRequestForShardOwnerMessage = dynamic_cast<RequestForShardOwnerMessage *> (pRequestForShardOwnerContext->getPWaveMessage ());
-
-        pRequestForShardOwnerMessage->setApplicationInstanceName (pRequestForShardOwnerContext->getApplicationInstanceName ());
-
-        pRequestForShardOwnerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
-        return;
+        tracePrintf (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::validateStep : Sharding owners already exists for all resources");
     }
     else
     {
-        const ObjectId newApplicationInstanceObjectId = ShardingCapabilitiesToolKit::getServiceInstanceObjectIdWithMinimalShardCategoryOwnership (shardingCategoryObjectId);
+        map<ObjectId, UI32> &shardOwnerCountsByapplicationInstanceObjectIdMap = pRequestForShardOwnerContext->getShardOwnerCountsByapplicationInstanceObjectIdMap ();
 
-        pRequestForShardOwnerContext->setNewApplicationInstanceObjectId (newApplicationInstanceObjectId);
+        ShardingCapabilitiesToolKit::getServiceInstanceObjectIdToShardCategoryOwnershipCountMap (shardingCategoryObjectId, shardOwnerCountsByapplicationInstanceObjectIdMap);
     }
 
     pRequestForShardOwnerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
@@ -131,43 +114,80 @@ void RequestForShardOwnerWorker::createStep (RequestForShardOwnerContext *pReque
 {
     trace (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::createStep : Entering ...");
 
-    const ObjectId applicationInstanceObjectId = pRequestForShardOwnerContext->getApplicationInstanceObjectId ();
+    const vector<string>         resourceNames                                = pRequestForShardOwnerContext->getResourceNames            ();
+    const ObjectId               shardingCategoryObjectId                     = pRequestForShardOwnerContext->getShardingCategoryObjectId ();
 
-    if (ObjectId::NullObjectId != applicationInstanceObjectId)
+          map<string, ObjectId> &applicationInstanceObjectIdByResourceNameMap = pRequestForShardOwnerContext->getApplicationInstanceObjectIdByResourceNameMap ();
+
+    vector<string>::const_iterator element    = resourceNames.begin ();
+    vector<string>::const_iterator endElement = resourceNames.end   ();
+
+    while (endElement != element)
     {
-        pRequestForShardOwnerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
-        return;
+        const string   resourceName                   = *element;
+        const ObjectId applicationInstanceObjectId    = applicationInstanceObjectIdByResourceNameMap[resourceName];
+
+        if (ObjectId::NullObjectId == applicationInstanceObjectId)
+        {
+            const ObjectId newApplicationInstanceObjectId = pRequestForShardOwnerContext->getApplicationInstanceObjectIdWithMinimalShardOwnerCount ();
+
+            NetworkDeviceReadShardDataManagedObject *pNetworkDeviceReadShardDataManagedObject = new NetworkDeviceReadShardDataManagedObject (getPWaveObjectManager ());
+
+            pNetworkDeviceReadShardDataManagedObject->setNetworkDeviceReadShardingCategory (shardingCategoryObjectId);
+            pNetworkDeviceReadShardDataManagedObject->setServiceInstance                   (newApplicationInstanceObjectId);
+
+            pNetworkDeviceReadShardDataManagedObject->setName (resourceName);
+
+            applicationInstanceObjectIdByResourceNameMap[resourceName] = newApplicationInstanceObjectId;
+
+            pRequestForShardOwnerContext->incrementShardOwnerCountForApplicationInstanceObjectId (newApplicationInstanceObjectId);
+
+            pRequestForShardOwnerContext->addManagedObjectForGarbageCollection (pNetworkDeviceReadShardDataManagedObject);
+        }
+
+        element++;
     }
-
-    const string     resourceName             = pRequestForShardOwnerContext->getResourceName             ();
-    const ObjectId   shardingCategoryObjectId = pRequestForShardOwnerContext->getShardingCategoryObjectId ();
-
-    const ObjectId   newApplicationInstanceObjectId = pRequestForShardOwnerContext->getNewApplicationInstanceObjectId ();
-
-    NetworkDeviceReadShardDataManagedObject *pNetworkDeviceReadShardDataManagedObject = new NetworkDeviceReadShardDataManagedObject (getPWaveObjectManager ());
-
-    pNetworkDeviceReadShardDataManagedObject->setNetworkDeviceReadShardingCategory (shardingCategoryObjectId);
-    pNetworkDeviceReadShardDataManagedObject->setServiceInstance                   (newApplicationInstanceObjectId);
-
-    pNetworkDeviceReadShardDataManagedObject->setName (resourceName);
-
-    WaveManagedObject *pWaveManagedObject = queryManagedObject (newApplicationInstanceObjectId);
-
-    waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
-
-    tracePrintf (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::createStep : New Sharding owner application instance name : %s", (pWaveManagedObject->getName ()).c_str ());
-
-    pRequestForShardOwnerContext->setApplicationInstanceName     (pWaveManagedObject->getName ());
-    pRequestForShardOwnerContext->setApplicationInstanceObjectId (pWaveManagedObject->getObjectId ());
-
-    pRequestForShardOwnerContext->addManagedObjectForGarbageCollection (pWaveManagedObject);
-
-    RequestForShardOwnerMessage *pRequestForShardOwnerMessage = dynamic_cast<RequestForShardOwnerMessage *> (pRequestForShardOwnerContext->getPWaveMessage ());
-
-    pRequestForShardOwnerMessage->setApplicationInstanceName (pRequestForShardOwnerContext->getApplicationInstanceName ());
 
     pRequestForShardOwnerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
     return;
 }
+
+void RequestForShardOwnerWorker::setOutputStep (RequestForShardOwnerContext *pRequestForShardOwnerContext)
+{
+    trace (TRACE_LEVEL_INFO, "RequestForShardOwnerWorker::setOutputStep : Entering ...");
+
+    pRequestForShardOwnerContext->populateApplicationInstanceNameByObjectIdMap ();
+
+    const vector<string>                  resourceNames                                = pRequestForShardOwnerContext->getResourceNames            ();
+
+          map<string, ObjectId>          &applicationInstanceObjectIdByResourceNameMap = pRequestForShardOwnerContext->getApplicationInstanceObjectIdByResourceNameMap ();
+          map<ObjectId, string>          &applicationInstanceNameByObjectIdMap         = pRequestForShardOwnerContext->getApplicationInstanceNameByObjectIdMap         ();
+
+          vector<string>::const_iterator  element                                      = resourceNames.begin ();
+          vector<string>::const_iterator  endElement                                   = resourceNames.end   ();
+
+          vector<string>                  applicationInstanceNames;
+
+    while (endElement != element)
+    {
+        const string   resourceName                   = *element;
+        const ObjectId applicationInstanceObjectId    = applicationInstanceObjectIdByResourceNameMap[resourceName];
+        const string   applicationInstanceName        = applicationInstanceNameByObjectIdMap[applicationInstanceObjectId];
+
+        applicationInstanceNames.push_back (applicationInstanceName);
+
+        element++;
+    }
+
+    RequestForShardOwnerMessage *pRequestForShardOwnerMessage = dynamic_cast<RequestForShardOwnerMessage *> (pRequestForShardOwnerContext->getPWaveMessage ());
+
+    waveAssert (NULL != pRequestForShardOwnerMessage, __FILE__, __LINE__);
+
+    pRequestForShardOwnerMessage->setApplicationInstanceNames (applicationInstanceNames);
+
+    pRequestForShardOwnerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
+    return;
+}
+
 
 }

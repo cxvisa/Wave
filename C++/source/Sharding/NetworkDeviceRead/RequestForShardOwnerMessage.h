@@ -21,25 +21,25 @@ class RequestForShardOwnerMessage : public ManagementInterfaceMessage
 
     protected :
     public :
-                            RequestForShardOwnerMessage ();
-                            RequestForShardOwnerMessage (const string &resourceName, const ResourceId &shardingCategory);
-        virtual            ~RequestForShardOwnerMessage ();
+                                RequestForShardOwnerMessage ();
+                                RequestForShardOwnerMessage (const vector<string> &resourceNames, const ResourceId &shardingCategory);
+        virtual                ~RequestForShardOwnerMessage ();
 
-                string      getResourceName             () const;
-                void        setResourceName             (const string &resourceName);
+                vector<string>  getResourceNames            () const;
+                void            setResourceNames            (const vector<string> &resourceNames);
 
-                ResourceId  getShardingCategory         () const;
-                void        setShardingCategory         (const ResourceId &shardingCategory);
+                ResourceId      getShardingCategory         () const;
+                void            setShardingCategory         (const ResourceId &shardingCategory);
 
-                string      getApplicationInstanceName  () const;
-                void        setApplicationInstanceName  (const string &applicationInstanceName);
+                vector<string>  getApplicationInstanceNames () const;
+                void            setApplicationInstanceNames (const vector<string> &applicationInstanceNames);
 
     // Now the Data Members
 
     private :
-        string     m_resourceName;
-        ResourceId m_shardingCategory;
-        string     m_applicationInstanceName;
+        vector<string> m_resourceNames;
+        ResourceId     m_shardingCategory;
+        vector<string> m_applicationInstanceNames;
 
     protected :
     public :

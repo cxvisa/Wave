@@ -7,8 +7,12 @@
 #ifndef REQUESTFORSHARDOWNERCONTEXT_H
 #define REQUESTFORSHARDOWNERCONTEXT_H
 
+#include <map>
+
 #include "Framework/ObjectModel/ObjectId.h"
 #include "Framework/Utils/WaveLinearSequencerContext.h"
+
+using namespace std;
 
 namespace WaveNs
 {
@@ -21,33 +25,41 @@ class RequestForShardOwnerContext : public WaveLinearSequencerContext
                  RequestForShardOwnerContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~RequestForShardOwnerContext ();
 
-        string      getResourceName                   () const;
-        void        setResourceName                   (const string &resourceName);
+        vector<string>  getResourceNames            () const;
+        void            setResourceNames            (const vector<string> &resourceNames);
 
-        ResourceId  getShardingCategory               () const;
-        void        setShardingCategory               (const ResourceId &shardingCategory);
+        ResourceId      getShardingCategory         () const;
+        void            setShardingCategory         (const ResourceId &shardingCategory);
 
-        string      getApplicationInstanceName        () const;
-        void        setApplicationInstanceName        (const string &applicationInstanceName);
-
-        ObjectId    getApplicationInstanceObjectId    () const;
-        void        setApplicationInstanceObjectId    (const ObjectId &applicationInstanceObjectId);
-
-        ObjectId    getNewApplicationInstanceObjectId () const;
-        void        setNewApplicationInstanceObjectId (const ObjectId &newApplicationInstanceObjectId);
+        vector<string>  getApplicationInstanceNames () const;
+        void            setApplicationInstanceNames (const vector<string> &applicationInstanceNames);
 
         ObjectId    getShardingCategoryObjectId       () const;
         void        setShardingCategoryObjectId       (const ObjectId &shardingCategoryObjectId);
 
+        map<string, ObjectId> &getApplicationInstanceObjectIdByResourceNameMap ();
+
+        map<ObjectId, UI32>   &getShardOwnerCountsByapplicationInstanceObjectIdMap ();
+
+        const ObjectId getApplicationInstanceObjectIdWithMinimalShardOwnerCount () const;
+
+        map<ObjectId, string> &getApplicationInstanceNameByObjectIdMap ();
+
+        void populateApplicationInstanceNameByObjectIdMap           ();
+        void incrementShardOwnerCountForApplicationInstanceObjectId (const ObjectId applicationInstanceObjectId);
+
     // Now the Data Members
 
     private :
-        string     m_resourceName;
-        ResourceId m_shardingCategory;
-        string     m_applicationInstanceName;
-        ObjectId   m_applicationInstanceObjectId;
-        ObjectId   m_newApplicationInstanceObjectId;
-        ObjectId   m_shardingCategoryObjectId;
+        vector<string>        m_resourceNames;
+        ResourceId            m_shardingCategory;
+        vector<string>        m_applicationInstanceNames;
+
+        ObjectId              m_shardingCategoryObjectId;
+
+        map<string, ObjectId> m_applicationInstanceObjectIdByResourceNameMap;
+        map<ObjectId, UI32>   m_shardOwnerCountsByapplicationInstanceObjectIdMap;
+        map<ObjectId, string> m_applicationInstanceNameByObjectIdMap;
 
     protected :
     public :

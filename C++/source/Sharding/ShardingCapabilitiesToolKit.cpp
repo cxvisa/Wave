@@ -167,6 +167,8 @@ const vector<ObjectId>  ShardingCapabilitiesToolKit::getServiceInstanceObjectIds
         serviceInstanceObjectIds.push_back (objectId);
     }
 
+    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector (pQueryResults);
+
     return (serviceInstanceObjectIds);
 }
 

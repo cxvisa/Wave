@@ -23,6 +23,7 @@ class RequestForShardOwnerWorker : public WaveWorker
         void requestForShardOwnerRequestHandler (RequestForShardOwnerMessage *pRequestForShardOwnerMessage);
         void validateStep                       (RequestForShardOwnerContext *pRequestForShardOwnerContext);
         void createStep                         (RequestForShardOwnerContext *pRequestForShardOwnerContext);
+        void setOutputStep                      (RequestForShardOwnerContext *pRequestForShardOwnerContext);
 
     protected :
     public :

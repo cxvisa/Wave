@@ -2609,7 +2609,7 @@ ResourceId WaveClientSynchronousConnection::registerExternalNonNativeServiceInst
     return (returnStatus);
 }
 
-ResourceId WaveClientSynchronousConnection::requestForShardOwnerForResource (const string &shardingCategoryToken, const string &resourceName)
+ResourceId WaveClientSynchronousConnection::requestForShardOwnerForResources (const string &shardingCategoryToken, const vector<string> &resourceNames, vector<string> &serviceInstanceNames)
 {
     WaveMessageStatus  sendStatus       = WAVE_MESSAGE_ERROR;
     ResourceId         completionStatus = WAVE_MESSAGE_ERROR;
@@ -2619,7 +2619,7 @@ ResourceId WaveClientSynchronousConnection::requestForShardOwnerForResource (con
     {
         const ResourceId shardingCapabilityResourceId = ShardingCapabilitiesToolKit::getResourceIdFromToken (shardingCategoryToken);
 
-        RequestForShardOwnerMessage requestForShardOwnerMessage (resourceName, shardingCapabilityResourceId);
+        RequestForShardOwnerMessage requestForShardOwnerMessage (resourceNames, shardingCapabilityResourceId);
 
         sendStatus = sendSynchronouslyToWaveServer (&requestForShardOwnerMessage);
 
@@ -2638,9 +2638,9 @@ ResourceId WaveClientSynchronousConnection::requestForShardOwnerForResource (con
             }
             else
             {
-                const string applicationInstanceName = requestForShardOwnerMessage.getApplicationInstanceName ();
+                serviceInstanceNames = requestForShardOwnerMessage.getApplicationInstanceNames ();
 
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveClientSynchronousConnection::requestForShardOwnerForResource : Shard Owner : %s", applicationInstanceName.c_str ());
+                //WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveClientSynchronousConnection::requestForShardOwnerForResource : Shard Owner : %s", applicationInstanceName.c_str ());
             }
 
             returnStatus = completionStatus;

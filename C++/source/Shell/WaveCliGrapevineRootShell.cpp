@@ -208,7 +208,6 @@ ResourceId WaveCliGrapevineRootShell::registerServiceInstancesByRange (const vec
         generatedApplicationInstanceNames.push_back (applicationInstanceNamePrefix + rangeVector[i]);
     }
 
-
     status = connection.registerExternalNonNativeServiceInstances (applicationName, generatedApplicationInstanceNames);
 
     if (WAVE_MESSAGE_SUCCESS == status)

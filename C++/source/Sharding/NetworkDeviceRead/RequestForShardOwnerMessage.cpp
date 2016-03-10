@@ -17,9 +17,9 @@ RequestForShardOwnerMessage::RequestForShardOwnerMessage ()
 {
 }
 
-RequestForShardOwnerMessage::RequestForShardOwnerMessage (const string &resourceName, const ResourceId &shardingCategory)
+RequestForShardOwnerMessage::RequestForShardOwnerMessage (const vector<string> &resourceNames, const ResourceId &shardingCategory)
     : ManagementInterfaceMessage (NetworkDeviceReadShardingObjectManager::getServiceName (), NETWORK_DEVICE_READ_SHARDING_REQUEST_FOR_SHARD_OWNER),
-      m_resourceName             (resourceName),
+      m_resourceNames            (resourceNames),
       m_shardingCategory         (shardingCategory)
 {
 }
@@ -34,19 +34,19 @@ void RequestForShardOwnerMessage::setupAttributesForSerialization ()
 
     // This class Specific Attributes below
 
-    addSerializableAttribute (new AttributeString     (&m_resourceName,            "resourceName"));
-    addSerializableAttribute (new AttributeResourceId (&m_shardingCategory,        "shardingCategory"));
-    addSerializableAttribute (new AttributeString     (&m_applicationInstanceName, "applicationInstanceName"));
+    addSerializableAttribute (new AttributeStringVector (&m_resourceNames,            "resourceNames"));
+    addSerializableAttribute (new AttributeResourceId   (&m_shardingCategory,         "shardingCategory"));
+    addSerializableAttribute (new AttributeStringVector (&m_applicationInstanceNames, "applicationInstanceNames"));
 }
 
-string RequestForShardOwnerMessage::getResourceName () const
+vector<string> RequestForShardOwnerMessage::getResourceNames () const
 {
-    return (m_resourceName);
+    return (m_resourceNames);
 }
 
-void RequestForShardOwnerMessage::setResourceName (const string &resourceName)
+void RequestForShardOwnerMessage::setResourceNames (const vector<string> &resourceNames)
 {
-    m_resourceName = resourceName;
+    m_resourceNames = resourceNames;
 }
 
 ResourceId RequestForShardOwnerMessage::getShardingCategory () const
@@ -59,14 +59,14 @@ void RequestForShardOwnerMessage::setShardingCategory (const ResourceId &shardin
     m_shardingCategory = shardingCategory;
 }
 
-string RequestForShardOwnerMessage::getApplicationInstanceName () const
+vector<string> RequestForShardOwnerMessage::getApplicationInstanceNames () const
 {
-    return (m_applicationInstanceName);
+    return (m_applicationInstanceNames);
 }
 
-void  RequestForShardOwnerMessage::setApplicationInstanceName (const string &applicationInstanceName)
+void RequestForShardOwnerMessage::setApplicationInstanceNames (const vector<string> &applicationInstanceNames)
 {
-    m_applicationInstanceName = applicationInstanceName;
+    m_applicationInstanceNames = applicationInstanceNames ;
 }
 
 }

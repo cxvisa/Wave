@@ -162,7 +162,7 @@ class WaveClientSynchronousConnection
 
         ResourceId            registerExternalNonNativeServiceInstanceShardingCapabilities (const string &serviceName, const string &serviceInstanceName, const vector<string> &serviceInstanceShardingCapabilityTokens);
 
-        ResourceId            requestForShardOwnerForResource                             (const string &shardingCategoryToken, const string &resourceName);
+        ResourceId            requestForShardOwnerForResources                            (const string &shardingCategoryToken, const vector<string> &resourceNames, vector<string> &serviceInstanceNames);
 
     // Now the data members
 
