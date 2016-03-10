@@ -13,6 +13,7 @@ namespace WaveNs
 {
 
 class NetworkDeviceReadShardWorker;
+class RequestForShardOwnerWorker;
 
 class NetworkDeviceReadShardingObjectManager : public WaveObjectManager
 {
@@ -31,6 +32,7 @@ class NetworkDeviceReadShardingObjectManager : public WaveObjectManager
 
     private:
         NetworkDeviceReadShardWorker *m_pNetworkDeviceReadShardWorker;
+        RequestForShardOwnerWorker   *m_pRequestForShardOwnerWorker;
 
     protected:
     public:

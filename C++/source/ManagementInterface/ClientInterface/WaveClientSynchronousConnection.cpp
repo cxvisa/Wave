@@ -48,6 +48,9 @@
 #include "Framework/Database/DatabaseObjectManagerTypes.h"
 #include "ServiceManagement/Global/AddExternalNonNativeServiceMessage.h"
 #include "ServiceManagement/Local/AddExternalNonNativeServiceInstanceMessage.h"
+#include "ServiceManagement/Local/SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage.h"
+#include "Sharding/NetworkDeviceRead/RequestForShardOwnerMessage.h"
+#include "Sharding/ShardingCapabilitiesToolKit.h"
 
 namespace WaveNs
 {
@@ -2540,6 +2543,104 @@ ResourceId WaveClientSynchronousConnection::registerExternalNonNativeServiceInst
             if (WAVE_MESSAGE_SUCCESS != completionStatus)
             {
                 trace (TRACE_LEVEL_INFO, "WaveClientSynchronousConnection::registerExternalNonNativeServiceInstance: Message Processing failed : " + FrameworkToolKit::localize (completionStatus));
+            }
+
+            returnStatus = completionStatus;
+        }
+    }
+    else
+    {
+        returnStatus = getConnectionStatus ();
+    }
+
+    return (returnStatus);
+}
+
+ResourceId WaveClientSynchronousConnection::registerExternalNonNativeServiceInstanceShardingCapabilities (const string &serviceName, const string &serviceInstanceName, const vector<string> &serviceInstanceShardingCapabilityTokens)
+{
+    WaveMessageStatus  sendStatus       = WAVE_MESSAGE_ERROR;
+    ResourceId         completionStatus = WAVE_MESSAGE_ERROR;
+    ResourceId         returnStatus     = WAVE_MESSAGE_ERROR;
+
+    if (true == (isCurrentlyConnected ()))
+    {
+        vector<ResourceId> serviceInstanceShardingCapabilities;
+
+        vector<string>::const_iterator element    = serviceInstanceShardingCapabilityTokens.begin ();
+        vector<string>::const_iterator endElement = serviceInstanceShardingCapabilityTokens.end   ();
+
+        while (endElement != element)
+        {
+            string serviceInstanceShardingCapabilityToken = *element;
+
+            const ResourceId shardingCapabilityResourceId = ShardingCapabilitiesToolKit::getResourceIdFromToken (serviceInstanceShardingCapabilityToken);
+
+            serviceInstanceShardingCapabilities.push_back (shardingCapabilityResourceId);
+
+            element++;
+        }
+
+        SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage setExternalNonNativeServiceInstanceShardingCapabilitiesMessage (serviceName, serviceInstanceName, serviceInstanceShardingCapabilities);
+
+        sendStatus = sendSynchronouslyToWaveServer (&setExternalNonNativeServiceInstanceShardingCapabilitiesMessage);
+
+        if (WAVE_MESSAGE_SUCCESS != sendStatus)
+        {
+            trace (TRACE_LEVEL_ERROR, "WaveClientSynchronousConnection::registerExternalNonNativeServiceInstance: Sending message failed : " + FrameworkToolKit::localize (sendStatus));
+            returnStatus = sendStatus;
+        }
+        else
+        {
+            completionStatus = setExternalNonNativeServiceInstanceShardingCapabilitiesMessage.getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TRACE_LEVEL_INFO, "WaveClientSynchronousConnection::registerExternalNonNativeServiceInstance: Message Processing failed : " + FrameworkToolKit::localize (completionStatus));
+            }
+
+            returnStatus = completionStatus;
+        }
+    }
+    else
+    {
+        returnStatus = getConnectionStatus ();
+    }
+
+    return (returnStatus);
+}
+
+ResourceId WaveClientSynchronousConnection::requestForShardOwnerForResource (const string &shardingCategoryToken, const string &resourceName)
+{
+    WaveMessageStatus  sendStatus       = WAVE_MESSAGE_ERROR;
+    ResourceId         completionStatus = WAVE_MESSAGE_ERROR;
+    ResourceId         returnStatus     = WAVE_MESSAGE_ERROR;
+
+    if (true == (isCurrentlyConnected ()))
+    {
+        const ResourceId shardingCapabilityResourceId = ShardingCapabilitiesToolKit::getResourceIdFromToken (shardingCategoryToken);
+
+        RequestForShardOwnerMessage requestForShardOwnerMessage (resourceName, shardingCapabilityResourceId);
+
+        sendStatus = sendSynchronouslyToWaveServer (&requestForShardOwnerMessage);
+
+        if (WAVE_MESSAGE_SUCCESS != sendStatus)
+        {
+            trace (TRACE_LEVEL_ERROR, "WaveClientSynchronousConnection::requestForShardOwnerForResource: Sending message failed : " + FrameworkToolKit::localize (sendStatus));
+            returnStatus = sendStatus;
+        }
+        else
+        {
+            completionStatus = requestForShardOwnerMessage.getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TRACE_LEVEL_INFO, "WaveClientSynchronousConnection::requestForShardOwnerForResource: Message Processing failed : " + FrameworkToolKit::localize (completionStatus));
+            }
+            else
+            {
+                const string applicationInstanceName = requestForShardOwnerMessage.getApplicationInstanceName ();
+
+                WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveClientSynchronousConnection::requestForShardOwnerForResource : Shard Owner : %s", applicationInstanceName.c_str ());
             }
 
             returnStatus = completionStatus;

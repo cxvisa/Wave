@@ -6,7 +6,7 @@ void addResourceId (const unsigned long int &resourceId, const string &resourceD
     s_waveResourceIdsMap[resourceId] = resourceDescription;
 }
 
-void addResourceIdToResourceEnum (const unsigned long int &resourceId, const unsigned long int &resourceEnum)
+void addResourceIdToResourceEnum (const unsigned long int &resourceEnum, const unsigned long int &resourceId)
 {
     s_waveResourceEnumsMap[resourceEnum].push_back (resourceId);
 }

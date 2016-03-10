@@ -9,6 +9,7 @@
 #include "ServiceManagement/Global/ShardableResourceCategory.h"
 #include "ServiceManagement/Global/ShardData.h"
 #include "ServiceManagement/Global/AddExternalNonNativeServiceWorker.h"
+#include "Sharding/ShardingCapabilitiesToolKit.h"
 
 namespace WaveNs
 {
@@ -16,6 +17,9 @@ namespace WaveNs
 ServiceManagementObjectManager::ServiceManagementObjectManager ()
     : WaveObjectManager (getServiceName ())
 {
+
+    ShardingCapabilitiesToolKit::initialize ();
+
     ShardableResourceCategory shardableResourceCategory (this);
     ShardData shardData (this);
 

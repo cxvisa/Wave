@@ -19,6 +19,7 @@ class NetworkDeviceReadShardDataManagedObject : public ShardData
     private :
         void setupAttributesForPersistence ();
         void setupAttributesForCreate      ();
+        void setupKeys                     ();
 
     protected :
     public :
@@ -37,7 +38,7 @@ class NetworkDeviceReadShardDataManagedObject : public ShardData
 
     private :
         ObjectId m_networkDeviceReadShardingCategory;
-        ObjectId m_service;
+        //ObjectId m_service;
         ObjectId m_serviceInstance;
 
     protected :

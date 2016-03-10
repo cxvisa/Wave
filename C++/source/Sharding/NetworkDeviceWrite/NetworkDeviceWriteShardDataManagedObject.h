@@ -17,6 +17,7 @@ class NetworkDeviceWriteShardDataManagedObject : public ShardData
     private :
         void setupAttributesForPersistence ();
         void setupAttributesForCreate      ();
+        void setupKeys                     ();
 
     protected :
     public :

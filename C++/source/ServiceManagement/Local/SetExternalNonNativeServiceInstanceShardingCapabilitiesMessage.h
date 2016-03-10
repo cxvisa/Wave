@@ -22,7 +22,7 @@ class SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage : public Ma
     protected :
     public :
                  SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage ();
-                 SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage (const string &applicationName, const string &applicationInstanceName, const vector<ResourceId> m_shardingCapabilities);
+                 SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage (const string &applicationName, const string &applicationInstanceName, const vector<ResourceId> shardingCapabilities);
         virtual ~SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage ();
 
                  string             getApplicationName          () const;

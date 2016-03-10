@@ -17,6 +17,15 @@ SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage::SetExternalNonNa
 {
 }
 
+SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage::SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage (const string &applicationName, const string &applicationInstanceName, const vector<ResourceId> shardingCapabilities)
+
+    : ManagementInterfaceMessage (ServiceManagementLocalObjectManager::getServiceName (), SERVCIE_MANAGEMENT_LOCAL_SET_EXTERNAL_NON_NATIVE_SERVICE_INSTANCE_SHARDING_CAPABILITIES),
+      m_applicationName          (applicationName),
+      m_applicationInstanceName  (applicationInstanceName),
+      m_shardingCapabilities     (shardingCapabilities)
+{
+}
+
 SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage::~SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage ()
 {
 }

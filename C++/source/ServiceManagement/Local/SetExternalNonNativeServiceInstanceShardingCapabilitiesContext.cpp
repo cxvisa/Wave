@@ -6,11 +6,13 @@
 
 #include "ServiceManagement/Local/SetExternalNonNativeServiceInstanceShardingCapabilitiesContext.h"
 
+#include "ServiceManagement/Local/ExternalNonNativeServiceInstanceManagedObject.h"
 namespace WaveNs
 {
 
 SetExternalNonNativeServiceInstanceShardingCapabilitiesContext::SetExternalNonNativeServiceInstanceShardingCapabilitiesContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps)
-    : WaveLinearSequencerContext (pWaveMessage, pWaveElement, pSteps, numberOfSteps)
+    : WaveLinearSequencerContext                       (pWaveMessage, pWaveElement, pSteps, numberOfSteps),
+      m_pExternalNonNativeServiceInstanceManagedObject (NULL)
 {
 }
 
@@ -48,5 +50,24 @@ void SetExternalNonNativeServiceInstanceShardingCapabilitiesContext::setSharding
     m_shardingCapabilities = shardingCapabilities;
 }
 
+ExternalNonNativeServiceInstanceManagedObject *SetExternalNonNativeServiceInstanceShardingCapabilitiesContext::getPExternalNonNativeServiceInstanceManagedObject ()
+{
+    return (m_pExternalNonNativeServiceInstanceManagedObject);
+}
+
+void SetExternalNonNativeServiceInstanceShardingCapabilitiesContext::setPExternalNonNativeServiceInstanceManagedObject (ExternalNonNativeServiceInstanceManagedObject *pExternalNonNativeServiceInstanceManagedObject)
+{
+    m_pExternalNonNativeServiceInstanceManagedObject = pExternalNonNativeServiceInstanceManagedObject;
+}
+
+vector<ObjectId> SetExternalNonNativeServiceInstanceShardingCapabilitiesContext::getShardingCapabilityObjectIds () const
+{
+    return (m_shardingCapabilityObjectIds);
+}
+
+void SetExternalNonNativeServiceInstanceShardingCapabilitiesContext::setShardingCapabilityObjectIds (const vector<ObjectId> &shardingCapabilityObjectIds)
+{
+    m_shardingCapabilityObjectIds = shardingCapabilityObjectIds;
+}
 
 }

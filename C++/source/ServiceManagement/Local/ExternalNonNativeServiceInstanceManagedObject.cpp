@@ -6,6 +6,8 @@
 
 #include "ServiceManagement/Local/ExternalNonNativeServiceInstanceManagedObject.h"
 #include "ServiceManagement/Global/ExternalNonNativeServiceManagedObject.h"
+#include "ServiceManagement/Global/ShardableResourceCategory.h"
+#include "ServiceManagement/Global/ShardableResourceCategory.h"
 
 namespace WaveNs
 {
@@ -44,7 +46,8 @@ void ExternalNonNativeServiceInstanceManagedObject::setupAttributesForPersistenc
 
     // This class Specific Attributes below
 
-    addPersistableAttribute (new AttributeObjectIdAggregation (&m_service, "service", ExternalNonNativeServiceManagedObject::getClassName()));
+    addPersistableAttribute (new AttributeObjectIdAssociation       (&m_service, "service",                                                            ExternalNonNativeServiceManagedObject::getClassName()));
+    addPersistableAttribute (new AttributeObjectIdVectorAssociation (&m_shardingCapabilities, "shardingCapabilities", getClassName (), getObjectId (), ShardableResourceCategory::getClassName()));
 }
 
 void ExternalNonNativeServiceInstanceManagedObject::setupAttributesForCreate ()
@@ -53,7 +56,8 @@ void ExternalNonNativeServiceInstanceManagedObject::setupAttributesForCreate ()
 
     // This class Specific Attributes below
 
-    addPersistableAttributeForCreate (new AttributeObjectIdAggregation (&m_service, "service", ExternalNonNativeServiceManagedObject::getClassName()));
+    addPersistableAttributeForCreate (new AttributeObjectIdAssociation       (&m_service, "service",                                                            ExternalNonNativeServiceManagedObject::getClassName()));
+    addPersistableAttributeForCreate (new AttributeObjectIdVectorAssociation (&m_shardingCapabilities, "shardingCapabilities", getClassName (), getObjectId (), ShardableResourceCategory::getClassName()));
 }
 
 void ExternalNonNativeServiceInstanceManagedObject::setupKeys ()
@@ -73,6 +77,16 @@ ObjectId ExternalNonNativeServiceInstanceManagedObject::getService () const
 void ExternalNonNativeServiceInstanceManagedObject::setService (const ObjectId &service)
 {
     m_service = service;
+}
+
+vector<ObjectId> ExternalNonNativeServiceInstanceManagedObject::getShardingCapabilities () const
+{
+    return (m_shardingCapabilities);
+}
+
+void ExternalNonNativeServiceInstanceManagedObject::setShardingCapabilities (const vector<ObjectId> shardingCapabilities)
+{
+    m_shardingCapabilities = shardingCapabilities;
 }
 
 }

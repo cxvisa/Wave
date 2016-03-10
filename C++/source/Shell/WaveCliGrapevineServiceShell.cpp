@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2010 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -21,6 +21,8 @@ WaveCliGrapevineServiceShell::WaveCliGrapevineServiceShell (WaveClientSynchronou
     addCommandfunction ("configure-service-shell",                         reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineServiceShell::configureServiceShell),                       "Configures a grapevine service shell.",                         reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineServiceShell::configureServiceShellHelp));
 
     addCommandfunction ("register-service-instance-sharding-capabilities", reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities), "Registers a grapevine service instance sharding capabilities.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilitiesHelp));
+
+    addCommandfunction ("get-shard-owner-for-resource",                    reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineServiceShell::getShardOwnerForResource),                    "Gets the shard owner for the given resource.",                  reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineServiceShell::getShardOwnerForResourceHelp));
 }
 
 WaveCliGrapevineServiceShell::~WaveCliGrapevineServiceShell ()
@@ -36,9 +38,16 @@ ResourceId WaveCliGrapevineServiceShell::configureServiceShell (const vector<str
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    if (0 < (arguments.size ()))
+    if (1 < (arguments.size ()))
     {
-        setShellName (arguments[0]);
+        m_serviceName         = arguments[0];
+        m_serviceInstanceName = arguments[1];
+
+        setShellName (m_serviceName + " / " + m_serviceInstanceName);
+    }
+    else
+    {
+        configureServiceShellHelp ();
     }
 
     return (status);
@@ -63,28 +72,76 @@ ResourceId WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabili
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
 
-    if (2 > (arguments.size ()))
+    if (0 > (arguments.size ()))
     {
         registerServiceInstanceShardingCapabilitiesHelp ();
 
         return (status);
     }
 
-    status = connection.registerExternalNonNativeServiceInstance (arguments[0], arguments[1]);
+    vector<string> shardingCpaabilities = arguments;
+
+    status = connection.registerExternalNonNativeServiceInstanceShardingCapabilities (m_serviceName, m_serviceInstanceName, shardingCpaabilities);
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineServiceShell::registerServiceInstance : Successfully registered service instance." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities : Successfully configured service instance sharding capabilities." ));
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineServiceShell::registerServiceInstance : Failed to register service instance. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities : Failed to configure service instance sharding capabilities. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
 void WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilitiesHelp ()
+{
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : register-service-instance <service-name> <service-instance-name>");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native service instance with Service Coordinator.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "INPUT :");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "  service-name");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    Unique Name of the service ");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "  service-instance-name");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    Unique Name of the service instance");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "OUTPUT :");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    ");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+}
+
+ResourceId WaveCliGrapevineServiceShell::getShardOwnerForResource (const vector<string> &arguments)
+{
+    ResourceId                      status                 = WAVE_MESSAGE_ERROR;
+    WaveClientSynchronousConnection connection             = getConnection ();
+
+    if (2 > (arguments.size ()))
+    {
+        getShardOwnerForResourceHelp ();
+
+        return (status);
+    }
+
+    const string shardingCategory = arguments[0];
+    const string resourceName     = arguments[1];
+
+    status = connection.requestForShardOwnerForResource (shardingCategory, resourceName);
+
+    if (WAVE_MESSAGE_SUCCESS == status)
+    {
+        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineServiceShell::getShardOwnerForResource : Successfully requested for shard owner." ));
+    }
+    else
+    {
+        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineServiceShell::getShardOwnerForResource : Failed to request for shard owner. Status : " + FrameworkToolKit::localize (status));
+    }
+
+    return (status);
+}
+
+void WaveCliGrapevineServiceShell::getShardOwnerForResourceHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : register-service-instance <service-name> <service-instance-name>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native service instance with Service Coordinator.");

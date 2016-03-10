@@ -30,9 +30,37 @@ NetworkDeviceReadShardWorker::~NetworkDeviceReadShardWorker ()
 {
 }
 
+WaveManagedObject *NetworkDeviceReadShardWorker::createManagedObjectInstance (const string &managedClassName)
+{
+    WaveManagedObject *pWaveManagedObject = NULL;
+
+    if ((NetworkDeviceReadShardingCategoryManagedObject::getClassName ()) == managedClassName)
+    {
+        pWaveManagedObject = new NetworkDeviceReadShardingCategoryManagedObject (getPWaveObjectManager ());
+    }
+    else if ((NetworkDeviceReadShardDataManagedObject::getClassName ()) == managedClassName)
+    {
+        pWaveManagedObject = new NetworkDeviceReadShardDataManagedObject (getPWaveObjectManager ());
+    }
+    else
+    {
+        trace (TRACE_LEVEL_FATAL, "AddExternalNonNativeServiceInstanceWorker::createManagedObjectInstance : Unknown Managed Class Name : " + managedClassName);
+        waveAssert (false, __FILE__, __LINE__);
+    }
+
+    return (pWaveManagedObject);
+}
+
 void NetworkDeviceReadShardWorker::install (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "NetworkDeviceReadShardWorker::install : Entering ...");
+
+    if (WAVE_BOOT_FIRST_TIME_BOOT != pWaveAsynchronousContextForBootPhases->getBootReason ())
+    {
+        pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+        pWaveAsynchronousContextForBootPhases->callback ();
+        return;
+    }
 
     trace (TRACE_LEVEL_INFO, "NetworkDeviceReadShardWorker::install : Installing Network Device Read Shard Category.");
 

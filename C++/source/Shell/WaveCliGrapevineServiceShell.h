@@ -25,6 +25,9 @@ class WaveCliGrapevineServiceShell : public WaveCliShell
         ResourceId registerServiceInstanceShardingCapabilities     (const vector<string> &arguments);
         void       registerServiceInstanceShardingCapabilitiesHelp (void);
 
+        ResourceId getShardOwnerForResource                        (const vector<string> &arguments);
+        void       getShardOwnerForResourceHelp                    (void);
+
     protected :
     public :
         virtual ~WaveCliGrapevineServiceShell ();
@@ -32,6 +35,9 @@ class WaveCliGrapevineServiceShell : public WaveCliShell
     // Now the data members
 
     private :
+        string m_serviceName;
+        string m_serviceInstanceName;
+
     protected :
     public :
 

@@ -46,4 +46,14 @@ void NetworkDeviceWriteShardDataManagedObject::setupAttributesForCreate ()
     addPersistableAttributeForCreate (new AttributeObjectIdAssociation (&m_serviceInstance,                    "serviceInstance",                    ExternalNonNativeServiceInstanceManagedObject::getClassName ()));
 }
 
+void NetworkDeviceWriteShardDataManagedObject::setupKeys ()
+{
+    vector<string> userDefinedKeyCombination;
+
+    userDefinedKeyCombination.push_back ("name");
+    userDefinedKeyCombination.push_back ("networkDeviceWriteShardingCategory");
+
+    setUserDefinedKeyCombination (userDefinedKeyCombination);
+}
+
 }

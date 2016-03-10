@@ -20,6 +20,8 @@ class SetExternalNonNativeServiceInstanceShardingCapabilitiesContext;
 class SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker : public WaveWorker
 {
     private :
+        WaveMessage *createMessageInstance (const UI32 &operationCode);
+
         void setExternalNonNativeServiceInstanceShardingCapabilitiesRequestHandler (SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage *pSetExternalNonNativeServiceInstanceShardingCapabilitiesMessage);
         void validateStep                                                          (SetExternalNonNativeServiceInstanceShardingCapabilitiesContext *pSetExternalNonNativeServiceInstanceShardingCapabilitiesContext);
         void setStep                                                               (SetExternalNonNativeServiceInstanceShardingCapabilitiesContext *pSetExternalNonNativeServiceInstanceShardingCapabilitiesContext);

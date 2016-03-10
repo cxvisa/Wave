@@ -15,6 +15,8 @@ namespace WaveNs
 class NetworkDeviceReadShardWorker : public WaveWorker
 {
     private :
+        WaveManagedObject *createManagedObjectInstance (const string &managedClassName);
+
         void install (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
     protected :

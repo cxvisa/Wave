@@ -31,10 +31,14 @@ class ExternalNonNativeServiceInstanceManagedObject : public WaveLocalManagedObj
         ObjectId getService () const;
         void     setService (const ObjectId &service);
 
+        vector<ObjectId> getShardingCapabilities () const;
+        void             setShardingCapabilities (const vector<ObjectId> shardingCapabilities);
+
     // Now the Data Members
 
     private :
-        ObjectId m_service;
+        ObjectId         m_service;
+        vector<ObjectId> m_shardingCapabilities;
 
     protected :
     public :

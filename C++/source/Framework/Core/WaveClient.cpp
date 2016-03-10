@@ -28,6 +28,8 @@
 #include <time.h>
 #include <stdlib.h>
 
+#include "Sharding/ShardingCapabilitiesToolKit.h"
+
 //Commenting it our for now.  We need to find way to enable it on Solaris.
 //extern int daemon (int doNotChangeToRootDir, int doNotCloseFileDescriptors);
 
@@ -42,7 +44,7 @@ vector<NativeWaveServiceInstantiator>         WaveClient::m_nativeWaveServiceIns
 vector<bool>                                   WaveClient::m_nativeWaveServiceInstantiatorIsForNormalPhase;
 vector<NativeMultipleWaveServiceInstantiator> WaveClient::m_nativeMultipleWaveServiceInstantiators;
 UpdateClientStatusFunctionPtr                  WaveClient::m_updateClientStatusFunctionPtr = NULL;
-WaveMutex                                     WaveClient::m_updateClientStatusFunctionPtrMutex;  
+WaveMutex                                     WaveClient::m_updateClientStatusFunctionPtrMutex;
 
 void WaveClient::initialize (const WaveClientConfiguration &waveClientConfiguration)
 {
@@ -62,6 +64,8 @@ void WaveClient::initialize (const WaveClientConfiguration &waveClientConfigurat
     // First record the current working directory as the directory in which the process was started
 
     FrameworkToolKit::initialize ();
+
+    ShardingCapabilitiesToolKit::initialize ();
 
     // set the WaveClient Framework configuration file.
 
@@ -205,7 +209,7 @@ string WaveClient::getProfileFileDirectory ()
     return (s_waveClientProfileFileDirectory);
 }
 
-//This is used to register the funcptr invoked by updateclientstatus 
+//This is used to register the funcptr invoked by updateclientstatus
 void WaveClient::registerUpdateClientStatusFunction ( UpdateClientStatusFunctionPtr  pUpdateClientStatusFunctionPtr  )
 {
     m_updateClientStatusFunctionPtrMutex.lock();
