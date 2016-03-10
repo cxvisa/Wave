@@ -218,6 +218,32 @@ const ObjectId ShardingCapabilitiesToolKit::getServiceInstanceObjectIdWithMinima
     return (ServiceInstanceObjectIdWithMinimalShardCategoryOwnership);
 }
 
+void ShardingCapabilitiesToolKit::getServiceInstanceObjectIdToShardCategoryOwnershipCountMap (const ObjectId shardableResourceCategoryObjectId, map<ObjectId, UI32> &resultsMap)
+{
+    if (ObjectId::NullObjectId == shardableResourceCategoryObjectId)
+    {
+        return;
+    }
+
+    vector<ObjectId> serviceInstanceObjectIds = getServiceInstanceObjectIdsForShardableResourceCategory (shardableResourceCategoryObjectId);
+
+    vector<ObjectId>::const_iterator element    = serviceInstanceObjectIds.begin ();
+    vector<ObjectId>::const_iterator endElement = serviceInstanceObjectIds.end   ();
+
+    while (endElement != element)
+    {
+        const ObjectId serviceInstanceObjectId = *element;
+
+        UI32 count = getNumberOfShardedResourcesByCategoryAndServiceInstance (shardableResourceCategoryObjectId, serviceInstanceObjectId);
+
+        resultsMap[serviceInstanceObjectId] = count;
+
+        element++;
+    }
+
+    return;
+}
+
 const ObjectId ShardingCapabilitiesToolKit::getServiceInstanceObjectIdByshardableResourceCategoryAndReosurce (const ObjectId shardableResourceCategoryObjectId, const string &resourceName)
 {
     WaveManagedObjectSynchronousQueryContext synchronousQueryContext (NetworkDeviceReadShardDataManagedObject::getClassName ());
@@ -262,6 +288,67 @@ const ObjectId ShardingCapabilitiesToolKit::getServiceInstanceObjectIdByshardabl
     WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector (pQueryResults);
 
     return (objectId);
+}
+
+void ShardingCapabilitiesToolKit::getServiceInstanceObjectIdsByshardableResourceCategoryAndReosurces (const ObjectId shardableResourceCategoryObjectId, const vector<string> &resourceNames, map<string, ObjectId> &resultsMap)
+{
+    WaveManagedObjectSynchronousQueryContext synchronousQueryContext (NetworkDeviceReadShardDataManagedObject::getClassName ());
+
+    // FIXME : Sagar : We need to get the class name and the fields dynamically.
+
+    synchronousQueryContext.createConditionSet ("A");
+    synchronousQueryContext.addAttributeToConditionSet ("A", new AttributeObjectIdAssociation (shardableResourceCategoryObjectId, "networkDeviceReadShardingCategory", NetworkDeviceReadShardingCategoryManagedObject::getClassName ()));
+
+    if (resourceNames.empty ())
+    {
+        synchronousQueryContext.combineConditionSets ("A");
+    }
+    else
+    {
+        synchronousQueryContext.createConditionSet ("B");
+
+        vector<string>::const_iterator element    = resourceNames.begin ();
+        vector<string>::const_iterator endElement = resourceNames.end   ();
+
+        while (endElement != element)
+        {
+            synchronousQueryContext.addAttributeToConditionSet ("B", new AttributeString (*element, "name"), WAVE_ATTRIBUTE_CONCATENATION_OPERATOR_OR, WAVE_ATTRIBUTE_CONDITION_OPERATOR_EQUAL);
+
+            element++;
+        }
+
+        synchronousQueryContext.combineConditionSets ("A * B");
+    }
+
+    vector<WaveManagedObject *> *pQueryResults = WaveObjectManagerToolKit::querySynchronously (&synchronousQueryContext);
+
+    WaveNs::waveAssert (NULL != pQueryResults, __FILE__, __LINE__);
+
+    const UI32 numberOfQueryResults = pQueryResults->size ();
+          UI32 i                    = 0;
+
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "ShardingCapabilitiesToolKit::getServiceInstanceObjectIdByshardableResourceCategoryAndReosurce : Query Results : %d", numberOfQueryResults);
+
+    ObjectId objectId = ObjectId::NullObjectId;
+
+    for (i = 0; i < numberOfQueryResults; i++)
+    {
+        WaveManagedObject *pWaveManagedObject = (*pQueryResults)[i];
+
+        WaveNs::waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+
+        NetworkDeviceReadShardDataManagedObject *pNetworkDeviceReadShardDataManagedObject = dynamic_cast<NetworkDeviceReadShardDataManagedObject *> (pWaveManagedObject);
+
+        WaveNs::waveAssert (NULL != pNetworkDeviceReadShardDataManagedObject, __FILE__, __LINE__);
+
+        objectId = pNetworkDeviceReadShardDataManagedObject->getServiceInstance ();
+
+        resultsMap[pNetworkDeviceReadShardDataManagedObject->getName ()] = objectId;
+    }
+
+    WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector (pQueryResults);
+
+    return;
 }
 
 }

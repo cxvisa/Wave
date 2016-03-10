@@ -99,6 +99,12 @@ void SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker::validateStep
 
     while (endElement != element)
     {
+        if (0 == *element)
+        {
+            pSetExternalNonNativeServiceInstanceShardingCapabilitiesContext->executeNextStep (WAVE_MESSAGE_ERROR);
+            return;
+        }
+
         const string   token                    = FrameworkToolKit::localize (*element);
               ObjectId shardingCategoryObjectId = ShardingCapabilitiesToolKit::getShardableResourceCategoryObjectIdByToken (token);
 

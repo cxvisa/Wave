@@ -70,6 +70,13 @@ void RequestForShardOwnerWorker::validateStep (RequestForShardOwnerContext *pReq
 
     const string     resourceName             = pRequestForShardOwnerContext->getResourceName     ();
     const ResourceId shardingCategory         = pRequestForShardOwnerContext->getShardingCategory ();
+
+    if (0 == shardingCategory)
+    {
+        pRequestForShardOwnerContext->executeNextStep (WAVE_MESSAGE_ERROR);
+        return;
+    }
+
     const string     shardingCategoryToken    = FrameworkToolKit::localize (shardingCategory);
     const ObjectId   shardingCategoryObjectId = ShardingCapabilitiesToolKit::getShardableResourceCategoryObjectIdByToken (shardingCategoryToken);
 

@@ -28,21 +28,23 @@ class ShardingCapabilitiesToolKit
 
     protected :
     public :
-        virtual                       ~ShardingCapabilitiesToolKit                                      ();
+        virtual                            ~ShardingCapabilitiesToolKit                                        ();
 
-        static  const ResourceId       getResourceIdFromToken                                           (const string &token);
+        static  const ResourceId            getResourceIdFromToken                                             (const string &token);
 
-        static  const string           getClassNameByToken                                              (const string &token);
+        static  const string                getClassNameByToken                                                (const string &token);
 
-        static  const ObjectId         getShardableResourceCategoryObjectIdByToken                      (const string &token);
+        static  const ObjectId              getShardableResourceCategoryObjectIdByToken                        (const string &token);
 
-        static const vector<ObjectId>  getServiceInstanceObjectIdsForShardableResourceCategory          (const ObjectId ShardableResourceCategoryObjectId);
+        static const vector<ObjectId>       getServiceInstanceObjectIdsForShardableResourceCategory            (const ObjectId ShardableResourceCategoryObjectId);
 
-        static const UI32              getNumberOfShardedResourcesByCategoryAndServiceInstance          (const ObjectId ShardableResourceCategoryObjectId, const ObjectId &serviceInstanceObjectId);
+        static const UI32                   getNumberOfShardedResourcesByCategoryAndServiceInstance            (const ObjectId ShardableResourceCategoryObjectId, const ObjectId &serviceInstanceObjectId);
 
-        static const ObjectId          getServiceInstanceObjectIdWithMinimalShardCategoryOwnership      (const ObjectId shardableResourceCategoryObjectId);
+        static const ObjectId               getServiceInstanceObjectIdWithMinimalShardCategoryOwnership        (const ObjectId shardableResourceCategoryObjectId);
+        static       void                   getServiceInstanceObjectIdToShardCategoryOwnershipCountMap         (const ObjectId shardableResourceCategoryObjectId, map<ObjectId, UI32> &resultsMap);
 
-        static const ObjectId          getServiceInstanceObjectIdByshardableResourceCategoryAndReosurce (const ObjectId shardableResourceCategoryObjectId, const string &resourceName);
+        static const ObjectId               getServiceInstanceObjectIdByshardableResourceCategoryAndReosurce   (const ObjectId shardableResourceCategoryObjectId, const string &resourceName);
+        static       void                   getServiceInstanceObjectIdsByshardableResourceCategoryAndReosurces (const ObjectId shardableResourceCategoryObjectId, const vector<string> &resourceNames, map<string, ObjectId> &resultsMap);
 
     // Now the data members
 
