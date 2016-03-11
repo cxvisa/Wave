@@ -13,7 +13,7 @@ namespace WaveNs
 {
 
 ServiceManagementLocalObjectManager::ServiceManagementLocalObjectManager ()
-    : WaveObjectManager (getServiceName ())
+    : WaveLocalObjectManager (getServiceName ())
 {
     m_pAddExternalNonNativeServiceInstanceWorker = new AddExternalNonNativeServiceInstanceWorker (this);
 

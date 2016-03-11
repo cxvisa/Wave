@@ -7,7 +7,7 @@
 #ifndef SERVICEMANAGEMENTLOCALOBJECTMANAGEROBJECTMANAGER_H
 #define SERVICEMANAGEMENTLOCALOBJECTMANAGEROBJECTMANAGER_H
 
-#include "Framework/ObjectModel/WaveObjectManager.h"
+#include "Framework/ObjectModel/WaveLocalObjectManager.h"
 
 namespace WaveNs
 {
@@ -15,7 +15,7 @@ namespace WaveNs
 class AddExternalNonNativeServiceInstanceWorker;
 class SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker;
 
-class ServiceManagementLocalObjectManager : public WaveObjectManager
+class ServiceManagementLocalObjectManager : public WaveLocalObjectManager
 {
     private:
         ServiceManagementLocalObjectManager ();
