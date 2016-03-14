@@ -8,6 +8,7 @@
 #include "ServiceManagement/Local/AddExternalNonNativeServiceInstanceWorker.h"
 #include "ServiceManagement/Local/ExternalNonNativeServiceInstanceManagedObject.h"
 #include "ServiceManagement/Local/SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker.h"
+#include "ServiceManagement/Local/RemoveExternalNonNativeServiceInstanceWorker.h"
 
 namespace WaveNs
 {
@@ -22,6 +23,10 @@ ServiceManagementLocalObjectManager::ServiceManagementLocalObjectManager ()
     m_pSetExternalNonNativeServiceInstanceShardingCapabilitiesWorker = new SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker (this);
 
     waveAssert (NULL != m_pSetExternalNonNativeServiceInstanceShardingCapabilitiesWorker, __FILE__, __LINE__);
+
+    m_pRemoveExternalNonNativeServiceInstanceWorker = new RemoveExternalNonNativeServiceInstanceWorker (this);
+
+    waveAssert (NULL != m_pRemoveExternalNonNativeServiceInstanceWorker, __FILE__, __LINE__);
 }
 
 ServiceManagementLocalObjectManager::~ServiceManagementLocalObjectManager ()
@@ -34,6 +39,11 @@ ServiceManagementLocalObjectManager::~ServiceManagementLocalObjectManager ()
     if (NULL != m_pSetExternalNonNativeServiceInstanceShardingCapabilitiesWorker)
     {
         delete m_pSetExternalNonNativeServiceInstanceShardingCapabilitiesWorker;
+    }
+
+    if (NULL != m_pRemoveExternalNonNativeServiceInstanceWorker)
+    {
+        delete m_pRemoveExternalNonNativeServiceInstanceWorker;
     }
 }
 

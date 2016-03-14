@@ -15,21 +15,28 @@ namespace WaveNs
 class WaveCliGrapevineRootShell : public WaveCliShell
 {
     private :
-                   WaveCliGrapevineRootShell           (WaveClientSynchronousConnection &connection);
+                   WaveCliGrapevineRootShell             (WaveClientSynchronousConnection &connection);
 
-        void       briefHelp                           ();
+        void       briefHelp                             ();
 
-        ResourceId registerService                     (const vector<string> &arguments);
-        void       registerServiceHelp                 (void);
+        ResourceId registerService                       (const vector<string> &arguments);
+        void       registerServiceHelp                   (void);
 
-        ResourceId registerServicesByRange             (const vector<string> &arguments);
-        void       registerServicesByRangeHelp         (void);
+        ResourceId registerServicesByRange               (const vector<string> &arguments);
+        void       registerServicesByRangeHelp           (void);
 
-        ResourceId registerServiceInstance             (const vector<string> &arguments);
-        void       registerServiceInstanceHelp         (void);
+        ResourceId registerServiceInstance               (const vector<string> &arguments);
+        void       registerServiceInstanceHelp           (void);
 
-        ResourceId registerServiceInstancesByRange     (const vector<string> &arguments);
-        void       registerServiceInstancesByRangeHelp (void);
+        ResourceId unregisterServiceInstance             (const vector<string> &arguments);
+        void       unregisterServiceInstanceHelp         (void);
+
+        ResourceId registerServiceInstancesByRange       (const vector<string> &arguments);
+        void       registerServiceInstancesByRangeHelp   (void);
+
+        ResourceId unregisterServiceInstancesByRange     (const vector<string> &arguments);
+        void       unregisterServiceInstancesByRangeHelp (void);
+
     protected :
     public :
         virtual ~WaveCliGrapevineRootShell ();

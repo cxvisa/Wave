@@ -48,6 +48,7 @@
 #include "Framework/Database/DatabaseObjectManagerTypes.h"
 #include "ServiceManagement/Global/AddExternalNonNativeServiceMessage.h"
 #include "ServiceManagement/Local/AddExternalNonNativeServiceInstanceMessage.h"
+#include "ServiceManagement/Local/RemoveExternalNonNativeServiceInstanceMessage.h"
 #include "ServiceManagement/Local/SetExternalNonNativeServiceInstanceShardingCapabilitiesMessage.h"
 #include "Sharding/NetworkDeviceRead/RequestForShardOwnerMessage.h"
 #include "Sharding/ShardingCapabilitiesToolKit.h"
@@ -2641,6 +2642,80 @@ ResourceId WaveClientSynchronousConnection::requestForShardOwnerForResources (co
                 serviceInstanceNames = requestForShardOwnerMessage.getApplicationInstanceNames ();
 
                 //WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveClientSynchronousConnection::requestForShardOwnerForResource : Shard Owner : %s", applicationInstanceName.c_str ());
+            }
+
+            returnStatus = completionStatus;
+        }
+    }
+    else
+    {
+        returnStatus = getConnectionStatus ();
+    }
+
+    return (returnStatus);
+}
+
+ResourceId WaveClientSynchronousConnection::unregisterExternalNonNativeServiceInstance (const string &serviceName, const string &serviceInstanceName)
+{
+    WaveMessageStatus  sendStatus       = WAVE_MESSAGE_ERROR;
+    ResourceId         completionStatus = WAVE_MESSAGE_ERROR;
+    ResourceId         returnStatus     = WAVE_MESSAGE_ERROR;
+
+    if (true == (isCurrentlyConnected ()))
+    {
+        RemoveExternalNonNativeServiceInstanceMessage removeExternalNonNativeServiceInstanceMessage (serviceName, serviceInstanceName);
+
+        sendStatus = sendSynchronouslyToWaveServer (&removeExternalNonNativeServiceInstanceMessage);
+
+        if (WAVE_MESSAGE_SUCCESS != sendStatus)
+        {
+            trace (TRACE_LEVEL_ERROR, "WaveClientSynchronousConnection::unregisterExternalNonNativeServiceInstance: Sending message failed : " + FrameworkToolKit::localize (sendStatus));
+            returnStatus = sendStatus;
+        }
+        else
+        {
+            completionStatus = removeExternalNonNativeServiceInstanceMessage.getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TRACE_LEVEL_INFO, "WaveClientSynchronousConnection::unregisterExternalNonNativeServiceInstance: Message Processing failed : " + FrameworkToolKit::localize (completionStatus));
+            }
+
+            returnStatus = completionStatus;
+        }
+    }
+    else
+    {
+        returnStatus = getConnectionStatus ();
+    }
+
+    return (returnStatus);
+}
+
+ResourceId WaveClientSynchronousConnection::unregisterExternalNonNativeServiceInstances (const string &serviceName, const vector<string> &serviceInstanceNames)
+{
+    WaveMessageStatus  sendStatus       = WAVE_MESSAGE_ERROR;
+    ResourceId         completionStatus = WAVE_MESSAGE_ERROR;
+    ResourceId         returnStatus     = WAVE_MESSAGE_ERROR;
+
+    if (true == (isCurrentlyConnected ()))
+    {
+        RemoveExternalNonNativeServiceInstanceMessage removeExternalNonNativeServiceInstanceMessage (serviceName, serviceInstanceNames);
+
+        sendStatus = sendSynchronouslyToWaveServer (&removeExternalNonNativeServiceInstanceMessage);
+
+        if (WAVE_MESSAGE_SUCCESS != sendStatus)
+        {
+            trace (TRACE_LEVEL_ERROR, "WaveClientSynchronousConnection::unregisterExternalNonNativeServiceInstance: Sending message failed : " + FrameworkToolKit::localize (sendStatus));
+            returnStatus = sendStatus;
+        }
+        else
+        {
+            completionStatus = removeExternalNonNativeServiceInstanceMessage.getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TRACE_LEVEL_INFO, "WaveClientSynchronousConnection::unregisterExternalNonNativeServiceInstance: Message Processing failed : " + FrameworkToolKit::localize (completionStatus));
             }
 
             returnStatus = completionStatus;

@@ -14,6 +14,7 @@ namespace WaveNs
 
 class AddExternalNonNativeServiceInstanceWorker;
 class SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker;
+class RemoveExternalNonNativeServiceInstanceWorker;
 
 class ServiceManagementLocalObjectManager : public WaveLocalObjectManager
 {
@@ -31,8 +32,9 @@ class ServiceManagementLocalObjectManager : public WaveLocalObjectManager
         // Now the Data Members
 
     private:
-        AddExternalNonNativeServiceInstanceWorker                      *m_pAddExternalNonNativeServiceInstanceWorker;
+        AddExternalNonNativeServiceInstanceWorker                     *m_pAddExternalNonNativeServiceInstanceWorker;
         SetExternalNonNativeServiceInstanceShardingCapabilitiesWorker *m_pSetExternalNonNativeServiceInstanceShardingCapabilitiesWorker;
+        RemoveExternalNonNativeServiceInstanceWorker                  *m_pRemoveExternalNonNativeServiceInstanceWorker;
 
     protected:
     public:
