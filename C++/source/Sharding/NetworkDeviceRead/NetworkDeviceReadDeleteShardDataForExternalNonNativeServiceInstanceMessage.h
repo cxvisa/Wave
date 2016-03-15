@@ -21,15 +21,16 @@ class NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage
     public :
                  NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage ();
                  NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage (const ObjectId &serviceInstanceObjectId);
+                 NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage (const vector<ObjectId> &serviceInstanceObjectIds);
         virtual ~NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage ();
 
-        ObjectId getServiceInstanceObjectId () const;
-        void     setServiceInstanceObjectId (const ObjectId &serviceInstanceObjectId);
+        vector<ObjectId> getServiceInstanceObjectIds () const;
+        void             setServiceInstanceObjectIds (const vector<ObjectId> &serviceInstanceObjectIds);
 
     // Now the Data Members
 
     private :
-        ObjectId m_serviceInstanceObjectId;
+        vector<ObjectId> m_serviceInstanceObjectIds;
 
     protected :
     public :

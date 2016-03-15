@@ -12,9 +12,18 @@
 namespace WaveNs
 {
 
+class NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext;
+class NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage;
+
 class NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker : public WaveWorker
 {
     private :
+        WaveMessage *createMessageInstance (const UI32 &operationCode);
+
+        void deleteShardDataForExternalNonNativeServiceInstanceRequestHandler (NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage *pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage);
+
+        void deleteStep                                                       (NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext *pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext);
+
     protected :
     public :
                  NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker (WaveObjectManager *pWaveObjectManager);

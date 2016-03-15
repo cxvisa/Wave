@@ -22,6 +22,7 @@ class RemoveExternalNonNativeServiceInstanceWorker : public WaveWorker
 
         void addExternalNonNativeServiceInstanceRequestHandler (RemoveExternalNonNativeServiceInstanceMessage *pRemoveExternalNonNativeServiceInstanceMessage);
         void validateStep                                      (RemoveExternalNonNativeServiceInstanceContext *pRemoveExternalNonNativeServiceInstanceContext);
+        void deleteShardDataStep                               (RemoveExternalNonNativeServiceInstanceContext *pRemoveExternalNonNativeServiceInstanceContext);
         void deleteStep                                        (RemoveExternalNonNativeServiceInstanceContext *pRemoveExternalNonNativeServiceInstanceContext);
 
     protected :

@@ -5,6 +5,7 @@
  ***************************************************************************/
 
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingObjectManager.h"
+#include "Sharding/NetworkDeviceRead/NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker.h"
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardWorker.h"
 #include "Sharding/NetworkDeviceRead/RequestForShardOwnerWorker.h"
 
@@ -21,6 +22,10 @@ NetworkDeviceReadShardingObjectManager::NetworkDeviceReadShardingObjectManager (
     m_pRequestForShardOwnerWorker = new RequestForShardOwnerWorker (this);
 
     waveAssert (NULL != m_pRequestForShardOwnerWorker, __FILE__, __LINE__);
+
+    m_pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker = new NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker (this);
+
+    waveAssert (NULL != m_pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker, __FILE__, __LINE__);
 }
 
 NetworkDeviceReadShardingObjectManager::~NetworkDeviceReadShardingObjectManager ()
@@ -33,6 +38,11 @@ NetworkDeviceReadShardingObjectManager::~NetworkDeviceReadShardingObjectManager 
     if (NULL != m_pRequestForShardOwnerWorker)
     {
         delete m_pRequestForShardOwnerWorker;
+    }
+
+    if (NULL != m_pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker)
+    {
+        delete m_pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker;
     }
 }
 

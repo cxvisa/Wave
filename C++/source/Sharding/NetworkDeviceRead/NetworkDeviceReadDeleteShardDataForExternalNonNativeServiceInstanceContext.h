@@ -21,13 +21,13 @@ class NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext
                  NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext (WaveMessage *pWaveMessage, WaveElement *pWaveElement, WaveLinearSequencerStep *pSteps, UI32 numberOfSteps);
         virtual ~NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext ();
 
-        ObjectId getServiceInstanceObjectId () const;
-        void     setServiceInstanceObjectId (const ObjectId &serviceInstanceObjectId);
+        vector<ObjectId> getServiceInstanceObjectIds () const;
+        void             setServiceInstanceObjectIds (const vector<ObjectId> &serviceInstanceObjectIds);
 
     // Now the Data Members
 
     private :
-        ObjectId m_serviceInstanceObjectId;
+        vector<ObjectId> m_serviceInstanceObjectIds;
 
     protected :
     public :

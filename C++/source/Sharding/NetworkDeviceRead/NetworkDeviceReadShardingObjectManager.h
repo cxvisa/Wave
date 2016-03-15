@@ -14,6 +14,7 @@ namespace WaveNs
 
 class NetworkDeviceReadShardWorker;
 class RequestForShardOwnerWorker;
+class NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker;
 
 class NetworkDeviceReadShardingObjectManager : public WaveObjectManager
 {
@@ -31,8 +32,10 @@ class NetworkDeviceReadShardingObjectManager : public WaveObjectManager
         // Now the Data Members
 
     private:
-        NetworkDeviceReadShardWorker *m_pNetworkDeviceReadShardWorker;
-        RequestForShardOwnerWorker   *m_pRequestForShardOwnerWorker;
+        NetworkDeviceReadShardWorker                                              *m_pNetworkDeviceReadShardWorker;
+        RequestForShardOwnerWorker                                                *m_pRequestForShardOwnerWorker;
+
+        NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker *m_pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceWorker;
 
     protected:
     public:

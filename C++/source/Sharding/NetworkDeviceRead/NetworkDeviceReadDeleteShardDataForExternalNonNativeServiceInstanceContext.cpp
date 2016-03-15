@@ -18,14 +18,14 @@ NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext::~Net
 {
 }
 
-ObjectId NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext::getServiceInstanceObjectId () const
+vector<ObjectId> NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext::getServiceInstanceObjectIds () const
 {
-    return (m_serviceInstanceObjectId);
+    return (m_serviceInstanceObjectIds);
 }
 
-void NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext::setServiceInstanceObjectId (const ObjectId &serviceInstanceObjectId)
+void NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceContext::setServiceInstanceObjectIds (const vector<ObjectId> &serviceInstanceObjectIds)
 {
-    m_serviceInstanceObjectId = serviceInstanceObjectId;
+    m_serviceInstanceObjectIds = serviceInstanceObjectIds;
 }
 
 }

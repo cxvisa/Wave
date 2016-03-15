@@ -17,8 +17,14 @@ NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::Netw
 }
 
 NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage (const ObjectId &serviceInstanceObjectId)
+    : ManagementInterfaceMessage (NetworkDeviceReadShardingObjectManager::getServiceName (), NETWORK_DEVICE_READ_SHARDING_DELETE_SHARD_DATA_FOR_SHARD_OWNER)
+{
+    m_serviceInstanceObjectIds.push_back (serviceInstanceObjectId);
+}
+
+NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage (const vector<ObjectId> &serviceInstanceObjectIds)
     : ManagementInterfaceMessage (NetworkDeviceReadShardingObjectManager::getServiceName (), NETWORK_DEVICE_READ_SHARDING_DELETE_SHARD_DATA_FOR_SHARD_OWNER),
-      m_serviceInstanceObjectId (serviceInstanceObjectId)
+      m_serviceInstanceObjectIds (serviceInstanceObjectIds)
 {
 }
 
@@ -32,17 +38,17 @@ void NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage:
 
     // This class Specific Attributes below
 
-    addSerializableAttribute (new AttributeObjectId (&m_serviceInstanceObjectId, "serviceInstanceObjectId"));
+    addSerializableAttribute (new AttributeObjectIdVector (&m_serviceInstanceObjectIds, "serviceInstanceObjectIds"));
 }
 
-ObjectId NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::getServiceInstanceObjectId () const
+vector<ObjectId> NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::getServiceInstanceObjectIds () const
 {
-    return (m_serviceInstanceObjectId);
+    return (m_serviceInstanceObjectIds);
 }
 
-void NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::setServiceInstanceObjectId (const ObjectId &serviceInstanceObjectId)
+void NetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage::setServiceInstanceObjectIds (const vector<ObjectId> &serviceInstanceObjectIds)
 {
-    m_serviceInstanceObjectId = serviceInstanceObjectId;
+    m_serviceInstanceObjectIds = serviceInstanceObjectIds;
 }
 
 }
