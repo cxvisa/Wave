@@ -50,11 +50,12 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
     @Override
     public void handleTestRequest (final RegressionTestAsynchronousContext regressionTestAsynchronousContext)
     {
-        infoTracePrintf ("FrameworkLocalMessagingTestObjectManager.handleTestRequest : Entering ...");
+        develTracePrintf ("FrameworkLocalMessagingTestObjectManager.handleTestRequest : Entering ...");
 
         final String[] sequencerSteps =
             {
                             "simpleAsynchronousMessageTestStep",
+                            "simpleOneWayMessageTestStep",
                             "waveLinearSequencerSucceededStep",
                             "waveLinearSequencerFailedStep"
             };
@@ -121,6 +122,45 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
         {
             frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
         }
+
+        frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private void simpleOneWayMessageTestStep (final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        infoTracePrintf ("Starting One Way      Messaging              Test.");
+
+        int numberOfMessagesToSend = 100000;
+        int i = 0;
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_ERROR;
+
+        if (0 != (m_regressionInput.size ()))
+        {
+            numberOfMessagesToSend = (new Integer (m_regressionInput.get (0))).intValue ();
+        }
+
+        infoTracePrintf ("    Sending %d messages.", numberOfMessagesToSend);
+
+        frameworkLocalMessagingTestContext.setNumberOfFailures (0);
+
+        frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        for (i = 0; i < numberOfMessagesToSend; i++)
+        {
+            final FrameworkTestabilityMessage1 FrameworkTestabilityMessage1 = new FrameworkTestabilityMessage1 ();
+
+            FrameworkTestabilityMessage1.setMessage ("This is a test message");
+
+            status = sendOneWay (FrameworkTestabilityMessage1);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
+                errorTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleAsynchronousMessageTestStep : Sending a message to [%s service] failed.", WaveThread.getWaveServiceNameForServiceId (FrameworkTestabilityMessage1.getServiceCode ()));
+            }
+        }
+
+        frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
 
         frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
     }
