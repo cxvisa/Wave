@@ -721,7 +721,7 @@ public class WaveThread extends Thread
 
         // In general a thread accepts responses only for the messages that it sent out.
 
-        if (m_waveServiceId != senderServiceId)
+        if (!(m_waveServiceId.equals (senderServiceId)))
         {
             WaveTraceUtils.fatalTracePrintf ("WaveThread.submitReplyMessage : Submitting reply message to a wrong Wave Thread.");
             WaveAssertUtils.waveAssert (false);

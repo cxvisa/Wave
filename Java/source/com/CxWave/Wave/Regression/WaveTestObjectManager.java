@@ -22,9 +22,9 @@ import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 @NonTestOM
 public class WaveTestObjectManager extends WaveLocalObjectManager
 {
-    private final Map<String, String> m_testParameters  = new HashMap<String, String> ();
-    private final Vector<String>      m_regressionInput = new Vector<String> ();
-    private boolean                   m_isTestEnabled   = false;
+    protected Map<String, String> m_testParameters  = new HashMap<String, String> ();
+    protected Vector<String>      m_regressionInput = new Vector<String> ();
+    protected boolean             m_isTestEnabled   = true;
 
     public WaveTestObjectManager (final String waveLocalObjectManagerName)
     {

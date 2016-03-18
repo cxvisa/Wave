@@ -4,11 +4,17 @@
 
 package com.CxWave.Wave.Framework.Messaging.Local.Test;
 
+import com.CxWave.Wave.Framework.Core.Test.FrameworkTestabilityMessage1;
+import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
+import com.CxWave.Wave.Framework.ObjectModel.WaveMessageResponseHandler;
+import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
 import com.CxWave.Wave.Regression.Contexts.RegressionTestAsynchronousContext;
+import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 
 public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectManager
 {
@@ -46,7 +52,76 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
     {
         infoTracePrintf ("FrameworkLocalMessagingTestObjectManager.handleTestRequest : Entering ...");
 
-        regressionTestAsynchronousContext.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
-        regressionTestAsynchronousContext.callback ();
+        final String[] sequencerSteps =
+            {
+                            "simpleAsynchronousMessageTestStep",
+                            "waveLinearSequencerSucceededStep",
+                            "waveLinearSequencerFailedStep"
+            };
+
+        final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext = new FrameworkLocalMessagingTestContext (regressionTestAsynchronousContext, this, sequencerSteps);
+
+        frameworkLocalMessagingTestContext.holdAll ();
+        frameworkLocalMessagingTestContext.start ();
+    }
+
+    private void simpleAsynchronousMessageTestStep (final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        infoTrace ("Starting Simple Asynchronous Messaging Test.");
+
+        int numberOfMessagesToSend = 100000;
+        int i = 0;
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_ERROR;
+
+        if (0 != (m_regressionInput.size ()))
+        {
+            numberOfMessagesToSend = (new Integer (m_regressionInput.get (0))).intValue ();
+        }
+
+        infoTracePrintf ("    Sending %d messages.", numberOfMessagesToSend);
+
+        frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        for (i = 0; i < numberOfMessagesToSend; i++)
+        {
+            final FrameworkTestabilityMessage1 frameworkTestabilityMessage1 = new FrameworkTestabilityMessage1 ();
+
+            status = send (frameworkTestabilityMessage1, new WaveMessageResponseHandler ("frameworkTestabilityMessage1Callback"), frameworkLocalMessagingTestContext, 0, LocationId.NullLocationId, this);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
+                debugTracePrintf ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [" + WaveThread.getWaveServiceNameForServiceId (frameworkTestabilityMessage1.getSenderServiceCode ()) + " service] failed.");
+            }
+            else
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+            }
+        }
+
+        frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+        frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private void frameworkTestabilityMessage1Callback (final FrameworkStatus frameworkStatus, final FrameworkTestabilityMessage1 frameworkTestabilityMessage1, final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        if (FrameworkStatus.FRAMEWORK_SUCCESS == frameworkStatus)
+        {
+            waveAssert (null != frameworkTestabilityMessage1);
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != (frameworkTestabilityMessage1.getCompletionStatus ()))
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
+            }
+
+        }
+        else
+        {
+            frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
+        }
+
+        frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 }
