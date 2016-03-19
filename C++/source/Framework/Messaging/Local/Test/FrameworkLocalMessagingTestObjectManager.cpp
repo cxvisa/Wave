@@ -288,7 +288,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep (Fram
         waveSleep (1);
     }
 
-    trace (TRACE_LEVEL_INFO, "FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestStep : The receiver indicated that it saw messages in its incoming queues.  We can proceed to cancel them.");
+    trace (TRACE_LEVEL_INFO, "FrameworkLocalMessagingTestObjectManager::simpleRecallMessageTestStep : The receiver indicated that it saw messages in its incoming queues.  We can proceed to cancel them.");
 
     for (i = 0; i < numberOfMessagesToCancel; i++)
     {
@@ -399,7 +399,7 @@ void FrameworkLocalMessagingTestObjectManager::simpleRecallFromFrontMessageTestS
         if (WAVE_MESSAGE_SUCCESS != status)
         {
             // In this test we do not count this as an actual failure.  We expect the actual message callback to arrive for this message.  That si why we could not recall the message.
-            // Most like it would been already processed by the rcipient service.
+            // Most like it would been already processed by the recipient service.
 
             numberOfFailuresToRecall++;
         }

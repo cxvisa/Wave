@@ -15,6 +15,7 @@ import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.WaveMessageResponseHandler;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.LocationId;
+import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
@@ -65,6 +66,9 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
                             "simpleOneWayMessageTestStep",
                             "simpleSynchronousMessageTestStep",
                             "simpleRecallMessageTestStep",
+                            "simpleRecallFromFrontMessageTestStep",
+                            "simpleRecallFromBackMessageTestStep",
+                            "simpleEventTestStep",
                             "waveLinearSequencerSucceededStep",
                             "waveLinearSequencerFailedStep"
             };
@@ -292,7 +296,7 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
             }
         }
 
-        infoTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleRecallFromFrontMessageTestStep : The receiver indicated that it saw messages in its incoming queues.  We can proceed to cancel them.");
+        infoTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleRecallMessageTestStep : The receiver indicated that it saw messages in its incoming queues.  We can proceed to cancel them.");
 
         for (i = 0; i < numberOfMessagesToCancel; i++)
         {
@@ -341,5 +345,172 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
 
         fatalTracePrintf ("FrameworkLocalMessagingTestObjectManager.frameworkTestabilityMessage6Callback : We should never reach this place.");
         waveAssert ();
+    }
+
+    private void simpleRecallFromFrontMessageTestStep (final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        infoTracePrintf ("Starting Simple Recall Front Messaging Test.");
+
+        int numberOfMessagesToSend = 100000;
+        int i = 0;
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_ERROR;
+        final Vector<WaveMessage> messagesToCancel = new Vector<WaveMessage> ();
+        int numberOfMessagesToCancel = 0;
+        int numberOfFailuresToRecall = 0;
+
+        if (0 != (m_regressionInput.size ()))
+        {
+            numberOfMessagesToSend = (new Integer (m_regressionInput.get (0))).intValue ();
+        }
+
+        infoTracePrintf ("    Sending %d messages.", numberOfMessagesToSend);
+
+        frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        for (i = 0; i < numberOfMessagesToSend; i++)
+        {
+            final FrameworkTestabilityMessage1 frameworkTestabilityMessage1 = new FrameworkTestabilityMessage1 ();
+
+            status = send (frameworkTestabilityMessage1, new WaveMessageResponseHandler ("frameworkTestabilityMessage1Callback"), frameworkLocalMessagingTestContext, 0, LocationId.NullLocationId, this);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
+                debugTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleRecallFromFrontMessageTestStep : Sending a message to [%s service] failed.", WaveThread.getWaveServiceNameForServiceId (frameworkTestabilityMessage1.getSenderServiceCode ()));
+            }
+            else
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+                messagesToCancel.add (frameworkTestabilityMessage1);
+            }
+        }
+
+        frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        numberOfMessagesToCancel = messagesToCancel.size ();
+        numberOfFailuresToRecall = 0;
+
+        for (i = 0; i < numberOfMessagesToCancel; i++)
+        {
+            status = recall (messagesToCancel.get (i));
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                // In this test we do not count this as an actual failure. We expect the actual message callback to arrive for
+                // this message. That si why we could not recall the message.
+                // Most like it would been already processed by the recipient service.
+
+                numberOfFailuresToRecall++;
+            }
+            else
+            {
+                frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+            }
+        }
+
+        messagesToCancel.clear ();
+
+        infoTracePrintf ("    Failed to recall %d messages out of %d", numberOfFailuresToRecall, numberOfMessagesToCancel);
+        infoTracePrintf ("    For all the failed messages we must receive callbacks to proceed further.");
+
+        frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private void simpleRecallFromBackMessageTestStep (final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        infoTracePrintf ("Starting Simple Recall Back  Messaging Test.");
+
+        int numberOfMessagesToSend = 100000;
+        int i = 0;
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_ERROR;
+        final Vector<WaveMessage> messagesToCancel = new Vector<WaveMessage> ();
+        int numberOfMessagesToCancel = 0;
+        int numberOfFailuresToRecall = 0;
+
+        if (0 != (m_regressionInput.size ()))
+        {
+            numberOfMessagesToSend = (new Integer (m_regressionInput.get (0))).intValue ();
+        }
+
+        infoTracePrintf ("    Sending %d messages.", numberOfMessagesToSend);
+
+        frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        for (i = 0; i < numberOfMessagesToSend; i++)
+        {
+            final FrameworkTestabilityMessage1 frameworkTestabilityMessage1 = new FrameworkTestabilityMessage1 ();
+
+            status = send (frameworkTestabilityMessage1, new WaveMessageResponseHandler ("frameworkTestabilityMessage1Callback"), frameworkLocalMessagingTestContext, 0, LocationId.NullLocationId, this);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
+                debugTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleRecallFromBackMessageTestStep : Sending a message to [%s service] failed.", WaveThread.getWaveServiceNameForServiceId (frameworkTestabilityMessage1.getSenderServiceCode ()));
+            }
+            else
+            {
+                frameworkLocalMessagingTestContext.incrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+                messagesToCancel.add (frameworkTestabilityMessage1);
+            }
+        }
+
+        frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+
+        numberOfMessagesToCancel = messagesToCancel.size ();
+        numberOfFailuresToRecall = 0;
+
+        for (i = 0; i < numberOfMessagesToCancel; i++)
+        {
+            status = recall (messagesToCancel.get (numberOfMessagesToCancel - 1 - i));
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                // In this test we do not count this as an actual failure. We expect the actual message callback to arrive for
+                // this message. That si why we could not recall the message.
+                // Most like it would been already processed by the recipient service.
+
+                numberOfFailuresToRecall++;
+            }
+            else
+            {
+                frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
+            }
+        }
+
+        messagesToCancel.clear ();
+
+        infoTracePrintf ("    Failed to recall %d messages out of %d", numberOfFailuresToRecall, numberOfMessagesToCancel);
+        infoTracePrintf ("    For all the failed messages we must receive callbacks to proceed further.");
+
+        frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    private void simpleEventTestStep (final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        infoTracePrintf ("Starting Event broadcasting Test.");
+
+        int numberOfEventsToSend = 100000;
+        int i = 0;
+
+        if (0 != (m_regressionInput.size ()))
+        {
+            numberOfEventsToSend = (new Integer (m_regressionInput.get (0))).intValue ();
+        }
+
+        infoTracePrintf ("    Sending %d Events.", numberOfEventsToSend);
+
+        for (i = 0; i < numberOfEventsToSend; i++)
+        {
+            final FrameworkTestabilityEvent1 frameworkTestabilityEvent1 = new FrameworkTestabilityEvent1 ();
+
+            final UI32 tempUI32 = new UI32 (i + 29);
+
+            frameworkTestabilityEvent1.setEventUI32 (tempUI32);
+            frameworkTestabilityEvent1.setEventString ((new String ("PJreasiusse Giosd AGlomdighty.")) + (tempUI32.toString ()));
+
+            broadcast (frameworkTestabilityEvent1);
+        }
+
+        frameworkLocalMessagingTestContext.executeNextStep (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 }
