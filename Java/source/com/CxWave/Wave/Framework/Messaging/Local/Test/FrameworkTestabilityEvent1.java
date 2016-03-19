@@ -5,8 +5,10 @@
 package com.CxWave.Wave.Framework.Messaging.Local.Test;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.Type.UI32;
 
+@OwnerOM (om = FrameworkLocalMessagingTestObjectManager.class)
 public class FrameworkTestabilityEvent1 extends WaveEvent
 {
     private UI32   m_eventUI32;

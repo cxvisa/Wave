@@ -5,8 +5,8 @@
 package com.CxWave.Wave.Framework.Core.Test;
 
 import com.CxWave.Wave.Framework.Boot.BootCompleteForThisLocationEvent;
+import com.CxWave.Wave.Framework.Messaging.Local.Test.FrameworkTestabilityEvent1;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
-import com.CxWave.Wave.Framework.ObjectModel.WaveTimerExpirationHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
@@ -24,6 +24,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
 {
     private static FrameworkTestability3ObjectManager s_frameworkTestability3ObjectManager    = null;
     private static int                                s_numberOfPeriodicTimerCallbackReceived = 0;
+    private int                                       s_numberOfEventsRceivedSoFar            = 0;
 
     protected FrameworkTestability3ObjectManager ()
     {
@@ -58,44 +59,34 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
         infoTracePrintf ("FrameworkTestability3ObjectManager.boot : Entering ...");
         waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         waveAsynchronousContextForBootPhases.callback ();
- /*
-        final TimerHandle timerHandle = new TimerHandle ();
-
-        final ResourceId status = startTimer (timerHandle, 5000, new WaveTimerExpirationHandler ("timerExpirationCallback"), waveAsynchronousContextForBootPhases, this);
-
-        if (ResourceId.FRAMEWORK_SUCCESS != status)
-        {
-            errorTracePrintf ("FrameworkTestability3ObjectManager.boot : Failed to arm a timer ...");
-
-            waveAsynchronousContextForBootPhases.setCompletionStatus (status);
-            waveAsynchronousContextForBootPhases.callback ();
-
-            return;
-        }
-        else
-        {
-            successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle.toString ());
-        }
-
-
-        final TimerHandle timerHandle2 = new TimerHandle ();
-
-        final ResourceId status2 = startTimer (timerHandle2, 7000, 2000, new WaveTimerExpirationHandler ("timerExpirationCallback2"), null, this);
-
-        if (ResourceId.FRAMEWORK_SUCCESS != status2)
-        {
-            errorTracePrintf ("FrameworkTestability3ObjectManager.boot : Failed to arm a periodic timer ...");
-
-            waveAsynchronousContextForBootPhases.setCompletionStatus (status);
-            waveAsynchronousContextForBootPhases.callback ();
-
-            return;
-        }
-        else
-        {
-            successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle2.toString ());
-        }
-        */
+        /*
+         * final TimerHandle timerHandle = new TimerHandle ();
+         *
+         * final ResourceId status = startTimer (timerHandle, 5000, new WaveTimerExpirationHandler ("timerExpirationCallback"),
+         * waveAsynchronousContextForBootPhases, this);
+         *
+         * if (ResourceId.FRAMEWORK_SUCCESS != status) { errorTracePrintf (
+         * "FrameworkTestability3ObjectManager.boot : Failed to arm a timer ...");
+         *
+         * waveAsynchronousContextForBootPhases.setCompletionStatus (status); waveAsynchronousContextForBootPhases.callback ();
+         *
+         * return; } else { successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s",
+         * timerHandle.toString ()); }
+         *
+         *
+         * final TimerHandle timerHandle2 = new TimerHandle ();
+         *
+         * final ResourceId status2 = startTimer (timerHandle2, 7000, 2000, new WaveTimerExpirationHandler
+         * ("timerExpirationCallback2"), null, this);
+         *
+         * if (ResourceId.FRAMEWORK_SUCCESS != status2) { errorTracePrintf (
+         * "FrameworkTestability3ObjectManager.boot : Failed to arm a periodic timer ...");
+         *
+         * waveAsynchronousContextForBootPhases.setCompletionStatus (status); waveAsynchronousContextForBootPhases.callback ();
+         *
+         * return; } else { successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s",
+         * timerHandle2.toString ()); }
+         */
     }
 
     private void timerExpirationCallback (final TimerHandle timerHandle, final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
@@ -129,5 +120,19 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
         infoTracePrintf ("FrameworkTestability3ObjectManager.bootCompleteEventHandler : Entering ...");
 
         reply (bootCompleteForThisLocationEvent);
+    }
+
+    private void frameworkTestabilityEvent1EventHandler (final FrameworkTestabilityEvent1 frameworkTestabilityEvent1)
+    {
+        s_numberOfEventsRceivedSoFar++;
+
+        if (0 == (s_numberOfEventsRceivedSoFar % 10000))
+        {
+            infoTracePrintf ("FrameworkTestability3ObjectManager::frameworkTestabilityEvent1EventHandler : Received Events ... %d", s_numberOfEventsRceivedSoFar);
+            debugTracePrintf ("m_eventUI32   = %d", frameworkTestabilityEvent1.getEventUI32 ());
+            debugTracePrintf ("m_eventString = %s", frameworkTestabilityEvent1.getEventString ());
+        }
+
+        reply (frameworkTestabilityEvent1);
     }
 }

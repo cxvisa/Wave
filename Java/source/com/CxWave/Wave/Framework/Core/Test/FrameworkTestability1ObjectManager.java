@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Core.Test;
 
+import com.CxWave.Wave.Framework.Messaging.Local.Test.FrameworkTestabilityEvent1;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
@@ -20,6 +21,8 @@ public class FrameworkTestability1ObjectManager extends WaveLocalObjectManager
     private static FrameworkTestability1ObjectManager s_frameworkTestability1ObjectManager = null;
     private static boolean                            s_areMessage6sReceived               = false;
     private static WaveMutex                          s_areMessage6sReceivedMutex          = new WaveMutex ();
+
+    static int                                        s_numberOfEventsRceivedSoFar         = 0;
 
     private FrameworkTestability1ObjectManager ()
     {
@@ -124,5 +127,20 @@ public class FrameworkTestability1ObjectManager extends WaveLocalObjectManager
 
         frameworkTestabilityMessage6.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
         reply (frameworkTestabilityMessage6);
+    }
+
+    private void frameworkTestabilityEvent1EventHandler (final FrameworkTestabilityEvent1 frameworkTestabilityEvent1)
+    {
+
+        s_numberOfEventsRceivedSoFar++;
+
+        if (0 == (s_numberOfEventsRceivedSoFar % 10000))
+        {
+            infoTracePrintf ("FrameworkTestability1ObjectManager::frameworkTestabilityEvent1EventHandler : Received Events ... %d", s_numberOfEventsRceivedSoFar);
+            debugTracePrintf ("m_eventUI32   = %d", frameworkTestabilityEvent1.getEventUI32 ());
+            debugTracePrintf ("m_eventString = %s", frameworkTestabilityEvent1.getEventString ());
+        }
+
+        reply (frameworkTestabilityEvent1);
     }
 }

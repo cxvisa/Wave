@@ -306,7 +306,7 @@ public class WaveThread extends Thread
                         break;
 
                     case WAVE_MESSAGE_TYPE_EVENT:
-                        WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Now servicing an event ...");
+                        // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "Now servicing an event ...");
 
                         waveEvent = (WaveEvent) waveMessage;
                         WaveAssertUtils.waveAssert (null != waveEvent);

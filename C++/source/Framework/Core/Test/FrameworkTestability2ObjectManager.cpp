@@ -82,7 +82,7 @@ void FrameworkTestability2ObjectManager::frameworkTestabilityEvent1EventHandler 
 /// Name
 /// WaveNewNodesAddedEventHandler
 /// Description
-/// Test Handler for handling broadcast event thrown during add node 
+/// Test Handler for handling broadcast event thrown during add node
 /// or cluster creation
 /// Input
 /// const WaveNewNodesAddedEvent* & : Actual event object
@@ -95,7 +95,7 @@ void FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler(const Wav
   trace(TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::WaveNewNodesAddedEventHandler..Entering");
   UI32 number_of_nodes = pEvent->getNumberOfNewLocations();
 
-  for(UI32 i=0; i<number_of_nodes; ++i) 
+  for(UI32 i=0; i<number_of_nodes; ++i)
   {
       tracePrintf(TRACE_LEVEL_INFO,"IpAddress: %s: Port: %d: LocationId: %d",pEvent->getIpAddressAtIndex(i).c_str(), pEvent->getPortAtIndex(i), pEvent->getLocationIdAtIndex(i));
   }
@@ -122,7 +122,7 @@ void FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEven
   trace(TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::WaveNodesAdditionToClusterCompletedEventHandler..Entering");
   UI32 number_of_nodes = pEvent->getNumberOfNewLocations();
 
-  for(UI32 i=0; i<number_of_nodes; ++i) 
+  for(UI32 i=0; i<number_of_nodes; ++i)
   {
       tracePrintf(TRACE_LEVEL_INFO,"IpAddress: %s: Port: %d: LocationId: %d",pEvent->getIpAddressAtIndex(i).c_str(), pEvent->getPortAtIndex(i), pEvent->getLocationIdAtIndex(i));
   }
@@ -157,7 +157,7 @@ void FrameworkTestability2ObjectManager::WaveNodeLocalNodeDeletedEventHandler(co
 
 // Name : PrimaryChangedEventHandler
 // Description : The handler for an event PrimaryChangedEvent which is broadcasted by New Primary and all secondaries in a
-//               cluster on Old Primary failover. 
+//               cluster on Old Primary failover.
 // Input       : const PrimaryChangedEvent* & : actual event object
 // Output      : None.
 
@@ -167,7 +167,7 @@ void FrameworkTestability2ObjectManager::PrimaryChangedEventHandler (const Prima
     const LocationId newPrimaryLocation = pEvent->getNewPrimaryLocationId ();
 
     trace (TRACE_LEVEL_INFO, string("New Primary locationId : ") + newPrimaryLocation);
-    
+
     reply (reinterpret_cast<const WaveEvent *&> (pEvent));
 
     trace (TRACE_LEVEL_INFO, "FrameworkTestability2ObjectManager::PrimaryChangedEventHandler : Exiting...");
@@ -180,16 +180,16 @@ void FrameworkTestability2ObjectManager::StartupSchemaChangeEventHandler (const 
 
     const bool          operationStatus = pEvent->getOperationStatus ();
     const SchemaType    fromSchema      = pEvent->getFromSchema ();
-    const string        schemaFile      = pEvent->getFromFileSchemaPath ();   
+    const string        schemaFile      = pEvent->getFromFileSchemaPath ();
     const SchemaType    toSchema        = pEvent->getToSchema ();
-    const string        toSchemaFile    = pEvent->getToFileSchemaPath ();   
-    
+    const string        toSchemaFile    = pEvent->getToFileSchemaPath ();
+
     trace (TRACE_LEVEL_DEBUG, string ("Operation status : ") + operationStatus);
-    
+
     string originSchema = pEvent->getSchemaName (fromSchema);
     string targetSchema = pEvent->getSchemaName (toSchema);
 
-    trace (TRACE_LEVEL_DEBUG, string ("operation is : COPY ") + originSchema + string (" ") + targetSchema); 
+    trace (TRACE_LEVEL_DEBUG, string ("operation is : COPY ") + originSchema + string (" ") + targetSchema);
 
     trace (TRACE_LEVEL_DEBUG, string ("fromFilePath : ") + schemaFile);
     trace (TRACE_LEVEL_DEBUG, string ("toFilePath : ") + toSchemaFile);
