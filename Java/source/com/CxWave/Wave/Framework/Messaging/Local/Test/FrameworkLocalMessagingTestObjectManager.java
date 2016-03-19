@@ -7,6 +7,7 @@ package com.CxWave.Wave.Framework.Messaging.Local.Test;
 import com.CxWave.Wave.Framework.Core.Test.FrameworkTestabilityMessage1;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.WaveMessageResponseHandler;
+import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
@@ -56,6 +57,7 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
             {
                             "simpleAsynchronousMessageTestStep",
                             "simpleOneWayMessageTestStep",
+                            "simpleSynchronousMessageTestStep",
                             "waveLinearSequencerSucceededStep",
                             "waveLinearSequencerFailedStep"
             };
@@ -92,7 +94,7 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
             if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
             {
                 frameworkLocalMessagingTestContext.incrementNumberOfFailures ();
-                debugTracePrintf ("FrameworkLocalMessagingTestObjectManager::simpleAsynchronousMessageTestStep : Sending a message to [" + WaveThread.getWaveServiceNameForServiceId (frameworkTestabilityMessage1.getSenderServiceCode ()) + " service] failed.");
+                debugTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleAsynchronousMessageTestStep : Sending a message to [" + WaveThread.getWaveServiceNameForServiceId (frameworkTestabilityMessage1.getSenderServiceCode ()) + " service] failed.");
             }
             else
             {
@@ -163,5 +165,48 @@ public class FrameworkLocalMessagingTestObjectManager extends WaveTestObjectMana
         frameworkLocalMessagingTestContext.decrementNumberOfCallbacksNeededBeforeAdvancingToNextStep ();
 
         frameworkLocalMessagingTestContext.executeNextStep (((frameworkLocalMessagingTestContext.getNumberOfFailures ()) > 0) ? ResourceId.WAVE_MESSAGE_ERROR : ResourceId.WAVE_MESSAGE_SUCCESS);
+    }
+
+    void simpleSynchronousMessageTestStep (final FrameworkLocalMessagingTestContext frameworkLocalMessagingTestContext)
+    {
+        infoTrace ("Starting Simple Synchronous Messaging Test.");
+
+        int numberOfMessagesToSend = 100000;
+        int i = 0;
+        WaveMessageStatus status = WaveMessageStatus.WAVE_MESSAGE_ERROR;
+
+        if (0 != (m_regressionInput.size ()))
+        {
+            numberOfMessagesToSend = (new Integer (m_regressionInput.get (0))).intValue ();
+        }
+
+        infoTracePrintf ("    Sending %d messages.", numberOfMessagesToSend);
+
+        for (i = 0; i < numberOfMessagesToSend; i++)
+        {
+            final FrameworkTestabilityMessage1 frameworkTestabilityMessage1 = new FrameworkTestabilityMessage1 ();
+            // WaveNativeTest1ServiceMessage1 message;
+
+            status = sendSynchronously (frameworkTestabilityMessage1);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS != status)
+            {
+                debugTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleSynchronousMessageTestStep : Failed sending a message synchronously. status = %s.", FrameworkToolKit.localize (status));
+                frameworkLocalMessagingTestContext.executeNextStep (ResourceId.WAVE_MESSAGE_ERROR);
+            }
+            else
+            {
+                final ResourceId completionStatus = frameworkTestabilityMessage1.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    debugTracePrintf ("FrameworkLocalMessagingTestObjectManager.simpleSynchronousMessageTestStep : Failed sending a message synchronously. status = %s.", FrameworkToolKit.localize (completionStatus));
+                    frameworkLocalMessagingTestContext.executeNextStep (ResourceId.WAVE_MESSAGE_ERROR);
+                    return;
+                }
+            }
+        }
+
+        frameworkLocalMessagingTestContext.executeNextStep (ResourceId.WAVE_MESSAGE_SUCCESS);
     }
 }

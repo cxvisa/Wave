@@ -2984,4 +2984,19 @@ public class WaveObjectManager extends WaveElement
 
         s_mutexForAddingEventListener.unlock ();
     }
+
+    protected long getNumberOfPendingTimerExpirationMessages ()
+    {
+        return (m_associatedWaveThread.getNumberOfPendingTimerExpirationMessages ());
+    }
+
+    protected long getNumberOfPendingNormalMessages ()
+    {
+        return (m_associatedWaveThread.getNumberOfPendingNormalMessages ());
+    }
+
+    protected long getNumberOfPendingHighPriorityMessages ()
+    {
+        return (m_associatedWaveThread.getNumberOfPendingHighPriorityMessages ());
+    }
 }

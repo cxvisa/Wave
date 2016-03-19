@@ -1029,4 +1029,25 @@ public class WaveThread extends Thread
             s_waveServiceMap.getListOfServiceIds (waveServiceIds);
         }
     }
+
+    public long getNumberOfPendingTimerExpirationMessages ()
+    {
+        // The message queues are internally protected by locks. We need not lock them explicitly here.
+
+        return (m_timerExpirations.getSize ());
+    }
+
+    public long getNumberOfPendingNormalMessages ()
+    {
+        // The message queues are internally protected by locks. We need not lock them explicitly here.
+
+        return (m_messages.getSize ());
+    }
+
+    public long getNumberOfPendingHighPriorityMessages ()
+    {
+        // The message queues are internally protected by locks. We need not lock them explicitly here.
+
+        return (m_highPriorityMessages.getSize ());
+    }
 }
