@@ -83,6 +83,13 @@ public class WaveObjectManager extends WaveElement
             {
                 errorTracePrintf ("WaveObjectManager.WaveOperationMapContext.executeMessageHandler : Could not execute message handler.  MessageType : %s, Details : %s", (waveMessage.getClass ()).getName (), e.toString ());
 
+                final Throwable cause = e.getCause ();
+
+                if (null != cause)
+                {
+                    errorTracePrintf ("WaveObjectManager.WaveOperationMapContext.executeMessageHandler : Could not execute message handler.  Cause : %s", cause.toString ());
+                }
+
                 waveMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
 
                 reply (waveMessage);
@@ -2721,7 +2728,7 @@ public class WaveObjectManager extends WaveElement
     }
 
     @NonMessageHandler
-    WaveMessageStatus recall (final WaveMessage waveMessage)
+    protected WaveMessageStatus recall (final WaveMessage waveMessage)
     {
         final WaveMessageStatus recallStatus = recallButDoNotDeleteResponseMap (waveMessage);
 

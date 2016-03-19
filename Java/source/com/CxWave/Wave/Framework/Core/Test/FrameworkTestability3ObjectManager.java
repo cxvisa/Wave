@@ -56,7 +56,9 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
     public void boot (final WaveAsynchronousContextForBootPhases waveAsynchronousContextForBootPhases)
     {
         infoTracePrintf ("FrameworkTestability3ObjectManager.boot : Entering ...");
-
+        waveAsynchronousContextForBootPhases.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        waveAsynchronousContextForBootPhases.callback ();
+ /*
         final TimerHandle timerHandle = new TimerHandle ();
 
         final ResourceId status = startTimer (timerHandle, 5000, new WaveTimerExpirationHandler ("timerExpirationCallback"), waveAsynchronousContextForBootPhases, this);
@@ -75,7 +77,7 @@ public class FrameworkTestability3ObjectManager extends WaveObjectManager
             successTracePrintf ("FrameworkTestability3ObjectManager.boot : Armed a timer with id : %s", timerHandle.toString ());
         }
 
-        /*
+
         final TimerHandle timerHandle2 = new TimerHandle ();
 
         final ResourceId status2 = startTimer (timerHandle2, 7000, 2000, new WaveTimerExpirationHandler ("timerExpirationCallback2"), null, this);

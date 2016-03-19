@@ -19,7 +19,7 @@ public class FrameworkTestability1ObjectManager extends WaveLocalObjectManager
 {
     private static FrameworkTestability1ObjectManager s_frameworkTestability1ObjectManager = null;
     private static boolean                            s_areMessage6sReceived               = false;
-    private static WaveMutex                          s_areMessage6sReceivedMutex;
+    private static WaveMutex                          s_areMessage6sReceivedMutex          = new WaveMutex ();
 
     private FrameworkTestability1ObjectManager ()
     {
@@ -56,14 +56,14 @@ public class FrameworkTestability1ObjectManager extends WaveLocalObjectManager
         reply (frameworkTestabilityMessage1);
     }
 
-    void setAreMessage6sReceived (final boolean areMessage6sReceived)
+    public static void setAreMessage6sReceived (final boolean areMessage6sReceived)
     {
         s_areMessage6sReceivedMutex.lock ();
         s_areMessage6sReceived = areMessage6sReceived;
         s_areMessage6sReceivedMutex.unlock ();
     }
 
-    boolean getAndResetAreMessage6sReceived ()
+    public static boolean getAndResetAreMessage6sReceived ()
     {
         boolean areMessage6sReceived = false;
 
@@ -75,7 +75,7 @@ public class FrameworkTestability1ObjectManager extends WaveLocalObjectManager
         return (areMessage6sReceived);
     }
 
-    void frameworkTestabilityMessage5RequestHandler (final FrameworkTestabilityMessage5 frameworkTestabilityMessage5)
+    private void frameworkTestabilityMessage5RequestHandler (final FrameworkTestabilityMessage5 frameworkTestabilityMessage5)
     {
         develTracePrintf ("FrameworkTestability1ObjectManager.frameworkTestabilityMessage5RequestHandler : Serving up a FrameworkTestabilityMessage5.");
 
@@ -115,7 +115,7 @@ public class FrameworkTestability1ObjectManager extends WaveLocalObjectManager
         reply (frameworkTestabilityMessage5);
     }
 
-    void frameworkTestabilityMessage6RequestHandler (final FrameworkTestabilityMessage6 frameworkTestabilityMessage6)
+    private void frameworkTestabilityMessage6RequestHandler (final FrameworkTestabilityMessage6 frameworkTestabilityMessage6)
     {
         develTracePrintf ("FrameworkTestability1ObjectManager.frameworkTestabilityMessage6RequestHandler : Serving up a FrameworkTestabilityMessage6.");
 
