@@ -139,6 +139,48 @@ public class WaveLineEditor
                     c5 = getchar ();
                     c6 = getchar ();
 
+                    // CTRL + RIGHT ARROW
+
+                    if ((27 == c1) && (91 == c2) && (49 == c3) && (59 == c4) && (53 == c5) && (67 == c6))
+                    {
+                        final int commandLength = command.length ();
+
+                        if (commandLength > currentPosition)
+                        {
+                            currentPosition++;
+                        }
+
+                        while ((commandLength - 1) > currentPosition)
+                        {
+                            final char currentChar = command.charAt (currentPosition);
+                            final char nextChar = command.charAt (currentPosition + 1);
+
+                            if ((' ' != currentChar) && (' ' == nextChar))
+                            {
+                                break;
+                            }
+
+                            currentPosition++;
+                        }
+
+                        if ((commandLength - 1) == currentPosition)
+                        {
+                            if (' ' == (command.charAt (currentPosition)))
+                            {
+                                currentPosition = command.length ();
+                            }
+                        }
+
+                        System.out.printf ("%c%s>%s", 13, linePrompt, command);
+
+                        for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                        {
+                            System.out.printf ("\b");
+                        }
+
+                        System.out.flush ();
+                    }
+
                     // CTRL + LEFT ARROW
 
                     if ((27 == c1) && (91 == c2) && (49 == c3) && (59 == c4) && (53 == c5) && (68 == c6))
@@ -163,7 +205,10 @@ public class WaveLineEditor
 
                         if (1 == currentPosition)
                         {
-                            if (' ' != (command.charAt (currentPosition - 1)))
+                            if ((' ' != (command.charAt (currentPosition))) && (' ' == (command.charAt (currentPosition - 1))))
+                            {
+                            }
+                            else
                             {
                                 currentPosition = 0;
                             }

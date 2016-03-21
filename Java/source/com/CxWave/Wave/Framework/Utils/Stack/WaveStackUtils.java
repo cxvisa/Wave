@@ -131,7 +131,7 @@ public final class WaveStackUtils
         {
             stackTraceString.append (stackTraceElement.toString ());
 
-            stackTraceString.append ("\n");
+            stackTraceString.append ("\r\n");
         }
 
         return (stackTraceString.toString ());

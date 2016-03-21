@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class WaveEventHandler
@@ -64,7 +65,11 @@ public class WaveEventHandler
             if (null != cause)
             {
                 WaveTraceUtils.fatalTracePrintf ("WaveEventHandler.execute : Cause : %s", cause.toString ());
+
+                WaveTraceUtils.fatalTracePrintf ("%s", WaveStackUtils.getStackString (cause));
             }
+
+            WaveTraceUtils.fatalTracePrintf ("%s", WaveStackUtils.getStackString (e));
         }
     }
 }
