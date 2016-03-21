@@ -2360,6 +2360,11 @@ public class WaveObjectManager extends WaveElement
         return (waveMessageResponseContext);
     }
 
+    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext)
+    {
+        return (send (waveMessage, waveMessageCallback, waveMessageContext, 0, LocationId.NullLocationId, this));
+    }
+
     protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final long timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
     {
         if (null == waveMessage)

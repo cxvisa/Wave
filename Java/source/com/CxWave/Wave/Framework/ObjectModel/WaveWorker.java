@@ -310,4 +310,16 @@ public class WaveWorker extends WaveElement
     {
         m_waveObjectManager.setIsEnabled (isEnabled);
     }
+
+    @Override
+    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext)
+    {
+        return (send (waveMessage, waveMessageCallback, waveMessageContext, 0, LocationId.NullLocationId, this));
+    }
+
+    @Override
+    protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final long timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
+    {
+        return (m_waveObjectManager.send (waveMessage, waveMessageCallback, waveMessageContext, timeOutInMilliSeconds, locationId, waveMessageSender));
+    }
 }

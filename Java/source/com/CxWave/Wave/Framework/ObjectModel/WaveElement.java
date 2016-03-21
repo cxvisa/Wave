@@ -411,6 +411,10 @@ public abstract class WaveElement
 
     protected abstract WaveMessageStatus sendSynchronously (final WaveMessage waveMessage, final LocationId locationId);
 
+    protected abstract WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext);
+
+    protected abstract WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final long timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender);
+
     @NonEventHandler
     protected abstract WaveMessageStatus broadcast (final WaveEvent waveEvent);
 
