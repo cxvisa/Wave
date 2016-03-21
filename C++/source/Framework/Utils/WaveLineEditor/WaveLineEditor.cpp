@@ -49,6 +49,9 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
     SI32           c1                                ='\0';
     SI32           c2                                ='\0';
     SI32           c3                                ='\0';
+    SI32           c4                                ='\0';
+    SI32           c5                                ='\0';
+    SI32           c6                                ='\0';
     UI32           numberOfCharactersAvailableToRead = 0;
     string         command;
     string         currentlyTypingCommand;
@@ -67,6 +70,108 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
     {
         if (0 != (numberOfCharactersAvailableToRead = (getNumberOfCharactersAvailableToRead ())))
         {
+            //printf ("%d\r\n", numberOfCharactersAvailableToRead);
+
+            if (6 <= numberOfCharactersAvailableToRead)
+             {
+                 c1 = getchar ();
+                 c2 = getchar ();
+                 c3 = getchar ();
+                 c4 = getchar ();
+                 c5 = getchar ();
+                 c6 = getchar ();
+
+                 //printf ("-->%d,%d,%d, %d, %d, %d\r\n", (int) c1, (int) c2, (int) c3, (int) c4, (int) c5, (int) c6);
+
+
+                 // CTRL + RIGHT ARROW
+
+                 if ((27 == c1) && (91 == c2) && (49 == c3) && (59 == c4) && (53 == c5) && (67 == c6))
+                 {
+                     UI32 commandLength = command.length ();
+
+                     if (commandLength > currentPosition)
+                     {
+                         currentPosition++;
+                     }
+
+                     while ((commandLength - 1) > currentPosition)
+                     {
+                         char currentChar = command[currentPosition];
+                         char nextChar = command[currentPosition + 1];
+
+                         if ((' ' != currentChar) && (' ' == nextChar))
+                         {
+                             break;
+                         }
+
+                         currentPosition++;
+                     }
+
+                     if ((commandLength - 1) == currentPosition)
+                     {
+                         if (' ' == (command[currentPosition]))
+                         {
+                             currentPosition = command.length ();
+                         }
+                     }
+
+                     printf ("%c%s>%s", 13, linePrompt.c_str (), command.c_str ());
+
+                     for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                     {
+                         printf ("\b");
+                     }
+
+                     fflush (stdout);
+                 }
+
+                 // CTRL + LEFT ARROW
+
+                 if ((27 == c1) && (91 == c2) && (49 == c3) && (59 == c4) && (53 == c5) && (68 == c6))
+                 {
+                     if (0 < currentPosition)
+                     {
+                         currentPosition--;
+                     }
+
+                     while (1 < currentPosition)
+                     {
+                         char currentChar = command[currentPosition];
+                         char previousChar = command[currentPosition - 1];
+
+                         if ((' ' != currentChar) && (' ' == previousChar))
+                         {
+                             break;
+                         }
+
+                         currentPosition--;
+                     }
+
+                     if (1 == currentPosition)
+                     {
+                         if ((' ' != (command[currentPosition])) && (' ' == (command[currentPosition - 1])))
+                         {
+                         }
+                         else
+                         {
+                             currentPosition = 0;
+                         }
+                     }
+
+                     printf ("%c%s>%s", 13, linePrompt.c_str (), command.c_str ());
+
+                     for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                     {
+                         printf ("\b");
+                     }
+
+                     fflush (stdout);
+                 }
+
+                 continue;
+             }
+
             if (3 == numberOfCharactersAvailableToRead)
             {
                 c1 = getchar ();
@@ -151,6 +256,40 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
             for (i = 0; i < numberOfCharactersAvailableToRead; i++)
             {
                 c = getchar();
+
+                // printf ("-->%d\r\n", (int) c);
+
+                if (1 == c)
+                {
+                    currentPosition = 0;
+
+                    printf ("%c%s>%s", 13, linePrompt.c_str (), command.c_str ());
+
+                    for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                    {
+                        printf ("\b");
+                    }
+
+                    fflush (stdout);
+
+                    continue;
+                }
+
+                if (5 == c)
+                {
+                    currentPosition = command.length ();
+
+                    printf ("%c%s>%s", 13, linePrompt.c_str (), command.c_str ());
+
+                    for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                    {
+                        printf ("\b");
+                    }
+
+                    fflush (stdout);
+
+                    continue;
+                }
 
                 if (4 == c)
                 {
