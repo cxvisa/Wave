@@ -92,6 +92,9 @@ public class WaveLineEditor
         char c1 = '\0';
         char c2 = '\0';
         char c3 = '\0';
+        char c4 = '\0';
+        char c5 = '\0';
+        char c6 = '\0';
         int numberOfCharactersAvailableToRead = 0;
         String command = new String ();
         String currentlyTypingCommand = new String ();
@@ -125,11 +128,67 @@ public class WaveLineEditor
 
             if (0 != (numberOfCharactersAvailableToRead = (getNumberOfCharactersAvailableToRead ())))
             {
+                // System.out.printf ("%d\r\n", numberOfCharactersAvailableToRead);
+
+                if (6 <= numberOfCharactersAvailableToRead)
+                {
+                    c1 = getchar ();
+                    c2 = getchar ();
+                    c3 = getchar ();
+                    c4 = getchar ();
+                    c5 = getchar ();
+                    c6 = getchar ();
+
+                    // CTRL + LEFT ARROW
+
+                    if ((27 == c1) && (91 == c2) && (49 == c3) && (59 == c4) && (53 == c5) && (68 == c6))
+                    {
+                        if (0 < currentPosition)
+                        {
+                            currentPosition--;
+                        }
+
+                        while (1 < currentPosition)
+                        {
+                            final char currentChar = command.charAt (currentPosition);
+                            final char previousChar = command.charAt (currentPosition - 1);
+
+                            if ((' ' != currentChar) && (' ' == previousChar))
+                            {
+                                break;
+                            }
+
+                            currentPosition--;
+                        }
+
+                        if (1 == currentPosition)
+                        {
+                            if (' ' != (command.charAt (currentPosition - 1)))
+                            {
+                                currentPosition = 0;
+                            }
+                        }
+
+                        System.out.printf ("%c%s>%s", 13, linePrompt, command);
+
+                        for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                        {
+                            System.out.printf ("\b");
+                        }
+
+                        System.out.flush ();
+                    }
+
+                    continue;
+                }
+
                 if (3 <= numberOfCharactersAvailableToRead)
                 {
                     c1 = getchar ();
                     c2 = getchar ();
                     c3 = getchar ();
+
+                    // System.out.printf ("-->%d,%d,%d\r\n", (int) c1, (int) c2, (int) c3);
 
                     if ((27 == c1) && (91 == c2) && (65 == c3))
                     {
@@ -209,6 +268,40 @@ public class WaveLineEditor
                 for (i = 0; i < numberOfCharactersAvailableToRead; i++)
                 {
                     c = getchar ();
+
+                    // System.out.printf ("-->%d\r\n", (int) c);
+
+                    if (1 == c)
+                    {
+                        currentPosition = 0;
+
+                        System.out.printf ("%c%s>%s", 13, linePrompt, command);
+
+                        for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                        {
+                            System.out.printf ("\b");
+                        }
+
+                        System.out.flush ();
+
+                        continue;
+                    }
+
+                    if (5 == c)
+                    {
+                        currentPosition = command.length ();
+
+                        System.out.printf ("%c%s>%s", 13, linePrompt, command);
+
+                        for (j = 0; j < ((command.length ()) - currentPosition); j++)
+                        {
+                            System.out.printf ("\b");
+                        }
+
+                        System.out.flush ();
+
+                        continue;
+                    }
 
                     if (4 == c)
                     {
