@@ -28,6 +28,7 @@
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY7"></Resource>
 
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_CORE_TEST"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_TIMER_TEST"></Resource>
 
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_DEFAULT"></Resource>
     </ResourceEnum>

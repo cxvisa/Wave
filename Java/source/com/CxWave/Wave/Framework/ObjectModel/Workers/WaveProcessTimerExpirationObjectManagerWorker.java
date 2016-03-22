@@ -29,7 +29,8 @@ public class WaveProcessTimerExpirationObjectManagerWorker extends WaveWorker
 
     private void timerExpiredRequestHandler (final WaveTimerExpiredObjectManagerMessage waveTimerExpiredObjectManagerMessage)
     {
-        infoTracePrintf ("WaveProcessTimerExpirationObjectManagerWorker.timerExpiredRequestHandler : Entering for OM %s", (getWaveObjectManager ()).getName ());
+        // infoTracePrintf ("WaveProcessTimerExpirationObjectManagerWorker.timerExpiredRequestHandler : Entering for OM %s",
+        // (getWaveObjectManager ()).getName ());
 
         waveAssert (null != waveTimerExpiredObjectManagerMessage);
 

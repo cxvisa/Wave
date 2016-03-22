@@ -173,7 +173,9 @@ public class TimerWorker extends WaveWorker
                 }
                 else
                 {
-                    successTracePrintf ("TimerWorker.restartTimer : Successfully sent a notification to service %s about a timer expiration with timer handle %s", FrameworkToolKit.getServiceNameById (timerInfo.getServiceId ()), (timerInfo.getTimerId ()).toString ());
+                    // successTracePrintf ("TimerWorker.restartTimer : Successfully sent a notification to service %s about a
+                    // timer expiration with timer handle %s", FrameworkToolKit.getServiceNameById (timerInfo.getServiceId ()),
+                    // (timerInfo.getTimerId ()).toString ());
                 }
 
                 final TimeValue periodicInterval = timerInfo.getPeriodicInterval ();
@@ -198,6 +200,8 @@ public class TimerWorker extends WaveWorker
                 final long nextWaitInterval = (expirationTime.getValueInNanos ()) - (currentTimeValue.getValueInNanos ());
 
                 final WaveConditionStatus waveConditionStatus = m_condition.awaitNanos (nextWaitInterval);
+
+                // infoTracePrintf ("Next : %d : Timers entries : %d", nextWaitInterval, m_timerList.size ());
 
                 if (WaveConditionStatus.WAVE_CONDITION_SUCCESS != waveConditionStatus)
                 {
@@ -427,14 +431,22 @@ public class TimerWorker extends WaveWorker
     {
         m_mutex.lock ();
 
-        final int result = restartTimer ();
-
-        if (0 != result)
+        while (true)
         {
-            fatalTracePrintf ("TimerWorker.processTimeoutInternal : Timer queue could not be restarted.");
+            final int result = restartTimer ();
+
+            if (0 != result)
+            {
+                fatalTracePrintf ("TimerWorker.processTimeoutInternal : Timer queue could not be restarted.");
+
+                break;
+            }
         }
 
         m_mutex.unlock ();
+
+        fatalTracePrintf ("TimerWorker.processTimeoutInternal : Exited processing timers.  Cannot continue.");
+        waveAssert ();
     }
 
     public static void processTimeout ()

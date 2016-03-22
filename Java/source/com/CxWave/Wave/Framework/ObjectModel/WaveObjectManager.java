@@ -88,7 +88,11 @@ public class WaveObjectManager extends WaveElement
                 if (null != cause)
                 {
                     errorTracePrintf ("WaveObjectManager.WaveOperationMapContext.executeMessageHandler : Could not execute message handler.  Cause : %s", cause.toString ());
+
+                    WaveTraceUtils.fatalTracePrintf ("%s", WaveStackUtils.getStackString (cause));
                 }
+
+                WaveTraceUtils.fatalTracePrintf ("%s", WaveStackUtils.getStackString (e));
 
                 waveMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_ERROR_OPERATION_NOT_SUPPORTED);
 
@@ -2360,11 +2364,13 @@ public class WaveObjectManager extends WaveElement
         return (waveMessageResponseContext);
     }
 
+    @Override
     protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext)
     {
         return (send (waveMessage, waveMessageCallback, waveMessageContext, 0, LocationId.NullLocationId, this));
     }
 
+    @Override
     protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final long timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
     {
         if (null == waveMessage)

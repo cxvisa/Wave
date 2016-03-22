@@ -34,7 +34,7 @@ public class WavePriorityQueue<T extends Comparable<T>> extends LinkedList<T>
 
         while (searchBeginIndex <= searchEndIndex)
         {
-            midPointIndex = searchBeginIndex + (searchEndIndex / 2);
+            midPointIndex = (searchBeginIndex + searchEndIndex) / 2;
 
             final T existingElement = get (midPointIndex);
 

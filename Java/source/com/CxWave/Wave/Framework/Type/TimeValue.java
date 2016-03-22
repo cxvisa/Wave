@@ -133,7 +133,7 @@ public class TimeValue implements Comparable<TimeValue>
     {
         normalize ();
 
-        if ((0 <= m_milliSeconds) && (0 <= m_nanoSeconds) && (NANOS_IN_MILLI >= m_nanoSeconds))
+        if ((0 <= m_milliSeconds) && (0 <= m_nanoSeconds) && (NANOS_IN_MILLI > m_nanoSeconds))
         {
             return (true);
         }
