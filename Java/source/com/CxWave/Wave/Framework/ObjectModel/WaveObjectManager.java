@@ -2755,6 +2755,25 @@ public class WaveObjectManager extends WaveElement
         return (recallStatus);
     }
 
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
+    {
+        return (startTimer (timerHandle, startInterval, new TimeValue (0, 0), waveTimerExpirationCallback, waveTimerExpirationContext, waveTimerSender));
+    }
+
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
+    {
+        return (startTimer (timerHandle, startInterval, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+    }
+
+    @Override
+    protected ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final TimeValue periodicInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext)
+    {
+        return (startTimer (timerHandle, startInterval, periodicInterval, waveTimerExpirationCallback, waveTimerExpirationContext, this));
+    }
+
+    @Override
     protected ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final TimeValue periodicInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender)
     {
         final TimeValue currentTimeValue = new TimeValue ();

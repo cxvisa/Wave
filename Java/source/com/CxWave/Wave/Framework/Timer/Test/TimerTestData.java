@@ -91,12 +91,12 @@ public class TimerTestData
         m_timerId = timerId;
     }
 
-    public int getnTimes ()
+    public int getNTimes ()
     {
         return m_nTimes;
     }
 
-    public void setnTimes (final int nTimes)
+    public void setNTimes (final int nTimes)
     {
         m_nTimes = nTimes;
     }

@@ -150,7 +150,7 @@ public class WaveMessageQueue<T>
             }
         }
 
-        m_waveMutex.lock ();
+        m_waveMutex.unlock ();
 
         return numberOfExpirationsEncountered;
     }

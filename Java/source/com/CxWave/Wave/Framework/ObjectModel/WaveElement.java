@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.Type.LocationId;
+import com.CxWave.Wave.Framework.Type.TimeValue;
 import com.CxWave.Wave.Framework.Type.TimerHandle;
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Utils.Context.WaveAsynchronousContext;
@@ -417,6 +418,14 @@ public abstract class WaveElement
 
     @NonEventHandler
     protected abstract WaveMessageStatus broadcast (final WaveEvent waveEvent);
+
+    protected abstract ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final TimeValue periodicInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender);
+
+    protected abstract ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final TimeValue periodicInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContexts);
+
+    protected abstract ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender);
+
+    protected abstract ResourceId startTimer (final TimerHandle timerHandle, final TimeValue startInterval, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext);
 
     protected abstract ResourceId startTimer (final TimerHandle timerHandle, final long startIntervalMilliSeconds, final long periodicIntervalMilliSeconds, final WaveTimerExpirationHandler waveTimerExpirationCallback, final Object waveTimerExpirationContext, final WaveElement waveTimerSender);
 
