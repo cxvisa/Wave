@@ -38,6 +38,7 @@ public class Wave
     private static WaveMutex s_waveMutex                      = new WaveMutex ();
     private static String    s_waveConfigurationFileDirectory = null;
     private static String    s_waveTraceFileDirectory         = null;
+    private static String    s_waveMainConfigurationFile      = null;
 
     private Wave ()
     {
@@ -45,6 +46,8 @@ public class Wave
 
     public static void initialize (final String waveMainConfigurationFile)
     {
+        s_waveMainConfigurationFile = waveMainConfigurationFile;
+
         final WaveMainConfiguration waveMainConfiguration = new WaveMainConfiguration ();
 
         if (SourceUtils.getIsInitialized ())
@@ -430,5 +433,35 @@ public class Wave
                 }
             }
         }
+    }
+
+    public static String getWaveConfigurationFileDirectory ()
+    {
+        return s_waveConfigurationFileDirectory;
+    }
+
+    public static void setWaveConfigurationFileDirectory (final String waveConfigurationFileDirectory)
+    {
+        s_waveConfigurationFileDirectory = waveConfigurationFileDirectory;
+    }
+
+    public static String getWaveTraceFileDirectory ()
+    {
+        return s_waveTraceFileDirectory;
+    }
+
+    public static void setWaveTraceFileDirectory (final String waveTraceFileDirectory)
+    {
+        s_waveTraceFileDirectory = waveTraceFileDirectory;
+    }
+
+    public static String getWaveMainConfigurationFile ()
+    {
+        return s_waveMainConfigurationFile;
+    }
+
+    public static void setWaveMainConfigurationFile (final String waveMainConfigurationFile)
+    {
+        s_waveMainConfigurationFile = waveMainConfigurationFile;
     }
 }
