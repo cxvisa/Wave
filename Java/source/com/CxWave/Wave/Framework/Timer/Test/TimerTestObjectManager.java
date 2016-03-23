@@ -58,9 +58,11 @@ public class TimerTestObjectManager extends WaveTestObjectManager
 
         final String[] sequencerSteps =
             {
-                            // "oneTimeTimerAccuracyTestStep",
-                            // "oneTimeTimerAccuracyWithTimeValueTestStep",
-                            "periodicTimerAccuracyWithTimeValueTestStep", "waveLinearSequencerSucceededStep", "waveLinearSequencerFailedStep"
+                            "oneTimeTimerAccuracyTestStep",
+                            "oneTimeTimerAccuracyWithTimeValueTestStep",
+                            "periodicTimerAccuracyWithTimeValueTestStep",
+                            "waveLinearSequencerSucceededStep",
+                            "waveLinearSequencerFailedStep"
             };
 
         final FrameworkTimerTestContext frameworkTimerTestContext = new FrameworkTimerTestContext (regressionTestAsynchronousContext, this, sequencerSteps);
