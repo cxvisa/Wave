@@ -109,7 +109,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
     // For now hard code authorization to disable authorization
 
-    authorization = "d2F2ZXJvb3Q6d2F2ZWZpYnJhbm5l";
+    authorization = "d2F2ZWFkbWluOldhdmUtVExJTVMtNzE4";
 
     if (("" == authorization) || (true ==  isContentReadIncomplete))
     {
@@ -167,7 +167,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
             if (false == authenticated)
             {
-                if (("waveroot" == userNameAndPassword[0]) && ("wavefibranne" == userNameAndPassword[1]))
+                if (("waveadmin" == userNameAndPassword[0]) && ("wave-TLIMS-718" == userNameAndPassword[1]))
                 {
                     authenticated = true;
                 }

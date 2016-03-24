@@ -192,7 +192,7 @@ public class ServerStreamingSocket implements StreamingSocket
             }
             catch (final IOException e)
             {
-                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not accept connection.  Host : %s and port : %d.", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_WARN, "Could not accept connection.  Host : %s and port : %d.", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
                 // WaveAssertUtils.waveAssert ();
             }
         }
