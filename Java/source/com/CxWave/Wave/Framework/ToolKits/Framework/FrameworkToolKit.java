@@ -14,6 +14,7 @@ import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
+import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -29,6 +30,7 @@ import com.CxWave.Wave.Shell.Annotations.ShellCommand;
 
 public class FrameworkToolKit
 {
+    private static SI32                        s_httpInterfaceReceiverPort      = new SI32 (2301);
     private static boolean                     s_isRunningAsADaemon             = false;
     private static WaveManagementInterfaceRole s_waveManagementInterfaceRole    = WaveManagementInterfaceRole.WAVE_MGMT_INTF_ROLE_SERVER;
     private static String                      s_processInitialWorkingDirectory = "";
@@ -316,5 +318,15 @@ public class FrameworkToolKit
         {
             WaveTraceUtils.infoTracePrintf (false, true, "%5d:%50s:%10s:%10s\n", waveServiceIds.get (i).getId (), getServiceNameById (waveServiceIds.get (i)), WaveObjectManager.isServiceEnabled (waveServiceIds.get (i)) ? "Enabled" : "Disabled", isALocalService (waveServiceIds.get (i)) ? "Local" : "Global");
         }
+    }
+
+    public static SI32 getHttpInterfaceReceiverPort ()
+    {
+        return s_httpInterfaceReceiverPort;
+    }
+
+    public static void setHttpInterfaceReceiverPort (final SI32 httpInterfaceReceiverPort)
+    {
+        s_httpInterfaceReceiverPort = httpInterfaceReceiverPort;
     }
 }

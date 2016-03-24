@@ -86,7 +86,7 @@ void HttpInterfaceReceiverObjectManager::initialize (WaveAsynchronousContextForB
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
-    m_pServerSocketForHttpInterfaceClients = new ServerStreamingSocket (FrameworkToolKit::getHttpInterfaceReceiverPort (), 1);
+    m_pServerSocketForHttpInterfaceClients = new ServerStreamingSocket (FrameworkToolKit::getHttpInterfaceReceiverPort (), 128);
 
     waveAssert (NULL != m_pServerSocketForHttpInterfaceClients, __FILE__, __LINE__);
 
@@ -100,7 +100,7 @@ void HttpInterfaceReceiverObjectManager::initialize (WaveAsynchronousContextForB
     }
     else
     {
-        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverObjectManager::initialize : Successfully bound to the Management Interface Receiver Port");
+        trace (TRACE_LEVEL_INFO, "HttpInterfaceReceiverObjectManager::initialize : Successfully bound to the HTTP Interface Receiver Port.");
 
         status = WAVE_MESSAGE_SUCCESS;
     }
@@ -125,7 +125,7 @@ void HttpInterfaceReceiverObjectManager::listenForEvents (WaveAsynchronousContex
 
 void HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler (const BootCompleteForThisLocationEvent *&pBootCompleteForThisLocationEvent)
 {
-    // Since we told framework not to unlistenEvents, we must explicitly unlisten for evnets since we asre going to go into an infinite while loop.
+    // Since we told framework not to unlistenEvents, we must explicitly unlisten for events since we are going to go into an infinite while loop.
 
     unlistenEvents ();
 
