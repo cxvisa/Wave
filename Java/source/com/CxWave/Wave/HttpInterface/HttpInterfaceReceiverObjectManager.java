@@ -89,7 +89,7 @@ public class HttpInterfaceReceiverObjectManager extends WaveLocalObjectManagerFo
     {
         ServerStreamingSocketStatus status = ServerStreamingSocketStatus.SERVER_STREAMING_SOCKET_SUCCESS;
 
-        m_serverSocketForHttpInterfaceClients = new ServerStreamingSocket ("172.16.179.140", FrameworkToolKit.getHttpInterfaceReceiverPort ());
+        m_serverSocketForHttpInterfaceClients = new ServerStreamingSocket (FrameworkToolKit.getHttpInterfaceReceiverPort ());
 
         waveAssert (null != m_serverSocketForHttpInterfaceClients);
 

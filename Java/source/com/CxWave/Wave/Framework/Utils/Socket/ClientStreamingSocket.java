@@ -148,6 +148,12 @@ public class ClientStreamingSocket implements StreamingSocket
     public ClientStreamingSocket (final String host, final SI32 port)
     {
         m_host = host;
+
+        if (null == host)
+        {
+            m_host = "0.0.0.0";
+        }
+
         m_port = port;
 
         try
@@ -171,6 +177,12 @@ public class ClientStreamingSocket implements StreamingSocket
     public ClientStreamingSocket (final String host, final SI32 port, final String localHost, final SI32 localPort)
     {
         m_host = host;
+
+        if (null == host)
+        {
+            m_host = "0.0.0.0";
+        }
+
         m_port = port;
         m_localHost = localHost;
         m_localPort = localPort;

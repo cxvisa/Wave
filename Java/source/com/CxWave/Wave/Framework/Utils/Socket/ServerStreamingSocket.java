@@ -33,6 +33,8 @@ public class ServerStreamingSocket implements StreamingSocket
     {
         m_port = port;
 
+        m_host = "0.0.0.0";
+
         try
         {
             m_serverSocket = new ServerSocket (port.intValue (), m_numberOfConnections.intValue (), InetAddress.getByName (m_host));
@@ -52,6 +54,11 @@ public class ServerStreamingSocket implements StreamingSocket
     {
         m_port = port;
         m_host = host;
+
+        if (null == m_host)
+        {
+            m_host = "0.0.0.0";
+        }
 
         try
         {
@@ -73,6 +80,11 @@ public class ServerStreamingSocket implements StreamingSocket
         m_port = port;
         m_host = host;
         m_numberOfConnections = numberOfConnections;
+
+        if (null == m_host)
+        {
+            m_host = "0.0.0.0";
+        }
 
         try
         {
