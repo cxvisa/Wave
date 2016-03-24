@@ -6,6 +6,7 @@ package com.CxWave.Wave.Framework.Utils.Socket;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -785,6 +786,10 @@ public class ClientStreamingSocket implements StreamingSocket
         {
             status = m_dataInputStream.read (buffer);
         }
+        catch (final EOFException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_WARN, "Failed to read Buffer : %s.  EOF Received.", e.toString ());
+        }
         catch (final IOException e)
         {
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to read Buffer : %s", e.toString ());
@@ -807,6 +812,10 @@ public class ClientStreamingSocket implements StreamingSocket
         try
         {
             status = m_dataInputStream.read (buffer, offset, length);
+        }
+        catch (final EOFException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_WARN, "Failed to read Buffer (offset, length) : %s.  EOF Received.", e.toString ());
         }
         catch (final IOException e)
         {
@@ -833,6 +842,10 @@ public class ClientStreamingSocket implements StreamingSocket
 
             status = buffer.length;
         }
+        catch (final EOFException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_WARN, "Failed to read Buffer Fully : %s.  EOF Received.", e.toString ());
+        }
         catch (final IOException e)
         {
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_ERROR, "Failed to read Buffer Fully : %s", e.toString ());
@@ -845,7 +858,7 @@ public class ClientStreamingSocket implements StreamingSocket
 
     public int receiveAll (final FixedSizeBuffer fixedSizeBuffer)
     {
-        final int status = receiveAll (fixedSizeBuffer.getRawBuffer ());
+        final int status = receive (fixedSizeBuffer.getRawBuffer (), 0, (fixedSizeBuffer.getMaximumSize ()).intValue ());
 
         return (status);
     }

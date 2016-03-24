@@ -224,7 +224,7 @@ HttpRequest::HttpRequest (string& httpRequest, ServerStreamingSocket* pServerStr
                 }
             }
 
-            // Get Authrozation
+            // Get Authrization
 
             if (0 == (strncasecmp ((httpRequestLines[i]).c_str (), s_authorizationString.c_str (), s_authorizationString.length ())))
             {

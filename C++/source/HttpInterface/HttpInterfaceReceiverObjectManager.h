@@ -21,7 +21,7 @@ class HttpInterfaceReceiverObjectManager : public WaveLocalObjectManagerForUserS
 {
     private :
                       HttpInterfaceReceiverObjectManager      ();
-        
+
         virtual void  initialize                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
         virtual void  boot                                    (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 

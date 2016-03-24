@@ -145,7 +145,9 @@ public class HttpInterfaceReceiverObjectManager extends WaveLocalObjectManagerFo
 
             infoTracePrintf ("HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Accepted A NEW connection From : " + acceptedStreamingSocket.getPeerIpAddress ());
 
-            acceptedStreamingSocket.close ();
+            final HttpInterfaceReceiverThread httpInterfaceReceiverThread = new HttpInterfaceReceiverThread (acceptedStreamingSocket);
+
+            httpInterfaceReceiverThread.start ();
         }
     }
 }

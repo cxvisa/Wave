@@ -38,7 +38,7 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveMessagePriority;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveMessageStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveThreadStatus;
 
-public class WaveThread extends Thread
+public class WaveThread extends WaveThreadBase
 {
     private WaveServiceId                               m_waveServiceId;
 
@@ -75,8 +75,6 @@ public class WaveThread extends Thread
 
     private boolean                                     m_terminateThread                         = false;
 
-    private static final long                           s_defaultStackSize                        = 256 * 1024;
-
     private static WaveServiceMap                       s_waveServiceMap                          = new WaveServiceMap ();
 
     private WaveThreadId                                m_waveThreadId                            = null;
@@ -90,7 +88,7 @@ public class WaveThread extends Thread
 
     public WaveThread (final String name, final WaveServiceId waveServiceId)
     {
-        super (null, null, name, s_defaultStackSize);
+        super (name);
 
         m_name = name;
 
@@ -103,7 +101,7 @@ public class WaveThread extends Thread
 
     public WaveThread (final String name, final UI32 stackSize, final WaveServiceId waveServiceId)
     {
-        super (null, null, name, stackSize.getValue ());
+        super (name, stackSize);
 
         m_name = name;
 
@@ -116,7 +114,7 @@ public class WaveThread extends Thread
 
     public WaveThread (final String name, final UI32 stackSize, final WaveServiceId waveServiceId, final WaveObjectManager waveObjectManager)
     {
-        super (null, null, name, stackSize.getValue ());
+        super (name, stackSize);
 
         m_name = name;
 
@@ -549,11 +547,6 @@ public class WaveThread extends Thread
         unholdHighPriorityMessages ();
         unholdEvents ();
         unholdFrameworkMessages ();
-    }
-
-    public static UI32 getDefaultStackSize ()
-    {
-        return (new UI32 (s_defaultStackSize));
     }
 
     public WaveObjectManager getWaveObjectManagerForOperationCode (final UI32 operationCode)

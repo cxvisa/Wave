@@ -13,7 +13,6 @@ import java.net.SocketException;
 import com.CxWave.Wave.Framework.LocationManagement.ServerStreamingSocketStatus;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.UI32;
-import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -185,14 +184,17 @@ public class ServerStreamingSocket implements StreamingSocket
     {
         Socket socket = null;
 
-        try
+        while (null == socket)
         {
-            socket = m_serverSocket.accept ();
-        }
-        catch (final IOException e)
-        {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not accept connection.  Host : %s and port : %d.", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
-            WaveAssertUtils.waveAssert ();
+            try
+            {
+                socket = m_serverSocket.accept ();
+            }
+            catch (final IOException e)
+            {
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "Could not accept connection.  Host : %s and port : %d.", (m_serverSocket.getInetAddress ()).toString (), m_serverSocket.getLocalPort ());
+                // WaveAssertUtils.waveAssert ();
+            }
         }
 
         return (new AcceptedStreamingSocket (socket));

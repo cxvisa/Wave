@@ -4,7 +4,6 @@
 
 package com.CxWave.Wave.HttpInterface;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -64,13 +63,10 @@ public class HttpRequest
             final byte[] tempStringBuffer = new byte[512];
 
             status = serverStreamingSocket.receive (tempStringBuffer);
-            try
+
+            if (-1 != status)
             {
-                tempString = new String (tempStringBuffer, "UTF-8");
-            }
-            catch (final UnsupportedEncodingException e)
-            {
-                WaveAssertUtils.waveAssert ();
+                tempString = new String (tempStringBuffer, 0, status);
             }
 
             if (0 == (tempString.length ()))
@@ -106,15 +102,24 @@ public class HttpRequest
         {
             final int positionOfcontentLengthValue = contentLengthPosition + s_contentLengthString.length () + 2;
 
+            nextEndOfLinePosition = httpRequest.indexOf ("\r\n", contentLengthPosition);
+
+            if (-1 != nextEndOfLinePosition)
+            {
+                final String contentLengthValueString = httpRequest.substring (positionOfcontentLengthValue, nextEndOfLinePosition);
+
+                m_contentLength = Integer.parseInt (contentLengthValueString, 10);
+            }
+            else
+            {
+                return;
+            }
+
             nextEndOfLinePosition = httpRequest.indexOf ("\r\n\r\n", contentLengthPosition);
 
             if (-1 != nextEndOfLinePosition)
             {
                 contentBeginPosition = nextEndOfLinePosition + 4;
-
-                final String contentLengthValueString = httpRequest.substring (positionOfcontentLengthValue, nextEndOfLinePosition);
-
-                m_contentLength = Integer.parseInt (contentLengthValueString, 10);
             }
             else
             {
@@ -133,10 +138,10 @@ public class HttpRequest
             }
         }
 
-        WaveTraceUtils.develTracePrintf ("HttpRequest.HttpRequest : Content Begin                          : %d", contentBeginPosition);
-        WaveTraceUtils.develTracePrintf ("HttpRequest.HttpRequest : Content Length                         : %d", m_contentLength);
-        WaveTraceUtils.develTracePrintf ("HttpRequest.HttpRequest : Request Length                         : %d", requestLength);
-        WaveTraceUtils.develTracePrintf ("HttpRequest.HttpRequest : Length of Remaining Content to be Read : %d", lengthOfRemainingDataToBeRead);
+        WaveTraceUtils.debugTracePrintf ("HttpRequest.HttpRequest : Content Begin                          : %d", contentBeginPosition);
+        WaveTraceUtils.debugTracePrintf ("HttpRequest.HttpRequest : Content Length                         : %d", m_contentLength);
+        WaveTraceUtils.debugTracePrintf ("HttpRequest.HttpRequest : Request Length                         : %d", requestLength);
+        WaveTraceUtils.debugTracePrintf ("HttpRequest.HttpRequest : Length of Remaining Content to be Read : %d", lengthOfRemainingDataToBeRead);
 
         if (0 < lengthOfRemainingDataToBeRead)
         {
@@ -168,6 +173,8 @@ public class HttpRequest
                 WaveAssertUtils.waveAssert ();
             }
         }
+
+        WaveTraceUtils.infoTracePrintf ("HttpRequest.HttpRequest : Request from wire:\r\n%s", httpRequest);
 
         // Now proceed to process the request in its entirety.
 
@@ -239,7 +246,7 @@ public class HttpRequest
                     }
                 }
 
-                // Get Authrozation
+                // Get Authrization
 
                 if ((httpRequestLines.get (i)).startsWith (s_authorizationString))
                 {
@@ -533,5 +540,245 @@ public class HttpRequest
     public void setIsContentReadIncomplete (final boolean isContentReadIncomplete)
     {
         m_isContentReadIncomplete = isContentReadIncomplete;
+    }
+
+    public WaveHttpInterfaceMethod getWaveHttpInterfaceMethod ()
+    {
+        return m_waveHttpInterfaceMethod;
+    }
+
+    public void setWaveHttpInterfaceMethod (final WaveHttpInterfaceMethod waveHttpInterfaceMethod)
+    {
+        m_waveHttpInterfaceMethod = waveHttpInterfaceMethod;
+    }
+
+    public String getUri ()
+    {
+        return m_uri;
+    }
+
+    public void setUri (final String uri)
+    {
+        m_uri = uri;
+    }
+
+    public Vector<String> getUriTokens ()
+    {
+        return m_uriTokens;
+    }
+
+    public void setUriTokens (final Vector<String> uriTokens)
+    {
+        m_uriTokens = uriTokens;
+    }
+
+    public String getAuthorization ()
+    {
+        return m_authorization;
+    }
+
+    public void setAuthorization (final String authorization)
+    {
+        m_authorization = authorization;
+    }
+
+    public int getContentLength ()
+    {
+        return m_contentLength;
+    }
+
+    public void setContentLength (final int contentLength)
+    {
+        m_contentLength = contentLength;
+    }
+
+    public WaveHttpContentType getContentType ()
+    {
+        return m_contentType;
+    }
+
+    public void setContentType (final WaveHttpContentType contentType)
+    {
+        m_contentType = contentType;
+    }
+
+    public String getContentBoundary ()
+    {
+        return m_contentBoundary;
+    }
+
+    public void setContentBoundary (final String contentBoundary)
+    {
+        m_contentBoundary = contentBoundary;
+    }
+
+    public String getContent ()
+    {
+        return m_content;
+    }
+
+    public void setContent (final String content)
+    {
+        m_content = content;
+    }
+
+    public Vector<String> getEntityNames ()
+    {
+        return m_entityNames;
+    }
+
+    public void setEntityNames (final Vector<String> entityNames)
+    {
+        m_entityNames = entityNames;
+    }
+
+    public Vector<String> getEntityFileNames ()
+    {
+        return m_entityFileNames;
+    }
+
+    public void setEntityFileNames (final Vector<String> entityFileNames)
+    {
+        m_entityFileNames = entityFileNames;
+    }
+
+    public Vector<String> getEntityValues ()
+    {
+        return m_entityValues;
+    }
+
+    public void setEntityValues (final Vector<String> entityValues)
+    {
+        m_entityValues = entityValues;
+    }
+
+    public Map<String, String> getEntitiesMap ()
+    {
+        return m_entitiesMap;
+    }
+
+    public void setEntitiesMap (final Map<String, String> entitiesMap)
+    {
+        m_entitiesMap = entitiesMap;
+    }
+
+    public String getHost ()
+    {
+        return m_host;
+    }
+
+    public void setHost (final String host)
+    {
+        m_host = host;
+    }
+
+    public AcceptedStreamingSocket getServerStreamingSocket ()
+    {
+        return m_serverStreamingSocket;
+    }
+
+    public void setServerStreamingSocket (final AcceptedStreamingSocket serverStreamingSocket)
+    {
+        m_serverStreamingSocket = serverStreamingSocket;
+    }
+
+    public static String getAuthorizationString ()
+    {
+        return s_authorizationString;
+    }
+
+    public static void setAuthorizationString (final String authorizationString)
+    {
+        s_authorizationString = authorizationString;
+    }
+
+    public static String getContentLengthString ()
+    {
+        return s_contentLengthString;
+    }
+
+    public static void setContentLengthString (final String contentLengthString)
+    {
+        s_contentLengthString = contentLengthString;
+    }
+
+    public static String getContentTypeString ()
+    {
+        return s_contentTypeString;
+    }
+
+    public static void setContentTypeString (final String contentTypeString)
+    {
+        s_contentTypeString = contentTypeString;
+    }
+
+    public static String getHostString ()
+    {
+        return s_hostString;
+    }
+
+    public static void setHostString (final String hostString)
+    {
+        s_hostString = hostString;
+    }
+
+    public int getNumberOfEntities ()
+    {
+        final int numberOfEntityNames = m_entityNames.size ();
+        final int numberOfEntityFileNames = m_entityFileNames.size ();
+        final int numberOfEntityValues = m_entityValues.size ();
+
+        WaveAssertUtils.waveAssert (numberOfEntityNames == numberOfEntityValues);
+        WaveAssertUtils.waveAssert (numberOfEntityNames == numberOfEntityFileNames);
+
+        return (numberOfEntityNames);
+    }
+
+    public String getEntityNameAtIndex (final int index)
+    {
+        final int numberOfEntities = getNumberOfEntities ();
+
+        if (index < numberOfEntities)
+        {
+            return (m_entityNames.get (index));
+        }
+        else
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return ("");
+    }
+
+    public String getEntityFileNameAtIndex (final int index)
+    {
+        final int numberOfEntities = getNumberOfEntities ();
+
+        if (index < numberOfEntities)
+        {
+            return (m_entityFileNames.get (index));
+        }
+        else
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return ("");
+    }
+
+    public String getEntityValueAtIndex (final int index)
+    {
+        final int numberOfEntities = getNumberOfEntities ();
+
+        if (index < numberOfEntities)
+        {
+            return (m_entityValues.get (index));
+        }
+        else
+        {
+            WaveAssertUtils.waveAssert ();
+        }
+
+        return ("");
     }
 }
