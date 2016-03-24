@@ -16,6 +16,7 @@
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_CLIENT_TRANSPORT"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_HA_PEER_MESSAGE_TRANSPORT"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_USER_INTERFACE"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_HTTP_INTERFACE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_SHELL"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_REGRESSION"></Resource>
 
