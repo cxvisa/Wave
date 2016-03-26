@@ -12,7 +12,10 @@ export DOCS_DIR = ../docs
 
 export JARFILE = ../build/lib/lib$(PROJECT_NAME)-$(PROJECT_VERSION).jar
 
-all: build
+all: build javatocppbridge
+
+javatocppbridge:
+	gmake -C C++Bridge all
 
 classes : generateresourceenums
 $(JARFILE) : generateresourceenums

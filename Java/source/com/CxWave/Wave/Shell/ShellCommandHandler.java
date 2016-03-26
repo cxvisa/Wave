@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Shell.Annotations.ShellCommand;
@@ -37,11 +38,16 @@ public class ShellCommandHandler
         {
             WaveTraceUtils.fatalTracePrintf ("ShellCommandHandler.execute : Failed to execute : %s, Details : %s", m_handlerName, e.toString ());
 
+            WaveTraceUtils.fatalTracePrintf ("ShellCommandHandler.execute : StackTrace : \r\n%s", WaveStackUtils.getStackString (e));
+
             final Throwable cause = e.getCause ();
 
             if (null != cause)
             {
                 WaveTraceUtils.fatalTracePrintf ("ShellCommandHandler.execute : Cause : %s", cause.toString ());
+
+                WaveTraceUtils.fatalTracePrintf ("ShellCommandHandler.execute : StackTrace : \r\n%s", WaveStackUtils.getStackString (cause));
+
             }
 
             return (ResourceId.WAVE_MESSAGE_ERROR);

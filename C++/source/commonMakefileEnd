@@ -121,7 +121,7 @@ $(LIB_TO_BUILD): $(ABS_OBJS) $(MKFS) | $$(@D)/.
 	-cd $(BUILD_DIR_OBJ); /bin/rm -f $(notdir $@).a
 	$(call split_objs,cd $(BUILD_DIR_OBJ); $(AR) q $(notdir $@).a,500,$(OBJS))
 	cd $(BUILD_DIR_OBJ); \
-	$(CXX) -shared -fPIC -Wl,--relax,-soname,$(notdir $(LIB.SO)) $(ZVM_LDFLAGS) -o $@ -Wl,--whole-archive $(notdir $@).a -Wl,--no-whole-archive
+	$(CXX) -shared -fPIC -Wl,--relax,-soname,$(notdir $(LIB.SO)) $(ZVM_LDFLAGS) -o $@ -Wl,--whole-archive $(notdir $@).a -Wl,--no-whole-archive -lxerces-c -lxalan-c -lxalanMsg
 endif
 
 ifneq '$(LIB.SO.VER)' ''

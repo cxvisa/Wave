@@ -361,7 +361,7 @@ public class WaveLineEditor
                         System.exit (0);
                     }
 
-                    if ((Character.isAlphabetic (c)) || (Character.isDigit (c)) || (' ' == c) || ('_' == c) || ('-' == c) || (':' == c) || ('.' == c) || ('=' == c) || ('/' == c) || ('\\' == c) || ('<' == c) || ('>' == c) || ('{' == c) || ('}' == c) || ('[' == c) || (']' == c) || ('"' == c) || (',' == c) || ('#' == c) || ('?' == c) || ('@' == c) || ('%' == c))
+                    if ((Character.isAlphabetic (c)) || (Character.isDigit (c)) || (' ' == c) || ('_' == c) || ('-' == c) || (':' == c) || ('.' == c) || ('=' == c) || ('/' == c) || ('\\' == c) || ('<' == c) || ('>' == c) || ('{' == c) || ('}' == c) || ('[' == c) || (']' == c) || ('"' == c) || (',' == c) || ('#' == c) || ('?' == c) || ('@' == c) || ('%' == c) || ('&' == c))
                     {
                         final StringBuffer commandBuffer = new StringBuffer (command);
 
