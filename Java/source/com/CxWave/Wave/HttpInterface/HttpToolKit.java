@@ -34,35 +34,35 @@ public class HttpToolKit
     {
         WaveHttpInterfaceMethod waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_UNKNOWN;
 
-        if ("GET" == httpRequestMethodString)
+        if ("GET".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_GET;
         }
-        else if ("HEAD" == httpRequestMethodString)
+        else if ("HEAD".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_HEAD;
         }
-        else if ("PUT" == httpRequestMethodString)
+        else if ("PUT".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_PUT;
         }
-        else if ("POST" == httpRequestMethodString)
+        else if ("POST".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_POST;
         }
-        else if ("DELETE" == httpRequestMethodString)
+        else if ("DELETE".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_DELETE;
         }
-        else if ("OPTIONS" == httpRequestMethodString)
+        else if ("OPTIONS".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_OPTIONS;
         }
-        else if ("TRACE" == httpRequestMethodString)
+        else if ("TRACE".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_TRACE;
         }
-        else if ("CONNECT" == httpRequestMethodString)
+        else if ("CONNECT".equals (httpRequestMethodString))
         {
             waveHttpInterfaceMethod = WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_CONNECT;
         }
@@ -74,51 +74,51 @@ public class HttpToolKit
     {
         WaveHttpContentType httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_UNKNOWN;
 
-        if ("text/plain" == contentTypeString)
+        if ("text/plain".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_TEXT_PLAIN;
         }
-        else if ("text/html" == contentTypeString)
+        else if ("text/html".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_TEXT_HTML;
         }
-        else if ("text/xml" == contentTypeString)
+        else if ("text/xml".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_TEXT_XML;
         }
-        else if ("application/octet-stream" == contentTypeString)
+        else if ("application/octet-stream".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_APPLICATION_OCTET_STREAM;
         }
-        else if ("application/atom+xml" == contentTypeString)
+        else if ("application/atom+xml".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_APPLICATION_ATOM_XML;
         }
-        else if ("application/x-www-form-urlencoded" == contentTypeString)
+        else if ("application/x-www-form-urlencoded".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_APPLICATION_FORM_URLENCODED;
         }
-        else if ("application/json" == contentTypeString)
+        else if ("application/json".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_APPLICATION_JSON;
         }
-        else if ("application/xhtml+xml" == contentTypeString)
+        else if ("application/xhtml+xml".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_APPLICATION_XHTML_XML;
         }
-        else if ("multipart/form-data" == contentTypeString)
+        else if ("multipart/form-data".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_MULTIPART_FORM_DATA;
         }
-        else if ("image/gif" == contentTypeString)
+        else if ("image/gif".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_IMAGE_GIF;
         }
-        else if ("image/png" == contentTypeString)
+        else if ("image/png".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_IMAGE_PNG;
         }
-        else if ("image/jpeg" == contentTypeString)
+        else if ("image/jpeg".equals (contentTypeString))
         {
             httpContentType = WaveHttpContentType.WAVE_HTTP_CONTENT_TYPE_IMAGE_JPEG;
         }

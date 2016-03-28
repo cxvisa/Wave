@@ -672,7 +672,7 @@ public class HttpRequest
         m_host = host;
     }
 
-    public AcceptedStreamingSocket getServerStreamingSocket ()
+    public AcceptedStreamingSocket getAcceptedStreamingSocket ()
     {
         return m_serverStreamingSocket;
     }
