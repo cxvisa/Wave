@@ -22,7 +22,7 @@ public class PamUtils
         {
             System.loadLibrary ("rt");
             System.loadLibrary ("nsl");
-            System.loadLibrary ("m");
+            // System.loadLibrary ("m");
             System.loadLibrary ("uuid");
             System.loadLibrary ("crypto");
             System.loadLibrary ("pam");

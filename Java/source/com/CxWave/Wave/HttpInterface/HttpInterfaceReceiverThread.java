@@ -4,9 +4,14 @@
 
 package com.CxWave.Wave.HttpInterface;
 
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.MultiThreading.WaveThreadBase;
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
+import com.CxWave.Wave.Framework.Utils.AAA.PamUtils;
+import com.CxWave.Wave.Framework.Utils.Base64.Base64Utils;
 import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveHttpContentType;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod;
@@ -30,10 +35,10 @@ public class HttpInterfaceReceiverThread extends WaveThreadBase
         final AcceptedStreamingSocket acceptedSocket = m_acceptedStreamingSocket;
         StringBuffer httpRequestPhase1 = null;
         int numberOfBytesRead = 0;
-        final StringBuffer httpResponsePhase1;
+        final StringBuffer httpResponsePhase1 = new StringBuffer ();
         final WaveHttpInterfaceMethod waveHttpInterfaceMethod;
-        final HttpInterfaceMethodWorker httpInterfaceMethodWorker = null;
-        final String authorization;
+        HttpInterfaceMethodWorker httpInterfaceMethodWorker = null;
+        String authorization;
         final String decodedAuthorization;
         int contentLength = 0;
         final WaveHttpContentType contentType;
@@ -102,6 +107,127 @@ public class HttpInterfaceReceiverThread extends WaveThreadBase
             entityFileName = httpRequest.getEntityFileNameAtIndex (i);
 
             WaveTraceUtils.infoTracePrintf ("HttpInterfaceReceiverThread::start : \"" + entityName + "(" + entityFileName + ")\" = ***\"" + entityValue + "\"***");
+        }
+        // For now hard code authorization to disable authorization
+
+        authorization = "d2F2ZWFkbWluOldhdmUtVExJTVMtNzE4";
+
+        if (("".equals (authorization)) || (isContentReadIncomplete))
+        {
+            StringBuffer httpResponsePhase1Error = new StringBuffer ("Response Data for Phase 1");
+
+            if (true == isContentReadIncomplete)
+            {
+                HttpToolKit.getBadRequestString (httpResponsePhase1);
+
+                httpResponsePhase1Error.append ("Incomplete " + httpResponsePhase1Error);
+            }
+            else if ("".equals (authorization))
+            {
+                HttpToolKit.getUnauthorizedString (httpResponsePhase1);
+
+                httpResponsePhase1Error = new StringBuffer ("Unauthorized " + httpResponsePhase1Error);
+            }
+
+            acceptedSocket.send (httpResponsePhase1);
+
+            WaveTraceUtils.debugTracePrintf ("HttpInterfaceReceiverThread::start : %s:\r\n_____\r\n%s\r\n_____\r\n", httpResponsePhase1Error, httpResponsePhase1);
+        }
+        else
+        {
+            decodedAuthorization = Base64Utils.decode (authorization);
+
+            // trace (TraceLevel.TRACE_LEVEL_INFO, "Authorization : \"" + authorization + "\"");
+            // trace (TraceLevel.TRACE_LEVEL_sINFO, "Authorization : \"" + decodedAuthorization + "\"");
+            // trace (TraceLevel.TRACE_LEVEL_INFO, "Authorization : \"" + Base64Utils::encode (decodedAuthorization) + "\"");
+
+            final Vector<String> userNameAndPassword = new Vector<String> ();
+            int numberOfTokensInUserNameAndPassword = 0;
+
+            WaveStringUtils.tokenize (decodedAuthorization, userNameAndPassword, ':');
+            numberOfTokensInUserNameAndPassword = userNameAndPassword.size ();
+
+            // tracePrintf (TracveLevel.TRACE_LEVEL_INFO, "Number Of Tokens in Authorization : %u",
+            // numberOfTokensInUserNameAndPassword);
+
+            for (i = 0; i < numberOfTokensInUserNameAndPassword; i++)
+            {
+                // trace (TRACE_LEVEL_INFO, " " + userNameAndPassword[i]);
+            }
+
+            if (2 != userNameAndPassword.size ())
+            {
+                HttpToolKit.getUnauthorizedString (httpResponsePhase1);
+
+                acceptedSocket.send (httpResponsePhase1);
+
+                WaveTraceUtils.debugTracePrintf ("HttpInterfaceReceiverThread::start : Unauthorized Response Data for Phase 1:\r\n_____\r\n%s\r\n_____\r\n", httpResponsePhase1);
+            }
+            else
+            {
+                boolean authenticated = false;
+
+                if (false == authenticated)
+                {
+                    if (("waveadmin" == userNameAndPassword.get (0)) && ("wave-TLIMS-718" == userNameAndPassword.get (1)))
+                    {
+                        authenticated = true;
+                    }
+                }
+
+                if (false == authenticated)
+                {
+                    authenticated = PamUtils.authenticate ("login", userNameAndPassword.get (0), userNameAndPassword.get (1));
+                }
+
+                if (false == authenticated)
+                {
+                    authenticated = PamUtils.authenticate ("passwd", userNameAndPassword.get (0), userNameAndPassword.get (1));
+                }
+
+                if (true != authenticated)
+                {
+                    HttpToolKit.getUnauthorizedString (httpResponsePhase1);
+
+                    acceptedSocket.send (httpResponsePhase1);
+
+                    WaveTraceUtils.debugTracePrintf ("HttpInterfaceReceiverThread::start : Unauthorized Response Data for Phase 1:\r\n_____\r\n%s\r\n_____\r\n", httpResponsePhase1);
+                }
+                else
+                {
+                    if (WaveHttpInterfaceMethod.WAVE_HTTP_INTERFACE_METHOD_UNKNOWN == waveHttpInterfaceMethod)
+                    {
+                        final StringBuffer methodNotAllowedErrorString = new StringBuffer ();
+
+                        HttpToolKit.getMethodNotAllowedErrorString (methodNotAllowedErrorString);
+
+                        acceptedSocket.send (methodNotAllowedErrorString);
+
+                        WaveTraceUtils.debugTracePrintf ("HttpInterfaceReceiverThread::start : Method Not Allowed Response Data for Phase 1:\r\n_____\r\n%s\r\n_____\r\n", methodNotAllowedErrorString);
+                    }
+                    else
+                    {
+                        httpInterfaceMethodWorker = HttpInterfaceReceiverObjectManager.getHttpInterfaceMethodWorker (waveHttpInterfaceMethod);
+
+                        if (null == httpInterfaceMethodWorker)
+                        {
+                            final StringBuffer notImplemnetedErrorString = new StringBuffer ();
+
+                            HttpToolKit.getNotImplementedErrorString (notImplemnetedErrorString);
+
+                            acceptedSocket.send (notImplemnetedErrorString);
+
+                            WaveTraceUtils.debugTracePrintf ("HttpInterfaceReceiverThread::start : Not Implemented Response Data for Phase 1:\r\n_____\r\n%s\r\n_____\r\n", notImplemnetedErrorString);
+                        }
+                        else
+                        {
+                            WaveTraceUtils.debugTracePrintf ("HttpInterfaceReceiverThread::start : Executing the supported method.");
+
+                            httpInterfaceMethodWorker.process (httpRequest);
+                        }
+                    }
+                }
+            }
         }
 
         if (null != m_acceptedStreamingSocket)

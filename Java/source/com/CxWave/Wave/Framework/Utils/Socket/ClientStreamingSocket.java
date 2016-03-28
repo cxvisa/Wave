@@ -719,6 +719,11 @@ public class ClientStreamingSocket implements StreamingSocket
         return (status);
     }
 
+    public boolean send (final StringBuffer value)
+    {
+        return (send (value.toString ()));
+    }
+
     public boolean send (final WaveMessage waveMessage)
     {
         WaveAssertUtils.waveAssert (null != waveMessage);
