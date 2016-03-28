@@ -169,7 +169,7 @@ public class HttpInterfaceReceiverThread extends WaveThreadBase
 
                 if (false == authenticated)
                 {
-                    if (("waveadmin" == userNameAndPassword.get (0)) && ("wave-TLIMS-718" == userNameAndPassword.get (1)))
+                    if (("waveadmin".equals (userNameAndPassword.get (0))) && ("Wave-TLIMS-718".equals (userNameAndPassword.get (1))))
                     {
                         authenticated = true;
                     }

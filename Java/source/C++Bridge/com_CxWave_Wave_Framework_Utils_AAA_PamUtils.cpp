@@ -27,7 +27,7 @@ JNIEXPORT jboolean JNICALL Java_com_CxWave_Wave_Framework_Utils_AAA_PamUtils_aut
     string userName              (pUserName);
     string password              (pPassword);
 
-    cout << authenticationService << ":" << userName << ":" << password << endl;
+    //cout << authenticationService << ":" << userName << ":" << password << endl;
 
     bool result = PamUtils::authenticate (authenticationService, userName, password);
 
