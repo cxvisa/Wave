@@ -14,9 +14,11 @@ public class WaveServerPage extends WaveWorker
     private String m_path        = "";
     private String m_pageHeading = "";
 
-    public WaveServerPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager)
+    public WaveServerPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager, final String path)
     {
         super (httpInterfaceReceiverObjectManager);
+
+        m_path = path;
     }
 
     public String getPath ()
@@ -561,5 +563,9 @@ public class WaveServerPage extends WaveWorker
         waveServerPagePostPortionForDelete.append ("</DIV>\r\n");
         waveServerPagePostPortionForDelete.append ("</BODY>\r\n");
         waveServerPagePostPortionForDelete.append ("</HTML>\r\n");
+    }
+
+    public void requestHandlerForGet (final HttpRequest httpRequest)
+    {
     }
 }

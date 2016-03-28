@@ -287,7 +287,7 @@ public class HttpToolKit
         deletedString.append (xmlBody);
     }
 
-    public static void getOkStringForGetForRestXml (final StringBuffer okString, final StringBuffer xmlBody)
+    public static void getOkStringForGetForRestXml (final StringBuffer okString, final String xmlBody)
     {
         okString.append ("HTTP/1.1 200 OK\r\n");
         okString.append ("Server: Wave World Wide Web Server (W4S) v0.0.1\r\n");
@@ -304,7 +304,7 @@ public class HttpToolKit
         noContentString.append ("\r\n");
     }
 
-    public static void getOkStringForGetForRestJson (final StringBuffer okString, final StringBuffer jsonBody)
+    public static void getOkStringForGetForRestJson (final StringBuffer okString, final String jsonBody)
     {
         okString.append ("HTTP/1.1 200 OK\r\n");
         okString.append ("Server: Wave World Wide Web Server (W4S) v0.0.1\r\n");
