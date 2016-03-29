@@ -193,6 +193,11 @@ public class WaveServerPageDirectoryEntry
         }
     }
 
+    public void print ()
+    {
+        print ("");
+    }
+
     public WaveServerPage getWaveServerPageForRelativePath (final String path)
     {
         final WaveServerPageDirectoryEntry waveServerPageDirectoryEntry = getSibling (path);
