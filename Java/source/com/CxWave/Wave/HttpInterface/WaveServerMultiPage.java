@@ -13,6 +13,7 @@ import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.HttpInterface.Annotations.Path;
+import com.CxWave.Wave.HttpInterface.Annotations.PathMapping;
 
 public class WaveServerMultiPage extends WaveServerPage
 {
@@ -310,11 +311,36 @@ public class WaveServerMultiPage extends WaveServerPage
             }
             else
             {
-
                 final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandlerViaDirectory = m_waveServerMultiPageRequestHandlerDirectoryForGet.getWaveServerMultiPageRequestHandler (adjustedUri);
 
                 if (null != waveServerMultiPageRequestHandlerViaDirectory)
                 {
+                    final PathMapping pathMappingAnnotation = thisClass.getAnnotation (PathMapping.class);
+                    String annotatedPathMapping = "";
+                    String pathMapping = path;
+
+                    if (null != pathMappingAnnotation)
+                    {
+                        annotatedPathMapping = pathMappingAnnotation.name ();
+                    }
+
+                    if (WaveStringUtils.isNotBlank (annotatedPathMapping))
+                    {
+                        pathMapping = annotatedPathMapping;
+                    }
+
+                    pathMapping = pathMapping.trim ();
+
+                    if (pathMapping.endsWith ("/"))
+                    {
+                        pathMapping = pathMapping.substring (0, path.length () - 1);
+                    }
+
+                    final String pathMappingForRequestHandler = waveServerMultiPageRequestHandlerViaDirectory.getAnnotatedPathMapping ();
+                    final String overallPathMapping = pathMapping + "/" + pathMappingForRequestHandler;
+
+                    httpRequest.applyUriToPathMapping (overallPathMapping);
+
                     waveServerMultiPageRequestHandlerViaDirectory.execute (httpRequest);
                 }
                 else

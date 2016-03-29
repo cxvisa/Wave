@@ -15,8 +15,10 @@ import com.CxWave.Wave.HttpInterface.HttpRequest;
 import com.CxWave.Wave.HttpInterface.WaveServerMultiPage;
 import com.CxWave.Wave.HttpInterface.Annotations.GET;
 import com.CxWave.Wave.HttpInterface.Annotations.Path;
+import com.CxWave.Wave.HttpInterface.Annotations.PathMapping;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
+@PathMapping (name = "/debug/{debugType}/trace")
 public class WaveTraceServerMultiPage extends WaveServerMultiPage
 {
     public WaveTraceServerMultiPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager, final String path)
@@ -26,6 +28,7 @@ public class WaveTraceServerMultiPage extends WaveServerMultiPage
 
     @GET
     @Path (name = "List/*")
+    @PathMapping (name = "List/{listType}")
     void getForList (final HttpRequest httpRequest)
     {
         final Vector<TraceClientId> traceClientIdsVector = new Vector<TraceClientId> ();

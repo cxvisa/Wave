@@ -6,6 +6,7 @@ package com.CxWave.Wave.HttpInterface;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Type.UI32;
@@ -33,6 +34,12 @@ public class HttpRequest
     Vector<String>          m_entityValues        = new Vector<String> ();
     Map<String, String>     m_entitiesMap         = new HashMap<String, String> ();
     String                  m_host;
+
+    Map<String, String>     m_queryParamatersMap  = new HashMap<String, String> ();
+    Map<String, String>     m_formParamatersMap   = new HashMap<String, String> ();
+    Map<String, String>     m_pathParamatersMap   = new HashMap<String, String> ();
+
+    String                  m_pathMapping;
 
     AcceptedStreamingSocket m_serverStreamingSocket;
 
@@ -361,6 +368,8 @@ public class HttpRequest
                             m_entityValues.add (entityValue);
 
                             m_entitiesMap.put (entityName, entityValue);
+
+                            m_queryParamatersMap.put (entityName, entityValue);
                         }
                     }
                 }
@@ -405,6 +414,8 @@ public class HttpRequest
                             m_entityValues.add (entityValue);
 
                             m_entitiesMap.put (entityName, entityValue);
+
+                            m_formParamatersMap.put (entityName, entityValue);
 
                             entityName = "";
                             fileName = "";
@@ -526,6 +537,8 @@ public class HttpRequest
                         m_entityValues.add (entityValue);
 
                         m_entitiesMap.put (entityName, entityValue);
+
+                        m_formParamatersMap.put (entityName, entityValue);
                     }
                 }
             }
@@ -780,5 +793,96 @@ public class HttpRequest
         }
 
         return ("");
+    }
+
+    public String getQueryParamterValue (final String queryParameter)
+    {
+        return (m_queryParamatersMap.get (queryParameter));
+    }
+
+    public Set<String> getQueryParamters ()
+    {
+        return (m_queryParamatersMap.keySet ());
+    }
+
+    public String getFormParamterValue (final String formParameter)
+    {
+        return (m_formParamatersMap.get (formParameter));
+    }
+
+    public Set<String> getFormParamters ()
+    {
+        return (m_formParamatersMap.keySet ());
+    }
+
+    public String getPathParamterValue (final String pathParameter)
+    {
+        return (m_pathParamatersMap.get (pathParameter));
+    }
+
+    public Set<String> getPathParamters ()
+    {
+        return (m_pathParamatersMap.keySet ());
+    }
+
+    public void applyUriToPathMapping (final String pathMapping)
+    {
+        m_pathMapping = pathMapping;
+
+        final Vector<String> uriTokens = new Vector<String> ();
+        final Vector<String> pathMappingTokens = new Vector<String> ();
+
+        WaveStringUtils.tokenize (m_uri, uriTokens, '/');
+        WaveStringUtils.tokenize (m_pathMapping, pathMappingTokens, '/');
+
+        final int numberOfUriTokens = uriTokens.size ();
+        final int numberOFPathMappingTokens = pathMappingTokens.size ();
+
+        WaveAssertUtils.waveAssert (numberOFPathMappingTokens == numberOfUriTokens);
+
+        for (int i = 0; i < numberOFPathMappingTokens; i++)
+        {
+            final String pathMappingToken = pathMappingTokens.get (i);
+
+            if ((pathMappingToken.startsWith ("{")) && (pathMappingToken.endsWith ("}")))
+            {
+                final int pathMappingTokenSize = pathMappingToken.length ();
+                int firstIndex = 0;
+                int lastIndex = pathMappingTokenSize - 1;
+
+                while (firstIndex < pathMappingTokenSize)
+                {
+                    if ((pathMappingToken.charAt (firstIndex)) != '{')
+                    {
+                        break;
+                    }
+
+                    firstIndex++;
+                }
+
+                while (lastIndex >= 0)
+                {
+                    if ((pathMappingToken.charAt (lastIndex)) != '}')
+                    {
+                        break;
+                    }
+
+                    lastIndex--;
+                }
+
+                if (lastIndex > firstIndex)
+                {
+                    final String pathParameter = pathMappingToken.substring (firstIndex, lastIndex + 1);
+                    final String pathParameterValue = uriTokens.get (i);
+
+                    m_pathParamatersMap.put (pathParameter, pathParameterValue);
+                }
+            }
+        }
+    }
+
+    public String getPathMapping ()
+    {
+        return (m_pathMapping);
     }
 }

@@ -9,7 +9,10 @@ import java.lang.reflect.Method;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.HttpInterface.Annotations.Path;
+import com.CxWave.Wave.HttpInterface.Annotations.PathMapping;
 
 public abstract class WaveServerMultiPageRequestHandler
 {
@@ -95,5 +98,54 @@ public abstract class WaveServerMultiPageRequestHandler
 
             WaveTraceUtils.fatalTracePrintf ("%s", WaveStackUtils.getStackString (e));
         }
+    }
+
+    public String getAnnotatedPathMapping ()
+    {
+        WaveAssertUtils.waveAssert (null != m_method);
+
+        final Path pathAnnotation = m_method.getAnnotation (Path.class);
+        String annotatedPath = "";
+        String path = "";
+
+        if (null != pathAnnotation)
+        {
+            annotatedPath = pathAnnotation.name ();
+        }
+
+        if (WaveStringUtils.isNotBlank (annotatedPath))
+        {
+            path = annotatedPath;
+        }
+
+        path = path.trim ();
+
+        if (path.endsWith ("/"))
+        {
+            path = path.substring (0, path.length () - 1);
+        }
+
+        final PathMapping pathMappingAnnotation = m_method.getAnnotation (PathMapping.class);
+        String annotatedPathMapping = "";
+        String pathMapping = path;
+
+        if (null != pathMappingAnnotation)
+        {
+            annotatedPathMapping = pathMappingAnnotation.name ();
+        }
+
+        if (WaveStringUtils.isNotBlank (annotatedPathMapping))
+        {
+            pathMapping = annotatedPathMapping;
+        }
+
+        pathMapping = pathMapping.trim ();
+
+        if (pathMapping.endsWith ("/"))
+        {
+            pathMapping = pathMapping.substring (0, path.length () - 1);
+        }
+
+        return (pathMapping);
     }
 }
