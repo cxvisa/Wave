@@ -70,11 +70,11 @@ bool WaveServerPageDirectoryEntry::isAKnownSibling (const string &siblingName)
 
     for ( i = 0; i < numberOFTokensInSiblingName; i++)
     {
-        pTempWaveServerPageDirectoryEntry = pTempWaveServerPageDirectoryEntry->getImmediateSibling (siblingNameTokens[i]);
+        WaveServerPageDirectoryEntry *pTemp = pTempWaveServerPageDirectoryEntry->getImmediateSibling (siblingNameTokens[i]);
 
         // If not found the exact match, check for wild card handler (*)
 
-        if (NULL == pTempWaveServerPageDirectoryEntry)
+        if (NULL == pTemp)
         {
             pTempWaveServerPageDirectoryEntry = pTempWaveServerPageDirectoryEntry->getImmediateSibling ("*");
         }
@@ -174,7 +174,6 @@ void WaveServerPageDirectoryEntry::addSibling (const string &siblingName, WaveSe
 
 void WaveServerPageDirectoryEntry::print (const string &prefix) const
 {
-    string                        siblingName;
     WaveServerPageDirectoryEntry *pWaveServerPageDirectoryEntry = NULL;
     string                        postfix;
 
