@@ -6,9 +6,11 @@ package com.CxWave.Wave.HttpInterface;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
+import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
 
 public class WaveServerMultiPage extends WaveServerPage
 {
@@ -25,9 +27,36 @@ public class WaveServerMultiPage extends WaveServerPage
     Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForConnect = new HashMap<String, WaveServerMultiPageRequestHandler> ();
     Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForTrace   = new HashMap<String, WaveServerMultiPageRequestHandler> ();
 
-    public WaveServerMultiPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager, final String path)
+    public WaveServerMultiPage (final String path)
     {
-        super (httpInterfaceReceiverObjectManager, path);
+        super (path);
+
+        final String thisClassTypeName = this.getClass ().getTypeName ();
+
+        final Set<String> relativePathsForGet = WaveJavaSourceRepository.getRelativePathsForWaveServerMultiPageHandlerForGetInWaveJavaClass (thisClassTypeName);
+        final Set<String> relativePathsForPost = WaveJavaSourceRepository.getRelativePathsForWaveServerMultiPageHandlerForPostInWaveJavaClass (thisClassTypeName);
+        final Set<String> relativePathsForPut = WaveJavaSourceRepository.getRelativePathsForWaveServerMultiPageHandlerForPutInWaveJavaClass (thisClassTypeName);
+        final Set<String> relativePathsForDelete = WaveJavaSourceRepository.getRelativePathsForWaveServerMultiPageHandlerForDeleteInWaveJavaClass (thisClassTypeName);
+
+        for (final String relativePathForGet : relativePathsForGet)
+        {
+            addWaveServerMultiPageRequestHandlerForGet (relativePathForGet, new WaveServerMultiPageRequestHandlerForGet (relativePathForGet));
+        }
+
+        for (final String relativePathForPost : relativePathsForPost)
+        {
+            addWaveServerMultiPageRequestHandlerForPost (relativePathForPost, new WaveServerMultiPageRequestHandlerForGet (relativePathForPost));
+        }
+
+        for (final String relativePathForPut : relativePathsForPut)
+        {
+            addWaveServerMultiPageRequestHandlerForPut (relativePathForPut, new WaveServerMultiPageRequestHandlerForGet (relativePathForPut));
+        }
+
+        for (final String relativePathForDelete : relativePathsForDelete)
+        {
+            addWaveServerMultiPageRequestHandlerForDelete (relativePathForDelete, new WaveServerMultiPageRequestHandlerForGet (relativePathForDelete));
+        }
     }
 
     public boolean isAKnownWaveServerMultiPageRequestHandlerForGet (final String path)

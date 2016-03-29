@@ -2255,4 +2255,24 @@ public class WaveJavaClass extends WaveJavaType
             return (null);
         }
     }
+
+    public Set<String> getRelativePathsForWaveServerMultiPageHandlerForGet ()
+    {
+        return (m_waveServerMultiPageGetHandlers.keySet ());
+    }
+
+    public Set<String> getRelativePathsForWaveServerMultiPageHandlerForPost ()
+    {
+        return (m_waveServerMultiPagePostHandlers.keySet ());
+    }
+
+    public Set<String> getRelativePathsForWaveServerMultiPageHandlerForPut ()
+    {
+        return (m_waveServerMultiPagePutHandlers.keySet ());
+    }
+
+    public Set<String> getRelativePathsForWaveServerMultiPageHandlerForDelete ()
+    {
+        return (m_waveServerMultiPageDeleteHandlers.keySet ());
+    }
 }

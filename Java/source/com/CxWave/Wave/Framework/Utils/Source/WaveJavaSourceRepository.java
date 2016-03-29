@@ -1083,4 +1083,52 @@ public class WaveJavaSourceRepository
 
         return (waveJavaClass.getMethodForWaveServerMultiPageForDelete (relativePath));
     }
+
+    public static Set<String> getRelativePathsForWaveServerMultiPageHandlerForGetInWaveJavaClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getRelativePathsForWaveServerMultiPageHandlerForGet ());
+    }
+
+    public static Set<String> getRelativePathsForWaveServerMultiPageHandlerForPostInWaveJavaClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getRelativePathsForWaveServerMultiPageHandlerForPost ());
+    }
+
+    public static Set<String> getRelativePathsForWaveServerMultiPageHandlerForPutInWaveJavaClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getRelativePathsForWaveServerMultiPageHandlerForPut ());
+    }
+
+    public static Set<String> getRelativePathsForWaveServerMultiPageHandlerForDeleteInWaveJavaClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getRelativePathsForWaveServerMultiPageHandlerForDelete ());
+    }
 }
