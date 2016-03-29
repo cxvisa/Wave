@@ -15,14 +15,14 @@ import com.CxWave.Wave.Shell.Annotations.ShellCommand;
 public class WaveServerPageDirectory
 {
     static Map<String, WaveServerPage>  m_serverPageMap;
-    static WaveServerPageDirectoryEntry m_waveServerPageDirectoryRoot;
+    static WaveServerPageDirectoryEntry m_waveServerPageDirectoryRoot = new WaveServerPageDirectoryEntry ("/", null);
 
-    public boolean isAKnownServerPage (final String path)
+    public static boolean isAKnownServerPage (final String path)
     {
         return (m_serverPageMap.containsKey (path));
     }
 
-    public void registerServerPage (final WaveServerPage waveServerPage)
+    public static void registerServerPage (final WaveServerPage waveServerPage)
     {
         WaveAssertUtils.waveAssert (null != waveServerPage);
 
@@ -48,7 +48,7 @@ public class WaveServerPageDirectory
         }
     }
 
-    public void registerServerPage (final String path, final WaveServerPage waveServerPage)
+    public static void registerServerPage (final String path, final WaveServerPage waveServerPage)
     {
         final boolean isAnExistingPage = isAKnownServerPage (path);
 
@@ -71,7 +71,7 @@ public class WaveServerPageDirectory
         }
     }
 
-    WaveServerPage getWaveServerPage (final String path)
+    public static WaveServerPage getWaveServerPage (final String path)
     {
         return (m_waveServerPageDirectoryRoot.getWaveServerPageForRelativePath (path));
     }

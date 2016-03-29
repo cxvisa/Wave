@@ -47,4 +47,140 @@ public class WaveServerMultiPage extends WaveServerPage
     {
         return (m_multiPageRequestHandlersForDelete.containsKey (path));
     }
+
+    public void addWaveServerMultiPageRequestHandlerForGet (final String path, final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler)
+    {
+        if (false == (isAKnownWaveServerMultiPageRequestHandlerForGet (path)))
+        {
+            m_multiPageRequestHandlersForGet.put (path, waveServerMultiPageRequestHandler);
+            m_multiPageOptionsForGet.add (path);
+
+            WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+        }
+        else
+        {
+            fatalTracePrintf ("WaveServerMultiPage.addWaveServerMultiPageRequestHandlerForGet : An option already exists with the path \"%s\"", path);
+            waveAssert ();
+        }
+    }
+
+    public void addWaveServerMultiPageRequestHandlerForPost (final String path, final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler)
+    {
+        if (false == (isAKnownWaveServerMultiPageRequestHandlerForPost (path)))
+        {
+            m_multiPageRequestHandlersForPost.put (path, waveServerMultiPageRequestHandler);
+            m_multiPageOptionsForPost.add (path);
+
+            // WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+        }
+        else
+        {
+            fatalTracePrintf ("WaveServerMultiPage.addWaveServerMultiPageRequestHandlerForPost : An option already exists with the path \"%s\"", path);
+            waveAssert ();
+        }
+    }
+
+    public void addWaveServerMultiPageRequestHandlerForPut (final String path, final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler)
+    {
+        if (false == (isAKnownWaveServerMultiPageRequestHandlerForPut (path)))
+        {
+            m_multiPageRequestHandlersForPut.put (path, waveServerMultiPageRequestHandler);
+            m_multiPageOptionsForPut.add (path);
+
+            // WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+        }
+        else
+        {
+            fatalTracePrintf ("WaveServerMultiPage.addWaveServerMultiPageRequestHandlerForPut : An option already exists with the path \"%s\"", path);
+            waveAssert ();
+        }
+    }
+
+    public void addWaveServerMultiPageRequestHandlerForDelete (final String path, final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler)
+    {
+        if (false == (isAKnownWaveServerMultiPageRequestHandlerForDelete (path)))
+        {
+            m_multiPageRequestHandlersForDelete.put (path, waveServerMultiPageRequestHandler);
+            m_multiPageOptionsForDelete.add (path);
+
+            // WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+        }
+        else
+        {
+            fatalTracePrintf ("WaveServerMultiPage.addWaveServerMultiPageRequestHandlerForDelete : An option already exists with the path \"%s\"", path);
+            waveAssert ();
+        }
+    }
+
+    public WaveServerMultiPageRequestHandler getWaveServerMultiPageRequestHandlerForGet (final String path)
+    {
+        WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler = null;
+
+        if (true == (isAKnownWaveServerMultiPageRequestHandlerForGet (path)))
+        {
+            waveServerMultiPageRequestHandler = m_multiPageRequestHandlersForGet.get (path);
+        }
+
+        return (waveServerMultiPageRequestHandler);
+    }
+
+    public WaveServerMultiPageRequestHandler getWaveServerMultiPageRequestHandlerForPost (final String path)
+    {
+        WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler = null;
+
+        if (true == (isAKnownWaveServerMultiPageRequestHandlerForPost (path)))
+        {
+            waveServerMultiPageRequestHandler = m_multiPageRequestHandlersForPost.get (path);
+        }
+
+        return (waveServerMultiPageRequestHandler);
+    }
+
+    public WaveServerMultiPageRequestHandler getWaveServerMultiPageRequestHandlerForPut (final String path)
+    {
+        WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler = null;
+
+        if (true == (isAKnownWaveServerMultiPageRequestHandlerForPut (path)))
+        {
+            waveServerMultiPageRequestHandler = m_multiPageRequestHandlersForPut.get (path);
+        }
+
+        return (waveServerMultiPageRequestHandler);
+    }
+
+    public WaveServerMultiPageRequestHandler getWaveServerMultiPageRequestHandlerForDelete (final String path)
+    {
+        WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler = null;
+
+        if (true == (isAKnownWaveServerMultiPageRequestHandlerForDelete (path)))
+        {
+            waveServerMultiPageRequestHandler = m_multiPageRequestHandlersForDelete.get (path);
+        }
+
+        return (waveServerMultiPageRequestHandler);
+    }
+
+    @Override
+    public void getListOfOptionsForGet (final Vector<String> optionsForGet)
+    {
+        optionsForGet.addAll (m_multiPageOptionsForGet);
+    }
+
+    @Override
+    public void getListOfOptionsForPost (final Vector<String> optionsForPost)
+    {
+        optionsForPost.addAll (m_multiPageOptionsForPost);
+    }
+
+    @Override
+    public void getListOfOptionsForPut (final Vector<String> optionsForPut)
+    {
+        optionsForPut.addAll (m_multiPageOptionsForPut);
+    }
+
+    @Override
+    public void getListOfOptionsForDelete (final Vector<String> optionsForDelete)
+    {
+        optionsForDelete.addAll (m_multiPageOptionsForDelete);
+    }
 }

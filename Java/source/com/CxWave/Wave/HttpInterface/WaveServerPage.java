@@ -19,6 +19,8 @@ public class WaveServerPage extends WaveWorker
         super (httpInterfaceReceiverObjectManager);
 
         m_path = path;
+
+        WaveServerPageDirectory.registerServerPage (this);
     }
 
     public String getPath ()
