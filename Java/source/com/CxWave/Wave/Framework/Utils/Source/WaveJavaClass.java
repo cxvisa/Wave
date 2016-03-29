@@ -43,6 +43,13 @@ import com.CxWave.Wave.Framework.Utils.Sequencer.WaveLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.Sequencer.WaveSynchronousLinearSequencerContext;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.HttpInterface.HttpRequest;
+import com.CxWave.Wave.HttpInterface.WaveServerMultiPage;
+import com.CxWave.Wave.HttpInterface.Annotations.DELETE;
+import com.CxWave.Wave.HttpInterface.Annotations.GET;
+import com.CxWave.Wave.HttpInterface.Annotations.POST;
+import com.CxWave.Wave.HttpInterface.Annotations.PUT;
+import com.CxWave.Wave.HttpInterface.Annotations.Path;
 import com.CxWave.Wave.Resources.ResourceEnums.FrameworkStatus;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 import com.CxWave.Wave.Shell.ShellBase;
@@ -71,6 +78,10 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, Method>                   m_waveMessageCallbacks;
     private final Map<String, Method>                   m_waveTimerExpirationHandlers;
     private final Map<String, Method>                   m_waveEventHandlers;
+    private final Map<String, Method>                   m_waveServerMultiPageGetHandlers;
+    private final Map<String, Method>                   m_waveServerMultiPagePostHandlers;
+    private final Map<String, Method>                   m_waveServerMultiPagePutHandlers;
+    private final Map<String, Method>                   m_waveServerMultiPageDeleteHandlers;
 
     private static Map<Class<?>, Map<String, Method>>   s_shellCommandHandlerMethodsByClass = new HashMap<Class<?>, Map<String, Method>> ();
     private static Map<Class<?>, Map<String, Class<?>>> s_shellSubordinatesByClass          = new HashMap<Class<?>, Map<String, Class<?>>> ();
@@ -95,6 +106,10 @@ public class WaveJavaClass extends WaveJavaType
         m_waveMessageCallbacks = new HashMap<String, Method> ();
         m_waveTimerExpirationHandlers = new HashMap<String, Method> ();
         m_waveEventHandlers = new HashMap<String, Method> ();
+        m_waveServerMultiPageGetHandlers = new HashMap<String, Method> ();
+        m_waveServerMultiPagePostHandlers = new HashMap<String, Method> ();
+        m_waveServerMultiPagePutHandlers = new HashMap<String, Method> ();
+        m_waveServerMultiPageDeleteHandlers = new HashMap<String, Method> ();
     }
 
     public String getName ()
@@ -345,6 +360,8 @@ public class WaveJavaClass extends WaveJavaType
         computeShellSubordinates (reflectionClass);
 
         computeShellRoot (reflectionClass);
+
+        computeWaveServerMultiPageHandlers (reflectionClass);
     }
 
     private void computeSerializationReflectionAttributesMapForDeclaredFields (final Class<?> reflectionClass)
@@ -1429,6 +1446,82 @@ public class WaveJavaClass extends WaveJavaType
         return (false);
     }
 
+    public boolean isADerivativeOfHttpRequest ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (HttpRequest.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean httpRequestIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (HttpRequest.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfWaveServerMultiPage ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (WaveServerMultiPage.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean waveServerMultiPageIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveServerMultiPage.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
     public boolean isADerivativeOfShellBase ()
     {
         final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
@@ -1969,6 +2062,197 @@ public class WaveJavaClass extends WaveJavaType
             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL, "WaveJavaClass.computeShellRoot : Shell Root is already set as : %s", s_shellRootClass.getTypeName ());
 
             WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    private void computeWaveServerMultiPageHandlers (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfWaveServerMultiPage ()))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing WaveServerMultiPage Handlers for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final GET getAnnotation = declaredMethod.getAnnotation (GET.class);
+            final POST postAnnotation = declaredMethod.getAnnotation (POST.class);
+            final PUT putAnnotation = declaredMethod.getAnnotation (PUT.class);
+            final DELETE deleteAnnotation = declaredMethod.getAnnotation (DELETE.class);
+
+            if ((null == getAnnotation) && (null == postAnnotation) && (null == putAnnotation) && (null == deleteAnnotation))
+            {
+                continue;
+            }
+
+            final Path pathAnnotation = declaredMethod.getAnnotation (Path.class);
+
+            if (null == pathAnnotation)
+            {
+                continue;
+            }
+
+            final String relativePathForHandler = pathAnnotation.name ();
+
+            if (WaveStringUtils.isBlank (relativePathForHandler))
+            {
+                continue;
+            }
+
+            if (null != getAnnotation)
+            {
+                if (m_waveServerMultiPageGetHandlers.containsKey (relativePathForHandler))
+                {
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Trying to add a WaveServerMultiPage Handler for Class %s for GET with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Already persent WaveServerMultiPage Handler method : %s", (m_waveServerMultiPageGetHandlers.get (relativePathForHandler)).toString ());
+                    WaveAssertUtils.waveAssert ();
+                }
+                else
+                {
+                    declaredMethod.setAccessible (true);
+
+                    m_waveServerMultiPageGetHandlers.put (relativePathForHandler, declaredMethod);
+
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Added a WaveServerMultiPage Handler for Class %s for GET with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                }
+            }
+
+            if (null != postAnnotation)
+            {
+                if (m_waveServerMultiPagePostHandlers.containsKey (relativePathForHandler))
+                {
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Trying to add a WaveServerMultiPage Handler for Class %s for POST with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Already persent WaveServerMultiPage Handler method : %s", (m_waveServerMultiPagePostHandlers.get (relativePathForHandler)).toString ());
+                    WaveAssertUtils.waveAssert ();
+                }
+                else
+                {
+                    declaredMethod.setAccessible (true);
+
+                    m_waveServerMultiPagePostHandlers.put (relativePathForHandler, declaredMethod);
+
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Added a WaveServerMultiPage Handler for Class %s for POST with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                }
+            }
+
+            if (null != putAnnotation)
+            {
+                if (m_waveServerMultiPagePutHandlers.containsKey (relativePathForHandler))
+                {
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Trying to add a WaveServerMultiPage Handler for Class %s for PUT with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Already persent WaveServerMultiPage Handler method : %s", (m_waveServerMultiPagePutHandlers.get (relativePathForHandler)).toString ());
+                    WaveAssertUtils.waveAssert ();
+                }
+                else
+                {
+                    declaredMethod.setAccessible (true);
+
+                    m_waveServerMultiPagePutHandlers.put (relativePathForHandler, declaredMethod);
+
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Added a WaveServerMultiPage Handler for Class %s for PUT with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                }
+            }
+
+            if (null != deleteAnnotation)
+            {
+                if (m_waveServerMultiPageDeleteHandlers.containsKey (relativePathForHandler))
+                {
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Trying to add a WaveServerMultiPage Handler for Class %s for DELETE with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Already persent WaveServerMultiPage Handler method : %s", (m_waveServerMultiPageDeleteHandlers.get (relativePathForHandler)).toString ());
+                    WaveAssertUtils.waveAssert ();
+                }
+                else
+                {
+                    declaredMethod.setAccessible (true);
+
+                    m_waveServerMultiPageDeleteHandlers.put (relativePathForHandler, declaredMethod);
+
+                    WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeWaveServerMultiPageHandlers : Added a WaveServerMultiPage Handler for Class %s for DELETE with Path %s, handler method : %s", m_typeName, relativePathForHandler, declaredMethod.getName ());
+                }
+            }
+        }
+    }
+
+    public Method getMethodForWaveServerMultiPageForGet (final String relativePath)
+    {
+        final Method method = m_waveServerMultiPageGetHandlers.get (relativePath);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveServerMultiPageForGet (relativePath));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveServerMultiPageForPost (final String relativePath)
+    {
+        final Method method = m_waveServerMultiPagePostHandlers.get (relativePath);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveServerMultiPageForPost (relativePath));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveServerMultiPageForPut (final String relativePath)
+    {
+        final Method method = m_waveServerMultiPagePutHandlers.get (relativePath);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveServerMultiPageForPut (relativePath));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveServerMultiPageForDelete (final String relativePath)
+    {
+        final Method method = m_waveServerMultiPagePutHandlers.get (relativePath);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveServerMultiPageForDelete (relativePath));
+        }
+        else
+        {
+            return (null);
         }
     }
 }

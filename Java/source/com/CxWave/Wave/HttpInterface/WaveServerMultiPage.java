@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
+
 public class WaveServerMultiPage extends WaveServerPage
 {
     Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForGet     = new HashMap<String, WaveServerMultiPageRequestHandler> ();
@@ -182,5 +184,71 @@ public class WaveServerMultiPage extends WaveServerPage
     public void getListOfOptionsForDelete (final Vector<String> optionsForDelete)
     {
         optionsForDelete.addAll (m_multiPageOptionsForDelete);
+    }
+
+    @Override
+    public void get (final HttpRequest httpRequest)
+    {
+        final String path = getPath ();
+        final String uri = httpRequest.getUri ();
+        final boolean isWildCardRequestHandlerRequiredAtTop = callWildCardRequestHandlerAtTop ();
+
+        if (path.equals (uri))
+        {
+            if (true == isWildCardRequestHandlerRequiredAtTop)
+            {
+                wildCardRequestHandlerForGet (httpRequest);
+            }
+            else
+            {
+                super.get (httpRequest);
+            }
+        }
+        else
+        {
+            final String adjustedPath = path + "/";
+            String adjustedUri = uri;
+            final int lengthOfAdjustedPath = adjustedPath.length ();
+            final int position = uri.indexOf (adjustedPath, 0);
+
+            if (-1 != position)
+            {
+                adjustedUri = adjustedUri.substring (lengthOfAdjustedPath);
+            }
+
+            debugTracePrintf ("WaveServerMultiPage.get : Adjusted URI : \"%s\"", adjustedUri);
+
+            final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandler = getWaveServerMultiPageRequestHandlerForGet (adjustedUri);
+
+            if (null != waveServerMultiPageRequestHandler)
+            {
+                waveServerMultiPageRequestHandler.execute (httpRequest);
+            }
+            else
+            {
+                wildCardRequestHandlerForGet (httpRequest);
+            }
+        }
+    }
+
+    public boolean callWildCardRequestHandlerAtTop ()
+    {
+        return false;
+    }
+
+    public void wildCardRequestHandlerForGet (final HttpRequest httpRequest)
+    {
+        final String uri = httpRequest.getUri ();
+        final StringBuffer httpResponse = new StringBuffer ();
+        final AcceptedStreamingSocket acceptedStreamingSocket = httpRequest.getAcceptedStreamingSocket ();
+
+        debugTracePrintf ("WaveServerMultiPage.wildCardRequestHandlerForGet : There is no page implemented with the given path \"%s\"", uri);
+
+        HttpToolKit.getNotFoundErrorString (httpResponse);
+
+        if (null != acceptedStreamingSocket)
+        {
+            acceptedStreamingSocket.send (httpResponse);
+        }
     }
 }

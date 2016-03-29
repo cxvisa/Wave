@@ -1035,4 +1035,52 @@ public class WaveJavaSourceRepository
     {
         return (WaveJavaClass.getShellSubordinnatesForClass (classForShell));
     }
+
+    public static Method getMethodForWaveServerMultiPageHandlerForGetInWaveJavaClass (final String waveJavaClassName, final String relativePath)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveServerMultiPageForGet (relativePath));
+    }
+
+    public static Method getMethodForWaveServerMultiPageHandlerForPostInWaveJavaClass (final String waveJavaClassName, final String relativePath)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveServerMultiPageForPost (relativePath));
+    }
+
+    public static Method getMethodForWaveServerMultiPageHandlerForPutInWaveJavaClass (final String waveJavaClassName, final String relativePath)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveServerMultiPageForPut (relativePath));
+    }
+
+    public static Method getMethodForWaveServerMultiPageHandlerForDeleteInWaveJavaClass (final String waveJavaClassName, final String relativePath)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveServerMultiPageForDelete (relativePath));
+    }
 }
