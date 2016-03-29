@@ -16,18 +16,28 @@ import com.CxWave.Wave.HttpInterface.Annotations.Path;
 
 public class WaveServerMultiPage extends WaveServerPage
 {
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForGet     = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Vector<String>                                 m_multiPageOptionsForGet             = new Vector<String> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForHead    = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForPut     = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Vector<String>                                 m_multiPageOptionsForPut             = new Vector<String> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForPost    = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Vector<String>                                 m_multiPageOptionsForPost            = new Vector<String> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForDelete  = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Vector<String>                                 m_multiPageOptionsForDelete          = new Vector<String> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForOptions = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForConnect = new HashMap<String, WaveServerMultiPageRequestHandler> ();
-    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForTrace   = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForGet                       = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForGet     = new WaveServerMultiPageRequestHandlerDirectory ();
+    Vector<String>                                 m_multiPageOptionsForGet                               = new Vector<String> ();
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForHead                      = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForHead    = new WaveServerMultiPageRequestHandlerDirectory ();
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForPut                       = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForPut     = new WaveServerMultiPageRequestHandlerDirectory ();
+    Vector<String>                                 m_multiPageOptionsForPut                               = new Vector<String> ();
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForPost                      = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForPost    = new WaveServerMultiPageRequestHandlerDirectory ();
+    Vector<String>                                 m_multiPageOptionsForPost                              = new Vector<String> ();
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForDelete                    = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForDelete  = new WaveServerMultiPageRequestHandlerDirectory ();
+    Vector<String>                                 m_multiPageOptionsForDelete                            = new Vector<String> ();
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForOptions                   = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForOptions = new WaveServerMultiPageRequestHandlerDirectory ();
+
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForConnect                   = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForConnect = new WaveServerMultiPageRequestHandlerDirectory ();
+
+    Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForTrace                     = new HashMap<String, WaveServerMultiPageRequestHandler> ();
+    WaveServerMultiPageRequestHandlerDirectory     m_waveServerMultiPageRequestHandlerDirectoryForTrace   = new WaveServerMultiPageRequestHandlerDirectory ();
 
     public WaveServerMultiPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager, final String path)
     {
@@ -105,6 +115,8 @@ public class WaveServerMultiPage extends WaveServerPage
             m_multiPageOptionsForGet.add (path);
 
             WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+
+            m_waveServerMultiPageRequestHandlerDirectoryForGet.registerServerMultiPageRequestHandler (waveServerMultiPageRequestHandler);
         }
         else
         {
@@ -121,6 +133,10 @@ public class WaveServerMultiPage extends WaveServerPage
             m_multiPageOptionsForPost.add (path);
 
             // WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+
+            // m_waveServerMultiPageRequestHandlerDirectoryForPost.registerServerMultiPageRequestHandler
+            // (waveServerMultiPageRequestHandler);
+
         }
         else
         {
@@ -137,6 +153,10 @@ public class WaveServerMultiPage extends WaveServerPage
             m_multiPageOptionsForPut.add (path);
 
             // WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+
+            // m_waveServerMultiPageRequestHandlerDirectoryForPut.registerServerMultiPageRequestHandler
+            // (waveServerMultiPageRequestHandler);
+
         }
         else
         {
@@ -153,6 +173,8 @@ public class WaveServerMultiPage extends WaveServerPage
             m_multiPageOptionsForDelete.add (path);
 
             // WaveServerPageDirectory.registerServerPage ((getPath ()) + "/" + path, this);
+            // m_waveServerMultiPageRequestHandlerDirectoryForDelete.registerServerMultiPageRequestHandler
+            // (waveServerMultiPageRequestHandler);
         }
         else
         {
@@ -288,7 +310,17 @@ public class WaveServerMultiPage extends WaveServerPage
             }
             else
             {
-                wildCardRequestHandlerForGet (httpRequest);
+
+                final WaveServerMultiPageRequestHandler waveServerMultiPageRequestHandlerViaDirectory = m_waveServerMultiPageRequestHandlerDirectoryForGet.getWaveServerMultiPageRequestHandler (adjustedUri);
+
+                if (null != waveServerMultiPageRequestHandlerViaDirectory)
+                {
+                    waveServerMultiPageRequestHandlerViaDirectory.execute (httpRequest);
+                }
+                else
+                {
+                    wildCardRequestHandlerForGet (httpRequest);
+                }
             }
         }
     }

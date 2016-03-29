@@ -25,7 +25,7 @@ public class WaveTraceServerMultiPage extends WaveServerMultiPage
     }
 
     @GET
-    @Path (name = "List")
+    @Path (name = "List/*")
     void getForList (final HttpRequest httpRequest)
     {
         final Vector<TraceClientId> traceClientIdsVector = new Vector<TraceClientId> ();
