@@ -11,6 +11,8 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
 import com.CxWave.Wave.Framework.Utils.Source.WaveJavaSourceRepository;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.HttpInterface.Annotations.Path;
 
 public class WaveServerMultiPage extends WaveServerPage
 {
@@ -218,7 +220,7 @@ public class WaveServerMultiPage extends WaveServerPage
     @Override
     public void get (final HttpRequest httpRequest)
     {
-        final String path = getPath ();
+        String path = getPath ();
         final String uri = httpRequest.getUri ();
         final boolean isWildCardRequestHandlerRequiredAtTop = callWildCardRequestHandlerAtTop ();
 
@@ -235,15 +237,30 @@ public class WaveServerMultiPage extends WaveServerPage
         }
         else
         {
-            final String adjustedPath = path + "/";
-            String adjustedUri = uri;
-            final int lengthOfAdjustedPath = adjustedPath.length ();
-            final int position = uri.indexOf (adjustedPath, 0);
+            final Class<?> thisClass = getClass ();
+            final Path pathAnnotation = thisClass.getAnnotation (Path.class);
+            String annotatedPath = "";
 
-            if (-1 != position)
+            if (null != pathAnnotation)
             {
-                adjustedUri = adjustedUri.substring (lengthOfAdjustedPath);
+                annotatedPath = pathAnnotation.name ();
             }
+
+            if (WaveStringUtils.isNotBlank (annotatedPath))
+            {
+                path = annotatedPath;
+            }
+
+            path = path.trim ();
+
+            if (path.endsWith ("/"))
+            {
+                path = path.substring (0, path.length () - 1);
+            }
+
+            final String adjustedPath = path + "/";
+            final int numberOfSeparatorOccurances = WaveStringUtils.numberOfOccurances (adjustedPath, '/');
+            final String adjustedUri = WaveStringUtils.subStringPostNthOccuranceOfChar (uri, '/', numberOfSeparatorOccurances);
 
             debugTracePrintf ("WaveServerMultiPage.get : Adjusted URI : \"%s\"", adjustedUri);
 

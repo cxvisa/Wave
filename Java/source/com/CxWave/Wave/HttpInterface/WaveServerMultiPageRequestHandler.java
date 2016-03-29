@@ -52,6 +52,30 @@ public abstract class WaveServerMultiPageRequestHandler
 
     void execute (final HttpRequest httpRequest)
     {
+        WaveAssertUtils.waveAssert (null != m_method);
+
+        final Class<?> parameterTypes[] = m_method.getParameterTypes ();
+        final int numberOfParameters = parameterTypes.length;
+        final Object[] paramterValues = new Object[numberOfParameters];
+
+        for (int i = 0; i < numberOfParameters; i++)
+        {
+            final Class<?> parameterType = parameterTypes[i];
+
+            if (String.class.equals (parameterType))
+            {
+
+            }
+            else if (HttpRequest.class.equals (parameterType))
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
         try
         {
             m_method.invoke (m_waveServerMultiPage, httpRequest);

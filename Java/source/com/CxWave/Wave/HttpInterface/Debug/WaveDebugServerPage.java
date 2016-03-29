@@ -14,7 +14,7 @@ public class WaveDebugServerPage extends WaveServerPage
     {
         super (httpInterfaceReceiverObjectManager, path);
 
-        final WaveTraceServerMultiPage waveTraceServerMultiPage = new WaveTraceServerMultiPage (httpInterfaceReceiverObjectManager, "/debug/trace");
+        final WaveTraceServerMultiPage waveTraceServerMultiPage = new WaveTraceServerMultiPage (httpInterfaceReceiverObjectManager, "/debug/*/trace");
     }
 
 }

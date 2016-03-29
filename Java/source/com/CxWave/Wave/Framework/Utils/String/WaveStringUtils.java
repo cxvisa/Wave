@@ -683,4 +683,51 @@ public class WaveStringUtils
 
         return (spacesBuffer.toString ());
     }
+
+    public static int numberOfOccurances (final String inputString, final char c)
+    {
+        final int numberOfChars = inputString.length ();
+        int numberOfOccurances = 0;
+
+        for (int i = 0; i < numberOfChars; i++)
+        {
+            if ((inputString.charAt (i)) == c)
+            {
+                numberOfOccurances++;
+            }
+        }
+
+        return (numberOfOccurances);
+    }
+
+    public static String subStringPostNthOccuranceOfChar (final String inputString, final char c, final int nthOccurance)
+    {
+        final int numberOfChars = inputString.length ();
+        int numberOfOccurances = 0;
+        int i = 0;
+
+        for (i = 0; i < numberOfChars; i++)
+        {
+            if ((inputString.charAt (i)) == c)
+            {
+                numberOfOccurances++;
+
+                if (nthOccurance == numberOfOccurances)
+                {
+                    break;
+                }
+            }
+        }
+
+        i++;
+
+        if (i < numberOfChars)
+        {
+            return (inputString.substring (i));
+        }
+        else
+        {
+            return ("");
+        }
+    }
 }
