@@ -193,4 +193,20 @@ public class TraceClientMap
     {
         return (s_traceClientMap);
     }
+
+    public void getClientsAndLevels (final Vector<TraceClientId> traceClientIdsVector, final Vector<TraceLevel> traceLevelsVector)
+    {
+        m_traceClientMapMutex.lock ();
+
+        for (final Map.Entry<TraceClientId, TraceLevel> entry : m_traceClientsAndLevels.entrySet ())
+        {
+            final TraceClientId traceClientId = entry.getKey ();
+            final TraceLevel traceLevel = entry.getValue ();
+
+            traceClientIdsVector.add (traceClientId);
+            traceLevelsVector.add (traceLevel);
+        }
+
+        m_traceClientMapMutex.unlock ();
+    }
 }

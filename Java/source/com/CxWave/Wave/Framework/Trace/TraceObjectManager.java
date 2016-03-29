@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.Trace;
 
+import java.util.Vector;
+
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NativeService;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
@@ -273,5 +275,19 @@ public class TraceObjectManager extends WaveObjectManager
         final TraceClientId traceClientId = traceClientMap.addClient (traceLevel, traceClientName);
 
         return (traceClientId);
+    }
+
+    public static void getClientsInformationDirectly (final Vector<TraceClientId> traceClientIdsVector, final Vector<TraceLevel> traceLevelsVector)
+    {
+        final TraceClientMap traceClientMap = TraceClientMap.getInstance ();
+
+        traceClientMap.getClientsAndLevels (traceClientIdsVector, traceLevelsVector);
+    }
+
+    public String getTraceClientName (final TraceClientId traceClientId)
+    {
+        final TraceClientMap traceClientMap = TraceClientMap.getInstance ();
+
+        return (traceClientMap.getTraceClientName (traceClientId));
     }
 }

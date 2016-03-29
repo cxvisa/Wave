@@ -13,8 +13,10 @@ import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.ReservedWaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
+import com.CxWave.Wave.Framework.Trace.TraceObjectManager;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.SI32;
+import com.CxWave.Wave.Framework.Type.TraceClientId;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
@@ -328,5 +330,17 @@ public class FrameworkToolKit
     public static void setHttpInterfaceReceiverPort (final SI32 httpInterfaceReceiverPort)
     {
         s_httpInterfaceReceiverPort = httpInterfaceReceiverPort;
+    }
+
+    public static String getTraceClientNameById (final TraceClientId traceClientId)
+    {
+        final TraceObjectManager traceObjectManager = TraceObjectManager.getInstance ();
+
+        if (null == traceObjectManager)
+        {
+            return ("");
+        }
+
+        return (traceObjectManager.getTraceClientName (traceClientId));
     }
 }

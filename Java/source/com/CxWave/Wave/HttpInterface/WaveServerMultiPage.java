@@ -42,22 +42,38 @@ public class WaveServerMultiPage extends WaveServerPage
 
         for (final String relativePathForGet : relativePathsForGet)
         {
-            addWaveServerMultiPageRequestHandlerForGet (relativePathForGet, new WaveServerMultiPageRequestHandlerForGet (relativePathForGet));
+            final WaveServerMultiPageRequestHandlerForGet waveServerMultiPageRequestHandlerForGet = new WaveServerMultiPageRequestHandlerForGet (relativePathForGet);
+
+            waveServerMultiPageRequestHandlerForGet.validateAndCompute (this);
+
+            addWaveServerMultiPageRequestHandlerForGet (relativePathForGet, waveServerMultiPageRequestHandlerForGet);
         }
 
         for (final String relativePathForPost : relativePathsForPost)
         {
-            addWaveServerMultiPageRequestHandlerForPost (relativePathForPost, new WaveServerMultiPageRequestHandlerForGet (relativePathForPost));
+            final WaveServerMultiPageRequestHandlerForPost waveServerMultiPageRequestHandlerForPost = new WaveServerMultiPageRequestHandlerForPost (relativePathForPost);
+
+            waveServerMultiPageRequestHandlerForPost.validateAndCompute (this);
+
+            addWaveServerMultiPageRequestHandlerForPost (relativePathForPost, waveServerMultiPageRequestHandlerForPost);
         }
 
         for (final String relativePathForPut : relativePathsForPut)
         {
-            addWaveServerMultiPageRequestHandlerForPut (relativePathForPut, new WaveServerMultiPageRequestHandlerForGet (relativePathForPut));
+            final WaveServerMultiPageRequestHandlerForPut waveServerMultiPageRequestHandlerForPut = new WaveServerMultiPageRequestHandlerForPut (relativePathForPut);
+
+            waveServerMultiPageRequestHandlerForPut.validateAndCompute (this);
+
+            addWaveServerMultiPageRequestHandlerForPut (relativePathForPut, waveServerMultiPageRequestHandlerForPut);
         }
 
         for (final String relativePathForDelete : relativePathsForDelete)
         {
-            addWaveServerMultiPageRequestHandlerForDelete (relativePathForDelete, new WaveServerMultiPageRequestHandlerForGet (relativePathForDelete));
+            final WaveServerMultiPageRequestHandlerForDelete waveServerMultiPageRequestHandlerForDelete = new WaveServerMultiPageRequestHandlerForDelete (relativePathForDelete);
+
+            waveServerMultiPageRequestHandlerForDelete.validateAndCompute (this);
+
+            addWaveServerMultiPageRequestHandlerForDelete (relativePathForDelete, waveServerMultiPageRequestHandlerForDelete);
         }
     }
 
