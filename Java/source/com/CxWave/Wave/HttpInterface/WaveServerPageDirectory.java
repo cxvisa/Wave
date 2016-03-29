@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.HttpInterface;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -14,7 +15,7 @@ import com.CxWave.Wave.Shell.Annotations.ShellCommand;
 
 public class WaveServerPageDirectory
 {
-    static Map<String, WaveServerPage>  m_serverPageMap;
+    static Map<String, WaveServerPage>  m_serverPageMap               = new HashMap<String, WaveServerPage> ();
     static WaveServerPageDirectoryEntry m_waveServerPageDirectoryRoot = new WaveServerPageDirectoryEntry ("/", null);
 
     public static boolean isAKnownServerPage (final String path)

@@ -14,9 +14,9 @@ public class WaveServerPage extends WaveWorker
     private String m_path        = "";
     private String m_pageHeading = "";
 
-    public WaveServerPage (final String path)
+    public WaveServerPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager, final String path)
     {
-        super (HttpInterfaceReceiverObjectManager.getInstance ());
+        super (httpInterfaceReceiverObjectManager);
 
         m_path = path;
 

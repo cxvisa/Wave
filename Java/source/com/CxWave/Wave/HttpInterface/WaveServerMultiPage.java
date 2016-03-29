@@ -27,9 +27,9 @@ public class WaveServerMultiPage extends WaveServerPage
     Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForConnect = new HashMap<String, WaveServerMultiPageRequestHandler> ();
     Map<String, WaveServerMultiPageRequestHandler> m_multiPageRequestHandlersForTrace   = new HashMap<String, WaveServerMultiPageRequestHandler> ();
 
-    public WaveServerMultiPage (final String path)
+    public WaveServerMultiPage (final HttpInterfaceReceiverObjectManager httpInterfaceReceiverObjectManager, final String path)
     {
-        super (path);
+        super (httpInterfaceReceiverObjectManager, path);
 
         final String thisClassTypeName = this.getClass ().getTypeName ();
 

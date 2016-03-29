@@ -17,6 +17,7 @@ import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Socket.AcceptedStreamingSocket;
 import com.CxWave.Wave.Framework.Utils.Socket.ServerStreamingSocket;
+import com.CxWave.Wave.HttpInterface.Debug.WaveDebugServerPage;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod;
 import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
@@ -28,6 +29,7 @@ public class HttpInterfaceReceiverObjectManager extends WaveLocalObjectManagerFo
     private static Map<WaveHttpInterfaceMethod, HttpInterfaceMethodWorker> m_httpInterfaceMethodWorkers             = new HashMap<WaveHttpInterfaceMethod, HttpInterfaceMethodWorker> ();
     private ServerStreamingSocket                                          m_serverSocketForHttpInterfaceClients    = null;
     private HttpInterfaceGetWorker                                         m_httpInterfaceGetWorker                 = null;
+    private WaveDebugServerPage                                            m_waveDebugServerPage                    = null;
 
     public HttpInterfaceReceiverObjectManager ()
     {
@@ -38,6 +40,10 @@ public class HttpInterfaceReceiverObjectManager extends WaveLocalObjectManagerFo
         m_httpInterfaceGetWorker = new HttpInterfaceGetWorker (this);
 
         waveAssert (null != m_httpInterfaceGetWorker);
+
+        m_waveDebugServerPage = new WaveDebugServerPage (this, "/debug");
+
+        waveAssert (null != m_waveDebugServerPage);
     }
 
     public static String getServiceName ()

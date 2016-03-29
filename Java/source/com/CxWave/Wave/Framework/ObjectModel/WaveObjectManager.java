@@ -2149,6 +2149,13 @@ public class WaveObjectManager extends WaveElement
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NullPointerException e)
         {
             WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getInstanceByClassNameIfSingleton : Could not invoke getInstance method for %s.  Details : %s", objectManagerClassName, e.toString ());
+
+            final Throwable cause = e.getCause ();
+
+            if (null != cause)
+            {
+                WaveTraceUtils.errorTracePrintf ("WaveObjectManager.getInstanceByClassNameIfSingleton : Cause : %s,  Stack : \r\n%s", cause.toString (), WaveStackUtils.getStackString (cause));
+            }
         }
 
         if (null == objectForWaveObjectManager)
