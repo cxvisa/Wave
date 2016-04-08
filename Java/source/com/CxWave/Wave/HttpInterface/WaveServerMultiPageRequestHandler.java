@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.HttpInterface;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -11,14 +12,18 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
+import com.CxWave.Wave.HttpInterface.Annotations.FormParam;
 import com.CxWave.Wave.HttpInterface.Annotations.Path;
 import com.CxWave.Wave.HttpInterface.Annotations.PathMapping;
+import com.CxWave.Wave.HttpInterface.Annotations.PathParam;
+import com.CxWave.Wave.HttpInterface.Annotations.QueryParam;
 
 public abstract class WaveServerMultiPageRequestHandler
 {
     private final String        m_relativePath;
-    private Method              m_method              = null;
-    private WaveServerMultiPage m_waveServerMultiPage = null;
+    private Method              m_method               = null;
+    private WaveServerMultiPage m_waveServerMultiPage  = null;
+    private String              m_annotatedPathMapping = "";
 
     public WaveServerMultiPageRequestHandler (final String relativePath)
     {
@@ -51,6 +56,8 @@ public abstract class WaveServerMultiPageRequestHandler
         }
 
         m_method = waveServerMultiPageHandler;
+
+        computeAnnotatedPathMapping ();
     }
 
     void execute (final HttpRequest httpRequest)
@@ -59,7 +66,8 @@ public abstract class WaveServerMultiPageRequestHandler
 
         final Class<?> parameterTypes[] = m_method.getParameterTypes ();
         final int numberOfParameters = parameterTypes.length;
-        final Object[] paramterValues = new Object[numberOfParameters];
+        final Object[] parameterValues = new Object[numberOfParameters];
+        final Annotation[][] parameterAnnotations = m_method.getParameterAnnotations ();
 
         for (int i = 0; i < numberOfParameters; i++)
         {
@@ -67,21 +75,77 @@ public abstract class WaveServerMultiPageRequestHandler
 
             if (String.class.equals (parameterType))
             {
+                final int numberOfParameterAnnotations = parameterAnnotations[i].length;
+                int j = 0;
 
+                for (j = 0; j < numberOfParameterAnnotations; j++)
+                {
+                    final Class<? extends Annotation> annotationType = (parameterAnnotations[i][j]).annotationType ();
+
+                    if (annotationType.equals (PathParam.class))
+                    {
+                        final PathParam pathParam = (PathParam) (parameterAnnotations[i][j]);
+                        final String pathParamName = pathParam.name ();
+
+                        if (WaveStringUtils.isNotBlank (pathParamName))
+                        {
+                            parameterValues[i] = httpRequest.getPathParamterValue (pathParamName);
+                        }
+                        else
+                        {
+                            parameterValues[i] = null;
+                        }
+
+                        break;
+                    }
+                    else if (annotationType.equals (QueryParam.class))
+                    {
+                        final QueryParam queryParam = (QueryParam) (parameterAnnotations[i][j]);
+                        final String queryParamName = queryParam.name ();
+
+                        if (WaveStringUtils.isNotBlank (queryParamName))
+                        {
+                            parameterValues[i] = httpRequest.getQueryParamterValue (queryParamName);
+                        }
+                        else
+                        {
+                            parameterValues[i] = null;
+                        }
+
+                        break;
+                    }
+                    else if (annotationType.equals (FormParam.class))
+                    {
+                        final FormParam formParam = (FormParam) (parameterAnnotations[i][j]);
+                        final String formParamName = formParam.name ();
+
+                        if (WaveStringUtils.isNotBlank (formParamName))
+                        {
+                            parameterValues[i] = httpRequest.getFormParamterValue (formParamName);
+                        }
+                        else
+                        {
+                            parameterValues[i] = null;
+                        }
+
+                        break;
+                    }
+                }
             }
             else if (HttpRequest.class.equals (parameterType))
             {
-
+                parameterValues[i] = httpRequest;
             }
             else
             {
-
+                WaveTraceUtils.fatalTracePrintf ("WaveServerMultiPageRequestHandler.execute : Currently we support only the following data types : HttpRequest and String");
+                WaveAssertUtils.waveAssert ();
             }
         }
 
         try
         {
-            m_method.invoke (m_waveServerMultiPage, httpRequest);
+            m_method.invoke (m_waveServerMultiPage, parameterValues);
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
@@ -100,7 +164,7 @@ public abstract class WaveServerMultiPageRequestHandler
         }
     }
 
-    public String getAnnotatedPathMapping ()
+    public void computeAnnotatedPathMapping ()
     {
         WaveAssertUtils.waveAssert (null != m_method);
 
@@ -146,6 +210,11 @@ public abstract class WaveServerMultiPageRequestHandler
             pathMapping = pathMapping.substring (0, path.length () - 1);
         }
 
-        return (pathMapping);
+        m_annotatedPathMapping = pathMapping;
+    }
+
+    public String getAnnotatedPathMapping ()
+    {
+        return (m_annotatedPathMapping);
     }
 }

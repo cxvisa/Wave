@@ -16,6 +16,7 @@ import com.CxWave.Wave.HttpInterface.WaveServerMultiPage;
 import com.CxWave.Wave.HttpInterface.Annotations.GET;
 import com.CxWave.Wave.HttpInterface.Annotations.Path;
 import com.CxWave.Wave.HttpInterface.Annotations.PathMapping;
+import com.CxWave.Wave.HttpInterface.Annotations.PathParam;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
 @PathMapping (name = "/debug/{debugType}/trace")
@@ -29,7 +30,7 @@ public class WaveTraceServerMultiPage extends WaveServerMultiPage
     @GET
     @Path (name = "List/*")
     @PathMapping (name = "List/{listType}")
-    void getForList (final HttpRequest httpRequest)
+    void getForList (final HttpRequest httpRequest, @PathParam (name = "debugType") final String debugType, @PathParam (name = "listType") final String listType)
     {
         final Vector<TraceClientId> traceClientIdsVector = new Vector<TraceClientId> ();
         final Vector<TraceLevel> traceLevelsVector = new Vector<TraceLevel> ();
@@ -47,7 +48,7 @@ public class WaveTraceServerMultiPage extends WaveServerMultiPage
 
         getWaveServerPagePrePortionForGet (httpResponseString);
 
-        httpResponseString.append ("<H2 STYLE=\"COLOR:RGB(255, 0, 0);TEXT-ALIGN:CENTER;\">" + getPageHeading () + "</H2>\r\n");
+        httpResponseString.append ("<H2 STYLE=\"COLOR:RGB(255, 0, 0);TEXT-ALIGN:CENTER;\">" + getPageHeading () + debugType + " - " + listType + "</H2>\r\n");
         httpResponseString.append ("<H3 STYLE=\"COLOR:RGB(0, 0, 255);TEXT-ALIGN:CENTER;\">List</H3>\r\n");
 
         if (0 < nServices)

@@ -9,6 +9,8 @@ export JVM_MEMORY_OPTIONS = -Xmx100m -Xss228k -XX:MaxMetaspaceSize=50m
 
 export JARFILE = ../build/lib/libSpectrum-1.5.jar
 
+export LD_LIBRARY_PATH += .
+
 .PHONY: all build package classes $(WAVEJARFILE)
 
 build: $(WAVEJARFILE) classes
