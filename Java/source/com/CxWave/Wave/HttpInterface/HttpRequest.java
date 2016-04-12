@@ -20,33 +20,37 @@ import com.CxWave.Wave.Resources.ResourceEnums.WaveHttpInterfaceMethod;
 
 public class HttpRequest
 {
-    WaveHttpInterfaceMethod m_waveHttpInterfaceMethod;
-    String                  m_uri;
-    Vector<String>          m_uriTokens           = new Vector<String> ();
-    String                  m_authorization;
-    int                     m_contentLength;
-    WaveHttpContentType     m_contentType;
-    String                  m_contentBoundary;
-    String                  m_content;
-    boolean                 m_isContentReadIncomplete;
-    Vector<String>          m_entityNames         = new Vector<String> ();
-    Vector<String>          m_entityFileNames     = new Vector<String> ();
-    Vector<String>          m_entityValues        = new Vector<String> ();
-    Map<String, String>     m_entitiesMap         = new HashMap<String, String> ();
-    String                  m_host;
+    WaveHttpInterfaceMethod     m_waveHttpInterfaceMethod;
+    String                      m_uri;
+    Vector<String>              m_uriTokens               = new Vector<String> ();
+    String                      m_authorization;
+    int                         m_contentLength;
+    WaveHttpContentType         m_contentType;
+    String                      m_contentBoundary;
+    String                      m_content;
+    boolean                     m_isContentReadIncomplete;
+    Vector<String>              m_entityNames             = new Vector<String> ();
+    Vector<String>              m_entityFileNames         = new Vector<String> ();
+    Vector<String>              m_entityValues            = new Vector<String> ();
+    Map<String, String>         m_entitiesMap             = new HashMap<String, String> ();
+    String                      m_host;
 
-    Map<String, String>     m_queryParamatersMap  = new HashMap<String, String> ();
-    Map<String, String>     m_formParamatersMap   = new HashMap<String, String> ();
-    Map<String, String>     m_pathParamatersMap   = new HashMap<String, String> ();
+    Map<String, String>         m_queryParamatersMap      = new HashMap<String, String> ();
+    Map<String, String>         m_formParamatersMap       = new HashMap<String, String> ();
+    Map<String, String>         m_pathParamatersMap       = new HashMap<String, String> ();
 
-    String                  m_pathMapping;
+    Map<String, Vector<String>> m_queryParamatersMultiMap = new HashMap<String, Vector<String>> ();
+    Map<String, Vector<String>> m_formParamatersMultiMap  = new HashMap<String, Vector<String>> ();
+    Map<String, Vector<String>> m_pathParamatersMultiMap  = new HashMap<String, Vector<String>> ();
 
-    AcceptedStreamingSocket m_serverStreamingSocket;
+    String                      m_pathMapping;
 
-    static String           s_authorizationString = "Authorization";
-    static String           s_contentLengthString = "Content-Length";
-    static String           s_contentTypeString   = "Content-Type";
-    static String           s_hostString          = "Host";
+    AcceptedStreamingSocket     m_serverStreamingSocket;
+
+    static String               s_authorizationString     = "Authorization";
+    static String               s_contentLengthString     = "Content-Length";
+    static String               s_contentTypeString       = "Content-Type";
+    static String               s_hostString              = "Host";
 
     public HttpRequest (final StringBuffer httpRequest, final AcceptedStreamingSocket serverStreamingSocket)
     {
@@ -370,6 +374,17 @@ public class HttpRequest
                             m_entitiesMap.put (entityName, entityValue);
 
                             m_queryParamatersMap.put (entityName, entityValue);
+
+                            Vector<String> entityValues = m_queryParamatersMultiMap.get (entityName);
+
+                            if (null == entityValues)
+                            {
+                                entityValues = new Vector<String> ();
+
+                                m_queryParamatersMultiMap.put (entityName, entityValues);
+                            }
+
+                            entityValues.add (entityValue);
                         }
                     }
                 }
@@ -416,6 +431,17 @@ public class HttpRequest
                             m_entitiesMap.put (entityName, entityValue);
 
                             m_formParamatersMap.put (entityName, entityValue);
+
+                            Vector<String> entityValues = m_formParamatersMultiMap.get (entityName);
+
+                            if (null == entityValues)
+                            {
+                                entityValues = new Vector<String> ();
+
+                                m_formParamatersMultiMap.put (entityName, entityValues);
+                            }
+
+                            entityValues.add (entityValue);
 
                             entityName = "";
                             fileName = "";
@@ -539,6 +565,17 @@ public class HttpRequest
                         m_entitiesMap.put (entityName, entityValue);
 
                         m_formParamatersMap.put (entityName, entityValue);
+
+                        Vector<String> entityValues = m_formParamatersMultiMap.get (entityName);
+
+                        if (null == entityValues)
+                        {
+                            entityValues = new Vector<String> ();
+
+                            m_formParamatersMultiMap.put (entityName, entityValues);
+                        }
+
+                        entityValues.add (entityValue);
                     }
                 }
             }
@@ -876,6 +913,17 @@ public class HttpRequest
                     final String pathParameterValue = uriTokens.get (i);
 
                     m_pathParamatersMap.put (pathParameter, pathParameterValue);
+
+                    Vector<String> entityValues = m_pathParamatersMultiMap.get (pathParameter);
+
+                    if (null == entityValues)
+                    {
+                        entityValues = new Vector<String> ();
+
+                        m_pathParamatersMultiMap.put (pathParameter, entityValues);
+                    }
+
+                    entityValues.add (pathParameterValue);
                 }
             }
         }
@@ -884,5 +932,20 @@ public class HttpRequest
     public String getPathMapping ()
     {
         return (m_pathMapping);
+    }
+
+    public Vector<String> getPathParameterValues (final String pathParamter)
+    {
+        return (m_pathParamatersMultiMap.get (pathParamter));
+    }
+
+    public Vector<String> getQueryParameterValues (final String queryParameter)
+    {
+        return (m_queryParamatersMultiMap.get (queryParameter));
+    }
+
+    public Vector<String> getFormParameterValues (final String formParameter)
+    {
+        return (m_queryParamatersMultiMap.get (formParameter));
     }
 }
