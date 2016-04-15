@@ -7,6 +7,14 @@ package com.CxWave.Wave.HttpInterface;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Stack.WaveStackUtils;
@@ -68,6 +76,7 @@ public abstract class WaveServerMultiPageRequestHandler
         final int numberOfParameters = parameterTypes.length;
         final Object[] parameterValues = new Object[numberOfParameters];
         final Annotation[][] parameterAnnotations = m_method.getParameterAnnotations ();
+        final Type genericParameterTypes[] = m_method.getGenericParameterTypes ();
 
         for (int i = 0; i < numberOfParameters; i++)
         {
@@ -138,8 +147,132 @@ public abstract class WaveServerMultiPageRequestHandler
             }
             else
             {
-                WaveTraceUtils.fatalTracePrintf ("WaveServerMultiPageRequestHandler.execute : Currently we support only the following data types : HttpRequest and String");
-                WaveAssertUtils.waveAssert ();
+                final Type genericParameterType = genericParameterTypes[i];
+
+                if (genericParameterType instanceof ParameterizedType)
+                {
+                    WaveTraceUtils.infoTracePrintf ("ParameterizedType");
+
+                    final ParameterizedType parameterizedType = (ParameterizedType) genericParameterType;
+
+                    WaveAssertUtils.waveAssert (null != parameterizedType);
+
+                    final Type ownerType = parameterizedType.getOwnerType ();
+                    final Type rawType = parameterizedType.getRawType ();
+                    String rawTypeName = null;
+
+                    if (null != ownerType)
+                    {
+                        WaveTraceUtils.infoTracePrintf ("Owner Type : %s", ownerType.getTypeName ());
+                    }
+
+                    if (null != rawType)
+                    {
+                        rawTypeName = rawType.getTypeName ();
+                        WaveTraceUtils.infoTracePrintf ("Raw   Type : %s", rawTypeName);
+                    }
+                    else
+                    {
+                        WaveAssertUtils.waveAssert ();
+                    }
+
+                    WaveAssertUtils.waveAssert (null != rawTypeName);
+
+                    final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments ();
+
+                    for (final Type actualTypeArgument : actualTypeArguments)
+                    {
+                        WaveTraceUtils.infoTracePrintf ("Actual Type Argument : %s", actualTypeArgument.getTypeName ());
+                    }
+
+                    WaveAssertUtils.waveAssert (1 == actualTypeArguments.length);
+                    WaveAssertUtils.waveAssert ((String.class.getName ()).equals (actualTypeArguments[0].getTypeName ()));
+
+                    final int numberOfParameterAnnotations = parameterAnnotations[i].length;
+                    int j = 0;
+                    Vector<String> pathParamValues = null;
+
+                    for (j = 0; j < numberOfParameterAnnotations; j++)
+                    {
+                        final Class<? extends Annotation> annotationType = (parameterAnnotations[i][j]).annotationType ();
+
+                        if (annotationType.equals (PathParam.class))
+                        {
+                            final PathParam pathParam = (PathParam) (parameterAnnotations[i][j]);
+                            final String pathParamName = pathParam.name ();
+
+                            if (WaveStringUtils.isNotBlank (pathParamName))
+                            {
+                                pathParamValues = httpRequest.getPathParameterValues (pathParamName);
+                            }
+
+                            break;
+                        }
+                        else if (annotationType.equals (QueryParam.class))
+                        {
+                            final QueryParam queryParam = (QueryParam) (parameterAnnotations[i][j]);
+                            final String queryParamName = queryParam.name ();
+
+                            if (WaveStringUtils.isNotBlank (queryParamName))
+                            {
+                                pathParamValues = httpRequest.getQueryParameterValues (queryParamName);
+                            }
+
+                            break;
+                        }
+                        else if (annotationType.equals (FormParam.class))
+                        {
+                            final FormParam formParam = (FormParam) (parameterAnnotations[i][j]);
+                            final String formParamName = formParam.name ();
+
+                            if (WaveStringUtils.isNotBlank (formParamName))
+                            {
+                                pathParamValues = httpRequest.getFormParameterValues (formParamName);
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if ((List.class.getName ()).equals (rawTypeName))
+                    {
+                        final List<String> newList = new Vector<String> ();
+
+                        if (null != pathParamValues)
+                        {
+                            newList.addAll (pathParamValues);
+                        }
+
+                        parameterValues[i] = newList;
+                    }
+                    else if ((Set.class.getName ()).equals (rawTypeName))
+                    {
+                        final Set<String> newSet = new HashSet<String> ();
+
+                        if (null != pathParamValues)
+                        {
+                            newSet.addAll (pathParamValues);
+                        }
+
+                        parameterValues[i] = newSet;
+                    }
+                    else if ((SortedSet.class.getName ()).equals (rawTypeName))
+                    {
+                        final SortedSet<String> newSortedSet = new TreeSet<String> ();
+
+                        if (null != pathParamValues)
+                        {
+                            newSortedSet.addAll (pathParamValues);
+                        }
+
+                        parameterValues[i] = newSortedSet;
+                    }
+                }
+                else
+                {
+                    WaveTraceUtils.fatalTracePrintf ("WaveServerMultiPageRequestHandler.execute : Currently we support only the following data types : HttpRequest, String and List<String>/Set<String>/SortedSet<String>");
+                    WaveAssertUtils.waveAssert ();
+                }
             }
         }
 

@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.HttpInterface.Debug.Trace;
 
+import java.util.List;
 import java.util.Vector;
 
 import com.CxWave.Wave.Framework.ToolKits.Framework.FrameworkToolKit;
@@ -30,7 +31,7 @@ public class WaveTraceServerMultiPage extends WaveServerMultiPage
     @GET
     @Path (name = "List/*")
     @PathMapping (name = "List/{listType}")
-    void getForList (final HttpRequest httpRequest, @PathParam (name = "debugType") final String debugType, @PathParam (name = "listType") final String listType)
+    void getForList (final HttpRequest httpRequest, @PathParam (name = "debugType") final String debugType, @PathParam (name = "listType") final String listType, @PathParam (name = "listType") final List<String> listTypes)
     {
         final Vector<TraceClientId> traceClientIdsVector = new Vector<TraceClientId> ();
         final Vector<TraceLevel> traceLevelsVector = new Vector<TraceLevel> ();
@@ -38,6 +39,14 @@ public class WaveTraceServerMultiPage extends WaveServerMultiPage
         int index = 0;
         String serviceName;
         String traceLevelName;
+
+        if (null != listTypes)
+        {
+            for (final String listType1 : listTypes)
+            {
+                infoTracePrintf ("WaveTraceServerMultiPage.getForList : List Types Obtained via the List argument : %s", listType1);
+            }
+        }
 
         TraceObjectManager.getClientsInformationDirectly (traceClientIdsVector, traceLevelsVector);
 
