@@ -43,6 +43,7 @@
 #include "SystemManagement/WaveSystemManagementObjectManager.h"
 #include "SystemManagement/SystemManagementToolKit.h"
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceReceiverObjectManager.h"
+#include "Framework/Messaging/LightHouse/LightHouseReceiverObjectManager.h"
 
 #include "Policy/PolicyObjectManager.h"
 #include "ServiceManagement/Global/ServiceManagementObjectManager.h"
@@ -82,6 +83,8 @@ bool                                           Wave::m_enableDistributedLogSuppo
 bool                                           Wave::m_enableTraceSupport;
 bool                                           Wave::m_enableFileServiceSupport;
 bool                                           Wave::m_enableSystemManagementSupport;
+bool                                           Wave::m_enableLightHouseSupport;
+
 PersistencePostBootCheck                       Wave::m_persistencePostBootCheck;
 WaveMutex                                     Wave::m_clusterEnabledCheckMutex;
 ClusterEnabledCheck                            Wave::m_clusterEnabledCheck  = NULL;
@@ -108,6 +111,7 @@ void Wave::enableAllFeatures ()
     enableTrace               ();
     enableDistributedLog      ();
     enableHaPeer              ();
+    enableSystemManagement    ();
     enableSystemManagement    ();
 }
 
@@ -239,6 +243,16 @@ void Wave::enableSystemManagement ()
 void Wave::disableSystemManagement ()
 {
     m_enableSystemManagementSupport = false;
+}
+
+void Wave::enableLightHouse ()
+{
+    m_enableLightHouseSupport = true;
+}
+
+void Wave::disableLightHouse ()
+{
+    m_enableLightHouseSupport = false;
 }
 
 void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
@@ -405,6 +419,11 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ServiceManagementObjectManager::getInstance));
     registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (ServiceManagementLocalObjectManager::getInstance));
+
+    if (true == m_enableLightHouseSupport)
+    {
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseReceiverObjectManager::getInstance));
+    }
 
     if (true == m_enableSystemManagementSupport)
     {

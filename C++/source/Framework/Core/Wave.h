@@ -64,7 +64,7 @@ typedef        ResourceId           (* PersistencePostBootCheck) ();
 typedef        bool                 (* ClusterEnabledCheck) ();
 typedef        void                 (* LogOperationStatusFunction) (ResourceId);
 typedef        bool                 (* IsWaveClusteringEnabled)();
-typedef        void                 (* GetLinecardReadySlotIdBitMapFunction) ( BitMap &, UI32 &); 
+typedef        void                 (* GetLinecardReadySlotIdBitMapFunction) ( BitMap &, UI32 &);
 
 class Wave
 {
@@ -113,6 +113,8 @@ class Wave
         static void         disableHaPeer                             ();
         static void         enableSystemManagement                    ();
         static void         disableSystemManagement                   ();
+        static void         enableLightHouse                          ();
+        static void         disableLightHouse                         ();
 
         static ResourceId   persistencePostBootCheck              ();
         static bool         clusterEnabledCheck                   ();
@@ -141,7 +143,7 @@ class Wave
         static WaveMutex                                     m_clusterEnabledCheckMutex;
         static IsWaveClusteringEnabled                        m_isWaveClusteringEnabled;
         static WaveMutex                                     m_isWaveClusteringEnabledMutex;
-        static GetLinecardReadySlotIdBitMapFunction           m_linecardReadySlotIdBitMapFunction;  
+        static GetLinecardReadySlotIdBitMapFunction           m_linecardReadySlotIdBitMapFunction;
         static WaveMutex                                     m_linecardReadySlotIdBitMapFunctionMutex;
         static bool                                           m_enableFileServiceSupport;
         static bool                                           m_enablePersistenceSupport;
@@ -156,6 +158,7 @@ class Wave
         static bool                                           m_enableTimerSupport;
         static bool                                           m_enableHaPeerSupport;
         static bool                                           m_enableSystemManagementSupport;
+        static bool                                           m_enableLightHouseSupport;
         static string                                         m_waveUserClientPath;
         static string                                         m_waveUserClientParams;
 

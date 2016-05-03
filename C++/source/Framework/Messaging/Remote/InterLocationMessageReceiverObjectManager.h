@@ -38,7 +38,7 @@ class InterLocationMessageReceiverObjectManager : public WaveLocalObjectManagerF
         static void                                       registerDebugShellEntries                 ();
 
         static string                                     getMessageVersionForRemoteLocation        (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort);
-        static UI8                                        getSerializationTypeForRemoteLocation     (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort);  
+        static UI8                                        getSerializationTypeForRemoteLocation     (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort);
 
     // Now the data members
 

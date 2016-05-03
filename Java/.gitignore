@@ -1,4 +1,4 @@
-build/
+build/*
 source/Resources/resources
 *.attach_pid*
 docs/

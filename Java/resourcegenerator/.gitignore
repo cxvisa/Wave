@@ -1,4 +1,4 @@
-build/
+build/*
 *.attach_pid*
 source/.externalToolBuilders/org.eclipse.jdt.core.javabuilder.launch
 source/.classpath
