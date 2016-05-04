@@ -6,11 +6,14 @@
 
 #include "Framework/Messaging/LightHouse/LightHouseReceiverObjectManager.h"
 #include "Framework/Utils/AssertUtils.h"
-
+#include "Framework/Utils/TraceUtils.h"
 #include "Framework/Boot/BootCompleteForThisLocationEvent.h"
 #include "Framework/Boot/BootTypes.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
+#include "Framework/Utils/MulticastReceiverSocket.h"
+#include "Framework/Utils/MulticastSenderSocket.h"
+#include "Shell/ShellDebug.h"
 
 namespace WaveNs
 {
@@ -19,6 +22,9 @@ LightHouseReceiverObjectManager::LightHouseReceiverObjectManager ()
     : WaveLocalObjectManager (getServiceName ())
 {
     setAllowAutomaticallyUnlistenForEvents (false);
+
+    addDebugFunction ((ShellCmdFunction) (&LightHouseReceiverObjectManager::sendMessageToMulticastGroup),      "sendMessageToMulticastGroup");
+    addDebugFunction ((ShellCmdFunction) (&LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup), "receiveMessageFromMulticastGroup");
 }
 
 LightHouseReceiverObjectManager::~LightHouseReceiverObjectManager ()
@@ -78,6 +84,56 @@ void LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler (c
     {
         waveSleep (1);
     }
+}
+
+UI32 LightHouseReceiverObjectManager::sendMessageToMulticastGroup (UI32 argc, vector<string> argv)
+{
+    if (argc >= 4)
+    {
+        string multicastGroupIpAddress = argv[1];
+        SI32   multicastGroupPort      = atoi (argv[2].c_str ());
+        string messageToSend           = argv[3];
+
+        MulticastSenderSocket multicastSenderSocket (multicastGroupIpAddress, multicastGroupPort);
+
+        bool status = multicastSenderSocket.send (messageToSend);
+
+        if (true == status)
+        {
+            WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::sendMessageToMulticastGroup : Succeeded.");
+        }
+        else
+        {
+            WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::sendMessageToMulticastGroup : Failed.");
+        }
+    }
+
+    return (0);
+}
+
+UI32 LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup (UI32 argc, vector<string> argv)
+{
+    if (argc >= 3)
+    {
+        string multicastGroupIpAddress = argv[1];
+        SI32   multicastGroupPort      = atoi (argv[2].c_str ());
+        string messageReceived;
+
+        MulticastReceiverSocket multicastReceiverSocket (multicastGroupIpAddress, multicastGroupPort);
+
+        bool status = multicastReceiverSocket.receive (messageReceived);
+
+        if (true == status)
+        {
+            WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup : Received Message : " + messageReceived);
+        }
+        else
+        {
+            WaveNs::trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup : Failed.");
+        }
+    }
+
+    return (0);
 }
 
 }

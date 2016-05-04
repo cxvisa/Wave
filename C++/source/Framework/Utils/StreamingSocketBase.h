@@ -49,7 +49,7 @@ class StreamingSocketBase
                 string getMessageVersion                        () const;
                 UI8    getSerializationType                     () const;
 
-                
+
 
     // Now the data members
 
@@ -58,7 +58,7 @@ class StreamingSocketBase
                      SI32 m_socket;
                      SI32 m_maximumNumberOfConnections;
 
-        static const UI32 maximumDataLengthToReceive    = 4 * 1024; // 4 KB - We will read 4 KB at a time - but there is no limit on the message size that can be sent across.
+        static const UI32 s_maximumDataLengthToReceive    = 4 * 1024; // 4 KB - We will read 4 KB at a time - but there is no limit on the message size that can be sent across.
                      string m_toMessageVersion;
                      UI8    m_toSerializationType;
 

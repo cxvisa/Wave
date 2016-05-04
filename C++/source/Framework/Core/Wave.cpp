@@ -112,7 +112,7 @@ void Wave::enableAllFeatures ()
     enableDistributedLog      ();
     enableHaPeer              ();
     enableSystemManagement    ();
-    enableSystemManagement    ();
+    enableLightHouse          ();
 }
 
 void Wave::enablePersistence ()

@@ -213,8 +213,8 @@ bool StreamingSocketBase::receive (string &dataString)
         return (false);
     }
 
-    char *pBuffer = new char[maximumDataLengthToReceive + 1];
-    SI32  status  = ::recv (m_socket, pBuffer, maximumDataLengthToReceive, 0);
+    char *pBuffer = new char[s_maximumDataLengthToReceive + 1];
+    SI32  status  = ::recv (m_socket, pBuffer, s_maximumDataLengthToReceive, 0);
 
     dataString = "";
 

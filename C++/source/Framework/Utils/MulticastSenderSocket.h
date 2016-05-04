@@ -4,29 +4,34 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef DATAGRAMRECEIVERSOCKET_H
-#define DATAGRAMRECEIVERSOCKET_H
+#ifndef MULTICASTSENDERSOCKET_H
+#define MULTICASTSENDERSOCKET_H
 
 #include "Framework/Types/Types.h"
+#include "Framework/Utils/MulticastSocket.h"
 
 namespace WaveNs
 {
 
-class DatagramReceiverSocket
+class MulticastSenderSocket : public MulticastSocket
 {
     private :
     protected :
     public :
-         DatagramReceiverSocket ();
-        ~DatagramReceiverSocket ();
+         MulticastSenderSocket (const string &groupIpAddress, const SI32 &port);
+        virtual ~MulticastSenderSocket ();
+
+        virtual bool send (const string &data);
 
         // Now the data members.
 
     private :
+        sockaddr_in m_groupSocketAddress;
+
     protected :
     public :
 };
 
 }
 
-#endif // DATAGRAMRECEIVERSOCKET_H
+#endif // MULTICASTSENDERSOCKET_H

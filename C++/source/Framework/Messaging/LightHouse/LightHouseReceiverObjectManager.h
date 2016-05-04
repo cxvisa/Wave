@@ -22,13 +22,16 @@ class BootCompleteForThisLocationEvent;
 class LightHouseReceiverObjectManager : public WaveLocalObjectManager
 {
     private :
-             LightHouseReceiverObjectManager         ();
+                    LightHouseReceiverObjectManager         ();
 
-        void initialize                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void listenForEvents                         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        void boot                                    (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+               void initialize                              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+               void listenForEvents                         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+               void boot                                    (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-        void bootCompleteForThisLocationEventHandler (const BootCompleteForThisLocationEvent *&pBootCompleteForThisLocationEvent);
+               void bootCompleteForThisLocationEventHandler (const BootCompleteForThisLocationEvent *&pBootCompleteForThisLocationEvent);
+
+        static UI32 sendMessageToMulticastGroup              (UI32 argc, vector<string> argv);
+        static UI32 receiveMessageFromMulticastGroup         (UI32 argc, vector<string> argv);
 
     protected :
     public :
