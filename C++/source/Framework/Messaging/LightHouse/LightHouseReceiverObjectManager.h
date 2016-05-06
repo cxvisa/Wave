@@ -18,6 +18,7 @@ namespace WaveNs
 
 class WaveAsynchronousContextForBootPhases;
 class BootCompleteForThisLocationEvent;
+class MulticastReceiverSocket;
 
 class LightHouseReceiverObjectManager : public WaveLocalObjectManager
 {
@@ -43,6 +44,8 @@ class LightHouseReceiverObjectManager : public WaveLocalObjectManager
         // Now the data members
 
     private :
+        MulticastReceiverSocket *m_pMulticastReceiverSocket;
+
     protected :
     public :
 };

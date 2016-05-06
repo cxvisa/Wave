@@ -96,6 +96,8 @@ class WaveWorker : public WaveElement
         virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
         virtual ResourceId                    deleteTimer                               (TimerHandle timerHandle);
 
+        virtual void                          addLightPulseType                         (const string &lightPulseName, WaveElement *pWaveElement = NULL);
+
         virtual void                          holdMessages                              ();
         virtual void                          holdHighPriorityMessages                  ();
         virtual void                          holdEvents                                ();

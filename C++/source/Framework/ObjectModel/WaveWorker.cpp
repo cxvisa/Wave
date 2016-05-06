@@ -340,6 +340,16 @@ void WaveWorker::addOperationMap (UI32 operationCode, WaveMessageHandler pWaveMe
     m_pWaveObjectManager->addOperationMap (operationCode, pWaveMessageHandler, pWaveElement);
 }
 
+void WaveWorker::addLightPulseType (const string &lightPulseName, WaveElement *pWaveElement)
+{
+    if (NULL == pWaveElement)
+    {
+        pWaveElement = this;
+    }
+
+    m_pWaveObjectManager->addLightPulseType (lightPulseName, pWaveElement);
+}
+
 void WaveWorker::removeOperationMap (const UI32 &operationCode)
 {
     m_pWaveObjectManager->removeOperationMap (operationCode);

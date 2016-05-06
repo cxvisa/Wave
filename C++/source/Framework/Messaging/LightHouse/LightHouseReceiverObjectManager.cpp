@@ -10,6 +10,7 @@
 #include "Framework/Boot/BootCompleteForThisLocationEvent.h"
 #include "Framework/Boot/BootTypes.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
+#include "Framework/Messaging/LightHouse/LightHouseToolKit.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 #include "Framework/Utils/MulticastReceiverSocket.h"
 #include "Framework/Utils/MulticastSenderSocket.h"
@@ -19,7 +20,8 @@ namespace WaveNs
 {
 
 LightHouseReceiverObjectManager::LightHouseReceiverObjectManager ()
-    : WaveLocalObjectManager (getServiceName ())
+    : WaveLocalObjectManager     (getServiceName ()),
+      m_pMulticastReceiverSocket (NULL)
 {
     setAllowAutomaticallyUnlistenForEvents (false);
 
@@ -52,6 +54,8 @@ WaveServiceId LightHouseReceiverObjectManager::getWaveServiceId ()
 
 void LightHouseReceiverObjectManager::initialize (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
 {
+    m_pMulticastReceiverSocket = new MulticastReceiverSocket (LightHouseToolKit::getLightHouseMulticastIpAddress (), LightHouseToolKit::getLightHouseMulticastPort ());
+
     pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     pWaveAsynchronousContextForBootPhases->callback ();
 }
@@ -82,6 +86,21 @@ void LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler (c
 
     for (;;)
     {
+        const UI32 maximumBufferSizeToRead = 4096;
+
+        FixedSizeBuffer fixedSizeBuffer (maximumBufferSizeToRead + 1);
+
+        bool status = m_pMulticastReceiverSocket->receive (&fixedSizeBuffer);
+
+        string lightPulseString;
+
+        fixedSizeBuffer.toString (lightPulseString);
+
+        if (true == status)
+        {
+            trace (TRACE_LEVEL_INFO, string ("LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Received a Light Pulse : ") + lightPulseString);
+        }
+
         waveSleep (1);
     }
 }

@@ -41,6 +41,7 @@ class WaveSendToClientsContext;
 class WaveSendMulticastContext;
 class CliBlockContext;
 class WaveBrokerPublishMessage;
+class LightPulse;
 
 typedef void (WaveElement::* WaveMessageHandler)                  (WaveMessage *pWaveMessage);
 typedef void (WaveElement::* WaveEventHandler)                    (const WaveEvent *&pWaveEvent);
@@ -142,6 +143,7 @@ class WaveElement
 
         virtual TraceClientId                 getTraceClientId                                     ()                                                                                    = 0;
         virtual void                          addEventType                                         (const UI32 &eventOperationCode)                                                      = 0;
+        virtual void                          addLightPulseType                                    (const string &lightPulseName, WaveElement *pWaveElement = NULL)                      = 0;
 
         virtual WaveObjectManager            *getPWaveObjectManager                                () const;
 
@@ -175,9 +177,10 @@ class WaveElement
         virtual WaveMessageBrokerStatus       publishToMessageBroker                               (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL) = 0;
 
     public :
-        virtual                   ~WaveElement                ();
+        virtual                   ~WaveElement                 ();
         virtual WaveManagedObject *createManagedObjectInstance (const string &managedClassName);
-        virtual WaveMessage      *createMessageInstance       (const UI32 &operationCode);
+        virtual WaveMessage       *createMessageInstance       (const UI32 &operationCode);
+        virtual LightPulse        *createLightPulseInstance    (const string &lightPulseName);
 
     // Now the data members
 

@@ -8,11 +8,12 @@
 #define MULTICASTRECEIVERSOCKET_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/FixedSizeBuffer.h"
 #include "Framework/Utils/MulticastSocket.h"
 
 namespace WaveNs
 {
+
+class FixedSizeBuffer;
 
 class MulticastReceiverSocket : public MulticastSocket
 {
@@ -26,6 +27,7 @@ class MulticastReceiverSocket : public MulticastSocket
 
         bool   receive                (string &dataString);
         SI32   receive                (UI8 *pBuffer, const UI32 maximumBufferLength);
+        SI32   receive                (FixedSizeBuffer * const pFixedSizeBuffer);
         SI32   receiveAll             (UI8 *pBuffer, const UI32 maximumBufferLength);
         bool   receiveUI32            (UI32 &value);
 

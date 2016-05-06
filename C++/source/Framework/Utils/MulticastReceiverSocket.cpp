@@ -7,6 +7,7 @@
 #include "Framework/Utils/MulticastReceiverSocket.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
+#include "Framework/Utils/FixedSizeBuffer.h"
 
 #include <errno.h>
 
@@ -89,13 +90,15 @@ bool MulticastReceiverSocket::receive (string &dataString)
     }
     else if (0 == status)
     {
-        tracePrintf (TRACE_LEVEL_DEBUG, "MulticastReceiverSocket::receive (string &dataString) : Status = %d, errno : %d", status, errno);
+        tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive (string &dataString) : Status = %d, errno : %d", status, errno);
 
         delete[] pBuffer;
         return (true);
     }
     else
     {
+        //tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive (string &dataString) : Status = %d, errno : %d", status, errno);
+
         //pBuffer[status] = '\0';
         dataString.assign (pBuffer, status);
 
@@ -119,7 +122,47 @@ SI32 MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLen
     }
     else if (0 == status)
     {
-        tracePrintf (TRACE_LEVEL_DEBUG, "MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+        tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+    else
+    {
+        //tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive ((UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+
+    return (status);
+}
+
+SI32 MulticastReceiverSocket::receive (FixedSizeBuffer * const pFixedSizeBuffer)
+{
+    if (NULL == pFixedSizeBuffer)
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, "MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : NULL input buffer cannot be used for input.");
+
+        return (-1);
+    }
+
+    if (true != (isValid ()))
+    {
+        return (false);
+    }
+
+    UI8 *pBuffer = pFixedSizeBuffer->getPCurrentRawBuffer ();
+
+    SI32 status = ::recv (m_socket, (char *) pBuffer, pFixedSizeBuffer->getMaximumSize (), 0);
+
+    if (-1 == status)
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, "MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+    else if (0 == status)
+    {
+        tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+    else
+    {
+        //tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive ((UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+
+        pFixedSizeBuffer->incrementCurrentSize (status);
     }
 
     return (status);
@@ -141,6 +184,10 @@ SI32 MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBuffer
     else if (0 == status)
     {
         tracePrintf (TRACE_LEVEL_DEBUG, "MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
+    }
+    else
+    {
+        //tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
     }
 
     return (status);

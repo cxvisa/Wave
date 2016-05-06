@@ -115,6 +115,8 @@ class WaveConfigurationAttributes;
 
 class WaveDeliverBrokerPublishMessageWorker;
 
+class LightPulse;
+
 class WaveObjectManager : public WaveElement
 {
     private :
@@ -520,25 +522,28 @@ class WaveObjectManager : public WaveElement
         virtual void                getDebugInformation                                   (WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation);
         virtual void                resetDebugInformation                                 (WaveAsynchronousContextForDebugInformation *pWaveAsynchronousContextForDebugInformation);
 
-                void                setAssociatedWaveThread                     (WaveThread *pAssociatedWaveThread);
+                void                setAssociatedWaveThread                      (WaveThread *pAssociatedWaveThread);
                 bool                isOperationCodeSupported                     (UI32 operationCode);
                 bool                isEventOperationCodeSupported                (UI32 eventOperationCode);
                 bool                isEventOperationCodeSupportedForListening    (const LocationId &eventSourceLocationId, const WaveServiceId &eventSourceServiceId, const UI32 &eventOperationCode);
+                bool                isLightPulseNameSupported                    (const string &lightPulseName);
                 bool                isAKnownMessage                              (UI32 waveMessageId);
-                void                handleWaveMessage                           (WaveMessage *pWaveMessage);
-                void                handleWaveEvent                             (const WaveEvent *&pWaveEvent);
-                void                handleWaveMessageResponse                   (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled = false);
-                void                handleWaveMessageResponseWhenTimeOutExpired (FrameworkStatus frameworkStatus, UI32 waveMessageId);
+                void                handleWaveMessage                            (WaveMessage *pWaveMessage);
+                void                handleWaveEvent                              (const WaveEvent *&pWaveEvent);
+                void                handleWaveMessageResponse                    (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, bool isMessageRecalled = false);
+                void                handleWaveMessageResponseWhenTimeOutExpired  (FrameworkStatus frameworkStatus, UI32 waveMessageId);
                 void                addWorker                                    (WaveWorker *pWorker);
                 void                removeWorker                                 (WaveWorker *pWorker);
         static  bool                isEventAllowedBeforeEnabling                 (const UI32 &eventOperationCode);
         static  bool                canInstantiateServiceAtThisTime              (const string &waveServiceName);
 
-        virtual WaveMessage       *createMessageInstance                        (const UI32 &operationCode);
-                WaveMessage       *createMessageInstanceWrapper                 (const UI32 &operationCode);
-        virtual WaveEvent         *createEventInstance                          (const UI32 &eventOperationCode);
+        virtual WaveMessage        *createMessageInstance                        (const UI32 &operationCode);
+                WaveMessage        *createMessageInstanceWrapper                 (const UI32 &operationCode);
+        virtual WaveEvent          *createEventInstance                          (const UI32 &eventOperationCode);
         virtual WaveManagedObject  *createManagedObjectInstance                  (const string &managedClassName);
                 WaveManagedObject  *createManagedObjectInstanceWrapper           (const string &managedClassName);
+        virtual LightPulse         *createLightPulseInstance                     (const string &lightPulseName);
+                LightPulse         *createLightPulseInstanceWrapper              (const string &lightPulseName);
 
                 void                addEventListener                             (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
                 void                removeEventListener                          (const UI32 &eventOperationCode, const WaveServiceId &listenerWaveServiceId, const LocationId &listenerLocationId);
@@ -608,6 +613,7 @@ class WaveObjectManager : public WaveElement
                 void                                             removeServiceIndependentOperationMap         (UI32 operationCode);
                 void                                             removeOperationMap                           (const UI32 &operationCode);
         virtual void                                             addEventType                                 (const UI32 &eventOperationCode);
+        virtual void                                             addLightPulseType                            (const string &lightPulseName, WaveElement *pWaveElement = NULL);
         virtual void                                             listenForEvent                               (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
         virtual void                                             unlistenEvents                               ();
                 void                                             addResponseMap                               (UI32 waveMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
@@ -898,23 +904,26 @@ class WaveObjectManager : public WaveElement
         static  void               endOfLifeService                            (WaveServiceId waveServiceId);
         static  void               bootStrapService                            (WaveServiceId waveServiceId);
 
+        static  WaveObjectManager *getWaveObjectManagerForLightPulseType       (const string &lightPulseName);
+
     // Now the data members
 
     private :
-               string                                                               m_name;
+               string                                                              m_name;
                WaveThread                                                         *m_pAssociatedWaveThread;
                map<UI32, WaveOperationMapContext *>                                m_operationsMap;
-               map<UI32, UI32>                                                      m_supportedEvents;
+               map<UI32, UI32>                                                     m_supportedEvents;
+               map<string, string>                                                 m_supportedLightPulses;
                map<LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>    m_eventsMap;
                map<UI32, WaveMessageResponseContext *>                             m_responsesMap;
                map<UI32, vector<WaveEventListenerMapContext *> *>                  m_eventListenersMap;
-               map<string, vector<string> >                                         m_postbootManagedObjectNames;
+               map<string, vector<string> >                                        m_postbootManagedObjectNames;
                WaveMutex                                                           m_responsesMapMutex;
                WaveMutex                                                           m_sendReplyMutexForResponseMap;
-               vector<WaveWorker *>                                                 m_workers;
-               bool                                                                 m_isEnabled;
+               vector<WaveWorker *>                                                m_workers;
+               bool                                                                m_isEnabled;
                WaveMutex                                                           m_isEnabledMutex;
-               TraceClientId                                                        m_traceClientId;
+               TraceClientId                                                       m_traceClientId;
 
                map<string, string>                                                  m_managedClasses;
                map<string, string>                                                  m_managedViews;
@@ -944,6 +953,8 @@ class WaveObjectManager : public WaveElement
         static WaveMutex                                                           m_createManagedObjectInstanceWrapperMutex;
                map<UI32, WaveElement *>                                            m_ownersForCreatingMessageInstances;
                WaveMutex                                                           m_createMessageInstanceWrapperMutex;
+               map<string, WaveElement *>                                          m_ownersForCreatingLightPulseInstances;
+               WaveMutex                                                           m_createLightPulseInstanceWrapperMutex;
 
                bool                                                                 m_allowAutomaticallyUnlistenForEvents;
 

@@ -176,6 +176,16 @@ void WaveManagedObject::addOperationMap (UI32 operationCode, WaveMessageHandler 
     m_pCurrentOwnerWaveObjectManager->addOperationMap (operationCode, pWaveMessageHandler, pWaveElement);
 }
 
+void WaveManagedObject::addLightPulseType (const string &lightPulseName, WaveElement *pWaveElement)
+{
+    if (NULL == pWaveElement)
+    {
+        pWaveElement = this;
+    }
+
+    m_pCurrentOwnerWaveObjectManager->addLightPulseType (lightPulseName, pWaveElement);
+}
+
 ResourceId WaveManagedObject::startTimer (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext, WaveElement *pWaveTimerSender)
 {
     return (m_pCurrentOwnerWaveObjectManager->startTimer (timerHandle, startInterval, periodicInterval, pWaveTimerExpirationCallback, pWaveTimerExpirationContext, pWaveTimerSender != NULL ? pWaveTimerSender : this));

@@ -59,6 +59,7 @@ class WaveManagedObject : virtual public WaveElement, virtual public WavePersist
         virtual void                          tracePrintf                               (TraceLevel traceLevel, const char * const pFormat, ...);
         virtual void                          waveAssert                               (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
                 void                          addOperationMap                           (UI32 operationCode, WaveMessageHandler pWaveMessageHandler, WaveElement *pWaveElement = NULL);
+        virtual void                          addLightPulseType                         (const string &lightPulseName, WaveElement *pWaveElement = NULL);
         virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
         virtual ResourceId                    startTimer                                (TimerHandle &timerHandle, UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
         virtual ResourceId                    deleteTimer                               (TimerHandle timerHandle);

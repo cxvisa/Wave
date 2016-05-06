@@ -12,6 +12,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/AssertUtils.h"
 
+#include "Framework/Messaging/LightHouse/LightPulse.h"
 namespace WaveNs
 {
 
@@ -297,6 +298,13 @@ WaveMessage *WaveElement::createMessageInstance (const UI32 &operationCode)
 {
     trace (TRACE_LEVEL_ERROR, "WaveElement::createMessageInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
     trace (TRACE_LEVEL_ERROR, "WaveElement::createMessageInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
+    return (NULL);
+}
+
+LightPulse *WaveElement::createLightPulseInstance (const string &lightPulseName)
+{
+    trace (TRACE_LEVEL_ERROR, "WaveElement::createLightPulseInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+    trace (TRACE_LEVEL_ERROR, "WaveElement::createLightPulseInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
     return (NULL);
 }
 

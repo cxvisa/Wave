@@ -121,4 +121,9 @@ WaveMessage *WaveMessageFactory::getManagementInterfaceMessageInstance (const st
     return (pWaveMessage);
 }
 
+WaveObjectManager *WaveMessageFactory::getWaveObjectManagerForLightPulse (const string &lightPulseName)
+{
+    return (WaveObjectManager::getWaveObjectManagerForLightPulseType (lightPulseName));
+}
+
 }

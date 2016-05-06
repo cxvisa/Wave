@@ -113,7 +113,9 @@ static WaveMutex                          s_enabledServicesMutex;
 static map<WaveServiceId, WaveServiceId> s_enabledServices;
 static WaveMutex                          s_mutexForAddingEventListener;
 static WaveMutex                          s_supportedEventsMutex;
-static map<string, WaveObjectManager *>    s_allManagedClassesAndOwnersMap;
+static WaveMutex                          s_supportedLightPulsesMutex;
+static map<string, WaveObjectManager *>   s_lightPulseToWaveObjectManagerMap;
+static map<string, WaveObjectManager *>   s_allManagedClassesAndOwnersMap;
 static WaveMutex                          s_allManagedClassesAndOwnersMapMutex;
 
 /*
@@ -854,6 +856,50 @@ void WaveObjectManager::addEventType (const UI32 &eventOperationCode)
     s_supportedEventsMutex.unlock ();
 }
 
+void WaveObjectManager::addLightPulseType (const string &lightPulseName, WaveElement *pWaveElement)
+{
+    s_supportedLightPulsesMutex.lock ();
+
+    if (NULL == pWaveElement)
+    {
+        pWaveElement = this;
+    }
+
+    m_supportedLightPulses[lightPulseName] = lightPulseName;
+
+    map<string, WaveObjectManager *>::iterator element    = s_lightPulseToWaveObjectManagerMap.find (lightPulseName);
+    map<string, WaveObjectManager *>::iterator endElement = s_lightPulseToWaveObjectManagerMap.end ();
+
+    if (endElement == element)
+    {
+        s_lightPulseToWaveObjectManagerMap[lightPulseName] = this;
+    }
+    else
+    {
+        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::addLightPulseType : Light Pulse Type " + lightPulseName + " has already been registered elsewhere.");
+        waveAssert (false, __FILE__, __LINE__);
+    }
+
+    s_supportedLightPulsesMutex.unlock ();
+
+    m_createLightPulseInstanceWrapperMutex.lock ();
+
+    map<string, WaveElement *>::iterator element1    = m_ownersForCreatingLightPulseInstances.find (lightPulseName);
+    map<string, WaveElement *>::iterator endElement1 = m_ownersForCreatingLightPulseInstances.end ();
+
+    if (endElement1 != element1)
+    {
+        trace (TRACE_LEVEL_FATAL, string ("WaveObjectManager::addLightPulseType : Trying to set duplicate Owner.  Owner for \"") + lightPulseName + string ("\" was already set."));
+        waveAssert (false, __FILE__, __LINE__);
+    }
+    else
+    {
+        m_ownersForCreatingLightPulseInstances[lightPulseName] = pWaveElement;
+    }
+
+    m_createLightPulseInstanceWrapperMutex.unlock ();
+}
+
 void WaveObjectManager::listenForEvent (WaveServiceId waveServiceCode, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement, const LocationId &sourceLocationId)
 {
     WaveServiceId waveServiceId = waveServiceCode;
@@ -1282,6 +1328,24 @@ bool WaveObjectManager::isEventOperationCodeSupportedForListening (const Locatio
     {
         return (false);
     }
+}
+
+bool WaveObjectManager::isLightPulseNameSupported (const string &lightPulseName)
+{
+    s_supportedLightPulsesMutex.lock ();
+
+    map<string, string>::iterator element               = m_supportedLightPulses.find (lightPulseName);
+    map<string, string>::iterator end                   = m_supportedLightPulses.end ();
+    bool                          isLightPulseSupported = false;
+
+    if (end != element)
+    {
+        isLightPulseSupported = true;
+    }
+
+    s_supportedLightPulsesMutex.unlock ();
+
+    return (isLightPulseSupported);
 }
 
 bool WaveObjectManager::isManagedClassSupported (const string &managedClass)
@@ -6812,6 +6876,36 @@ WaveEvent *WaveObjectManager::createEventInstance (const UI32 &eventOperationCod
     return (NULL);
 }
 
+LightPulse *WaveObjectManager::createLightPulseInstanceWrapper (const string &lightPulseName)
+{
+    LightPulse *pLightPulse = NULL;
+
+    m_createLightPulseInstanceWrapperMutex.lock ();
+
+    map<string, WaveElement *>::iterator element    = m_ownersForCreatingLightPulseInstances.find (lightPulseName);
+    map<string, WaveElement *>::iterator endElement = m_ownersForCreatingLightPulseInstances.end  ();
+
+    if (endElement != element)
+    {
+        WaveElement *pWaveElement = m_ownersForCreatingLightPulseInstances[lightPulseName];
+
+        if (NULL != pWaveElement)
+        {
+            pLightPulse = pWaveElement->createLightPulseInstance (lightPulseName);
+        }
+    }
+
+    m_createLightPulseInstanceWrapperMutex.lock ();
+
+    return (pLightPulse);
+}
+
+LightPulse *WaveObjectManager::createLightPulseInstance (const string &lightPulseName)
+{
+    trace (TRACE_LEVEL_ERROR, "WaveObjectManager::createLightPulseInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+    return (NULL);
+}
+
 void WaveObjectManager::registerEventListenerHandler (WaveObjectManagerRegisterEventListenerMessage *pWaveObjectManagerRegisterEventListenerMessage)
 {
     const UI32           operationCodeToListenFor = pWaveObjectManagerRegisterEventListenerMessage->getOperationCodeToListenFor ();
@@ -11855,6 +11949,25 @@ void WaveObjectManager::bootStrapService (WaveServiceId waveServiceId)
     }
 
     delete pWaveBootObjectManagerMessage;
+}
+
+WaveObjectManager *WaveObjectManager::getWaveObjectManagerForLightPulseType (const string &lightPulseName)
+{
+    WaveObjectManager *pWaveObjectManager = NULL;
+
+    s_supportedLightPulsesMutex.lock ();
+
+    map<string, WaveObjectManager *>::iterator element    = s_lightPulseToWaveObjectManagerMap.find (lightPulseName);
+    map<string, WaveObjectManager *>::iterator endElement = s_lightPulseToWaveObjectManagerMap.end ();
+
+    if (endElement != element)
+    {
+        pWaveObjectManager = s_lightPulseToWaveObjectManagerMap[lightPulseName];
+    }
+
+    s_supportedLightPulsesMutex.unlock ();
+
+    return (pWaveObjectManager);
 }
 
 }
