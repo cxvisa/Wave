@@ -101,8 +101,6 @@ void LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler (c
         {
             trace (TRACE_LEVEL_INFO, string ("LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Received a Light Pulse : ") + lightPulseString + ", from : " + from + ", port : " + port);
         }
-
-        waveSleep (1);
     }
 }
 

@@ -9,6 +9,7 @@
 #include "Framework/Messaging/LightHouse/LightHouseTransportBroadcastLightPulseMessage.h"
 #include "Framework/Messaging/LightHouse/LightHouseTransportObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightHouseTransportTypes.h"
+#include "Framework/Messaging/LightHouse/LightPulse.h"
 #include "Framework/Utils/MulticastSenderSocket.h"
 
 namespace WaveNs
@@ -35,9 +36,13 @@ void LightHouseTransportBroadcastLightPulseWorker::broadcastLightPulseMessageHan
 
     waveAssert (NULL != pLightHouseTransportBroadcastLightPulseMessage, __FILE__, __LINE__);
 
+    LightPulse *pLightPulse = pLightHouseTransportBroadcastLightPulseMessage->getPLightPulse ();
+
+    waveAssert (NULL != pLightPulse, __FILE__, __LINE__);
+
     string serializedLightPulseString;
 
-    pLightHouseTransportBroadcastLightPulseMessage->serialize2 (serializedLightPulseString);
+    pLightPulse->serialize2 (serializedLightPulseString);
 
     m_pMulticastSenderSocket->send (serializedLightPulseString);
 

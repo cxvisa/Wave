@@ -104,6 +104,7 @@
 #include <stdarg.h>
 #include <sstream>
 
+#include "Framework/Messaging/LightHouse/LightHouseTransportBroadcastLightPulseMessage.h"
 namespace WaveNs
 {
 
@@ -11972,7 +11973,15 @@ WaveObjectManager *WaveObjectManager::getWaveObjectManagerForLightPulseType (con
 
 WaveMessageStatus WaveObjectManager::broadcastLightPulse (LightPulse *pLightPulse)
 {
-    return (WAVE_MESSAGE_SUCCESS);
+    waveAssert (NULL != pLightPulse, __FILE__, __LINE__);
+
+    LightHouseTransportBroadcastLightPulseMessage *pLightHouseTransportBroadcastLightPulseMessage = new LightHouseTransportBroadcastLightPulseMessage (pLightPulse);
+
+    waveAssert (NULL != pLightHouseTransportBroadcastLightPulseMessage, __FILE__, __LINE__);
+
+    WaveMessageStatus sendStatus = sendOneWay (pLightHouseTransportBroadcastLightPulseMessage);
+
+    return (sendStatus);
 }
 
 }

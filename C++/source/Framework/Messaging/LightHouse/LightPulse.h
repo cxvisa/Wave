@@ -16,9 +16,9 @@ namespace WaveNs
 class LightPulse : public SerializableObject
 {
     private :
+    protected :
         void setupAttributesForSerialization ();
 
-    protected :
     public :
                         LightPulse                              (const string &Name);
         virtual        ~LightPulse                              ();
