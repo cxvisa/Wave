@@ -167,6 +167,8 @@ class WaveManagedObject : virtual public WaveElement, virtual public WavePersist
         virtual WaveMessageBrokerStatus       unsubscribeToMessageBroker                (const string &brokerName, const string &topicName, WaveElement *pSubscriber = NULL);
         virtual WaveMessageBrokerStatus       publishToMessageBroker                    (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL);
 
+        virtual WaveMessageStatus             broadcastLightPulse                       (LightPulse *pLightPulse);
+
     public :
                                               WaveManagedObject                         (WaveObjectManager *pWaveObjectManager);
         virtual                              ~WaveManagedObject                         ();

@@ -44,6 +44,7 @@
 #include "SystemManagement/SystemManagementToolKit.h"
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceReceiverObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightHouseReceiverObjectManager.h"
+#include "Framework/Messaging/LightHouse/LightHouseTransportObjectManager.h"
 
 #include "Policy/PolicyObjectManager.h"
 #include "ServiceManagement/Global/ServiceManagementObjectManager.h"
@@ -65,10 +66,10 @@ static string s_waveProfileFileDirectory       ("");
 namespace WaveNs
 {
 
-vector<NativeWaveServiceInstantiator>         Wave::m_nativeWaveServiceInstantiators;
+vector<NativeWaveServiceInstantiator>          Wave::m_nativeWaveServiceInstantiators;
 vector<bool>                                   Wave::m_nativeWaveServiceInstantiatorIsForNormalPhase;
-vector<NativeMultipleWaveServiceInstantiator> Wave::m_nativeMultipleWaveServiceInstantiators;
-vector<NativeWaveServiceInstantiator>         Wave::m_nativeApplicationSpecificWaveServiceInstantiators;
+vector<NativeMultipleWaveServiceInstantiator>  Wave::m_nativeMultipleWaveServiceInstantiators;
+vector<NativeWaveServiceInstantiator>          Wave::m_nativeApplicationSpecificWaveServiceInstantiators;
 vector<ResourceId>                             Wave::m_nativeWaveServiceInstantiationMode;
 bool                                           Wave::m_enablePersistenceSupport;
 bool                                           Wave::m_enableClusteringSupport;
@@ -86,16 +87,16 @@ bool                                           Wave::m_enableSystemManagementSup
 bool                                           Wave::m_enableLightHouseSupport;
 
 PersistencePostBootCheck                       Wave::m_persistencePostBootCheck;
-WaveMutex                                     Wave::m_clusterEnabledCheckMutex;
+WaveMutex                                      Wave::m_clusterEnabledCheckMutex;
 ClusterEnabledCheck                            Wave::m_clusterEnabledCheck  = NULL;
 string                                         Wave::m_waveUserClientPath;
 string                                         Wave::m_waveUserClientParams;
 LogOperationStatusFunction                     Wave::m_logOperationStatusFunction = NULL;
-WaveMutex                                     Wave::m_logOperationStatusMutex;
+WaveMutex                                      Wave::m_logOperationStatusMutex;
 IsWaveClusteringEnabled                        Wave::m_isWaveClusteringEnabled = NULL;
-WaveMutex                                     Wave::m_isWaveClusteringEnabledMutex;
+WaveMutex                                      Wave::m_isWaveClusteringEnabledMutex;
 GetLinecardReadySlotIdBitMapFunction           Wave::m_linecardReadySlotIdBitMapFunction = NULL;
-WaveMutex                                     Wave::m_linecardReadySlotIdBitMapFunctionMutex;
+WaveMutex                                      Wave::m_linecardReadySlotIdBitMapFunctionMutex;
 
 void Wave::enableAllFeatures ()
 {
@@ -422,6 +423,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableLightHouseSupport)
     {
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseTransportObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseReceiverObjectManager::getInstance));
     }
 

@@ -879,6 +879,8 @@ class WaveObjectManager : public WaveElement
 
                 bool                                             isAKnownWaveBrokerBasedMessageSubscription          (const string &brokerName, const string &topicName) const;
 
+        virtual WaveMessageStatus                                broadcastLightPulse                                 (LightPulse *pLightPulse);
+
     public :
         static void                getListOfEnabledServices                    (vector<WaveServiceId> &enabledServices);
         static bool                isServiceEnabled                            (const WaveServiceId &waveServiceId);

@@ -1237,4 +1237,9 @@ WaveMessageBrokerStatus WaveManagedObject::publishToMessageBroker (const string 
     return (m_pCurrentOwnerWaveObjectManager->publishToMessageBroker (brokerName, pWaveBrokerPublishMessage));
 }
 
+WaveMessageStatus WaveManagedObject::broadcastLightPulse (LightPulse *pLightPulse)
+{
+    return (m_pCurrentOwnerWaveObjectManager->broadcastLightPulse (pLightPulse));
+}
+
 }

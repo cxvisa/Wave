@@ -176,6 +176,8 @@ class WaveElement
         virtual WaveMessageBrokerStatus       unsubscribeToMessageBroker                           (const string &brokerName, const string &topicName, WaveElement *pSubscriber = NULL) = 0;
         virtual WaveMessageBrokerStatus       publishToMessageBroker                               (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL) = 0;
 
+        virtual WaveMessageStatus             broadcastLightPulse                                  (LightPulse *pLightPulse) = 0;
+
     public :
         virtual                   ~WaveElement                 ();
         virtual WaveManagedObject *createManagedObjectInstance (const string &managedClassName);

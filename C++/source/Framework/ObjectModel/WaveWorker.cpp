@@ -888,4 +888,9 @@ void WaveWorker::deliverWaveBrokerPublishedEvent (const string &brokerName, cons
     m_pWaveObjectManager->deliverWaveBrokerPublishedEvent (brokerName, topicName, pWaveBrokerPublishMessage);
 }
 
+WaveMessageStatus WaveWorker::broadcastLightPulse (LightPulse *pLightPulse)
+{
+    return (m_pWaveObjectManager->broadcastLightPulse (pLightPulse));
+}
+
 }

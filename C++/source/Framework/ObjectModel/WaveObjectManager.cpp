@@ -11970,4 +11970,9 @@ WaveObjectManager *WaveObjectManager::getWaveObjectManagerForLightPulseType (con
     return (pWaveObjectManager);
 }
 
+WaveMessageStatus WaveObjectManager::broadcastLightPulse (LightPulse *pLightPulse)
+{
+    return (WAVE_MESSAGE_SUCCESS);
+}
+
 }

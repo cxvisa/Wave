@@ -210,6 +210,7 @@ class WaveWorker : public WaveElement
         virtual WaveMessageBrokerStatus        publishToMessageBroker                    (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL);
 
                 void                           deliverWaveBrokerPublishedEvent           (const string &brokerName, const string &topicName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage);
+        virtual WaveMessageStatus              broadcastLightPulse                       (LightPulse *pLightPulse);
 
     public :
                  WaveWorker (WaveObjectManager *pWaveObjectManager);
