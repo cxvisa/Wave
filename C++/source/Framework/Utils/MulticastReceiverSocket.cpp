@@ -69,7 +69,7 @@ bool MulticastReceiverSocket::addGroupMembership (const string &groupIpAddress)
     }
 }
 
-bool MulticastReceiverSocket::receive (string &dataString)
+bool MulticastReceiverSocket::receive (string &dataString, string &fromIpAddress, SI32 &fromPort)
 {
     if (true != (isValid ()))
     {
@@ -77,7 +77,10 @@ bool MulticastReceiverSocket::receive (string &dataString)
     }
 
     char *pBuffer = new char[s_maximumDataLengthToReceive + 1];
-    SI32  status  = ::recv (m_socket, pBuffer, s_maximumDataLengthToReceive, 0);
+
+    m_fromSocketLength = sizeof (m_fromSocketAddres);
+
+    SI32  status  = ::recvfrom (m_socket, pBuffer, s_maximumDataLengthToReceive, 0, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength);
 
     dataString = "";
 
@@ -92,6 +95,9 @@ bool MulticastReceiverSocket::receive (string &dataString)
     {
         tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive (string &dataString) : Status = %d, errno : %d", status, errno);
 
+        fromIpAddress = inet_ntoa (m_fromSocketAddres.sin_addr);
+        fromPort      = m_fromSocketAddres.sin_port;
+
         delete[] pBuffer;
         return (true);
     }
@@ -102,19 +108,24 @@ bool MulticastReceiverSocket::receive (string &dataString)
         //pBuffer[status] = '\0';
         dataString.assign (pBuffer, status);
 
+        fromIpAddress = inet_ntoa (m_fromSocketAddres.sin_addr);
+        fromPort      = m_fromSocketAddres.sin_port;
+
         delete[] pBuffer;
         return (true);
     }
 }
 
-SI32 MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength)
+SI32 MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLength, string &fromIpAddress, SI32 &fromPort)
 {
     if (true != (isValid ()))
     {
         return (false);
     }
 
-    SI32 status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0);
+    m_fromSocketLength = sizeof (m_fromSocketAddres);
+
+    SI32 status = ::recvfrom (m_socket, (char *) pBuffer, maximumBufferLength, 0, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength);
 
     if (-1 == status)
     {
@@ -129,10 +140,13 @@ SI32 MulticastReceiverSocket::receive (UI8 *pBuffer, const UI32 maximumBufferLen
         //tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receive ((UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
     }
 
+    fromIpAddress = inet_ntoa (m_fromSocketAddres.sin_addr);
+    fromPort      = m_fromSocketAddres.sin_port;
+
     return (status);
 }
 
-SI32 MulticastReceiverSocket::receive (FixedSizeBuffer * const pFixedSizeBuffer)
+SI32 MulticastReceiverSocket::receive (FixedSizeBuffer * const pFixedSizeBuffer, string &fromIpAddress, SI32 &fromPort)
 {
     if (NULL == pFixedSizeBuffer)
     {
@@ -148,7 +162,9 @@ SI32 MulticastReceiverSocket::receive (FixedSizeBuffer * const pFixedSizeBuffer)
 
     UI8 *pBuffer = pFixedSizeBuffer->getPCurrentRawBuffer ();
 
-    SI32 status = ::recv (m_socket, (char *) pBuffer, pFixedSizeBuffer->getMaximumSize (), 0);
+    m_fromSocketLength = sizeof (m_fromSocketAddres);
+
+    SI32 status = ::recvfrom (m_socket, (char *) pBuffer, pFixedSizeBuffer->getMaximumSize (), 0, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength);
 
     if (-1 == status)
     {
@@ -165,17 +181,22 @@ SI32 MulticastReceiverSocket::receive (FixedSizeBuffer * const pFixedSizeBuffer)
         pFixedSizeBuffer->incrementCurrentSize (status);
     }
 
+    fromIpAddress = inet_ntoa (m_fromSocketAddres.sin_addr);
+    fromPort      = m_fromSocketAddres.sin_port;
+
     return (status);
 }
 
-SI32 MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLength)
+SI32 MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLength, string &fromIpAddress, SI32 &fromPort)
 {
     if (true != (isValid ()))
     {
         return (0);
     }
 
-    SI32 status = ::recv (m_socket, (char *) pBuffer, maximumBufferLength, 0); //MSG_WAITALL);
+    m_fromSocketLength = sizeof (m_fromSocketAddres);
+
+    SI32 status = ::recvfrom (m_socket, (char *) pBuffer, maximumBufferLength, 0, (sockaddr *) &m_fromSocketAddres, &m_fromSocketLength); //MSG_WAITALL);
 
     if (-1 == status)
     {
@@ -190,34 +211,10 @@ SI32 MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBuffer
         //tracePrintf (TRACE_LEVEL_WARN, "MulticastReceiverSocket::receiveAll (UI8 *pBuffer, const UI32 maximumBufferLength) : Status = %d, errno : %d", status, errno);
     }
 
+    fromIpAddress = inet_ntoa (m_fromSocketAddres.sin_addr);
+    fromPort      = m_fromSocketAddres.sin_port;
+
     return (status);
-}
-
-bool MulticastReceiverSocket::receiveUI32 (UI32 &value)
-{
-    UI8 *pTempBuffer                  = reinterpret_cast<UI8 *> (&value);
-    UI32 numberOfBytesRemainingToRead = sizeof (value);
-
-    while (numberOfBytesRemainingToRead > 0)
-    {
-        SI32 numberOfBytesRead = receiveAll (pTempBuffer, numberOfBytesRemainingToRead);
-
-        if (numberOfBytesRead > 0)
-        {
-            numberOfBytesRemainingToRead -= numberOfBytesRead;
-            pTempBuffer                  += numberOfBytesRead;
-        }
-        else
-        {
-            //cout << "numberOfBytesRemainingToRead : " << numberOfBytesRemainingToRead << ", numberOfBytesRead : " << numberOfBytesRead << " : " << errno << endl;
-
-            return (false);
-        }
-    }
-
-    value = ntohl (value);
-
-    return (true);
 }
 
 }

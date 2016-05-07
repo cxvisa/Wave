@@ -89,16 +89,17 @@ void LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler (c
         const UI32 maximumBufferSizeToRead = 4096;
 
         FixedSizeBuffer fixedSizeBuffer (maximumBufferSizeToRead + 1);
+        string          from;
+        SI32            port;
 
-        bool status = m_pMulticastReceiverSocket->receive (&fixedSizeBuffer);
-
+        bool status = m_pMulticastReceiverSocket->receive (&fixedSizeBuffer, from, port);
         string lightPulseString;
 
         fixedSizeBuffer.toString (lightPulseString);
 
         if (true == status)
         {
-            trace (TRACE_LEVEL_INFO, string ("LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Received a Light Pulse : ") + lightPulseString);
+            trace (TRACE_LEVEL_INFO, string ("LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Received a Light Pulse : ") + lightPulseString + ", from : " + from + ", port : " + port);
         }
 
         waveSleep (1);
@@ -137,14 +138,16 @@ UI32 LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup (UI32 arg
         string multicastGroupIpAddress = argv[1];
         SI32   multicastGroupPort      = atoi (argv[2].c_str ());
         string messageReceived;
+        string from;
+        SI32   port;
 
         MulticastReceiverSocket multicastReceiverSocket (multicastGroupIpAddress, multicastGroupPort);
 
-        bool status = multicastReceiverSocket.receive (messageReceived);
+        bool status = multicastReceiverSocket.receive (messageReceived, from, port);
 
         if (true == status)
         {
-            WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup : Received Message : " + messageReceived);
+            WaveNs::trace (TRACE_LEVEL_SUCCESS, "LightHouseReceiverObjectManager::receiveMessageFromMulticastGroup : Received Message : " + messageReceived + ", from : " + from + ", port : " + port);
         }
         else
         {

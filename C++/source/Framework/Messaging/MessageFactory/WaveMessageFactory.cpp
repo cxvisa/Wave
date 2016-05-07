@@ -11,6 +11,8 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
+
+#include "Framework/Messaging/LightHouse/LightPulse.h"
 #include "ManagementInterface/ClientInterface/WaveUserInterfaceObjectManager.h"
 
 namespace WaveNs
@@ -124,6 +126,20 @@ WaveMessage *WaveMessageFactory::getManagementInterfaceMessageInstance (const st
 WaveObjectManager *WaveMessageFactory::getWaveObjectManagerForLightPulse (const string &lightPulseName)
 {
     return (WaveObjectManager::getWaveObjectManagerForLightPulseType (lightPulseName));
+}
+
+LightPulse *WaveMessageFactory::getLightPulseInstance (const string &lightPulseName)
+{
+    LightPulse *pLightPulse = NULL;
+
+    WaveObjectManager *pWaveObjectManager = getWaveObjectManagerForLightPulse (lightPulseName);
+
+    if (NULL != pWaveObjectManager)
+    {
+        pLightPulse = pWaveObjectManager->createLightPulseInstanceWrapper (lightPulseName);
+    }
+
+    return (pLightPulse);
 }
 
 }
