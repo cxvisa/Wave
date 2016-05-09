@@ -11,7 +11,9 @@
 #include "Framework/Boot/BootTypes.h"
 #include "Framework/Core/WaveFrameworkObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightHouseToolKit.h"
+#include "Framework/Messaging/LightHouse/LightPulseDispatchMessage.h"
 #include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
+#include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Utils/MulticastReceiverSocket.h"
 #include "Framework/Utils/MulticastSenderSocket.h"
 #include "Shell/ShellDebug.h"
@@ -99,7 +101,21 @@ void LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler (c
 
         if (true == status)
         {
-            trace (TRACE_LEVEL_INFO, string ("LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Received a Light Pulse : ") + lightPulseString + ", from : " + from + ", port : " + port);
+            // trace (TRACE_LEVEL_INFO, string ("LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Received a Light Pulse : ") + lightPulseString + ", from : " + from + ", port : " + port);
+
+            LightPulseDispatchMessage *pLightPulseDispatchMessage = new LightPulseDispatchMessage ();
+
+            waveAssert (NULL != pLightPulseDispatchMessage, __FILE__, __LINE__);
+
+            pLightPulseDispatchMessage->setLightPulseSerializedString (lightPulseString);
+
+            WaveMessageStatus sendStatus = sendOneWay (pLightPulseDispatchMessage);
+
+            if (WAVE_MESSAGE_SUCCESS != sendStatus)
+            {
+                trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Error in sending message to dispatch a light pulse.  Status : " + FrameworkToolKit::localize (sendStatus));
+                trace (TRACE_LEVEL_ERROR, "LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler : Errored Light Pulse : \n" + lightPulseString);
+            }
         }
     }
 }

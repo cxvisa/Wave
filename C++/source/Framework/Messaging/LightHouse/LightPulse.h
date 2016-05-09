@@ -38,6 +38,8 @@ class LightPulse : public SerializableObject
                 string  getSenderIpAddressFromClientPerspective () const;
                 void    setSenderIpAddressFromClientPerspective (const string &senderIpAddressFromClientPerspective);
 
+        static  string  getLightPulseName                       (const char *pSerializedData);
+
         // Now the data members
 
     private :

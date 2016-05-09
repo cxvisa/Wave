@@ -82,4 +82,23 @@ void LightPulse::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeString (&m_senderIpAddressFromClientPerspective, "senderIpAddressFromClientPerspective"));
 }
 
+string LightPulse::getLightPulseName (const char *pSerializedData)
+{
+    static const char *pAttributeStringAtBegining = "<Aname>";
+    static const char *pAttributeStringAtEnding   = "</Aname>";
+    static       char  sotString[256];
+
+    const char *pBegin = strstr (pSerializedData, pAttributeStringAtBegining);
+    const char *pValue = pBegin + strlen (pAttributeStringAtBegining);
+    const char *pEnd   = strstr (pValue, pAttributeStringAtEnding);
+
+    UI32 valueSize = pEnd - pValue;
+
+    strncpy (sotString, pValue, valueSize);
+
+    sotString[valueSize] = '\0';
+
+    return (sotString);
+}
+
 }

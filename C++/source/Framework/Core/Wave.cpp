@@ -43,6 +43,7 @@
 #include "SystemManagement/WaveSystemManagementObjectManager.h"
 #include "SystemManagement/SystemManagementToolKit.h"
 #include "SystemManagement/CommandLineInterface/Server/CommandLineInterfaceReceiverObjectManager.h"
+#include "Framework/Messaging/LightHouse/LightPulseDispatchObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightHouseReceiverObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightHouseTransportObjectManager.h"
 
@@ -425,6 +426,7 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableLightHouseSupport)
     {
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightPulseDispatchObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseTransportObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseReceiverObjectManager::getInstance));
     }
