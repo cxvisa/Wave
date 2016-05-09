@@ -190,6 +190,24 @@ class WaveObjectManager : public WaveElement
             public :
         };
 
+        class WaveLightPulseMapContext
+        {
+            private :
+            protected :
+            public :
+                     WaveLightPulseMapContext (WaveElement *pWaveElement, WaveLightPulseHandler pWaveLightPulseHandler);
+                void executeLightPulseHandler (const LightPulse *&pLightPulse);
+
+            // Now the data members
+
+            private :
+                WaveElement           *m_pWaveElementThatHandlesTheLightPulse;
+                WaveLightPulseHandler  m_pWaveLightPulseHandler;
+
+            protected :
+            public :
+        };
+
         class WaveEventListenerMapContext
         {
             private :
@@ -615,7 +633,9 @@ class WaveObjectManager : public WaveElement
         virtual void                                             addEventType                                 (const UI32 &eventOperationCode);
         virtual void                                             addLightPulseType                            (const string &lightPulseName, WaveElement *pWaveElement = NULL);
         virtual void                                             listenForEvent                               (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                                             listenForLightPulse                          (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement = NULL);
         virtual void                                             unlistenEvents                               ();
+        virtual void                                             unlistenLightPulses                          ();
                 void                                             addResponseMap                               (UI32 waveMessageId, WaveMessageResponseContext *pWaveMessageResponseContext);
                 WaveMessageResponseContext                     *removeResponseMap                            (UI32 waveMessageId);
                 WaveOperationMapContext                        *getWaveMessageHandler                       (UI32 operationCode, UI32 messageHandlerServiceCode = 0, UI32 thisServiceId = 0);
@@ -917,6 +937,7 @@ class WaveObjectManager : public WaveElement
                map<UI32, UI32>                                                     m_supportedEvents;
                map<string, string>                                                 m_supportedLightPulses;
                map<LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>    m_eventsMap;
+               map<string, WaveLightPulseMapContext *>                             m_lightPulsesMap;
                map<UI32, WaveMessageResponseContext *>                             m_responsesMap;
                map<UI32, vector<WaveEventListenerMapContext *> *>                  m_eventListenersMap;
                map<string, vector<string> >                                        m_postbootManagedObjectNames;

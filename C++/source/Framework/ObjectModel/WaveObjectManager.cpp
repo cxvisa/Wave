@@ -97,6 +97,9 @@
 #include "Framework/ObjectModel/WaveDeliverBrokerPublishMessageWorker.h"
 #include "Framework/ObjectModel/WaveObjectManagerToolKit.h"
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveMessagingBrokerClient/WaveMessagingBroker.h"
+#include "Framework/Messaging/LightHouse/LightHouseTransportBroadcastLightPulseMessage.h"
+#include "Framework/Messaging/LightHouse/LightPulseRegistrationMessage.h"
+#include "Framework/Messaging/LightHouse/LightPulseUnregistrationMessage.h"
 
 #include <time.h>
 #include <execinfo.h>
@@ -104,7 +107,6 @@
 #include <stdarg.h>
 #include <sstream>
 
-#include "Framework/Messaging/LightHouse/LightHouseTransportBroadcastLightPulseMessage.h"
 namespace WaveNs
 {
 
@@ -299,6 +301,17 @@ WaveObjectManager::WaveEventMapContext::WaveEventMapContext (WaveElement *pWaveE
 void WaveObjectManager::WaveEventMapContext::executeEventHandler (const WaveEvent *&pWaveEvent)
 {
     (m_pWaveElementThatHandlesTheEvent->*m_pWaveEventHandler) (pWaveEvent);
+}
+
+WaveObjectManager::WaveLightPulseMapContext::WaveLightPulseMapContext (WaveElement *pWaveElement, WaveLightPulseHandler pWaveLightPulseHandler)
+    : m_pWaveElementThatHandlesTheLightPulse (pWaveElement),
+      m_pWaveLightPulseHandler (pWaveLightPulseHandler)
+{
+}
+
+void WaveObjectManager::WaveLightPulseMapContext::executeLightPulseHandler (const LightPulse *&pLightPulse)
+{
+    (m_pWaveElementThatHandlesTheLightPulse->*m_pWaveLightPulseHandler) (pLightPulse);
 }
 
 WaveObjectManager::WaveEventListenerMapContext::WaveEventListenerMapContext (const WaveServiceId &eventListenerServiceId, const LocationId &eventListenerLocationId)
@@ -1012,6 +1025,50 @@ void WaveObjectManager::listenForEvent (WaveServiceId waveServiceCode, UI32 sour
     }
 }
 
+void WaveObjectManager::listenForLightPulse (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement)
+{
+    map<string, WaveLightPulseMapContext *>::iterator element    = m_lightPulsesMap.find (lightPulseName);
+    map<string, WaveLightPulseMapContext *>::iterator endElement = m_lightPulsesMap.end  ();
+
+    if (endElement == element)
+    {
+        if (NULL == pWaveElement)
+        {
+            pWaveElement = this;
+        }
+
+        m_lightPulsesMap[lightPulseName] = new WaveLightPulseMapContext (pWaveElement, pWaveLightPulseHandler);
+    }
+    else
+    {
+        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::listenForLightPulse : This light pulse name is already registered : " + lightPulseName);
+
+        waveAssert (false, __FILE__, __LINE__);
+    }
+
+    LightPulseRegistrationMessage *pLightPulseRegistrationMessage = new LightPulseRegistrationMessage (lightPulseName);
+
+    WaveMessageStatus sendStatus = sendSynchronously (pLightPulseRegistrationMessage);
+
+    if (WAVE_MESSAGE_SUCCESS == sendStatus)
+    {
+        ResourceId completionStatus = pLightPulseRegistrationMessage->getCompletionStatus ();
+
+        if (WAVE_MESSAGE_SUCCESS != completionStatus)
+        {
+            trace (TRACE_LEVEL_FATAL, "WaveObjectManager::listenForLightPulse : This light pulse registration could not be successfully completed : " + lightPulseName + ", status : " + FrameworkToolKit::localize (completionStatus));
+
+            waveAssert (false, __FILE__, __LINE__);
+        }
+    }
+    else
+    {
+        trace (TRACE_LEVEL_FATAL, "WaveObjectManager::listenForLightPulse : This light pulse registration could not be sent : " + lightPulseName + ", status : " + FrameworkToolKit::localize (sendStatus));
+
+        waveAssert (false, __FILE__, __LINE__);
+    }
+}
+
 void WaveObjectManager::unlistenEvents ()
 {
     map<LocationId, map<UI32, map<UI32, WaveEventMapContext *> *> *>::iterator element               = m_eventsMap.begin ();
@@ -1088,6 +1145,49 @@ void WaveObjectManager::unlistenEvents ()
     m_eventsMap.clear ();
 
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::unlistenEvents : Finished unlistening all the events for this service.");
+}
+
+void WaveObjectManager::unlistenLightPulses ()
+{
+    map<string, WaveLightPulseMapContext *>::iterator element    = m_lightPulsesMap.begin ();
+    map<string, WaveLightPulseMapContext *>::iterator endElement = m_lightPulsesMap.end   ();
+
+    while (element != endElement)
+    {
+        const string &lightPulseName = element->first;
+
+        LightPulseUnregistrationMessage *pLightPulseUnregistrationMessage = new LightPulseUnregistrationMessage (lightPulseName);
+
+        WaveMessageStatus sendStatus = sendSynchronously (pLightPulseUnregistrationMessage);
+
+        if (WAVE_MESSAGE_SUCCESS == sendStatus)
+        {
+            ResourceId completionStatus = pLightPulseUnregistrationMessage->getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TRACE_LEVEL_FATAL, "WaveObjectManager::unlistenLightPulses : This light pulse un-registration could not be successfully completed : " + lightPulseName + ", status : " + FrameworkToolKit::localize (completionStatus));
+
+                waveAssert (false, __FILE__, __LINE__);
+            }
+        }
+        else
+        {
+            trace (TRACE_LEVEL_FATAL, "WaveObjectManager::unlistenLightPulses : This light pulse un-registration could not be sent : " + lightPulseName + ", status : " + FrameworkToolKit::localize (sendStatus));
+
+            waveAssert (false, __FILE__, __LINE__);
+        }
+
+        element++;
+    }
+
+    m_lightPulsesMap.clear ();
+
+    trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::unlistenLightPulses : Finished unlistening all the light pulses for this service.");
+
+    // Also unlisten for the light pulses.
+
+    unlistenLightPulses ();
 }
 
 void WaveObjectManager::addResponseMap (UI32 waveMessageId, WaveMessageResponseContext *pWaveMessageResponseContext)

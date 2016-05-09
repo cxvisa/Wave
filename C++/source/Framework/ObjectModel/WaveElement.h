@@ -43,14 +43,15 @@ class CliBlockContext;
 class WaveBrokerPublishMessage;
 class LightPulse;
 
-typedef void (WaveElement::* WaveMessageHandler)                  (WaveMessage *pWaveMessage);
-typedef void (WaveElement::* WaveEventHandler)                    (const WaveEvent *&pWaveEvent);
-typedef void (WaveElement::* WaveMessageResponseHandler)          (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
-typedef void (WaveElement::* WaveTimerExpirationHandler)          (TimerHandle timerHandle, void *pContext);
+typedef void (WaveElement::* WaveMessageHandler)                    (WaveMessage *pWaveMessage);
+typedef void (WaveElement::* WaveEventHandler)                      (const WaveEvent *&pWaveEvent);
+typedef void (WaveElement::* WaveLightPulseHandler)                 (const LightPulse *&pWaveEvent);
+typedef void (WaveElement::* WaveMessageResponseHandler)            (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
+typedef void (WaveElement::* WaveTimerExpirationHandler)            (TimerHandle timerHandle, void *pContext);
 typedef void (*WaveServiceIndependentMessageHandler)                (WaveServiceIndependentMessage *pWaveServiceIndependentMessage);
 typedef void (*ManagementInterfaceServiceIndependentMessageHandler) (ManagementInterfaceServiceIndependentMessage *pManagementInterfaceServiceIndependentMessage);
 
-typedef void (WaveElement::* WaveBrokerPublishMessageHandler)      (const WaveBrokerPublishMessage * const pWaveBrokerPublishMessage);
+typedef void (WaveElement::* WaveBrokerPublishMessageHandler)       (const WaveBrokerPublishMessage * const pWaveBrokerPublishMessage);
 
 class WaveElement
 {
@@ -148,6 +149,7 @@ class WaveElement
         virtual WaveObjectManager            *getPWaveObjectManager                                () const;
 
         virtual void                          listenForEvent                                       (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0) = 0;
+        virtual void                          listenForLightPulse                                  (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement = NULL) = 0;
 
         virtual ResourceId                    sendSynchronouslyToWaveClient                        (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance = 0) = 0;
         virtual WaveMessageStatus             sendToWaveServer                                     (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds) = 0;

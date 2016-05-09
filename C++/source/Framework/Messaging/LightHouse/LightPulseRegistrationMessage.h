@@ -20,6 +20,7 @@ class LightPulseRegistrationMessage : public WaveMessage
     protected :
     public :
                         LightPulseRegistrationMessage ();
+                        LightPulseRegistrationMessage (const string &lightPulseName);
         virtual        ~LightPulseRegistrationMessage ();
 
                 string  getLightPulseName             () const;

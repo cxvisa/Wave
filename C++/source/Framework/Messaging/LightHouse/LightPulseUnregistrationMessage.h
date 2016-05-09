@@ -20,6 +20,7 @@ class LightPulseUnregistrationMessage : public WaveMessage
     protected :
     public :
                         LightPulseUnregistrationMessage ();
+                        LightPulseUnregistrationMessage (const string &lightPulseName);
         virtual        ~LightPulseUnregistrationMessage ();
 
                 string  getLightPulseName               () const;

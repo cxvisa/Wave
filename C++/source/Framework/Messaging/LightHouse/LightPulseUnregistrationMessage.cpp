@@ -16,6 +16,12 @@ LightPulseUnregistrationMessage::LightPulseUnregistrationMessage ()
 {
 }
 
+LightPulseUnregistrationMessage::LightPulseUnregistrationMessage (const string &lightPulseName)
+    : WaveMessage      (LightPulseDispatchObjectManager::getWaveServiceId (), LIGHT_PULSE_DISPATCH_UNREGISTER_FOR_LIGHT_PULSE),
+      m_lightPulseName (lightPulseName)
+{
+}
+
 LightPulseUnregistrationMessage::~LightPulseUnregistrationMessage ()
 {
 }

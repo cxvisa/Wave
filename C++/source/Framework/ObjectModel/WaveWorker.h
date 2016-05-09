@@ -163,6 +163,8 @@ class WaveWorker : public WaveElement
                 WaveServiceId                 getServiceId                             ();
 
         virtual void                           listenForEvent                           (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                           listenForLightPulse                      (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement =  NULL);
+
         virtual ResourceId                     sendSynchronouslyToWaveClient            (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance = 0);
         virtual WaveMessageStatus              sendToWaveServer                         (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
         virtual ResourceId                     sendToWaveClient                         (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instance = 0);

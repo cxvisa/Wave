@@ -484,6 +484,11 @@ void WaveManagedObject::listenForEvent (WaveServiceId waveServiceCode, UI32 sour
     m_pCurrentOwnerWaveObjectManager->listenForEvent (waveServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
 }
 
+void WaveManagedObject::listenForLightPulse (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement)
+{
+    m_pCurrentOwnerWaveObjectManager->listenForLightPulse (lightPulseName, pWaveLightPulseHandler, pWaveElement != NULL ? pWaveElement : this);
+}
+
 ResourceId WaveManagedObject::sendSynchronouslyToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance)
 {
     return (m_pCurrentOwnerWaveObjectManager->sendSynchronouslyToWaveClient (waveClientName, pManagementInterfaceMessage, Instance));

@@ -118,6 +118,7 @@ class WaveManagedObject : virtual public WaveElement, virtual public WavePersist
         virtual void                          addEventType                              (const UI32 &eventOperationCode);
 
         virtual void                          listenForEvent                            (WaveServiceId waveServiceId, UI32 sourceOperationCode, WaveEventHandler pWaveEventHandler, WaveElement *pWaveElement = NULL, const LocationId &sourceLocationId = 0);
+        virtual void                          listenForLightPulse                       (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement =  NULL);
 
         virtual ResourceId                    sendSynchronouslyToWaveClient             (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
         virtual WaveMessageStatus             sendToWaveServer                          (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);

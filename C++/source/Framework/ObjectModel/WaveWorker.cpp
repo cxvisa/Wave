@@ -688,6 +688,11 @@ void WaveWorker::listenForEvent (WaveServiceId waveServiceCode, UI32 sourceOpera
     m_pWaveObjectManager->listenForEvent (waveServiceCode, sourceOperationCode, pWaveEventHandler, pWaveElement != NULL ? pWaveElement : this, sourceLocationId);
 }
 
+void WaveWorker::listenForLightPulse (const string &lightPulseName, WaveLightPulseHandler pWaveLightPulseHandler, WaveElement *pWaveElement)
+{
+    m_pWaveObjectManager->listenForLightPulse (lightPulseName, pWaveLightPulseHandler, pWaveElement != NULL ? pWaveElement : this);
+}
+
 ResourceId WaveWorker::sendSynchronouslyToWaveClient (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instance)
 {
     return (m_pWaveObjectManager->sendSynchronouslyToWaveClient (waveClientName, pManagementInterfaceMessage, Instance));

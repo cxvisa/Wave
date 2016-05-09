@@ -16,6 +16,12 @@ LightPulseRegistrationMessage::LightPulseRegistrationMessage ()
 {
 }
 
+LightPulseRegistrationMessage::LightPulseRegistrationMessage (const string &lightPulseName)
+    : WaveMessage      (LightPulseDispatchObjectManager::getWaveServiceId (), LIGHT_PULSE_DISPATCH_REGISTER_FOR_LIGHT_PULSE),
+      m_lightPulseName (lightPulseName)
+{
+}
+
 LightPulseRegistrationMessage::~LightPulseRegistrationMessage ()
 {
 }
