@@ -13,6 +13,8 @@ namespace WaveNs
 {
 
 class LightPulseDispatchWorker;
+class LightPulseRegistrationWorker;
+class LightPulseUnregistrationWorker;
 
 class LightPulseDispatchObjectManager : public WaveLocalObjectManager
 {
@@ -30,7 +32,9 @@ class LightPulseDispatchObjectManager : public WaveLocalObjectManager
         // Now the data members
 
     private :
-        LightPulseDispatchWorker *m_pLightPulseDispatchWorker;
+        LightPulseDispatchWorker       *m_pLightPulseDispatchWorker;
+        LightPulseRegistrationWorker   *m_pLightPulseRegistrationWorker;
+        LightPulseUnregistrationWorker *m_pLightPulseUnregistrationWorker;
 
     protected :
     public :

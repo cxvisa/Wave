@@ -13,12 +13,17 @@ namespace WaveNs
 {
 
 class RegressionTestMessage;
-class LightHouseTestContext;
+class WaveAsynchronousContextForBootPhases;
+class LightHouseTestLightPulse1;
 
 class LightHouseTestObjectManager3 : public WaveLocalObjectManager
 {
     private :
-             LightHouseTestObjectManager3 ();
+                     LightHouseTestObjectManager3     ();
+
+        virtual void listenForEvents                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+
+                void lightHouseTestLightPulse1Handler (const LightHouseTestLightPulse1 *&pLightHouseTestLightPulse1);
 
     protected :
     public :

@@ -13,7 +13,6 @@ namespace WaveNs
 {
 
 class RegressionTestMessage;
-class LightHouseTestContext;
 
 class LightHouseTestObjectManager2 : public WaveLocalObjectManager
 {

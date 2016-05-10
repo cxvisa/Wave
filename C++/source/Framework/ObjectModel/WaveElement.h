@@ -45,7 +45,7 @@ class LightPulse;
 
 typedef void (WaveElement::* WaveMessageHandler)                    (WaveMessage *pWaveMessage);
 typedef void (WaveElement::* WaveEventHandler)                      (const WaveEvent *&pWaveEvent);
-typedef void (WaveElement::* WaveLightPulseHandler)                 (const LightPulse *&pWaveEvent);
+typedef void (WaveElement::* WaveLightPulseHandler)                 (const LightPulse *&pLightPulse);
 typedef void (WaveElement::* WaveMessageResponseHandler)            (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 typedef void (WaveElement::* WaveTimerExpirationHandler)            (TimerHandle timerHandle, void *pContext);
 typedef void (*WaveServiceIndependentMessageHandler)                (WaveServiceIndependentMessage *pWaveServiceIndependentMessage);

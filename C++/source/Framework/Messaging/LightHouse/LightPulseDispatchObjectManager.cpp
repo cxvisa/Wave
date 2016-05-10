@@ -6,6 +6,8 @@
 
 #include "Framework/Messaging/LightHouse/LightPulseDispatchObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightPulseDispatchWorker.h"
+#include "Framework/Messaging/LightHouse/LightPulseRegistrationWorker.h"
+#include "Framework/Messaging/LightHouse/LightPulseUnregistrationWorker.h"
 
 namespace WaveNs
 {
@@ -16,6 +18,14 @@ LightPulseDispatchObjectManager::LightPulseDispatchObjectManager ()
     m_pLightPulseDispatchWorker = new LightPulseDispatchWorker (this);
 
     waveAssert (NULL != m_pLightPulseDispatchWorker, __FILE__, __LINE__);
+
+    m_pLightPulseRegistrationWorker = new LightPulseRegistrationWorker (this);
+
+    waveAssert (NULL != m_pLightPulseRegistrationWorker, __FILE__, __LINE__);
+
+    m_pLightPulseUnregistrationWorker = new LightPulseUnregistrationWorker (this);
+
+    waveAssert (NULL != m_pLightPulseUnregistrationWorker, __FILE__, __LINE__);
 }
 
 LightPulseDispatchObjectManager::~LightPulseDispatchObjectManager ()
@@ -23,6 +33,16 @@ LightPulseDispatchObjectManager::~LightPulseDispatchObjectManager ()
     if (NULL != m_pLightPulseDispatchWorker)
     {
         delete m_pLightPulseDispatchWorker;
+    }
+
+    if (NULL != m_pLightPulseRegistrationWorker)
+    {
+        delete m_pLightPulseRegistrationWorker;
+    }
+
+    if (NULL != m_pLightPulseUnregistrationWorker)
+    {
+        delete m_pLightPulseUnregistrationWorker;
     }
 }
 

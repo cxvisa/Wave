@@ -115,6 +115,8 @@ class WaveConfigurationAttributes;
 
 class WaveDeliverBrokerPublishMessageWorker;
 
+class WaveDeliverLightPulseWorker;
+
 class LightPulse;
 
 class WaveObjectManager : public WaveElement
@@ -618,6 +620,7 @@ class WaveObjectManager : public WaveElement
 
                void                 deliverWaveBrokerPublishedEvent                                     (const string &brokerName, const string &topicName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage);
 
+               void                 deliverWaveLightPulse                                               (const LightPulse *&pLightPulse);
     protected :
                 bool                getIsEnabled                                 ();
                                                                  WaveObjectManager                            (const string &objectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
@@ -1028,6 +1031,8 @@ class WaveObjectManager : public WaveElement
                map<string, map<string, WaveBrokerPublishMessageHandlerContext *> >  m_waveBrokerBasedMessageSubscriberInformationMap;
 
                WaveDeliverBrokerPublishMessageWorker                               *m_pWaveDeliverBrokerPublishMessageWorker;
+
+               WaveDeliverLightPulseWorker                                         *m_pWaveDeliverLightPulseWorker;
 
     protected :
     public :

@@ -21,6 +21,7 @@ namespace WaveNs
 {
 
 class WaveBrokerPublishMessage;
+class LightPulse;
 
 class WaveInitializeObjectManagerMessage : public WaveMessage
 {
@@ -1030,6 +1031,26 @@ class WaveDeliverBrokerPublishMessage : public WaveMessage
 
     private :
         WaveBrokerPublishMessage *m_pWaveBrokerPublishMessage;
+
+    protected :
+    public :
+};
+
+class WaveDeliverLightPulseMessage : public WaveMessage
+{
+    private :
+    protected :
+    public :
+                    WaveDeliverLightPulseMessage (WaveServiceId waveServiceId);
+                   ~WaveDeliverLightPulseMessage ();
+
+        LightPulse *getPLightPulse               ();
+        void        setPLightPulse               (LightPulse *pLightPulse);
+
+    // Now the data members
+
+    private :
+        LightPulse *m_pLightPulse;
 
     protected :
     public :

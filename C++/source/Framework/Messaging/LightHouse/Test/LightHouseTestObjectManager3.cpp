@@ -5,10 +5,10 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager3.h"
-#include "Regression/RegressionTestMessage.h"
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestContext.h"
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestLightPulse1.h"
 #include "Framework/Utils/StringUtils.h"
+#include "Framework/ObjectModel/WaveAsynchronousContextForBootPhases.h"
 
 namespace WaveNs
 {
@@ -39,6 +39,23 @@ LightHouseTestObjectManager3 *LightHouseTestObjectManager3::getInstance ()
 WaveServiceId LightHouseTestObjectManager3::getWaveServiceId ()
 {
     return ((getInstance ())->getServiceId ());
+}
+
+void LightHouseTestObjectManager3::listenForEvents (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases)
+{
+    listenForLightPulse (LightHouseTestLightPulse1::getLightPulseName (), reinterpret_cast<WaveLightPulseHandler> (&LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler));
+
+    pWaveAsynchronousContextForBootPhases->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
+    pWaveAsynchronousContextForBootPhases->callback            ();
+}
+
+void LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler (const LightHouseTestLightPulse1 *&pLightHouseTestLightPulse1)
+{
+    waveAssert (NULL != pLightHouseTestLightPulse1, __FILE__, __LINE__);
+
+    const string lightMessage = pLightHouseTestLightPulse1->getLightMessage ();
+
+    trace (TRACE_LEVEL_INFO, "LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler : Light Message Received : " + lightMessage);
 }
 
 }

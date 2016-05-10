@@ -5,7 +5,6 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager2.h"
-#include "Regression/RegressionTestMessage.h"
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestContext.h"
 #include "Framework/Messaging/LightHouse/Test/LightHouseTestLightPulse1.h"
 #include "Framework/Utils/StringUtils.h"

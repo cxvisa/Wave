@@ -123,6 +123,10 @@ typedef enum
 
     WAVE_OBJECT_MANAGER_DELIVER_WAVE_BROKER_PUBLISH_MESSAGE,
 
+    // Light Pulse delivery
+
+    WAVE_OBJECT_MANAGER_DELIVER_WAVE_LIGHT_PULSE_MESSAGE,
+
     // The following must be the last two.
     // These opcodes are currently limited to be used by only
     // the remote transport service.

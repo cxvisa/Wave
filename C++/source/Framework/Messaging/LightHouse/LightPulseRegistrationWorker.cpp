@@ -9,6 +9,7 @@
 #include "Framework/Messaging/LightHouse/LightPulseDispatchObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightPulseDispatchTypes.h"
 #include "Framework/Messaging/LightHouse/LightPulseRegistrationRepository.h"
+#include "Framework/Utils/FrameworkToolKit.h"
 
 using WaveNs::LightPulseDispatchObjectManager;
 
@@ -39,6 +40,8 @@ void LightPulseRegistrationWorker::registerForLightPulseMessageHandler (LightPul
     const WaveServiceId  waveServiceId  = pLightPulseRegistrationMessage->getSenderServiceCode ();
 
     pLightPulseRegistrationRepository->addLightPulseRecepientForLightPulseName (lightPulseName, waveServiceId);
+
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "LightPulseRegistrationWorker::registerForLightPulseMessageHandler : Registered %s for %s", (FrameworkToolKit::getServiceNameById (waveServiceId)).c_str (), lightPulseName.c_str ());
 
     pLightPulseRegistrationMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     reply (pLightPulseRegistrationMessage);

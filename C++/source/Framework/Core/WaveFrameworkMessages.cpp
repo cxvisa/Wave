@@ -11,6 +11,7 @@
 #include "Framework/Utils/FrameworkToolKit.h"
 #include "Framework/Attributes/AttributeStringVectorVector.h"
 #include "Framework/Attributes/AttributeUI32VectorVector.h"
+#include "Framework/Messaging/LightHouse/LightPulse.h"
 #include "Framework/Messaging/MessagingBus/BrokerBasedMessagingBus/WaveBrokerPublishMessage.h"
 
 namespace WaveNs
@@ -1502,6 +1503,26 @@ WaveBrokerPublishMessage *WaveDeliverBrokerPublishMessage::getPWaveBrokerPublish
 void WaveDeliverBrokerPublishMessage::setPWaveBrokerPublishMessage (WaveBrokerPublishMessage *pWaveBrokerPublishMessage)
 {
     m_pWaveBrokerPublishMessage = pWaveBrokerPublishMessage;
+}
+
+WaveDeliverLightPulseMessage::WaveDeliverLightPulseMessage (WaveServiceId waveServiceId)
+    : WaveMessage   (waveServiceId, WAVE_OBJECT_MANAGER_DELIVER_WAVE_LIGHT_PULSE_MESSAGE),
+      m_pLightPulse (NULL)
+{
+}
+
+WaveDeliverLightPulseMessage::~WaveDeliverLightPulseMessage ()
+{
+}
+
+LightPulse *WaveDeliverLightPulseMessage::getPLightPulse ()
+{
+    return (m_pLightPulse);
+}
+
+void WaveDeliverLightPulseMessage::setPLightPulse (LightPulse *pLightPulse)
+{
+    m_pLightPulse = pLightPulse;
 }
 
 }

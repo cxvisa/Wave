@@ -898,4 +898,9 @@ WaveMessageStatus WaveWorker::broadcastLightPulse (LightPulse *pLightPulse)
     return (m_pWaveObjectManager->broadcastLightPulse (pLightPulse));
 }
 
+void WaveWorker::deliverWaveLightPulse (const LightPulse *&pLightPulse)
+{
+    return (m_pWaveObjectManager->deliverWaveLightPulse (pLightPulse));
+}
+
 }

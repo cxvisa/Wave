@@ -100,6 +100,8 @@
 #include "Framework/Messaging/LightHouse/LightHouseTransportBroadcastLightPulseMessage.h"
 #include "Framework/Messaging/LightHouse/LightPulseRegistrationMessage.h"
 #include "Framework/Messaging/LightHouse/LightPulseUnregistrationMessage.h"
+#include "Framework/ObjectModel/WaveDeliverLightPulseWorker.h"
+#include "Framework/Messaging/LightHouse/LightPulse.h"
 
 #include <time.h>
 #include <execinfo.h>
@@ -543,6 +545,10 @@ WaveObjectManager::WaveObjectManager (const string &objectManagerName, const UI3
     m_pWaveDeliverBrokerPublishMessageWorker = new WaveDeliverBrokerPublishMessageWorker(this);
     waveAssert (NULL != m_pWaveDeliverBrokerPublishMessageWorker, __FILE__, __LINE__);
 
+    m_pWaveDeliverLightPulseWorker = new WaveDeliverLightPulseWorker (this);
+
+    waveAssert (NULL != m_pWaveDeliverLightPulseWorker, __FILE__, __LINE__);
+
     addOperationMap (WAVE_OBJECT_MANAGER_INITIALIZE,                             reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::initializeHandler));
     addOperationMap (WAVE_OBJECT_MANAGER_LISTEN_FOR_EVENTS,                      reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::listenForEventsHandler));
     addOperationMap (WAVE_OBJECT_MANAGER_INSTALL,                                reinterpret_cast<WaveMessageHandler> (&WaveObjectManager::installHandler));
@@ -648,6 +654,11 @@ WaveObjectManager::~WaveObjectManager ()
     if (NULL != m_pWaveDeliverBrokerPublishMessageWorker)
     {
         delete m_pWaveDeliverBrokerPublishMessageWorker;
+    }
+
+    if (NULL != m_pWaveDeliverLightPulseWorker)
+    {
+        delete m_pWaveDeliverLightPulseWorker;
     }
 
     // delete MessageHistory objects in m_messageHistoryVector (if any)
@@ -11821,6 +11832,25 @@ void WaveObjectManager::deliverWaveBrokerPublishedEvent (const string &brokerNam
 
             (pSubscriber->*waveBrokerPublishMessageHandler) (pWaveBrokerPublishMessage);
         }
+    }
+}
+
+void WaveObjectManager::deliverWaveLightPulse (const LightPulse *&pLightPulse)
+{
+    waveAssert (NULL != pLightPulse, __FILE__, __LINE__);
+
+    const string lightPulseName = pLightPulse->getName ();
+
+    map<string, WaveLightPulseMapContext *>::iterator element    = m_lightPulsesMap.find (lightPulseName);
+    map<string, WaveLightPulseMapContext *>::iterator endElement = m_lightPulsesMap.end  ();
+
+    if (endElement != element)
+    {
+        WaveLightPulseMapContext *pWaveLightPulseMapContext = element->second;
+
+        waveAssert (NULL != pWaveLightPulseMapContext, __FILE__, __LINE__);
+
+        pWaveLightPulseMapContext->executeLightPulseHandler (pLightPulse);
     }
 }
 
