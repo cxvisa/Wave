@@ -268,6 +268,11 @@ public class Wave
             WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_SUCCESS, "Trace file is being set to : " + waveTraceFilePath, true, false);
         }
 
+
+        // Set the HttpInterface Port
+
+        FrameworkToolKit.setHttpInterfaceReceiverPort ((waveMainConfiguration.getWaveMainHttp ()).getPort ());
+
         WaveFrameworkObjectManager.bootSelf ();
 
         // Initialize Serialization for the System

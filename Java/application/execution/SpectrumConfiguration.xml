@@ -110,7 +110,7 @@
 
     <http>
         <enable>true</enable>
-        <port>1100</port>
+        <port>2301</port>
     </http>
 
     <orm>

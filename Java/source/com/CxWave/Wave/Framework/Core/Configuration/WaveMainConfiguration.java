@@ -32,6 +32,9 @@ public class WaveMainConfiguration extends WaveConfiguration
     @XmlWaveXPath (path = "ras")
     private WaveMainRas                 m_waveMainRas              = new WaveMainRas ();
 
+    @XmlWaveXPath (path = "http")
+    private WaveMainHttp                m_waveMainHttp             = new WaveMainHttp ();
+
     @NonSerializable
     private Vector<String>              m_yinPaths;
     private String                      m_wyserTagsFilePath;
@@ -229,5 +232,15 @@ public class WaveMainConfiguration extends WaveConfiguration
     public void setWaveMainRas (final WaveMainRas waveMainRas)
     {
         m_waveMainRas = waveMainRas;
+    }
+
+    public WaveMainHttp getWaveMainHttp ()
+    {
+        return m_waveMainHttp;
+    }
+
+    public void setWaveMainHttp (final WaveMainHttp waveMainHttp)
+    {
+        m_waveMainHttp = waveMainHttp;
     }
 }
