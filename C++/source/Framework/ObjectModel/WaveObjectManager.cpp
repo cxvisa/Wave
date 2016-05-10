@@ -6996,7 +6996,7 @@ LightPulse *WaveObjectManager::createLightPulseInstanceWrapper (const string &li
         }
     }
 
-    m_createLightPulseInstanceWrapperMutex.lock ();
+    m_createLightPulseInstanceWrapperMutex.unlock ();
 
     return (pLightPulse);
 }
@@ -7004,6 +7004,8 @@ LightPulse *WaveObjectManager::createLightPulseInstanceWrapper (const string &li
 LightPulse *WaveObjectManager::createLightPulseInstance (const string &lightPulseName)
 {
     trace (TRACE_LEVEL_ERROR, "WaveObjectManager::createLightPulseInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+    trace (TRACE_LEVEL_ERROR, "WaveObjectManager::createLightPulseInstance : Please overwrite this method in the corresponding object manager.");
+
     return (NULL);
 }
 

@@ -65,7 +65,7 @@ void LightHouseTestObjectManager1::broadcastTestLightPulse1TestStep (LightHouseT
     static       UI32 currentCounter                   = 0;
           UI32 i                                = 0;
 
-    for (i = 0;i < numberOfLightPulsesToBeBroadcast; i++)
+    for (i = 0; i < numberOfLightPulsesToBeBroadcast; i++)
     {
         LightHouseTestLightPulse1 *pLightHouseTestLightPulse1 = new LightHouseTestLightPulse1 ();
 

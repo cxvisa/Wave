@@ -53,11 +53,14 @@
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingObjectManager.h"
 #include "Sharding/NetworkDeviceWrite/NetworkDeviceWriteShardingObjectManager.h"
 
+#include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager1.h"
+#include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager2.h"
+#include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager3.h"
+
 #include <time.h>
 #include <stdlib.h>
 #include <sys/resource.h>
 
-#include "Framework/Messaging/LightHouse/Test/LightHouseTestObjectManager1.h"
 //Commenting it our for now.  We need to find way to enable it on Solaris.
 //extern int daemon (int doNotChangeToRootDir, int doNotCloseFileDescriptors);
 
@@ -393,6 +396,8 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
 
     if (true == m_enableBuiltInSelfTestSupport)
     {
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseTestObjectManager3::getInstance));
+        registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseTestObjectManager2::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (LightHouseTestObjectManager1::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (FrameworkTestability6ObjectManager::getInstance));
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (DistributedLogTestObjectManager::getInstance));

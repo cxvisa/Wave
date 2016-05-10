@@ -5,9 +5,11 @@
  ***************************************************************************/
 
 #include "Framework/Messaging/LightHouse/LightPulseDispatchWorker.h"
+#include "Framework/Messaging/LightHouse/LightPulse.h"
 #include "Framework/Messaging/LightHouse/LightPulseDispatchMessage.h"
 #include "Framework/Messaging/LightHouse/LightPulseDispatchObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightPulseDispatchTypes.h"
+#include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 
 using WaveNs::LightPulseDispatchObjectManager;
 
@@ -30,7 +32,21 @@ void LightPulseDispatchWorker::dispatchReceivedLightPulseMessageHandler (LightPu
 
     waveAssert (NULL != pLightPulseDispatchMessage, __FILE__, __LINE__);
 
-    trace (TRACE_LEVEL_INFO, "LightPulseDispatchWorker::dispatchReceivedLightPulseMessageHandler : Dispatching a Light Pulse ...\n" + pLightPulseDispatchMessage->getLightPulseSerializedString ());
+    const string seralizedLightPulseString = pLightPulseDispatchMessage->getLightPulseSerializedString ();
+
+    trace (TRACE_LEVEL_INFO, "LightPulseDispatchWorker::dispatchReceivedLightPulseMessageHandler : Dispatching a Light Pulse ...\r\n" + seralizedLightPulseString);
+
+    const string lightPulseName = LightPulse::getLightPulseName (seralizedLightPulseString.c_str ());
+
+    trace (TRACE_LEVEL_INFO, "LightPulseDispatchWorker::dispatchReceivedLightPulseMessageHandler : Light Pulse Name : " + lightPulseName);
+
+    LightPulse *pLightPulse = WaveMessageFactory::getLightPulseInstance (lightPulseName);
+
+    if (NULL == pLightPulse)
+    {
+        trace (TRACE_LEVEL_FATAL, "LightPulseDispatchWorker::dispatchReceivedLightPulseMessageHandler : Please have the corresponding Object Manager implement  createLightPulseInstance for : " + lightPulseName);
+        waveAssert (false, __FILE__, __LINE__);
+    }
 
     pLightPulseDispatchMessage->setCompletionStatus (WAVE_MESSAGE_SUCCESS);
     reply (pLightPulseDispatchMessage);
