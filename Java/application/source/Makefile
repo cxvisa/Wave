@@ -40,15 +40,15 @@ cleanall: clean
 	gmake -C ../../source clean
 
 runspectrum:
-	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
-	java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -jar ../build/lib/libSpectrum-1.5.jar .. SpectrumConfiguration.xml
+	#java -cp ../../build/lib/libSpectrum-1.5.jar:../../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ../..
+	java -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -jar ../../build/lib/libSpectrum-1.5.jar ../.. SpectrumConfiguration.xml
 
 hspectrum:
-	#java -cp ../build/lib/libSpectrum-1.5.jar:../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ..
-	javah  ../build/obj/
+	#java -cp ../../build/lib/libSpectrum-1.5.jar:../../../build/lib/libWave-1.5.jar com.CxWave.Wave.Spectrum ../..
+	javah  ../../build/obj/
 
 jdbspectrum:
-	jdb -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -sourcepath ../source:../../source -classpath ../build/obj:../../build/obj com.CxWave.Wave.Spectrum .. SpectrumConfiguration.xml
+	jdb -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -sourcepath ../../source:../../../source -classpath ../../build/obj:../../../build/obj com.CxWave.Wave.Spectrum ../.. SpectrumConfiguration.xml
 
 debugspectrum:
-	java -agentlib:jdwp=transport=dt_socket,address=3333,server=y,suspend=y -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -jar ../build/lib/libSpectrum-1.5.jar .. SpectrumConfiguration.xml
+	java -agentlib:jdwp=transport=dt_socket,address=3333,server=y,suspend=y -Duser.dir=`pwd` -Dfile.encoding=UTF-8 $(JVM_MEMORY_OPTIONS) -jar ../../build/lib/libSpectrum-1.5.jar ../.. SpectrumConfiguration.xml
