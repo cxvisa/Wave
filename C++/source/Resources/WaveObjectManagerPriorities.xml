@@ -18,6 +18,8 @@
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_USER_INTERFACE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_HTTP_INTERFACE"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_SHELL"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_LIGHT_HOUSE_RECEIVER"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_LIGHT_HOUSE_DISPATCHER"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_REGRESSION"></Resource>
 
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY1"></Resource>
@@ -27,6 +29,9 @@
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY5"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY6"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_TESTABILITY7"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_LIGHT_HOUSE_TEST_1"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_LIGHT_HOUSE_TEST_2"></Resource>
+        <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_LIGHT_HOUSE_TEST_3"></Resource>
 
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_FRAMEWORK_CORE_TEST"></Resource>
         <Resource Name = "WAVE_OBJECT_MANAGER_PRIORITY_TIMER_TEST"></Resource>

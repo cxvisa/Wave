@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Shell.ShellDebug;
@@ -134,6 +135,52 @@ public class MulticastReceiverSocket
 
         return (true);
     }
+
+    public boolean receive (final FixedSizeBuffer fixedSizeBuffer, final StringBuffer fromIpAddress, final SI32 fromPort)
+    {
+        if (! (isValid ()))
+        {
+            return (false);
+        }
+
+        try
+        {
+            m_multicastSocket.receive (m_datagramPacket);
+        }
+        catch (IOException e)
+        {
+            WaveTraceUtils.fatalTracePrintf ("MulticastReceiverSocket.receive :could not receive for string data.  Status : %s", e.toString ());
+
+           return (false);
+        }
+
+        final byte data[] = m_datagramPacket.getData ();
+        final int  length = m_datagramPacket.getLength ();
+        final int  offset = m_datagramPacket.getOffset ();
+
+        WaveAssertUtils.waveAssert (null != fixedSizeBuffer);
+
+        final byte destinationData[] = fixedSizeBuffer.getRawBuffer ();
+        final int  destinationLength = ((fixedSizeBuffer.getMaximumSize ()).intValue ()) - ((fixedSizeBuffer.getCurrentSize ()).intValue ());
+        final int  destinationOffset = (fixedSizeBuffer.getCurrentSize ()).intValue ();
+
+        System.arraycopy (data, 0, destinationData, destinationOffset, destinationLength);
+
+        InetAddress inetAddressForSource = m_datagramPacket.getAddress ();
+
+        WaveAssertUtils.waveAssert (null != inetAddressForSource);
+
+        WaveAssertUtils.waveAssert (null != fromIpAddress);
+
+        fromIpAddress.append (inetAddressForSource.getHostAddress ());
+
+        WaveAssertUtils.waveAssert (null != fromPort);
+
+        fromPort.seValue (m_datagramPacket.getPort ());
+
+        return (true);
+    }
+
 
     @ShellCommand (shell = ShellDebug.class, briefHelp = "Sends a muticast packet to the specified multicast group and port.")
     public static void receiveMessageToMulticastGroup (final Vector<String> arguments)

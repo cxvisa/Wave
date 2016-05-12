@@ -2,20 +2,18 @@
  * Copyright (C) 2015-2016 Vidyasagara Guntaka & CxWave, Inc * All rights reserved. * Author : Vidyasagara Reddy Guntaka *
  *************************************************************************************************************************/
 
-package com.CxWave.Wave.Regression;
+package com.CxWave.Wave.Framework.Messaging.LightHouse;
 
 import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveOperationCodeInterface;
 
-public enum RegressionMessageIds implements WaveOperationCodeInterface
+public enum LightHouseDispatchTypes implements WaveOperationCodeInterface
 {
-    REGRESSION_GET_TEST_SERVICE_ENTRIES,
-    REGRESSION_SET_TEST_SERVICE_STATE,
-    REGRESSION_START_REGRESSION,
-    REGRESSION_PREPARE_TEST_FOR_A_SERVICE,
-    REGRESSION_RUN_TEST_FOR_A_SERVICE;
+    LIGHT_PULSE_DISPATCH_RECEIVED_LIGHT_PULSE,
+    LIGHT_PULSE_DISPATCH_REGISTER_FOR_LIGHT_PULSE,
+    LIGHT_PULSE_DISPATCH_UNREGISTER_FOR_LIGHT_PULSE;
 
-    private RegressionMessageIds ()
+    private LightHouseDispatchTypes ()
     {
     }
 
