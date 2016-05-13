@@ -18,6 +18,7 @@ import java.util.Vector;
 import com.CxWave.Wave.Framework.Attributes.AttributesMap;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttribute;
 import com.CxWave.Wave.Framework.Attributes.ReflectionAttributesMap;
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
@@ -27,6 +28,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorker;
 import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonLightPulseHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageCallback;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonSequencerStep;
@@ -69,6 +71,7 @@ public class WaveJavaClass extends WaveJavaType
     private final ReflectionAttributesMap               m_serializationReflectionAttributesMapForDeclaredFields;
     private String                                      m_typeName;
     private final Map<Class<?>, Method>                 m_messageHandlers;
+    private final Map<Class<?>, Method>                 m_lightPulseHandlers;
     private final Map<Class<?>, Method>                 m_eventHandlers;
     private final Map<String, Integer>                  m_ownedWorkerClassNamesCadinalityMap;
     private final Map<String, WaveWorkerPriority>       m_ownedWorkerClassNamesPriorityMap;
@@ -97,6 +100,7 @@ public class WaveJavaClass extends WaveJavaType
         m_anonymousClasses = new HashMap<String, WaveJavaClass> ();
         m_serializationReflectionAttributesMapForDeclaredFields = new ReflectionAttributesMap ();
         m_messageHandlers = new HashMap<Class<?>, Method> ();
+        m_lightPulseHandlers = new HashMap<Class<?>, Method> ();
         m_eventHandlers = new HashMap<Class<?>, Method> ();
         m_ownedWorkerClassNamesCadinalityMap = new HashMap<String, Integer> ();
         m_ownedWorkerClassNamesPriorityMap = new HashMap<String, WaveWorkerPriority> ();
@@ -537,6 +541,74 @@ public class WaveJavaClass extends WaveJavaType
                             m_messageHandlers.put (waveMessageClass, declaredMethod);
 
                             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeMessageHandlers : Added a Message Handler for Class %s with Message Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void computeLightPulseHandlers (final Class<?> reflectionClass)
+    {
+        if ((!(isADerivativeOfWaveObjectManager ())) && (!(isADerivativeOfWaveWorker ())) && (!(isADerivativeOfWaveManagedObject ())) && (!(waveObjectManagerIsADerivativeOf (m_typeName))) && (!(waveWorkerIsADerivativeOf (m_typeName))) && (!(waveManagedObjectIsADerivativeOf (m_typeName))))
+        {
+            return;
+        }
+
+        WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Proceeding with Computing LightPulse Handlers for Java Class " + m_name, true, false);
+
+        final Method[] declaredMethods = reflectionClass.getDeclaredMethods ();
+
+        for (final Method declaredMethod : declaredMethods)
+        {
+            WaveAssertUtils.waveAssert (null != declaredMethod);
+
+            WaveTraceUtils.trace (TraceLevel.TRACE_LEVEL_INFO, "        Considering Method " + declaredMethod.toString (), true, false);
+
+            final Annotation annotationForNonLightPulseHandler = declaredMethod.getAnnotation (NonLightPulseHandler.class);
+
+            if (null != annotationForNonLightPulseHandler)
+            {
+                final NonLightPulseHandler nonLightPulseHandler = (NonLightPulseHandler) annotationForNonLightPulseHandler;
+
+                WaveAssertUtils.waveAssert (null != nonLightPulseHandler);
+
+                WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Ignoring %s : %s from LightPulse Handler computations since it is annotated with @NonLightPulseHandler", m_typeName, declaredMethod.toString ());
+
+                continue;
+            }
+
+            final int numberOfParameters = declaredMethod.getParameterCount ();
+
+            if (1 == numberOfParameters)
+            {
+                final Class<?>[] parameterTypes = declaredMethod.getParameterTypes ();
+
+                final String parameterClassTypeName = parameterTypes[0].getTypeName ();
+
+                final WaveJavaClass waveJavaClass = WaveJavaSourceRepository.getWaveJavaClass (parameterClassTypeName);
+
+                if (null != waveJavaClass)
+                {
+                    if (waveJavaClass.isADerivativeOfLightPulse ())
+                    {
+                        if (m_lightPulseHandlers.containsKey (parameterTypes[0]))
+                        {
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Trying to add a LightPulse Handler for Class %s with LightPulse Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Already persent LightPulse Handler method : %s", (m_lightPulseHandlers.get (parameterTypes[0])).toString ());
+                            WaveAssertUtils.waveAssert ();
+                        }
+                        else
+                        {
+                            declaredMethod.setAccessible (true);
+
+                            final Class<?> waveMessageClass = parameterTypes[0];
+
+                            WaveAssertUtils.waveAssert (null != waveMessageClass);
+
+                            m_lightPulseHandlers.put (waveMessageClass, declaredMethod);
+
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Added a LightPulse Handler for Class %s with LightPulse Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
                         }
                     }
                 }
@@ -1202,6 +1274,44 @@ public class WaveJavaClass extends WaveJavaType
     public static boolean waveMessageIsADerivativeOf (final String derivedFromClassName)
     {
         final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (WaveMessage.class.getName ());
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (derivedFromClassName))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public boolean isADerivativeOfLightPulse ()
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (m_name);
+
+        for (final String className : inheritanceHierarchy.toArray (new String[0]))
+        {
+            if (WaveStringUtils.isBlank (className))
+            {
+                break;
+            }
+            else if (className.equals (LightPulse.class.getName ()))
+            {
+                return (true);
+            }
+        }
+
+        return (false);
+    }
+
+    public static boolean lightPulseIsADerivativeOf (final String derivedFromClassName)
+    {
+        final Vector<String> inheritanceHierarchy = WaveJavaSourceRepository.getInheritanceHeirarchyForClassLatestFirstIncludingSelf (LightPulse.class.getName ());
 
         for (final String className : inheritanceHierarchy.toArray (new String[0]))
         {
