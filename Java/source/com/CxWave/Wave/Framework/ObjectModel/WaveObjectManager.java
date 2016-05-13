@@ -507,13 +507,30 @@ public class WaveObjectManager extends WaveElement
 
                 Constructor<?> constructor = null;
 
-                try
+                final Constructor<?> declaredConstructors[] = waveWorkerClass.getDeclaredConstructors ();
+
+                for (final Constructor<?> declaredConstructor : declaredConstructors)
                 {
-                    constructor = waveWorkerClass.getConstructor (WaveObjectManager.class);
+                    final int numberOfParameters = declaredConstructor.getParameterCount ();
+
+                    if (1 == numberOfParameters)
+                    {
+                        final Class<?> parameterTypes[] = declaredConstructor.getParameterTypes ();
+
+                        final Class<?> parameterType = parameterTypes[0];
+
+                        final String paramterTypeName = parameterType.getTypeName ();
+
+                        if (WaveJavaSourceRepository.isAderivativeOfWaveObjectManager (paramterTypeName))
+                        {
+                            constructor = declaredConstructor;
+                        }
+                    }
                 }
-                catch (NoSuchMethodException | SecurityException e)
+
+                if (null == constructor)
                 {
-                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager as argument could not be found.  Details :%s", e.toString ());
+                    infoTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager/descendandant as argument could not be found.");
 
                     WaveAssertUtils.waveAssert ();
                 }
@@ -532,13 +549,13 @@ public class WaveObjectManager extends WaveElement
                 }
                 catch (InstantiationException | IllegalAccessException | IllegalArgumentException e)
                 {
-                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager as argument could not be executed.  Details : %s", e.toString ());
+                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager/descendant as argument could not be executed.  Details : %s", e.toString ());
 
                     WaveAssertUtils.waveAssert ();
                 }
                 catch (final InvocationTargetException e1)
                 {
-                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager as argument could not be executed.  Details : %s", WaveStackUtils.getStackString (e1.getCause ()));
+                    fatalTracePrintf ("WaveObjectManager.addWorkers :        A constructor that takes WaveObjectManager/descendant as argument could not be executed.  Details : %s", WaveStackUtils.getStackString (e1.getCause ()));
                 }
 
                 WaveAssertUtils.waveAssert (null != object);
