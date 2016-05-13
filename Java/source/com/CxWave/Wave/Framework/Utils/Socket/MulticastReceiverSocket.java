@@ -161,7 +161,7 @@ public class MulticastReceiverSocket
         final int destinationLength = ((fixedSizeBuffer.getMaximumSize ()).intValue ()) - ((fixedSizeBuffer.getCurrentSize ()).intValue ());
         final int destinationOffset = (fixedSizeBuffer.getCurrentSize ()).intValue ();
 
-        System.arraycopy (data, 0, destinationData, destinationOffset, destinationLength);
+        System.arraycopy (data, 0, destinationData, destinationOffset, length <= destinationLength ? length : destinationLength);
 
         final InetAddress inetAddressForSource = m_datagramPacket.getAddress ();
 

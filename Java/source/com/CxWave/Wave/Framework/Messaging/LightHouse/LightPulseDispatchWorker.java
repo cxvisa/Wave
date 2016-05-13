@@ -9,6 +9,7 @@ import com.CxWave.Wave.Framework.ObjectModel.WaveWorkerPriority;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.Cardinality;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.WorkerPriority;
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 
 @OwnerOM (om = LightPulseDispatchObjectManager.class)
 @Cardinality (1)
@@ -22,6 +23,9 @@ public class LightPulseDispatchWorker extends WaveWorker
 
     private void dispatchReceivedLightPulseMessageHandler (final LightPulseDispatchMessage lightPulseDispatchMessage)
     {
+        infoTracePrintf ("LightPulseDispatchWorker.dispatchReceivedLightPulseMessageHandler : Receied a light Pulse : %s", lightPulseDispatchMessage.getLightPulseSerializedString ());
 
+        lightPulseDispatchMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_SUCCESS);
+        reply (lightPulseDispatchMessage);
     }
 }
