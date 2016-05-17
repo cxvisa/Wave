@@ -76,6 +76,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, Integer>                  m_ownedWorkerClassNamesCadinalityMap;
     private final Map<String, WaveWorkerPriority>       m_ownedWorkerClassNamesPriorityMap;
     private final Set<String>                           m_ownedEventClasses;
+    private final Set<String>                           m_ownedLightPulseClasses;
     private final Map<String, Method>                   m_waveLinearSequencerSteps;
     private final Map<String, Method>                   m_waveSynchronousLinearSequencerSteps;
     private final Map<String, Method>                   m_waveMessageCallbacks;
@@ -105,6 +106,7 @@ public class WaveJavaClass extends WaveJavaType
         m_ownedWorkerClassNamesCadinalityMap = new HashMap<String, Integer> ();
         m_ownedWorkerClassNamesPriorityMap = new HashMap<String, WaveWorkerPriority> ();
         m_ownedEventClasses = new HashSet<String> ();
+        m_ownedLightPulseClasses = new HashSet<String> ();
         m_waveLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveSynchronousLinearSequencerSteps = new HashMap<String, Method> ();
         m_waveMessageCallbacks = new HashMap<String, Method> ();
@@ -1157,6 +1159,41 @@ public class WaveJavaClass extends WaveJavaType
         WaveTraceUtils.infoTracePrintf ("    Successfully added %s event to %s", eventClassName, m_name);
     }
 
+    private boolean isAKnownLightPulse (final String lightPulseClassName)
+    {
+        if (m_ownedLightPulseClasses.contains (lightPulseClassName))
+        {
+            return (true);
+        }
+        else
+        {
+            if (null != m_superClass)
+            {
+                return (m_superClass.isAKnownLightPulse (lightPulseClassName));
+            }
+            else
+            {
+                return (false);
+            }
+        }
+    }
+
+    private void addOwnedLightPulse (final String lightPulseClassName)
+    {
+        if (isAKnownLightPulse (lightPulseClassName))
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveJavaClass.addOwnedLightPulse : %s is already a known lightpulse class name.", lightPulseClassName);
+
+            WaveAssertUtils.waveAssert ();
+
+            return;
+        }
+
+        m_ownedLightPulseClasses.add (lightPulseClassName);
+
+        WaveTraceUtils.infoTracePrintf ("    Successfully added %s lightpulse to %s", lightPulseClassName, m_name);
+    }
+
     public Set<String> getAllDescendants ()
     {
         final Set<String> allDescendantsSet = new HashSet<String> ();
@@ -1749,6 +1786,34 @@ public class WaveJavaClass extends WaveJavaType
         return (eventHandlersInInheritanceHierarchyPreferringLatest);
     }
 
+    private void getLightPulseHandlersInInheritanceHierarchyPreferringLatest (final Map<Class<?>, Method> lightPulseHandlersInInheritanceHierarchyPreferringLatest)
+    {
+        WaveAssertUtils.waveAssert (null != lightPulseHandlersInInheritanceHierarchyPreferringLatest);
+
+        for (final Map.Entry<Class<?>, Method> entry : m_lightPulseHandlers.entrySet ())
+        {
+            final Method alreadyExistingMethod = lightPulseHandlersInInheritanceHierarchyPreferringLatest.putIfAbsent (entry.getKey (), entry.getValue ());
+
+            WaveAssertUtils.waveAssert (null == alreadyExistingMethod);
+        }
+
+        if (null != m_superClass)
+        {
+            m_superClass.getLightPulseHandlersInInheritanceHierarchyPreferringLatest (lightPulseHandlersInInheritanceHierarchyPreferringLatest);
+        }
+    }
+
+    public Map<Class<?>, Method> getLightPulseHandlersInInheritanceHierarchyPreferringLatest ()
+    {
+        final Map<Class<?>, Method> lightPulseHandlersInInheritanceHierarchyPreferringLatest = new HashMap<Class<?>, Method> ();
+
+        WaveAssertUtils.waveAssert (null != lightPulseHandlersInInheritanceHierarchyPreferringLatest);
+
+        getLightPulseHandlersInInheritanceHierarchyPreferringLatest (lightPulseHandlersInInheritanceHierarchyPreferringLatest);
+
+        return (lightPulseHandlersInInheritanceHierarchyPreferringLatest);
+    }
+
     public Vector<String> getWorkerClassNames ()
     {
         final Vector<String> workerClassNames = new Vector<String> ();
@@ -1860,7 +1925,6 @@ public class WaveJavaClass extends WaveJavaType
         {
             m_superClass.getOwnedEventClassNames (ownedEventClassNames);
         }
-
     }
 
     public Set<String> getOwnedEventClassNames ()
@@ -1870,6 +1934,25 @@ public class WaveJavaClass extends WaveJavaType
         getOwnedEventClassNames (ownedEventClassNames);
 
         return (ownedEventClassNames);
+    }
+
+    public void getOwnedLightPulseClassNames (final Set<String> ownedLightPulseClassNames)
+    {
+        ownedLightPulseClassNames.addAll (m_ownedLightPulseClasses);
+
+        if (null != m_superClass)
+        {
+            m_superClass.getOwnedLightPulseClassNames (ownedLightPulseClassNames);
+        }
+    }
+
+    public Set<String> getOwnedLightPulseClassNames ()
+    {
+        final Set<String> ownedLightPulseClassNames = new HashSet<String> ();
+
+        getOwnedLightPulseClassNames (ownedLightPulseClassNames);
+
+        return (ownedLightPulseClassNames);
     }
 
     public Method getMethodForWaveLinearSequencerStep (final String waveLinearSequencerStepName)
@@ -1960,6 +2043,25 @@ public class WaveJavaClass extends WaveJavaType
         if (null != m_superClass)
         {
             return (m_superClass.getMethodForWaveEventHandler (waveEventHandlerName));
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public Method getMethodForWaveLightPulseHandler (final String waveLightPulseHandlerName)
+    {
+        final Method method = m_lightPulseHandlers.get (waveLightPulseHandlerName);
+
+        if (null != method)
+        {
+            return (method);
+        }
+
+        if (null != m_superClass)
+        {
+            return (m_superClass.getMethodForWaveLightPulseHandler (waveLightPulseHandlerName));
         }
         else
         {

@@ -600,6 +600,25 @@ public class WaveJavaSourceRepository
         return ((getInstance ()).getEventHandlersInInheritanceHierarchyPreferringLatestInternal (className));
     }
 
+    private Map<Class<?>, Method> getLightPulseHandlersInInheritanceHierarchyPreferringLatestInternal (final String className)
+    {
+        final WaveJavaClass waveJavaClass = m_classes.get (className);
+
+        if (null != waveJavaClass)
+        {
+            return (waveJavaClass.getLightPulseHandlersInInheritanceHierarchyPreferringLatest ());
+        }
+        else
+        {
+            return (null);
+        }
+    }
+
+    public static Map<Class<?>, Method> getLightPulseHandlersInInheritanceHierarchyPreferringLatest (final String className)
+    {
+        return ((getInstance ()).getLightPulseHandlersInInheritanceHierarchyPreferringLatestInternal (className));
+    }
+
     public static Vector<String> getWorkerClassNamesForClass (final String waveJavaClassName)
     {
         final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
@@ -646,6 +665,18 @@ public class WaveJavaSourceRepository
         }
 
         return (waveJavaClass.getOwnedEventClassNames ());
+    }
+
+    public static Set<String> getLightPulseClassNamesForClass (final String waveJavaClassName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (new HashSet<String> ());
+        }
+
+        return (waveJavaClass.getOwnedLightPulseClassNames ());
     }
 
     public static boolean waveObjectManagerIsADerivativeOf (final String derivedFromClassName)
@@ -736,6 +767,18 @@ public class WaveJavaSourceRepository
         }
 
         return (waveJavaClass.getMethodForWaveEventHandler (waveEventHandlerName));
+    }
+
+    public static Method getMethodForWaveLightPulseHandlerInWaveJavaClass (final String waveJavaClassName, final String waveLightPulseHandlerName)
+    {
+        final WaveJavaClass waveJavaClass = getWaveJavaClass (waveJavaClassName);
+
+        if (null == waveJavaClass)
+        {
+            return (null);
+        }
+
+        return (waveJavaClass.getMethodForWaveLightPulseHandler (waveLightPulseHandlerName));
     }
 
     public static Set<String> getAllObjectManagerClassNames ()

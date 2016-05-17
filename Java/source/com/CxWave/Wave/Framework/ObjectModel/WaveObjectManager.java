@@ -21,6 +21,7 @@ import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerConfigurati
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerRemoveConfigurationIntentMessage;
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerStoreConfigurationIntentMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveObjectManagerRegisterEventListenerMessage;
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.MessageFactory.WaveMessageFactory;
@@ -123,6 +124,31 @@ public class WaveObjectManager extends WaveElement
             WaveAssertUtils.waveAssert (null != waveEvent);
 
             m_waveEventHandler.execute (waveEvent);
+        }
+    };
+
+    private class WaveLightPulseMapContext
+    {
+
+        private final WaveElement           m_waveElementThatHandlesTheLightPulse;
+        private final WaveLightPulseHandler m_waveLightPulseHandler;
+
+        public WaveLightPulseMapContext (final WaveElement waveElement, final WaveLightPulseHandler waveLightPulseHandler)
+        {
+            m_waveElementThatHandlesTheLightPulse = waveElement;
+            m_waveLightPulseHandler = waveLightPulseHandler;
+
+            WaveAssertUtils.waveAssert (null != m_waveElementThatHandlesTheLightPulse);
+            WaveAssertUtils.waveAssert (null != m_waveLightPulseHandler);
+
+            m_waveLightPulseHandler.validateAndCompute (m_waveElementThatHandlesTheLightPulse);
+        }
+
+        public void executeLightPulseHandler (final LightPulse lightPulse)
+        {
+            WaveAssertUtils.waveAssert (null != lightPulse);
+
+            m_waveLightPulseHandler.execute (lightPulse);
         }
     };
 
@@ -302,6 +328,9 @@ public class WaveObjectManager extends WaveElement
     private final Map<UI32, UI32>                                                     m_supportedEvents                                = new HashMap<UI32, UI32> ();
     private final WaveMutex                                                           m_supportedEventsMutex                           = new WaveMutex ();
     private final Map<LocationId, Map<WaveServiceId, Map<UI32, WaveEventMapContext>>> m_eventsMap                                      = new HashMap<LocationId, Map<WaveServiceId, Map<UI32, WaveEventMapContext>>> ();
+    private final Map<String, String>                                                 m_supportedLightPulses                           = new HashMap<String, String> ();
+    private final WaveMutex                                                           m_supportedLightPulsesMutex                      = new WaveMutex ();
+    private final Map<String, WaveLightPulseMapContext>                               m_lightPulsesMap                                 = new HashMap<String, WaveLightPulseMapContext> ();
     private final Map<UI32, WaveMessageResponseContext>                               m_responsesMap                                   = new HashMap<UI32, WaveMessageResponseContext> ();
     private final Map<UI32, Vector<WaveEventListenerMapContext>>                      m_eventListenersMap                              = new HashMap<UI32, Vector<WaveEventListenerMapContext>> ();
     private Map<String, Vector<String>>                                               m_postbootManagedObjectNames;
@@ -430,6 +459,74 @@ public class WaveObjectManager extends WaveElement
             infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Event Handler %s in OM : %s, for Event : %s, using : %s", eventHandlerMethod.getName (), m_name, eventClass.getTypeName (), (getClass ()).getTypeName ());
 
             addOperationMapForEventClass (eventClass, eventHandlerMethod, this);
+        }
+
+        final Map<Class<?>, Method> lightPulseHandlersForThisClass = WaveJavaSourceRepository.getEventHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getTypeName ());
+
+    }
+
+    private void addLightPulseType (final String lightPulseName)
+    {
+        m_supportedLightPulsesMutex.lock ();
+
+        m_supportedLightPulses.put (lightPulseName, lightPulseName);
+
+        m_supportedLightPulsesMutex.unlock ();
+    }
+
+    public boolean isLightPulseNameSupported (final String lightPulseName)
+    {
+        m_supportedLightPulsesMutex.lock ();
+
+        final boolean isSupported = m_supportedLightPulses.containsKey (lightPulseName);
+
+        m_supportedLightPulsesMutex.unlock ();
+
+        return (isSupported);
+    }
+
+    public boolean isLightPulseNameSupportedForListening (final String lightPulseName)
+    {
+        if (null != (getWaveLightPulseHandler (lightPulseName)))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    public void addSupportedLightPulses ()
+    {
+        final String waveJavaClassName = (getClass ()).getName ();
+        final Set<String> lightPulseClassNames = WaveJavaSourceRepository.getLightPulseClassNamesForClass (waveJavaClassName);
+
+        WaveAssertUtils.waveAssert (null != lightPulseClassNames);
+
+        for (final String lightPulseClassName : lightPulseClassNames)
+        {
+            Class<?> lightPulseClass = null;
+
+            try
+            {
+                lightPulseClass = Class.forName (lightPulseClassName);
+            }
+            catch (final ClassNotFoundException e)
+            {
+                fatalTracePrintf ("WaveObjectManager.addSupportedLightPulses : %s lightpulse class could not be found.", lightPulseClassName);
+
+                waveAssert ();
+            }
+
+            if (null != lightPulseClass)
+            {
+                final String lightPulseName = LightPulse.getLightPulseNameForLightPulseClass (lightPulseClass);
+
+                infoTracePrintf ("WaveObjectManager.addSupportedLightPulses : %s lightpulse class with %s name is added to OM : %s", lightPulseClassName, lightPulseName, m_name);
+
+                addLightPulseType (lightPulseName);
+            }
         }
     }
 
@@ -1649,6 +1746,11 @@ public class WaveObjectManager extends WaveElement
         final WaveEventMapContext waveEventMapContext = eventsForLocationIdAndServiceId.get (eventOperationCode);
 
         return (waveEventMapContext);
+    }
+
+    private WaveLightPulseMapContext getWaveLightPulseHandler (final String lightPulseName)
+    {
+        return (m_lightPulsesMap.get (lightPulseName));
     }
 
     @NonMessageHandler

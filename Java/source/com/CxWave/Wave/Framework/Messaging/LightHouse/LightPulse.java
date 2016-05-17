@@ -4,6 +4,9 @@ package com.CxWave.Wave.Framework.Messaging.LightHouse;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Type.Uuid;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
+import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class LightPulse extends SerializableObject
 {
@@ -66,5 +69,33 @@ public class LightPulse extends SerializableObject
     public void setSenderIpAddressFromClientPerspective (final String senderIpAddressFromClientPerspective)
     {
         m_senderIpAddressFromClientPerspective = senderIpAddressFromClientPerspective;
+    }
+
+    public static String getLightPulseNameForLightPulseClass (final Class<?> lightPulseClass)
+    {
+        WaveAssertUtils.waveAssert (null != lightPulseClass);
+
+        Object object = null;
+
+        try
+        {
+            object = lightPulseClass.newInstance ();
+        }
+        catch (final Exception exception)
+        {
+            WaveTraceUtils.fatalTracePrintf ("WaveEvent.getLightPulseNameForLightPulseClass : %s message class could not be instantiated.  Details : %s", lightPulseClass.getName (), exception.toString ());
+
+            WaveAssertUtils.waveAssert ();
+        }
+
+        final LightPulse lightPulse = (LightPulse) object;
+
+        WaveAssertUtils.waveAssert (null != lightPulse);
+
+        final String lightPulseName = lightPulse.getName ();
+
+        WaveAssertUtils.waveAssert (WaveStringUtils.isNotBlank (lightPulseName));
+
+        return (lightPulseName);
     }
 }
