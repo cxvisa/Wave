@@ -15,12 +15,12 @@ import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
-public class MuilticastSenderSocket
+public class MulticastSenderSocket
 {
     private MulticastSocket      m_multicastSocket;
     private final DatagramPacket m_datagramPacket = new DatagramPacket (new byte[1], 1);
 
-    public MuilticastSenderSocket (final String groupAddress, final int port)
+    public MulticastSenderSocket (final String groupAddress, final int port)
     {
         try
         {
@@ -101,5 +101,10 @@ public class MuilticastSenderSocket
         }
 
         return (true);
+    }
+
+    public boolean send (final StringBuffer data)
+    {
+        return (send (data.toString ()));
     }
 }

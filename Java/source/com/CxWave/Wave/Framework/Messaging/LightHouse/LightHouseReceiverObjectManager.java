@@ -16,7 +16,7 @@ import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer;
-import com.CxWave.Wave.Framework.Utils.Socket.MuilticastSenderSocket;
+import com.CxWave.Wave.Framework.Utils.Socket.MulticastSenderSocket;
 import com.CxWave.Wave.Framework.Utils.Socket.MulticastReceiverSocket;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
@@ -139,7 +139,7 @@ public class LightHouseReceiverObjectManager extends WaveLocalObjectManagerForUs
             final int port = Integer.valueOf (arguments.get (1));
             final String dataToSend = arguments.get (2);
 
-            final MuilticastSenderSocket muilticastSenderSocket = new MuilticastSenderSocket (groupAddress, port);
+            final MulticastSenderSocket muilticastSenderSocket = new MulticastSenderSocket (groupAddress, port);
 
             final boolean status = muilticastSenderSocket.send (dataToSend);
 

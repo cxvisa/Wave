@@ -7,6 +7,7 @@ package com.CxWave.Wave.Framework.ObjectModel;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
@@ -325,12 +326,6 @@ public class WaveWorker extends WaveElement
         return (m_waveObjectManager.getAllowAutomaticallyUnlistenForEvents ());
     }
 
-    @Override
-    protected void unlistenEvents ()
-    {
-        m_waveObjectManager.unlistenEvents ();
-    }
-
     protected void setIsEnabled (final boolean isEnabled)
     {
         m_waveObjectManager.setIsEnabled (isEnabled);
@@ -346,5 +341,11 @@ public class WaveWorker extends WaveElement
     protected WaveMessageStatus send (final WaveMessage waveMessage, final WaveMessageResponseHandler waveMessageCallback, final Object waveMessageContext, final long timeOutInMilliSeconds, final LocationId locationId, final WaveElement waveMessageSender)
     {
         return (m_waveObjectManager.send (waveMessage, waveMessageCallback, waveMessageContext, timeOutInMilliSeconds, locationId, waveMessageSender));
+    }
+
+    @Override
+    protected WaveMessageStatus broadcastLightPulse (final LightPulse lightPulse)
+    {
+        return (m_waveObjectManager.broadcastLightPulse (lightPulse));
     }
 }

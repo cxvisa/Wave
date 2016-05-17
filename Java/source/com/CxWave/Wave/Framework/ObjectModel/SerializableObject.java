@@ -198,6 +198,11 @@ public class SerializableObject
         m_attributesMap.serializeTo (stringBuffer);
     }
 
+    public void serialize2 (final StringBuffer stringBuffer)
+    {
+        serializeTo (stringBuffer);
+    }
+
     public void loadFromSerializableObject (final SerializableObject serializableObject)
     {
         prepareForSerialization ();

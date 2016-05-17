@@ -4,9 +4,11 @@
 
 package com.CxWave.Wave.Framework.ObjectModel;
 
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonLightPulseHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.Type.LocationId;
 import com.CxWave.Wave.Framework.Type.TimeValue;
@@ -437,5 +439,6 @@ public abstract class WaveElement
 
     protected abstract ResourceId deleteTimer (final TimerHandle timerHandle);
 
-    protected abstract void unlistenEvents ();
+    @NonLightPulseHandler
+    protected abstract WaveMessageStatus broadcastLightPulse (final LightPulse lightPulse);
 }

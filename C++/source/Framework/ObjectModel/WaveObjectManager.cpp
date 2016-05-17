@@ -1156,6 +1156,10 @@ void WaveObjectManager::unlistenEvents ()
     m_eventsMap.clear ();
 
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::unlistenEvents : Finished unlistening all the events for this service.");
+
+    // Also unlisten for the light pulses.
+
+    unlistenLightPulses ();
 }
 
 void WaveObjectManager::unlistenLightPulses ()
@@ -1195,10 +1199,6 @@ void WaveObjectManager::unlistenLightPulses ()
     m_lightPulsesMap.clear ();
 
     trace (TRACE_LEVEL_DEBUG, "WaveObjectManager::unlistenLightPulses : Finished unlistening all the light pulses for this service.");
-
-    // Also unlisten for the light pulses.
-
-    unlistenLightPulses ();
 }
 
 void WaveObjectManager::addResponseMap (UI32 waveMessageId, WaveMessageResponseContext *pWaveMessageResponseContext)

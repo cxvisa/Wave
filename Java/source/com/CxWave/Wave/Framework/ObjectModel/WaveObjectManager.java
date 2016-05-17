@@ -21,7 +21,10 @@ import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerConfigurati
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerRemoveConfigurationIntentMessage;
 import com.CxWave.Wave.Framework.Core.Messages.FrameworkObjectManagerStoreConfigurationIntentMessage;
 import com.CxWave.Wave.Framework.Core.Messages.WaveObjectManagerRegisterEventListenerMessage;
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightHouseTransportBroadcastLightPulseMessage;
 import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulseRegistrationMessage;
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulseUnregistrationMessage;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.MessageFactory.WaveMessageFactory;
@@ -461,8 +464,20 @@ public class WaveObjectManager extends WaveElement
             addOperationMapForEventClass (eventClass, eventHandlerMethod, this);
         }
 
-        final Map<Class<?>, Method> lightPulseHandlersForThisClass = WaveJavaSourceRepository.getEventHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getTypeName ());
+        final Map<Class<?>, Method> lightPulseHandlersForThisClass = WaveJavaSourceRepository.getLightPulseHandlersInInheritanceHierarchyPreferringLatest ((getClass ()).getTypeName ());
 
+        for (final Map.Entry<Class<?>, Method> entry : lightPulseHandlersForThisClass.entrySet ())
+        {
+            final Class<?> lightPulseClass = entry.getKey ();
+            final Method lightPulseHandlerMethod = entry.getValue ();
+
+            waveAssert (null != lightPulseClass);
+            waveAssert (null != lightPulseHandlerMethod);
+
+            infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Light Pulse Handler %s in OM : %s, for Event : %s, using : %s", lightPulseHandlerMethod.getName (), m_name, lightPulseClass.getTypeName (), (getClass ()).getTypeName ());
+
+            addOperationMapForLightPulseClass (lightPulseClass, lightPulseHandlerMethod, this);
+        }
     }
 
     private void addLightPulseType (final String lightPulseName)
@@ -941,6 +956,13 @@ public class WaveObjectManager extends WaveElement
         listenForEvent (serviceCode, operationCode, eventHandlerMethod.getName (), waveElement, FrameworkToolKit.getThisLocationId ());
     }
 
+    public void addOperationMapForLightPulseClass (final Class<?> lightPulseClass, final Method lightPulseHandlerMethod, final WaveElement waveElement)
+    {
+        final String lightPulseName = LightPulse.getLightPulseNameForLightPulseClass (lightPulseClass);
+
+        listenForLightPulse (lightPulseName, lightPulseHandlerMethod.getName (), waveElement);
+    }
+
     private void listenForEvent (final WaveServiceId waveServiceCode, final UI32 sourceOperationCode, final String waveEventHandlerMethodName, WaveElement waveElement, final LocationId sourceLocationId)
     {
         WaveServiceId waveServiceId = waveServiceCode;
@@ -1067,6 +1089,44 @@ public class WaveObjectManager extends WaveElement
 
                 waveAssert (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == status);
             }
+        }
+    }
+
+    private void listenForLightPulse (final String lightPulseName, final String lightPulseHandlerMethodName, final WaveElement waveElement)
+    {
+        if (!(m_lightPulsesMap.containsKey (lightPulseHandlerMethodName)))
+        {
+            final WaveLightPulseHandler waveLightPulseHandler = new WaveLightPulseHandler (lightPulseHandlerMethodName);
+
+            m_lightPulsesMap.put (lightPulseHandlerMethodName, new WaveLightPulseMapContext (waveElement, waveLightPulseHandler));
+        }
+        else
+        {
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.listenForLightPulse : This light pulse name is already registered : " + lightPulseName);
+
+            waveAssert ();
+        }
+
+        final LightPulseRegistrationMessage lightPulseRegistrationMessage = new LightPulseRegistrationMessage (lightPulseName);
+
+        final WaveMessageStatus sendStatus = sendSynchronously (lightPulseRegistrationMessage);
+
+        if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == sendStatus)
+        {
+            final ResourceId completionStatus = lightPulseRegistrationMessage.getCompletionStatus ();
+
+            if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.listenForLightPulse : This light pulse registration could not be successfully completed : " + lightPulseName + ", status : " + (FrameworkToolKit.localize (completionStatus)));
+
+                waveAssert ();
+            }
+        }
+        else
+        {
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.listenForLightPulse : This light pulse registration could not be sent : " + lightPulseName + ", status : " + (FrameworkToolKit.localize (sendStatus)));
+
+            waveAssert ();
         }
     }
 
@@ -3038,7 +3098,6 @@ public class WaveObjectManager extends WaveElement
         m_allowAutomaticallyUnlistenForEvents = allowAutomaticallyUnlistenForEvents;
     }
 
-    @Override
     protected void unlistenEvents ()
     {
         LocationId eventSourceLocationId;
@@ -3111,6 +3170,40 @@ public class WaveObjectManager extends WaveElement
         m_eventsMap.clear ();
 
         debugTracePrintf ("WaveObjectManager.unlistenEvents : Finished unlistening all the events for this service.");
+
+        // Also unlisten for the light pulses.
+
+        unlistenLightPulses ();
+    }
+
+    protected void unlistenLightPulses ()
+    {
+        for (final String lightPulseName : m_lightPulsesMap.keySet ())
+        {
+            final LightPulseUnregistrationMessage lightPulseUnregistrationMessage = new LightPulseUnregistrationMessage (lightPulseName);
+
+            final WaveMessageStatus sendStatus = sendSynchronously (lightPulseUnregistrationMessage);
+
+            if (WaveMessageStatus.WAVE_MESSAGE_SUCCESS == sendStatus)
+            {
+                final ResourceId completionStatus = lightPulseUnregistrationMessage.getCompletionStatus ();
+
+                if (ResourceId.WAVE_MESSAGE_SUCCESS != completionStatus)
+                {
+                    trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.listenForLightPulse : This light pulse un-registration could not be successfully completed : " + lightPulseName + ", status : " + (FrameworkToolKit.localize (completionStatus)));
+
+                    waveAssert ();
+                }
+            }
+            else
+            {
+                trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.listenForLightPulse : This light pulse un-registration could not be sent : " + lightPulseName + ", status : " + (FrameworkToolKit.localize (sendStatus)));
+
+                waveAssert ();
+            }
+        }
+
+        m_lightPulsesMap.clear ();
     }
 
     protected void removeEventListener (final UI32 eventOperationCode, final WaveServiceId listenerWaveServiceId, final LocationId listenerLocationId)
@@ -3161,5 +3254,19 @@ public class WaveObjectManager extends WaveElement
     protected long getNumberOfPendingHighPriorityMessages ()
     {
         return (m_associatedWaveThread.getNumberOfPendingHighPriorityMessages ());
+    }
+
+    @Override
+    protected WaveMessageStatus broadcastLightPulse (final LightPulse lightPulse)
+    {
+        waveAssert (null != lightPulse);
+
+        final LightHouseTransportBroadcastLightPulseMessage lightHouseTransportBroadcastLightPulseMessage = new LightHouseTransportBroadcastLightPulseMessage (lightPulse);
+
+        waveAssert (null != lightHouseTransportBroadcastLightPulseMessage);
+
+        final WaveMessageStatus sendStatus = sendOneWay (lightHouseTransportBroadcastLightPulseMessage);
+
+        return (sendStatus);
     }
 }
