@@ -30,6 +30,7 @@ import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.Messaging.MessageFactory.WaveMessageFactory;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonLightPulseHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonOM;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
@@ -373,6 +374,7 @@ public class WaveObjectManager extends WaveElement
         addWorkers ();
         addSupportedOperations ();
         addSupportedEvents ();
+        addSupportedLightPulses ();
     }
 
     public void addSupportedOperations ()
@@ -479,7 +481,7 @@ public class WaveObjectManager extends WaveElement
             waveAssert (null != lightPulseClass);
             waveAssert (null != lightPulseHandlerMethod);
 
-            infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Light Pulse Handler %s in OM : %s, for Event : %s, using : %s", lightPulseHandlerMethod.getName (), m_name, lightPulseClass.getTypeName (), (getClass ()).getTypeName ());
+            infoTracePrintf ("WaveObjectManager.listenForEventsDefaultImplementation : Adding Light Pulse Handler %s in OM : %s, for LightPulse : %s, using : %s", lightPulseHandlerMethod.getName (), m_name, lightPulseClass.getTypeName (), (getClass ()).getTypeName ());
 
             addOperationMapForLightPulseClass (lightPulseClass, lightPulseHandlerMethod, this);
         }
@@ -3332,6 +3334,7 @@ public class WaveObjectManager extends WaveElement
     }
 
     @Override
+    @NonLightPulseHandler
     protected WaveMessageStatus broadcastLightPulse (final LightPulse lightPulse)
     {
         waveAssert (null != lightPulse);

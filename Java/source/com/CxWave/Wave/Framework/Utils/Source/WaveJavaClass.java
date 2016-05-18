@@ -82,6 +82,7 @@ public class WaveJavaClass extends WaveJavaType
     private final Map<String, Method>                   m_waveMessageCallbacks;
     private final Map<String, Method>                   m_waveTimerExpirationHandlers;
     private final Map<String, Method>                   m_waveEventHandlers;
+    private final Map<String, Method>                   m_waveLightPulseHandlers;
     private final Map<String, Method>                   m_waveServerMultiPageGetHandlers;
     private final Map<String, Method>                   m_waveServerMultiPagePostHandlers;
     private final Map<String, Method>                   m_waveServerMultiPagePutHandlers;
@@ -112,6 +113,7 @@ public class WaveJavaClass extends WaveJavaType
         m_waveMessageCallbacks = new HashMap<String, Method> ();
         m_waveTimerExpirationHandlers = new HashMap<String, Method> ();
         m_waveEventHandlers = new HashMap<String, Method> ();
+        m_waveLightPulseHandlers = new HashMap<String, Method> ();
         m_waveServerMultiPageGetHandlers = new HashMap<String, Method> ();
         m_waveServerMultiPagePostHandlers = new HashMap<String, Method> ();
         m_waveServerMultiPagePutHandlers = new HashMap<String, Method> ();
@@ -361,6 +363,10 @@ public class WaveJavaClass extends WaveJavaType
 
         computeSupportedEvents (reflectionClass);
 
+        computeLightPulseHandlers (reflectionClass);
+
+        computeSupportedLightPulses (reflectionClass);
+
         computeShellCommandHandlers (reflectionClass);
 
         computeShellSubordinates (reflectionClass);
@@ -594,21 +600,22 @@ public class WaveJavaClass extends WaveJavaType
                 {
                     if (waveJavaClass.isADerivativeOfLightPulse ())
                     {
-                        if (m_lightPulseHandlers.containsKey (parameterTypes[0]))
+                        if (m_waveLightPulseHandlers.containsKey (declaredMethod.getName ()))
                         {
                             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Trying to add a LightPulse Handler for Class %s with LightPulse Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
-                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Already persent LightPulse Handler method : %s", (m_lightPulseHandlers.get (parameterTypes[0])).toString ());
+                            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Already persent LightPulse Handler method : %s", (m_waveLightPulseHandlers.get (declaredMethod.getName ())).toString ());
                             WaveAssertUtils.waveAssert ();
                         }
                         else
                         {
                             declaredMethod.setAccessible (true);
 
-                            final Class<?> waveMessageClass = parameterTypes[0];
+                            final Class<?> waveLightPulseClass = parameterTypes[0];
 
-                            WaveAssertUtils.waveAssert (null != waveMessageClass);
+                            WaveAssertUtils.waveAssert (null != waveLightPulseClass);
 
-                            m_lightPulseHandlers.put (waveMessageClass, declaredMethod);
+                            m_waveLightPulseHandlers.put (declaredMethod.getName (), declaredMethod);
+                            m_lightPulseHandlers.put (waveLightPulseClass, declaredMethod);
 
                             WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "WaveJavaClass.computeLightPulseHandlers : Added a LightPulse Handler for Class %s with LightPulse Type %s, handler method : %s", m_typeName, parameterClassTypeName, declaredMethod.getName ());
                         }
@@ -1044,6 +1051,40 @@ public class WaveJavaClass extends WaveJavaType
                 WaveAssertUtils.waveAssert (null != waveJavaClassForOwnerOm);
 
                 waveJavaClassForOwnerOm.addOwnedEvent (reflectionClass.getName ());
+            }
+        }
+    }
+
+    private void computeSupportedLightPulses (final Class<?> reflectionClass)
+    {
+        if (!(isADerivativeOfLightPulse ()))
+        {
+            return;
+        }
+
+        WaveJavaClass waveJavaClassForOwnerOm = null;
+
+        final Annotation annotationForOwnerOM = reflectionClass.getAnnotation (OwnerOM.class);
+
+        if (null != annotationForOwnerOM)
+        {
+            final OwnerOM ownerOM = (OwnerOM) annotationForOwnerOM;
+
+            WaveAssertUtils.waveAssert (null != ownerOM);
+
+            final Class<?> ownerOmClass = ownerOM.om ();
+
+            WaveAssertUtils.waveAssert (null != ownerOmClass);
+
+            final String ownerOmClassName = ownerOmClass.getName ();
+
+            if (WaveStringUtils.isNotBlank (ownerOmClassName))
+            {
+                waveJavaClassForOwnerOm = WaveJavaSourceRepository.getWaveJavaClass (ownerOmClassName);
+
+                WaveAssertUtils.waveAssert (null != waveJavaClassForOwnerOm);
+
+                waveJavaClassForOwnerOm.addOwnedLightPulse (reflectionClass.getName ());
             }
         }
     }
@@ -2052,7 +2093,7 @@ public class WaveJavaClass extends WaveJavaType
 
     public Method getMethodForWaveLightPulseHandler (final String waveLightPulseHandlerName)
     {
-        final Method method = m_lightPulseHandlers.get (waveLightPulseHandlerName);
+        final Method method = m_waveLightPulseHandlers.get (waveLightPulseHandlerName);
 
         if (null != method)
         {

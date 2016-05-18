@@ -5,7 +5,9 @@
 package com.CxWave.Wave.Framework.Messaging.LightHouse.Test;
 
 import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.OwnerOM;
 
+@OwnerOM (om = LightHouseTestObjectManager2.class)
 public class LightHouseTestLightPulse1 extends LightPulse
 {
     private String m_lightMessage;

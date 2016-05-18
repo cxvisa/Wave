@@ -48,7 +48,11 @@ public class LightPulseDispatchWorker extends WaveWorker
         if (null == lightPulse)
         {
             trace (TraceLevel.TRACE_LEVEL_FATAL, "LightPulseDispatchWorker.dispatchReceivedLightPulseMessageHandler : Please have the corresponding Object Manager implement  createLightPulseInstance for : " + lightPulseName);
-            waveAssert (false);
+
+            lightPulseDispatchMessage.setCompletionStatus (ResourceId.WAVE_MESSAGE_ERROR);
+            reply (lightPulseDispatchMessage);
+
+            return;
         }
 
         lightPulse.loadFromSerializedData2 (seralizedLightPulseString);
@@ -61,6 +65,8 @@ public class LightPulseDispatchWorker extends WaveWorker
 
         for (final WaveServiceId waveServiceId : servicesRegisteredForLightPulse)
         {
+            infoTracePrintf ("LightPulseDispatchWorker.dispatchReceivedLightPulseMessageHandler : Delivering the light Pulse of type %s to Service : %s", lightPulseName, FrameworkToolKit.getServiceNameById (waveServiceId));
+
             final WaveDeliverLightPulseMessage waveDeliverLightPulseMessage = new WaveDeliverLightPulseMessage (waveServiceId);
 
             waveDeliverLightPulseMessage.setLightPulse (lightPulse);

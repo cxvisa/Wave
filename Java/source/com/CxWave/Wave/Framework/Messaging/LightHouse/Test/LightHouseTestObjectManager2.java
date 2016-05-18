@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Messaging.LightHouse.Test;
 
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.ObjectModel.WaveLocalObjectManager;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
@@ -18,8 +19,6 @@ public class LightHouseTestObjectManager2 extends WaveLocalObjectManager
     public LightHouseTestObjectManager2 ()
     {
         super (getServiceName ());
-
-        addLightPulseType (LightHouseTestLightPulse1.getLightPulseName ());
     }
 
     private static String getServiceName ()
@@ -42,5 +41,24 @@ public class LightHouseTestObjectManager2 extends WaveLocalObjectManager
     public static WaveServiceId getWaveServiceId ()
     {
         return ((getInstance ()).getServiceId ());
+    }
+
+    @Override
+    public LightPulse createLightPulseInstance (final String lightPulseName)
+    {
+        LightPulse lightPulse = null;
+
+        if (lightPulseName.equals (LightHouseTestLightPulse1.getLightPulseName ()))
+        {
+            lightPulse = new LightHouseTestLightPulse1 ();
+        }
+        else
+        {
+            fatalTracePrintf ("LightHouseTestObjectManager2.createLightPulseInstance : Unknown light pulse name : %s", lightPulseName);
+
+            waveAssert ();
+        }
+
+        return (lightPulse);
     }
 }

@@ -11,6 +11,7 @@ import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveEvent;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonEventHandler;
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonLightPulseHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonMessageHandler;
 import com.CxWave.Wave.Framework.ObjectModel.Annotations.NonWorker;
 import com.CxWave.Wave.Framework.ObjectModel.Boot.WaveAsynchronousContextForBootPhases;
@@ -344,6 +345,7 @@ public class WaveWorker extends WaveElement
     }
 
     @Override
+    @NonLightPulseHandler
     protected WaveMessageStatus broadcastLightPulse (final LightPulse lightPulse)
     {
         return (m_waveObjectManager.broadcastLightPulse (lightPulse));

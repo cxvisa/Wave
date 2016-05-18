@@ -38,7 +38,7 @@ public class LightPulseRegistrationRepository
     {
         Set<WaveServiceId> waveServiceIdsForLightPulseName = null;
 
-        if (!(m_lightPulseRecepientsByLightPulseName.containsKey (lightPulseName)))
+        if (m_lightPulseRecepientsByLightPulseName.containsKey (lightPulseName))
         {
             waveServiceIdsForLightPulseName = m_lightPulseRecepientsByLightPulseName.get (lightPulseName);
         }
