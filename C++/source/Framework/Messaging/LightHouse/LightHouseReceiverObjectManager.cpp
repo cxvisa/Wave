@@ -108,6 +108,8 @@ void LightHouseReceiverObjectManager::bootCompleteForThisLocationEventHandler (c
             waveAssert (NULL != pLightPulseDispatchMessage, __FILE__, __LINE__);
 
             pLightPulseDispatchMessage->setLightPulseSerializedString (lightPulseString);
+            pLightPulseDispatchMessage->setSenderIpAddress (from);
+            pLightPulseDispatchMessage->setSenderPort (port);
 
             WaveMessageStatus sendStatus = sendOneWay (pLightPulseDispatchMessage);
 

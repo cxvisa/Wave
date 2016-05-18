@@ -25,10 +25,18 @@ class LightPulseDispatchMessage : public WaveMessage
                 string  getLightPulseSerializedString () const;
                 void    setLightPulseSerializedString (const string &lightPulseSerializedString);
 
+                string  getSenderIpAddress            () const;
+                void    setSenderIpAddress            (const string &senderIpAddress);
+
+                SI32    getSenderPort                 () const;
+                void    setSenderPort                 (const SI32 &senderPort);
+
         // Now the data members
 
     private :
         string m_lightPulseSerializedString;
+        string m_senderIpAddress;
+        SI32   m_senderPort;
 
     protected :
     public :

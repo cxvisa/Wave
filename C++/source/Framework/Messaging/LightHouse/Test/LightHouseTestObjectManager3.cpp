@@ -53,9 +53,10 @@ void LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler (const Light
 {
     waveAssert (NULL != pLightHouseTestLightPulse1, __FILE__, __LINE__);
 
-    const string lightMessage = pLightHouseTestLightPulse1->getLightMessage ();
+    const string lightMessage                         = pLightHouseTestLightPulse1->getLightMessage                         ();
+    const string senderIpAddressFromClientPerspective = pLightHouseTestLightPulse1->getSenderIpAddressFromClientPerspective ();
 
-    trace (TRACE_LEVEL_INFO, "LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler : Light Message Received : " + lightMessage);
+    trace (TRACE_LEVEL_INFO, "LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler : Light Message Received : " + lightMessage + ", from ip address : " + senderIpAddressFromClientPerspective);
 }
 
 }

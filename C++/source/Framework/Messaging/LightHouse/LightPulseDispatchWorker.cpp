@@ -55,6 +55,8 @@ void LightPulseDispatchWorker::dispatchReceivedLightPulseMessageHandler (LightPu
 
     pLightPulse->loadFromSerializedData2 (seralizedLightPulseString);
 
+    pLightPulse->setSenderIpAddressFromClientPerspective (pLightPulseDispatchMessage->getSenderIpAddress ());
+
     LightPulseRegistrationRepository *pLightPulseRegistrationRepository = LightPulseRegistrationRepository::getInstance ();
 
     waveAssert (NULL != pLightPulseRegistrationRepository, __FILE__, __LINE__);

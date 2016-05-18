@@ -37,4 +37,24 @@ void LightPulseDispatchMessage::setupAttributesForSerialization ()
     addSerializableAttribute (new AttributeString (&m_lightPulseSerializedString, "lightPulseSerializedString"));
 }
 
+string LightPulseDispatchMessage::getSenderIpAddress () const
+{
+    return (m_senderIpAddress);
+}
+
+void LightPulseDispatchMessage::setSenderIpAddress (const string &senderIpAddress)
+{
+    m_senderIpAddress = senderIpAddress;
+}
+
+SI32 LightPulseDispatchMessage::getSenderPort () const
+{
+    return (m_senderPort);
+}
+
+void LightPulseDispatchMessage::setSenderPort (const SI32 &senderPort)
+{
+    m_senderPort = senderPort;
+}
+
 }
