@@ -162,11 +162,18 @@ public class AttributeStringVector extends Attribute
     @Override
     public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
     {
-        final Object object = getValue (thisSerializableObject);
+        Object object = getValue (thisSerializableObject);
 
         if (null == object)
         {
-            return;
+            if (WaveStringUtils.isNotBlank (value))
+            {
+                object = new Vector<String> ();
+            }
+            else
+            {
+                return;
+            }
         }
 
         @SuppressWarnings ("unchecked")

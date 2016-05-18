@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 
 public class AttributeString extends Attribute
 {
@@ -56,7 +57,10 @@ public class AttributeString extends Attribute
 
         if (null == object)
         {
-            return;
+            if (WaveStringUtils.isBlank (value))
+            {
+                return;
+            }
         }
 
         final String data = (String) object;

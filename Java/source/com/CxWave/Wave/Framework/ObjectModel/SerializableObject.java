@@ -222,4 +222,14 @@ public class SerializableObject
     {
         return (null != m_attributesMap);
     }
+
+    public void toWaveString (final StringBuffer value)
+    {
+        serialize2 (value);
+    }
+
+    public void loadFromWaveString (final String serializedData)
+    {
+        loadFromSerializedData2 (serializedData);
+    }
 }

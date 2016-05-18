@@ -171,62 +171,7 @@ public class AttributeSerializableObject extends Attribute
     }
 
     @Override
-    public void serializeTo (final SerializableObject serializableObject, final StringBuffer stringBuffer)
-    {
-        WaveAssertUtils.waveAssert (null != serializableObject);
-
-        final String name = m_reflectionAttribute.getAttributeName ();
-
-        stringBuffer.append (String.valueOf (name.length ()));
-        stringBuffer.append ("#");
-        stringBuffer.append (name);
-
-        final Field reflectionField = m_reflectionAttribute.getField ();
-
-        WaveAssertUtils.waveAssert (null != reflectionField);
-
-        final StringBuffer childStringBuffer = new StringBuffer ();
-
-        try
-        {
-            final Object object = (reflectionField.get (serializableObject));
-
-            if (null == object)
-            {
-
-            }
-            else
-            {
-                final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
-
-                WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
-
-                // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix,
-                // m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (),
-                // (serializableObject.getClass ()).getName ());
-
-                serializableObjectForAttribute.serialize2 (childStringBuffer);
-            }
-        }
-        catch (IllegalArgumentException | IllegalAccessException e)
-        {
-            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "AttributeSerializableObject.loadValueFromWaveConfigurationFile : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (serializableObject.getClass ()).getName (), e.toString ());
-            WaveAssertUtils.waveAssert ();
-        }
-
-        stringBuffer.append (String.valueOf (childStringBuffer.length ()));
-        stringBuffer.append ("#");
-        stringBuffer.append (childStringBuffer);
-    }
-
-    @Override
     public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
-    {
-        serializeTo (thisSerializableObject, value);
-    }
-
-    @Override
-    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
     {
         WaveAssertUtils.waveAssert (null != thisSerializableObject);
 
@@ -240,20 +185,66 @@ public class AttributeSerializableObject extends Attribute
 
             if (null == object)
             {
-
+                return;
             }
-            else
+
+            final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
+
+            WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
+
+            // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix,
+            // m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (),
+            // (serializableObject.getClass ()).getName ());
+
+            serializableObjectForAttribute.toWaveString (value);
+
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "AttributeSerializableObject.loadValueFromWaveConfigurationFile : Attribute loading failed for Field : %s, Class : %s, Status : %s", m_reflectionAttribute.getAttributeName (), (thisSerializableObject.getClass ()).getName (), e.toString ());
+            WaveAssertUtils.waveAssert ();
+        }
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        WaveAssertUtils.waveAssert (null != thisSerializableObject);
+
+        final Field reflectionField = m_reflectionAttribute.getField ();
+
+        WaveAssertUtils.waveAssert (null != reflectionField);
+
+        try
+        {
+            Object object = (reflectionField.get (thisSerializableObject));
+
+            if (null == object)
             {
-                final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
+                final Class<?> objectClass = reflectionField.getType ();
 
-                WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
+                try
+                {
+                    object = objectClass.newInstance ();
+                }
+                catch (final InstantiationException e)
+                {
+                    WaveTraceUtils.fatalTracePrintf ("AttributeSerializableObject.fromWaveString : Could not allocate Object of type : %s, Details : %s", objectClass.toGenericString (), e.toString ());
 
-                // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix,
-                // m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (),
-                // (serializableObject.getClass ()).getName ());
-
-                serializableObjectForAttribute.loadFromSerializedData2 (value);
+                    WaveAssertUtils.waveAssert ();
+                }
             }
+
+            final SerializableObject serializableObjectForAttribute = (SerializableObject) object;
+
+            WaveAssertUtils.waveAssert (null != serializableObjectForAttribute);
+
+            // WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_INFO, "%s%s (%s) (%s) :", prefix,
+            // m_reflectionAttribute.getAttributeFieldName (), m_reflectionAttribute.getAttributeName (),
+            // (serializableObject.getClass ()).getName ());
+
+            serializableObjectForAttribute.loadFromSerializedData2 (value);
+
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {

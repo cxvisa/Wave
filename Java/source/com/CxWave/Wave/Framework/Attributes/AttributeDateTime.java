@@ -14,6 +14,7 @@ import java.util.Set;
 
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 
 public class AttributeDateTime extends Attribute
@@ -61,11 +62,18 @@ public class AttributeDateTime extends Attribute
     @Override
     public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
     {
-        final Object object = getValue (thisSerializableObject);
+        Object object = getValue (thisSerializableObject);
 
         if (null == object)
         {
-            return;
+            if (WaveStringUtils.isNotBlank (value))
+            {
+                object = new Date ();
+            }
+            else
+            {
+                return;
+            }
         }
 
         final Date data = (Date) object;

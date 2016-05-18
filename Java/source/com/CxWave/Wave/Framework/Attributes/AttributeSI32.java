@@ -11,6 +11,7 @@ import java.util.Set;
 import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
 import com.CxWave.Wave.Framework.Type.SI32;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+import com.CxWave.Wave.Framework.Utils.String.WaveStringUtils;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
 
@@ -80,11 +81,18 @@ public class AttributeSI32 extends Attribute
     @Override
     public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
     {
-        final Object object = getValue (thisSerializableObject);
+        Object object = getValue (thisSerializableObject);
 
         if (null == object)
         {
-            return;
+            if (WaveStringUtils.isNotBlank (value))
+            {
+                object = new SI32 (0);
+            }
+            else
+            {
+                return;
+            }
         }
 
         final SI32 data = (SI32) object;
