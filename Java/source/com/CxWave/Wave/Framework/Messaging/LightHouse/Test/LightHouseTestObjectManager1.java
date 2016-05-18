@@ -4,13 +4,16 @@
 
 package com.CxWave.Wave.Framework.Messaging.LightHouse.Test;
 
+import com.CxWave.Wave.Framework.ObjectModel.Annotations.ObjectManagerPriority;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Regression.WaveTestObjectManager;
 import com.CxWave.Wave.Regression.Contexts.RegressionTestAsynchronousContext;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
+import com.CxWave.Wave.Resources.ResourceEnums.WaveObjectManagerPriority;
 
+@ObjectManagerPriority (WaveObjectManagerPriority.WAVE_OBJECT_MANAGER_PRIORITY_LIGHT_HOUSE_TEST_1)
 public class LightHouseTestObjectManager1 extends WaveTestObjectManager
 {
     private static LightHouseTestObjectManager1 s_LightHouseTestObjectManager1   = null;

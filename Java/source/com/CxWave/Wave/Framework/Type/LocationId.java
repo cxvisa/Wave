@@ -24,6 +24,11 @@ public class LocationId implements Comparable<LocationId>
         m_id = new UI32 (id);
     }
 
+    public LocationId (final String locationIdAsString)
+    {
+        m_id = new UI32 (locationIdAsString);
+    }
+
     public UI32 getId ()
     {
         return m_id;
@@ -105,5 +110,10 @@ public class LocationId implements Comparable<LocationId>
     public int compareTo (final LocationId rhs)
     {
         return (m_id.compareTo (rhs.m_id));
+    }
+
+    public void fromWaveString (final String inputString)
+    {
+        m_id = new UI32 (inputString);
     }
 }

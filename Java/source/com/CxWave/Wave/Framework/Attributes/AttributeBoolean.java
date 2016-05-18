@@ -48,4 +48,45 @@ public class AttributeBoolean extends Attribute
             WaveAssertUtils.waveAssert ();
         }
     }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final Boolean data = (Boolean) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        value.append (data ? "true" : "false");
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        Boolean data = (Boolean) object;
+
+        final String valueString = value;
+
+        if ((valueString.equalsIgnoreCase ("true")) || (valueString.equalsIgnoreCase ("t")))
+        {
+            data = true;
+        }
+        else
+        {
+            data = false;
+        }
+    }
 }

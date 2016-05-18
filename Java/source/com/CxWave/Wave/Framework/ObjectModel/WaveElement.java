@@ -441,4 +441,15 @@ public abstract class WaveElement
 
     @NonLightPulseHandler
     protected abstract WaveMessageStatus broadcastLightPulse (final LightPulse lightPulse);
+
+    protected abstract void addLightPulseType (final String lightPulseName);
+
+    protected abstract void addLightPulseType (final String lightPulseName, final WaveElement waveElement);
+
+    protected LightPulse createLightPulseInstance (final String lightPulseName)
+    {
+        trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveElement.createLightPulseInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+        trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveElement.createLightPulseInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
+        return (null);
+    }
 }

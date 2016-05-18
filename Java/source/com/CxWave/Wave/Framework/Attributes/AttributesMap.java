@@ -298,4 +298,56 @@ public class AttributesMap
             attribute.copyFrom (m_serializableObject, rhsAttribute, attributesMap.m_serializableObject);
         }
     }
+
+    public void loadFromSerializedData (final String serializedData)
+    {
+        int startIndex = 0;
+        final int serializedDataLength = serializedData.length ();
+
+        while (startIndex < serializedDataLength)
+        {
+            final int attributeNameLengthEndMarkerPosition = serializedData.indexOf ("#", startIndex);
+
+            if (-1 == attributeNameLengthEndMarkerPosition)
+            {
+                break;
+            }
+
+            final int attributeNameLength = Integer.valueOf (serializedData.substring (startIndex, attributeNameLengthEndMarkerPosition));
+
+            final int attributeNameStartIndex = attributeNameLengthEndMarkerPosition + 1;
+            final int attributeNameEndIndex = attributeNameStartIndex + attributeNameLength;
+
+            WaveAssertUtils.waveAssert (attributeNameStartIndex < serializedDataLength);
+            WaveAssertUtils.waveAssert (attributeNameEndIndex < serializedDataLength);
+
+            final String attributeName = serializedData.substring (attributeNameStartIndex, attributeNameEndIndex);
+
+            final int attributeValueLengthEndMarkerPosition = serializedData.indexOf ("#", attributeNameEndIndex);
+
+            if (-1 == attributeValueLengthEndMarkerPosition)
+            {
+                break;
+            }
+
+            final int attributeValueLength = Integer.valueOf (serializedData.substring (attributeNameEndIndex, attributeValueLengthEndMarkerPosition));
+
+            final int attributeValueStartIndex = attributeValueLengthEndMarkerPosition + 1;
+            final int attributeValueEndIndex = attributeValueStartIndex + attributeValueLength;
+
+            WaveAssertUtils.waveAssert (attributeValueStartIndex < serializedDataLength);
+            WaveAssertUtils.waveAssert (attributeValueEndIndex < serializedDataLength);
+
+            final String attributeValue = serializedData.substring (attributeValueStartIndex, attributeValueEndIndex);
+
+            final Attribute attribute = m_attributesByName.get (attributeName);
+
+            if (null != attribute)
+            {
+                attribute.fromWaveString (m_serializableObject, attributeValue);
+            }
+
+            startIndex = attributeValueEndIndex;
+        }
+    }
 }

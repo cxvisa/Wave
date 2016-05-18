@@ -126,8 +126,9 @@ public class WaveResourceRepository
             writer.write ("    private int                                   m_effectiveResourceId;\n");
             writer.write ("    private String                                m_name;\n");
             writer.write ("    private String                                m_value;\n\n");
-            writer.write ("    private static final ResourceId[]             s_values         = ResourceId.values ();\n\n");
-            writer.write ("    private static final Map<Integer, ResourceId> s_resourceIdsMap = new HashMap<Integer, ResourceId> ();\n");
+            writer.write ("    private static final ResourceId[]             s_values               = ResourceId.values ();\n\n");
+            writer.write ("    private static final Map<Integer, ResourceId> s_resourceIdsMap       = new HashMap<Integer, ResourceId> ();\n");
+            writer.write ("    private static final Map<String,  ResourceId> s_resourceIdsMapByName = new HashMap<String,  ResourceId> ();\n");
 
             writer.write ("\n");
 
@@ -174,13 +175,21 @@ public class WaveResourceRepository
             writer.write ("        return (s_resourceIdsMap.get (effectiveResourceId));\n");
             writer.write ("    }\n");
 
+
+            writer.write ("\n");
+            writer.write ("    public static ResourceId getResourceIdByName (final String name)\n");
+            writer.write ("    {\n");
+            writer.write ("        return (s_resourceIdsMapByName.get (name));\n");
+            writer.write ("    }\n");
+
             writer.write ("\n");
 
             writer.write ("    public static void initializeResourceIdsMap ()\n");
             writer.write ("    {\n");
             writer.write ("        for (final ResourceId resourceId : s_values)\n");
             writer.write ("        {\n");
-            writer.write ("            s_resourceIdsMap.put (resourceId.getEffectiveResourceId (), resourceId);\n");
+            writer.write ("            s_resourceIdsMap.put       (resourceId.getEffectiveResourceId (), resourceId);\n");
+            writer.write ("            s_resourceIdsMapByName.put (resourceId.getName                (), resourceId);\n");
             writer.write ("        }\n");
             writer.write ("    }\n");
 

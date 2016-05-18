@@ -323,6 +323,9 @@ public class WaveObjectManager extends WaveElement
     private static final Set<UI32>                                                    s_operationsAllowedBeforeEnabling                = initializeOperationsAllowedBeforeEnablingSet ();
     private static final WaveMutex                                                    s_mutexForAddingEventListener                    = new WaveMutex ();
 
+    private static final WaveMutex                                                    s_supportedLightPulsesMutex                      = new WaveMutex ();
+    private static final Map<String, WaveObjectManager>                               s_lightPulseToWaveObjectManagerMap               = new HashMap<String, WaveObjectManager> ();
+
     private final String                                                              m_name;
     private WaveThread                                                                m_associatedWaveThread;
     private final Map<UI32, WaveOperationMapContext>                                  m_operationsMap                                  = new HashMap<UI32, WaveOperationMapContext> ();
@@ -332,7 +335,6 @@ public class WaveObjectManager extends WaveElement
     private final WaveMutex                                                           m_supportedEventsMutex                           = new WaveMutex ();
     private final Map<LocationId, Map<WaveServiceId, Map<UI32, WaveEventMapContext>>> m_eventsMap                                      = new HashMap<LocationId, Map<WaveServiceId, Map<UI32, WaveEventMapContext>>> ();
     private final Map<String, String>                                                 m_supportedLightPulses                           = new HashMap<String, String> ();
-    private final WaveMutex                                                           m_supportedLightPulsesMutex                      = new WaveMutex ();
     private final Map<String, WaveLightPulseMapContext>                               m_lightPulsesMap                                 = new HashMap<String, WaveLightPulseMapContext> ();
     private final Map<UI32, WaveMessageResponseContext>                               m_responsesMap                                   = new HashMap<UI32, WaveMessageResponseContext> ();
     private final Map<UI32, Vector<WaveEventListenerMapContext>>                      m_eventListenersMap                              = new HashMap<UI32, Vector<WaveEventListenerMapContext>> ();
@@ -357,6 +359,9 @@ public class WaveObjectManager extends WaveElement
 
     private final WaveMutex                                                           m_createMessageInstanceWrapperMutex              = new WaveMutex ();
     private final Map<UI32, WaveElement>                                              m_ownersForCreatingMessageInstances              = new HashMap<UI32, WaveElement> ();
+
+    private final WaveMutex                                                           m_createLightPulseInstanceWrapperMutex           = new WaveMutex ();
+    private final Map<String, WaveElement>                                            m_ownersForCreatingLightPulseInstances           = new HashMap<String, WaveElement> ();
 
     private static WaveMutex                                                          s_enabledServicesMutex                           = new WaveMutex ();
     private static Map<WaveServiceId, WaveServiceId>                                  s_enabledServices                                = new HashMap<WaveServiceId, WaveServiceId> ();
@@ -480,22 +485,53 @@ public class WaveObjectManager extends WaveElement
         }
     }
 
-    private void addLightPulseType (final String lightPulseName)
+    @Override
+    protected void addLightPulseType (final String lightPulseName)
     {
-        m_supportedLightPulsesMutex.lock ();
+        addLightPulseType (lightPulseName, this);
+    }
+
+    @Override
+    protected void addLightPulseType (final String lightPulseName, final WaveElement waveElement)
+    {
+        s_supportedLightPulsesMutex.lock ();
 
         m_supportedLightPulses.put (lightPulseName, lightPulseName);
 
-        m_supportedLightPulsesMutex.unlock ();
+        if (!(s_lightPulseToWaveObjectManagerMap.containsKey (lightPulseName)))
+        {
+            s_lightPulseToWaveObjectManagerMap.put (lightPulseName, this);
+        }
+        else
+        {
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager.addLightPulseType : Light Pulse Type " + lightPulseName + " has already been registered elsewhere.");
+            waveAssert ();
+        }
+
+        s_supportedLightPulsesMutex.unlock ();
+
+        m_createLightPulseInstanceWrapperMutex.lock ();
+
+        if (!(m_ownersForCreatingLightPulseInstances.containsKey (lightPulseName)))
+        {
+            m_ownersForCreatingLightPulseInstances.put (lightPulseName, waveElement);
+        }
+        else
+        {
+            trace (TraceLevel.TRACE_LEVEL_FATAL, "WaveObjectManager::addLightPulseType : Trying to set duplicate Owner.  Owner for \"" + lightPulseName + "\" was already set.");
+            waveAssert ();
+        }
+
+        m_createLightPulseInstanceWrapperMutex.unlock ();
     }
 
     public boolean isLightPulseNameSupported (final String lightPulseName)
     {
-        m_supportedLightPulsesMutex.lock ();
+        s_supportedLightPulsesMutex.lock ();
 
         final boolean isSupported = m_supportedLightPulses.containsKey (lightPulseName);
 
-        m_supportedLightPulsesMutex.unlock ();
+        s_supportedLightPulsesMutex.unlock ();
 
         return (isSupported);
     }
@@ -543,6 +579,45 @@ public class WaveObjectManager extends WaveElement
                 addLightPulseType (lightPulseName);
             }
         }
+    }
+
+    public LightPulse createLightPulseInstanceWrapper (final String lightPulseName)
+    {
+        LightPulse lightPulse = null;
+
+        m_createLightPulseInstanceWrapperMutex.lock ();
+
+        final WaveElement waveElement = m_ownersForCreatingLightPulseInstances.get (lightPulseName);
+
+        if (null != waveElement)
+        {
+            lightPulse = waveElement.createLightPulseInstance (lightPulseName);
+        }
+
+        m_createLightPulseInstanceWrapperMutex.unlock ();
+
+        return (lightPulse);
+    }
+
+    public static WaveObjectManager getWaveObjectManagerForLightPulseType (final String lightPulseName)
+    {
+        WaveObjectManager waveObjectManager = null;
+
+        s_supportedLightPulsesMutex.lock ();
+
+        waveObjectManager = s_lightPulseToWaveObjectManagerMap.get (lightPulseName);
+
+        s_supportedLightPulsesMutex.unlock ();
+
+        return (waveObjectManager);
+    }
+
+    @Override
+    protected LightPulse createLightPulseInstance (final String lightPulseName)
+    {
+        trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveObjectManager.createLightPulseInstance : NOT IMPLEMENTED.  RETURNS NULL BY DEFAULT.");
+        trace (TraceLevel.TRACE_LEVEL_ERROR, "WaveObjectManager.createLightPulseInstance : ObjectManagers and Workers MUST overwrite this virtual function.");
+        return (null);
     }
 
     private void addWorkers ()
@@ -3098,7 +3173,7 @@ public class WaveObjectManager extends WaveElement
         m_allowAutomaticallyUnlistenForEvents = allowAutomaticallyUnlistenForEvents;
     }
 
-    protected void unlistenEvents ()
+    public void unlistenEvents ()
     {
         LocationId eventSourceLocationId;
         WaveServiceId eventSourceServiceId;

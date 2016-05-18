@@ -4,6 +4,7 @@
 
 package com.CxWave.Wave.Framework.Messaging.MessageFactory;
 
+import com.CxWave.Wave.Framework.Messaging.LightHouse.LightPulse;
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
 import com.CxWave.Wave.Framework.MultiThreading.WaveThread;
 import com.CxWave.Wave.Framework.ObjectModel.WaveObjectManager;
@@ -69,5 +70,24 @@ public class WaveMessageFactory
         }
 
         return (waveObjectManager);
+    }
+
+    private static WaveObjectManager getWaveObjectManagerForLightPulse (final String lightPulseName)
+    {
+        return (WaveObjectManager.getWaveObjectManagerForLightPulseType (lightPulseName));
+    }
+
+    public static LightPulse getLightPulseInstance (final String lightPulseName)
+    {
+        LightPulse lightPulse = null;
+
+        final WaveObjectManager waveObjectManager = getWaveObjectManagerForLightPulse (lightPulseName);
+
+        if (null != waveObjectManager)
+        {
+            lightPulse = waveObjectManager.createLightPulseInstanceWrapper (lightPulseName);
+        }
+
+        return (lightPulse);
     }
 }

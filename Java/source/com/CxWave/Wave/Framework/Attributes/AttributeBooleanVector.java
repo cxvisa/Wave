@@ -161,4 +161,69 @@ public class AttributeBooleanVector extends Attribute
             return;
         }
     }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        @SuppressWarnings ("unchecked")
+        final Vector<Boolean> data = (Vector<Boolean>) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        for (final Boolean b : data)
+        {
+            value.append ("#");
+            value.append (b.toString ());
+        }
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        @SuppressWarnings ("unchecked")
+        final Vector<Boolean> data = (Vector<Boolean>) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        data.clear ();
+
+        int firstIndex = 0;
+        int nextIndex = 0;
+
+        while (true)
+        {
+            firstIndex = nextIndex;
+            nextIndex = value.indexOf ("#", firstIndex + 1);
+
+            final String valueString;
+
+            if (-1 != nextIndex)
+            {
+                valueString = value.substring (firstIndex + 1, nextIndex);
+            }
+            else
+            {
+                valueString = value.substring (firstIndex + 1);
+                break;
+            }
+
+            WaveAssertUtils.waveAssert (null != valueString);
+
+            data.add (Boolean.valueOf (valueString));
+        }
+    }
 }

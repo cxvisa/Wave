@@ -87,4 +87,9 @@ public class Uuid implements Comparable<Uuid>
     {
         return (m_uuid.compareTo (rhs.m_uuid));
     }
+
+    public void fromWaveString (final String valueString)
+    {
+        fromString (valueString);
+    }
 }

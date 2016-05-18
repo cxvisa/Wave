@@ -138,4 +138,16 @@ public class SI32 implements Comparable<SI32>
     {
         return (m_value.compareTo (rhs.m_value));
     }
+
+    public void fromWaveString (final String valueString)
+    {
+        try
+        {
+            setValue (Long.valueOf (valueString));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
+    }
 }

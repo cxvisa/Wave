@@ -56,34 +56,34 @@ public class AttributeStringVector extends Attribute
             // ()).getName (), value);
             /*
              * Object object = reflectionField.get (serializableObject);
-             * 
+             *
              * if (null == object) { final Class<?> fieldType = reflectionField.getType ();
-             * 
+             *
              * WaveAssertUtils.waveAssert (null != fieldType);
-             * 
+             *
              * final Constructor<?>[] declaredConstructors = fieldType.getDeclaredConstructors (); Constructor<?>
              * constructorWithZeroArguments = null;
-             * 
+             *
              * for (final Constructor<?> constructor : declaredConstructors) { if (0 == (constructor.getGenericParameterTypes
              * ()).length) { constructorWithZeroArguments = constructor; } }
-             * 
+             *
              * if (null == constructorWithZeroArguments) { WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL,
              * "AttributeStringVector.loadValueFromPlainString : Could not find constructor with 0 arguments for Field Type : %s"
              * , fieldType.getName ()); WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL,
              * "AttributeStringVector.loadValueFromPlainString :     Please declare a constructor with no arguments and retry."
              * );
-             * 
+             *
              * WaveAssertUtils.waveAssert (); } else {
-             * 
+             *
              * try { constructorWithZeroArguments.setAccessible (true);
-             * 
+             *
              * object = constructorWithZeroArguments.newInstance (); } catch (final InstantiationException |
              * InvocationTargetException e) { WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL,
              * "AttributeStringVector.loadValueFromPlainString:  Instantiating fieldType :%s failed.  Status : %s",
              * fieldType.getName (), e.toString ()); WaveAssertUtils.waveAssert (); } } }
-             * 
+             *
              * WaveAssertUtils.waveAssert (null != object);
-             * 
+             *
              * if (object instanceof Collection) { reflectionField.set (serializableObject, value); } else {
              * WaveAssertUtils.waveAssert (); }
              */
@@ -134,6 +134,71 @@ public class AttributeStringVector extends Attribute
         else
         {
             return;
+        }
+    }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        @SuppressWarnings ("unchecked")
+        final Vector<String> data = (Vector<String>) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        for (final String string : data)
+        {
+            value.append ("#");
+            value.append (string);
+        }
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        @SuppressWarnings ("unchecked")
+        final Vector<String> data = (Vector<String>) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        data.clear ();
+
+        int firstIndex = 0;
+        int nextIndex = 0;
+
+        while (true)
+        {
+            firstIndex = nextIndex;
+            nextIndex = value.indexOf ("#", firstIndex + 1);
+
+            final String valueString;
+
+            if (-1 != nextIndex)
+            {
+                valueString = value.substring (firstIndex + 1, nextIndex);
+            }
+            else
+            {
+                valueString = value.substring (firstIndex + 1);
+                break;
+            }
+
+            WaveAssertUtils.waveAssert (null != valueString);
+
+            data.add (valueString);
         }
     }
 }

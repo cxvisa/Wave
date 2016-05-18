@@ -101,4 +101,45 @@ public class LightPulse extends SerializableObject
 
         return (lightPulseName);
     }
+
+    public static String getLightPulseName (final String serializedLightPulseString)
+    {
+        if (WaveStringUtils.isBlank (serializedLightPulseString))
+        {
+            return ("");
+        }
+
+        final int seralizedLightPulseStringLength = serializedLightPulseString.length ();
+        final String attributeNameLocatorString = "4#name";
+        final int attributeNameLocatorStringLength = attributeNameLocatorString.length ();
+        final int attributeNameLocatorStringIndex = serializedLightPulseString.indexOf (attributeNameLocatorString, 0);
+
+        if (-1 == attributeNameLocatorStringIndex)
+        {
+            return ("");
+        }
+
+        final int attributeValueLengthStartIndex = attributeNameLocatorStringIndex + attributeNameLocatorStringLength;
+
+        WaveAssertUtils.waveAssert (attributeValueLengthStartIndex < seralizedLightPulseStringLength);
+
+        final int attributeValueLengthEndMarkerIndex = serializedLightPulseString.indexOf ("#", attributeValueLengthStartIndex);
+
+        if (-1 == attributeValueLengthEndMarkerIndex)
+        {
+            return ("");
+        }
+
+        final int attributeValueLength = Integer.valueOf (serializedLightPulseString.substring (attributeValueLengthStartIndex, attributeValueLengthEndMarkerIndex));
+
+        final int attributeValueStartIndex = attributeValueLengthEndMarkerIndex + 1;
+        final int attributeValueEndIndex = attributeValueStartIndex + attributeValueLength;
+
+        WaveAssertUtils.waveAssert (attributeValueStartIndex < seralizedLightPulseStringLength);
+        WaveAssertUtils.waveAssert (attributeValueEndIndex < seralizedLightPulseStringLength);
+
+        final String attributeValue = serializedLightPulseString.substring (attributeValueStartIndex, attributeValueEndIndex);
+
+        return (attributeValue);
+    }
 }

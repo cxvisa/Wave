@@ -348,4 +348,21 @@ public class WaveWorker extends WaveElement
     {
         return (m_waveObjectManager.broadcastLightPulse (lightPulse));
     }
+
+    @Override
+    protected void addLightPulseType (final String lightPulseName)
+    {
+        addLightPulseType (lightPulseName, this);
+    }
+
+    @Override
+    protected void addLightPulseType (final String lightPulseName, final WaveElement waveElement)
+    {
+        m_waveObjectManager.addLightPulseType (lightPulseName, waveElement);
+    }
+
+    public void unlistenEvents ()
+    {
+        m_waveObjectManager.unlistenEvents ();
+    }
 }

@@ -142,6 +142,11 @@ public abstract class Attribute
         return (plainString);
     }
 
+    public String toWaveString (final SerializableObject serializableObject)
+    {
+        return (toPlainString (serializableObject));
+    }
+
     public void loadValueFromWaveConfigurationFile (final WaveConfigurationFile waveConfigurationFile, final SerializableObject serializableObject, final String xmlWaveXPathPrefix)
     {
         WaveAssertUtils.waveAssert (null != waveConfigurationFile);
@@ -234,11 +239,11 @@ public abstract class Attribute
         stringBuffer.append ("#");
         stringBuffer.append (name);
 
-        final String plainString = toPlainString (serializableObject);
+        final String waveString = toWaveString (serializableObject);
 
-        stringBuffer.append (String.valueOf (plainString.length ()));
+        stringBuffer.append (String.valueOf (waveString.length ()));
         stringBuffer.append ("#");
-        stringBuffer.append (plainString);
+        stringBuffer.append (waveString);
     }
 
     public Object getValue (final SerializableObject serializableObject)
@@ -299,4 +304,8 @@ public abstract class Attribute
 
         setValue (thisSerializableObject, rhsValue);
     }
+
+    public abstract void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value);
+
+    public abstract void fromWaveString (final SerializableObject thisSerializableObject, final String value);
 }

@@ -12,9 +12,9 @@ public class UI32 implements Comparable<UI32>
 {
     private Long             m_value;
 
-    public static final UI32 MAXIMUM           = new UI32 ((0x1L << 32) - 1L);
+    public static final UI32 MAXIMUM            = new UI32 ((0x1L << 32) - 1L);
     public static final long MAXIMUM_LONG_VALUE = (0x1L << 32) - 1L;
-    public static UI32       MINIMUM           = new UI32 (0);
+    public static UI32       MINIMUM            = new UI32 (0);
     public static final long MINIMUM_LONG_VALUE = 0;
 
     public UI32 (final Integer value)
@@ -183,5 +183,17 @@ public class UI32 implements Comparable<UI32>
     public int compareTo (final UI32 rhs)
     {
         return (m_value.compareTo (rhs.m_value));
+    }
+
+    public void fromWaveString (final String valueString)
+    {
+        try
+        {
+            setValue (Long.valueOf (valueString));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
     }
 }

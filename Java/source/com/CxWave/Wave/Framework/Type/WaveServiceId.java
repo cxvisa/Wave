@@ -79,4 +79,21 @@ public class WaveServiceId
 
         return (m_id == rhs.m_id);
     }
+
+    public String toWaveString ()
+    {
+        return (toString ());
+    }
+
+    public void fromWaveString (final String valueString)
+    {
+        try
+        {
+            setId (Long.valueOf (valueString));
+        }
+        catch (final NumberFormatException e)
+        {
+            setId (0);
+        }
+    }
 }

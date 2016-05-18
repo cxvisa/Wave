@@ -56,4 +56,18 @@ public class AttributeResourceEnum extends Attribute
     {
         return (super.toPlainString (serializableObject));
     }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final String valueString = toPlainString (thisSerializableObject);
+
+        value.append (valueString);
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        loadValueFromPlainString (value, thisSerializableObject);
+    }
 }

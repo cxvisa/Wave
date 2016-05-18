@@ -4,6 +4,8 @@
 
 package com.CxWave.Wave.Framework.Type;
 
+import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
+
 public class WaveResourceId
 {
     private UI32 m_id;
@@ -56,5 +58,17 @@ public class WaveResourceId
         final WaveResourceId rhs = (WaveResourceId) object;
 
         return (m_id.equals (rhs.m_id));
+    }
+
+    public String toWaveString ()
+    {
+        return ((ResourceId.getResourceIdByEffectiveResourceId ((m_id.getValue ()).intValue ())).getName ());
+    }
+
+    public void fromWaveString (final String valueString)
+    {
+        final ResourceId resourceId = ResourceId.getResourceIdByName (valueString);
+
+        m_id.setValue (resourceId.getEffectiveResourceId ());
     }
 }

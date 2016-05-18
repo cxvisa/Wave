@@ -59,34 +59,34 @@ public class AttributeWaveResourceIdVector extends Attribute
 
             /*
              * Object object = reflectionField.get (serializableObject);
-             * 
+             *
              * if (null == object) { final Class<?> fieldType = reflectionField.getType ();
-             * 
+             *
              * WaveAssertUtils.waveAssert (null != fieldType);
-             * 
+             *
              * final Constructor<?>[] declaredConstructors = fieldType.getDeclaredConstructors (); Constructor<?>
              * constructorWithZeroArguments = null;
-             * 
+             *
              * for (final Constructor<?> constructor : declaredConstructors) { if (0 == (constructor.getGenericParameterTypes
              * ()).length) { constructorWithZeroArguments = constructor; } }
-             * 
+             *
              * if (null == constructorWithZeroArguments) { WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL,
              * "AttributeWaveResourceIdVector.loadValueFromPlainString : Could not find constructor with 0 arguments for Field Type : %s"
              * , fieldType.getName ()); WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL,
              * "AttributeWaveResourceIdVector.loadValueFromPlainString :     Please declare a constructor with no arguments and retry."
              * );
-             * 
+             *
              * WaveAssertUtils.waveAssert (); } else {
-             * 
+             *
              * try { constructorWithZeroArguments.setAccessible (true);
-             * 
+             *
              * object = constructorWithZeroArguments.newInstance (); } catch (final InstantiationException |
              * InvocationTargetException e) { WaveTraceUtils.tracePrintf (TraceLevel.TRACE_LEVEL_FATAL,
              * "AttributeWaveResourceIdVector.loadValueFromPlainString:  Instantiating fieldType :%s failed.  Status : %s",
              * fieldType.getName (), e.toString ()); WaveAssertUtils.waveAssert (); } } }
-             * 
+             *
              * WaveAssertUtils.waveAssert (null != object);
-             * 
+             *
              * if (object instanceof Collection) { reflectionField.set (serializableObject, value); } else {
              * WaveAssertUtils.waveAssert (); }
              */
@@ -137,6 +137,74 @@ public class AttributeWaveResourceIdVector extends Attribute
         else
         {
             return;
+        }
+    }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        @SuppressWarnings ("unchecked")
+        final Vector<WaveResourceId> data = (Vector<WaveResourceId>) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        for (final WaveResourceId waveResourceId : data)
+        {
+            value.append ("#");
+            value.append (waveResourceId.toWaveString ());
+        }
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        @SuppressWarnings ("unchecked")
+        final Vector<WaveResourceId> data = (Vector<WaveResourceId>) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        data.clear ();
+
+        int firstIndex = 0;
+        int nextIndex = 0;
+
+        while (true)
+        {
+            firstIndex = nextIndex;
+            nextIndex = value.indexOf ("#", firstIndex + 1);
+
+            final String valueString;
+
+            if (-1 != nextIndex)
+            {
+                valueString = value.substring (firstIndex + 1, nextIndex);
+            }
+            else
+            {
+                valueString = value.substring (firstIndex + 1);
+                break;
+            }
+
+            WaveAssertUtils.waveAssert (null != valueString);
+
+            final WaveResourceId waveResourceId = new WaveResourceId (new UI32 (0));
+            waveResourceId.fromWaveString (valueString);
+
+            data.add (waveResourceId);
         }
     }
 }

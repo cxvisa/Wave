@@ -211,6 +211,13 @@ public class SerializableObject
         m_attributesMap.copyFrom (serializableObject.m_attributesMap);
     }
 
+    public void loadFromSerializedData2 (final String serializedData)
+    {
+        prepareForSerialization ();
+
+        m_attributesMap.loadFromSerializedData (serializedData);
+    }
+
     public boolean isPreparedForSerialization ()
     {
         return (null != m_attributesMap);

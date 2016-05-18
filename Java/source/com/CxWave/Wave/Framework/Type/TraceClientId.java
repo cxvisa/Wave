@@ -80,4 +80,16 @@ public class TraceClientId implements Comparable<TraceClientId>
     {
         return ((new Long (m_id)).compareTo (rhs.m_id));
     }
+
+    public void fromWaveString (final String valueString)
+    {
+        try
+        {
+            setId (Long.valueOf (valueString));
+        }
+        catch (final NumberFormatException e)
+        {
+            setId (0);
+        }
+    }
 }

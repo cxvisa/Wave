@@ -48,4 +48,38 @@ public class AttributeTimerHandle extends Attribute
             WaveAssertUtils.waveAssert ();
         }
     }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final TimerHandle data = (TimerHandle) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        value.append (data.toString ());
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final TimerHandle data = (TimerHandle) object;
+
+        final String valueString = value;
+
+        data.fromWaveString (valueString);
+    }
 }

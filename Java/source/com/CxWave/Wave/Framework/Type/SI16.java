@@ -127,4 +127,16 @@ public class SI16 implements Comparable<SI16>
     {
         return (m_value.compareTo (rhs.m_value));
     }
+
+    public void fromWaveString (final String valueString)
+    {
+        try
+        {
+            setValue (Long.valueOf (valueString));
+        }
+        catch (final NumberFormatException e)
+        {
+            setValue (0);
+        }
+    }
 }

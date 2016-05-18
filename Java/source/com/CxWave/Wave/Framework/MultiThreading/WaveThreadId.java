@@ -6,7 +6,7 @@ package com.CxWave.Wave.Framework.MultiThreading;
 
 import com.CxWave.Wave.Framework.Type.UI32;
 
-public class WaveThreadId
+public class WaveThreadId implements Comparable<WaveThreadId>
 {
     private long m_threadId;
 
@@ -97,5 +97,23 @@ public class WaveThreadId
     public static WaveThreadId getSelf ()
     {
         return (getWaveThreadIdForThisThread ());
+    }
+
+    @Override
+    public int compareTo (final WaveThreadId rhs)
+    {
+        return ((new Long (m_threadId)).compareTo (rhs.m_threadId));
+    }
+
+    public void fromWaveString (final String valueString)
+    {
+        try
+        {
+            setThreadId (Long.valueOf (valueString));
+        }
+        catch (final NumberFormatException e)
+        {
+            setThreadId (0);
+        }
     }
 }

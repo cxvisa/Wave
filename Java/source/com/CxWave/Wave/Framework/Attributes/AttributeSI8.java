@@ -7,6 +7,10 @@ package com.CxWave.Wave.Framework.Attributes;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.CxWave.Wave.Framework.ObjectModel.SerializableObject;
+import com.CxWave.Wave.Framework.Type.SI8;
+import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
+
 public class AttributeSI8 extends Attribute
 {
     public AttributeSI8 ()
@@ -28,5 +32,39 @@ public class AttributeSI8 extends Attribute
         supportedDataTypes.add (Byte.class.getTypeName ());
 
         return (supportedDataTypes);
+    }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final SI8 data = (SI8) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        value.append (data.toString ());
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final SI8 data = (SI8) object;
+
+        final String valueString = value;
+
+        data.fromWaveString (valueString);
     }
 }

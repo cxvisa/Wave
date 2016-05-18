@@ -49,4 +49,38 @@ public class AttributeWaveServiceId extends Attribute
             WaveAssertUtils.waveAssert ();
         }
     }
+
+    @Override
+    public void toWaveString (final SerializableObject thisSerializableObject, final StringBuffer value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final WaveServiceId data = (WaveServiceId) object;
+
+        WaveAssertUtils.waveAssert (null != data);
+
+        value.append (data.toWaveString ());
+    }
+
+    @Override
+    public void fromWaveString (final SerializableObject thisSerializableObject, final String value)
+    {
+        final Object object = getValue (thisSerializableObject);
+
+        if (null == object)
+        {
+            return;
+        }
+
+        final WaveServiceId data = (WaveServiceId) object;
+
+        final String valueString = value;
+
+        data.fromWaveString (valueString);
+    }
 }
