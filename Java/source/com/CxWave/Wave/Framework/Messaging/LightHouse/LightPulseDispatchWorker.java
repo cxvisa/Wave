@@ -57,6 +57,8 @@ public class LightPulseDispatchWorker extends WaveWorker
 
         lightPulse.loadFromSerializedData2 (seralizedLightPulseString);
 
+        lightPulse.setSenderIpAddressFromClientPerspective (lightPulseDispatchMessage.getSenderIpAddress ());
+
         final LightPulseRegistrationRepository lightPulseRegistrationRepository = LightPulseRegistrationRepository.getInstance ();
 
         waveAssert (null != lightPulseRegistrationRepository);

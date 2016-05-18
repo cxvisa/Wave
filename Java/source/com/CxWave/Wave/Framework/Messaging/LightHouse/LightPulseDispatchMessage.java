@@ -5,10 +5,13 @@
 package com.CxWave.Wave.Framework.Messaging.LightHouse;
 
 import com.CxWave.Wave.Framework.Messaging.Local.WaveMessage;
+import com.CxWave.Wave.Framework.Type.SI32;
 
 public class LightPulseDispatchMessage extends WaveMessage
 {
     private String m_lightPulseSerializedString;
+    private String m_senderIpAddress;
+    private SI32   m_senderPort = new SI32 (0);
 
     public LightPulseDispatchMessage ()
     {
@@ -30,5 +33,25 @@ public class LightPulseDispatchMessage extends WaveMessage
     public void setLightPulseSerializedString (final String lightPulseSerializedString)
     {
         m_lightPulseSerializedString = lightPulseSerializedString;
+    }
+
+    public String getSenderIpAddress ()
+    {
+        return m_senderIpAddress;
+    }
+
+    public void setSenderIpAddress (final String senderIpAddress)
+    {
+        m_senderIpAddress = senderIpAddress;
+    }
+
+    public SI32 getSenderPort ()
+    {
+        return m_senderPort;
+    }
+
+    public void setSenderPort (final SI32 senderPort)
+    {
+        m_senderPort = senderPort;
     }
 }

@@ -48,7 +48,8 @@ public class LightHouseTestObjectManager3 extends WaveLocalObjectManager
         waveAssert (null != lightHouseTestLightPulse1);
 
         final String lightMessage = lightHouseTestLightPulse1.getLightMessage ();
+        final String senderIpAddressFromClientPerspective = lightHouseTestLightPulse1.getSenderIpAddressFromClientPerspective ();
 
-        trace (TraceLevel.TRACE_LEVEL_INFO, "LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler : Light Message Received : " + lightMessage);
+        trace (TraceLevel.TRACE_LEVEL_INFO, "LightHouseTestObjectManager3::lightHouseTestLightPulse1Handler : Light Message Received : " + lightMessage + ", from ip address : " + senderIpAddressFromClientPerspective);
     }
 }

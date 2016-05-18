@@ -16,8 +16,8 @@ import com.CxWave.Wave.Framework.Type.UI32;
 import com.CxWave.Wave.Framework.Type.WaveServiceId;
 import com.CxWave.Wave.Framework.Utils.Assert.WaveAssertUtils;
 import com.CxWave.Wave.Framework.Utils.Buffer.FixedSizeBuffer;
-import com.CxWave.Wave.Framework.Utils.Socket.MulticastSenderSocket;
 import com.CxWave.Wave.Framework.Utils.Socket.MulticastReceiverSocket;
+import com.CxWave.Wave.Framework.Utils.Socket.MulticastSenderSocket;
 import com.CxWave.Wave.Framework.Utils.Trace.WaveTraceUtils;
 import com.CxWave.Wave.Resources.ResourceEnums.ResourceId;
 import com.CxWave.Wave.Resources.ResourceEnums.TraceLevel;
@@ -118,6 +118,8 @@ public class LightHouseReceiverObjectManager extends WaveLocalObjectManagerForUs
                 waveAssert (null != lightPulseDispatchMessage);
 
                 lightPulseDispatchMessage.setLightPulseSerializedString (lightPulseString);
+                lightPulseDispatchMessage.setSenderIpAddress (from.toString ());
+                lightPulseDispatchMessage.setSenderPort (port);
 
                 final WaveMessageStatus sendStatus = sendOneWay (lightPulseDispatchMessage);
 
