@@ -367,4 +367,14 @@ public class WaveWorker extends WaveElement
     {
         m_waveObjectManager.unlistenEvents ();
     }
+
+    @NonLightPulseHandler
+    public void handleLightPulse (final LightPulse lightPulse)
+    {
+        final WaveObjectManager waveObjectManager = getWaveObjectManager ();
+
+        waveAssert (null != waveObjectManager);
+
+        waveObjectManager.handleWaveLightPulse (lightPulse);
+    }
 }

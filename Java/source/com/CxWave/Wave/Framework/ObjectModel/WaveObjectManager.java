@@ -1171,11 +1171,11 @@ public class WaveObjectManager extends WaveElement
 
     private void listenForLightPulse (final String lightPulseName, final String lightPulseHandlerMethodName, final WaveElement waveElement)
     {
-        if (!(m_lightPulsesMap.containsKey (lightPulseHandlerMethodName)))
+        if (!(m_lightPulsesMap.containsKey (lightPulseName)))
         {
             final WaveLightPulseHandler waveLightPulseHandler = new WaveLightPulseHandler (lightPulseHandlerMethodName);
 
-            m_lightPulsesMap.put (lightPulseHandlerMethodName, new WaveLightPulseMapContext (waveElement, waveLightPulseHandler));
+            m_lightPulsesMap.put (lightPulseName, new WaveLightPulseMapContext (waveElement, waveLightPulseHandler));
         }
         else
         {
@@ -1835,6 +1835,26 @@ public class WaveObjectManager extends WaveElement
 
             reply (waveEvent);
         }
+    }
+
+    @NonLightPulseHandler
+    public void handleWaveLightPulse (final LightPulse lightPulse)
+    {
+        if (null == lightPulse)
+        {
+            return;
+        }
+
+        final String lightPulseName = lightPulse.getName ();
+
+        final WaveLightPulseMapContext waveLightPulseMapContext = getWaveLightPulseHandler (lightPulseName);
+
+        if (null == waveLightPulseMapContext)
+        {
+            return;
+        }
+
+        waveLightPulseMapContext.executeLightPulseHandler (lightPulse);
     }
 
     private WaveOperationMapContext getWaveMessageHandler (final UI32 operationCode, final WaveServiceId messageHandlerServiceCode, final WaveServiceId thisServiceId)
