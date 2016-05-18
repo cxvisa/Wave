@@ -195,6 +195,10 @@ public class AttributeBooleanVector extends Attribute
             {
                 object = new Vector<Boolean> ();
             }
+            else
+            {
+                return;
+            }
         }
 
         @SuppressWarnings ("unchecked")
