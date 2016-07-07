@@ -29,7 +29,7 @@ class FrameworkToolKit
         static UI32       printNumberOfCpus                     (UI32 argc, vector<string> argv);
         static UI32       debugResourceId                       (UI32 argc, vector<string> argv);
         static UI32       debugAllResourceEnums                 (UI32 argc, vector<string> argv);
-        static ResourceId debugSaveWaveConfiguration           (UI32 argc, vector<string> argv);
+        static ResourceId debugSaveWaveConfiguration            (UI32 argc, vector<string> argv);
         static ResourceId printServices                         (UI32 argc, vector<string> argv);
         static ResourceId printRemoteLocations                  (UI32 argc, vector<string> argv);
         static ResourceId assertTest                            (UI32 argc, vector<string> argv);
@@ -38,7 +38,8 @@ class FrameworkToolKit
         static ResourceId debugObjectLeak                       (UI32 argc, vector<string> argv);
         static ResourceId debugObjectLeakAll                    (UI32 argc, vector<string> argv);
         static ResourceId analyzeUri                            (UI32 argc, vector<string> argv);
-        static ResourceId analyzeJson                            (UI32 argc, vector<string> argv);
+        static ResourceId analyzeJson                           (UI32 argc, vector<string> argv);
+        static ResourceId getMaxNumberOfOpenFiles               (UI32 argc, vector<string> argv);
         static ResourceId debugTokenizeConsideringStringQuotes  (UI32 argc, vector<string> argv);
 
         static void       registerDebugShellEntries             ();

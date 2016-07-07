@@ -42,6 +42,7 @@
 #include "Framework/Messaging/HaPeer/HaPeerMessageReceiverObjectManager.h"
 #include "Modeling/JSON/ObjectModel/JsonFactory/JsonFactory.h"
 #include "Modeling/JSON/ObjectModel/JsonValue.h"
+#include "Framework/Utils/SystemLimitsUtils.h"
 
 #include <iostream>
 #include <fstream>
@@ -753,8 +754,9 @@ void FrameworkToolKit::registerDebugShellEntries ()
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugObjectLeakAll),                   "dumpobjectleakall");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::analyzeUri),                           "analyzeuri");
     addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::debugTokenizeConsideringStringQuotes), "tokenizeConsideringStringQuotes");
-    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::analyzeJson),                           "analyzeJson");
+    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::analyzeJson),                          "analyzeJson");
 
+    addDebugFunction ((ShellCmdFunction) (&FrameworkToolKit::getMaxNumberOfOpenFiles),              "getMaxNumberOfOpenFiles");
 
     addDebugFunction ((ShellCmdFunction) (&RedundancyOptimizerBase::optimizePathDebugShellEntree), "reduce");
 }
@@ -1074,6 +1076,48 @@ ResourceId FrameworkToolKit::analyzeJson (UI32 argc, vector<string> argv)
         {
             trace (TRACE_LEVEL_ERROR, "Error in parsing input JSON");
         }
+    }
+
+    return (0);
+}
+
+ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> argv)
+{
+    UI32 softLimit = 0;
+    UI32 hardLimit = 0;
+
+    bool status = SystemLimitsUtils::getMaxNumberOfOpenFiles (softLimit, hardLimit);
+
+    if (true == status)
+    {
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Soft : %u, Hard : %u", softLimit, hardLimit);
+    }
+    else
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Could not obtain System Limits for maximum number of open files.");
+    }
+
+    vector<UI32> fileDescriptorsCurrentlyInUse;
+
+    status = SystemLimitsUtils::getFileDescriptorsCurrentlyInUse (fileDescriptorsCurrentlyInUse);
+
+    if (true == status)
+    {
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Currently In Use File Descriptors :");
+
+        vector<UI32>::const_iterator element    = fileDescriptorsCurrentlyInUse.begin ();
+        vector<UI32>::const_iterator endElement = fileDescriptorsCurrentlyInUse.end   ();
+
+        while (endElement != element)
+        {
+            tracePrintf (TRACE_LEVEL_INFO, true, true, "%u", *element);
+
+            element++;
+        }
+    }
+    else
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Could not obtain currently in use file descriptors.");
     }
 
     return (0);
