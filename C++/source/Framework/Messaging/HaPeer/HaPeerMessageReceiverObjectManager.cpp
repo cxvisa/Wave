@@ -222,7 +222,7 @@ void HaPeerMessageReceiverObjectManager::boot (WaveAsynchronousContextForBootPha
 
         if (true != successfullyAcceptedNewConnection)
         {
-            trace (TRACE_LEVEL_INFO, "HaPeerMessageReceiverObjectManager::initialize : Could not accept connection from a new location.  This could be because of an unwanted location arbitrarily trying to connect to us.");
+            trace (TRACE_LEVEL_DEBUG, "HaPeerMessageReceiverObjectManager::initialize : Could not accept connection from a new location.  This could be because of an unwanted location arbitrarily trying to connect to us.");
 
             delete pNewServerStreamingSocket;
             continue;
@@ -264,7 +264,7 @@ string HaPeerMessageReceiverObjectManager::getMessageVersionForHaPeer (const str
     }
 
     s_interLocationMessageReceiverThreadCacheMutex.unlock ();
-    
+
     return (messageVersion);
 }
 
@@ -279,7 +279,7 @@ UI8 HaPeerMessageReceiverObjectManager::getSerializationTypeForHaPeer (const str
     map<string, HaPeerMessageReceiverThread *>::iterator end     = s_interLocationMessageReceiverThreadCache.end ();
 
     if (element != end)
-    {   
+    {
         HaPeerMessageReceiverThread* pThread = element->second;
         serializationType = pThread->getPeerServerSerializationType ();
     }

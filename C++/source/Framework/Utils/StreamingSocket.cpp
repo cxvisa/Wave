@@ -62,7 +62,7 @@ StreamingSocket::StreamingSocket (const SI32 maximumNumberOfConnections)
     if (false == sendTimeoutStatus)
     {
         trace (TRACE_LEVEL_FATAL, "Not Able to set send timout");
-        waveAssert (false, __FILE__, __LINE__); 
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     memset (&m_socketAddress, 0, sizeof (m_socketAddress));
@@ -264,7 +264,7 @@ bool StreamingSocket::accept (StreamingSocketBase &newStreamingSocketBase)
     }
     else
     {
-        tracePrintf (TRACE_LEVEL_ERROR, "StreamingSocket::accept : %d\n", errno);
+        tracePrintf (TRACE_LEVEL_DEBUG, "StreamingSocket::accept : %d\n", errno);
         //cout << "*** errno = " << errno << " ***\n";
         return (false);
     }

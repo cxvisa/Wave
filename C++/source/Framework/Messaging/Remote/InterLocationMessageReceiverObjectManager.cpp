@@ -250,7 +250,7 @@ void InterLocationMessageReceiverObjectManager::boot (WaveAsynchronousContextFor
 
         if (true != successfullyAcceptedNewConnection)
         {
-            trace (TRACE_LEVEL_INFO, "InterLocationMessageReceiverObjectManager::initialize : Could not accept connection from a new location.  This could be because of an unwanted location arbitrarily trying to connect to us.");
+            trace (TRACE_LEVEL_DEBUG, "InterLocationMessageReceiverObjectManager::initialize : Could not accept connection from a new location.  This could be because of an unwanted location arbitrarily trying to connect to us.");
 
             delete pNewServerStreamingSocket;
             continue;
@@ -288,7 +288,7 @@ string InterLocationMessageReceiverObjectManager::getMessageVersionForRemoteLoca
     if (end != element)
     {
         InterLocationMessageReceiverThread* pThread = element->second;
-        messageVersion = pThread->getPeerServerMessageVersion ();        
+        messageVersion = pThread->getPeerServerMessageVersion ();
     }
 
     s_interLocationMessageReceiverThreadCacheMutex.unlock ();
@@ -296,23 +296,23 @@ string InterLocationMessageReceiverObjectManager::getMessageVersionForRemoteLoca
     return (messageVersion);
 }
 
-UI8 InterLocationMessageReceiverObjectManager::getSerializationTypeForRemoteLocation (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort) 
+UI8 InterLocationMessageReceiverObjectManager::getSerializationTypeForRemoteLocation (const string &remoteLocationIpAddress, const SI32 &remoteLocationPort)
 {
     string  remoteLocationUniqueId  = getRemoteLocationUniqueIdentifier (remoteLocationIpAddress, remoteLocationPort);
     UI8     serializationType       = SERIALIZE_WITH_UNKNOWN;
 
-    s_interLocationMessageReceiverThreadCacheMutex.lock (); 
+    s_interLocationMessageReceiverThreadCacheMutex.lock ();
 
     map<string, InterLocationMessageReceiverThread *>::iterator element = s_interLocationMessageReceiverThreadCache.find (remoteLocationUniqueId);
-    map<string, InterLocationMessageReceiverThread *>::iterator end     = s_interLocationMessageReceiverThreadCache.end (); 
+    map<string, InterLocationMessageReceiverThread *>::iterator end     = s_interLocationMessageReceiverThreadCache.end ();
 
     if (end != element)
-    {   
+    {
         InterLocationMessageReceiverThread* pThread = element->second;
-        serializationType = pThread->getPeerServerSerializationType ();    
-    }   
+        serializationType = pThread->getPeerServerSerializationType ();
+    }
 
-    s_interLocationMessageReceiverThreadCacheMutex.unlock (); 
+    s_interLocationMessageReceiverThreadCacheMutex.unlock ();
 
     return (serializationType);
 }

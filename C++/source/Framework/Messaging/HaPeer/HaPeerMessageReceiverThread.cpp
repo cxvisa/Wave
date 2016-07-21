@@ -236,13 +236,13 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                 //trace (TRACE_LEVEL_DEVEL, messageString);
 
                 UI8                 serializationType               = m_peerServerSerializationType;
-                UI32                messageIdAtOriginatingLocation  = WaveMessage::getMessageIdAtOriginatingLocation (messageString, serializationType); 
-                WaveMessageType     messageType                     = WaveMessage::getType (messageString, serializationType); 
+                UI32                messageIdAtOriginatingLocation  = WaveMessage::getMessageIdAtOriginatingLocation (messageString, serializationType);
+                WaveMessageType     messageType                     = WaveMessage::getType (messageString, serializationType);
                 WaveMessage       *pWaveMessage                   = NULL;
 
                 if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
                 {
-                    pWaveMessage = WaveMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType); 
+                    pWaveMessage = WaveMessage::createAndLoadFromSerializedData2 (messageString, 0, serializationType);
                 }
                 else if (WAVE_MESSAGE_TYPE_RESPONSE == messageType)
                 {
@@ -251,7 +251,7 @@ WaveThreadStatus HaPeerMessageReceiverThread::start ()
                     if (NULL != pWaveMessage)
                     {
                         pWaveMessage->removeAllBuffers ();
-                        pWaveMessage->loadFromSerializedData2 (messageString, serializationType); 
+                        pWaveMessage->loadFromSerializedData2 (messageString, serializationType);
                     }
                 }
                 else
@@ -429,7 +429,7 @@ bool HaPeerMessageReceiverThread::authorizeClient ()
 
     if ((false == isSuccessful) || (0 == (passphraseFixedSizeBuffer.getCurrentSize ())))
     {
-        trace (TRACE_LEVEL_WARN, "HaPeerMessageReceiverThread::start : A client could not supply proper credentials.  Ignoring client.");
+        trace (TRACE_LEVEL_DEBUG, "HaPeerMessageReceiverThread::start : A client could not supply proper credentials.  Ignoring client.");
     }
     else
     {

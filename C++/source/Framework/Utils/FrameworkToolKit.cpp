@@ -43,6 +43,7 @@
 #include "Modeling/JSON/ObjectModel/JsonFactory/JsonFactory.h"
 #include "Modeling/JSON/ObjectModel/JsonValue.h"
 #include "Framework/Utils/SystemLimitsUtils.h"
+#include "Framework/Utils/PortScanner/TcpPortScanner.h"
 
 #include <iostream>
 #include <fstream>
@@ -1083,6 +1084,25 @@ ResourceId FrameworkToolKit::analyzeJson (UI32 argc, vector<string> argv)
 
 ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> argv)
 {
+    string ipAddress = "127.0.0.1";
+    SI32   startPort = 1;
+    SI32   endPort   = 65535;
+
+    if (argc >= 2)
+    {
+        ipAddress = argv[1];
+    }
+
+    if (argc >= 3)
+    {
+        startPort = atoi ((argv[2]).c_str ());
+    }
+
+    if (argc >= 4)
+    {
+        endPort = atoi ((argv[3]).c_str ());
+    }
+
     UI32 softLimit = 0;
     UI32 hardLimit = 0;
 
@@ -1119,6 +1139,73 @@ ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> 
     {
         tracePrintf (TRACE_LEVEL_ERROR, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Could not obtain currently in use file descriptors.");
     }
+
+    set<UI32> allOpenPorts;
+    set<UI32> allClosedPorts;
+    set<UI32> allTimedOutPorts;
+    set<UI32> allNotTriedPorts;
+
+    for (SI32 i = startPort; i <= endPort; i += 1000)
+    {
+        set<UI32> inputPorts;
+        set<UI32> openPorts;
+        set<UI32> closedPorts;
+        set<UI32> timedOutPorts;
+        set<UI32> notTriedPorts;
+
+        UI32Range inputPortRange (i, i + 999 < endPort ? i + 999 : endPort);
+
+        vector<UI32> inputPortRangeIntegers;
+
+        inputPortRange.getUI32RangeVector (inputPortRangeIntegers);
+
+        inputPorts.insert (inputPortRangeIntegers.begin (), inputPortRangeIntegers.end ());
+
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Processing Ports in Range : %s", (inputPortRange.toString ()).c_str ());
+
+
+        status = TcpPortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
+
+        allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
+        allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());
+        allTimedOutPorts.insert (timedOutPorts.begin (), timedOutPorts.end ());
+        allNotTriedPorts.insert (notTriedPorts.begin (), notTriedPorts.end ());
+
+        if (true == status)
+        {
+            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Currently open ports :");
+
+            set<UI32>::const_iterator element    = openPorts.begin ();
+            set<UI32>::const_iterator endElement = openPorts.end   ();
+
+            while (endElement != element)
+            {
+                tracePrintf (TRACE_LEVEL_DEBUG, true, true, "%u", *element);
+
+                element++;
+            }
+        }
+        else
+        {
+            tracePrintf (TRACE_LEVEL_ERROR, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Could not scan for IPV4 tcp ports.");
+        }
+    }
+
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Currently open ports : %u", allOpenPorts.size ());
+
+    set<UI32>::const_iterator element    = allOpenPorts.begin ();
+    set<UI32>::const_iterator endElement = allOpenPorts.end   ();
+
+    while (endElement != element)
+    {
+        tracePrintf (TRACE_LEVEL_INFO, true, true, "%u", *element);
+
+        element++;
+    }
+
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Currently Closed ports    : %u", allClosedPorts.size   ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Currently Timed out ports : %u", allTimedOutPorts.size ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Currently Not Tried ports : %u", allNotTriedPorts.size ());
 
     return (0);
 }

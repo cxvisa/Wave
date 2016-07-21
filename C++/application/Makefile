@@ -43,7 +43,8 @@ PROGRAMS := \
 	WavesyStemManagement.$(OS_ARCH_XT) \
 	WyserCli.$(OS_ARCH_XT) \
 	WaveMessageExchange.$(OS_ARCH_XT) \
-	WaveMessageExchangeClient.$(OS_ARCH_XT)
+	WaveMessageExchangeClient.$(OS_ARCH_XT) \
+        WavePortScanner.$(OS_ARCH_XT)
 
 
 .PHONY: all wavesobundle waveso clean cleanall phony Wyser
@@ -68,6 +69,7 @@ WavesyStemManagement.$(OS_ARCH_XT): Wsmd.cpp
 WyserCli.$(OS_ARCH_XT): WyserCli.cpp
 WaveMessageExchange.$(OS_ARCH_XT) : WaveMessageExchange.cpp
 WaveMessageExchangeClient.$(OS_ARCH_XT) : WaveMessageExchangeClient.cpp
+WavePortScanner.$(OS_ARCH_XT) : WavePortScanner.cpp
 
 
 include ../source/commonMakefileEnd
@@ -101,6 +103,7 @@ clean: wave_clean
 	rm -rf wavesobundle.$(OS).$(ARCH).tar.gz;
 	rm -rf WaveConfigurationWriter.$(OS).$(ARCH);
 	rm -rf Wyser.$(OS).$(ARCH);
+	rm -rf WavePortScanner.$(OS).$(ARCH);
 
 wave_clean:
 	$(MAKE) -C $(WAVE_SRC) clean
@@ -113,3 +116,4 @@ cleanall:
 	rm -f wavesobundle.*.*.tar.gz;
 	rm -f WaveConfigurationWriter.*.*;
 	rm -f Wyser.*.*;
+	rm -f WavePortScanner.*.*;

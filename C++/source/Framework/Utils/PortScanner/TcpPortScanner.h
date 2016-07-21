@@ -4,25 +4,30 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef SYSTEMERRORUTILS_H
-#define SYSTEMERRORUTILS_H
+#ifndef TCPPORTSCANNERUTILS_H
+#define TCPPORTSCANNERUTILS_H
 
+#include <sys/select.h>
 #include "Framework/Types/Types.h"
 
 #include <string>
+#include <set>
 
 using namespace std;
 
 namespace WaveNs
 {
 
-class SystemErrorUtils
+class TcpPortScanner
 {
     private :
+        static void fdCopy (fd_set *pSource, fd_set *pDestination);
+        static SI32 fdMax  (fd_set *pSource);
+
     protected :
     public :
-        static string getErrorStringForErrorNumber (const SI32 &errorNumber);
-
+        static bool       scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inputPorts, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts);
+        static ResourceId scanPorts (vector<string> argv);
         // Now the data members
 
     private :
@@ -32,4 +37,4 @@ class SystemErrorUtils
 
 }
 
-#endif // SYSTEMERRORUTILS_H
+#endif // TCPPORTSCANNERUTILS_H

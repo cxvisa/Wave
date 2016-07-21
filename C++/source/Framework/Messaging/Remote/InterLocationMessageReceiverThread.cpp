@@ -29,7 +29,7 @@ InterLocationMessageReceiverThread::InterLocationMessageReceiverThread (ServerSt
       m_peerServerPort (0),
       m_peerServerMessageVersion (""),
       m_peerServerSerializationType (SERIALIZE_WITH_UNKNOWN)
-      
+
 {
     if (NULL == m_pServerStreamingSocket)
     {
@@ -63,7 +63,7 @@ InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread ()
 			failureStatus= ((FrameworkToolKit::getClusterPrimaryLocationId () == peerServerLocationId)?
 											WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE_DUE_TO_PRINCIPAL_FAILOVER:
 											WAVE_MESSAGE_ERROR_REMOTE_LOCATION_UNAVAILABLE);
-																		
+
             (WaveFrameworkObjectManager::getInstance ())->invalidateClientStreamingSocketForRemoteLocation (peerServerLocationId);
             (InterLocationMessageTransportObjectManager::getInstance ())->replyToRemoteMessagesPendingOnLocation (peerServerLocationId, failureStatus);
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Invalidated client streaming socket for Ip Address : %s, Port %d reason %s", m_peerServerIpAddress.c_str (), m_peerServerPort,FrameworkToolKit::localize(failureStatus).c_str());
@@ -73,7 +73,7 @@ InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread ()
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Disconnecting From Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
             (WaveFrameworkObjectManager::getInstance ())->disconnectFromLocation (m_peerServerIpAddress, m_peerServerPort, false);
             tracePrintf (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::~InterLocationMessageReceiverThread : Disconnected  From Ip Address : %s, Port %d", m_peerServerIpAddress.c_str (), m_peerServerPort);
-#endif     
+#endif
 
 
        }
@@ -99,7 +99,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
     bool       isSuccessful                           = false;
     LocationId myExpectedLocationId                   = 0;
     bool       isMulticastMessage                     = false;
-    string     messageVersion                         = ""; 
+    string     messageVersion                         = "";
 
     // This is InterLocation receive socket. Set custom Keep Alive timeout settings.
 
@@ -175,12 +175,12 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
         peerServerIpAddress = peerServerConnectionInformation.getThisLocationServerIpAddress ();
         peerServerPort      = peerServerConnectionInformation.getThisLocationServerPort ();
         myExpectedLocationId    = peerServerConnectionInformation.getExpectedLocationId ();
-        messageVersion      = peerServerConnectionInformation.getMessageVersion ();  
+        messageVersion      = peerServerConnectionInformation.getMessageVersion ();
 
         trace (TRACE_LEVEL_INFO, string ("                message Version                 : \"") + messageVersion + "\"");
-        if (true == messageVersion.empty()) 
+        if (true == messageVersion.empty())
         {
-            messageVersion = string ("0.0.0");   
+            messageVersion = string ("0.0.0");
         }
 
         trace (TRACE_LEVEL_INFO, string ("Remote Location Ip Address                      : \"") + peerServerIpAddress + "\"");
@@ -216,7 +216,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
             // We will connect back during phase 0 after shutting down all the services
             // This is done to avoid global services active in the rejoining secondary nodes writing to the primary
             // Only after shutting down these services we must connect back to the primary.
-            
+
             if ((LOCATION_PRIMARY == FrameworkToolKit::getThisLocationRole ()) || (LOCATION_SECONDARY_UNCONFIRMED == FrameworkToolKit::getThisLocationRole ()) || (LOCATION_PRIMARY_UNCONFIRMED == FrameworkToolKit::getThisLocationRole ()) || (myExpectedLocationId != FrameworkToolKit::getThisLocationId ()))
             {
                 connectionStatus = FRAMEWORK_UNKNOWN_LOCATION;
@@ -350,7 +350,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
 
                 UI8              serializationType              = m_peerServerSerializationType;
                 UI32             messageIdAtOriginatingLocation = WaveMessage::getMessageIdAtOriginatingLocation (messageString, serializationType);
-                WaveMessageType  messageType                    = WaveMessage::getType (messageString, serializationType);  
+                WaveMessageType  messageType                    = WaveMessage::getType (messageString, serializationType);
                 WaveMessage    *pWaveMessage                  = NULL;
 
                 if (WAVE_MESSAGE_TYPE_REQUEST == messageType)
@@ -370,7 +370,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                             ResourceId                     completionStatus               = WaveMessage::getMessageCompletionStatus (messageString);
                             LocationId                     receiverLocationId             = FrameworkToolKit::getLocationIdForIpAddressAndPort (peerServerIpAddress, peerServerPort);
                             InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
-        
+
                             waveAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
 
                             pInterLocationMulticastMessage->messageOperationAccess ();
@@ -390,7 +390,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                             isMulticastMessage = false;
 
                             pWaveMessage = (InterLocationMessageTransportObjectManager::getInstance ())->getPendingMessage (messageIdAtOriginatingLocation);
-            
+
                             (InterLocationMessageTransportObjectManager::getInstance ())->unlockGlobalAccessMutexForMulticastMessaging ();
 
                             pWaveMessage->removeAllBuffers ();
@@ -485,7 +485,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                         if (true == isMulticastMessage)
                         {
                             InterLocationMulticastMessage *pInterLocationMulticastMessage = dynamic_cast<InterLocationMulticastMessage *>(pWaveMessage);
-    
+
                             waveAssert (NULL != pInterLocationMulticastMessage, __FILE__, __LINE__);
 
                             if (false == isSuccessful)
@@ -505,7 +505,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                                 (InterLocationMessageTransportObjectManager::getInstance ())->unlockGlobalAccessMutexForMulticastMessaging ();
 
                                 pInterLocationMulticastMessage->messageOperationReleaseAccess ();
-                                
+
                                 (InterLocationMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pWaveMessage);
                             }
                             else
@@ -521,7 +521,7 @@ WaveThreadStatus InterLocationMessageReceiverThread::start ()
                             {
                                 pWaveMessage->setCompletionStatus (WAVE_MESSAGE_ERROR_INCOMPLETE_BUFFER_READ_FROM_REMOTE_LOCATION);
                             }
-                            
+
                             (InterLocationMessageTransportObjectManager::getInstance ())->replyToBeUsedByReceiverThreads (pWaveMessage);
                         }
                     }
@@ -563,7 +563,7 @@ bool InterLocationMessageReceiverThread::authorizeClient ()
 
     if ((false == isSuccessful) || (0 == (passphraseFixedSizeBuffer.getCurrentSize ())))
     {
-        trace (TRACE_LEVEL_WARN, "InterLocationMessageReceiverThread::start : A client could not supply proper credentials.  Ignoring client.");
+        trace (TRACE_LEVEL_DEBUG, "InterLocationMessageReceiverThread::start : A client could not supply proper credentials.  Ignoring client.");
     }
     else
     {
@@ -596,7 +596,7 @@ void InterLocationMessageReceiverThread::setPeerServerDetails (const string &pee
     }
     else
     {
-        m_peerServerSerializationType = ((0 == messageVersion.compare ("0.0.0")) ? SERIALIZE_WITH_ATTRIBUTE_ORDER : SERIALIZE_WITH_ATTRIBUTE_NAME); 
+        m_peerServerSerializationType = ((0 == messageVersion.compare ("0.0.0")) ? SERIALIZE_WITH_ATTRIBUTE_ORDER : SERIALIZE_WITH_ATTRIBUTE_NAME);
     }
 
     m_peerServerMutex.unlock ();
