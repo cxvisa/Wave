@@ -14,20 +14,20 @@ namespace WaveNs
 
 typedef enum
 {
-    WAVE_INVALID = 0,
-    WAVE_IPV4,
-    WAVE_IPV6
-}IpType;
+    WAVE_IP_INVALID = 0,
+    WAVE_IP_V4,
+    WAVE_IP_V6
+}WaveIpType;
 
 class IpVxAddress : public IpAddress
 {
     private :
 
-        void                   setIpType             (const IpType ipType);
-        IpType                 determineIpType       (const string &ipVxAddress);
-                              
-    protected :               
-    public :                  
+        void                   setIpType             (const WaveIpType ipType);
+        WaveIpType             determineIpType       (const string &ipVxAddress);
+
+    protected :
+    public :
                                IpVxAddress           ();
                                IpVxAddress           (const string &ipVxAddress);
                                IpVxAddress           (const IpVxAddress &ipVxAddress);
@@ -40,12 +40,12 @@ class IpVxAddress : public IpAddress
         IpVxAddress            &operator =           (const IpVxAddress &ipVxAddress);
         static bool            isValidIpV4Address    (const string &ipVxAddress);
         static bool            isValidIpV6Address    (const string &ipVxAddress);
-        IpType                 getIpType             () const;
+        WaveIpType             getIpType             () const;
 
     // Now the data members
 
     private :
-        IpType      m_addressType;
+        WaveIpType      m_addressType;
 
     protected :
     public :
