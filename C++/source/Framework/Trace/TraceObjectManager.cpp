@@ -374,7 +374,7 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
         }
         else
         {
-            cout << "TraceObjectManager::traceDirectly : Failed to open tracefile " << s_traceFileName << endl << "\r";
+            //cout << "TraceObjectManager::traceDirectly : Failed to open tracefile " << s_traceFileName << endl << "\r";
         }
     }
 
@@ -508,7 +508,7 @@ void TraceObjectManager::traceDirectly (const TraceClientId &traceClientId, cons
         }
         else
         {
-            cout << "TraceObjectManager::traceDirectly : Failed to open tracefile " << s_traceFileName << endl << "\r";
+            //cout << "TraceObjectManager::traceDirectly : Failed to open tracefile " << s_traceFileName << endl << "\r";
         }
     }
 
@@ -627,7 +627,7 @@ void TraceObjectManager::traceMessageHandler (TraceMessage *pTraceMessage)
         }
         else
         {
-            cout << "TraceObjectManager::traceMessageHandler : Failed to open tracefile " << s_traceFileName << endl << "\r";
+            //cout << "TraceObjectManager::traceMessageHandler : Failed to open tracefile " << s_traceFileName << endl << "\r";
         }
     }
 

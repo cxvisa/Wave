@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <sys/time.h>
 #include <sys/select.h>
+#include <netdb.h>
 
 namespace WaveNs
 {
@@ -265,28 +266,112 @@ SI32 TcpPortScanner::fdMax (fd_set *pSource)
     return (-1);
 }
 
-ResourceId TcpPortScanner::scanPorts (vector<string> argv)
+ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tcpPortScannerInputConfiguration)
 {
-    const UI32   numberOfArguments = argv.size ();
-          string ipAddress         = "127.0.0.1";
-          SI32   startPort         = 1;
-          SI32   endPort           = 65535;
+          UI32   numberOfPortsToScanInABatch     = 1000; // Default value, will get reset below if possible.
+          UI32   numberOfPortsToScanInABatchTemp = 0;
 
-    if (numberOfArguments >= 1)
+    const string ipAddress                       = tcpPortScannerInputConfiguration.getIpAddress ();
+
+    bool batchSizeComputationStatus = computeNumberOfPortsToScanInABatch (numberOfPortsToScanInABatchTemp);
+
+    if (batchSizeComputationStatus)
     {
-        ipAddress = argv[0];
+        numberOfPortsToScanInABatch = numberOfPortsToScanInABatchTemp;
     }
 
-    if (numberOfArguments >= 2)
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Batch Size : %u", numberOfPortsToScanInABatch);
+
+    set<UI32> allOpenPorts;
+    set<UI32> allClosedPorts;
+    set<UI32> allTimedOutPorts;
+    set<UI32> allNotTriedPorts;
+
+    UI32Range inputPortRange    = tcpPortScannerInputConfiguration.getPortRange ();
+    vector<UI32> allInputPorts;
+
+    inputPortRange.getUI32RangeVector (allInputPorts);
+
+    vector<UI32>::const_iterator element          = allInputPorts.begin ();
+    vector<UI32>::const_iterator batchEndElement;
+    vector<UI32>::const_iterator endElement       = allInputPorts.end   ();
+
+    while (endElement != element)
     {
-        startPort = atoi ((argv[1]).c_str ());
+        set<UI32> inputPorts;
+        set<UI32> openPorts;
+        set<UI32> closedPorts;
+        set<UI32> timedOutPorts;
+        set<UI32> notTriedPorts;
+
+        batchEndElement = element + numberOfPortsToScanInABatch < endElement ? element + numberOfPortsToScanInABatch : endElement;
+
+        inputPorts.insert (element, batchEndElement);
+
+        vector<UI32> inputPortsVector;
+
+        inputPortsVector.insert (inputPortsVector.end (), inputPorts.begin (), inputPorts.end ());
+        const string rangeString = UI32Range::getUI32RangeStringFromVector (inputPortsVector);
+
+        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Processing Ports in Range : %s", rangeString.c_str ());
+
+
+        bool scanStatus = TcpPortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
+
+        allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
+        allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());
+        allTimedOutPorts.insert (timedOutPorts.begin (), timedOutPorts.end ());
+        allNotTriedPorts.insert (notTriedPorts.begin (), notTriedPorts.end ());
+
+        if (true == scanStatus)
+        {
+            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Currently open ports :");
+
+            set<UI32>::const_iterator elementForOpenPorts    = openPorts.begin ();
+            set<UI32>::const_iterator endElementForOpenPorts = openPorts.end   ();
+
+            while (endElementForOpenPorts != elementForOpenPorts)
+            {
+                tracePrintf (TRACE_LEVEL_DEBUG, true, true, "%u", *elementForOpenPorts);
+
+                elementForOpenPorts++;
+            }
+        }
+        else
+        {
+            tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanPorts : Could not scan for IPV4 tcp ports.");
+        }
+
+        element = batchEndElement;
     }
 
-    if (numberOfArguments >= 3)
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently open ports : %u", allOpenPorts.size ());
+
+    set<UI32>::const_iterator elementForAllOpenPorts    = allOpenPorts.begin ();
+    set<UI32>::const_iterator endElementForAllOpenPorts = allOpenPorts.end   ();
+
+    setservent (1);
+
+    while (endElementForAllOpenPorts != elementForAllOpenPorts)
     {
-        endPort = atoi ((argv[2]).c_str ());
+        struct servent *pServiceEntry = getservbyport (htons ((int) (*elementForAllOpenPorts)), "tcp");
+
+        tracePrintf (TRACE_LEVEL_INFO, true, true, "%5u %s", *elementForAllOpenPorts, pServiceEntry != NULL ? pServiceEntry->s_name : "Unknown");
+
+        elementForAllOpenPorts++;
     }
 
+    endservent ();
+
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Closed ports    : %u", allClosedPorts.size   ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Timed out ports : %u", allTimedOutPorts.size ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Not Tried ports : %u", allNotTriedPorts.size ());
+
+    return (0);
+}
+
+bool TcpPortScanner::computeNumberOfPortsToScanInABatch (UI32 &numberOfPortsToScanInABatch)
+{
     UI32 softLimit = 0;
     UI32 hardLimit = 0;
 
@@ -294,7 +379,7 @@ ResourceId TcpPortScanner::scanPorts (vector<string> argv)
 
     if (true == status)
     {
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Soft : %u, Hard : %u", softLimit, hardLimit);
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Soft limit on open files : %u, Hard limit on open files : %u", softLimit, hardLimit);
     }
     else
     {
@@ -307,92 +392,35 @@ ResourceId TcpPortScanner::scanPorts (vector<string> argv)
 
     if (true == status)
     {
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently In Use File Descriptors :");
+        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Currently In Use File Descriptors :");
 
         vector<UI32>::const_iterator element    = fileDescriptorsCurrentlyInUse.begin ();
         vector<UI32>::const_iterator endElement = fileDescriptorsCurrentlyInUse.end   ();
 
         while (endElement != element)
         {
-            tracePrintf (TRACE_LEVEL_INFO, true, true, "%u", *element);
+            tracePrintf (TRACE_LEVEL_DEBUG, true, true, "%u", *element);
 
             element++;
         }
+
+        const string inUseFileDescriptorRangeString = UI32Range::getUI32RangeStringFromVector (fileDescriptorsCurrentlyInUse);
+
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : %s", inUseFileDescriptorRangeString.c_str ());
+
+        numberOfPortsToScanInABatch = softLimit - (fileDescriptorsCurrentlyInUse.size ());
+
+        // Round it off to nearest 100 multiple.
+        // 100 is arbitrarily chosen and this can be adjusted by any reasonable value.
+
+        numberOfPortsToScanInABatch -= numberOfPortsToScanInABatch % 100;
     }
     else
     {
         tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanPorts : Could not obtain currently in use file descriptors.");
     }
 
-    set<UI32> allOpenPorts;
-    set<UI32> allClosedPorts;
-    set<UI32> allTimedOutPorts;
-    set<UI32> allNotTriedPorts;
-
-    for (SI32 i = startPort; i <= endPort; i += 1000)
-    {
-        set<UI32> inputPorts;
-        set<UI32> openPorts;
-        set<UI32> closedPorts;
-        set<UI32> timedOutPorts;
-        set<UI32> notTriedPorts;
-
-        UI32Range inputPortRange (i, i + 999 < endPort ? i + 999 : endPort);
-
-        vector<UI32> inputPortRangeIntegers;
-
-        inputPortRange.getUI32RangeVector (inputPortRangeIntegers);
-
-        inputPorts.insert (inputPortRangeIntegers.begin (), inputPortRangeIntegers.end ());
-
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Processing Ports in Range : %s", (inputPortRange.toString ()).c_str ());
-
-
-        status = TcpPortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
-
-        allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
-        allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());
-        allTimedOutPorts.insert (timedOutPorts.begin (), timedOutPorts.end ());
-        allNotTriedPorts.insert (notTriedPorts.begin (), notTriedPorts.end ());
-
-        if (true == status)
-        {
-            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Currently open ports :");
-
-            set<UI32>::const_iterator element    = openPorts.begin ();
-            set<UI32>::const_iterator endElement = openPorts.end   ();
-
-            while (endElement != element)
-            {
-                tracePrintf (TRACE_LEVEL_DEBUG, true, true, "%u", *element);
-
-                element++;
-            }
-        }
-        else
-        {
-            tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanPorts : Could not scan for IPV4 tcp ports.");
-        }
-    }
-
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently open ports : %u", allOpenPorts.size ());
-
-    set<UI32>::const_iterator element    = allOpenPorts.begin ();
-    set<UI32>::const_iterator endElement = allOpenPorts.end   ();
-
-    while (endElement != element)
-    {
-        tracePrintf (TRACE_LEVEL_INFO, true, true, "%u", *element);
-
-        element++;
-    }
-
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Closed ports    : %u", allClosedPorts.size   ());
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Timed out ports : %u", allTimedOutPorts.size ());
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Not Tried ports : %u", allNotTriedPorts.size ());
-
-    return (0);
+    return (status);
 }
-
 
 }

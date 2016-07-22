@@ -1667,7 +1667,7 @@ SI32 FrameworkToolKit::systemCommandOutput (const string &command, vector<string
     char   psBuffer[128];
     FILE   *pPipe;
     SI32   status = -1000 ;
-    cout << "FrameworkToolKit::systemCommandOutput : Executing command " << command << endl << "\r";
+    //cout << "FrameworkToolKit::systemCommandOutput : Executing command " << command << endl << "\r";
     if( (pPipe = popen( command.c_str(), "r" )) == NULL )
     {
         return status;

@@ -9,6 +9,7 @@
 #include "Framework/Utils/PortScanner/TcpPortScanner.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/SystemErrorUtils.h"
+#include "Framework/Utils/PortScanner/TcpPortScannerInputConfiguration.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -22,20 +23,26 @@ using namespace WaveNs;
 
 int main (int argc, char *argv[])
 {
+#if 0
     SI32           i;
-    vector<string> argumentVector;
     const SI32 numberOfShards = 100;
     int **pipeFdsForShardsForReading;
     int **pipeFdsForShardsForWriting;
     SI32 childIndex = 0;
     SI32 pipeStatus = 0;
     map<pid_t, SI32> pidToChildIndexMap;
+#endif
 
-    for (i = 1; i < argc; i++)
+    TcpPortScannerInputConfiguration tcpPortScannerInputConfiguration;
+
+    bool parsingStatus = tcpPortScannerInputConfiguration.parseCommandLineInputs (argc, argv);
+
+    if (! parsingStatus)
     {
-        argumentVector.push_back (argv[i]);
+        exit (-1);
     }
 
+#if 0
     pipeFdsForShardsForReading = new int*[numberOfShards];
 
     for (i = 0; i < numberOfShards; i++)
@@ -162,8 +169,9 @@ int main (int argc, char *argv[])
             }
         }
     }
+#endif
 
-    //TcpPortScanner::scanPorts (argumentVector);
+    TcpPortScanner::scanPorts (tcpPortScannerInputConfiguration);
 
     return (0);
 }

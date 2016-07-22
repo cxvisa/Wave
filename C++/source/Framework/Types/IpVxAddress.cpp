@@ -150,7 +150,27 @@ WaveIpType IpVxAddress::determineIpType (const string &ipVxAddress)
     }
 
     return (WAVE_IP_INVALID);
+}
 
+bool IpVxAddress::isValidIpAddress(const string &ipVxAddress)
+{
+    if ("" != ipVxAddress)
+    {
+        if (isValidIpV4Address (ipVxAddress))
+        {
+            return (true);
+        }
+        else if (isValidIpV6Address (ipVxAddress))
+        {
+            return (true);
+        }
+        else
+        {
+            return (false);
+        }
+    }
+
+    return (false);
 }
 
 void IpVxAddress::fromString (const string &ipVxAddress)

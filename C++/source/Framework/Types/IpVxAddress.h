@@ -40,6 +40,7 @@ class IpVxAddress : public IpAddress
         IpVxAddress            &operator =           (const IpVxAddress &ipVxAddress);
         static bool            isValidIpV4Address    (const string &ipVxAddress);
         static bool            isValidIpV6Address    (const string &ipVxAddress);
+        static bool            isValidIpAddress      (const string &ipVxAddress);
         WaveIpType             getIpType             () const;
 
     // Now the data members

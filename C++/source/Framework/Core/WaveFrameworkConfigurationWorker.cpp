@@ -79,13 +79,13 @@ ResourceId WaveFrameworkConfigurationWorker::saveWaveConfiguration (const string
 
 ResourceId WaveFrameworkConfigurationWorker::validateStep (WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext)
 {
-    if ( true ==  FrameworkToolKit::isNodeZeroized ()) 
+    if ( true ==  FrameworkToolKit::isNodeZeroized ())
     {
         trace (TRACE_LEVEL_ERROR,"WaveFrameworkConfigurationWorker::validateStep: Failed to save cfg file as node is zeroized.");
 
         return (WAVE_MESSAGE_ERROR);
     }
-    
+
     if ( false == getWaveConfigurationValidity() )
     {
 
@@ -119,15 +119,15 @@ ResourceId WaveFrameworkConfigurationWorker::saveConfigurationStep (WaveFramewor
     {
         status = configurationWithFlock (SAVE_CONFIGURATION, pWaveFrameworkConfigurationContext);
     }
-    
+
     return (status);
 }
 
 ResourceId WaveFrameworkConfigurationWorker::sendConfigurationToStandbyStep (WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
-   
-    if (pWaveFrameworkConfigurationContext->getSyncToStandby () == true) 
+
+    if (pWaveFrameworkConfigurationContext->getSyncToStandby () == true)
     {
 
         if (FrameworkToolKit::getIsLiveSyncEnabled () == false)
@@ -146,8 +146,8 @@ ResourceId WaveFrameworkConfigurationWorker::sendConfigurationToStandbyStep (Wav
         FrameworkObjectManagerSyncConfigurationMessage *pFrameworkObjectManagerSyncConfigurationMessage = new FrameworkObjectManagerSyncConfigurationMessage ();
 
         pFrameworkObjectManagerSyncConfigurationMessage->setWaveFrameworkConfigurationFileName (WaveFrameworkObjectManager::getConfigurationFileName ());
-       
-        bool cfgValidity = getWaveConfigurationValidity(); 
+
+        bool cfgValidity = getWaveConfigurationValidity();
 
         WaveFrameworkConfiguration &waveFrameworkConfigurationObject = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();
 
@@ -169,11 +169,11 @@ ResourceId WaveFrameworkConfigurationWorker::sendConfigurationToStandbyStep (Wav
         else
         {
              status = pFrameworkObjectManagerSyncConfigurationMessage->getCompletionStatus ();
-     
+
              if (WAVE_MESSAGE_SUCCESS != status)
              {
                  trace (TRACE_LEVEL_FATAL, "WaveFrameworkConfigurationWorker::sendConfigurationToStandbyStep : Message to sync configuration failed.  Completion Status : " + FrameworkToolKit::localize (status));
-                 FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_STATUS_HASYNC_FAILED); 
+                 FrameworkToolKit::notifySyncUpdateFailAndStopSync(WAVE_MESSAGE_ERROR_CLUSTER_STATUS_HASYNC_FAILED);
              }
              else
              {
@@ -209,7 +209,7 @@ ResourceId WaveFrameworkConfigurationWorker::loadConfigurationStep (WaveFramewor
     string                      &waveFrameworkConfigurationFileName = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationFileName ();
     WaveFrameworkConfiguration &waveFrameworkConfigurationObject   = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();
     ResourceId status = WAVE_MESSAGE_SUCCESS;
-    
+
     if (WAVE_MGMT_INTF_ROLE_SERVER != (FrameworkToolKit::getManagementInterfaceRole ()))
     {
         // Wave client need not use flock mechanism to change configuration
@@ -219,7 +219,7 @@ ResourceId WaveFrameworkConfigurationWorker::loadConfigurationStep (WaveFramewor
     {
         status = configurationWithFlock (LOAD_CONFIGURATION, pWaveFrameworkConfigurationContext );
     }
-    
+
     return (status);
 }
 
@@ -234,10 +234,10 @@ ResourceId WaveFrameworkConfigurationWorker::displayConfigurationStep (WaveFrame
 
 ResourceId WaveFrameworkConfigurationWorker::changeWaveConfigurationValidity ( const bool &validity)
 {
-    
+
     setWaveConfigurationValidity(validity);
     ResourceId status = WAVE_MESSAGE_SUCCESS;
-     
+
     if ( validity == false )
     {
         //Since we remove Cfg file need to acquire flock
@@ -245,20 +245,20 @@ ResourceId WaveFrameworkConfigurationWorker::changeWaveConfigurationValidity ( c
     }
     else
     {
-        status = saveWaveConfiguration( WaveFrameworkObjectManager::getConfigurationFileName(), false);        
+        status = saveWaveConfiguration( WaveFrameworkObjectManager::getConfigurationFileName(), false);
         trace (TRACE_LEVEL_INFO, "WaveFrameworkConfigurationWorker::changeWaveConfigurationValidity : Configuration File is valid now ");
     }
-    
+
     return status;
-    
+
 }
 
 void WaveFrameworkConfigurationWorker::setWaveConfigurationValidity(const bool &validity)
 {
     m_waveConfigurationValidityMutex.lock();
-    
+
     m_isWaveConfigurationValid = validity;
-    
+
     m_waveConfigurationValidityMutex.unlock();
 }
 
@@ -269,32 +269,32 @@ bool WaveFrameworkConfigurationWorker::getWaveConfigurationValidity( )
     bool validity = m_isWaveConfigurationValid ;
 
     m_waveConfigurationValidityMutex.unlock();
-    
+
     return validity;
 }
 
 void WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile()
 {
-    string cmdToCreateLockFile = "/bin/touch " + WaveFrameworkObjectManager::getLockFileForConfigurationFile(); 
+    string cmdToCreateLockFile = "/bin/touch " + WaveFrameworkObjectManager::getLockFileForConfigurationFile();
     vector<string>  output;
     SI32 cmdStatus = 0;
     cmdStatus = FrameworkToolKit::systemCommandOutput ( cmdToCreateLockFile, output );
 
     if ( cmdStatus != 0 )
-    {   
+    {
         if (0 < (output.size ()))
         {
-            trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile : cmdToCreateLockFile = ")+ cmdToCreateLockFile + " failed with error message : " + output[0]);
+            trace (TRACE_LEVEL_DEBUG, string("WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile : cmdToCreateLockFile = ")+ cmdToCreateLockFile + " failed with error message : " + output[0]);
         }
         else
         {
-            trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile : cmdToCreateLockFile = ")+ cmdToCreateLockFile + " failed.");
+            trace (TRACE_LEVEL_DEBUG, string("WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile : cmdToCreateLockFile = ")+ cmdToCreateLockFile + " failed.");
         }
     }
 }
 
 ResourceId WaveFrameworkConfigurationWorker::configurationWithFlock ( const UI32 &operationType, WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext)
-{   
+{
 
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
@@ -304,16 +304,16 @@ ResourceId WaveFrameworkConfigurationWorker::configurationWithFlock ( const UI32
 
     //Acquire flock for all operation types
     pFile = fopen (lockFilename.c_str(),"w");
-    
+
     if (pFile == NULL)
-    {   
+    {
         trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::configurationWithFlock : Unable to open the lockfile --> ") + lockFilename.c_str() );
         return (WAVE_MESSAGE_ERROR);
     }
-    
+
     if (0 != flock( fileno(pFile), LOCK_EX ))
-    {   
-        trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::configurationWithFlock : Unable to secure the lock on Configurationlockfile --> ") + lockFilename.c_str() );  
+    {
+        trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::configurationWithFlock : Unable to secure the lock on Configurationlockfile --> ") + lockFilename.c_str() );
         fclose( pFile );
         return (WAVE_MESSAGE_ERROR);
     }
@@ -322,31 +322,31 @@ ResourceId WaveFrameworkConfigurationWorker::configurationWithFlock ( const UI32
 
     switch ( operationType )
     {
-     
+
         case CHANGE_CONFIGURATION_VALIDITY :
-                                    {      //This is used to invalidate the configuration                              
+                                    {      //This is used to invalidate the configuration
                                         string          cmdToDeleteCFG  = "/bin/rm -rf " + WaveFrameworkObjectManager::getConfigurationFileName();
                                         vector<string>  output;
 
                                         cmdStatus = FrameworkToolKit::systemCommandOutput (cmdToDeleteCFG, output);
                                         if ( cmdStatus != 0 )
-                                        {   
+                                        {
                                             trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::configurationWithFlock : cmdToDeleteCFG = ")+ cmdToDeleteCFG + " failed with error message : " + output[0]);
                                             status = WAVE_MESSAGE_ERROR;
                                         }
                                         break;
                                     }
 
-        case SAVE_CONFIGURATION :       
+        case SAVE_CONFIGURATION :
                                     {
                                         if ( pWaveFrameworkConfigurationContext == NULL  )
                                         {
                                             trace (TRACE_LEVEL_ERROR,"WaveFrameworkConfigurationWorker::configurationWithFlock : pWaveFrameworkConfigurationContext for Save is Null");
                                             status = WAVE_MESSAGE_ERROR;
-                                            break ;                    
-                                        }                        
+                                            break ;
+                                        }
                                         string   &waveFrameworkConfigurationFileName = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationFileName ();
-                                        WaveFrameworkConfiguration &waveFrameworkConfigurationObject   = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();                                               
+                                        WaveFrameworkConfiguration &waveFrameworkConfigurationObject   = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();
                                         status = waveFrameworkConfigurationObject.saveConfiguration (waveFrameworkConfigurationFileName);
                                         break;
                                     }
@@ -360,21 +360,21 @@ ResourceId WaveFrameworkConfigurationWorker::configurationWithFlock ( const UI32
                                             break ;
                                         }
                                         string   &waveFrameworkConfigurationFileName = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationFileName ();
-                                        WaveFrameworkConfiguration &waveFrameworkConfigurationObject   = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();      
+                                        WaveFrameworkConfiguration &waveFrameworkConfigurationObject   = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();
                                         status = waveFrameworkConfigurationObject.loadConfiguration (waveFrameworkConfigurationFileName);
                                         break;
                                     }
         default :
                                         trace (TRACE_LEVEL_ERROR, string("WaveFrameworkConfigurationWorker::configurationWithFlock : Unknown operation type = ") + operationType );
                                         status = WAVE_MESSAGE_ERROR;
-                                        break;                                                         
-                            
+                                        break;
+
     }
     // Since the operation is complete release the flock
     flock( fileno(pFile), LOCK_UN );
     trace (TRACE_LEVEL_DEBUG, string("WaveFrameworkConfigurationWorker::configurationWithFlock : released lock on Configurationlockfile --> ") + lockFilename.c_str() );
     fclose( pFile );
-    
+
     return (status);
 }
 
@@ -419,7 +419,7 @@ ResourceId WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep (Wa
     bool        cfgValidity         = false;
 
     FrameworkObjectManagerSyncConfigurationMessage *pMessage = reinterpret_cast<FrameworkObjectManagerSyncConfigurationMessage *> (pWaveFrameworkConfigurationContext->getPWaveMessage ());
-    
+
     bool *cfgValidityPtr = reinterpret_cast<bool *> (pMessage->findBuffer (CFG_VALIDITY, sizeOfBuffer));
 
     if (NULL == cfgValidityPtr)
@@ -440,18 +440,18 @@ ResourceId WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep (Wa
         status = FrameworkToolKit::changeWaveConfigurationValidity (false);
     }
     else
-    {      
+    {
         trace (TRACE_LEVEL_INFO, "WaveFrameworkConfigurationWorker::updateWaveConfigurationFileStep: save wave configuration file.");
         status = FrameworkToolKit::changeWaveConfigurationValidity (true);
     }
-    
+
     return (status);
-} 
+}
 
 ResourceId WaveFrameworkConfigurationWorker::resetStartupFileStep (WaveFrameworkConfigurationContext *pWaveFrameworkConfigurationContext)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
-    
+
     WaveFrameworkConfiguration &waveFrameworkConfigurationObject = pWaveFrameworkConfigurationContext->getWaveFrameworkConfigurationObject ();
 
     waveFrameworkConfigurationObject.setIsStartupValid (FrameworkToolKit::getIsStartupValid ());
