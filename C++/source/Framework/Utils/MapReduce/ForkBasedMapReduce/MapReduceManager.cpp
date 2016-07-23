@@ -33,7 +33,7 @@ MapReduceManager::~MapReduceManager ()
 ResourceId MapReduceManager::mapReduce ()
 {
     SI32           i;
-    const SI32 numberOfShards = 250;
+    const SI32 numberOfShards = 508;
     int **pipeFdsForShardsForReading;
     int **pipeFdsForShardsForWriting;
     SI32 childIndex = 0;
@@ -45,6 +45,9 @@ ResourceId MapReduceManager::mapReduce ()
     for (i = 0; i < numberOfShards; i++)
     {
         pipeFdsForShardsForReading[i] = new int[2];
+
+        pipeFdsForShardsForReading[i][0] = -1;
+        pipeFdsForShardsForReading[i][1] = -1;
     }
 
     pipeFdsForShardsForWriting = new int*[numberOfShards];
@@ -52,7 +55,12 @@ ResourceId MapReduceManager::mapReduce ()
     for (i = 0; i < numberOfShards; i++)
     {
         pipeFdsForShardsForWriting[i] = new int[2];
+
+        pipeFdsForShardsForWriting[i][0] = -1;
+        pipeFdsForShardsForWriting[i][1] = -1;
     }
+
+    pid_t pid = 0;
 
     for (i = 0; i < numberOfShards; i++)
     {
@@ -73,17 +81,15 @@ ResourceId MapReduceManager::mapReduce ()
 
             exit (-2);
         }
-    }
 
-    pid_t pid = 0;
-
-    for (i = 0; i < numberOfShards; i++)
-    {
         pid = fork ();
 
         if (0 < pid)
         {
             pidToChildIndexMap[pid] = i;
+
+            close (pipeFdsForShardsForReading[i][1]);
+            close (pipeFdsForShardsForWriting[i][0]);
         }
         else if (0 == pid)
         {
@@ -100,13 +106,11 @@ ResourceId MapReduceManager::mapReduce ()
 
     if (0 == pid)
     {
-        for (i = 0; i < numberOfShards; i++)
+        for (i = 0; i <= childIndex; i++)
         {
             if (childIndex != i)
             {
                 close (pipeFdsForShardsForReading[i][0]);
-                close (pipeFdsForShardsForReading[i][1]);
-                close (pipeFdsForShardsForWriting[i][0]);
                 close (pipeFdsForShardsForWriting[i][1]);
             }
             else
@@ -120,9 +124,11 @@ ResourceId MapReduceManager::mapReduce ()
 
                 SI32 dataToSend = htonl (childIndex);
 
+                errno = 0;
+
                 SI32 childWriteStatus = write (pipeFdsForShardsForReading[i][1], &dataToSend, sizeof (dataToSend));
 
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "PID %d, data sent : %d, Write Status : %d, errno : %d, %s", getpid (), childIndex, childWriteStatus, errno, (SystemErrorUtils::getErrorStringForErrorNumber (errno)).c_str ());
+                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "PID %d, data sent : %d using FD : %d, Write Status : %d, errno : %d, %s", getpid (), childIndex, pipeFdsForShardsForReading[i][1], childWriteStatus, errno, (SystemErrorUtils::getErrorStringForErrorNumber (errno)).c_str ());
 
                 close (pipeFdsForShardsForReading[i][1]);
 
@@ -133,20 +139,10 @@ ResourceId MapReduceManager::mapReduce ()
             }
         }
 
-        for (;;)
-        {
-            waveSleep (5);
-        }
         return (childIndex);
     }
     else
     {
-        for (i = 0; i < numberOfShards; i++)
-        {
-            close (pipeFdsForShardsForReading[i][1]);
-            close (pipeFdsForShardsForWriting[i][0]);
-        }
-
         //SI32 status = 0;
         fd_set pipeFdSetForReading;
         struct timeval timeOut;
@@ -214,22 +210,6 @@ ResourceId MapReduceManager::mapReduce ()
                 }
             }
         }
-
-#if 0
-        while (true)
-        {
-            pid = ::wait (&status);
-
-            if (-1 == pid)
-            {
-                break;
-            }
-
-            childIndex = pidToChildIndexMap[pid];
-
-            WaveNs::tracePrintf (TRACE_LEVEL_INFO, "PID %d exited with status %d, childIndex : %d", pid, WEXITSTATUS(status), childIndex);
-        }
-#endif
     }
 
     return (WAVE_MESSAGE_SUCCESS);

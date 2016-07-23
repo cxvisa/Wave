@@ -275,6 +275,13 @@ bool WaveFrameworkConfigurationWorker::getWaveConfigurationValidity( )
 
 void WaveFrameworkConfigurationWorker::createLockFileForConfigurationFile()
 {
+    string lockFileForConfigurationFile = WaveFrameworkObjectManager::getLockFileForConfigurationFile();
+
+    if ("" == lockFileForConfigurationFile)
+    {
+        return;
+    }
+
     string cmdToCreateLockFile = "/bin/touch " + WaveFrameworkObjectManager::getLockFileForConfigurationFile();
     vector<string>  output;
     SI32 cmdStatus = 0;
