@@ -15,6 +15,11 @@ namespace WaveNs
 class PortScannerWorkerProxy : public MapReduceWorkerProxy
 {
     private :
+        virtual MapReduceWorkerReadinessMessage *instantiateWorkerReadynessMessage          ();
+        virtual MapReduceManagerDelegateMessage *instantiateMapReduceManagerDelegateMessage ();
+        virtual MapReduceWorkerResponseMessage  *instantiateWorkerResponseMessage           ();
+        virtual MapReduceManagerDelegateMessage *process                                    (MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
+
     protected :
     public :
                  PortScannerWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket);

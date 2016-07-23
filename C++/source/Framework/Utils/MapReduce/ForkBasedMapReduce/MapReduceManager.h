@@ -13,10 +13,16 @@
 namespace WaveNs
 {
 
+class MapReduceWorker;
+class MapReduceWorkerProxy;
+
 class MapReduceManager
 {
     private :
     protected :
+        virtual MapReduceWorker      *createMapReduceWorker      (const SI32 &readSocket, const SI32 &writeSocket) = 0;
+        virtual MapReduceWorkerProxy *createMapReduceWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket) = 0;
+
     public :
                            MapReduceManager (const MapReduceInputConfiguration *m_pMapReduceInputConfiguration);
         virtual           ~MapReduceManager ();

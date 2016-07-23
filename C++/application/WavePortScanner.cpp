@@ -10,7 +10,7 @@
 #include "Framework/Utils/SystemErrorUtils.h"
 #include "Framework/Utils/PortScanner/PortScanner.h"
 #include "Framework/Utils/PortScanner/PortScannerInputConfiguration.h"
-#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManager.h"
+#include "Framework/Utils/PortScanner/PortScannerMapReducer.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -24,20 +24,20 @@ using namespace WaveNs;
 
 int main (int argc, char *argv[])
 {
-    PortScannerInputConfiguration tcpPortScannerInputConfiguration;
+    PortScannerInputConfiguration portScannerInputConfiguration;
 
-    bool parsingStatus = tcpPortScannerInputConfiguration.parseCommandLineInputs (argc, argv);
+    bool parsingStatus = portScannerInputConfiguration.parseCommandLineInputs (argc, argv);
 
     if (! parsingStatus)
     {
         exit (-1);
     }
 
-    MapReduceManager mapReduceManager (&tcpPortScannerInputConfiguration);
+    PortScannerMapReducer portScannerMapReducer (&portScannerInputConfiguration);
 
-    mapReduceManager.mapReduce();
+    portScannerMapReducer.mapReduce();
 
-    //TcpPortScanner::scanPorts (tcpPortScannerInputConfiguration);
+    //PortScanner::scanPorts (portScannerInputConfiguration);
 
     return (0);
 }
