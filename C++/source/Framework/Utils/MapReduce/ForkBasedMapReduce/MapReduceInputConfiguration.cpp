@@ -14,6 +14,11 @@ MapReduceInputConfiguration::MapReduceInputConfiguration ()
 {
 }
 
+MapReduceInputConfiguration::MapReduceInputConfiguration (const UI32 &maximumNumberOfPartitions)
+    : m_maximumNumberOfPartitions (maximumNumberOfPartitions)
+{
+}
+
 MapReduceInputConfiguration::MapReduceInputConfiguration (const MapReduceInputConfiguration &mapReduceInputConfiguration)
     : m_maximumNumberOfPartitions (mapReduceInputConfiguration.m_maximumNumberOfPartitions)
 {
@@ -38,6 +43,13 @@ UI32 MapReduceInputConfiguration::getMaximumNumberOfPartitions () const
 void MapReduceInputConfiguration::setMaximumNumberOfPartitions (const UI32 &maximumNumberOfPartitions)
 {
     m_maximumNumberOfPartitions = maximumNumberOfPartitions;
+}
+
+UI32 MapReduceInputConfiguration::getAdjustedMaximumNumberOfPartitionsRequired () const
+{
+    const UI32 computedMaximumNumberOfParitionsRequired = computeMaximumNumberOfPartitionsRequired ();
+
+    return (computedMaximumNumberOfParitionsRequired < m_maximumNumberOfPartitions ? computedMaximumNumberOfParitionsRequired : computedMaximumNumberOfParitionsRequired);
 }
 
 }

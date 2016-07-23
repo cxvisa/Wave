@@ -5,6 +5,9 @@
  ***************************************************************************/
 
 #include "Framework/Utils/FdUtils.h"
+#include "Framework/Types/UI32Range.h"
+#include "Framework/Utils/SystemLimitsUtils.h"
+#include "Framework/Utils/TraceUtils.h"
 
 namespace WaveNs
 {
@@ -53,6 +56,59 @@ SI32 FdUtils::fdCount (fd_set *pSource)
     }
 
     return (count);
+}
+
+bool FdUtils::getNumberOfAvailableFds (UI32 &getNumberOfAvailableFds)
+{
+    UI32 softLimit = 0;
+    UI32 hardLimit = 0;
+
+    bool status = SystemLimitsUtils::getMaxNumberOfOpenFiles (softLimit, hardLimit);
+
+    if (true == status)
+    {
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "FdUtils::getNumberOfAvailableFds : Soft limit on open files : %u, Hard limit on open files : %u", softLimit, hardLimit);
+    }
+    else
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "FdUtils::getNumberOfAvailableFds : Could not obtain System Limits for maximum number of open files.");
+    }
+
+    vector<UI32> fileDescriptorsCurrentlyInUse;
+
+    status = SystemLimitsUtils::getFileDescriptorsCurrentlyInUse (fileDescriptorsCurrentlyInUse);
+
+    if (true == status)
+    {
+        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FdUtils::getNumberOfAvailableFds : Currently In Use File Descriptors :");
+
+        vector<UI32>::const_iterator element    = fileDescriptorsCurrentlyInUse.begin ();
+        vector<UI32>::const_iterator endElement = fileDescriptorsCurrentlyInUse.end   ();
+
+        while (endElement != element)
+        {
+            tracePrintf (TRACE_LEVEL_DEBUG, true, true, "%u", *element);
+
+            element++;
+        }
+
+        const string inUseFileDescriptorRangeString = UI32Range::getUI32RangeStringFromVector (fileDescriptorsCurrentlyInUse);
+
+        tracePrintf (TRACE_LEVEL_INFO, true, false, "FdUtils::getNumberOfAvailableFds : %s", inUseFileDescriptorRangeString.c_str ());
+
+        getNumberOfAvailableFds = softLimit - (fileDescriptorsCurrentlyInUse.size ());
+
+        // Round it off to nearest 100 multiple.
+        // 100 is arbitrarily chosen and this can be adjusted by any reasonable value.
+
+        getNumberOfAvailableFds -= getNumberOfAvailableFds % 100;
+    }
+    else
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "FdUtils::getNumberOfAvailableFds : Could not obtain currently in use file descriptors.");
+    }
+
+    return (status);
 }
 
 }

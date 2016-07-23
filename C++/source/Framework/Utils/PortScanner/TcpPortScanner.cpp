@@ -244,7 +244,7 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
 
     const string ipAddress                       = tcpPortScannerInputConfiguration.getIpAddress ();
 
-    bool batchSizeComputationStatus = computeNumberOfPortsToScanInABatch (numberOfPortsToScanInABatchTemp);
+    bool batchSizeComputationStatus = FdUtils::getNumberOfAvailableFds (numberOfPortsToScanInABatchTemp);
 
     if (batchSizeComputationStatus)
     {
@@ -339,59 +339,6 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
     tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Not Tried ports : %u", allNotTriedPorts.size ());
 
     return (0);
-}
-
-bool TcpPortScanner::computeNumberOfPortsToScanInABatch (UI32 &numberOfPortsToScanInABatch)
-{
-    UI32 softLimit = 0;
-    UI32 hardLimit = 0;
-
-    bool status = SystemLimitsUtils::getMaxNumberOfOpenFiles (softLimit, hardLimit);
-
-    if (true == status)
-    {
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Soft limit on open files : %u, Hard limit on open files : %u", softLimit, hardLimit);
-    }
-    else
-    {
-        tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanPorts : Could not obtain System Limits for maximum number of open files.");
-    }
-
-    vector<UI32> fileDescriptorsCurrentlyInUse;
-
-    status = SystemLimitsUtils::getFileDescriptorsCurrentlyInUse (fileDescriptorsCurrentlyInUse);
-
-    if (true == status)
-    {
-        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Currently In Use File Descriptors :");
-
-        vector<UI32>::const_iterator element    = fileDescriptorsCurrentlyInUse.begin ();
-        vector<UI32>::const_iterator endElement = fileDescriptorsCurrentlyInUse.end   ();
-
-        while (endElement != element)
-        {
-            tracePrintf (TRACE_LEVEL_DEBUG, true, true, "%u", *element);
-
-            element++;
-        }
-
-        const string inUseFileDescriptorRangeString = UI32Range::getUI32RangeStringFromVector (fileDescriptorsCurrentlyInUse);
-
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : %s", inUseFileDescriptorRangeString.c_str ());
-
-        numberOfPortsToScanInABatch = softLimit - (fileDescriptorsCurrentlyInUse.size ());
-
-        // Round it off to nearest 100 multiple.
-        // 100 is arbitrarily chosen and this can be adjusted by any reasonable value.
-
-        numberOfPortsToScanInABatch -= numberOfPortsToScanInABatch % 100;
-    }
-    else
-    {
-        tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanPorts : Could not obtain currently in use file descriptors.");
-    }
-
-    return (status);
 }
 
 }

@@ -6,6 +6,7 @@
 
 #include "Framework/Utils/PortScanner/TcpPortScannerInputConfiguration.h"
 #include "Framework/Utils/TraceUtils.h"
+#include "Framework/Utils/FdUtils.h"
 
 #include <stdlib.h>
 
@@ -13,7 +14,8 @@ namespace WaveNs
 {
 
 TcpPortScannerInputConfiguration::TcpPortScannerInputConfiguration ()
-    : m_ipAddress             ("127.0.0.1"),
+    : MapReduceInputConfiguration (100),
+      m_ipAddress             ("127.0.0.1"),
       m_portRange             ("1-65535"),
       m_timeoutInMilliSeconds (3000)
 {
@@ -174,6 +176,29 @@ bool TcpPortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numbe
 void TcpPortScannerInputConfiguration::printHelp (const char * const programName)
 {
     WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE:\r\n%s [-ip <IPV4/IPV6 address>] [-p <Comma Separated Port Range>] [-t <Timeout in Milli Seconds>] [-ns <Number Of Shards>]", programName);
+}
+
+UI32 TcpPortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired () const
+{
+    UI32 availableFileDescriptorsSize = 0;
+
+    bool status = FdUtils::getNumberOfAvailableFds (availableFileDescriptorsSize);
+
+    if ((! status) || (0 == availableFileDescriptorsSize))
+    {
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired : Number of available File Descriptors could not be computed.");
+
+        return (0);
+    }
+
+    const UI32Range    inputPortRange = getPortRange ();
+          vector<UI32> allInputPorts;
+
+    inputPortRange.getUI32RangeVector (allInputPorts);
+
+    const UI32 numberOfInputPorts = allInputPorts.size ();
+
+    return ((numberOfInputPorts + (availableFileDescriptorsSize - 1)) / availableFileDescriptorsSize);
 }
 
 }

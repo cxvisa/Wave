@@ -21,8 +21,8 @@ using namespace std;
 namespace WaveNs
 {
 
-MapReduceManager::MapReduceManager (const MapReduceInputConfiguration &mapReduceInputConfiguration)
-    : m_mapReduceInputConfiguration (mapReduceInputConfiguration)
+MapReduceManager::MapReduceManager (const MapReduceInputConfiguration *pMapReduceInputConfiguration)
+    : m_pMapReduceInputConfiguration (pMapReduceInputConfiguration)
 {
 }
 
@@ -32,17 +32,24 @@ MapReduceManager::~MapReduceManager ()
 
 ResourceId MapReduceManager::mapReduce ()
 {
-    SI32           i;
-    const SI32 numberOfShards = 508;
-    int **pipeFdsForShardsForReading;
-    int **pipeFdsForShardsForWriting;
-    SI32 childIndex = 0;
-    SI32 pipeStatus = 0;
-    map<pid_t, SI32> pidToChildIndexMap;
+    SI32               i;
+    SI32               numberOfPartitions         = m_pMapReduceInputConfiguration->getAdjustedMaximumNumberOfPartitionsRequired ();
+    int              **pipeFdsForShardsForReading;
+    int              **pipeFdsForShardsForWriting;
+    SI32               childIndex = 0;
+    SI32               pipeStatus = 0;
+    map<pid_t, SI32>   pidToChildIndexMap;
 
-    pipeFdsForShardsForReading = new int*[numberOfShards];
+    if (numberOfPartitions > s_MAX_PARTITIONS_LIMIT)
+    {
+        numberOfPartitions = s_MAX_PARTITIONS_LIMIT;
+    }
 
-    for (i = 0; i < numberOfShards; i++)
+    tracePrintf (TRACE_LEVEL_INFO, "MapReduceManager::mapReduce : Number of partitions computed : %d in reality, Requested : %d", numberOfPartitions, m_pMapReduceInputConfiguration->getMaximumNumberOfPartitions ());
+
+    pipeFdsForShardsForReading = new int*[numberOfPartitions];
+
+    for (i = 0; i < numberOfPartitions; i++)
     {
         pipeFdsForShardsForReading[i] = new int[2];
 
@@ -50,9 +57,9 @@ ResourceId MapReduceManager::mapReduce ()
         pipeFdsForShardsForReading[i][1] = -1;
     }
 
-    pipeFdsForShardsForWriting = new int*[numberOfShards];
+    pipeFdsForShardsForWriting = new int*[numberOfPartitions];
 
-    for (i = 0; i < numberOfShards; i++)
+    for (i = 0; i < numberOfPartitions; i++)
     {
         pipeFdsForShardsForWriting[i] = new int[2];
 
@@ -62,7 +69,7 @@ ResourceId MapReduceManager::mapReduce ()
 
     pid_t pid = 0;
 
-    for (i = 0; i < numberOfShards; i++)
+    for (i = 0; i < numberOfPartitions; i++)
     {
         pipeStatus = pipe (pipeFdsForShardsForReading[i]);
 

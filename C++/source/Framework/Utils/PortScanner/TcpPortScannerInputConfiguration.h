@@ -25,19 +25,21 @@ class TcpPortScannerInputConfiguration : public MapReduceInputConfiguration
 
     protected :
     public :
-                           TcpPortScannerInputConfiguration ();
-        virtual           ~TcpPortScannerInputConfiguration ();
+                           TcpPortScannerInputConfiguration         ();
+        virtual           ~TcpPortScannerInputConfiguration         ();
 
-                string     getIpAddress                     () const;
-                void       setIpAddress                     (const string &ipAddress);
+                string     getIpAddress                             () const;
+                void       setIpAddress                             (const string &ipAddress);
 
-                UI32Range  getPortRange                     () const;
-                void       setPortRange                     (const UI32Range &portRange);
+                UI32Range  getPortRange                             () const;
+                void       setPortRange                             (const UI32Range &portRange);
 
-                UI32       getTimeoutInMilliSeconds         () const;
-                void       setTimeoutInMilliSeconds         (const UI32 &timeoutInMilliSeconds);
+                UI32       getTimeoutInMilliSeconds                 () const;
+                void       setTimeoutInMilliSeconds                 (const UI32 &timeoutInMilliSeconds);
 
-                bool       parseCommandLineInputs (const UI32 &numberOfInputArguments, const char * const inputArguments[]);
+                bool       parseCommandLineInputs                   (const UI32 &numberOfInputArguments, const char * const inputArguments[]);
+
+        virtual UI32       computeMaximumNumberOfPartitionsRequired () const;
 
         // Now the data members
 

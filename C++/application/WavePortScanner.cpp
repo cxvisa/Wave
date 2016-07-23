@@ -33,7 +33,7 @@ int main (int argc, char *argv[])
         exit (-1);
     }
 
-    MapReduceManager mapReduceManager (tcpPortScannerInputConfiguration);
+    MapReduceManager mapReduceManager (&tcpPortScannerInputConfiguration);
 
     mapReduceManager.mapReduce();
 

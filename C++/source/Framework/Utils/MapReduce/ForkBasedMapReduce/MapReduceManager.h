@@ -18,7 +18,7 @@ class MapReduceManager
     private :
     protected :
     public :
-                           MapReduceManager (const MapReduceInputConfiguration &mapReduceInputConfiguration);
+                           MapReduceManager (const MapReduceInputConfiguration *m_pMapReduceInputConfiguration);
         virtual           ~MapReduceManager ();
 
                 ResourceId mapReduce        ();
@@ -26,10 +26,12 @@ class MapReduceManager
         // Now the data members
 
     private :
-        MapReduceInputConfiguration m_mapReduceInputConfiguration;
+        const MapReduceInputConfiguration *m_pMapReduceInputConfiguration;
 
     protected :
     public :
+
+        static const SI32 s_MAX_PARTITIONS_LIMIT = 500;
 };
 
 }

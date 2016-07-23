@@ -27,7 +27,7 @@ class TcpPortScanner
     protected :
     public :
         static bool       scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inputPorts, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts);
-        static ResourceId scanPorts (const TcpPortScannerInputConfiguration &tcpPortScannerInputConfiguration);
+        static ResourceId scanPorts           (const TcpPortScannerInputConfiguration &tcpPortScannerInputConfiguration);
 
         // Now the data members
 
