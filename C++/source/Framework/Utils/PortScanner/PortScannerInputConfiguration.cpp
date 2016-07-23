@@ -4,7 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/Utils/PortScanner/TcpPortScannerInputConfiguration.h"
+#include "PortScannerInputConfiguration.h"
+
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FdUtils.h"
 
@@ -13,7 +14,7 @@
 namespace WaveNs
 {
 
-TcpPortScannerInputConfiguration::TcpPortScannerInputConfiguration ()
+PortScannerInputConfiguration::PortScannerInputConfiguration ()
     : MapReduceInputConfiguration (100),
       m_ipAddress             ("127.0.0.1"),
       m_portRange             ("1-65535"),
@@ -21,41 +22,41 @@ TcpPortScannerInputConfiguration::TcpPortScannerInputConfiguration ()
 {
 }
 
-TcpPortScannerInputConfiguration::~TcpPortScannerInputConfiguration ()
+PortScannerInputConfiguration::~PortScannerInputConfiguration ()
 {
 }
 
-string TcpPortScannerInputConfiguration::getIpAddress () const
+string PortScannerInputConfiguration::getIpAddress () const
 {
     return (m_ipAddress);
 }
 
-void TcpPortScannerInputConfiguration::setIpAddress (const string &ipAddress)
+void PortScannerInputConfiguration::setIpAddress (const string &ipAddress)
 {
     m_ipAddress = ipAddress;
 }
 
-UI32Range TcpPortScannerInputConfiguration::getPortRange () const
+UI32Range PortScannerInputConfiguration::getPortRange () const
 {
     return (m_portRange);
 }
 
-void TcpPortScannerInputConfiguration::setPortRange (const UI32Range &portRange)
+void PortScannerInputConfiguration::setPortRange (const UI32Range &portRange)
 {
     m_portRange = portRange;
 }
 
-UI32 TcpPortScannerInputConfiguration::getTimeoutInMilliSeconds () const
+UI32 PortScannerInputConfiguration::getTimeoutInMilliSeconds () const
 {
     return (m_timeoutInMilliSeconds);
 }
 
-void TcpPortScannerInputConfiguration::setTimeoutInMilliSeconds (const UI32 &timeoutInMilliSeconds)
+void PortScannerInputConfiguration::setTimeoutInMilliSeconds (const UI32 &timeoutInMilliSeconds)
 {
     m_timeoutInMilliSeconds = timeoutInMilliSeconds;
 }
 
-bool TcpPortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numberOfInputArguments, const char * const inputArguments[])
+bool PortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numberOfInputArguments, const char * const inputArguments[])
 {
     UI32 i= 0;
 
@@ -173,12 +174,12 @@ bool TcpPortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numbe
     return (true);
 }
 
-void TcpPortScannerInputConfiguration::printHelp (const char * const programName)
+void PortScannerInputConfiguration::printHelp (const char * const programName)
 {
     WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE:\r\n%s [-ip <IPV4/IPV6 address>] [-p <Comma Separated Port Range>] [-t <Timeout in Milli Seconds>] [-ns <Number Of Shards>]", programName);
 }
 
-UI32 TcpPortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired () const
+UI32 PortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired () const
 {
     UI32 availableFileDescriptorsSize = 0;
 
@@ -186,7 +187,7 @@ UI32 TcpPortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired 
 
     if ((! status) || (0 == availableFileDescriptorsSize))
     {
-        tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired : Number of available File Descriptors could not be computed.");
+        tracePrintf (TRACE_LEVEL_ERROR, true, false, "PortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired : Number of available File Descriptors could not be computed.");
 
         return (0);
     }

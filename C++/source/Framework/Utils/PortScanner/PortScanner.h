@@ -9,7 +9,7 @@
 
 #include <sys/select.h>
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/PortScanner/TcpPortScannerInputConfiguration.h"
+#include "Framework/Utils/PortScanner/PortScannerInputConfiguration.h"
 
 #include <string>
 #include <set>
@@ -19,7 +19,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class TcpPortScanner
+class PortScanner
 {
     private :
         static bool computeNumberOfPortsToScanInABatch (UI32 &numberOfPortsToScanInABatch);
@@ -27,7 +27,7 @@ class TcpPortScanner
     protected :
     public :
         static bool       scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inputPorts, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts);
-        static ResourceId scanPorts           (const TcpPortScannerInputConfiguration &tcpPortScannerInputConfiguration);
+        static ResourceId scanPorts           (const PortScannerInputConfiguration &portScannerInputConfiguration);
 
         // Now the data members
 

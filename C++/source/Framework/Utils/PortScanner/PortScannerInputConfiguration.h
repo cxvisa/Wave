@@ -18,15 +18,15 @@ using namespace std;
 namespace WaveNs
 {
 
-class TcpPortScannerInputConfiguration : public MapReduceInputConfiguration
+class PortScannerInputConfiguration : public MapReduceInputConfiguration
 {
     private :
         static void printHelp (const char * const programName);
 
     protected :
     public :
-                           TcpPortScannerInputConfiguration         ();
-        virtual           ~TcpPortScannerInputConfiguration         ();
+                           PortScannerInputConfiguration         ();
+        virtual           ~PortScannerInputConfiguration         ();
 
                 string     getIpAddress                             () const;
                 void       setIpAddress                             (const string &ipAddress);

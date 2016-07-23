@@ -43,8 +43,6 @@
 #include "Modeling/JSON/ObjectModel/JsonFactory/JsonFactory.h"
 #include "Modeling/JSON/ObjectModel/JsonValue.h"
 #include "Framework/Utils/SystemLimitsUtils.h"
-#include "Framework/Utils/PortScanner/TcpPortScanner.h"
-
 #include <iostream>
 #include <fstream>
 
@@ -57,6 +55,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include "PortScanner/PortScanner.h"
 
 namespace WaveNs
 {
@@ -1164,7 +1163,7 @@ ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> 
         tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Processing Ports in Range : %s", (inputPortRange.toString ()).c_str ());
 
 
-        status = TcpPortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
+        status = PortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
 
         allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
         allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());

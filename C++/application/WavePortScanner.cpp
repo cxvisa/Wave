@@ -6,10 +6,11 @@
 
 #include "Framework/Types/Types.h"
 #include "Framework/Redundancy/RedundancyOptimizerBase.h"
-#include "Framework/Utils/PortScanner/TcpPortScanner.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/SystemErrorUtils.h"
-#include "Framework/Utils/PortScanner/TcpPortScannerInputConfiguration.h"
+#include "Framework/Utils/PortScanner/PortScanner.h"
+#include "Framework/Utils/PortScanner/PortScannerInputConfiguration.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManager.h"
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -18,13 +19,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManager.h"
 using namespace std;
 using namespace WaveNs;
 
 int main (int argc, char *argv[])
 {
-    TcpPortScannerInputConfiguration tcpPortScannerInputConfiguration;
+    PortScannerInputConfiguration tcpPortScannerInputConfiguration;
 
     bool parsingStatus = tcpPortScannerInputConfiguration.parseCommandLineInputs (argc, argv);
 

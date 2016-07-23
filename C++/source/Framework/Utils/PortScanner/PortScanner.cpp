@@ -4,7 +4,8 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Framework/Utils/PortScanner/TcpPortScanner.h"
+#include "PortScanner.h"
+
 #include "Framework/Utils/SystemErrorUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/SystemLimitsUtils.h"
@@ -24,7 +25,7 @@
 namespace WaveNs
 {
 
-bool TcpPortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inputPorts, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
+bool PortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inputPorts, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
 {
     // TODO : Declare a ResourceEnum to return detailed status instead a simple boolean
 
@@ -60,7 +61,7 @@ bool TcpPortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> i
 
         if (0 > socket)
         {
-            WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanForIpV4TcpPorts : Errored out creating a socket.  Iteration %u, errno : %d, %s", i, errno, (SystemErrorUtils::getErrorStringForErrorNumber (errno)).c_str ());
+            WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "PortScanner::scanForIpV4TcpPorts : Errored out creating a socket.  Iteration %u, errno : %d, %s", i, errno, (SystemErrorUtils::getErrorStringForErrorNumber (errno)).c_str ());
 
             continue;
         }
@@ -237,12 +238,12 @@ bool TcpPortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> i
     return (true);
 }
 
-ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tcpPortScannerInputConfiguration)
+ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScannerInputConfiguration)
 {
           UI32   numberOfPortsToScanInABatch     = 1000; // Default value, will get reset below if possible.
           UI32   numberOfPortsToScanInABatchTemp = 0;
 
-    const string ipAddress                       = tcpPortScannerInputConfiguration.getIpAddress ();
+    const string ipAddress                       = portScannerInputConfiguration.getIpAddress ();
 
     bool batchSizeComputationStatus = FdUtils::getNumberOfAvailableFds (numberOfPortsToScanInABatchTemp);
 
@@ -251,14 +252,14 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
         numberOfPortsToScanInABatch = numberOfPortsToScanInABatchTemp;
     }
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Batch Size : %u", numberOfPortsToScanInABatch);
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Batch Size : %u", numberOfPortsToScanInABatch);
 
     set<UI32> allOpenPorts;
     set<UI32> allClosedPorts;
     set<UI32> allTimedOutPorts;
     set<UI32> allNotTriedPorts;
 
-    UI32Range inputPortRange    = tcpPortScannerInputConfiguration.getPortRange ();
+    UI32Range inputPortRange    = portScannerInputConfiguration.getPortRange ();
     vector<UI32> allInputPorts;
 
     inputPortRange.getUI32RangeVector (allInputPorts);
@@ -284,10 +285,10 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
         inputPortsVector.insert (inputPortsVector.end (), inputPorts.begin (), inputPorts.end ());
         const string rangeString = UI32Range::getUI32RangeStringFromVector (inputPortsVector);
 
-        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Processing Ports in Range : %s", rangeString.c_str ());
+        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "PortScanner::scanPorts : Processing Ports in Range : %s", rangeString.c_str ());
 
 
-        bool scanStatus = TcpPortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
+        bool scanStatus = PortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
 
         allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
         allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());
@@ -296,7 +297,7 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
 
         if (true == scanStatus)
         {
-            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "TcpPortScanner::scanPorts : Currently open ports :");
+            tracePrintf (TRACE_LEVEL_DEBUG, true, false, "PortScanner::scanPorts : Currently open ports :");
 
             set<UI32>::const_iterator elementForOpenPorts    = openPorts.begin ();
             set<UI32>::const_iterator endElementForOpenPorts = openPorts.end   ();
@@ -310,13 +311,13 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
         }
         else
         {
-            tracePrintf (TRACE_LEVEL_ERROR, true, false, "TcpPortScanner::scanPorts : Could not scan for IPV4 tcp ports.");
+            tracePrintf (TRACE_LEVEL_ERROR, true, false, "PortScanner::scanPorts : Could not scan for IPV4 tcp ports.");
         }
 
         element = batchEndElement;
     }
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently open ports : %u", allOpenPorts.size ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Currently open ports : %u", allOpenPorts.size ());
 
     set<UI32>::const_iterator elementForAllOpenPorts    = allOpenPorts.begin ();
     set<UI32>::const_iterator endElementForAllOpenPorts = allOpenPorts.end   ();
@@ -334,9 +335,9 @@ ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tc
 
     endservent ();
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Closed ports    : %u", allClosedPorts.size   ());
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Timed out ports : %u", allTimedOutPorts.size ());
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "TcpPortScanner::scanPorts : Currently Not Tried ports : %u", allNotTriedPorts.size ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Currently Closed ports    : %u", allClosedPorts.size   ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Currently Timed out ports : %u", allTimedOutPorts.size ());
+    tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Currently Not Tried ports : %u", allNotTriedPorts.size ());
 
     return (0);
 }

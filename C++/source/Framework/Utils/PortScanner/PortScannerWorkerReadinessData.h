@@ -4,23 +4,23 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef MAPREDUCEWORKERRESPONSEMESSAGE_H
-#define MAPREDUCEWORKERRESPONSEMESSAGE_H
+#ifndef PORTSCANNERREADINESSDATA_H
+#define PORTSCANNERREADINESSDATA_H
 
-#include "Framework/ObjectModel/SerializableObject.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceWorkerReadinessMessage.h"
 
 namespace WaveNs
 {
 
-class MapReduceWorkerResponseMessage : public SerializableObject
+class PortScannerWorkerReadinessData : public MapReduceWorkerReadinessMessage
 {
     private :
-    protected :
         virtual void setupAttributesForSerialization ();
 
+    protected :
     public :
-                 MapReduceWorkerResponseMessage ();
-        virtual ~MapReduceWorkerResponseMessage ();
+                 PortScannerWorkerReadinessData ();
+        virtual ~PortScannerWorkerReadinessData ();
 
         // Now the data members
 
@@ -28,7 +28,6 @@ class MapReduceWorkerResponseMessage : public SerializableObject
     protected :
     public :
 };
-
 }
 
-#endif // MAPREDUCEWORKERRESPONSEMESSAGE_H
+#endif // PORTSCANNERREADINESSDATA_H

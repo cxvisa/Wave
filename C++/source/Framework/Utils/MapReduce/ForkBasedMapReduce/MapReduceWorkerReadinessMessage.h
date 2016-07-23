@@ -15,9 +15,9 @@ namespace WaveNs
 class MapReduceWorkerReadinessMessage : public SerializableObject
 {
     private :
+    protected :
         virtual void setupAttributesForSerialization ();
 
-    protected :
     public :
                  MapReduceWorkerReadinessMessage ();
         virtual ~MapReduceWorkerReadinessMessage ();

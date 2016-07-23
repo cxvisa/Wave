@@ -15,9 +15,9 @@ namespace WaveNs
 class MapReduceManagerDelegateMessage : public SerializableObject
 {
     private :
+    protected :
         virtual void setupAttributesForSerialization ();
 
-    protected :
     public :
                  MapReduceManagerDelegateMessage ();
         virtual ~MapReduceManagerDelegateMessage ();
