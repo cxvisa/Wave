@@ -10,8 +10,9 @@ namespace WaveNs
 {
 
 MapReduceWorkerReadinessMessage::MapReduceWorkerReadinessMessage ()
-    : SerializableObject ()
+    : MapReduceMessageBase ()
 {
+    setMapReduceMesageType (MAP_REDUCE_MESSAGE_TYPE_READY);
 }
 
 MapReduceWorkerReadinessMessage::~MapReduceWorkerReadinessMessage ()
@@ -20,7 +21,7 @@ MapReduceWorkerReadinessMessage::~MapReduceWorkerReadinessMessage ()
 
 void MapReduceWorkerReadinessMessage::setupAttributesForSerialization ()
 {
-    SerializableObject::setupAttributesForSerialization ();
+    MapReduceMessageBase::setupAttributesForSerialization ();
 }
 
 }

@@ -7,12 +7,12 @@
 #ifndef MAPREDUCEWORKERREADINESSMESSAGE_H
 #define MAPREDUCEWORKERREADINESSMESSAGE_H
 
-#include "Framework/ObjectModel/SerializableObject.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceMessageBase.h"
 
 namespace WaveNs
 {
 
-class MapReduceWorkerReadinessMessage : public SerializableObject
+class MapReduceWorkerReadinessMessage : public MapReduceMessageBase
 {
     private :
     protected :

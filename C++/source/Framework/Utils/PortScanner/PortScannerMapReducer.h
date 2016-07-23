@@ -22,7 +22,7 @@ class PortScannerMapReducer : public MapReduceManager
 
     protected :
     public :
-                 PortScannerMapReducer (const PortScannerInputConfiguration *pPortScannerInputConfiguration);
+                 PortScannerMapReducer (PortScannerInputConfiguration *pPortScannerInputConfiguration);
         virtual ~PortScannerMapReducer ();
 
     // Now the data members

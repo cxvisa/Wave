@@ -8,6 +8,10 @@
 #define PORTSCANNERWORKERINPUT_H
 
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManagerDelegateMessage.h"
+#include "Framework/Types/Types.h"
+#include "Framework/Types/UI32Range.h"
+
+#include <string>
 
 namespace WaveNs
 {
@@ -19,12 +23,25 @@ class PortScannerWorkerInput : public MapReduceManagerDelegateMessage
 
     protected :
     public :
-                 PortScannerWorkerInput ();
-        virtual ~PortScannerWorkerInput ();
+                           PortScannerWorkerInput   ();
+        virtual           ~PortScannerWorkerInput   ();
+
+                string     getIpAddress             () const;
+                void       setIpAddress             (const string &ipAddress);
+
+                UI32Range  getPortRange             () const;
+                void       setPortRange             (const UI32Range &portRange);
+
+                UI32       getTimeoutInMilliSeconds () const;
+                void       setTimeoutInMilliSeconds (const UI32 &timeoutInMilliSeconds);
 
         // Now the data members
 
     private :
+        string    m_ipAddress;
+        UI32Range m_portRange;
+        UI32      m_timeoutInMilliSeconds;
+
     protected :
     public :
 };

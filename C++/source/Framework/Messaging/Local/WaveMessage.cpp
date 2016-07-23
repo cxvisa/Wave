@@ -594,7 +594,7 @@ bool WaveMessage::getDropReplyAcrossLocations () const
 
 WaveMessageType WaveMessage::getType (const string &serializedData, const UI8 serializationType)  //const string& messageVersion)
 {
-    // We now the SerializableObjectAttributeId for Message Type is always 1. (This cannot be changed from 1)
+    // We know the SerializableObjectAttributeId for Message Type is always 1. (This cannot be changed from 1)
     // So the corresponding attribute in the serialized XML will be tagged with A1.  So look for the data
     // tagged between <A1> and </A1>
 

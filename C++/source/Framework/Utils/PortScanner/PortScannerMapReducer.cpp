@@ -12,7 +12,7 @@
 namespace WaveNs
 {
 
-PortScannerMapReducer::PortScannerMapReducer (const PortScannerInputConfiguration *pPortScannerInputConfiguration)
+PortScannerMapReducer::PortScannerMapReducer (PortScannerInputConfiguration *pPortScannerInputConfiguration)
     : MapReduceManager (pPortScannerInputConfiguration)
 {
 }

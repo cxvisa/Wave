@@ -5,12 +5,15 @@
  ***************************************************************************/
 
 #include "PortScannerInputConfiguration.h"
-
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/FdUtils.h"
+#include "Framework/Utils/AssertUtils.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManagerDelegateMessage.h"
+#include "Framework/Utils/PortScanner/PortScannerWorkerReadinessData.h"
 
 #include <stdlib.h>
 
+#include "Framework/Utils/PortScanner/PortScannerWorkerInput.h"
 namespace WaveNs
 {
 
@@ -18,12 +21,16 @@ PortScannerInputConfiguration::PortScannerInputConfiguration ()
     : MapReduceInputConfiguration (100),
       m_ipAddress             ("127.0.0.1"),
       m_portRange             ("1-65535"),
-      m_timeoutInMilliSeconds (3000)
+      m_timeoutInMilliSeconds (3000),
+      m_currentIndex          (0)
 {
+    m_portRange.getUI32RangeVector(m_expandedPortRange);
+    m_currentIndex = 0;
 }
 
 PortScannerInputConfiguration::~PortScannerInputConfiguration ()
 {
+    setPortRange (m_portRange);
 }
 
 string PortScannerInputConfiguration::getIpAddress () const
@@ -44,6 +51,9 @@ UI32Range PortScannerInputConfiguration::getPortRange () const
 void PortScannerInputConfiguration::setPortRange (const UI32Range &portRange)
 {
     m_portRange = portRange;
+
+    m_portRange.getUI32RangeVector (m_expandedPortRange);
+    m_currentIndex = 0;
 }
 
 UI32 PortScannerInputConfiguration::getTimeoutInMilliSeconds () const
@@ -200,6 +210,54 @@ UI32 PortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired () 
     const UI32 numberOfInputPorts = allInputPorts.size ();
 
     return ((numberOfInputPorts + (availableFileDescriptorsSize - 1)) / availableFileDescriptorsSize);
+}
+
+MapReduceManagerDelegateMessage *PortScannerInputConfiguration::getNextWork (MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage)
+{
+    PortScannerWorkerReadinessData *pPortScannerWorkerReadinessData = dynamic_cast<PortScannerWorkerReadinessData *> (pMapReduceWorkerReadinessMessage);
+
+    if (NULL == pPortScannerWorkerReadinessData)
+    {
+        waveAssert (false, __FILE__, __LINE__);
+        return (NULL);
+    }
+
+    const UI32 numberOfPortsToScanFor = pPortScannerWorkerReadinessData->getNumberOfPortsToScanFor ();
+    const UI32 numberOfInputPorts     = m_expandedPortRange.size ();
+
+    if (numberOfInputPorts <= m_currentIndex)
+    {
+        return (NULL);
+    }
+
+    UI32 endIndex = m_currentIndex + numberOfPortsToScanFor - 1;
+
+    if (numberOfInputPorts <= endIndex)
+    {
+        endIndex = numberOfInputPorts - 1;
+    }
+
+    PortScannerWorkerInput *pPortScannerWorkerInput = new PortScannerWorkerInput ();
+
+    waveAssert (NULL != pPortScannerWorkerInput, __FILE__, __LINE__);
+
+    vector<UI32> currentItertionPorts;
+    UI32         i                     = 0;
+
+    for (i = m_currentIndex; i <= endIndex; i++)
+    {
+        currentItertionPorts.push_back (m_expandedPortRange[i]);
+    }
+
+    m_currentIndex = endIndex + 1;
+
+    UI32Range currentIterationPortRange (currentItertionPorts);
+
+    pPortScannerWorkerInput->setIpAddress             (m_ipAddress);
+    pPortScannerWorkerInput->setPortRange             (currentIterationPortRange);
+    pPortScannerWorkerInput->setTimeoutInMilliSeconds (m_timeoutInMilliSeconds);
+
+    return (pPortScannerWorkerInput);
 }
 
 }

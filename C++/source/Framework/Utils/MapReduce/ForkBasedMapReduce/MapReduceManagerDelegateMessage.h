@@ -7,12 +7,12 @@
 #ifndef MAPREDUCEMANAGERDELEGATEMESSAGE_H
 #define MAPREDUCEMANAGERDELEGATEMESSAGE_H
 
-#include "Framework/ObjectModel/SerializableObject.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceMessageBase.h"
 
 namespace WaveNs
 {
 
-class MapReduceManagerDelegateMessage : public SerializableObject
+class MapReduceManagerDelegateMessage : public MapReduceMessageBase
 {
     private :
     protected :

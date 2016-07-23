@@ -15,10 +15,14 @@ namespace WaveNs
 class MapReduceWorkerReadinessMessage;
 class MapReduceManagerDelegateMessage;
 class MapReduceWorkerResponseMessage;
+class MapReduceMessageBase;
 
 class MapReduceWorker
 {
     private :
+        void                  receiveMessageFromManager (string &messageFromManager);
+        MapReduceMessageBase *receiveManagerMessage     ();
+
     protected :
         virtual MapReduceWorkerReadinessMessage *instantiateWorkerReadynessMessage          () = 0;
         virtual MapReduceManagerDelegateMessage *instantiateMapReduceManagerDelegateMessage () = 0;

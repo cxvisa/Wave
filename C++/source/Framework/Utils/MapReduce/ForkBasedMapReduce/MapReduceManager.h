@@ -15,16 +15,21 @@ namespace WaveNs
 
 class MapReduceWorker;
 class MapReduceWorkerProxy;
+class MapReduceWorkerReadinessMessage;
+class MapReduceWorkerResponseMessage;
 
 class MapReduceManager
 {
     private :
+        bool processWorkerReady    (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
+        bool processWorkerResponse (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage);
+
     protected :
         virtual MapReduceWorker      *createMapReduceWorker      (const SI32 &readSocket, const SI32 &writeSocket) = 0;
         virtual MapReduceWorkerProxy *createMapReduceWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket) = 0;
 
     public :
-                           MapReduceManager (const MapReduceInputConfiguration *m_pMapReduceInputConfiguration);
+                           MapReduceManager (MapReduceInputConfiguration *m_pMapReduceInputConfiguration);
         virtual           ~MapReduceManager ();
 
                 ResourceId mapReduce        ();
@@ -32,7 +37,7 @@ class MapReduceManager
         // Now the data members
 
     private :
-        const MapReduceInputConfiguration *m_pMapReduceInputConfiguration;
+        MapReduceInputConfiguration *m_pMapReduceInputConfiguration;
 
     protected :
     public :

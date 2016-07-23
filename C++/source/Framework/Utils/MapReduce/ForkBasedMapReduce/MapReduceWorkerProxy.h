@@ -15,10 +15,15 @@ namespace WaveNs
 class MapReduceWorkerReadinessMessage;
 class MapReduceManagerDelegateMessage;
 class MapReduceWorkerResponseMessage;
+class MapReduceMessageBase;
+class MapReduceInputConfiguration;
 
 class MapReduceWorkerProxy
 {
     private :
+        void receiveMessageFromWorker   (string &messageFromManager);
+        bool sendWorkerReadinessMessage (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage);
+
     protected :
         virtual MapReduceWorkerReadinessMessage *instantiateWorkerReadynessMessage          () = 0;
         virtual MapReduceManagerDelegateMessage *instantiateMapReduceManagerDelegateMessage () = 0;
@@ -30,8 +35,9 @@ class MapReduceWorkerProxy
         virtual ~MapReduceWorkerProxy ();
 
         virtual MapReduceWorkerReadinessMessage *receiveWorkerReadynessMessage            ();
-        virtual bool                             processWorkerReadynessMessageAndDelegate (MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
+        virtual bool                             processWorkerReadynessMessageAndDelegate (MapReduceInputConfiguration *pMapReduceInputConfiguration, MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
         virtual MapReduceWorkerResponseMessage  *receiveWorkerResponseMessage             ();
+        virtual MapReduceMessageBase            *receiveWorkerMessage                     ();
 
         // Now the data members
 

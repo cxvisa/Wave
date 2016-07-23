@@ -7,12 +7,12 @@
 #ifndef MAPREDUCEWORKERRESPONSEMESSAGE_H
 #define MAPREDUCEWORKERRESPONSEMESSAGE_H
 
-#include "Framework/ObjectModel/SerializableObject.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceMessageBase.h"
 
 namespace WaveNs
 {
 
-class MapReduceWorkerResponseMessage : public SerializableObject
+class MapReduceWorkerResponseMessage : public MapReduceMessageBase
 {
     private :
     protected :

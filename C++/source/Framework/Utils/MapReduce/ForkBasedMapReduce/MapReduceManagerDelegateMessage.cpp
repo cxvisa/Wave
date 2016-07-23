@@ -10,8 +10,9 @@ namespace WaveNs
 {
 
 MapReduceManagerDelegateMessage::MapReduceManagerDelegateMessage ()
-    : SerializableObject ()
+    : MapReduceMessageBase ()
 {
+    setMapReduceMesageType (MAP_REDUCE_MESSAGE_TYPE_DELEGATE);
 }
 
 MapReduceManagerDelegateMessage::~MapReduceManagerDelegateMessage ()
@@ -20,7 +21,7 @@ MapReduceManagerDelegateMessage::~MapReduceManagerDelegateMessage ()
 
 void MapReduceManagerDelegateMessage::setupAttributesForSerialization ()
 {
-    SerializableObject::setupAttributesForSerialization ();
+    MapReduceMessageBase::setupAttributesForSerialization ();
 }
 
 }

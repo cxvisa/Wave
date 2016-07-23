@@ -19,12 +19,17 @@ class PortScannerWorkerReadinessData : public MapReduceWorkerReadinessMessage
 
     protected :
     public :
-                 PortScannerWorkerReadinessData ();
-        virtual ~PortScannerWorkerReadinessData ();
+                      PortScannerWorkerReadinessData ();
+        virtual      ~PortScannerWorkerReadinessData ();
+
+                UI32  getNumberOfPortsToScanFor     () const;
+                void  setNumberOfPortsToScanFor     (const UI32 &numberOfPortsToScanFor);
 
         // Now the data members
 
     private :
+        UI32 m_numberOfPortsToScanFor;
+
     protected :
     public :
 };

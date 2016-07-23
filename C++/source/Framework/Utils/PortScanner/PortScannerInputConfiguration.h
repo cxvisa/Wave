@@ -12,6 +12,7 @@
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceInputConfiguration.h"
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -21,7 +22,8 @@ namespace WaveNs
 class PortScannerInputConfiguration : public MapReduceInputConfiguration
 {
     private :
-        static void printHelp (const char * const programName);
+        static  void                             printHelp   (const char * const programName);
+        virtual MapReduceManagerDelegateMessage *getNextWork (MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
 
     protected :
     public :
@@ -44,9 +46,11 @@ class PortScannerInputConfiguration : public MapReduceInputConfiguration
         // Now the data members
 
     private :
-        string    m_ipAddress;
-        UI32Range m_portRange;
-        UI32      m_timeoutInMilliSeconds;
+        string       m_ipAddress;
+        UI32Range    m_portRange;
+        UI32         m_timeoutInMilliSeconds;
+        vector<UI32> m_expandedPortRange;
+        UI32         m_currentIndex;
 
     protected :
     public :
