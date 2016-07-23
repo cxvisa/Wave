@@ -15,8 +15,7 @@ namespace WaveNs
 TcpPortScannerInputConfiguration::TcpPortScannerInputConfiguration ()
     : m_ipAddress             ("127.0.0.1"),
       m_portRange             ("1-65535"),
-      m_timeoutInMilliSeconds (3000),
-      m_numberOfShards        (10)
+      m_timeoutInMilliSeconds (3000)
 {
 }
 
@@ -32,16 +31,6 @@ string TcpPortScannerInputConfiguration::getIpAddress () const
 void TcpPortScannerInputConfiguration::setIpAddress (const string &ipAddress)
 {
     m_ipAddress = ipAddress;
-}
-
-UI32 TcpPortScannerInputConfiguration::getNumberOfShards () const
-{
-    return (m_numberOfShards);
-}
-
-void TcpPortScannerInputConfiguration::setNumberOfShards (const UI32 &numberOfShards)
-{
-    m_numberOfShards = numberOfShards;
 }
 
 UI32Range TcpPortScannerInputConfiguration::getPortRange () const
@@ -168,7 +157,7 @@ bool TcpPortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numbe
                     return (false);
                 }
 
-                setNumberOfShards (value);
+                setMaximumNumberOfPartitions (value);
             }
             else
             {

@@ -17,11 +17,14 @@ class MapReduceInputConfiguration
     private :
     protected :
     public :
-                      MapReduceInputConfiguration  ();
-        virtual      ~MapReduceInputConfiguration  ();
+                                             MapReduceInputConfiguration  ();
+                                             MapReduceInputConfiguration  (const MapReduceInputConfiguration &mapReduceInputConfiguration);
+        virtual                             ~MapReduceInputConfiguration  ();
 
-                UI32  getMaximumNumberOfPartitions () const;
-                void  setMaximumNumberOfPartitions (const UI32 &maximumNumberOfPartitions);
+                UI32                         getMaximumNumberOfPartitions () const;
+                void                         setMaximumNumberOfPartitions (const UI32 &maximumNumberOfPartitions);
+
+                MapReduceInputConfiguration &operator =                   (const MapReduceInputConfiguration &mapReduceInputConfiguration);
 
         // Now the data members
 

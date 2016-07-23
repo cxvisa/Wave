@@ -16,6 +16,10 @@ MapReduceWorkerReadinessMessage::MapReduceWorkerReadinessMessage ()
 
 MapReduceWorkerReadinessMessage::~MapReduceWorkerReadinessMessage ()
 {
+}
+
+void MapReduceWorkerReadinessMessage::setupAttributesForSerialization ()
+{
     SerializableObject::setupAttributesForSerialization ();
 }
 

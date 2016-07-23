@@ -4,34 +4,32 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef MAPREDUCEMANAGER_H
-#define MAPREDUCEMANAGER_H
+#ifndef FDUTILS_H
+#define FDUTILS_H
 
 #include "Framework/Types/Types.h"
-#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceInputConfiguration.h"
+
+#include <sys/select.h>
 
 namespace WaveNs
 {
 
-class MapReduceManager
+class FdUtils
 {
     private :
     protected :
     public :
-                           MapReduceManager (const MapReduceInputConfiguration &mapReduceInputConfiguration);
-        virtual           ~MapReduceManager ();
-
-                ResourceId mapReduce        ();
+        static void fdCopy  (fd_set *pSource, fd_set *pDestination);
+        static SI32 fdMax   (fd_set *pSource);
+        static SI32 fdCount (fd_set *pSource);
 
         // Now the data members
 
     private :
-        MapReduceInputConfiguration m_mapReduceInputConfiguration;
-
     protected :
     public :
 };
 
 }
 
-#endif // MAPREDUCEMANAGER_H
+#endif // FDUTILS_H

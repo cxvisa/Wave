@@ -9,6 +9,8 @@
 
 #include "Framework/Types/Types.h"
 #include "Framework/Types/UI32Range.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceInputConfiguration.h"
+
 #include <string>
 
 using namespace std;
@@ -16,7 +18,7 @@ using namespace std;
 namespace WaveNs
 {
 
-class TcpPortScannerInputConfiguration
+class TcpPortScannerInputConfiguration : public MapReduceInputConfiguration
 {
     private :
         static void printHelp (const char * const programName);
@@ -28,9 +30,6 @@ class TcpPortScannerInputConfiguration
 
                 string     getIpAddress                     () const;
                 void       setIpAddress                     (const string &ipAddress);
-
-                UI32       getNumberOfShards                () const;
-                void       setNumberOfShards                (const UI32 &numberOfShards);
 
                 UI32Range  getPortRange                     () const;
                 void       setPortRange                     (const UI32Range &portRange);
@@ -46,7 +45,6 @@ class TcpPortScannerInputConfiguration
         string    m_ipAddress;
         UI32Range m_portRange;
         UI32      m_timeoutInMilliSeconds;
-        UI32      m_numberOfShards;
 
     protected :
     public :

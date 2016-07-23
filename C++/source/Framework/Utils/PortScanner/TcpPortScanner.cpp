@@ -9,6 +9,7 @@
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/SystemLimitsUtils.h"
 #include "Framework/Types/UI32Range.h"
+#include "Framework/Utils/FdUtils.h"
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -164,9 +165,9 @@ bool TcpPortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> i
 
     while (!(socketToPortMap.empty()))
     {
-        fdCopy (&socketFdSet, &socketFdSetToTryForInProgress);
+        FdUtils::fdCopy (&socketFdSet, &socketFdSetToTryForInProgress);
 
-        SI32 maxFdToSelect = fdMax (&socketFdSetToTryForInProgress) + 1;
+        SI32 maxFdToSelect = FdUtils::fdMax (&socketFdSetToTryForInProgress) + 1;
         SI32 selectStatus = select (maxFdToSelect, NULL, &socketFdSetToTryForInProgress, NULL, &timeOut);
 
         if (0 < selectStatus)
@@ -234,36 +235,6 @@ bool TcpPortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> i
     socketToPortMap.clear ();
 
     return (true);
-}
-
-void TcpPortScanner::fdCopy (fd_set *pSource, fd_set *pDestination)
-{
-    SI32 i = 0;
-
-    FD_ZERO (pDestination);
-
-    for (i = 0; i < FD_SETSIZE; i++)
-    {
-        if (FD_ISSET(i, pSource))
-        {
-            FD_SET (i, pDestination);
-        }
-    }
-}
-
-SI32 TcpPortScanner::fdMax (fd_set *pSource)
-{
-    SI32 i = 0;
-
-    for (i = FD_SETSIZE - 1; i >= 0; i--)
-    {
-        if (FD_ISSET(i, pSource))
-        {
-            return (i);
-        }
-    }
-
-    return (-1);
 }
 
 ResourceId TcpPortScanner::scanPorts (const TcpPortScannerInputConfiguration &tcpPortScannerInputConfiguration)

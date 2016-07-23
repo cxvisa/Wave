@@ -14,8 +14,20 @@ MapReduceInputConfiguration::MapReduceInputConfiguration ()
 {
 }
 
+MapReduceInputConfiguration::MapReduceInputConfiguration (const MapReduceInputConfiguration &mapReduceInputConfiguration)
+    : m_maximumNumberOfPartitions (mapReduceInputConfiguration.m_maximumNumberOfPartitions)
+{
+}
+
 MapReduceInputConfiguration::~MapReduceInputConfiguration ()
 {
+}
+
+MapReduceInputConfiguration &MapReduceInputConfiguration::operator = (const MapReduceInputConfiguration &mapReduceInputConfiguration)
+{
+    m_maximumNumberOfPartitions = mapReduceInputConfiguration.m_maximumNumberOfPartitions;
+
+    return (*this);
 }
 
 UI32 MapReduceInputConfiguration::getMaximumNumberOfPartitions () const

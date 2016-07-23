@@ -22,9 +22,6 @@ namespace WaveNs
 class TcpPortScanner
 {
     private :
-        static void fdCopy (fd_set *pSource, fd_set *pDestination);
-        static SI32 fdMax  (fd_set *pSource);
-
         static bool computeNumberOfPortsToScanInABatch (UI32 &numberOfPortsToScanInABatch);
 
     protected :
