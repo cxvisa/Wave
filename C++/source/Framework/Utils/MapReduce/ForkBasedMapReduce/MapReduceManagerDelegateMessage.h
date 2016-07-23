@@ -7,14 +7,20 @@
 #ifndef MAPREDUCEMANAGERDELEGATEMESSAGE_H
 #define MAPREDUCEMANAGERDELEGATEMESSAGE_H
 
+#include "Framework/ObjectModel/SerializableObject.h"
+
 namespace WaveNs
 {
 
-class MapReduceManagerDelegateMessage
+class MapReduceManagerDelegateMessage : public SerializableObject
 {
     private :
+        virtual void setupAttributesForSerialization ();
+
     protected :
     public :
+                 MapReduceManagerDelegateMessage ();
+        virtual ~MapReduceManagerDelegateMessage ();
 
         // Now the data members
 

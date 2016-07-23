@@ -15,6 +15,8 @@ class MapReduceWorker
     private :
     protected :
     public :
+                 MapReduceWorker ();
+        virtual ~MapReduceWorker ();
 
         // Now the data members
 

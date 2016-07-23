@@ -7,14 +7,20 @@
 #ifndef MAPREDUCEWORKERRESPONSEMESSAGE_H
 #define MAPREDUCEWORKERRESPONSEMESSAGE_H
 
+#include "Framework/ObjectModel/SerializableObject.h"
+
 namespace WaveNs
 {
 
-class MapReduceWorkerResponseMessage
+class MapReduceWorkerResponseMessage : public SerializableObject
 {
     private :
+        virtual void setupAttributesForSerialization ();
+
     protected :
     public :
+                 MapReduceWorkerResponseMessage ();
+        virtual ~MapReduceWorkerResponseMessage ();
 
         // Now the data members
 

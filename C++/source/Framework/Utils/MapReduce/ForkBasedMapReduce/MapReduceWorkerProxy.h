@@ -15,6 +15,8 @@ class MapReduceWorkerProxy
     private :
     protected :
     public :
+                 MapReduceWorkerProxy ();
+        virtual ~MapReduceWorkerProxy ();
 
         // Now the data members
 

@@ -15,6 +15,8 @@ class MapReduceManager
     private :
     protected :
     public :
+                 MapReduceManager ();
+        virtual ~MapReduceManager ();
 
         // Now the data members
 
