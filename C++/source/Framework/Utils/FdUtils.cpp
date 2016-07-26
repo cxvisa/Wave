@@ -67,7 +67,7 @@ bool FdUtils::getNumberOfAvailableFds (UI32 &getNumberOfAvailableFds)
 
     if (true == status)
     {
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "FdUtils::getNumberOfAvailableFds : Soft limit on open files : %u, Hard limit on open files : %u", softLimit, hardLimit);
+        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FdUtils::getNumberOfAvailableFds : Soft limit on open files : %u, Hard limit on open files : %u", softLimit, hardLimit);
     }
     else
     {
@@ -94,7 +94,7 @@ bool FdUtils::getNumberOfAvailableFds (UI32 &getNumberOfAvailableFds)
 
         const string inUseFileDescriptorRangeString = UI32Range::getUI32RangeStringFromVector (fileDescriptorsCurrentlyInUse);
 
-        tracePrintf (TRACE_LEVEL_INFO, true, false, "FdUtils::getNumberOfAvailableFds : %s", inUseFileDescriptorRangeString.c_str ());
+        tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FdUtils::getNumberOfAvailableFds : Currently In Use : %s", inUseFileDescriptorRangeString.c_str ());
 
         getNumberOfAvailableFds = softLimit - (fileDescriptorsCurrentlyInUse.size ());
 

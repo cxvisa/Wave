@@ -39,7 +39,7 @@ int main (int argc, char *argv[])
 
     portScannerMapReducer.mapReduce();
 
-    //PortScanner::scanPorts (portScannerInputConfiguration);
+    portScannerMapReducer.printReport ();
 
     return (0);
 }

@@ -9,25 +9,38 @@
 
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManager.h"
 
+#include <set>
+
+using namespace std;
+
 namespace WaveNs
 {
 
 class PortScannerInputConfiguration;
+class MapReduceWorkerResponseMessage;
 
 class PortScannerMapReducer : public MapReduceManager
 {
     private :
-        virtual MapReduceWorker      *createMapReduceWorker      (const SI32 &readSocket, const SI32 &writeSocket);
-        virtual MapReduceWorkerProxy *createMapReduceWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket);
+        virtual MapReduceWorker      *createMapReduceWorker        (const SI32 &readSocket, const SI32 &writeSocket);
+        virtual MapReduceWorkerProxy *createMapReduceWorkerProxy   (const SI32 &readSocket, const SI32 &writeSocket);
+        virtual void                  consumeMapReduceWorkerOutput (MapReduceWorkerResponseMessage *pMapReduceWorkerResponseMessage);
 
     protected :
     public :
-                 PortScannerMapReducer (PortScannerInputConfiguration *pPortScannerInputConfiguration);
-        virtual ~PortScannerMapReducer ();
+                      PortScannerMapReducer (PortScannerInputConfiguration *pPortScannerInputConfiguration);
+        virtual      ~PortScannerMapReducer ();
+
+                void  printReport           ();
 
     // Now the data members
 
     private :
+        set<UI32> m_allOpenPorts;
+        set<UI32> m_allClosedPorts;
+        set<UI32> m_allTimedOutPorts;
+        set<UI32> m_allNotTriedPorts;
+
     protected :
     public :
 };

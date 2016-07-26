@@ -53,7 +53,7 @@ ResourceId MapReduceManager::mapReduce ()
         numberOfPartitions = s_MAX_PARTITIONS_LIMIT;
     }
 
-    tracePrintf (TRACE_LEVEL_INFO, "MapReduceManager::mapReduce : Number of partitions computed : %d in reality, Requested : %d", numberOfPartitions, m_pMapReduceInputConfiguration->getMaximumNumberOfPartitions ());
+    tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceManager::mapReduce : Number of partitions computed : %d in reality, Requested : %d", numberOfPartitions, m_pMapReduceInputConfiguration->getMaximumNumberOfPartitions ());
 
     pipeFdsForShardsForReading = new int*[numberOfPartitions];
 
@@ -133,7 +133,7 @@ ResourceId MapReduceManager::mapReduce ()
                 close (pipeFdsForShardsForReading[i][0]);
                 close (pipeFdsForShardsForWriting[i][1]);
 
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "PID %d, Child Index : %d", getpid (), childIndex);
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "PID %d, Child Index : %d", getpid (), childIndex);
             }
         }
 
@@ -169,7 +169,7 @@ ResourceId MapReduceManager::mapReduce ()
 
         delete pMapReduceWorker;
 
-        return (childIndex);
+        exit (childIndex);
     }
     else
     {
@@ -216,18 +216,20 @@ ResourceId MapReduceManager::mapReduce ()
 
             FdUtils::fdCopy (&pipeFdSetForReading, &pipeFdSetForReadingForThisIteration);
 
-            timeOut.tv_sec = 3;
-            timeOut.tv_usec = 0;
+            const UI32 timeoutInMilliSecondsForManager = m_pMapReduceInputConfiguration->getTimeoutInMilliSecondsForManager ();
+
+            timeOut.tv_sec = timeoutInMilliSecondsForManager / 1000;
+            timeOut.tv_usec = (timeoutInMilliSecondsForManager % 1000) * 1000;
 
             SI32 selectStatus = select (maxFdToSelect + 1, &pipeFdSetForReadingForThisIteration, NULL, NULL, &timeOut);
 
-            WaveNs::tracePrintf (TRACE_LEVEL_INFO, "Select Status : %d, %d", selectStatus, FdUtils::fdCount (&pipeFdSetForReadingForThisIteration));
+            WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "Select Status : %d, %d", selectStatus, FdUtils::fdCount (&pipeFdSetForReadingForThisIteration));
 
             for (i = 0; i <= maxFdToSelect; i++)
             {
                 if (FD_ISSET(i, &pipeFdSetForReadingForThisIteration))
                 {
-                    WaveNs::tracePrintf (TRACE_LEVEL_INFO, "FD : %d", i);
+                    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD : %d", i);
 
                     MapReduceWorkerProxy *pMapReduceWorkerProxy = readFdToWorkerProxy[i];
 
@@ -237,7 +239,7 @@ ResourceId MapReduceManager::mapReduce ()
 
                     if (NULL == pMapReduceMessageBase)
                     {
-                        WaveNs::tracePrintf (TRACE_LEVEL_INFO, "FD %d, Closed communications.", i);
+                        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, Closed communications.", i);
 
                         FD_CLR (i, &pipeFdSetForReading);
 
@@ -253,7 +255,7 @@ ResourceId MapReduceManager::mapReduce ()
                         switch (mapReduceMessageType)
                         {
                             case MAP_REDUCE_MESSAGE_TYPE_READY :
-                                WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "FD %d, Can Accept Work.", i);
+                                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD %d, Can Accept Work.", i);
 
                                 pMapReduceWorkerReadinessMessage = dynamic_cast<MapReduceWorkerReadinessMessage *> (pMapReduceMessageBase);
 
@@ -271,13 +273,20 @@ ResourceId MapReduceManager::mapReduce ()
                                 break;
 
                             case MAP_REDUCE_MESSAGE_TYPE_RESPONSE :
-                                WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "FD %d, Finished work and responded.", i);
+                                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD %d, Finished work and responded.", i);
 
                                 pMapReduceWorkerResponseMessage = dynamic_cast<MapReduceWorkerResponseMessage *> (pMapReduceMessageBase);
 
                                 waveAssert (NULL != pMapReduceWorkerResponseMessage, __FILE__, __LINE__);
 
-                                processWorkerResponse (pMapReduceWorkerProxy, pMapReduceWorkerResponseMessage);
+                                status = processWorkerResponse (pMapReduceWorkerProxy, pMapReduceWorkerResponseMessage);
+
+                                if (false == status)
+                                {
+                                    FD_CLR (i, &pipeFdSetForReading);
+
+                                    delete pMapReduceWorkerProxy;
+                                }
 
                                 break;
 
@@ -313,6 +322,11 @@ bool MapReduceManager::processWorkerReady (MapReduceWorkerProxy *pMapReduceWorke
 
 bool MapReduceManager::processWorkerResponse (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage)
 {
+    waveAssert (NULL != pMapReduceWorkerProxy,            __FILE__, __LINE__);
+    waveAssert (NULL != pMapReduceWorkerResponseMessage, __FILE__, __LINE__);
+
+    consumeMapReduceWorkerOutput (pMapReduceWorkerResponseMessage);
+
     return (true);
 }
 

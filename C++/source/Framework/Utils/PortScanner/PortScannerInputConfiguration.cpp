@@ -26,6 +26,8 @@ PortScannerInputConfiguration::PortScannerInputConfiguration ()
 {
     m_portRange.getUI32RangeVector(m_expandedPortRange);
     m_currentIndex = 0;
+
+    setTimeoutInMilliSecondsForManager (2 * m_timeoutInMilliSeconds);
 }
 
 PortScannerInputConfiguration::~PortScannerInputConfiguration ()
@@ -64,6 +66,8 @@ UI32 PortScannerInputConfiguration::getTimeoutInMilliSeconds () const
 void PortScannerInputConfiguration::setTimeoutInMilliSeconds (const UI32 &timeoutInMilliSeconds)
 {
     m_timeoutInMilliSeconds = timeoutInMilliSeconds;
+
+    setTimeoutInMilliSecondsForManager (2 * m_timeoutInMilliSeconds);
 }
 
 bool PortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numberOfInputArguments, const char * const inputArguments[])

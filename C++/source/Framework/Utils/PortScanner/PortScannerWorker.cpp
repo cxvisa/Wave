@@ -8,8 +8,11 @@
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/FdUtils.h"
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceWorkerReadinessMessage.h"
+#include "Framework/Utils/PortScanner/PortScannerInputConfiguration.h"
 #include "Framework/Utils/PortScanner/PortScannerWorkerInput.h"
 #include "Framework/Utils/PortScanner/PortScannerWorkerReadinessData.h"
+#include "Framework/Utils/PortScanner/PortScanner.h"
+#include "Framework/Utils/PortScanner/PortScannerWorkerOutput.h"
 
 namespace WaveNs
 {
@@ -50,7 +53,43 @@ MapReduceManagerDelegateMessage *PortScannerWorker::instantiateMapReduceManagerD
 
 MapReduceWorkerResponseMessage *PortScannerWorker::process (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage)
 {
-    return (NULL);
+    PortScannerWorkerInput *pPortScannerWorkerInput = dynamic_cast<PortScannerWorkerInput *> (pMapReduceManagerDelegateMessage);
+
+    waveAssert (NULL != pPortScannerWorkerInput, __FILE__, __LINE__);
+
+    PortScannerInputConfiguration portScannerInputConfiguration;
+
+    portScannerInputConfiguration.setIpAddress             (pPortScannerWorkerInput->getIpAddress             ());
+    portScannerInputConfiguration.setPortRange             (pPortScannerWorkerInput->getPortRange             ());
+    portScannerInputConfiguration.setTimeoutInMilliSeconds (pPortScannerWorkerInput->getTimeoutInMilliSeconds ());
+
+    set<UI32> allOpenPorts;
+    set<UI32> allClosedPorts;
+    set<UI32> allTimedOutPorts;
+    set<UI32> allNotTriedPorts;
+
+    PortScanner::scanPorts (portScannerInputConfiguration, allOpenPorts, allClosedPorts, allTimedOutPorts, allNotTriedPorts);
+
+    vector<UI32> allOpenPortsVector;
+    vector<UI32> allClosedPortsVector;
+    vector<UI32> allTimedOutPortsVector;
+    vector<UI32> allNotTriedPortsVector;
+
+    allOpenPortsVector.insert     (allOpenPortsVector.begin     (), allOpenPorts.begin     (), allOpenPorts.end ());
+    allClosedPortsVector.insert   (allClosedPortsVector.begin   (), allClosedPorts.begin   (), allClosedPorts.end ());
+    allTimedOutPortsVector.insert (allTimedOutPortsVector.begin (), allTimedOutPorts.begin (), allTimedOutPorts.end ());
+    allNotTriedPortsVector.insert (allNotTriedPortsVector.begin (), allNotTriedPorts.begin (), allNotTriedPorts.end ());
+
+    PortScannerWorkerOutput *pPortScannerWorkerOutput = new PortScannerWorkerOutput ();
+
+    waveAssert (NULL != pPortScannerWorkerOutput, __FILE__, __LINE__);
+
+    pPortScannerWorkerOutput->setAllOpenPorts     (allOpenPortsVector);
+    pPortScannerWorkerOutput->setAllClosedPorts   (allClosedPortsVector);
+    pPortScannerWorkerOutput->setAllTimedOutPorts (allTimedOutPortsVector);
+    pPortScannerWorkerOutput->setAllNotTriedPorts (allNotTriedPortsVector);
+
+    return (pPortScannerWorkerOutput);
 }
 
 }

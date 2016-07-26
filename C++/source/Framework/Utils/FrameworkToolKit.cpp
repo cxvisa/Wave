@@ -1083,9 +1083,10 @@ ResourceId FrameworkToolKit::analyzeJson (UI32 argc, vector<string> argv)
 
 ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> argv)
 {
-    string ipAddress = "127.0.0.1";
-    SI32   startPort = 1;
-    SI32   endPort   = 65535;
+    string ipAddress             = "127.0.0.1";
+    SI32   startPort             = 1;
+    SI32   endPort               = 65535;
+    UI32   timeoutInMilliSeconds = 3000;
 
     if (argc >= 2)
     {
@@ -1100,6 +1101,11 @@ ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> 
     if (argc >= 4)
     {
         endPort = atoi ((argv[3]).c_str ());
+    }
+
+    if (argc >= 5)
+    {
+        timeoutInMilliSeconds = atoi ((argv[4]).c_str ());
     }
 
     UI32 softLimit = 0;
@@ -1163,7 +1169,7 @@ ResourceId FrameworkToolKit::getMaxNumberOfOpenFiles (UI32 argc, vector<string> 
         tracePrintf (TRACE_LEVEL_INFO, true, false, "FrameworkToolKit::getMaxNumberOfOpenFiles : Processing Ports in Range : %s", (inputPortRange.toString ()).c_str ());
 
 
-        status = PortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
+        status = PortScanner::scanForIpPorts (ipAddress, inputPorts, timeoutInMilliSeconds, openPorts, closedPorts, timedOutPorts, notTriedPorts);
 
         allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
         allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());

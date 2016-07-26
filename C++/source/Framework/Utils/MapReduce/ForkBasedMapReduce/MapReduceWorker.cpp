@@ -11,6 +11,7 @@
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceMessageBase.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManagerDelegateMessage.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceWorkerResponseMessage.h"
 
 #include <errno.h>
 
@@ -29,15 +30,13 @@ MapReduceWorker::~MapReduceWorker()
     ::close (m_writeSocket);
 }
 
-bool MapReduceWorker::sendWorkerReadinessMessage ()
+bool MapReduceWorker::sendMessageToManager (MapReduceMessageBase *pMapReduceMessageBase)
 {
-    MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage = instantiateWorkerReadynessMessage ();
-
-    waveAssert (NULL != pMapReduceWorkerReadinessMessage, __FILE__, __LINE__);
+    waveAssert (NULL != pMapReduceMessageBase, __FILE__, __LINE__);
 
     string serializedData;
 
-    pMapReduceWorkerReadinessMessage->serialize2 (serializedData);
+    pMapReduceMessageBase->serialize2 (serializedData);
 
           UI32  sizeOfSerializedData            = serializedData.length ();
     const char *pBuffer                         = serializedData.c_str ();
@@ -71,6 +70,15 @@ bool MapReduceWorker::sendWorkerReadinessMessage ()
     return (true);
 }
 
+bool MapReduceWorker::sendWorkerReadinessMessage ()
+{
+    MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage = instantiateWorkerReadynessMessage ();
+
+    waveAssert (NULL != pMapReduceWorkerReadinessMessage, __FILE__, __LINE__);
+
+    return (sendMessageToManager (pMapReduceWorkerReadinessMessage));
+}
+
 void MapReduceWorker::receiveMessageFromManager (string &messageFromManager)
 {
     messageFromManager = "";
@@ -81,7 +89,7 @@ void MapReduceWorker::receiveMessageFromManager (string &messageFromManager)
 
     if (-1 == status)
     {
-        WaveNs::tracePrintf (TRACE_LEVEL_INFO, "MapReduceWorker::receiveMessageFromManager : Data read failed for fd : %d with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorker::receiveMessageFromManager : Data read failed for fd : %d with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
     }
     else if (0 == status)
     {
@@ -93,7 +101,7 @@ void MapReduceWorker::receiveMessageFromManager (string &messageFromManager)
 
         const UI32 originalSizeOfDataToReceive = sizeOfDataToReceive;
 
-        WaveNs::tracePrintf (TRACE_LEVEL_INFO, "FD %d, number of bytes to read : %d", m_readSocket, originalSizeOfDataToReceive);
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, number of bytes to read : %d", m_readSocket, originalSizeOfDataToReceive);
 
         char *pBuffer     = new char[originalSizeOfDataToReceive + 1];
         char *pTempBuffer = pBuffer;
@@ -107,7 +115,7 @@ void MapReduceWorker::receiveMessageFromManager (string &messageFromManager)
 
             if (-1 == status)
             {
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "MapReduceWorker::receiveMessageFromManager : Data read failed for fd : %d during message read with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorker::receiveMessageFromManager : Data read failed for fd : %d during message read with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
 
                 delete pBuffer;
 
@@ -115,7 +123,7 @@ void MapReduceWorker::receiveMessageFromManager (string &messageFromManager)
             }
             else if (0 == status)
             {
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "FD %d, could not read when number of bytes remaining : %d", m_readSocket, status, sizeOfDataToReceive);
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, could not read when number of bytes remaining : %d", m_readSocket, status, sizeOfDataToReceive);
 
                 delete pBuffer;
 
@@ -130,9 +138,11 @@ void MapReduceWorker::receiveMessageFromManager (string &messageFromManager)
 
         pBuffer[originalSizeOfDataToReceive] = '\0';
 
-        WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "FD : %d, Data Read : %s", m_readSocket, pBuffer);
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD : %d, Data Read : %s", m_readSocket, pBuffer);
 
         messageFromManager = pBuffer;
+
+        delete pBuffer;
 
         return;
     }
@@ -192,7 +202,19 @@ MapReduceMessageBase *MapReduceWorker::receiveManagerMessage ()
 
 bool MapReduceWorker::processAndSendWorkerResponseMessage (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage)
 {
-    return (false);
+    MapReduceWorkerResponseMessage *pMapReduceWorkerResponseMessage = process (pMapReduceManagerDelegateMessage);
+
+    if (NULL == pMapReduceWorkerResponseMessage)
+    {
+        return (false);
+
+    }
+
+    bool status = sendMessageToManager (pMapReduceWorkerResponseMessage);
+
+    delete pMapReduceWorkerResponseMessage;
+
+    return (status);
 }
 
 }

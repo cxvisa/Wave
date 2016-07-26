@@ -22,6 +22,7 @@ class MapReduceWorker
     private :
         void                  receiveMessageFromManager (string &messageFromManager);
         MapReduceMessageBase *receiveManagerMessage     ();
+        bool                  sendMessageToManager      (MapReduceMessageBase *pMapReduceMessageBase);
 
     protected :
         virtual MapReduceWorkerReadinessMessage *instantiateWorkerReadynessMessage          () = 0;

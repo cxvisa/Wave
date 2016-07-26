@@ -27,7 +27,7 @@ MapReduceWorkerProxy::MapReduceWorkerProxy (const SI32 &readSocket, const SI32 &
 
 MapReduceWorkerProxy::~MapReduceWorkerProxy ()
 {
-    WaveNs::tracePrintf (TRACE_LEVEL_INFO, "MapReduceWorkerProxy::~MapReduceWorkerProxy : RFD : %d, WFD : %d", m_readSocket, m_writeSocket);
+    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorkerProxy::~MapReduceWorkerProxy : RFD : %d, WFD : %d", m_readSocket, m_writeSocket);
 
     ::close (m_readSocket);
     ::close (m_writeSocket);
@@ -43,7 +43,7 @@ void MapReduceWorkerProxy::receiveMessageFromWorker (string &messageFromManager)
 
     if (-1 == status)
     {
-        WaveNs::tracePrintf (TRACE_LEVEL_INFO, "MapReduceWorkerProxy::receiveMessageFromWorker : Data read failed for fd : %d with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorkerProxy::receiveMessageFromWorker : Data read failed for fd : %d with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
     }
     else if (0 == status)
     {
@@ -55,7 +55,7 @@ void MapReduceWorkerProxy::receiveMessageFromWorker (string &messageFromManager)
 
         const UI32 originalSizeOfDataToReceive = sizeOfDataToReceive;
 
-        WaveNs::tracePrintf (TRACE_LEVEL_INFO, "FD %d, number of bytes to read : %d", m_readSocket, originalSizeOfDataToReceive);
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, number of bytes to read : %d", m_readSocket, originalSizeOfDataToReceive);
 
         char *pBuffer     = new char[originalSizeOfDataToReceive + 1];
         char *pTempBuffer = pBuffer;
@@ -69,7 +69,7 @@ void MapReduceWorkerProxy::receiveMessageFromWorker (string &messageFromManager)
 
             if (-1 == status)
             {
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "MapReduceWorkerProxy::receiveMessageFromWorker : Data read failed for fd : %d during message read with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorkerProxy::receiveMessageFromWorker : Data read failed for fd : %d during message read with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
 
                 delete pBuffer;
 
@@ -77,7 +77,7 @@ void MapReduceWorkerProxy::receiveMessageFromWorker (string &messageFromManager)
             }
             else if (0 == status)
             {
-                WaveNs::tracePrintf (TRACE_LEVEL_INFO, "FD %d, could not read when number of bytes remaining : %d", m_readSocket, status, sizeOfDataToReceive);
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, could not read when number of bytes remaining : %d", m_readSocket, status, sizeOfDataToReceive);
 
                 delete pBuffer;
 
@@ -92,9 +92,11 @@ void MapReduceWorkerProxy::receiveMessageFromWorker (string &messageFromManager)
 
         pBuffer[originalSizeOfDataToReceive] = '\0';
 
-        WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, false, "FD : %d, Data Read : %s", m_readSocket, pBuffer);
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD : %d, Data Read : %s", m_readSocket, pBuffer);
 
         messageFromManager = pBuffer;
+
+        delete pBuffer;
 
         return;
     }
@@ -221,6 +223,26 @@ bool MapReduceWorkerProxy::sendWorkerReadinessMessage (MapReduceManagerDelegateM
 
 MapReduceWorkerResponseMessage *MapReduceWorkerProxy::receiveWorkerResponseMessage ()
 {
+    string messageFromWorker;
+
+    receiveMessageFromWorker (messageFromWorker);
+
+    if ("" != messageFromWorker)
+    {
+        MapReduceMessageType mapReduceMessageType = MapReduceMessageBase::getType (messageFromWorker);
+
+        if (MAP_REDUCE_MESSAGE_TYPE_RESPONSE == mapReduceMessageType)
+        {
+            MapReduceWorkerResponseMessage *pMapReduceWorkerResponseMessage = instantiateWorkerResponseMessage ();
+
+            waveAssert (NULL != pMapReduceWorkerResponseMessage, __FILE__, __LINE__);
+
+            pMapReduceWorkerResponseMessage->loadFromSerializedData2 (messageFromWorker);
+
+            return (pMapReduceWorkerResponseMessage);
+        }
+    }
+
     return (NULL);
 }
 

@@ -25,7 +25,7 @@
 namespace WaveNs
 {
 
-bool PortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inputPorts, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
+bool PortScanner::scanForIpPorts (const string &ipV4Address, set<UI32> inputPorts, const UI32 &timeoutInMilliSeconds, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
 {
     // TODO : Declare a ResourceEnum to return detailed status instead a simple boolean
 
@@ -112,8 +112,8 @@ bool PortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inpu
     struct timeval timeOut;
            fd_set  socketFdSet;
 
-    timeOut.tv_sec = 3;
-    timeOut.tv_usec = 0;
+    timeOut.tv_sec = timeoutInMilliSeconds / 1000;
+    timeOut.tv_usec = (timeoutInMilliSeconds % 1000) * 1000;
 
     FD_ZERO (&socketFdSet);
 
@@ -238,12 +238,13 @@ bool PortScanner::scanForIpV4TcpPorts (const string &ipV4Address, set<UI32> inpu
     return (true);
 }
 
-ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScannerInputConfiguration)
+ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScannerInputConfiguration, set<UI32> &allOpenPorts, set<UI32> &allClosedPorts, set<UI32> &allTimedOutPorts, set<UI32> &allNotTriedPorts)
 {
           UI32   numberOfPortsToScanInABatch     = 1000; // Default value, will get reset below if possible.
           UI32   numberOfPortsToScanInABatchTemp = 0;
 
-    const string ipAddress                       = portScannerInputConfiguration.getIpAddress ();
+    const string ipAddress                       = portScannerInputConfiguration.getIpAddress             ();
+    const UI32   timeoutInMilliSeconds           = portScannerInputConfiguration.getTimeoutInMilliSeconds ();
 
     bool batchSizeComputationStatus = FdUtils::getNumberOfAvailableFds (numberOfPortsToScanInABatchTemp);
 
@@ -252,12 +253,7 @@ ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScan
         numberOfPortsToScanInABatch = numberOfPortsToScanInABatchTemp;
     }
 
-    tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Batch Size : %u", numberOfPortsToScanInABatch);
-
-    set<UI32> allOpenPorts;
-    set<UI32> allClosedPorts;
-    set<UI32> allTimedOutPorts;
-    set<UI32> allNotTriedPorts;
+    tracePrintf (TRACE_LEVEL_DEBUG, true, false, "PortScanner::scanPorts : Batch Size : %u", numberOfPortsToScanInABatch);
 
     UI32Range inputPortRange    = portScannerInputConfiguration.getPortRange ();
     vector<UI32> allInputPorts;
@@ -288,7 +284,7 @@ ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScan
         tracePrintf (TRACE_LEVEL_DEBUG, true, false, "PortScanner::scanPorts : Processing Ports in Range : %s", rangeString.c_str ());
 
 
-        bool scanStatus = PortScanner::scanForIpV4TcpPorts (ipAddress, inputPorts, openPorts, closedPorts, timedOutPorts, notTriedPorts);
+        bool scanStatus = PortScanner::scanForIpPorts (ipAddress, inputPorts, timeoutInMilliSeconds, openPorts, closedPorts, timedOutPorts, notTriedPorts);
 
         allOpenPorts.insert     (openPorts.begin     (), openPorts.end     ());
         allClosedPorts.insert   (closedPorts.begin   (), closedPorts.end   ());
@@ -317,6 +313,23 @@ ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScan
         element = batchEndElement;
     }
 
+    return (0);
+}
+
+ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScannerInputConfiguration)
+{
+    set<UI32> allOpenPorts;
+    set<UI32> allClosedPorts;
+    set<UI32> allTimedOutPorts;
+    set<UI32> allNotTriedPorts;
+
+    ResourceId status = scanPorts (portScannerInputConfiguration, allOpenPorts, allClosedPorts, allTimedOutPorts, allNotTriedPorts);
+
+    if (!status)
+    {
+        tracePrintf (TRACE_LEVEL_FATAL, true, false, "PortScanner::scanPorts : Port Scanning failed.");
+    }
+
     tracePrintf (TRACE_LEVEL_INFO, true, false, "PortScanner::scanPorts : Currently open ports : %u", allOpenPorts.size ());
 
     set<UI32>::const_iterator elementForAllOpenPorts    = allOpenPorts.begin ();
@@ -341,5 +354,6 @@ ResourceId PortScanner::scanPorts (const PortScannerInputConfiguration &portScan
 
     return (0);
 }
+
 
 }

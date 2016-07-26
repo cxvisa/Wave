@@ -36,10 +36,14 @@ class MapReduceInputConfiguration
 
         virtual MapReduceManagerDelegateMessage *getNextWork                                  (MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage) = 0;
 
+                UI32                             getTimeoutInMilliSecondsForManager           () const;
+                void                             setTimeoutInMilliSecondsForManager           (const UI32 &timeoutInMilliSecondsForManager);
+
         // Now the data members
 
     private :
         UI32 m_maximumNumberOfPartitions;
+        UI32 m_timeoutInMilliSecondsForManager;
 
     protected :
     public :

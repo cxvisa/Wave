@@ -25,8 +25,9 @@ class MapReduceManager
         bool processWorkerResponse (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage);
 
     protected :
-        virtual MapReduceWorker      *createMapReduceWorker      (const SI32 &readSocket, const SI32 &writeSocket) = 0;
-        virtual MapReduceWorkerProxy *createMapReduceWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket) = 0;
+        virtual MapReduceWorker      *createMapReduceWorker        (const SI32 &readSocket, const SI32 &writeSocket) = 0;
+        virtual MapReduceWorkerProxy *createMapReduceWorkerProxy   (const SI32 &readSocket, const SI32 &writeSocket) = 0;
+        virtual void                  consumeMapReduceWorkerOutput (MapReduceWorkerResponseMessage *pMapReduceWorkerResponseMessage) = 0;
 
     public :
                            MapReduceManager (MapReduceInputConfiguration *m_pMapReduceInputConfiguration);
@@ -42,7 +43,9 @@ class MapReduceManager
     protected :
     public :
 
-        static const SI32 s_MAX_PARTITIONS_LIMIT = 500;
+        static const SI32 s_MAX_PARTITIONS_LIMIT = 500;  // Can go up to 509 when rlimit (soft) for max open file limit is 1024.
+                                                         // We do AUTO-DETECT the number of partitions required and use only the
+                                                         // the number required up a max of this number.
 };
 
 }
