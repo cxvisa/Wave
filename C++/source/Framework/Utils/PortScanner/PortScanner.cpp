@@ -25,7 +25,7 @@
 namespace WaveNs
 {
 
-bool PortScanner::scanForIpPorts (const string &ipV4Address, set<UI32> inputPorts, const UI32 &timeoutInMilliSeconds, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
+bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts, const UI32 &timeoutInMilliSeconds, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
 {
     // TODO : Declare a ResourceEnum to return detailed status instead a simple boolean
 
@@ -33,11 +33,33 @@ bool PortScanner::scanForIpPorts (const string &ipV4Address, set<UI32> inputPort
     closedPorts.clear   ();
     timedOutPorts.clear ();
 
-    struct in_addr inetAddress;
+    struct in_addr  inetAddress;
+    struct in6_addr inet6Address;
 
-    SI32 status = inet_aton (ipV4Address.c_str (), &inetAddress);
+    bool isValid = IpVxAddress::isValidIpAddress (ipAddress);
 
-    if (0 == status)
+    if (! isValid)
+    {
+        return (false);
+    }
+
+    IpVxAddress ipVxAddress (ipAddress);
+
+    UI32 addressFamily = ipVxAddress.getAddressFamily();
+
+    SI32 status = -1;
+
+    switch (addressFamily)
+    {
+        case AF_INET :
+            status = inet_pton (AF_INET, ipAddress.c_str (), &inetAddress);
+            break;
+
+        case AF_INET6 :
+            status = inet_pton (AF_INET6, ipAddress.c_str (), &inet6Address);
+    }
+
+    if (1 != status)
     {
         return (false);
     }
@@ -57,7 +79,7 @@ bool PortScanner::scanForIpPorts (const string &ipV4Address, set<UI32> inputPort
 
     for (i = 0; i < numberOfInputPorts; i++)
     {
-        const SI32 socket = ::socket (AF_INET, SOCK_STREAM, 0);
+        const SI32 socket = ::socket (addressFamily, SOCK_STREAM, 0);
 
         if (0 > socket)
         {
@@ -71,10 +93,21 @@ bool PortScanner::scanForIpPorts (const string &ipV4Address, set<UI32> inputPort
         }
     }
 
-    sockaddr_in socketAddress;
+    sockaddr_in  socketAddress;
+    sockaddr_in6 socketAddress6;
 
-    socketAddress.sin_family = AF_INET;
-    socketAddress.sin_addr.s_addr = inetAddress.s_addr;
+    switch (addressFamily)
+    {
+        case AF_INET :
+            socketAddress.sin_family = AF_INET;
+            socketAddress.sin_addr.s_addr = inetAddress.s_addr;
+            break;
+
+        case AF_INET6 :
+            socketAddress6.sin6_family = AF_INET6;
+            socketAddress6.sin6_addr = inet6Address;
+            break;
+    }
 
     set<SI32>::const_iterator socketElement    = sockets.begin ();
     set<SI32>::const_iterator socketEndElement = sockets.end   ();
@@ -121,9 +154,20 @@ bool PortScanner::scanForIpPorts (const string &ipV4Address, set<UI32> inputPort
 
     while (socketEndElement != socketElement)
     {
-        socketAddress.sin_port = htons (*inputPortElement);
+        SI32 connectionStatus = -1;
 
-        SI32 connectionStatus = ::connect (*socketElement, (struct sockaddr *) &socketAddress, sizeof (socketAddress));
+        switch (addressFamily)
+        {
+            case AF_INET :
+                socketAddress.sin_port = htons (*inputPortElement);
+                connectionStatus = ::connect (*socketElement, (struct sockaddr *) &socketAddress, sizeof (socketAddress));
+                break;
+
+            case AF_INET6 :
+                socketAddress6.sin6_port = htons (*inputPortElement);
+                connectionStatus = ::connect (*socketElement, (struct sockaddr *) &socketAddress6, sizeof (socketAddress6));
+                break;
+        }
 
         if (0 == connectionStatus)
         {

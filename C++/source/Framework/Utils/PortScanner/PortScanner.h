@@ -26,7 +26,7 @@ class PortScanner
 
     protected :
     public :
-        static bool       scanForIpPorts (const string &ipV4Address, set<UI32> inputPorts, const UI32 &timeoutInMilliSeconds, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts);
+        static bool       scanForIpPorts (const string &ipAddress, set<UI32> inputPorts, const UI32 &timeoutInMilliSeconds, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts);
         static ResourceId scanPorts      (const PortScannerInputConfiguration &portScannerInputConfiguration, set<UI32> &allOpenPorts, set<UI32> &allClosedPorts, set<UI32> &allTimedOutPorts, set<UI32> &allNotTriedPorts);
         static ResourceId scanPorts      (const PortScannerInputConfiguration &portScannerInputConfiguration);
 
