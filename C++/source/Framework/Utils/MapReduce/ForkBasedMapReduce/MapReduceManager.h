@@ -35,8 +35,10 @@ class MapReduceManager
         ResourceId processParent                                ();
         void       createMapReduceWorkerProxies                 ();
         void       initializePipeFdSetForReadingAndComputeMaxFd ();
-        void       errorOutMapReduceWorkerProxy                 (MapReduceWorkerProxy *pMapReduceWorkerProxy);
+        void       errorOutMapReduceWorkerProxy                 (MapReduceWorkerProxy *pMapReduceWorkerProxy, const MapReduceProcessingStatus &mapReduceProcessingStatus);
         void       processAvailableFd                           (const SI32 &availableFd);
+        void       errorOutUnprocessedFd                        (const SI32 &unprocessedFd, const MapReduceProcessingStatus &mapReduceProcessingStatus);
+
 
     protected :
         virtual MapReduceWorker      *createMapReduceWorker        (const SI32 &readSocket, const SI32 &writeSocket) = 0;
@@ -49,7 +51,7 @@ class MapReduceManager
 
                 ResourceId mapReduce                    ();
 
-        virtual void       errorOutMapReduceWorkerInput (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage) = 0 ;
+        virtual void       errorOutMapReduceWorkerInput (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage, const MapReduceProcessingStatus &mapReduceProcessingStatus) = 0 ;
 
 
         // Now the data members

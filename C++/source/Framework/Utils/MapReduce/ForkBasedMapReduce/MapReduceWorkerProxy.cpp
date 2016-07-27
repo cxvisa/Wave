@@ -197,13 +197,13 @@ void MapReduceWorkerProxy::resetPendingMapReduceManagerDelegateMessage ()
     }
 }
 
-void MapReduceWorkerProxy::errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager)
+void MapReduceWorkerProxy::errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager, const MapReduceProcessingStatus &mapReduceProcessingStatus)
 {
     waveAssert (NULL != pMapReduceManager, __FILE__, __LINE__);
 
     if (NULL != m_pPendingMapReduceManagerDelegateMessage)
     {
-        pMapReduceManager->errorOutMapReduceWorkerInput (m_pPendingMapReduceManagerDelegateMessage);
+        pMapReduceManager->errorOutMapReduceWorkerInput (m_pPendingMapReduceManagerDelegateMessage, mapReduceProcessingStatus);
     }
 }
 

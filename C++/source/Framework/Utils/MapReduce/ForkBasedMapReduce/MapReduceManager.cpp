@@ -272,20 +272,20 @@ void MapReduceManager::initializePipeFdSetForReadingAndComputeMaxFd ()
     }
 }
 
-void MapReduceManager::errorOutMapReduceWorkerProxy (MapReduceWorkerProxy *pMapReduceWorkerProxy)
+void MapReduceManager::errorOutMapReduceWorkerProxy (MapReduceWorkerProxy *pMapReduceWorkerProxy, const MapReduceProcessingStatus &mapReduceProcessingStatus)
 {
     waveAssert (NULL != pMapReduceWorkerProxy, __FILE__, __LINE__);
 
     FD_CLR (pMapReduceWorkerProxy->getReadSocket (), &m_pipeFdSetForReading);
 
-    pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this);
+    pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this, mapReduceProcessingStatus);
 
     delete pMapReduceWorkerProxy;
 }
 
 void MapReduceManager::processAvailableFd (const SI32 &availableFd)
 {
-    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD : %d", availableFd);
+    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "Processing FD : %d", availableFd);
 
     MapReduceWorkerProxy *pMapReduceWorkerProxy = m_readFdToWorkerProxy[availableFd];
 
@@ -297,7 +297,7 @@ void MapReduceManager::processAvailableFd (const SI32 &availableFd)
     {
         WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, Closed communications.", availableFd);
 
-        errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+        errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy, MAP_REDUCE_PROCESSING_STATUS_ERROR);
     }
     else
     {
@@ -319,7 +319,7 @@ void MapReduceManager::processAvailableFd (const SI32 &availableFd)
 
                 if (false == status)
                 {
-                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy, MAP_REDUCE_PROCESSING_STATUS_ERROR);
                 }
 
                 break;
@@ -335,7 +335,7 @@ void MapReduceManager::processAvailableFd (const SI32 &availableFd)
 
                 if (false == status)
                 {
-                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy, MAP_REDUCE_PROCESSING_STATUS_ERROR);
                 }
 
                 break;
@@ -343,13 +343,24 @@ void MapReduceManager::processAvailableFd (const SI32 &availableFd)
             default :
                 WaveNs::tracePrintf (TRACE_LEVEL_FATAL, true, false, "FD %d, Unexpected message from worker.  Status : %s", availableFd, (FrameworkToolKit::localize (mapReduceMessageType)).c_str ());
 
-                errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+                errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy, MAP_REDUCE_PROCESSING_STATUS_ERROR);
 
                 break;
         }
 
         delete pMapReduceMessageBase;
     }
+}
+
+void MapReduceManager::errorOutUnprocessedFd (const SI32 &unprocessedFd, const MapReduceProcessingStatus &mapReduceProcessingStatus)
+{
+    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "Error-ing out unprocessed FD : %d", unprocessedFd);
+
+    MapReduceWorkerProxy *pMapReduceWorkerProxy = m_readFdToWorkerProxy[unprocessedFd];
+
+    waveAssert (NULL != pMapReduceWorkerProxy, __FILE__, __LINE__);
+
+    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy, mapReduceProcessingStatus);
 }
 
 ResourceId MapReduceManager::processParent ()
@@ -415,7 +426,13 @@ ResourceId MapReduceManager::processParent ()
 
     if (MAP_REDUCE_PROCESSING_STATUS_SUCCESS != mapReduceProcessingStatus)
     {
-
+        for (i = 0; i <= m_maxFdToSelect; i++)
+        {
+            if (FD_ISSET(i, &m_pipeFdSetForReading))
+            {
+                errorOutUnprocessedFd (i, mapReduceProcessingStatus);
+            }
+        }
     }
 
     releaseAllocatedPipeFdsForShards ();

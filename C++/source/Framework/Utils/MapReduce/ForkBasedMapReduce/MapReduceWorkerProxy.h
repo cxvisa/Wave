@@ -41,7 +41,7 @@ class MapReduceWorkerProxy
         virtual MapReduceMessageBase            *receiveWorkerMessage                           ();
 
                 void                             resetPendingMapReduceManagerDelegateMessage    ();
-                void                             errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager);
+                void                             errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager, const MapReduceProcessingStatus &mapReduceProcessingStatus);
 
                 SI32                             getReadSocket                                  () const;
 

@@ -13,6 +13,7 @@
 #include "Framework/Utils/PortScanner/PortScannerWorkerOutput.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/PortScanner/PortScannerWorkerInput.h"
+#include "WaveResourceIdEnums.h"
 
 #include <netdb.h>
 
@@ -57,7 +58,7 @@ void PortScannerMapReducer::consumeMapReduceWorkerOutput (MapReduceWorkerRespons
     m_allNotTriedPorts.insert (allNotTriedPortsVector.begin (), allNotTriedPortsVector.end ());
 }
 
-void PortScannerMapReducer::errorOutMapReduceWorkerInput (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage)
+void PortScannerMapReducer::errorOutMapReduceWorkerInput (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage, const MapReduceProcessingStatus &mapReduceProcessingStatus)
 {
     WaveNs::waveAssert (NULL != pMapReduceManagerDelegateMessage, __FILE__, __LINE__);
 
@@ -71,11 +72,22 @@ void PortScannerMapReducer::errorOutMapReduceWorkerInput (MapReduceManagerDelega
 
     inputPortRange.getUI32RangeVector (inputPortsVector);
 
-    // TODO : For now we always onsiders errored out port range proessing a not tried ports.
-    //        We shpuld pass a reason code (resource id) into this member function and insert
-    //        ports into timed out / not tried as per the reason code.
+    // Based on the reason code we accumulate the errored out ports
 
-    m_allNotTriedPorts.insert (inputPortsVector.begin (), inputPortsVector.end ());
+    switch (mapReduceProcessingStatus)
+    {
+        case MAP_REDUCE_PROCESSING_STATUS_ERROR :
+            m_allNotTriedPorts.insert (inputPortsVector.begin (), inputPortsVector.end ());
+            break;
+
+        case MAP_REDUCE_PROCESSING_STATUS_TIMED_OUT :
+            m_allTimedOutPorts.insert (inputPortsVector.begin (), inputPortsVector.end ());
+            break;
+
+        default :
+            m_allNotTriedPorts.insert (inputPortsVector.begin (), inputPortsVector.end ());
+            break;
+    }
 }
 
 void PortScannerMapReducer::printReport ()
