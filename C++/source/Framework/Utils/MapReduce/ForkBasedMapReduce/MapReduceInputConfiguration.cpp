@@ -52,7 +52,7 @@ UI32 MapReduceInputConfiguration::getAdjustedMaximumNumberOfPartitionsRequired (
 {
     const UI32 computedMaximumNumberOfParitionsRequired = computeMaximumNumberOfPartitionsRequired ();
 
-    return (computedMaximumNumberOfParitionsRequired < m_maximumNumberOfPartitions ? computedMaximumNumberOfParitionsRequired : computedMaximumNumberOfParitionsRequired);
+    return (computedMaximumNumberOfParitionsRequired < m_maximumNumberOfPartitions ? computedMaximumNumberOfParitionsRequired : m_maximumNumberOfPartitions);
 }
 
 UI32 MapReduceInputConfiguration::getTimeoutInMilliSecondsForManager () const

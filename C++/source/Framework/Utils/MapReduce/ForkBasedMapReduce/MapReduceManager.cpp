@@ -40,7 +40,7 @@ MapReduceManager::MapReduceManager (MapReduceInputConfiguration *pMapReduceInput
         m_numberOfPartitions = s_MAX_PARTITIONS_LIMIT;
     }
 
-    tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceManager::MapReduceManager : Number of partitions computed : %d in reality, Requested : %d", m_numberOfPartitions, m_pMapReduceInputConfiguration->getMaximumNumberOfPartitions ());
+    tracePrintf (TRACE_LEVEL_INFO, "MapReduceManager::MapReduceManager : Number of partitions computed : %d in reality, Requested : %d", m_numberOfPartitions, m_pMapReduceInputConfiguration->getMaximumNumberOfPartitions ());
 
     allocatePipeFdsForShards ();
 }
@@ -283,6 +283,75 @@ void MapReduceManager::errorOutMapReduceWorkerProxy (MapReduceWorkerProxy *pMapR
     delete pMapReduceWorkerProxy;
 }
 
+void MapReduceManager::processAvailableFd (const SI32 &availableFd)
+{
+    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD : %d", availableFd);
+
+    MapReduceWorkerProxy *pMapReduceWorkerProxy = m_readFdToWorkerProxy[availableFd];
+
+    waveAssert (NULL != pMapReduceWorkerProxy, __FILE__, __LINE__);
+
+    MapReduceMessageBase *pMapReduceMessageBase = pMapReduceWorkerProxy->receiveWorkerMessage ();
+
+    if (NULL == pMapReduceMessageBase)
+    {
+        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, Closed communications.", availableFd);
+
+        errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+    }
+    else
+    {
+        MapReduceMessageType             mapReduceMessageType             = pMapReduceMessageBase->getMapReduceMessageType ();
+        MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage = NULL;
+        MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage  = NULL;
+        bool                             status                           = false;
+
+        switch (mapReduceMessageType)
+        {
+            case MAP_REDUCE_MESSAGE_TYPE_READY :
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD %d, Can Accept Work.", availableFd);
+
+                pMapReduceWorkerReadinessMessage = dynamic_cast<MapReduceWorkerReadinessMessage *> (pMapReduceMessageBase);
+
+                waveAssert (NULL != pMapReduceWorkerReadinessMessage, __FILE__, __LINE__);
+
+                status = processWorkerReady (pMapReduceWorkerProxy, pMapReduceWorkerReadinessMessage);
+
+                if (false == status)
+                {
+                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+                }
+
+                break;
+
+            case MAP_REDUCE_MESSAGE_TYPE_RESPONSE :
+                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD %d, Finished work and responded.", availableFd);
+
+                pMapReduceWorkerResponseMessage = dynamic_cast<MapReduceWorkerResponseMessage *> (pMapReduceMessageBase);
+
+                waveAssert (NULL != pMapReduceWorkerResponseMessage, __FILE__, __LINE__);
+
+                status = processWorkerResponse (pMapReduceWorkerProxy, pMapReduceWorkerResponseMessage);
+
+                if (false == status)
+                {
+                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+                }
+
+                break;
+
+            default :
+                WaveNs::tracePrintf (TRACE_LEVEL_FATAL, true, false, "FD %d, Unexpected message from worker.  Status : %s", availableFd, (FrameworkToolKit::localize (mapReduceMessageType)).c_str ());
+
+                errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
+
+                break;
+        }
+
+        delete pMapReduceMessageBase;
+    }
+}
+
 ResourceId MapReduceManager::processParent ()
 {
     SI32 i = 0;
@@ -338,71 +407,7 @@ ResourceId MapReduceManager::processParent ()
             {
                 if (FD_ISSET(i, &pipeFdSetForReadingForThisIteration))
                 {
-                    WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD : %d", i);
-
-                    MapReduceWorkerProxy *pMapReduceWorkerProxy = m_readFdToWorkerProxy[i];
-
-                    waveAssert (NULL != pMapReduceWorkerProxy, __FILE__, __LINE__);
-
-                    MapReduceMessageBase *pMapReduceMessageBase = pMapReduceWorkerProxy->receiveWorkerMessage ();
-
-                    if (NULL == pMapReduceMessageBase)
-                    {
-                        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, Closed communications.", i);
-
-                        errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
-                    }
-                    else
-                    {
-                        MapReduceMessageType             mapReduceMessageType             = pMapReduceMessageBase->getMapReduceMessageType ();
-                        MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage = NULL;
-                        MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage  = NULL;
-                        bool                             status                           = false;
-
-                        switch (mapReduceMessageType)
-                        {
-                            case MAP_REDUCE_MESSAGE_TYPE_READY :
-                                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD %d, Can Accept Work.", i);
-
-                                pMapReduceWorkerReadinessMessage = dynamic_cast<MapReduceWorkerReadinessMessage *> (pMapReduceMessageBase);
-
-                                waveAssert (NULL != pMapReduceWorkerReadinessMessage, __FILE__, __LINE__);
-
-                                status = processWorkerReady (pMapReduceWorkerProxy, pMapReduceWorkerReadinessMessage);
-
-                                if (false == status)
-                                {
-                                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
-                                }
-
-                                break;
-
-                            case MAP_REDUCE_MESSAGE_TYPE_RESPONSE :
-                                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD %d, Finished work and responded.", i);
-
-                                pMapReduceWorkerResponseMessage = dynamic_cast<MapReduceWorkerResponseMessage *> (pMapReduceMessageBase);
-
-                                waveAssert (NULL != pMapReduceWorkerResponseMessage, __FILE__, __LINE__);
-
-                                status = processWorkerResponse (pMapReduceWorkerProxy, pMapReduceWorkerResponseMessage);
-
-                                if (false == status)
-                                {
-                                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
-                                }
-
-                                break;
-
-                            default :
-                                WaveNs::tracePrintf (TRACE_LEVEL_FATAL, true, false, "FD %d, Unexpected message from worker.  Status : %s", i, (FrameworkToolKit::localize (mapReduceMessageType)).c_str ());
-
-                                errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
-
-                                break;
-                        }
-
-                        delete pMapReduceMessageBase;
-                    }
+                    processAvailableFd (i);
                 }
             }
         }

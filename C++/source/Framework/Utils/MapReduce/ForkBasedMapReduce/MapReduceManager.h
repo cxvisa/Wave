@@ -36,6 +36,7 @@ class MapReduceManager
         void       createMapReduceWorkerProxies                 ();
         void       initializePipeFdSetForReadingAndComputeMaxFd ();
         void       errorOutMapReduceWorkerProxy                 (MapReduceWorkerProxy *pMapReduceWorkerProxy);
+        void       processAvailableFd                           (const SI32 &availableFd);
 
     protected :
         virtual MapReduceWorker      *createMapReduceWorker        (const SI32 &readSocket, const SI32 &writeSocket) = 0;
