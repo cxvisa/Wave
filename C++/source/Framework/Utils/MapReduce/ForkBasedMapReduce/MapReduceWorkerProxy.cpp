@@ -207,4 +207,9 @@ void MapReduceWorkerProxy::errorOutPendingMapReduceManagerDelegateMessage (MapRe
     }
 }
 
+SI32 MapReduceWorkerProxy::getReadSocket () const
+{
+    return (m_readSocket);
+}
+
 }

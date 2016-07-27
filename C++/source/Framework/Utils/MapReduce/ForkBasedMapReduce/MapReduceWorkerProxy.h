@@ -43,6 +43,8 @@ class MapReduceWorkerProxy
                 void                             resetPendingMapReduceManagerDelegateMessage    ();
                 void                             errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager);
 
+                SI32                             getReadSocket                                  () const;
+
         // Now the data members
 
     private :

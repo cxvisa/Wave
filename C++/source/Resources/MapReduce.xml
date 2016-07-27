@@ -8,4 +8,10 @@
           <Resource Name = "MAP_REDUCE_MESSAGE_TYPE_DELEGATE">Manager Delegate</Resource>
           <Resource Name = "MAP_REDUCE_MESSAGE_TYPE_RESPONSE">Worker Response</Resource>
      </ResourceEnum>
+
+     <ResourceEnum Name = "MapReduceProcessingStatus">
+          <Resource Name = "MAP_REDUCE_PROCESSING_STATUS_SUCCESS">Success</Resource>
+          <Resource Name = "MAP_REDUCE_PROCESSING_STATUS_TIMED_OUT">Timed out</Resource>
+          <Resource Name = "MAP_REDUCE_PROCESSING_STATUS_ERROR">Generic Error</Resource>
+     </ResourceEnum>
 </ModuleResources>

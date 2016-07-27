@@ -26,13 +26,16 @@ class MapReduceManagerDelegateMessage;
 class MapReduceManager
 {
     private :
-        bool       processWorkerReady               (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
-        bool       processWorkerResponse            (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage);
+        bool       processWorkerReady                           (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
+        bool       processWorkerResponse                        (MapReduceWorkerProxy *pMapReduceWorkerProxy, MapReduceWorkerResponseMessage  *pMapReduceWorkerResponseMessage);
 
-        void       releaseAllocatedPipeFdsForShards ();
-        void       allocatePipeFdsForShards         ();
-        void       processChild                     ();
-        ResourceId processParent                    ();
+        void       releaseAllocatedPipeFdsForShards             ();
+        void       allocatePipeFdsForShards                     ();
+        void       processChild                                 ();
+        ResourceId processParent                                ();
+        void       createMapReduceWorkerProxies                 ();
+        void       initializePipeFdSetForReadingAndComputeMaxFd ();
+        void       errorOutMapReduceWorkerProxy                 (MapReduceWorkerProxy *pMapReduceWorkerProxy);
 
     protected :
         virtual MapReduceWorker      *createMapReduceWorker        (const SI32 &readSocket, const SI32 &writeSocket) = 0;
@@ -66,6 +69,8 @@ class MapReduceManager
                      map<SI32, MapReduceWorkerProxy *>   m_readFdToWorkerProxy;
                      SI32                                m_numberOfPartitions;
                      SI32                                m_childIndex;
+                     fd_set                              m_pipeFdSetForReading;
+                     SI32                                m_maxFdToSelect;
 };
 
 }

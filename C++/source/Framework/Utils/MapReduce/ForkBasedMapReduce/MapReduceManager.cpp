@@ -231,9 +231,12 @@ void MapReduceManager::processChild ()
     exit (0);
 }
 
-ResourceId MapReduceManager::processParent ()
+void MapReduceManager::createMapReduceWorkerProxies ()
 {
     SI32 i = 0;
+
+    // Create Map Reduce Worker Proxies for all of the workers and store them into a map indexed by the Read FD.
+    // When we select on the Read FDs, the map will be handy to readily identify the Worker Proxy and work with it.
 
     for (i = 0; i < m_numberOfPartitions; i++)
     {
@@ -243,42 +246,66 @@ ResourceId MapReduceManager::processParent ()
 
         m_readFdToWorkerProxy[m_pPipeFdsForShardsForReading[i][0]] = pMapReduceWorkerProxy;
     }
+}
 
-    fd_set         pipeFdSetForReading;
-    struct timeval timeOut;
-    SI32           maxFdToSelect = 0;
-
-    FD_ZERO (&pipeFdSetForReading);
+void MapReduceManager::initializePipeFdSetForReadingAndComputeMaxFd ()
+{
+    FD_ZERO (&m_pipeFdSetForReading);
 
     map<pid_t, SI32>::const_iterator element    = m_pidToChildIndexMap.begin ();
     map<pid_t, SI32>::const_iterator endElement = m_pidToChildIndexMap.end   ();
+
+    m_maxFdToSelect = 0;
 
     while (endElement != element)
     {
         SI32 fdToSelect = m_pPipeFdsForShardsForReading[element->second][0];
 
-        if (fdToSelect > maxFdToSelect)
+        if (fdToSelect > m_maxFdToSelect)
         {
-            maxFdToSelect = fdToSelect;
+            m_maxFdToSelect = fdToSelect;
         }
 
-        FD_SET (fdToSelect, &pipeFdSetForReading);
+        FD_SET (fdToSelect, &m_pipeFdSetForReading);
 
         element++;
     }
+}
 
-    while (0 < (FdUtils::fdCount (&pipeFdSetForReading)))
+void MapReduceManager::errorOutMapReduceWorkerProxy (MapReduceWorkerProxy *pMapReduceWorkerProxy)
+{
+    waveAssert (NULL != pMapReduceWorkerProxy, __FILE__, __LINE__);
+
+    FD_CLR (pMapReduceWorkerProxy->getReadSocket (), &m_pipeFdSetForReading);
+
+    pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this);
+
+    delete pMapReduceWorkerProxy;
+}
+
+ResourceId MapReduceManager::processParent ()
+{
+    SI32 i = 0;
+
+    createMapReduceWorkerProxies ();
+
+    initializePipeFdSetForReadingAndComputeMaxFd ();
+
+    struct timeval            timeOut;
+    MapReduceProcessingStatus mapReduceProcessingStatus = MAP_REDUCE_PROCESSING_STATUS_SUCCESS;
+
+    while (0 < (FdUtils::fdCount (&m_pipeFdSetForReading)))
     {
         fd_set pipeFdSetForReadingForThisIteration;
 
-        FdUtils::fdCopy (&pipeFdSetForReading, &pipeFdSetForReadingForThisIteration);
+        FdUtils::fdCopy (&m_pipeFdSetForReading, &pipeFdSetForReadingForThisIteration);
 
         const UI32 timeoutInMilliSecondsForManager = m_pMapReduceInputConfiguration->getTimeoutInMilliSecondsForManager ();
 
         timeOut.tv_sec = timeoutInMilliSecondsForManager / 1000;
         timeOut.tv_usec = (timeoutInMilliSecondsForManager % 1000) * 1000;
 
-        SI32 selectStatus = select (maxFdToSelect + 1, &pipeFdSetForReadingForThisIteration, NULL, NULL, &timeOut);
+        SI32 selectStatus = select (m_maxFdToSelect + 1, &pipeFdSetForReadingForThisIteration, NULL, NULL, &timeOut);
 
         WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "Select Status : %d, %d", selectStatus, FdUtils::fdCount (&pipeFdSetForReadingForThisIteration));
 
@@ -290,16 +317,24 @@ ResourceId MapReduceManager::processParent ()
            }
            else
            {
+               WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "Failed select, errno : %d, %s", errno, (SystemErrorUtils::getErrorStringForErrorNumber (errno)).c_str ());
+
+               mapReduceProcessingStatus = MAP_REDUCE_PROCESSING_STATUS_ERROR;
+
                break;
            }
         }
         else if (0 == selectStatus)
         {
+            WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "select timed out.");
+
+            mapReduceProcessingStatus = MAP_REDUCE_PROCESSING_STATUS_TIMED_OUT;
+
             break;
         }
         else
         {
-            for (i = 0; i <= maxFdToSelect; i++)
+            for (i = 0; i <= m_maxFdToSelect; i++)
             {
                 if (FD_ISSET(i, &pipeFdSetForReadingForThisIteration))
                 {
@@ -315,11 +350,7 @@ ResourceId MapReduceManager::processParent ()
                     {
                         WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, Closed communications.", i);
 
-                        FD_CLR (i, &pipeFdSetForReading);
-
-                        pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this);
-
-                        delete pMapReduceWorkerProxy;
+                        errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
                     }
                     else
                     {
@@ -341,11 +372,7 @@ ResourceId MapReduceManager::processParent ()
 
                                 if (false == status)
                                 {
-                                    FD_CLR (i, &pipeFdSetForReading);
-
-                                    pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this);
-
-                                    delete pMapReduceWorkerProxy;
+                                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
                                 }
 
                                 break;
@@ -361,11 +388,7 @@ ResourceId MapReduceManager::processParent ()
 
                                 if (false == status)
                                 {
-                                    FD_CLR (i, &pipeFdSetForReading);
-
-                                    pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this);
-
-                                    delete pMapReduceWorkerProxy;
+                                    errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
                                 }
 
                                 break;
@@ -373,11 +396,7 @@ ResourceId MapReduceManager::processParent ()
                             default :
                                 WaveNs::tracePrintf (TRACE_LEVEL_FATAL, true, false, "FD %d, Unexpected message from worker.  Status : %s", i, (FrameworkToolKit::localize (mapReduceMessageType)).c_str ());
 
-                                FD_CLR (i, &pipeFdSetForReading);
-
-                                pMapReduceWorkerProxy->errorOutPendingMapReduceManagerDelegateMessage(this);
-
-                                delete pMapReduceWorkerProxy;
+                                errorOutMapReduceWorkerProxy (pMapReduceWorkerProxy);
 
                                 break;
                         }
@@ -387,6 +406,11 @@ ResourceId MapReduceManager::processParent ()
                 }
             }
         }
+    }
+
+    if (MAP_REDUCE_PROCESSING_STATUS_SUCCESS != mapReduceProcessingStatus)
+    {
+
     }
 
     releaseAllocatedPipeFdsForShards ();
