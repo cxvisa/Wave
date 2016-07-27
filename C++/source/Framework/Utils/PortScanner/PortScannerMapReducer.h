@@ -25,6 +25,7 @@ class PortScannerMapReducer : public MapReduceManager
         virtual MapReduceWorker      *createMapReduceWorker        (const SI32 &readSocket, const SI32 &writeSocket);
         virtual MapReduceWorkerProxy *createMapReduceWorkerProxy   (const SI32 &readSocket, const SI32 &writeSocket);
         virtual void                  consumeMapReduceWorkerOutput (MapReduceWorkerResponseMessage *pMapReduceWorkerResponseMessage);
+        virtual void                  errorOutMapReduceWorkerInput (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage);
 
     protected :
     public :

@@ -17,6 +17,7 @@ class MapReduceManagerDelegateMessage;
 class MapReduceWorkerResponseMessage;
 class MapReduceMessageBase;
 class MapReduceInputConfiguration;
+class MapReduceManager;
 
 class MapReduceWorkerProxy
 {
@@ -31,19 +32,24 @@ class MapReduceWorkerProxy
         virtual MapReduceManagerDelegateMessage *process                                    (MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage) = 0;
 
     public :
-                 MapReduceWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket);
-        virtual ~MapReduceWorkerProxy ();
+                                                 MapReduceWorkerProxy                           (const SI32 &readSocket, const SI32 &writeSocket);
+        virtual                                 ~MapReduceWorkerProxy                           ();
 
-        virtual MapReduceWorkerReadinessMessage *receiveWorkerReadynessMessage            ();
-        virtual bool                             processWorkerReadynessMessageAndDelegate (MapReduceInputConfiguration *pMapReduceInputConfiguration, MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
-        virtual MapReduceWorkerResponseMessage  *receiveWorkerResponseMessage             ();
-        virtual MapReduceMessageBase            *receiveWorkerMessage                     ();
+        virtual MapReduceWorkerReadinessMessage *receiveWorkerReadynessMessage                  ();
+        virtual bool                             processWorkerReadynessMessageAndDelegate       (MapReduceInputConfiguration *pMapReduceInputConfiguration, MapReduceWorkerReadinessMessage *pMapReduceWorkerReadinessMessage);
+        virtual MapReduceWorkerResponseMessage  *receiveWorkerResponseMessage                   ();
+        virtual MapReduceMessageBase            *receiveWorkerMessage                           ();
+
+                void                             resetPendingMapReduceManagerDelegateMessage    ();
+                void                             errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager);
 
         // Now the data members
 
     private :
         SI32 m_readSocket;
         SI32 m_writeSocket;
+
+        MapReduceManagerDelegateMessage *m_pPendingMapReduceManagerDelegateMessage;
 
     protected :
     public :

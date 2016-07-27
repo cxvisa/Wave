@@ -74,6 +74,8 @@ bool SystemLimitsUtils::getFileDescriptorsCurrentlyInUse (vector<UI32> &fileDesc
     {
         WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "SystemLimitsUtils::getFileDescriptorsCurrentlyInUse : Filed to poll. errno : %d, %s", errno, SystemErrorUtils::getErrorStringForErrorNumber(errno));
 
+        delete[] (pPollFds);
+
         return (false);
     }
 
@@ -84,6 +86,8 @@ bool SystemLimitsUtils::getFileDescriptorsCurrentlyInUse (vector<UI32> &fileDesc
             fileDescriptorsCurrentlyInUse.push_back (i);
         }
     }
+
+    delete[] (pPollFds);
 
     return (true);
 }

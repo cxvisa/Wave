@@ -19,10 +19,11 @@ class FdUtils
     private :
     protected :
     public :
-        static void fdCopy                  (fd_set *pSource, fd_set *pDestination);
-        static SI32 fdMax                   (fd_set *pSource);
-        static SI32 fdCount                 (fd_set *pSource);
-        static bool getNumberOfAvailableFds (UI32 &numberOfAvailableFds);
+        static void fdCopy                   (fd_set *pSource, fd_set *pDestination);
+        static SI32 fdMax                    (fd_set *pSource);
+        static SI32 fdCount                  (fd_set *pSource);
+        static bool getNumberOfAvailableFds  (UI32 &numberOfAvailableFds);
+        static void receiveMessageFromSocket (const SI32 &socket, string &message);
 
         // Now the data members
 

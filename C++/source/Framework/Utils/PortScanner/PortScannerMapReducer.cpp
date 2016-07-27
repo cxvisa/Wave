@@ -12,6 +12,7 @@
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceWorkerResponseMessage.h"
 #include "Framework/Utils/PortScanner/PortScannerWorkerOutput.h"
 #include "Framework/Utils/TraceUtils.h"
+#include "Framework/Utils/PortScanner/PortScannerWorkerInput.h"
 
 #include <netdb.h>
 
@@ -54,6 +55,27 @@ void PortScannerMapReducer::consumeMapReduceWorkerOutput (MapReduceWorkerRespons
     m_allClosedPorts.insert   (allClosedPortsVector.begin   (), allClosedPortsVector.end   ());
     m_allTimedOutPorts.insert (allTimedOutPortsVector.begin (), allTimedOutPortsVector.end ());
     m_allNotTriedPorts.insert (allNotTriedPortsVector.begin (), allNotTriedPortsVector.end ());
+}
+
+void PortScannerMapReducer::errorOutMapReduceWorkerInput (MapReduceManagerDelegateMessage *pMapReduceManagerDelegateMessage)
+{
+    WaveNs::waveAssert (NULL != pMapReduceManagerDelegateMessage, __FILE__, __LINE__);
+
+    PortScannerWorkerInput *pPortScannerWorkerInput = dynamic_cast<PortScannerWorkerInput *> (pMapReduceManagerDelegateMessage);
+
+    WaveNs::waveAssert (NULL != pPortScannerWorkerInput, __FILE__, __LINE__);
+
+    UI32Range inputPortRange = pPortScannerWorkerInput->getPortRange ();
+
+    vector<UI32> inputPortsVector;
+
+    inputPortRange.getUI32RangeVector (inputPortsVector);
+
+    // TODO : For now we always onsiders errored out port range proessing a not tried ports.
+    //        We shpuld pass a reason code (resource id) into this member function and insert
+    //        ports into timed out / not tried as per the reason code.
+
+    m_allNotTriedPorts.insert (inputPortsVector.begin (), inputPortsVector.end ());
 }
 
 void PortScannerMapReducer::printReport ()

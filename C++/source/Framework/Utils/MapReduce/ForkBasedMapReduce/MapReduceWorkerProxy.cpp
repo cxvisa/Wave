@@ -13,6 +13,8 @@
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceWorkerResponseMessage.h"
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceInputConfiguration.h"
 #include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManagerDelegateMessage.h"
+#include "Framework/Utils/FdUtils.h"
+#include "Framework/Utils/MapReduce/ForkBasedMapReduce/MapReduceManager.h"
 
 #include <errno.h>
 
@@ -20,8 +22,9 @@ namespace WaveNs
 {
 
 MapReduceWorkerProxy::MapReduceWorkerProxy (const SI32 &readSocket, const SI32 &writeSocket)
-    : m_readSocket  (readSocket),
-      m_writeSocket (writeSocket)
+    : m_readSocket                              (readSocket),
+      m_writeSocket                             (writeSocket),
+      m_pPendingMapReduceManagerDelegateMessage (NULL)
 {
 }
 
@@ -31,77 +34,13 @@ MapReduceWorkerProxy::~MapReduceWorkerProxy ()
 
     ::close (m_readSocket);
     ::close (m_writeSocket);
+
+    resetPendingMapReduceManagerDelegateMessage ();
 }
 
 void MapReduceWorkerProxy::receiveMessageFromWorker (string &messageFromManager)
 {
-    messageFromManager = "";
-
-    UI32 sizeOfDataToReceive = 0;
-
-    SI32 status = ::read (m_readSocket, &sizeOfDataToReceive, sizeof (sizeOfDataToReceive));
-
-    if (-1 == status)
-    {
-        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorkerProxy::receiveMessageFromWorker : Data read failed for fd : %d with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
-    }
-    else if (0 == status)
-    {
-        return;
-    }
-    else
-    {
-        sizeOfDataToReceive = ntohl (sizeOfDataToReceive);
-
-        const UI32 originalSizeOfDataToReceive = sizeOfDataToReceive;
-
-        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, number of bytes to read : %d", m_readSocket, originalSizeOfDataToReceive);
-
-        char *pBuffer     = new char[originalSizeOfDataToReceive + 1];
-        char *pTempBuffer = pBuffer;
-
-        waveAssert (NULL != pBuffer,     __FILE__, __LINE__);
-        waveAssert (NULL != pTempBuffer, __FILE__, __LINE__);
-
-        while (sizeOfDataToReceive > 0)
-        {
-            status = ::read (m_readSocket, pTempBuffer, sizeOfDataToReceive);
-
-            if (-1 == status)
-            {
-                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "MapReduceWorkerProxy::receiveMessageFromWorker : Data read failed for fd : %d during message read with status : %d : %s", m_readSocket, errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
-
-                delete pBuffer;
-
-                return;
-            }
-            else if (0 == status)
-            {
-                WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, "FD %d, could not read when number of bytes remaining : %d", m_readSocket, status, sizeOfDataToReceive);
-
-                delete pBuffer;
-
-                return;
-            }
-            else
-            {
-                sizeOfDataToReceive -= status;
-                pTempBuffer         += status;
-            }
-        }
-
-        pBuffer[originalSizeOfDataToReceive] = '\0';
-
-        WaveNs::tracePrintf (TRACE_LEVEL_DEBUG, true, false, "FD : %d, Data Read : %s", m_readSocket, pBuffer);
-
-        messageFromManager = pBuffer;
-
-        delete pBuffer;
-
-        return;
-    }
-
-    return;
+    FdUtils::receiveMessageFromSocket (m_readSocket, messageFromManager);
 }
 
 MapReduceWorkerReadinessMessage *MapReduceWorkerProxy::receiveWorkerReadynessMessage ()
@@ -176,6 +115,8 @@ bool MapReduceWorkerProxy::processWorkerReadynessMessageAndDelegate (MapReduceIn
         return (false);
     }
 
+    m_pPendingMapReduceManagerDelegateMessage = pMapReduceManagerDelegateMessage;
+
     bool sendStatus = sendWorkerReadinessMessage (pMapReduceManagerDelegateMessage);
 
     return (sendStatus);
@@ -244,6 +185,26 @@ MapReduceWorkerResponseMessage *MapReduceWorkerProxy::receiveWorkerResponseMessa
     }
 
     return (NULL);
+}
+
+void MapReduceWorkerProxy::resetPendingMapReduceManagerDelegateMessage ()
+{
+    if (NULL != m_pPendingMapReduceManagerDelegateMessage)
+    {
+        delete (m_pPendingMapReduceManagerDelegateMessage);
+
+        m_pPendingMapReduceManagerDelegateMessage = NULL;
+    }
+}
+
+void MapReduceWorkerProxy::errorOutPendingMapReduceManagerDelegateMessage (MapReduceManager *pMapReduceManager)
+{
+    waveAssert (NULL != pMapReduceManager, __FILE__, __LINE__);
+
+    if (NULL != m_pPendingMapReduceManagerDelegateMessage)
+    {
+        pMapReduceManager->errorOutMapReduceWorkerInput (m_pPendingMapReduceManagerDelegateMessage);
+    }
 }
 
 }
