@@ -22,8 +22,8 @@ namespace WaveNs
 {
 
 LightHouseReceiverObjectManager::LightHouseReceiverObjectManager ()
-    : WaveLocalObjectManager     (getServiceName ()),
-      m_pMulticastReceiverSocket (NULL)
+    : WaveLocalObjectManagerForUserSpecificTasks (getServiceName ()),
+      m_pMulticastReceiverSocket                 (NULL)
 {
     setAllowAutomaticallyUnlistenForEvents (false);
 

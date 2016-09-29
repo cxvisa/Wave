@@ -27,6 +27,16 @@ namespace WaveNs
 
 bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts, const UI32 &timeoutInMilliSeconds, set<UI32> &openPorts, set<UI32> &closedPorts, set<UI32> &timedOutPorts, set<UI32> &notTriedPorts)
 {
+    // Here is the high level flow for determining open tcp ports.
+    // Currently this scanner support scanning TCP/IP ports via connect call.
+
+    // We first do basic validations like IP Address validations etc.  A few more validations with respect to ports are TBD at this point.
+    // Then we create enough sockets based on IP Address family.
+    // We then try to connect all of those sockets using appropriate address family to the given ip address and each of the ports given in input.
+    // We set the sockets to ASYNC mode before calling connect so that all of those connects can be done in parallel.
+    // Then we examine various select states and classify the ports open/closed etc.,
+    // Classifying for timed out ports (can be easily done below) and Not tried ports etc are TBD at this point.
+
     // TODO : Declare a ResourceEnum to return detailed status instead a simple boolean
 
     openPorts.clear     ();
@@ -121,6 +131,8 @@ bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts,
             ::close (*socketElement);
 
             sockets.erase (socketElement);
+
+            WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "Obtaining flags for socket %d failed.", *socketElement);
         }
         else
         {
@@ -131,6 +143,8 @@ bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts,
                 ::close (*socketElement);
 
                 sockets.erase (socketElement);
+
+                WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "Setting flags for socket %d failed.", *socketElement);
             }
         }
 
@@ -200,6 +214,8 @@ bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts,
             ::close (*socketElement);
 
             closedPorts.insert (*inputPortElement);
+
+            WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "Connect Failed for port %d with errno : %d : %s", *inputPortElement, errno, (SystemErrorUtils::getErrorStringForErrorNumber (errno)).c_str ());
         }
 
         socketElement++;
@@ -272,7 +288,9 @@ bool PortScanner::scanForIpPorts (const string &ipAddress, set<UI32> inputPorts,
     {
         ::close (socketToPortMapElement->first);
 
-        closedPorts.insert (socketToPortMapElement->second);
+        // TODO : Instead of always classifying as closed, determine appropriate classification based on how and where we exited from the above loop around select.
+
+        timedOutPorts.insert (socketToPortMapElement->second);
 
         socketToPortMapElement++;
     }

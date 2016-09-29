@@ -71,7 +71,7 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
         SI32    status        = -1;
 
         // option -w in pg_ctl command returns a non-zero status for command failure. 
-        string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + DatabaseObjectManager::getDatabaseLogStringForPgctl () + string (" -w -o \" -F --shared_buffers=") + DatabaseObjectManager::getDatabaseSharedBuffers () + string (" --max_stack_depth=7680kB --checkpoint_segments=1 --max_prepared_transactions='8' --max_locks_per_transaction='200' --log_line_prefix='%t %a [%e] ' -p ") + DatabaseObjectManager::getDatabasePort () + "\" start > /dev/null";
+        string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + DatabaseObjectManager::getDatabaseLogStringForPgctl () + string (" -w -o \" -F --shared_buffers=") + DatabaseObjectManager::getDatabaseSharedBuffers () + string (" --max_stack_depth=7680kB --max_wal_size=48MB --max_prepared_transactions='8' --max_locks_per_transaction='200' --log_line_prefix='%t %a [%e] ' -p ") + DatabaseObjectManager::getDatabasePort () + "\" start > /dev/null";
 
         trace (TRACE_LEVEL_DEVEL, "DatabaseStandaloneTransaction::bootDatabaseStep : Starting psql- conmmand string " + commandString);
 

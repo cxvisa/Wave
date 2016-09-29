@@ -190,7 +190,7 @@ bool PortScannerInputConfiguration::parseCommandLineInputs (const UI32 &numberOf
 
 void PortScannerInputConfiguration::printHelp (const char * const programName)
 {
-    WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE:\r\n%s [-ip <IPV4/IPV6 address>] [-p <Comma Separated Port Range>] [-t <Timeout in Milli Seconds>] [-ns <Number Of Shards>]", programName);
+    WaveNs::tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE:\r\n%s [-ip <IPV4/IPV6 address>] [-p <Comma Separated Port Range>] [-t <Timeout in Milli Seconds>] [-ns <Number Of Parallel Shards>]", programName);
 }
 
 UI32 PortScannerInputConfiguration::computeMaximumNumberOfPartitionsRequired () const

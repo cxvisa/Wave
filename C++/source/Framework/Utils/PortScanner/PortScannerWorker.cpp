@@ -68,6 +68,12 @@ MapReduceWorkerResponseMessage *PortScannerWorker::process (MapReduceManagerDele
     set<UI32> allTimedOutPorts;
     set<UI32> allNotTriedPorts;
 
+    // TODO : Currently we always launch the default port scanner
+    //        Default scanner is TCP only and it is based on connect calls.
+    //        In future we can examine command line arguments and launch various
+    //        Port scanner (ex. UDP based, TCP/SYN scan based etc.,).
+    //        Based on features we support, we may decide to launch more than one scanner in parallel.
+
     PortScanner::scanPorts (portScannerInputConfiguration, allOpenPorts, allClosedPorts, allTimedOutPorts, allNotTriedPorts);
 
     vector<UI32> allOpenPortsVector;

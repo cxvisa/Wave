@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "Framework/ObjectModel/WaveLocalObjectManager.h"
+#include "Framework/ObjectModel/WaveLocalObjectManagerForUserSpecificTasks.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ class WaveAsynchronousContextForBootPhases;
 class BootCompleteForThisLocationEvent;
 class MulticastReceiverSocket;
 
-class LightHouseReceiverObjectManager : public WaveLocalObjectManager
+class LightHouseReceiverObjectManager : public WaveLocalObjectManagerForUserSpecificTasks
 {
     private :
                     LightHouseReceiverObjectManager         ();
