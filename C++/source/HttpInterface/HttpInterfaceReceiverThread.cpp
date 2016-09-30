@@ -109,7 +109,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
     // For now hard code authorization to disable authorization
 
-    authorization = "d2F2ZWFkbWluOldhdmUtVExJTVMtNzE4";
+    //authorization = "d2F2ZWFkbWluOldhdmUtVExJTVMtNzE4";
 
     if (("" == authorization) || (true ==  isContentReadIncomplete))
     {
