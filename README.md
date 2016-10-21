@@ -27,6 +27,7 @@ variants in sight so that the micro services running in Wave cluster can be
 polyglot.
 
 LICENSE
+-------
 _______
 
 This code is being made available to the pulbic under [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
