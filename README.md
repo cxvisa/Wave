@@ -31,7 +31,7 @@ polyglot.
 
 CODE LAYOUT
 -----------
-
+```
 Wave/
 ├── application
 ├── build
@@ -39,7 +39,7 @@ Wave/
 ├── projects
 ├── resourcegenerator
 └── source
-
+```
 * source
     * contains almost all of the Wave Framework code.
 * application 
