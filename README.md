@@ -29,6 +29,7 @@ variants in sight so that the micro services running in Wave cluster can be
 polyglot.
 
 **C++**
+_______
 
 CODE LAYOUT
 -----------
@@ -82,5 +83,6 @@ The following build instructions are provided from Linux build host perspective.
     * export MAKEFLAGS=-s
     
 **JAVA**
+________
 
 Stay tuned ...
