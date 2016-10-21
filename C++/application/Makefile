@@ -40,7 +40,7 @@ PROGRAMS := \
 	RedundancyOptimizer.$(OS_ARCH_XT) \
 	WaveConfigurationWriter.$(OS_ARCH_XT) \
 	Wyser.$(OS_ARCH_XT) \
-	WavesyStemManagement.$(OS_ARCH_XT) \
+	WaveSystemManagement.$(OS_ARCH_XT) \
 	WyserCli.$(OS_ARCH_XT) \
 	WaveMessageExchange.$(OS_ARCH_XT) \
 	WaveMessageExchangeClient.$(OS_ARCH_XT) \
@@ -65,7 +65,7 @@ WaveCli.$(OS_ARCH_XT): WaveCli.cpp WaveCliReplyThread.cpp
 RedundancyOptimizer.$(OS_ARCH_XT): RedundancyOptimizer.cpp
 WaveConfigurationWriter.$(OS_ARCH_XT): WaveConfigurationWriter.cpp
 Wyser.$(OS_ARCH_XT): Wyser.cpp
-WavesyStemManagement.$(OS_ARCH_XT): Wsmd.cpp
+WaveSystemManagement.$(OS_ARCH_XT): Wsmd.cpp
 WyserCli.$(OS_ARCH_XT): WyserCli.cpp
 WaveMessageExchange.$(OS_ARCH_XT) : WaveMessageExchange.cpp
 WaveMessageExchangeClient.$(OS_ARCH_XT) : WaveMessageExchangeClient.cpp
@@ -104,6 +104,10 @@ clean: wave_clean
 	rm -rf WaveConfigurationWriter.$(OS).$(ARCH);
 	rm -rf Wyser.$(OS).$(ARCH);
 	rm -rf WavePortScanner.$(OS).$(ARCH);
+	rm -rf WaveMessageExchange.$(OS).$(ARCH);
+	rm -rf WaveMessageExchangeClient.$(OS).$(ARCH);
+	rm -rf WaveSystemManagement.$(OS).$(ARCH);
+	rm -rf WyserCli.$(OS).$(ARCH);
 
 wave_clean:
 	$(MAKE) -C $(WAVE_SRC) clean
@@ -117,3 +121,7 @@ cleanall:
 	rm -f WaveConfigurationWriter.*.*;
 	rm -f Wyser.*.*;
 	rm -f WavePortScanner.*.*;
+	rm -rf WaveMessageExchange.$(OS).$(ARCH);
+	rm -rf WaveMessageExchangeClient.$(OS).$(ARCH);
+	rm -rf WaveSystemManagement.$(OS).$(ARCH);
+	rm -rf WyserCli.$(OS).$(ARCH);
