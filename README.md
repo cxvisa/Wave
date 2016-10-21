@@ -33,6 +33,7 @@ _______
 This code is being made available to the pulbic under [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 **C++**
+-------
 _______
 
 CODE LAYOUT
@@ -87,6 +88,7 @@ The following build instructions are provided from Linux build host perspective.
     * export MAKEFLAGS=-s
     
 **JAVA**
+--------
 ________
 
 Stay tuned ...
