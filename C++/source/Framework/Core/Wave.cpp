@@ -47,7 +47,6 @@
 #include "Framework/Messaging/LightHouse/LightHouseReceiverObjectManager.h"
 #include "Framework/Messaging/LightHouse/LightHouseTransportObjectManager.h"
 
-#include "Policy/PolicyObjectManager.h"
 #include "ServiceManagement/Global/ServiceManagementObjectManager.h"
 #include "ServiceManagement/Local/ServiceManagementLocalObjectManager.h"
 #include "Sharding/NetworkDeviceRead/NetworkDeviceReadShardingObjectManager.h"
@@ -420,8 +419,6 @@ void Wave::initialize (const WaveMainConfiguration &waveMainConfiguration)
         registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (RegressionTestObjectManager::getInstance));
     }
 
-
-    registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (PolicyObjectManager::getInstance));
 
     registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (NetworkDeviceWriteShardingObjectManager::getInstance));
     registerNativeServiceInternal (reinterpret_cast<NativeWaveServiceInstantiator> (NetworkDeviceReadShardingObjectManager::getInstance));
