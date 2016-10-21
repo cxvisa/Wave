@@ -14,7 +14,7 @@ due to its versatile distributed and multi threaded message bus and interfaces.
 A complete list of features will run into more than hundred lines.
 
 Around December of 2013, Brocade decided to donate the code to open source
-community under Apache License 2.0 as part of its obligations when it joined
+community under Apache License 2.0 as part of the committment when it joined
 OpenDayLight project as a Platinum member.
 
 Brocade donated source code can be accessed from [here](https://github.com/brocadeodl/ODL-Proxy/tree/genesis)
