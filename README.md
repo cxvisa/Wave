@@ -2,7 +2,7 @@ CREDITS
 -------
 
 The core Framework Wave was originally developed by Vidyasagara Guntaka and his
-team at Brocade Communications Systems, Inc.  Majaority of the code developed as part of a 
+team at Brocade Communications Systems, Inc.  Majority of the code was developed as part of a 
 n-master controller that managed / controlled Brocade VCS fabrics.  Core portions of the code predates Brocade VCS Fabrics.  Brocade  shipped 48 node clusters based on this framework.  The framework is capable of
 n-master clustering / federation with distributed persistence among many other neat
 features.
@@ -19,7 +19,7 @@ OpenDayLight project as a Platinum member.
 
 Brocade donated source code can be accessed from [here](https://github.com/brocadeodl/ODL-Proxy/tree/genesis)
 
-*Only the Wave (the core framework) that has no Networking / Storage specifics is absorbed into this repository.*
+*Only the Wave (the core framework) that has no Networking / Storage specifics is absorbed into this repository and further developed.*
 
 Vidyasagara Guntaka maintains this repository on GitHub further
 developing the Wave framework.  He is Currently coding C++ and Java variants of the framework and has Python and Go
