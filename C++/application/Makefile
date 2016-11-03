@@ -44,7 +44,9 @@ PROGRAMS := \
 	WyserCli.$(OS_ARCH_XT) \
 	WaveMessageExchange.$(OS_ARCH_XT) \
 	WaveMessageExchangeClient.$(OS_ARCH_XT) \
-        WavePortScanner.$(OS_ARCH_XT)
+        WavePortScanner.$(OS_ARCH_XT) \
+        WaveTcpTestServer.$(OS_ARCH_XT) \
+        WaveTcpTestClient.$(OS_ARCH_XT)
 
 
 .PHONY: all wavesobundle waveso clean cleanall phony Wyser
@@ -70,7 +72,8 @@ WyserCli.$(OS_ARCH_XT): WyserCli.cpp
 WaveMessageExchange.$(OS_ARCH_XT) : WaveMessageExchange.cpp
 WaveMessageExchangeClient.$(OS_ARCH_XT) : WaveMessageExchangeClient.cpp
 WavePortScanner.$(OS_ARCH_XT) : WavePortScanner.cpp
-
+WaveTcpTestServer.$(OS_ARCH_XT): WaveTcpTestServer.cpp
+WaveTcpTestClient.$(OS_ARCH_XT): WaveTcpTestClient.cpp
 
 include ../source/commonMakefileEnd
 
