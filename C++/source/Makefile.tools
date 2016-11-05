@@ -1,26 +1,3 @@
-################################################################################
-# this file has tools and related common stuff used in all Wave and dcm makefiles
-# main Makefiles are the only one that build, 
-# so stuff related to building need not be here
-
-# this makefile is included in all dcm makefiles
-
-# the including makefile should establish TOPDIR
-# so this makefile can figure out where it is,
-# regardless if we are in an expected ("springboard") location or not
-################################################################################
-
-# except perhaps for generated makefiles (like dependencies) which should not be 
-# touched by the user anyway
-
-# this makefile should not include other makefiles 
-# (because there is no such thing as 
-# "current directory" rule like for -I compiler options,
-# it is hard to determine what path to give if we included
-# here)
-#
-# instead, the includer should include everything else as needed
-
 .SUFFIXES:
 MAKEFLAGS += -R 
 
@@ -38,9 +15,6 @@ ifeq "1" "$(DEBUG)"
 else
 	BUILD_TYPE := optimized
 endif
-
-#establish CXXFLAGS as immediate variable
-CXXFLAGS	:=
 
 PROFILE		:= 0
 GPROF		:= 0
@@ -71,7 +45,6 @@ DYNAMIC_SRC	:= DynamicSource
 BIN_DIR := bin
 
 ifeq "$(WAVE_HOME)" ""
-    WAVE_HOME := $(shell pwd | grep Wave | sed "s/\/Wave\/.*/\/Wave\//")
     WAVE_HOME := $(shell dirname `pwd`)
 endif 
 ifeq "$(WAVE_HOME)" ""
@@ -82,14 +55,8 @@ export WAVE_SRC := $(WAVE_HOME)/source
 WAVE_DEPENDENCIES_OS_ARCH := $(WAVE_HOME)/WaveDependencies/$(OS)/$(ARCH)
 WAVE_DEPENDENCIES_OS_ARCH_HOST := $(WAVE_HOME)/WaveDependencies/$(OS)/$(ARCH_HOST)
 
-BUILD_DIR_DEPENDENCIES := $(WAVE_HOME)/build/target26
-
 DCM_HOME := $(shell pwd | sed "s/Dcm.*/Dcm/")
 DCM_SRC := $(DCM_HOME)/source
-
-SLM_HOME := $(shell pwd | sed "s/Slm.*/Slm/")
-
-FSC_HOME := $(shell pwd | sed "s/Fsc.*/Fsc/")
 
 RESOURCE_GENERATOR := $(WAVE_HOME)/resourcegenerator/WaveResourceGenerator.$(OS).$(ARCH_HOST)
 
@@ -133,24 +100,6 @@ else ifneq '$(findstring Wave,$(CURDIR))' ''
 	LIB_TO_BUILD = $(LIB.SO.VER)
 	BUILD_DIR_DYNAMIC_SRC	:= $(BUILD_DIR)/$(DYNAMIC_SRC)
 
-else ifneq '$(findstring slm,$(CURDIR))' ''
-	PROJECT := Slm
-	HOME := $(SLM_HOME)
-	VERSION_FULL = $(SLM_VERSION_MAJOR).$(SLM_VERSION_MINOR).$(SLM_VERSION_PATCH)
-	VERSION_MAJOR = $(SLM_VERSION_MAJOR)
-	BUILD_DIR := $(HOME)/build/$(PROJECT)/$(OS)/$(ARCH)/$(BUILD_TYPE)
-	LIB_TO_BUILD = $(LIB.SO.VER)
-	BUILD_DIR_DYNAMIC_SRC	:= $(BUILD_DIR)/$(DYNAMIC_SRC)
-
-else ifneq '$(findstring fsc,$(CURDIR))' ''
-	PROJECT := Fsc
-	HOME := $(FSC_HOME)
-	VERSION_FULL = $(FSC_VERSION_MAJOR).$(FSC_VERSION_MINOR).$(FSC_VERSION_PATCH)
-	VERSION_MAJOR = $(FSC_VERSION_MAJOR)
-	BUILD_DIR := $(HOME)/build/$(PROJECT)/$(OS)/$(ARCH)/$(BUILD_TYPE)
-	LIB_TO_BUILD = $(LIB.SO.VER)
-	BUILD_DIR_DYNAMIC_SRC	:= $(BUILD_DIR)/$(DYNAMIC_SRC)
-
 endif
 
 
@@ -181,12 +130,12 @@ LIB.A := $(BUILD_DIR_LIB)/lib$(PROJECT).a
 # this sentinel files are touched whenever the associated multiple resource files are
 # built
 WAVE_RESOURCES := \
-	$(WAVE_SRC)/Resources/resources
+	$(wildcard $(SRC_ROOT)/Resources/*.xml)
 
 # Wave dynamic sources that do not depend on architecture and kind of build:
 # headers and resource files
 WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP := \
-	$(WAVE_HOME)/build/Wave/$(OS)/$(DYNAMIC_SRC)
+	$(HOME)/build/$(PROJECT)/$(OS)/$(DYNAMIC_SRC)
 $(call TARGET_TO_VAR,$(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
 
 WAVE_APPLICATION := $(WAVE_HOME)/application
@@ -202,7 +151,7 @@ endif
 
 WAVE_HASH_USERTAGS_PGM      := $(WAVE_APPLICATION)/hashusertags.erl
 
-WAVE_BUILD_DIR := $(WAVE_HOME)/build/Wave/$(OS)/$(ARCH)/$(BUILD_TYPE)
+WAVE_BUILD_DIR := $(WAVE_HOME)/build/$(PROJECT)/$(OS)/$(ARCH)/$(BUILD_TYPE)
 WAVE_BUILD_DIR_LIB := $(WAVE_BUILD_DIR)/$(LIB_DIR)
 WAVE_BUILD_DIR_DYNAMIC_SRC := $(WAVE_BUILD_DIR)/$(DYNAMIC_SRC)
 $(call TARGET_TO_VAR,$(WAVE_BUILD_DIR_DYNAMIC_SRC)/.)
@@ -229,13 +178,6 @@ POSTGRESQL_DIR := $(POSTGRESQL_ARCH_DIR)/$(POSTGRESQL_VERSION)
 POSTGRESQL_INCLUDE_DIR	:= $(POSTGRESQL_DIR)/include
 POSTGRESQL_LIB_DIR	:= $(POSTGRESQL_DIR)/lib
 POSTGRESQL_FILE_WAVE := $(WAVE_DEPENDENCIES_OS_ARCH)/$(POSTGRESQL)/$(POSTGRESQL)-$(POSTGRESQL_VERSION).tgz
-
-TPS_CONFIGD_VERSION	:= LATEST
-TPS_CONFIGD_ALL_ARCH_DIR := $(ABS_SRC_TOPDIR)/build/target26/tps_configd/$(TPS_CONFIGD_VERSION)
-TPS_CONFIGD_DIR	:= $(TPS_CONFIGD_ALL_ARCH_DIR)/$(TPS_CONFIGD_ARCH)
-TPS_CONFIGD_DIR_HOST	:= $(TPS_CONFIGD_ALL_ARCH_DIR)/$(ARCH_HOST)
-TPS_CONFIGDC_HOST	:= $(TPS_CONFIGD_DIR_HOST)/bin/tps_configdc
-TPS_CONFIGD_FILE_WAVE := $(ABS_SRC_TOPDIR)/tps/tps_configd/$(TPS_CONFIGD_VERSION)/tps_configd-$(TPS_CONFIGD_ARCH).tgz
 
 PYANG	:= $(BUILD_DIR_DEPENDENCIES)/pyang/x86_64/1.4.1/bin/pyang
 
@@ -282,7 +224,6 @@ TPS_CONFIGD_FLAGS	+= --addloadpath $(FABOS_ROOT)/src/yang --addloadpath $(FABOS_
 
 LDFLAGS	+= -L$(XERCESC_LIB_DIR) -Wl,-R$(XERCESC_LIB_DIR)
 LDFLAGS += -L $(WAVE_BUILD_DIR_LIB) -Wl,-R$(WAVE_BUILD_DIR_LIB)
-LDFLAGS	+= -L $(ABS_TOPDIR)/target/lib
 
 ifeq "x86_64" "$(ARCH)"
 	LDFLAGS		+= -L$(LIBERTY_LIB_DIR)
@@ -316,9 +257,9 @@ CXXFLAGS	+= $(if $(filter $(OS),Linux),-D LINUX)
 
 
 ifeq "1" "$(GPROF)"
-LIBFILES	+= $(WAVE_BUILD_DIR_LIB)/libWave.a
+LIBFILES	+= $(WAVE_BUILD_DIR_LIB)/lib$(PROJECT).a
 else
-LIBFILES	+= -lWave
+LIBFILES	+= -l$(PROJECT)
 endif
 
 LIBFILES += -lxerces-c -lxalan-c -lxalanMsg -lcurl -lssl -lidn -lpq -lcrypto \
@@ -369,7 +310,6 @@ GEN_DEPS = \
 ################################################################################
 define OBJ_UPDATE_CMDS
 	$(CXX) -MMD $(CXXFLAGS) -c $< -o $@
-	$(GEN_DEPS)
 endef
 
 ifeq '$(findstring s,$(MAKEFLAGS))' ''
@@ -384,6 +324,7 @@ endef
 endif
 
 MKFS = $(MAKEFILE_LIST)
+MKFS =
 
 CXXFLAGS += -I $(XERCESC_INCLUDE_DIR)
 CXXFLAGS += -I.

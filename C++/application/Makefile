@@ -1,5 +1,3 @@
-TOPDIR := ../../../../..
-
 include ../source/Makefile.versioninfo
 include ../source/Makefile.tools
 
@@ -111,6 +109,8 @@ clean: wave_clean
 	rm -rf WaveMessageExchangeClient.$(OS).$(ARCH);
 	rm -rf WaveSystemManagement.$(OS).$(ARCH);
 	rm -rf WyserCli.$(OS).$(ARCH);
+	rm -rf WaveTcpTestClient.$(OS).$(ARCH);
+	rm -rf WaveTcpTestServer.$(OS).$(ARCH);
 
 wave_clean:
 	$(MAKE) -C $(WAVE_SRC) clean

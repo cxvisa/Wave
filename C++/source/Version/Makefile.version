@@ -1,17 +1,14 @@
-TOPDIR := ../../../../../..
-
 include ../Makefile.versioninfo
 include ../Makefile.tools
 
-WAVE_VERSION := $(BUILD_DIR_DYNAMIC_SRC)/WaveVersion.cpp
-
 .PHONY: all
-all: $(WAVE_VERSION)
 
-.SECONDEXPANSION:
+all: buildwaveversion
 
 MKFS := $(MAKEFILE_LIST)
-$(WAVE_VERSION): WaveVersion.h WaveVersion.cpp.template $(MKFS) | $(BUILD_DIR_DYNAMIC_SRC)/.
+
+buildwaveversion: WaveVersion.h WaveVersion.cpp.template $(MKFS) | $(BUILD_DIR_DYNAMIC_SRC)/.
+	$(ECHOCMD) "Generating Version files ..."
 	sed "s/WAVE_VERSION_MAJOR/$(WAVE_VERSION_MAJOR)/g" WaveVersion.cpp.template | \
 	sed "s/WAVE_VERSION_MINOR/$(WAVE_VERSION_MINOR)/g"                           | \
 	sed "s/WAVE_VERSION_PATCH/$(WAVE_VERSION_PATCH)/g"                           | \
@@ -21,6 +18,6 @@ $(WAVE_VERSION): WaveVersion.h WaveVersion.cpp.template $(MKFS) | $(BUILD_DIR_DY
 	sed "s/WAVE_VERSION_DATE/$(WAVE_VERSION_DATE)/g"                             | \
 	sed "s/WAVE_VERSION_USER/$(WAVE_VERSION_USER)/g"                             | \
 	sed "s/WAVE_VERSION_HOST/$(WAVE_VERSION_HOST)/g"                             | \
-	sed "s/WAVE_VERSION_DOMAIN/$(WAVE_VERSION_DOMAIN)/g" > $@
+	sed "s/WAVE_VERSION_DOMAIN/$(WAVE_VERSION_DOMAIN)/g" > $(WAVE_VERSION)
 
 include $(SRC_ROOT)/commonMakefileEnd

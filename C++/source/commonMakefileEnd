@@ -26,7 +26,7 @@
 # don't depend on any junk like destinations of links - make sure everything is listed in $(COMMON_DEPENDENCIES)
 ################################################################################
 #pragma noautodep *
-%.$(OS_ARCH_XT): $(COMMON_DEPENDENCIES) $(MKFS)
+%.$(OS_ARCH_XT): $(COMMON_DEPENDENCIES)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBFILES) $(filter-out /%,$(filter %.cpp,$^)) -o $@
 
 
@@ -45,8 +45,7 @@ else
 ABS_OBJS := $(addprefix $(BUILD_DIR_OBJ)/,$(OBJS))
 endif
 
-#pragma noautodep */toolchain*
-$(ABS_OBJS) : $(BUILD_DIR_OBJ)/%.o: %.cpp 
+$(ABS_OBJS) : $(BUILD_DIR_OBJ)/%.o: %.cpp
 	$(OBJ_UPDATE)
 
 ifndef CHANG
@@ -54,6 +53,7 @@ ifndef CHANG
 # parallel makes are fastest with long jobs listed first 
 ABS_OBJS := $(addprefix $(BUILD_DIR_OBJ)/,$(DYN_OBJS)) $(ABS_OBJS)
 endif
+
 OBJS += $(DYN_OBJS)
 
 
@@ -65,9 +65,9 @@ OBJS += $(DYN_OBJS)
 # if the static rule to build static sources did not catch
 # this catches the dynamic sources
 ################################################################################
-$(BUILD_DIR_OBJ)/%.o: $(BUILD_DIR_DYNAMIC_SRC)/%.cpp $(MKFS) | $$(@D)/.
+$(BUILD_DIR_OBJ)/%.o: $(BUILD_DIR_DYNAMIC_SRC)/%.cpp | $$(@D)/.
 	$(OBJ_UPDATE)
-$(BUILD_DIR_OBJ)/%.o: $(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/%.cpp $(MKFS) | $$(@D)/.
+$(BUILD_DIR_OBJ)/%.o: $(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/%.cpp | $$(@D)/.
 	$(OBJ_UPDATE)
 
 
@@ -112,11 +112,11 @@ endef
 ifeq '$(OBJS)' ''
 # if we don't have objects, that means we are in an application
 # go build in the proper directory, SRC_ROOT for that application library
-$(LIB_TO_BUILD): phony | $(WAVE_RESOURCES) $(RESOURCE_GENERATOR) $(MKFS)
-	$(MAKE) -C $(SRC_ROOT) $@ WAVE_RESOURCES= RESOURCE_GENERATOR=
+$(LIB_TO_BUILD): $(WAVE_RESOURCES)
+	$(MAKE) -C $(SRC_ROOT)
 else
 
-$(LIB_TO_BUILD): $(ABS_OBJS) $(MKFS) | $$(@D)/.
+$(LIB_TO_BUILD): $(ABS_OBJS) 
 	$(ECHOCMD) L - $(PROJECT)
 	-cd $(BUILD_DIR_OBJ); /bin/rm -f $(notdir $@).a
 	$(call split_objs,cd $(BUILD_DIR_OBJ); $(AR) q $(notdir $@).a,500,$(OBJS))
@@ -150,17 +150,18 @@ endif
 # we need to rebuild every object - that decision comes from dependency
 # makefiles if they exist
 ################################################################################
-$(ABS_OBJS): $(MKFS) | $(WHO_GENERATES_INCLUDES) $$(@D)/. 
+$(ABS_OBJS): $(WAVE_VERSION) $(WAVE_RESOURCE_ENUMS) | $$(@D)/.
 
 # the strange stuff with 
 # WAVE_RESOURCES and WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP
 # is to avoid parallelism bugs with the recursive makes
 # see the manual for explanation
 
-$(WAVE_RESOURCES): phony | \
-	$(RESOURCE_GENERATOR) $($(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
-	$(MAKE) -C $(WAVE_SRC)/Resources -f Makefile.resources \
-		RESOURCE_GENERATOR= $(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.=
+$(WAVE_RESOURCE_ENUMS): $(RESOURCE_GENERATOR) $($(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
+	$(MAKE) -C $(SRC_ROOT)/Resources -f Makefile.resources WAVE_RESOURCE_ENUMS=$(WAVE_RESOURCE_ENUMS)
+
+$(WAVE_VERSION): $($(BUILD_DIR_DYNAMIC_SRC)/.)
+	$(MAKE) -C $(SRC_ROOT)/Version -f Makefile.version WAVE_VERSION=$(WAVE_VERSION)
 
 $(RESOURCE_GENERATOR): phony
 	$(MAKE) -C $(WAVE_HOME)/resourcegenerator
@@ -177,7 +178,7 @@ $(RESOURCE_GENERATOR): phony
 #
 # and if there are prefixes of real goals on command line, we expand them to their real goals
 ################################################################################
-DEP_MAKEFILES := $(ABS_OBJS:.o=.P)
+DEP_MAKEFILES := $(ABS_OBJS:.o=.d)
 
 ifdef MAKECMDGOALS
 
@@ -195,7 +196,7 @@ define PROCESS_MAKECMDGOAL
 GOAL_MATCHING_OBJS := $(filter-out $(1),$(filter $(1)% $(BUILD_DIR_OBJ)/$(1)%,$(ABS_OBJS)))
 
 ifneq '$$(GOAL_MATCHING_OBJS)' ''
-NEEDED_DEP_MAKEFILES += $$(GOAL_MATCHING_OBJS:.o=.P) 
+NEEDED_DEP_MAKEFILES += $$(GOAL_MATCHING_OBJS:.o=.d) 
 
 #if we are a prefix of objects and are not not an object ourselves, 
 # then reduce to them
@@ -221,7 +222,7 @@ endif
 #$(MKFS): extractxercesc extractpostgresql extractzlib extractxalanc;
 
 #not needed for the OS build
-$(LIB.A): $(ABS_OBJS) $(MKFS)
+$(LIB.A): $(ABS_OBJS)
 	$(AR) -r $@ $(ABS_OBJS)
 
 $(XERCESC_ARCH_DIR):
