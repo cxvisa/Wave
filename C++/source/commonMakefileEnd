@@ -157,7 +157,8 @@ $(ABS_OBJS): $(WAVE_VERSION) $(WAVE_RESOURCE_ENUMS) | $$(@D)/.
 # is to avoid parallelism bugs with the recursive makes
 # see the manual for explanation
 
-$(WAVE_RESOURCE_ENUMS): $(RESOURCE_GENERATOR) $($(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
+WAVE_RESOURCE_FILES := $(wildcard $(SRC_ROOT)/Resources/*.xml)
+$(WAVE_RESOURCE_ENUMS): $(RESOURCE_GENERATOR) $(WAVE_RESOURCE_FILES) $($(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
 	$(MAKE) -C $(SRC_ROOT)/Resources -f Makefile.resources WAVE_RESOURCE_ENUMS=$(WAVE_RESOURCE_ENUMS)
 
 $(WAVE_VERSION): $($(BUILD_DIR_DYNAMIC_SRC)/.)
