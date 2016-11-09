@@ -70,38 +70,15 @@ RESOURCE_GENERATOR := $(WAVE_HOME)/resourcegenerator/WaveResourceGenerator.$(OS)
 # PROJECT is the project name, such as Dcm or Wave
 # HOME is the top of tree for that project
 
-ifneq '$(findstring Dcm,$(CURDIR))' ''
-	PROJECT := Dcm
-	HOME := $(DCM_HOME)
-	VERSION_FULL = $(DCM_VERSION_MAJOR).$(DCM_VERSION_MINOR).$(DCM_VERSION_PATCH) 
-	VERSION_MAJOR = $(DCM_VERSION_MAJOR)
-	BUILD_OS_DIR := $(HOME)/build/$(PROJECT)/$(OS)
-	BUILD_DIR := $(BUILD_OS_DIR)/$(ARCH)/$(BUILD_TYPE)
-	LIB_TO_BUILD = $(LIB.SO.VER)
-	BUILD_DIR_DYNAMIC_SRC	:= $(BUILD_DIR)/$(DYNAMIC_SRC)
-	DCM_CLISPEC_GENERATOR_PGM   := \
-		$(BUILD_OS_DIR)/$(ARCH_HOST)/$(BUILD_TYPE)/$(BIN)/CliSpecGenerator.$(OS).$(ARCH_HOST)
-
-else ifneq '$(findstring uBreeze,$(CURDIR))' ''
-	PROJECT := uBreeze
-	HOME := $(WAVE_HOME)/breeze/uBreeze
-	BUILD_DIR := $(HOME)/build
-	LIB_TO_BUILD = $(LIB.SO)
-
-	#don't need resources for this lib
-	RESOURCE_GENERATOR :=
-
-else ifneq '$(findstring Wave,$(CURDIR))' ''
-	PROJECT := Wave
-	HOME := $(WAVE_HOME)
-	VERSION_FULL = $(WAVE_VERSION_MAJOR).$(WAVE_VERSION_MINOR).$(WAVE_VERSION_PATCH)
-	VERSION_MAJOR = $(WAVE_VERSION_MAJOR)
-	BUILD_DIR := $(HOME)/build/$(PROJECT)/$(OS)/$(ARCH)/$(BUILD_TYPE)
-	LIB_TO_BUILD = $(LIB.SO.VER)
-	BUILD_DIR_DYNAMIC_SRC	:= $(BUILD_DIR)/$(DYNAMIC_SRC)
-
+ifneq '$(findstring Wave,$(CURDIR))' ''
+    PROJECT := Wave
+    HOME := $(WAVE_HOME)
+    VERSION_FULL = $(WAVE_VERSION_MAJOR).$(WAVE_VERSION_MINOR).$(WAVE_VERSION_PATCH)
+    VERSION_MAJOR = $(WAVE_VERSION_MAJOR)
+    BUILD_DIR := $(HOME)/build/$(PROJECT)/$(OS)/$(ARCH)/$(BUILD_TYPE)
+    LIB_TO_BUILD = $(LIB.SO.VER)
+    BUILD_DIR_DYNAMIC_SRC	:= $(BUILD_DIR)/$(DYNAMIC_SRC)
 endif
-
 
 SRC_ROOT := $(HOME)/source
 
@@ -115,6 +92,7 @@ $(call TARGET_TO_VAR,$(BUILD_DIR_DYNAMIC_SRC)/.)
 BUILD_DIR_BIN := $(BUILD_DIR)/$(BIN_DIR)
 $(call TARGET_TO_VAR,$(BUILD_DIR_BIN)/.)
 
+WAVE_RESOURCES := $(wildcard $(SRC_ROOT)/Resources/*.xml)
 
 LIB.SO := $(BUILD_DIR_LIB)/lib$(PROJECT).so
 LIB.A := $(BUILD_DIR_LIB)/lib$(PROJECT).a
@@ -129,8 +107,6 @@ LIB.A := $(BUILD_DIR_LIB)/lib$(PROJECT).a
 
 # this sentinel files are touched whenever the associated multiple resource files are
 # built
-WAVE_RESOURCES := \
-	$(wildcard $(SRC_ROOT)/Resources/*.xml)
 
 # Wave dynamic sources that do not depend on architecture and kind of build:
 # headers and resource files

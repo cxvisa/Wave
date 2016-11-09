@@ -112,11 +112,11 @@ endef
 ifeq '$(OBJS)' ''
 # if we don't have objects, that means we are in an application
 # go build in the proper directory, SRC_ROOT for that application library
-$(LIB_TO_BUILD): $(WAVE_RESOURCES)
+$(LIB_TO_BUILD): $(WAVE_RESOURCES) | $$(@D)/.
 	$(MAKE) -C $(SRC_ROOT)
 else
 
-$(LIB_TO_BUILD): $(ABS_OBJS) 
+$(LIB_TO_BUILD): $(ABS_OBJS) | $$(@D)/.
 	$(ECHOCMD) L - $(PROJECT)
 	-cd $(BUILD_DIR_OBJ); /bin/rm -f $(notdir $@).a
 	$(call split_objs,cd $(BUILD_DIR_OBJ); $(AR) q $(notdir $@).a,500,$(OBJS))
@@ -158,7 +158,7 @@ $(ABS_OBJS): $(WAVE_VERSION) $(WAVE_RESOURCE_ENUMS) | $$(@D)/.
 # see the manual for explanation
 
 WAVE_RESOURCE_FILES := $(wildcard $(SRC_ROOT)/Resources/*.xml)
-$(WAVE_RESOURCE_ENUMS): $(RESOURCE_GENERATOR) $(WAVE_RESOURCE_FILES) $($(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.)
+$(WAVE_RESOURCE_ENUMS): $(RESOURCE_GENERATOR) $(WAVE_RESOURCE_FILES) $($(WAVE_BUILD_DIR_DYNAMIC_SRC_ARCH_KIND_INDEP)/.) | $$(@D)/.
 	$(MAKE) -C $(SRC_ROOT)/Resources -f Makefile.resources WAVE_RESOURCE_ENUMS=$(WAVE_RESOURCE_ENUMS)
 
 $(WAVE_VERSION): $($(BUILD_DIR_DYNAMIC_SRC)/.)
@@ -224,6 +224,7 @@ endif
 
 #not needed for the OS build
 $(LIB.A): $(ABS_OBJS)
+	echo "###########" $(LIB.A) ########
 	$(AR) -r $@ $(ABS_OBJS)
 
 $(XERCESC_ARCH_DIR):
