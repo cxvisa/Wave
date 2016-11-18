@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Shell/WaveCliGrapevineServiceShell.h"
+#include "Shell/WaveCliShardServiceShell.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -15,26 +15,26 @@
 namespace WaveNs
 {
 
-WaveCliGrapevineServiceShell::WaveCliGrapevineServiceShell (WaveClientSynchronousConnection &connection)
-    : WaveCliShell ("grapevine-service", connection)
+WaveCliShardServiceShell::WaveCliShardServiceShell (WaveClientSynchronousConnection &connection)
+    : WaveCliShell ("shard-service", connection)
 {
-    addCommandfunction ("configure-service-shell",                         reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineServiceShell::configureServiceShell),                       "Configures a grapevine service shell.",                         reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineServiceShell::configureServiceShellHelp));
+    addCommandfunction ("configure-service-shell",                         reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardServiceShell::configureServiceShell),                       "Configures a shard service shell.",                         reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardServiceShell::configureServiceShellHelp));
 
-    addCommandfunction ("register-service-instance-sharding-capabilities", reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities), "Registers a grapevine service instance sharding capabilities.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilitiesHelp));
+    addCommandfunction ("register-service-instance-sharding-capabilities", reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardServiceShell::registerServiceInstanceShardingCapabilities), "Registers a shard service instance sharding capabilities.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardServiceShell::registerServiceInstanceShardingCapabilitiesHelp));
 
-    addCommandfunction ("get-shard-owner-for-resource",                    reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineServiceShell::getShardOwnerForResource),                    "Gets the shard owner for the given resource.",                  reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineServiceShell::getShardOwnerForResourceHelp));
+    addCommandfunction ("get-shard-owner-for-resource",                    reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardServiceShell::getShardOwnerForResource),                    "Gets the shard owner for the given resource.",                  reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardServiceShell::getShardOwnerForResourceHelp));
 }
 
-WaveCliGrapevineServiceShell::~WaveCliGrapevineServiceShell ()
+WaveCliShardServiceShell::~WaveCliShardServiceShell ()
 {
 }
 
-void WaveCliGrapevineServiceShell::briefHelp ()
+void WaveCliShardServiceShell::briefHelp ()
 {
-    tracePrintf (TRACE_LEVEL_INFO, true, true, "        Grapevine interaction with Service Coordinator for service / service-instance management.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "        Shard interaction with Service Coordinator for service / service-instance management.");
 }
 
-ResourceId WaveCliGrapevineServiceShell::configureServiceShell (const vector<string> &arguments)
+ResourceId WaveCliShardServiceShell::configureServiceShell (const vector<string> &arguments)
 {
     ResourceId status = WAVE_MESSAGE_SUCCESS;
 
@@ -53,7 +53,7 @@ ResourceId WaveCliGrapevineServiceShell::configureServiceShell (const vector<str
     return (status);
 }
 
-void WaveCliGrapevineServiceShell::configureServiceShellHelp ()
+void WaveCliShardServiceShell::configureServiceShellHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : list");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native application with Service Coordinator.");
@@ -67,7 +67,7 @@ void WaveCliGrapevineServiceShell::configureServiceShellHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities (const vector<string> &arguments)
+ResourceId WaveCliShardServiceShell::registerServiceInstanceShardingCapabilities (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -85,17 +85,17 @@ ResourceId WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabili
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities : Successfully configured service instance sharding capabilities." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardServiceShell::registerServiceInstanceShardingCapabilities : Successfully configured service instance sharding capabilities." ));
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilities : Failed to configure service instance sharding capabilities. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliShardServiceShell::registerServiceInstanceShardingCapabilities : Failed to configure service instance sharding capabilities. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
-void WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilitiesHelp ()
+void WaveCliShardServiceShell::registerServiceInstanceShardingCapabilitiesHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : register-service-instance <service-name> <service-instance-name>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native service instance with Service Coordinator.");
@@ -112,7 +112,7 @@ void WaveCliGrapevineServiceShell::registerServiceInstanceShardingCapabilitiesHe
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineServiceShell::getShardOwnerForResource (const vector<string> &arguments)
+ResourceId WaveCliShardServiceShell::getShardOwnerForResource (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -149,7 +149,7 @@ ResourceId WaveCliGrapevineServiceShell::getShardOwnerForResource (const vector<
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineServiceShell::getShardOwnerForResource : Successfully requested for shard owner." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardServiceShell::getShardOwnerForResource : Successfully requested for shard owner." ));
 
         const UI32 numberOfResourcesNames       = generatedResourceNames.size ();
         const UI32 numberOfServiceInstanceNames = serviceInstanceNames.size   ();
@@ -158,18 +158,18 @@ ResourceId WaveCliGrapevineServiceShell::getShardOwnerForResource (const vector<
 
         for (i = 0; i < numberOfResourcesNames; i++)
         {
-            tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveCliGrapevineServiceShell::getShardOwnerForResource : Shard Owner for %s : %s", generatedResourceNames[i].c_str (), serviceInstanceNames[i].c_str ());
+            tracePrintf (TRACE_LEVEL_INFO, true, false, "WaveCliShardServiceShell::getShardOwnerForResource : Shard Owner for %s : %s", generatedResourceNames[i].c_str (), serviceInstanceNames[i].c_str ());
         }
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineServiceShell::getShardOwnerForResource : Failed to request for shard owner. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliShardServiceShell::getShardOwnerForResource : Failed to request for shard owner. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
-void WaveCliGrapevineServiceShell::getShardOwnerForResourceHelp ()
+void WaveCliShardServiceShell::getShardOwnerForResourceHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : register-service-instance <service-name> <service-instance-name>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native service instance with Service Coordinator.");

@@ -4,18 +4,18 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#ifndef WAVECLIGRAPEVINESERVICESHELL_H
-#define WAVECLIGRAPEVINESERVICESHELL_H
+#ifndef WAVECLISHARDSERVICESHELL_H
+#define WAVECLISHARDSERVICESHELL_H
 
 #include "Shell/WaveCliShell.h"
 
 namespace WaveNs
 {
 
-class WaveCliGrapevineServiceShell : public WaveCliShell
+class WaveCliShardServiceShell : public WaveCliShell
 {
     private :
-                   WaveCliGrapevineServiceShell                    (WaveClientSynchronousConnection &connection);
+                   WaveCliShardServiceShell                    (WaveClientSynchronousConnection &connection);
 
         void       briefHelp                                       ();
 
@@ -30,7 +30,7 @@ class WaveCliGrapevineServiceShell : public WaveCliShell
 
     protected :
     public :
-        virtual ~WaveCliGrapevineServiceShell ();
+        virtual ~WaveCliShardServiceShell ();
 
     // Now the data members
 
@@ -46,4 +46,4 @@ class WaveCliGrapevineServiceShell : public WaveCliShell
 
 }
 
-#endif // WAVECLIGRAPEVINESERVICESHELL_H
+#endif // WAVECLISHARDSERVICESHELL_H

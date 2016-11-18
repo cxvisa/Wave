@@ -4,7 +4,7 @@
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
 
-#include "Shell/WaveCliGrapevineRootShell.h"
+#include "Shell/WaveCliShardRootShell.h"
 #include "Framework/Utils/AssertUtils.h"
 #include "Framework/Utils/TraceUtils.h"
 #include "Framework/Utils/StringUtils.h"
@@ -15,29 +15,29 @@
 namespace WaveNs
 {
 
-WaveCliGrapevineRootShell::WaveCliGrapevineRootShell (WaveClientSynchronousConnection &connection)
-    : WaveCliShell ("grapevine", connection)
+WaveCliShardRootShell::WaveCliShardRootShell (WaveClientSynchronousConnection &connection)
+    : WaveCliShell ("shard", connection)
 {
-    addCommandfunction ("register-service",                      reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineRootShell::registerService),                   "Registers a grapevine service.",                       reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineRootShell::registerServiceHelp));
-    addCommandfunction ("register-services-by-range",            reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineRootShell::registerServicesByRange),           "Registers grapevine services using range",             reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineRootShell::registerServicesByRangeHelp));
+    addCommandfunction ("register-service",                      reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardRootShell::registerService),                   "Registers a shard service.",                       reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardRootShell::registerServiceHelp));
+    addCommandfunction ("register-services-by-range",            reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardRootShell::registerServicesByRange),           "Registers shard services using range",             reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardRootShell::registerServicesByRangeHelp));
 
-    addCommandfunction ("register-service-instance",             reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineRootShell::registerServiceInstance),           "Registers a grapevine service instance.",              reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineRootShell::registerServiceInstanceHelp));
-    addCommandfunction ("register-service-instances-by-range",   reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineRootShell::registerServiceInstancesByRange),   "Registers grapevine service instances using range",    reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineRootShell::registerServiceInstancesByRangeHelp));
+    addCommandfunction ("register-service-instance",             reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardRootShell::registerServiceInstance),           "Registers a shard service instance.",              reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardRootShell::registerServiceInstanceHelp));
+    addCommandfunction ("register-service-instances-by-range",   reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardRootShell::registerServiceInstancesByRange),   "Registers shard service instances using range",    reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardRootShell::registerServiceInstancesByRangeHelp));
 
-    addCommandfunction ("unregister-service-instance",           reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineRootShell::unregisterServiceInstance),         "Un-Registers a grapevine service instance.",           reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineRootShell::unregisterServiceInstanceHelp));
-    addCommandfunction ("unregister-service-instances-by-range", reinterpret_cast<WaveShellCommandFunction> (&WaveCliGrapevineRootShell::unregisterServiceInstancesByRange), "Un-Registers grapevine service instances using range", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliGrapevineRootShell::unregisterServiceInstancesByRangeHelp));
+    addCommandfunction ("unregister-service-instance",           reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardRootShell::unregisterServiceInstance),         "Un-Registers a shard service instance.",           reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardRootShell::unregisterServiceInstanceHelp));
+    addCommandfunction ("unregister-service-instances-by-range", reinterpret_cast<WaveShellCommandFunction> (&WaveCliShardRootShell::unregisterServiceInstancesByRange), "Un-Registers shard service instances using range", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliShardRootShell::unregisterServiceInstancesByRangeHelp));
 }
 
-WaveCliGrapevineRootShell::~WaveCliGrapevineRootShell ()
+WaveCliShardRootShell::~WaveCliShardRootShell ()
 {
 }
 
-void WaveCliGrapevineRootShell::briefHelp ()
+void WaveCliShardRootShell::briefHelp ()
 {
-    tracePrintf (TRACE_LEVEL_INFO, true, true, "        Grapevine interaction with Service Coordinator for service / service-instance management.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "        Shard interaction with Service Coordinator for service / service-instance management.");
 }
 
-ResourceId WaveCliGrapevineRootShell::registerService (const vector<string> &arguments)
+ResourceId WaveCliShardRootShell::registerService (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -53,7 +53,7 @@ ResourceId WaveCliGrapevineRootShell::registerService (const vector<string> &arg
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineRootShell::showRunningConfiguration : Successfully registered services." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardRootShell::showRunningConfiguration : Successfully registered services." ));
     }
     else
     {
@@ -63,7 +63,7 @@ ResourceId WaveCliGrapevineRootShell::registerService (const vector<string> &arg
     return (status);
 }
 
-void WaveCliGrapevineRootShell::registerServiceHelp ()
+void WaveCliShardRootShell::registerServiceHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : list");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native application with Service Coordinator.");
@@ -77,7 +77,7 @@ void WaveCliGrapevineRootShell::registerServiceHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineRootShell::registerServicesByRange (const vector<string> &arguments)
+ResourceId WaveCliShardRootShell::registerServicesByRange (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -111,7 +111,7 @@ ResourceId WaveCliGrapevineRootShell::registerServicesByRange (const vector<stri
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineRootShell::showRunningConfiguration : Successfully registered services." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardRootShell::showRunningConfiguration : Successfully registered services." ));
     }
     else
     {
@@ -121,7 +121,7 @@ ResourceId WaveCliGrapevineRootShell::registerServicesByRange (const vector<stri
     return (status);
 }
 
-void WaveCliGrapevineRootShell::registerServicesByRangeHelp ()
+void WaveCliShardRootShell::registerServicesByRangeHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : list");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native application with Service Coordinator.");
@@ -137,7 +137,7 @@ void WaveCliGrapevineRootShell::registerServicesByRangeHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineRootShell::registerServiceInstance (const vector<string> &arguments)
+ResourceId WaveCliShardRootShell::registerServiceInstance (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -153,17 +153,17 @@ ResourceId WaveCliGrapevineRootShell::registerServiceInstance (const vector<stri
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineRootShell::registerServiceInstance : Successfully registered service instance." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardRootShell::registerServiceInstance : Successfully registered service instance." ));
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineRootShell::registerServiceInstance : Failed to register service instance. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliShardRootShell::registerServiceInstance : Failed to register service instance. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
-void WaveCliGrapevineRootShell::registerServiceInstanceHelp ()
+void WaveCliShardRootShell::registerServiceInstanceHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : register-service-instance <service-name> <service-instance-name>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native service instance with Service Coordinator.");
@@ -180,7 +180,7 @@ void WaveCliGrapevineRootShell::registerServiceInstanceHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineRootShell::registerServiceInstancesByRange (const vector<string> &arguments)
+ResourceId WaveCliShardRootShell::registerServiceInstancesByRange (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -215,17 +215,17 @@ ResourceId WaveCliGrapevineRootShell::registerServiceInstancesByRange (const vec
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineRootShell::registerServiceInstance : Successfully registered service instances." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardRootShell::registerServiceInstance : Successfully registered service instances." ));
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineRootShell::registerServiceInstance : Failed to register service instances. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliShardRootShell::registerServiceInstance : Failed to register service instances. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
-void WaveCliGrapevineRootShell::registerServiceInstancesByRangeHelp ()
+void WaveCliShardRootShell::registerServiceInstancesByRangeHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : register-service-instance <service-name> <service-instance-name-prefix> <Comma-Separated-Range>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Registers an external non-native service instance with Service Coordinator.");
@@ -245,7 +245,7 @@ void WaveCliGrapevineRootShell::registerServiceInstancesByRangeHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineRootShell::unregisterServiceInstance (const vector<string> &arguments)
+ResourceId WaveCliShardRootShell::unregisterServiceInstance (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -261,17 +261,17 @@ ResourceId WaveCliGrapevineRootShell::unregisterServiceInstance (const vector<st
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineRootShell::unregisterServiceInstance : Successfully unregistered service instance." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardRootShell::unregisterServiceInstance : Successfully unregistered service instance." ));
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineRootShell::unregisterServiceInstance : Failed to unregister service instance. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliShardRootShell::unregisterServiceInstance : Failed to unregister service instance. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
-void WaveCliGrapevineRootShell::unregisterServiceInstanceHelp ()
+void WaveCliShardRootShell::unregisterServiceInstanceHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : unregister-service-instance <service-name> <service-instance-name>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    U-Registers an external non-native service instance with Service Coordinator.");
@@ -288,7 +288,7 @@ void WaveCliGrapevineRootShell::unregisterServiceInstanceHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
-ResourceId WaveCliGrapevineRootShell::unregisterServiceInstancesByRange (const vector<string> &arguments)
+ResourceId WaveCliShardRootShell::unregisterServiceInstancesByRange (const vector<string> &arguments)
 {
     ResourceId                      status                 = WAVE_MESSAGE_ERROR;
     WaveClientSynchronousConnection connection             = getConnection ();
@@ -323,17 +323,17 @@ ResourceId WaveCliGrapevineRootShell::unregisterServiceInstancesByRange (const v
 
     if (WAVE_MESSAGE_SUCCESS == status)
     {
-        trace (TRACE_LEVEL_INFO, string ("WaveCliGrapevineRootShell::unregisterServiceInstance : Successfully registered service instances." ));
+        trace (TRACE_LEVEL_INFO, string ("WaveCliShardRootShell::unregisterServiceInstance : Successfully registered service instances." ));
     }
     else
     {
-        trace (TRACE_LEVEL_ERROR, "WaveCliGrapevineRootShell::unregisterServiceInstance : Failed to register service instances. Status : " + FrameworkToolKit::localize (status));
+        trace (TRACE_LEVEL_ERROR, "WaveCliShardRootShell::unregisterServiceInstance : Failed to register service instances. Status : " + FrameworkToolKit::localize (status));
     }
 
     return (status);
 }
 
-void WaveCliGrapevineRootShell::unregisterServiceInstancesByRangeHelp ()
+void WaveCliShardRootShell::unregisterServiceInstancesByRangeHelp ()
 {
     tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : unregister-service-instance <service-name> <service-instance-name-prefix> <Comma-Separated-Range>");
     tracePrintf (TRACE_LEVEL_INFO, true, true, "    Un-Registers an external non-native service instance with Service Coordinator.");
