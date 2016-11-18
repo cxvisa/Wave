@@ -5111,7 +5111,7 @@ void AttributeObjectId::getSqlForSelect (string &sqlForSelect, AttributeConditio
         // The equal and not equal condition operators are the only two that should be supported.  The SQL query will fail in this case if the check above is not set properly.
     }
 
-    sqlForSelect += getAttributeName () + string ("ClassId") + FrameworkToolKit::localize (attributeConditionOperator) + (m_pData->getClassId ()) + logicOperator + (getAttributeName ()) + string ("InstanceId") + FrameworkToolKit::localize (attributeConditionOperator) + (m_pData->getInstanceId ());
+    sqlForSelect += string ("(") + getAttributeName () + string ("ClassId") + FrameworkToolKit::localize (attributeConditionOperator) + (m_pData->getClassId ()) + logicOperator + (getAttributeName ()) + string ("InstanceId") + FrameworkToolKit::localize (attributeConditionOperator) + (m_pData->getInstanceId ()) + string (")");
 }
 
 void AttributeObjectId::toString (string &valueString)
@@ -5292,6 +5292,7 @@ bool AttributeObjectIdAssociation::isConditionOperatorSupported ( AttributeCondi
     bool isSupported = false;
 
     if (WAVE_ATTRIBUTE_CONDITION_OPERATOR_EQUAL == attributeConditionOperator ||
+        WAVE_ATTRIBUTE_CONDITION_OPERATOR_NOT_EQUAL == attributeConditionOperator ||
         WAVE_ATTRIBUTE_CONDITION_OPERATOR_IS_NULL == attributeConditionOperator ||
         WAVE_ATTRIBUTE_CONDITION_OPERATOR_IS_NOT_NULL == attributeConditionOperator)
     {
@@ -5389,15 +5390,19 @@ void AttributeObjectIdAssociation::getSqlForSelect (string &sqlForSelect, Attrib
 
     if (WAVE_ATTRIBUTE_CONDITION_OPERATOR_IS_NULL == attributeConditionOperator)
     {
-        sqlForSelect += getAttributeName () + string ("ClassId IS NULL AND ") + getAttributeName () + string ("InstanceId IS NULL ");
+        sqlForSelect += string ("(") + getAttributeName () + string ("ClassId IS NULL AND ") + getAttributeName () + string ("InstanceId IS NULL ") + string (")");
     }
     else if (WAVE_ATTRIBUTE_CONDITION_OPERATOR_IS_NOT_NULL == attributeConditionOperator)
     {
-        sqlForSelect += getAttributeName () + string ("ClassId IS NOT NULL AND ") + getAttributeName () + string ("InstanceId IS NOT NULL ");
+        sqlForSelect += string ("(") + getAttributeName () + string ("ClassId IS NOT NULL AND ") + getAttributeName () + string ("InstanceId IS NOT NULL ") + string (")");
     }
-    else
+    else if (WAVE_ATTRIBUTE_CONDITION_OPERATOR_EQUAL == attributeConditionOperator)
     {
-        sqlForSelect += getAttributeName () + string ("ClassId = ") + (m_pData->getClassId ()) + " AND " + (getAttributeName ()) + string ("InstanceId = ") + (m_pData->getInstanceId ());
+        sqlForSelect += string ("(") + getAttributeName () + string ("ClassId = ") + (m_pData->getClassId ()) + " AND " + (getAttributeName ()) + string ("InstanceId = ") + (m_pData->getInstanceId ()) + string (")");
+    }
+    else if (WAVE_ATTRIBUTE_CONDITION_OPERATOR_NOT_EQUAL == attributeConditionOperator)
+    {
+        sqlForSelect += string ("(") + getAttributeName () + string ("ClassId <> ") + (m_pData->getClassId ()) + " AND " + (getAttributeName ()) + string ("InstanceId <> ") + (m_pData->getInstanceId ()) + string (")");
     }
 }
 
