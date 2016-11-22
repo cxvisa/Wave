@@ -240,7 +240,7 @@ Attribute *AttributesMap::getAttributeAt (const UI32 index)
         }
     }
 
-	waveAssert (element != limitingElement, __FILE__, __LINE__);
+  waveAssert (element != limitingElement, __FILE__, __LINE__);
     return (element->second);
 }
 
@@ -862,26 +862,26 @@ void AttributesMap::updateOrmRelations (const WavePersistableObject *pWavePersis
 
 WaveManagedObject *AttributesMap::getComposedManagedObject (const ObjectId &childObjectId)
 {
-	UI32 attributeSize = getSize();
-	WaveManagedObject *pComposedManagedObject = NULL;
+  UI32 attributeSize = getSize();
+  WaveManagedObject *pComposedManagedObject = NULL;
 
-	for (UI8 i = 0; i < attributeSize; i++)
-	{
+  for (UI8 i = 0; i < attributeSize; i++)
+  {
         Attribute *pAttribute = getAttributeAt (i);
 
-		if (AttributeType::AttributeTypeComposition == pAttribute->getAttributeType ())
-		{
-			pComposedManagedObject = pAttribute->getComposedManagedObject(childObjectId);
+    if (AttributeType::AttributeTypeComposition == pAttribute->getAttributeType ())
+    {
+      pComposedManagedObject = pAttribute->getComposedManagedObject(childObjectId);
             break;
-		}
-		else if (AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType ())
-		{
-			pComposedManagedObject = pAttribute->getComposedManagedObject(childObjectId);
+    }
+    else if (AttributeType::AttributeTypeCompositionVector == pAttribute->getAttributeType ())
+    {
+      pComposedManagedObject = pAttribute->getComposedManagedObject(childObjectId);
             break;
-		}
-	}
+    }
+  }
 
-	return pComposedManagedObject;
+  return pComposedManagedObject;
 }
 
 void AttributesMap::getShowDump (string &showDump, const WaveManagedObjectShowType &showType)
@@ -1372,7 +1372,8 @@ void AttributesMap::getJsonObjectData (const vector<string> &attributeNamesForJs
             jsonObjectData += "    ";
         }
 
-        jsonObjectData += "\"" + jsonFieldName + "\" : \"" + tempString + "\"";
+        jsonObjectData += "\"" + jsonFieldName + "\" : " + tempString;
+
 
         if ((numberOfAttributeNamesForJson - 1) != i)
         {

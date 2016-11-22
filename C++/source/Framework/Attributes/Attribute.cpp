@@ -139,7 +139,7 @@ string Attribute::getAttributeName () const
     return (m_attributeName);
 }
 
-void Attribute::setAttributeName (const string &attributeName) 
+void Attribute::setAttributeName (const string &attributeName)
 {
     m_attributeName = attributeName;
 }
@@ -234,7 +234,7 @@ WaveManagedObject *Attribute::getComposedManagedObject (const ObjectId &childObj
 
     waveAssert (false, __FILE__, __LINE__);
 
-	return NULL;
+  return NULL;
 }
 
 vector<WaveManagedObject *>  *Attribute::getComposedManagedObject ()
@@ -248,7 +248,7 @@ vector<WaveManagedObject *>  *Attribute::getComposedManagedObject ()
 
 bool Attribute::isDeletableForOperation (const WaveManagedObjectOperation &operation)
 {
-	return true;
+  return true;
 }
 
 void Attribute::updateKeyString (const WavePersistableObject *pWavePersistableObject)
@@ -405,7 +405,7 @@ Attribute* Attribute::getAttributeFromAttributeType (const ResourceId attributeT
                 vector <WorldWideName> temp;
                 pAttribute = new AttributeWorldWideNameVector (temp);
             }
-		    break;
+        break;
         case WAVE_ATTRIBUTE_TYPE_MACADDRESS:
             {
                 MacAddress tempMAC;
@@ -636,7 +636,7 @@ Attribute* Attribute::getAttributeFromAttributeType (const ResourceId attributeT
             }
     }
 
-    return (pAttribute);    
+    return (pAttribute);
 }
 
 void Attribute::toEscapedString (string &valueString)
@@ -660,6 +660,10 @@ ResourceId Attribute::loadFromPlainString (const string &valueString)
 void Attribute::toJsonString (string &jsonString)
 {
     toString (jsonString);
+
+    jsonString.insert (0, "\"");
+
+    jsonString += "\"";
 }
 
 }

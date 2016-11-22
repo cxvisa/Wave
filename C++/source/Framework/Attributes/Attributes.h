@@ -802,6 +802,7 @@ class AttributeObjectId : public Attribute
         virtual void                setDefaultValue                 ();
         virtual void                loadFromPostgresQueryResult     (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
         virtual void                getCValue                       (WaveCValue *pCValue);
+        virtual void                toJsonString                    (string &jsonString);
 
     // Now the data members
 
@@ -884,6 +885,8 @@ class AttributeObjectIdVector : public Attribute, public AttributeVector
         virtual void                     getCValue                   (WaveCValue *pCValue);
         virtual void                     addAttributeToVector        (Attribute *attribute);
         virtual void                     deleteAttributeFromVector   (Attribute *attribute);
+        virtual void                     toJsonString                (string &jsonString);
+
     // Now the data members
 
     private :

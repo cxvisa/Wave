@@ -429,7 +429,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::loadFromPost
 template <class T> Attribute *AttributeManagedObjectVectorComposition<T>::clone ()
 {
     AttributeManagedObjectVectorComposition *pAttributeManagedObjectVectorComposition = new AttributeManagedObjectVectorComposition (*this);
-    
+
     return (pAttributeManagedObjectVectorComposition);
 }
 
@@ -465,19 +465,19 @@ template<class T> vector<WaveManagedObject *>  *AttributeManagedObjectVectorComp
 {
     if ( NULL == m_pData )
     {
-        trace (TRACE_LEVEL_FATAL, string("AttributeManagedObjectVectorComposition::getComposedManagedObject: NULL pointer"));    
-        waveAssert (false, __FILE__, __LINE__);        
+        trace (TRACE_LEVEL_FATAL, string("AttributeManagedObjectVectorComposition::getComposedManagedObject: NULL pointer"));
+        waveAssert (false, __FILE__, __LINE__);
     }
 
     vector<WaveManagedObject *> *pResults = new vector<WaveManagedObject *> ;
-    
+
     UI32 compositionVectorSize = (*m_pData).size();
 
     for (UI32 i=0; i < compositionVectorSize; i++)
-    {   
+    {
        (*pResults).push_back( ((*m_pData)[i]).operator->() );
     }
-        
+
     return ( pResults );
 }
 
@@ -551,7 +551,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::setDefaultVa
 
 template <class T> void AttributeManagedObjectVectorComposition<T>::getCValue (WaveCValue *pCValue)
 {
-    waveAssert (false, __FILE__, __LINE__); 
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 template <class T> void AttributeManagedObjectVectorComposition<T>::storeRelatedObjectVector (const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects)
@@ -570,6 +570,34 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::storeRelated
 
         (*m_pData).push_back (tempWaveManagedObjectPointer);
     }
+}
+
+template <class T> void AttributeManagedObjectVectorComposition<T>::toJsonString (string &jsonString)
+{
+    UI32 numberOfObjectsInComposition = m_pData->size ();
+    UI32 i                            = 0;
+
+    jsonString += "[\r\n";
+
+    for (i = 0; i < numberOfObjectsInComposition; i++)
+    {
+        string tempJsonString;
+
+        ((*m_pData)[i])->getJsonObjectData (tempJsonString);
+
+        jsonString += tempJsonString;
+
+        if ((numberOfObjectsInComposition - 1) != i)
+        {
+            jsonString += ",\r\n";
+        }
+        else
+        {
+            jsonString += "\r\n";
+        }
+    }
+
+    jsonString += "]\r\n";
 }
 
 }

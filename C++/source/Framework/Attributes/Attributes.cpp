@@ -18,6 +18,8 @@
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/Database/DatabaseConnection.h"
 #include "Framework/Database/DatabaseObjectManager.h"
+#include "Framework/ObjectModel/WaveObjectManagerToolKit.h"
+#include "Framework/ObjectModel/WaveManagedObject.h"
 
 #include <algorithm>
 
@@ -4180,7 +4182,7 @@ void AttributeUnion::toEscapedString (string &valueString)
 
     if (0 != errorCode)
     {
-    	trace (TRACE_LEVEL_ERROR, string ("AttributeUnion::toEscapedString : Return Size ") + returnSize);
+      trace (TRACE_LEVEL_ERROR, string ("AttributeUnion::toEscapedString : Return Size ") + returnSize);
     }
 
     waveAssert (0 == errorCode, __FILE__, __LINE__);
@@ -5262,6 +5264,27 @@ void AttributeObjectId::getCValue (WaveCValue *pCValue)
     waveAssert (false, __FILE__, __LINE__);
 }
 
+void AttributeObjectId::toJsonString (string &jsonString)
+{
+    if ((NULL == m_pData) || (ObjectId::NullObjectId == (*m_pData)))
+    {
+        jsonString += "null";
+    }
+    else
+    {
+        WaveManagedObject *pWaveManagedObject = WaveObjectManagerToolKit::queryManagedObject (*m_pData);
+
+        if (NULL == pWaveManagedObject)
+        {
+            jsonString += "null";
+        }
+        else
+        {
+            jsonString += pWaveManagedObject->getUserDefinedKeyCombinationValue ();
+        }
+    }
+}
+
     AttributeObjectIdAssociation::AttributeObjectIdAssociation (const ObjectId &data, const string &attributeName, const string &associatedTo, const bool &canBeEmpty, const UI32 &attributeUserTag, const bool &isOperational)
 : AttributeObjectId (data, attributeName, attributeUserTag, isOperational),
     m_associatedTo    (associatedTo),
@@ -5728,6 +5751,48 @@ void AttributeObjectIdVector::deleteAttributeFromVector (Attribute *attribute)
             trace (TRACE_LEVEL_FATAL, string ("AttributeObjectIdVector::deleteAttributeFromVector : Element to be deleted not found ."));
             waveAssert (false, __FILE__, __LINE__);
         }
+    }
+}
+
+void AttributeObjectIdVector::toJsonString (string &jsonString)
+{
+    UI32 numberOfObjectIds = m_pData->size ();
+    UI32 i                 = 0;
+
+    jsonString += "[\r\n";
+
+    for (i = 0; i < numberOfObjectIds; i++)
+    {
+        ObjectId objectId = (*m_pData)[i];
+
+        if (ObjectId::NullObjectId == objectId)
+        {
+            jsonString += "null";
+        }
+        else
+        {
+            WaveManagedObject *pWaveManagedObject = WaveObjectManagerToolKit::queryManagedObject (objectId);
+
+            if (NULL == pWaveManagedObject)
+            {
+                jsonString += "null";
+            }
+            else
+            {
+                jsonString += "\"" + pWaveManagedObject->getUserDefinedKeyCombinationValue () + "\"";
+            }
+        }
+
+        if ((numberOfObjectIds - 1) != i)
+        {
+            jsonString += ",\r\n";
+        }
+        else
+        {
+            jsonString += "\r\n";
+        }
+
+        jsonString += "]\r\n";
     }
 }
 

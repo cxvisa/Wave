@@ -65,6 +65,8 @@ template<class T> class AttributeManagedObjectVectorComposition : public Attribu
 
         virtual void                                     storeRelatedObjectVector                (const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects);
 
+        virtual void                                     toJsonString                            (string &jsonString);
+
     // Now the data members
 
     private :
