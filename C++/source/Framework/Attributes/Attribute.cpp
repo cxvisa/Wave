@@ -278,6 +278,7 @@ bool Attribute::isConditionOperatorSupported (AttributeConditionOperator attribu
 
 Attribute* Attribute::getAttributeFromAttributeType (const ResourceId attributeType)
 {
+    // FIXME : Sagar : Make this a dynamic factory based instantiation instead of being a static thing.
 
     Attribute *pAttribute = NULL;
 

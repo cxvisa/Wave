@@ -585,7 +585,9 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::toJsonString
 
         ((*m_pData)[i])->getJsonObjectData (tempJsonString);
 
-        jsonString += tempJsonString;
+        StringUtils::replaceAllInstancesOfInputStringWith (tempJsonString, "\n", "\n    ");
+
+        jsonString += "    " + tempJsonString;
 
         if ((numberOfObjectsInComposition - 1) != i)
         {
@@ -597,7 +599,7 @@ template <class T> void AttributeManagedObjectVectorComposition<T>::toJsonString
         }
     }
 
-    jsonString += "]\r\n";
+    jsonString += "    ]";
 }
 
 }

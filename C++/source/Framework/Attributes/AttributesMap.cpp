@@ -1365,14 +1365,17 @@ void AttributesMap::getJsonObjectData (const vector<string> &attributeNamesForJs
 
         pAttribute->toJsonString (tempString);
 
+        StringUtils::replaceAllInstancesOfInputStringWith (tempString, "\n", "\n    ");
+
         jsonObjectData += "    ";
+
 
         if (true == isManagedObjectClassNameForJsonPresent)
         {
             jsonObjectData += "    ";
         }
 
-        jsonObjectData += "\"" + jsonFieldName + "\" : " + tempString;
+        jsonObjectData += "    \"" + jsonFieldName + "\" : " + tempString;
 
 
         if ((numberOfAttributeNamesForJson - 1) != i)

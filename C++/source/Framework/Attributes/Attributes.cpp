@@ -20,6 +20,8 @@
 #include "Framework/Database/DatabaseObjectManager.h"
 #include "Framework/ObjectModel/WaveObjectManagerToolKit.h"
 #include "Framework/ObjectModel/WaveManagedObject.h"
+#include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
+#include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
 
 #include <algorithm>
 
@@ -316,6 +318,11 @@ void AttributeUI32::setDefaultValue()
 void AttributeUI32::getCValue (WaveCValue *pCValue)
 {
    wave_cvalue_set_ui32 (pCValue, getValue ());
+}
+
+void AttributeUI32::toJsonString (string &jsonString)
+{
+    toString (jsonString);
 }
 
 AttributeUI32Vector::AttributeUI32Vector (const vector<UI32> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
@@ -618,6 +625,37 @@ void AttributeUI32Vector::deleteAttributeFromVector (Attribute *attribute)
     }
 }
 
+void AttributeUI32Vector::toJsonString (string &jsonString)
+{
+    if (NULL == m_pData)
+    {
+        jsonString += "[]";
+
+        return;
+    }
+
+    UI32 numberOfEntries = m_pData->size ();
+    UI32 i               = 0;
+
+    jsonString += "[\r\n";
+
+    for (i = 0; i < numberOfEntries; i++)
+    {
+        jsonString += string ("    ") + (*m_pData)[i];
+
+        if ((numberOfEntries - 1) != i)
+        {
+            jsonString += ",\r\n";
+        }
+        else
+        {
+            jsonString += "\r\n";
+        }
+    }
+
+    jsonString += "    ]";
+}
+
 AttributeUI64::AttributeUI64 (const UI64 &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
     : Attribute             ( AttributeType::AttributeTypeUI64, attributeName, attributeUserTag, isOperational),
       m_defaultData         (0),
@@ -913,6 +951,11 @@ map<string, string> AttributeUI64::getSupportedConversions ()
 void AttributeUI64::getCValue (WaveCValue *pCValue)
 {
    wave_cvalue_set_ui64 (pCValue, getValue ());
+}
+
+void AttributeUI64::toJsonString (string &jsonString)
+{
+    toString (jsonString);
 }
 
 AttributeUI64Vector::AttributeUI64Vector (const vector<UI64> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
@@ -3969,6 +4012,9 @@ void AttributeString::toJsonString (string &jsonString)
     toString (jsonString);
 
     StringUtils::replaceAllInstancesOfInputStringWith (jsonString, string ("\""), string ("\\\""));
+
+    jsonString.insert (0, "\"");
+    jsonString += "\"";
 }
 
 AttributeUnion::AttributeUnion (const string &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
@@ -5264,43 +5310,22 @@ void AttributeObjectId::getCValue (WaveCValue *pCValue)
     waveAssert (false, __FILE__, __LINE__);
 }
 
-void AttributeObjectId::toJsonString (string &jsonString)
-{
-    if ((NULL == m_pData) || (ObjectId::NullObjectId == (*m_pData)))
-    {
-        jsonString += "null";
-    }
-    else
-    {
-        WaveManagedObject *pWaveManagedObject = WaveObjectManagerToolKit::queryManagedObject (*m_pData);
-
-        if (NULL == pWaveManagedObject)
-        {
-            jsonString += "null";
-        }
-        else
-        {
-            jsonString += pWaveManagedObject->getUserDefinedKeyCombinationValue ();
-        }
-    }
-}
-
-    AttributeObjectIdAssociation::AttributeObjectIdAssociation (const ObjectId &data, const string &attributeName, const string &associatedTo, const bool &canBeEmpty, const UI32 &attributeUserTag, const bool &isOperational)
-: AttributeObjectId (data, attributeName, attributeUserTag, isOperational),
+AttributeObjectIdAssociation::AttributeObjectIdAssociation (const ObjectId &data, const string &attributeName, const string &associatedTo, const bool &canBeEmpty, const UI32 &attributeUserTag, const bool &isOperational)
+    : AttributeObjectId (data, attributeName, attributeUserTag, isOperational),
     m_associatedTo    (associatedTo),
     m_canBeEmpty      (canBeEmpty)
 {
 }
 
-    AttributeObjectIdAssociation::AttributeObjectIdAssociation (ObjectId *pData, const string &attributeName, const string &associatedTo, const bool &canBeEmpty, const UI32 &attributeUserTag, const bool &isOperational)
-: AttributeObjectId (pData, attributeName, attributeUserTag, isOperational),
+AttributeObjectIdAssociation::AttributeObjectIdAssociation (ObjectId *pData, const string &attributeName, const string &associatedTo, const bool &canBeEmpty, const UI32 &attributeUserTag, const bool &isOperational)
+    : AttributeObjectId (pData, attributeName, attributeUserTag, isOperational),
     m_associatedTo    (associatedTo),
     m_canBeEmpty      (canBeEmpty)
 {
 }
 
-    AttributeObjectIdAssociation::AttributeObjectIdAssociation (const AttributeObjectIdAssociation &attribute)
-: AttributeObjectId (attribute)
+AttributeObjectIdAssociation::AttributeObjectIdAssociation (const AttributeObjectIdAssociation &attribute)
+    : AttributeObjectId (attribute)
 {
     m_associatedTo = attribute.m_associatedTo;
     m_canBeEmpty   = attribute.m_canBeEmpty;
@@ -5452,9 +5477,46 @@ void AttributeObjectIdAssociation::getCValue (WaveCValue *pCValue)
     waveAssert (false, __FILE__, __LINE__);
 }
 
-    AttributeObjectIdVector::AttributeObjectIdVector (const vector<ObjectId> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
-: Attribute          ( AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
-    m_isDefaultDataValid (false)
+void AttributeObjectIdAssociation::toJsonString (string &jsonString)
+{
+    if ((NULL == m_pData) || (ObjectId::NullObjectId == (*m_pData)))
+    {
+        jsonString += "null";
+    }
+    else
+    {
+        WaveManagedObjectSynchronousQueryContext queryContext (OrmRepository::getTableNameById (m_pData->getClassId ()));
+
+        queryContext.addAndAttribute (new AttributeObjectId (m_pData, "objectId"));
+        queryContext.addSelectField  ("userDefinedKeyCombinationValue");
+
+        WaveManagedObject *pWaveManagedObject = NULL;
+
+        vector<WaveManagedObject *> *pQueryResults = WaveObjectManagerToolKit::querySynchronously (&queryContext);
+
+        waveAssert (NULL != pQueryResults, __FILE__, __LINE__);
+
+        if (0 != (pQueryResults->size ()))
+        {
+            pWaveManagedObject = (*pQueryResults)[0];
+        }
+
+        if (NULL == pWaveManagedObject)
+        {
+            jsonString += "null";
+        }
+        else
+        {
+            jsonString += "\"" + pWaveManagedObject->getUserDefinedKeyCombinationValue () + "\"";
+        }
+
+        WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector (pQueryResults);
+    }
+}
+
+AttributeObjectIdVector::AttributeObjectIdVector (const vector<ObjectId> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
+    : Attribute            (AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
+      m_isDefaultDataValid (false)
 {
     m_pData  = new vector<ObjectId>;
     *m_pData = data;
@@ -5462,10 +5524,10 @@ void AttributeObjectIdAssociation::getCValue (WaveCValue *pCValue)
     setIsMemoryOwnedByAttribute (true);
 }
 
-    AttributeObjectIdVector::AttributeObjectIdVector (const vector<ObjectId> &data, const vector<ObjectId> &defaultData, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
-: Attribute          ( AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
-    m_defaultData        (defaultData),
-    m_isDefaultDataValid (true)
+AttributeObjectIdVector::AttributeObjectIdVector (const vector<ObjectId> &data, const vector<ObjectId> &defaultData, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
+    : Attribute            (AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
+      m_defaultData        (defaultData),
+      m_isDefaultDataValid (true)
 {
     m_pData  = new vector<ObjectId>;
     *m_pData = data;
@@ -5473,27 +5535,27 @@ void AttributeObjectIdAssociation::getCValue (WaveCValue *pCValue)
     setIsMemoryOwnedByAttribute (true);
 }
 
-    AttributeObjectIdVector::AttributeObjectIdVector (vector<ObjectId> *pData, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
-: Attribute          ( AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
-    m_isDefaultDataValid (false)
+AttributeObjectIdVector::AttributeObjectIdVector (vector<ObjectId> *pData, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
+    : Attribute            (AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
+      m_isDefaultDataValid (false)
 {
     m_pData = pData;
 
     setIsMemoryOwnedByAttribute (false);
 }
 
-    AttributeObjectIdVector::AttributeObjectIdVector (vector<ObjectId> *pData, const vector<ObjectId> &defaultData, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
-: Attribute          ( AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
-    m_defaultData        (defaultData),
-    m_isDefaultDataValid (true)
+AttributeObjectIdVector::AttributeObjectIdVector (vector<ObjectId> *pData, const vector<ObjectId> &defaultData, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
+    : Attribute            (AttributeType::AttributeTypeObjectIdVector, attributeName, attributeUserTag, isOperational),
+      m_defaultData        (defaultData),
+      m_isDefaultDataValid (true)
 {
     m_pData = pData;
 
     setIsMemoryOwnedByAttribute (false);
 }
 
-    AttributeObjectIdVector::AttributeObjectIdVector (const AttributeObjectIdVector &attribute)
-: Attribute (attribute)
+AttributeObjectIdVector::AttributeObjectIdVector (const AttributeObjectIdVector &attribute)
+    : Attribute (attribute)
 {
     m_pData              = new vector<ObjectId>;
     *m_pData             = attribute.getValue ();
@@ -5754,68 +5816,26 @@ void AttributeObjectIdVector::deleteAttributeFromVector (Attribute *attribute)
     }
 }
 
-void AttributeObjectIdVector::toJsonString (string &jsonString)
-{
-    UI32 numberOfObjectIds = m_pData->size ();
-    UI32 i                 = 0;
-
-    jsonString += "[\r\n";
-
-    for (i = 0; i < numberOfObjectIds; i++)
-    {
-        ObjectId objectId = (*m_pData)[i];
-
-        if (ObjectId::NullObjectId == objectId)
-        {
-            jsonString += "null";
-        }
-        else
-        {
-            WaveManagedObject *pWaveManagedObject = WaveObjectManagerToolKit::queryManagedObject (objectId);
-
-            if (NULL == pWaveManagedObject)
-            {
-                jsonString += "null";
-            }
-            else
-            {
-                jsonString += "\"" + pWaveManagedObject->getUserDefinedKeyCombinationValue () + "\"";
-            }
-        }
-
-        if ((numberOfObjectIds - 1) != i)
-        {
-            jsonString += ",\r\n";
-        }
-        else
-        {
-            jsonString += "\r\n";
-        }
-
-        jsonString += "]\r\n";
-    }
-}
-
-    AttributeObjectIdVectorAssociation::AttributeObjectIdVectorAssociation (const vector<ObjectId> &data, const string &attributeName, const string &parent, const ObjectId &parentObjectId, const string &associatedTo, const UI32 &attributeUserTag, const bool &isOperational, const bool &outputAsString)
-: AttributeObjectIdVector (data, attributeName, attributeUserTag, isOperational),
-    m_parent                (parent),
-    m_parentObjectId        (parentObjectId),
-    m_associatedTo          (associatedTo),
-    m_outputAsString        (outputAsString)
+AttributeObjectIdVectorAssociation::AttributeObjectIdVectorAssociation (const vector<ObjectId> &data, const string &attributeName, const string &parent, const ObjectId &parentObjectId, const string &associatedTo, const UI32 &attributeUserTag, const bool &isOperational, const bool &outputAsString)
+    : AttributeObjectIdVector (data, attributeName, attributeUserTag, isOperational),
+      m_parent                (parent),
+      m_parentObjectId        (parentObjectId),
+      m_associatedTo          (associatedTo),
+      m_outputAsString        (outputAsString)
 {
 }
 
-    AttributeObjectIdVectorAssociation::AttributeObjectIdVectorAssociation (vector<ObjectId> *pData, const string &attributeName, const string &parent, const ObjectId &parentObjectId, const string &associatedTo, const UI32 &attributeUserTag, const bool &isOperational, const bool &outputAsString)
-: AttributeObjectIdVector (pData, attributeName, attributeUserTag, isOperational),
-    m_parent                (parent),
-    m_parentObjectId        (parentObjectId),
-    m_associatedTo          (associatedTo),
-    m_outputAsString        (outputAsString)
+AttributeObjectIdVectorAssociation::AttributeObjectIdVectorAssociation (vector<ObjectId> *pData, const string &attributeName, const string &parent, const ObjectId &parentObjectId, const string &associatedTo, const UI32 &attributeUserTag, const bool &isOperational, const bool &outputAsString)
+    : AttributeObjectIdVector (pData, attributeName, attributeUserTag, isOperational),
+      m_parent                (parent),
+      m_parentObjectId        (parentObjectId),
+      m_associatedTo          (associatedTo),
+      m_outputAsString        (outputAsString)
 {
 }
 
-    AttributeObjectIdVectorAssociation::AttributeObjectIdVectorAssociation (const AttributeObjectIdVectorAssociation &attribute)
-: AttributeObjectIdVector (attribute)
+AttributeObjectIdVectorAssociation::AttributeObjectIdVectorAssociation (const AttributeObjectIdVectorAssociation &attribute)
+    : AttributeObjectIdVector (attribute)
 {
     m_parent               = attribute.m_parent;
     m_parentObjectId       = attribute.m_parentObjectId;
@@ -5998,6 +6018,48 @@ void AttributeObjectIdVectorAssociation::getCValue (WaveCValue *pCValue)
 string AttributeObjectIdVectorAssociation::getAssociatedTo () const
 {
     return (m_associatedTo);
+}
+
+void AttributeObjectIdVectorAssociation::toJsonString (string &jsonString)
+{
+    UI32 numberOfObjectIds = m_pData->size ();
+    UI32 i                 = 0;
+
+    jsonString += "[\r\n";
+
+    for (i = 0; i < numberOfObjectIds; i++)
+    {
+        ObjectId objectId = (*m_pData)[i];
+
+        if (ObjectId::NullObjectId == objectId)
+        {
+            jsonString += "    null";
+        }
+        else
+        {
+            WaveManagedObject *pWaveManagedObject = WaveObjectManagerToolKit::queryManagedObject (objectId);
+
+            if (NULL == pWaveManagedObject)
+            {
+                jsonString += "    null";
+            }
+            else
+            {
+                jsonString += "    \"" + pWaveManagedObject->getUserDefinedKeyCombinationValue () + "\"";
+            }
+        }
+
+        if ((numberOfObjectIds - 1) != i)
+        {
+            jsonString += ",\r\n";
+        }
+        else
+        {
+            jsonString += "\r\n";
+        }
+
+        jsonString += "    ]";
+    }
 }
 
 void AttributeObjectIdVectorAssociation::storeRelatedObjectIdVector (const ObjectId &parentObjectId, const vector<ObjectId> &vectorOfRelatedObjectIds)

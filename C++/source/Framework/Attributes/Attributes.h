@@ -54,6 +54,8 @@ class AttributeUI32 : public Attribute
         static  map<string, string>     getSupportedConversions ();
         virtual void            setDefaultValue                 ();
         virtual void            getCValue                       (WaveCValue *pCValue);
+        virtual void            toJsonString                    (string &jsonString);
+
     // Now the data members
 
     private :
@@ -105,6 +107,8 @@ class AttributeUI32Vector : public Attribute, public AttributeVector
         virtual void                    getCValue                       (WaveCValue *pCValue);
         virtual void                    addAttributeToVector            (Attribute *attribute);
         virtual void                    deleteAttributeFromVector       (Attribute *attribute);
+        virtual void                    toJsonString                    (string &jsonString);
+
     // Now the data members
 
     private :
@@ -156,6 +160,8 @@ class AttributeUI64 : public Attribute
         static  map<string, string>     getSupportedConversions ();
         virtual void            setDefaultValue                 ();
         virtual void            getCValue                       (WaveCValue *pCValue);
+        virtual void            toJsonString                    (string &jsonString);
+
     // Now the data members
 
     private :
@@ -802,7 +808,6 @@ class AttributeObjectId : public Attribute
         virtual void                setDefaultValue                 ();
         virtual void                loadFromPostgresQueryResult     (PGresult *pResult, const UI32 &row, const string &schema, WaveObjectManager *pWaveObjectManager = NULL);
         virtual void                getCValue                       (WaveCValue *pCValue);
-        virtual void                toJsonString                    (string &jsonString);
 
     // Now the data members
 
@@ -837,6 +842,7 @@ class AttributeObjectIdAssociation : public AttributeObjectId
         virtual string                          getAssociatedTo                 () const;
         virtual bool                            getCanBeEmpty                   () const;
         virtual void                            getCValue                       (WaveCValue *pCValue);
+        virtual void                            toJsonString                    (string &jsonString);
 
     // Now the data members
 
@@ -885,7 +891,6 @@ class AttributeObjectIdVector : public Attribute, public AttributeVector
         virtual void                     getCValue                   (WaveCValue *pCValue);
         virtual void                     addAttributeToVector        (Attribute *attribute);
         virtual void                     deleteAttributeFromVector   (Attribute *attribute);
-        virtual void                     toJsonString                (string &jsonString);
 
     // Now the data members
 
@@ -925,6 +930,7 @@ class AttributeObjectIdVectorAssociation : public AttributeObjectIdVector
                 string                              getAssociatedTo                       () const;
 
         virtual void                                storeRelatedObjectIdVector            (const ObjectId &parentObjectId, const vector<ObjectId> &vectorOfRelatedObjectIds);
+        virtual void                                toJsonString                          (string &jsonString);
 
     // Now the data members
 
