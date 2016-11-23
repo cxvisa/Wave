@@ -669,4 +669,29 @@ void HttpRequest::setIsContentReadIncomplete (bool isContentReadIncomplete)
     m_isContentReadIncomplete = isContentReadIncomplete;
 }
 
+map<string, string> HttpRequest::getUriParamterValues () const
+{
+    return (m_uriParameterValues);
+}
+
+void HttpRequest::setUriParamterValues (const map<string, string> &uriParameterValues)
+{
+    m_uriParameterValues = uriParameterValues;
+}
+
+void HttpRequest::getUriParameterValue (const string &uriParameterName, string &uriParamterValue) const
+{
+    map<string, string>::const_iterator element    = m_uriParameterValues.find (uriParameterName);
+    map<string, string>::const_iterator endElement = m_uriParameterValues.end  ();
+
+    if (endElement != element)
+    {
+        uriParamterValue = element->second;
+    }
+    else
+    {
+        uriParamterValue = string ("");
+    }
+}
+
 }

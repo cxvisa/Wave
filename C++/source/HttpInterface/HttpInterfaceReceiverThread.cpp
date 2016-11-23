@@ -18,6 +18,7 @@
 #include <Framework/Utils/Base64Utils.h>
 #include <Framework/Utils/PamUtils.h>
 #include <Framework/Utils/FrameworkToolKit.h>
+#include "HttpInterface/WaveServerPageDirectory.h"
 
 namespace WaveNs
 {
@@ -38,7 +39,7 @@ HttpInterfaceReceiverThread::~HttpInterfaceReceiverThread ()
 
 WaveThreadStatus HttpInterfaceReceiverThread::start()
 {
-    trace (TRACE_LEVEL_DEVEL, "HttpInterfaceReceiverThread::start : Starting ...");
+    //trace (TRACE_LEVEL_DEVEL, "HttpInterfaceReceiverThread::start : Starting ...");
 
     ServerStreamingSocket     &acceptedSocket             = *m_pServerStreamingSocket;
     string                     httpRequestPhase1;
@@ -64,7 +65,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
     if (true == isSuccesful)
     {
-        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Received Data for Phase 1:\r\n_____\r\n" + httpRequestPhase1 + "\r\n_____\r\n");
+        //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Received Data for Phase 1:\r\n_____\r\n" + httpRequestPhase1 + "\r\n_____\r\n");
     }
     else
     {
@@ -83,18 +84,22 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
     isContentReadIncomplete = httpRequest.getIsContentReadIncomplete ();
     numberOfEntities        = httpRequest.getNumberOfEntities        ();
 
-    trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : URI                = ") + uri);
+    //trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : URI                = ") + uri);
 
     if (0 != contentLength)
     {
-        trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content Length     = ") + contentLength);
-        trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content Type       = ") + FrameworkToolKit::localize (contentType));
-        trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content Boundary   = ") + contentBoundary);
+        //trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content Length     = ") + contentLength);
+        //trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content Type       = ") + FrameworkToolKit::localize (contentType));
+        //trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content Boundary   = ") + contentBoundary);
 
-        trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content:\r\n_____\r\n") + content + string ("\r\n_____\r\n"));
+        //trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Content:\r\n_____\r\n") + content + string ("\r\n_____\r\n"));
+
+        if (WAVE_HTTP_CONTENT_TYPE_APPLICATION_JSON == contentType)
+        {
+        }
     }
 
-    trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Number of Entities = ") + numberOfEntities);
+    //trace (TRACE_LEVEL_DEBUG, string ("HttpInterfaceReceiverThread::start : Number of Entities = ") + numberOfEntities);
 
     for (i = 0; i < numberOfEntities; i++)
     {
@@ -104,7 +109,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
         httpRequest.getEntityAtIndex (i, entityName, entityValue, entityFileName);
 
-        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : \"" + entityName + "(" + entityFileName + ")\" = ***\"" + entityValue + "\"***");
+        //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : \"" + entityName + "(" + entityFileName + ")\" = ***\"" + entityValue + "\"***");
     }
 
     // For now hard code authorization to disable authorization
@@ -130,7 +135,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
         acceptedSocket << httpResponsePhase1;
 
-        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : " + httpResponsePhase1Error + ":\r\n_____\r\n" + httpResponsePhase1 + "\r\n_____\r\n");
+        //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : " + httpResponsePhase1Error + ":\r\n_____\r\n" + httpResponsePhase1 + "\r\n_____\r\n");
     }
     else
     {
@@ -159,7 +164,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
             acceptedSocket << httpResponsePhase1;
 
-            trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Unauthorized Response Data for Phase 1:\r\n_____\r\n" + httpResponsePhase1 + "\r\n_____\r\n");
+            //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Unauthorized Response Data for Phase 1:\r\n_____\r\n" + httpResponsePhase1 + "\r\n_____\r\n");
         }
         else
         {
@@ -189,7 +194,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
                 acceptedSocket << httpResponsePhase1;
 
-                trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Unauthorized Response Data for Phase 1:\r\n_____\r\n" + httpResponsePhase1 + "\r\n_____\r\n");
+                //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Unauthorized Response Data for Phase 1:\r\n_____\r\n" + httpResponsePhase1 + "\r\n_____\r\n");
             }
             else
             {
@@ -201,7 +206,7 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
                     acceptedSocket << methodNotAllowedErrorString;
 
-                    trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Method Not Allowed Response Data for Phase 1:\r\n_____\r\n" + methodNotAllowedErrorString + "\r\n_____\r\n");
+                    //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Method Not Allowed Response Data for Phase 1:\r\n_____\r\n" + methodNotAllowedErrorString + "\r\n_____\r\n");
                 }
                 else
                 {
@@ -215,11 +220,17 @@ WaveThreadStatus HttpInterfaceReceiverThread::start()
 
                         acceptedSocket << notImplemnetedErrorString;
 
-                        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Not Implemented Response Data for Phase 1:\r\n_____\r\n" + notImplemnetedErrorString + "\r\n_____\r\n");
+                        //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Not Implemented Response Data for Phase 1:\r\n_____\r\n" + notImplemnetedErrorString + "\r\n_____\r\n");
                     }
                     else
                     {
-                        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Executing the supported method.");
+                        //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverThread::start : Executing the supported method.");
+
+                        map<string, string> uriParamterValues;
+
+                        WaveServerPageDirectory::getUriParameterValuesForRelativePath (httpRequest.getUri (), uriParamterValues);
+
+                        httpRequest.setUriParamterValues (uriParamterValues);
 
                         pHttpInterfaceMethodWorker->process (httpRequest);
                     }

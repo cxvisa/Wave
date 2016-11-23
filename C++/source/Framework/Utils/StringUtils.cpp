@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2011 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -721,6 +721,55 @@ void StringUtils::unquote (string &inputString)
         previousCharacter = currentCharacter;
         startPosition++;
     }
+}
+
+string::size_type StringUtils::getNumberOfOccurances (const string &inputString, const char &inputCharacter)
+{
+    string::const_iterator element    = inputString.begin ();
+    string::const_iterator endElement = inputString.end   ();
+
+    string::size_type      count      = 0;
+
+
+    while (endElement != element)
+    {
+        if (inputCharacter == (*element))
+        {
+            count++;
+        }
+
+        element++;
+    }
+
+    return (count);
+}
+
+string::size_type StringUtils::findNthOccurance (const string &inputString, const char &inputCharacter, const string::size_type &n)
+{
+    string::const_iterator beginElement = inputString.begin ();
+    string::const_iterator element      = inputString.begin ();
+    string::const_iterator endElement   = inputString.end   ();
+    string::size_type      position     = 0;
+
+    string::size_type      count      = 0;
+
+    while (endElement != element)
+    {
+        if (inputCharacter == (*element))
+        {
+            count++;
+
+            if (n == count)
+            {
+                return (position);
+            }
+        }
+
+        element++;
+        position++;
+    }
+
+    return (string::npos);
 }
 
 }

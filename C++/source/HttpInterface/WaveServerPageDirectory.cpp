@@ -94,6 +94,11 @@ WaveServerPage *WaveServerPageDirectory::getWaveServerPage (const string &path)
     return (m_waveServerPageDirectoryRoot.getWaveServerPageForRelativePath (path));
 }
 
+void WaveServerPageDirectory::getUriParameterValuesForRelativePath (const string &path, map<string, string> &uriParamterValues)
+{
+    m_waveServerPageDirectoryRoot.getUriParameterValuesForRelativePath (path, uriParamterValues);
+}
+
 ResourceId WaveServerPageDirectory::print (UI32 argc, vector<string> argv)
 {
     m_waveServerPageDirectoryRoot.print ();

@@ -152,7 +152,7 @@ void HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler
             continue;
         }
 
-        trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Accepted A NEW connection From : " + pNewServerStreamingSocket->getPeerIpAddress ());
+        //trace (TRACE_LEVEL_DEBUG, "HttpInterfaceReceiverObjectManager::bootCompleteForThisLocationEventHandler : Accepted A NEW connection From : " + pNewServerStreamingSocket->getPeerIpAddress ());
 
         HttpInterfaceReceiverThread *pHttpInterfaceReceiverThread = new HttpInterfaceReceiverThread (pNewServerStreamingSocket);
 

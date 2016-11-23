@@ -66,6 +66,11 @@ class HttpRequest
         bool                     getIsContentReadIncomplete () const;
         void                     setIsContentReadIncomplete (bool isContentReadIncomplete);
 
+        map<string, string>      getUriParamterValues       () const;
+        void                     setUriParamterValues       (const map<string, string> &uriParamterValues);
+
+        void                     getUriParameterValue       (const string &uriParameterName, string &uriParamterValue) const;
+
     // Now the data members
 
     private :
@@ -83,6 +88,7 @@ class HttpRequest
                vector<string>          m_entityValues;
                map<string, string>     m_entitiesMap;
                string                  m_host;
+               map<string, string>     m_uriParameterValues;
 
                ServerStreamingSocket  *m_pServerStreamingSocket;
 

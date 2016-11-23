@@ -235,15 +235,12 @@ void WaveServerMultiPage::get (const HttpRequest &httpRequest)
     {
         string            adjustedPath         = path + "/";
         string            adjustedUri          = uri;
-        UI32              lengthOfAdjustedPath = adjustedPath.length ();
-        string::size_type position             = uri.find (adjustedPath, 0);
+        string::size_type numberOfSeparators   = StringUtils::getNumberOfOccurances (adjustedPath, '/');
+        string::size_type position             = StringUtils::findNthOccurance      (adjustedUri, '/', numberOfSeparators);
 
-        if (string::npos != position)
-        {
-            adjustedUri.replace (0, lengthOfAdjustedPath, "");
-        }
+        adjustedUri.erase (0, position + 1);
 
-        trace (TRACE_LEVEL_DEBUG, "WaveServerMultiPage::get : Adjusted URI : \"" + adjustedUri + "\"");
+        //trace (TRACE_LEVEL_INFO, "WaveServerMultiPage::get : Adjusted URI : \"" + adjustedUri + "\"");
 
         WaveServerMultiPageRequestHandler pWaveServerMultiPageRequestHandler = getWaveServerMultiPageRequestHandlerForGet (adjustedUri);
 
@@ -265,15 +262,12 @@ void WaveServerMultiPage::post (const HttpRequest &httpRequest)
 
     string            adjustedPath         = path + "/";
     string            adjustedUri          = uri;
-    UI32              lengthOfAdjustedPath = adjustedPath.length ();
-    string::size_type position             = uri.find (adjustedPath, 0);
+    string::size_type numberOfSeparators   = StringUtils::getNumberOfOccurances (adjustedPath, '/');
+    string::size_type position             = StringUtils::findNthOccurance      (adjustedUri, '/', numberOfSeparators);
 
-    if (string::npos != position)
-    {
-        adjustedUri.replace (0, lengthOfAdjustedPath, "");
-    }
+    adjustedUri.erase (0, position + 1);
 
-    trace (TRACE_LEVEL_DEBUG, "WaveServerMultiPage::post : Adjusted URI : \"" + adjustedUri + "\"");
+    //trace (TRACE_LEVEL_INFO, "WaveServerMultiPage::post : Adjusted URI : \"" + adjustedUri + "\"");
 
     WaveServerMultiPageRequestHandler pWaveServerMultiPageRequestHandler = getWaveServerMultiPageRequestHandlerForPost (adjustedUri);
 
@@ -294,15 +288,12 @@ void WaveServerMultiPage::put (const HttpRequest &httpRequest)
 
     string            adjustedPath         = path + "/";
     string            adjustedUri          = uri;
-    UI32              lengthOfAdjustedPath = adjustedPath.length ();
-    string::size_type position             = uri.find (adjustedPath, 0);
+    string::size_type numberOfSeparators   = StringUtils::getNumberOfOccurances (adjustedPath, '/');
+    string::size_type position             = StringUtils::findNthOccurance      (adjustedUri, '/', numberOfSeparators);
 
-    if (string::npos != position)
-    {
-        adjustedUri.replace (0, lengthOfAdjustedPath, "");
-    }
+    adjustedUri.erase (0, position + 1);
 
-    trace (TRACE_LEVEL_DEBUG, "WaveServerMultiPage::put : Adjusted URI : \"" + adjustedUri + "\"");
+    //trace (TRACE_LEVEL_INFO, "WaveServerMultiPage::put : Adjusted URI : \"" + adjustedUri + "\"");
 
     WaveServerMultiPageRequestHandler pWaveServerMultiPageRequestHandler = getWaveServerMultiPageRequestHandlerForPut (adjustedUri);
 
@@ -323,15 +314,12 @@ void WaveServerMultiPage::deleteMethod (const HttpRequest &httpRequest)
 
     string            adjustedPath         = path + "/";
     string            adjustedUri          = uri;
-    UI32              lengthOfAdjustedPath = adjustedPath.length ();
-    string::size_type position             = uri.find (adjustedPath, 0);
+    string::size_type numberOfSeparators   = StringUtils::getNumberOfOccurances (adjustedPath, '/');
+    string::size_type position             = StringUtils::findNthOccurance      (adjustedUri, '/', numberOfSeparators);
 
-    if (string::npos != position)
-    {
-        adjustedUri.replace (0, lengthOfAdjustedPath, "");
-    }
+    adjustedUri.erase (0, position + 1);
 
-    trace (TRACE_LEVEL_DEBUG, "WaveServerMultiPage::deleteMethod : Adjusted URI : \"" + adjustedUri + "\"");
+    //trace (TRACE_LEVEL_INFO, "WaveServerMultiPage::deleteMethod : Adjusted URI : \"" + adjustedUri + "\"");
 
     WaveServerMultiPageRequestHandler pWaveServerMultiPageRequestHandler = getWaveServerMultiPageRequestHandlerForDelete (adjustedUri);
 

@@ -25,16 +25,18 @@ class WaveServerPageDirectory
     private :
     protected :
     public :
-                                WaveServerPageDirectory ();
-        virtual                ~WaveServerPageDirectory ();
+                                WaveServerPageDirectory              ();
+        virtual                ~WaveServerPageDirectory              ();
 
-        static  bool            isAKnownServerPage      (const string &path);
+        static  bool            isAKnownServerPage                   (const string &path);
 
-        static  void            registerServerPage      (WaveServerPage *pWaveServerPage);
-        static  void            registerServerPage      (const string &path, WaveServerPage *pWaveServerPage);
-        static  WaveServerPage *getWaveServerPage       (const string &path);
+        static  void            registerServerPage                   (WaveServerPage *pWaveServerPage);
+        static  void            registerServerPage                   (const string &path, WaveServerPage *pWaveServerPage);
+        static  WaveServerPage *getWaveServerPage                    (const string &path);
 
-        static  ResourceId      print                   (UI32 argc, vector<string> argv);
+        static  void            getUriParameterValuesForRelativePath (const string &path, map<string, string> &uriParamterValues);
+
+        static  ResourceId      print                                (UI32 argc, vector<string> argv);
 
     // Now the data members
 

@@ -80,6 +80,9 @@ class StringUtils
 
         static void                 unquote                                                         (string &inputString);
 
+        static string::size_type    getNumberOfOccurances                                           (const string &inputString, const char &inputCharacter);
+        static string::size_type    findNthOccurance                                                (const string &inputString, const char &inputCharacter, const string::size_type &n);
+
         // Now the data members
 
     private :
