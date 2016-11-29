@@ -389,6 +389,11 @@ vector<WaveManagedObject *> *WaveManagedObject::querySynchronouslyByName (const 
     return (m_pCurrentOwnerWaveObjectManager->querySynchronouslyByName (managedClassName, managedObjectName, schema));
 }
 
+ResourceId WaveManagedObject::querySynchronouslyForObjectIdForManagedObjectByName (const string &managedClassName, const string &nameValue, ObjectId &objectId, const string &schema)
+{
+    return (m_pCurrentOwnerWaveObjectManager->querySynchronouslyForObjectIdForManagedObjectByName (managedClassName, nameValue, objectId, schema));
+}
+
 void WaveManagedObject::updateWaveManagedObject (WaveManagedObject *pWaveManagedObject)
 {
     m_pCurrentOwnerWaveObjectManager->updateWaveManagedObject (pWaveManagedObject);

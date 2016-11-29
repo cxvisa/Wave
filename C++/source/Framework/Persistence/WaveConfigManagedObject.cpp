@@ -9,10 +9,6 @@
 
 namespace WaveNs
 {
-/*
- * This Managed Object stores all Global Config/Cluster wide configurations
- * Eg. Gvlan state 
- */
 WaveConfigManagedObject::WaveConfigManagedObject (WaveObjectManager *pWaveObjectManager)
     : WaveConfigurationAttributes ("", "", 0),
       WaveElement               (pWaveObjectManager),

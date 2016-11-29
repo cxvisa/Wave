@@ -8299,7 +8299,7 @@ ResourceId WaveObjectManager::querySynchronouslyForCountForManagedObjectByName(c
 {
     if (false == OrmRepository::isFieldOfStringType (managedClassName, "name"))
     {
-        return (WAVE_MESSAGE_ERROR_COUNT_QUERY_NOT_SUPPORTED_ON_NON_INTEGER_RANGE);
+        return (WAVE_MESSAGE_ERROR_COUNT_QUERY_NOT_SUPPORTED_ON_NON_STRING);
     }
 
     WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
@@ -8307,6 +8307,44 @@ ResourceId WaveObjectManager::querySynchronouslyForCountForManagedObjectByName(c
     waveManagedObjectSynchronousQueryContext.addAndAttribute (new AttributeString (nameValue, "name"));
 
     return (querySynchronouslyForCount (&waveManagedObjectSynchronousQueryContext, count));
+}
+
+ResourceId WaveObjectManager::querySynchronouslyForObjectIdForManagedObjectByName (const string &managedClassName, const string &nameValue, ObjectId &objectId, const string &schema)
+{
+    if (false == OrmRepository::isFieldOfStringType (managedClassName, "name"))
+    {
+        return (WAVE_MESSAGE_ERROR_OBJECT_ID_QUERY_NOT_SUPPORTED_ON_NON_STRING);
+    }
+
+    WaveManagedObjectSynchronousQueryContext waveManagedObjectSynchronousQueryContext (managedClassName);
+    waveManagedObjectSynchronousQueryContext.setSchemaToQuery (schema);
+    waveManagedObjectSynchronousQueryContext.addAndAttribute (new AttributeString (nameValue, "name"));
+    waveManagedObjectSynchronousQueryContext.addSelectField ("objectId");
+
+    vector<WaveManagedObject *> *pQueryResultsVector = querySynchronously (&waveManagedObjectSynchronousQueryContext);
+
+    waveAssert (NULL != pQueryResultsVector, __FILE__, __LINE__);
+
+    objectId = ObjectId::NullObjectId;
+
+    const UI32 numberOfResults = pQueryResultsVector->size ();
+
+    if (1 == numberOfResults)
+    {
+        WaveManagedObject *pWaveManagedObject =(*pQueryResultsVector)[0];
+
+        waveAssert (NULL != pWaveManagedObject, __FILE__, __LINE__);
+
+        objectId = pWaveManagedObject->getObjectId ();
+
+        WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector (pQueryResultsVector);
+    }
+    else if (1 < numberOfResults)
+    {
+        return (WAVE_MESSAGE_ERROR_OBJECT_ID_QUERY_TOO_MANY_RESULTS);
+    }
+
+    return (WAVE_MESSAGE_SUCCESS);
 }
 
 vector<WaveManagedObject *> *WaveObjectManager::querySynchronously (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext)

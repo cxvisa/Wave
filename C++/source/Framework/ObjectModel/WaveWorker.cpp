@@ -658,6 +658,11 @@ WaveManagedObject *WaveWorker::queryManagedObject (const ObjectId &managedObject
     return (m_pWaveObjectManager->queryManagedObject (managedObjectId, schema));
 }
 
+ResourceId WaveWorker::querySynchronouslyForObjectIdForManagedObjectByName (const string &managedClassName, const string &nameValue, ObjectId &objectId, const string &schema)
+{
+    return (m_pWaveObjectManager->querySynchronouslyForObjectIdForManagedObjectByName (managedClassName, nameValue, objectId, schema));
+}
+
 vector<WaveManagedObject *> *WaveWorker::queryManagedObjectAssociatedWithSlot (const string &managedClassName, UI32 slotNumber, LocationId locationId, const string &schema)
 {
     return (m_pWaveObjectManager->queryManagedObjectAssociatedWithSlot (managedClassName, slotNumber, locationId, schema));

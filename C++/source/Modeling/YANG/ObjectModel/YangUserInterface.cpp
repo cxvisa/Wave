@@ -414,152 +414,26 @@ void YangUserInterface::applyAnnotationSupplement ()
 
 void YangUserInterface::applyAddModeAnnotation ()
 {
-    applyAddModeAnnotationToTargetNodes ("config hosts");
-    applyAddModeAnnotationToTargetNodes ("protocol spanning-tree stp");
-    applyAddModeAnnotationToTargetNodes ("protocol spanning-tree rstp");
-    applyAddModeAnnotationToTargetNodes ("protocol spanning-tree mstp");
-    applyAddModeAnnotationToTargetNodes ("protocol spanning-tree pvst");
-    applyAddModeAnnotationToTargetNodes ("protocol spanning-tree rpvst");
 }
 
 void YangUserInterface::applyCompactElemAnnotation ()
 {
-    applyCompactElemAnnotationToTargetNodes ("interface TenGigabitEthernet channel-group");
-    applyCompactElemAnnotationToTargetNodes ("interface TenGigabitEthernet channel-group");
-    applyCompactElemAnnotationToTargetNodes ("interface FortyGigabitEthernet channel-group");
-    applyCompactElemAnnotationToTargetNodes ("interface FortyGigabitEthernet channel-group");
-    applyCompactElemAnnotationToTargetNodes ("interface Port-channel private-vlan");
-    applyCompactElemAnnotationToTargetNodes ("interface Port-channel private-vlan mapping");
-    applyCompactElemAnnotationToTargetNodes ("vlan classifier");
-    applyCompactElemAnnotationToTargetNodes ("interface TenGigabitEthernet vlan classifier activate");
-    applyCompactElemAnnotationToTargetNodes ("interface Port-channel vlan classifier activate");
 }
 
 void YangUserInterface::applyDropElemAnnotation ()
 {
-    applyDropElemAnnotationToTargetNodes ("ip route routing-table");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet channel-group port-int");
-    applyDropElemAnnotationToTargetNodes ("interface FortyGigabitEthernet channel-group port-int");
-    applyDropElemAnnotationToTargetNodes ("port-profile vlan-profile switchport mode vlanMode");
-    applyDropElemAnnotationToTargetNodes ("interface Vlan private-vlan pvlan_type_leaf");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport mode vlanMode");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport mode private-vlan private-vlanMode");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport mode private-vlan trunk private-vlan-trunkMode");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan mapping primary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan mapping secondaryVlanIds");
-    applyDropElemAnnotationToTargetNodes ("interface Vlan private-vlan association secondaryVlanIds");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan host-association primary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan association trunk primary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan host-association secondary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan association trunk secondaryVlanIds");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport mode vlanMode");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport mode private-vlan private-vlanMode");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport mode private-vlan trunk private-vlan-trunkMode");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport private-vlan mapping primary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport private-vlan mapping secondaryVlanIds");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport private-vlan host-association primary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport private-vlan association trunk primary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport private-vlan host-association secondary-vlan");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel switchport private-vlan association trunk secondaryVlanIds");
-    applyDropElemAnnotationToTargetNodes ("vlan classifier rule mac address");
-    applyDropElemAnnotationToTargetNodes ("vlan classifier rule proto proto-val");
-    applyDropElemAnnotationToTargetNodes ("vlan classifier group oper");
-    applyDropElemAnnotationToTargetNodes ("ip access-list standard seq deny ip-address");
-    applyDropElemAnnotationToTargetNodes ("ip access-list standard seq permit ip-address");
-    applyDropElemAnnotationToTargetNodes ("ip access-list extended seq deny ip");
-    applyDropElemAnnotationToTargetNodes ("ip access-list extended seq permit ip");
-    applyDropElemAnnotationToTargetNodes ("ip access-list extended seq deny dst-ip");
-    applyDropElemAnnotationToTargetNodes ("ip access-list extended seq deny ip-proto");
-    applyDropElemAnnotationToTargetNodes ("ip access-list extended seq permit dst-ip");
-    applyDropElemAnnotationToTargetNodes ("ip access-list extended seq permit ip-proto");
-    applyDropElemAnnotationToTargetNodes ("interface TenGigabitEthernet ip access-group l3-access-list");
-    applyDropElemAnnotationToTargetNodes ("interface Port-channel ip access-group l3-access-list");
-    applyDropElemAnnotationToTargetNodes ("interface Vlan ip access-group l3-access-list");
-    applyDropElemAnnotationToTargetNodes ("alias-config alias expansion");
-    applyDropElemAnnotationToTargetNodes ("alias-config user alias expansion");
-    applyDropElemAnnotationToTargetNodes ("clock-set-datetime");
-    applyDropElemAnnotationToTargetNodes ("clock-set-timezone");
-    applyDropElemAnnotationToTargetNodes ("snmp-server agtconfig");
-    applyDropElemAnnotationToTargetNodes ("snmp-server community access");
 }
 
 void YangUserInterface::applyMultiValueAnnotation ()
 {
-    applyMultiValueAnnotationToTargetNodes ("alias-config alias expansion");
-    applyMultiValueAnnotationToTargetNodes ("alias-config user alias expansion");
 }
 
 void YangUserInterface::applySuppressModeAnnotation ()
 {
-    applySuppressModeAnnotationToTargetNodes ("vlan classifier rule");
-    applySuppressModeAnnotationToTargetNodes ("vlan classifier group");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet vlan classifier activate group");
-    applySuppressModeAnnotationToTargetNodes ("port-profile vlan-profile vlan classifier activate group");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel vlan classifier activate group");
-    applySuppressModeAnnotationToTargetNodes ("ip access-list standard seq");
-    applySuppressModeAnnotationToTargetNodes ("ip access-list extended seq");
-    applySuppressModeAnnotationToTargetNodes ("mac-address-table static");
-    applySuppressModeAnnotationToTargetNodes ("interface Vlan ip igmp snooping mrouter interface");
-    applySuppressModeAnnotationToTargetNodes ("interface Vlan ip igmp static-group");
-    applySuppressModeAnnotationToTargetNodes ("alias-config alias");
-    applySuppressModeAnnotationToTargetNodes ("alias-config user alias");
-    applySuppressModeAnnotationToTargetNodes ("interface Vlan private-vlan association secondaryVlanIds");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet private-vlan association trunk secondaryVlanIds");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet private-vlan association trunk");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel private-vlan association trunk secondaryVlanIds");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel private-vlan association trunk");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan mapping primary-vlan secondaryVlanIds");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet switchport private-vlan mapping");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel switchport private-vlan mapping");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel switchport private-vlan mapping primary-vlan secondaryVlanIds");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet channel-group");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet switchport trunk allowed vlanoper vlan");
-    applySuppressModeAnnotationToTargetNodes ("port-profile vlan-profile switchport trunk allowed vlanoper vlan");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel switchport trunk allowed vlanoper vlan");
-    applySuppressModeAnnotationToTargetNodes ("clock-set-datetime");
-    applySuppressModeAnnotationToTargetNodes ("clock-set-timezone");
-    applySuppressModeAnnotationToTargetNodes ("snmp-server");
-    applySuppressModeAnnotationToTargetNodes ("protocol spanning-tree mstp instance");
-    applySuppressModeAnnotationToTargetNodes ("protocol spanning-tree pvst vlan");
-    applySuppressModeAnnotationToTargetNodes ("protocol spanning-tree rpvst vlan");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet spanning-tree vlan");
-    applySuppressModeAnnotationToTargetNodes ("interface GigabitEthernet spanning-tree vlan");
-    applySuppressModeAnnotationToTargetNodes ("interface TenGigabitEthernet spanning-tree instance");
-    applySuppressModeAnnotationToTargetNodes ("interface GigabitEthernet spanning-tree instance");
-    applySuppressModeAnnotationToTargetNodes ("interface FortyGigabitEthernet spanning-tree instance");
-    applySuppressModeAnnotationToTargetNodes ("interface FortyGigabitEthernet spanning-tree vlan");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel spanning-tree instance");
-    applySuppressModeAnnotationToTargetNodes ("interface Port-channel spanning-tree vlan");
 }
 
 void YangUserInterface::applyIncompleteCommandAnnotation ()
 {
-    applyIncompleteCommandAnnotationToTargetNodes ("vlan classifier rule");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface");
-    applyIncompleteCommandAnnotationToTargetNodes ("vlan classifier rule mac");
-    applyIncompleteCommandAnnotationToTargetNodes ("vlan classifier rule proto");
-    applyIncompleteCommandAnnotationToTargetNodes ("vlan classifier rule proto proto-val");
-    applyIncompleteCommandAnnotationToTargetNodes ("vcenter");
-    applyIncompleteCommandAnnotationToTargetNodes ("mac-address-table static forward interface_type interface vlan");
-    applyIncompleteCommandAnnotationToTargetNodes ("mac access-list extended seq");
-    applyIncompleteCommandAnnotationToTargetNodes ("mac access-list extended seq action");
-    applyIncompleteCommandAnnotationToTargetNodes ("mac access-list extended seq source");
-    applyIncompleteCommandAnnotationToTargetNodes ("mac access-list extended seq srchost");
-    applyIncompleteCommandAnnotationToTargetNodes ("protocol spanning-tree mstp instance");
-    applyIncompleteCommandAnnotationToTargetNodes ("protocol spanning-tree pvst vlan");
-    applyIncompleteCommandAnnotationToTargetNodes ("protocol spanning-tree rpvst vlan");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface TenGigabitEthernet spanning-tree instance");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface GigabitEthernet spanning-tree instance");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface TenGigabitEthernet spanning-tree vlan");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface GigabitEthernet spanning-tree vlan");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface TenGigabitEthernet spanning-tree");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface GigabitEthernet spanning-tree");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface FortyGigabitEthernet spanning-tree instance");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface FortyGigabitEthernet spanning-tree vlan");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface FortyGigabitEthernet spanning-tree");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface Port-channel spanning-tree");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface Port-channel spanning-tree instance");
-    applyIncompleteCommandAnnotationToTargetNodes ("interface Port-channel spanning-tree vlan");
 }
 
 void YangUserInterface::lock ()

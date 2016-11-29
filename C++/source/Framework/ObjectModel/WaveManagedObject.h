@@ -111,6 +111,8 @@ class WaveManagedObject : virtual public WaveElement, virtual public WavePersist
         virtual vector<WaveManagedObject *>  *querySynchronously                        (const string &managedClassName, vector<ObjectId> &objectIds, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual vector<WaveManagedObject *>  *querySynchronouslyByName                  (const string &managedClassName, const string &managedObjectName, const string &schema = OrmRepository::getWaveCurrentSchema ());
         virtual WaveManagedObject            *queryManagedObject                        (const ObjectId &managedObjectId, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                    querySynchronouslyForObjectIdForManagedObjectByName (const string &managedClassName, const string &nameValue, ObjectId &objectId, const string &schema = OrmRepository::getWaveCurrentSchema ());
+
         virtual vector<WaveManagedObject *> *queryManagedObjectAssociatedWithSlot       (const string &managedClassName, UI32 slotNumber, LocationId locationId = 0, const string &schema = OrmRepository::getWaveCurrentSchema ());
 
         virtual TraceClientId                 getTraceClientId                          ();

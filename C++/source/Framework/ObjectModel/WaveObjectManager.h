@@ -622,7 +622,7 @@ class WaveObjectManager : public WaveElement
 
                void                 deliverWaveLightPulse                                               (const LightPulse *&pLightPulse);
     protected :
-                bool                getIsEnabled                                 ();
+                bool                                             getIsEnabled                                 ();
                                                                  WaveObjectManager                            (const string &objectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
                                                                  WaveObjectManager                            (const WaveObjectManager &waveObjectManager);
         virtual                                                 ~WaveObjectManager                            ();
@@ -688,65 +688,65 @@ class WaveObjectManager : public WaveElement
 
          @see WaveSendToClusterContext
          */
-        virtual void                                             sendToWaveCluster                                  (WaveSendToClusterContext *pWaveSendToClusterContext);
+        virtual void                                             sendToWaveCluster                                   (WaveSendToClusterContext *pWaveSendToClusterContext);
 
-        virtual void                                             sendMulticast                                      (WaveSendMulticastContext *pWaveSendMulticastContext);
-                void                                             performSendMulticast                               (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             performSendMulticastLocalCallback                  (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
-                void                                             performSendMulticastRemoteCallback                 (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
+        virtual void                                             sendMulticast                                       (WaveSendMulticastContext *pWaveSendMulticastContext);
+                void                                             performSendMulticast                                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             performSendMulticastLocalCallback                   (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
+                void                                             performSendMulticastRemoteCallback                  (FrameworkStatus frameworkStatus, WaveMessage *pWaveMessage, void *pContext);
 
         /**
          @}
          */
-        virtual void                                             sendOneWayToWaveCluster                            (WaveSendToClusterContext *pWaveSendToClusterContext);
+        virtual void                                             sendOneWayToWaveCluster                             (WaveSendToClusterContext *pWaveSendToClusterContext);
 
-        virtual WaveMessageStatus                                recall                                             (WaveMessage *pWaveMessage);
-                WaveMessageStatus                                recallButDoNotDeleteResponseMap                    (WaveMessage *pWaveMessage);
-        virtual WaveMessageStatus                                reply                                              (WaveMessage *pWaveMessage);
-        virtual WaveMessageStatus                                broadcast                                          (WaveEvent *pWaveEvent);
-        virtual WaveMessageStatus                                reply                                              (const WaveEvent *&pWaveEvent);
+        virtual WaveMessageStatus                                recall                                              (WaveMessage *pWaveMessage);
+                WaveMessageStatus                                recallButDoNotDeleteResponseMap                     (WaveMessage *pWaveMessage);
+        virtual WaveMessageStatus                                reply                                               (WaveMessage *pWaveMessage);
+        virtual WaveMessageStatus                                broadcast                                           (WaveEvent *pWaveEvent);
+        virtual WaveMessageStatus                                reply                                               (const WaveEvent *&pWaveEvent);
 
-        virtual void                                             trace                                              (TraceLevel traceLevel, const string &stringToTrace);
-        virtual void                                             tracePrintf                                        (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...);
-        virtual void                                             tracePrintf                                        (TraceLevel traceLevel, const char * const pFormat, ...);
-        virtual void                                             waveAssert                                        (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
-        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
-        virtual ResourceId                                       startTimer                                         (TimerHandle &timerHandle,UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
-        void                                                     timerExpiredHandler                                (WaveTimerExpiredObjectManagerMessage *pTimerExpiredMessage);
-        virtual ResourceId                                       deleteTimer                                        (TimerHandle timerHandle);
-        virtual ResourceId                                       deleteAllTimersForService                          ();
+        virtual void                                             trace                                               (TraceLevel traceLevel, const string &stringToTrace);
+        virtual void                                             tracePrintf                                         (TraceLevel traceLevel, const bool &addNewLine, const bool &suppressPrefix, const char * const pFormat, ...);
+        virtual void                                             tracePrintf                                         (TraceLevel traceLevel, const char * const pFormat, ...);
+        virtual void                                             waveAssert                                           (bool isAssertNotRequired, const char *pFileName, UI32 lineNumber);
+        virtual ResourceId                                       startTimer                                          (TimerHandle &timerHandle, timeval &startInterval, timeval &periodicInterval, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
+        virtual ResourceId                                       startTimer                                          (TimerHandle &timerHandle,UI32 timeInMilliSeconds, WaveTimerExpirationHandler pWaveTimerExpirationCallback, void *pWaveTimerExpirationContext = NULL, WaveElement *pWaveTimerSender = NULL);
+        void                                                     timerExpiredHandler                                 (WaveTimerExpiredObjectManagerMessage *pTimerExpiredMessage);
+        virtual ResourceId                                       deleteTimer                                         (TimerHandle timerHandle);
+        virtual ResourceId                                       deleteAllTimersForService                           ();
 
-        virtual void                                             holdMessages                                       ();
-        virtual void                                             holdHighPriorityMessages                           ();
-        virtual void                                             holdEvents                                         ();
-        virtual void                                             holdAll                                            ();
-        virtual void                                             unholdMessages                                     ();
-        virtual void                                             unholdHighPriorityMessages                         ();
-        virtual void                                             unholdEvents                                       ();
-        virtual void                                             unholdAll                                          ();
+        virtual void                                             holdMessages                                        ();
+        virtual void                                             holdHighPriorityMessages                            ();
+        virtual void                                             holdEvents                                          ();
+        virtual void                                             holdAll                                             ();
+        virtual void                                             unholdMessages                                      ();
+        virtual void                                             unholdHighPriorityMessages                          ();
+        virtual void                                             unholdEvents                                        ();
+        virtual void                                             unholdAll                                           ();
 
-        virtual UI32                                             getNumberOfPendingTimerExpirationMessages          ();
-        virtual UI32                                             getNumberOfPendingNormalMessages                   ();
-        virtual UI32                                             getNumberOfPendingHighPriorityMessages             ();
+        virtual UI32                                             getNumberOfPendingTimerExpirationMessages           ();
+        virtual UI32                                             getNumberOfPendingNormalMessages                    ();
+        virtual UI32                                             getNumberOfPendingHighPriorityMessages              ();
 
-        virtual bool                                             isALocalWaveService                               ();
+        virtual bool                                             isALocalWaveService                                 ();
 
-                void                                             registerEventListenerHandler                       (WaveObjectManagerRegisterEventListenerMessage *pWaveObjectManagerRegisterEventListenerMessage);
+                void                                             registerEventListenerHandler                        (WaveObjectManagerRegisterEventListenerMessage *pWaveObjectManagerRegisterEventListenerMessage);
 
-                void                                             setupPartitionForMOsBeingCommitted                 (vector<WaveManagedObject *> *&partitionManagedObjectsForGarbageCollection);
+                void                                             setupPartitionForMOsBeingCommitted                  (vector<WaveManagedObject *> *&partitionManagedObjectsForGarbageCollection);
 
-        virtual void                                             startTransaction                                   ();
-        virtual bool                                             isTransactionInProgress                            ();
-        virtual ResourceId                                       commitTransaction                                  (WaveObjectManagerCommitTransactionContext *pWaveObjectManagerCommitTransactionContext = NULL);
-        virtual void                                             rollbackTransaction                                ();
-        virtual void                                             addWaveConfigEntry                                 (Attribute *attribute);
-        virtual void                                             updateWaveConfigEntry                              (Attribute *attribute);
-        virtual void                                             getWaveConfigEntry                                 (string &configName, Attribute *attribute, bool &configFound);
-        virtual void                                             updateWaveManagedObject                            (WaveManagedObject *pWaveManagedObject);
-        virtual void                                             updateMultipleWaveManagedObjects                   (WaveManagedObjectSynchronousQueryContextForUpdate *pWaveManagedObjectSynchronousQueryContextForUpdate);
-        virtual void                                             deleteWaveManagedObject                            (const ObjectId &objectId);
-        virtual void                                             deleteWaveManagedObject                            (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion);
-        virtual void                                             deleteMultipleWaveManagedObjects                   (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion);
+        virtual void                                             startTransaction                                    ();
+        virtual bool                                             isTransactionInProgress                             ();
+        virtual ResourceId                                       commitTransaction                                   (WaveObjectManagerCommitTransactionContext *pWaveObjectManagerCommitTransactionContext = NULL);
+        virtual void                                             rollbackTransaction                                 ();
+        virtual void                                             addWaveConfigEntry                                  (Attribute *attribute);
+        virtual void                                             updateWaveConfigEntry                               (Attribute *attribute);
+        virtual void                                             getWaveConfigEntry                                  (string &configName, Attribute *attribute, bool &configFound);
+        virtual void                                             updateWaveManagedObject                             (WaveManagedObject *pWaveManagedObject);
+        virtual void                                             updateMultipleWaveManagedObjects                    (WaveManagedObjectSynchronousQueryContextForUpdate *pWaveManagedObjectSynchronousQueryContextForUpdate);
+        virtual void                                             deleteWaveManagedObject                             (const ObjectId &objectId);
+        virtual void                                             deleteWaveManagedObject                             (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion);
+        virtual void                                             deleteMultipleWaveManagedObjects                    (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion);
 
         /**
         * @brief Deletes the compositions of MO's matching the passed query context. The objects themselves are
@@ -758,7 +758,7 @@ class WaveObjectManager : public WaveElement
         *        For deleting all compositions pass empty set, or don't pass this parameter at all.
         * @retval void - Void or Empty.
         */
-        virtual void                                             deleteManagedObjectCompositions                    (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion, const set<string> relationsSet = set<string>());
+        virtual void                                             deleteManagedObjectCompositions                     (WaveManagedObjectSynchronousQueryContextForDeletion *pWaveManagedObjectSynchronousQueryContextForDeletion, const set<string> relationsSet = set<string>());
 
         /**
         * @brief Deletes the compositions of the MO with passed objectId. The object itself is not deleted.
@@ -768,99 +768,100 @@ class WaveObjectManager : public WaveElement
         *        For deleting all compositions pass empty set, or don't pass this parameter at all.
         * @retval void - Void or Empty.
         */
-        virtual void                                             deleteManagedObjectCompositions                    (const ObjectId &objectId, const set<string> relationsSet = set<string>());
+        virtual void                                             deleteManagedObjectCompositions                     (const ObjectId &objectId, const set<string> relationsSet = set<string>());
 
-        virtual void                                             deletePartialManagedObjectCompositions             (const string &parentClassName, const string &compositionName, WaveManagedObjectSynchronousQueryContextForDeletion *pQueryContextForDeletionOnChildMO);
+        virtual void                                             deletePartialManagedObjectCompositions              (const string &parentClassName, const string &compositionName, WaveManagedObjectSynchronousQueryContextForDeletion *pQueryContextForDeletionOnChildMO);
 
-        virtual bool                                             isManagedClassSupported                            (const string &managedClass);
-        virtual void                                             addRelationship                                    (const string &parentClassName, const string &childClassName, const string &relationshipName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
-        virtual void                                             deleteRelationship                                 (const string &parentClassName, const string &childClassName, const string &relationshipName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
-        virtual void                                             addToComposition                                   (const string &parentClassName, const string &childCalssName, const string &compositionName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
-        virtual void                                             deleteFromComposition                              (const string &parentClassName, const string &childCalssName, const string &compositionName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
-        virtual void                                             addToAssociation                                   (const string &parentClassName, const string &childCalssName, const string &associationName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
-        virtual void                                             deleteFromAssociation                              (const string &parentClassName, const string &childCalssName, const string &associationName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
+        virtual bool                                             isManagedClassSupported                             (const string &managedClass);
+        virtual void                                             addRelationship                                     (const string &parentClassName, const string &childClassName, const string &relationshipName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
+        virtual void                                             deleteRelationship                                  (const string &parentClassName, const string &childClassName, const string &relationshipName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
+        virtual void                                             addToComposition                                    (const string &parentClassName, const string &childCalssName, const string &compositionName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
+        virtual void                                             deleteFromComposition                               (const string &parentClassName, const string &childCalssName, const string &compositionName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
+        virtual void                                             addToAssociation                                    (const string &parentClassName, const string &childCalssName, const string &associationName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
+        virtual void                                             deleteFromAssociation                               (const string &parentClassName, const string &childCalssName, const string &associationName, const ObjectId &parentObjectId, const ObjectId &childObjectId);
 
-        virtual void                                             query                                              (WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext);
-                void                                             queryCallback                                      (FrameworkStatus frameworkStatus, DatabaseObjectManagerExecuteQueryMessage *pDatabaseObjectManagerExecuteQueryMessage, void *pContext);
-        virtual vector<WaveManagedObject *>                     *querySynchronouslyLocalManagedObjectsForLocationId (const LocationId &locationId, const string &className);
-        virtual vector<WaveManagedObject *>                     *querySynchronouslyLocalManagedObjectsForLocationId (const LocationId &locationId, const string &className, const vector<string> &selectFields);
-        virtual vector<WaveManagedObject *>                     *querySynchronouslyLocalManagedObjectsForLocationId (const LocationId &locationId, WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext);
-        virtual vector<WaveManagedObject *>                     *querySynchronously                                 (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext);
-        virtual vector<WaveManagedObject *>                     *querySynchronously                                 (const string &managedClassName, const string &schema = OrmRepository::getWaveCurrentSchema ());
-        virtual vector<WaveManagedObject *>                     *querySynchronously                                 (const string &managedClassName, vector<ObjectId> &objectIds, const string &schema = OrmRepository::getWaveCurrentSchema ());
-        virtual vector<WaveManagedObject *>                     *querySynchronouslyByName                           (const string &managedClassName, const string &managedObjectName, const string &schema = OrmRepository::getWaveCurrentSchema ());
-        virtual WaveManagedObject                               *queryManagedObject                                 (const ObjectId &managedObjectId, const string &schema = OrmRepository::getWaveCurrentSchema ());
-        virtual ResourceId                                       querySynchronouslyForCount                         (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext, UI32 &count);
-        virtual ResourceId                                       querySynchronouslyForCount                         (const string &managedClassName, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
-        virtual ResourceId                                       querySynchronouslyForCount                         (const string &managedClassName, const string &fieldName, const string &range, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
-        virtual ResourceId                                       querySynchronouslyForCountForManagedObjectByName   (const string &managedClassName, const string &nameValue, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual void                                             query                                               (WaveManagedObjectQueryContext *pWaveManagedObjectQueryContext);
+                void                                             queryCallback                                       (FrameworkStatus frameworkStatus, DatabaseObjectManagerExecuteQueryMessage *pDatabaseObjectManagerExecuteQueryMessage, void *pContext);
+        virtual vector<WaveManagedObject *>                     *querySynchronouslyLocalManagedObjectsForLocationId  (const LocationId &locationId, const string &className);
+        virtual vector<WaveManagedObject *>                     *querySynchronouslyLocalManagedObjectsForLocationId  (const LocationId &locationId, const string &className, const vector<string> &selectFields);
+        virtual vector<WaveManagedObject *>                     *querySynchronouslyLocalManagedObjectsForLocationId  (const LocationId &locationId, WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext);
+        virtual vector<WaveManagedObject *>                     *querySynchronously                                  (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext);
+        virtual vector<WaveManagedObject *>                     *querySynchronously                                  (const string &managedClassName, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual vector<WaveManagedObject *>                     *querySynchronously                                  (const string &managedClassName, vector<ObjectId> &objectIds, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual vector<WaveManagedObject *>                     *querySynchronouslyByName                            (const string &managedClassName, const string &managedObjectName, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual WaveManagedObject                               *queryManagedObject                                  (const ObjectId &managedObjectId, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                                       querySynchronouslyForCount                          (WaveManagedObjectSynchronousQueryContext *pWaveManagedObjectSynchronousQueryContext, UI32 &count);
+        virtual ResourceId                                       querySynchronouslyForCount                          (const string &managedClassName, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                                       querySynchronouslyForCount                          (const string &managedClassName, const string &fieldName, const string &range, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                                       querySynchronouslyForCountForManagedObjectByName    (const string &managedClassName, const string &nameValue, UI32 &count, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual ResourceId                                       querySynchronouslyForObjectIdForManagedObjectByName (const string &managedClassName, const string &nameValue, ObjectId &objectId, const string &schema);
 
-        virtual vector<WaveManagedObject *>                     *queryManagedObjectAssociatedWithSlot               (const string &managedClassName, UI32 slotNumber, LocationId locationId = 0, const string &schema = OrmRepository::getWaveCurrentSchema ());
+        virtual vector<WaveManagedObject *>                     *queryManagedObjectAssociatedWithSlot                (const string &managedClassName, UI32 slotNumber, LocationId locationId = 0, const string &schema = OrmRepository::getWaveCurrentSchema ());
 
-        virtual pthread_t                                        getPthreadId                                       ();
+        virtual pthread_t                                        getPthreadId                                        ();
 
-                void                                             setTraceLevel                                      (const TraceLevel &traceLevel);
+                void                                             setTraceLevel                                       (const TraceLevel &traceLevel);
 
-                void                                             setCpuAffinity                                     (const vector<UI32> &cpuAffinityVector);
+                void                                             setCpuAffinity                                      (const vector<UI32> &cpuAffinityVector);
 
-                void                                             associateWithVirtualWaveObjectManager              (WaveObjectManager *pAssociatedVirtualWaveObjectManager);
+                void                                             associateWithVirtualWaveObjectManager               (WaveObjectManager *pAssociatedVirtualWaveObjectManager);
 
-        virtual ResourceId                                       sendSynchronouslyToWaveClient                      (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
-        virtual WaveMessageStatus                                sendToWaveServer                                   (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
-        virtual ResourceId                                       sendToWaveClient                                   (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instnace = 0);
-        virtual void                                             sendToWaveClients                                  (WaveSendToClientsContext *pWaveSendToClientsContext);
-        virtual ResourceId                                       sendOneWayToAllWaveClients                         (ManagementInterfaceMessage *pManagementInterfaceMessage);
-                bool                                             getAllowAutomaticallyUnlistenForEvents             () const;
-                void                                             setAllowAutomaticallyUnlistenForEvents             (const bool &allowAutomaticallyUnlistenForEvents);
+        virtual ResourceId                                       sendSynchronouslyToWaveClient                       (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, const SI32 &Instnace = 0);
+        virtual WaveMessageStatus                                sendToWaveServer                                    (const UI32 &waveServerId, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler messageCallback, WaveElement *pWaveMessageSender, void *pInputContext, UI32 timeOutInMilliSeconds);
+        virtual ResourceId                                       sendToWaveClient                                    (const string &waveClientName, ManagementInterfaceMessage *pManagementInterfaceMessage, WaveMessageResponseHandler pWaveMessageCallback, void *pWaveMessageContext = NULL, UI32 timeOutInMilliSeconds = 0, const SI32 &Instnace = 0);
+        virtual void                                             sendToWaveClients                                   (WaveSendToClientsContext *pWaveSendToClientsContext);
+        virtual ResourceId                                       sendOneWayToAllWaveClients                          (ManagementInterfaceMessage *pManagementInterfaceMessage);
+                bool                                             getAllowAutomaticallyUnlistenForEvents              () const;
+                void                                             setAllowAutomaticallyUnlistenForEvents              (const bool &allowAutomaticallyUnlistenForEvents);
 
-                vector<WaveWorker *>                             getWorkers                                         ();   // postboot requires the list of workers on which the function will be invoked
-                                                                                                                          // since postboot is derived from WaveWorker & it is friend of WaveObjectManager
-                                                                                                                          // we can return the list of worker
+                vector<WaveWorker *>                             getWorkers                                          ();   // postboot requires the list of workers on which the function will be invoked
+                                                                                                                           // since postboot is derived from WaveWorker & it is friend of WaveObjectManager
+                                                                                                                           // we can return the list of worker
 
-        virtual void                                             printfToWaveClientSession                          (const WaveClientSessionContext &waveClientSessionContext, const char * const pFormat, ...);
-        virtual void                                             printfToWaveClientSession                          (const WaveClientSessionContext &waveClientSessionContext, const char * const pFormat, va_list &variableArguments);
-        virtual void                                             printfToAllWaveClientSessions                      (const WaveClientSessionContext &waveClientSessionContext, const char * const pFormat, ...);
-        virtual void                                             printfToWaveClientSessionOver                      (const WaveClientSessionContext &waveClientSessionContext);
-        virtual ResourceId                                       addLog                                             (ResourceId logType, ResourceId logDescriptionType, const vector<Attribute *> &logDescriptionArguments);
-                void                                             updateMessageHistoryConfig                         (bool requestedMessageHistoryState, UI32 requestedMessageHistoryMaxSize);
-                void                                             getMessageHistoryDumpStringVector                  (vector<string> &messageHistoryDumpStringVector);
-                void                                             restrictMessageHistoryLogging                      (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
-        virtual bool                                             isOperationAllowedBeforeEnabling                   (const UI32 &operationCode);
+        virtual void                                             printfToWaveClientSession                           (const WaveClientSessionContext &waveClientSessionContext, const char * const pFormat, ...);
+        virtual void                                             printfToWaveClientSession                           (const WaveClientSessionContext &waveClientSessionContext, const char * const pFormat, va_list &variableArguments);
+        virtual void                                             printfToAllWaveClientSessions                       (const WaveClientSessionContext &waveClientSessionContext, const char * const pFormat, ...);
+        virtual void                                             printfToWaveClientSessionOver                       (const WaveClientSessionContext &waveClientSessionContext);
+        virtual ResourceId                                       addLog                                              (ResourceId logType, ResourceId logDescriptionType, const vector<Attribute *> &logDescriptionArguments);
+                void                                             updateMessageHistoryConfig                          (bool requestedMessageHistoryState, UI32 requestedMessageHistoryMaxSize);
+                void                                             getMessageHistoryDumpStringVector                   (vector<string> &messageHistoryDumpStringVector);
+                void                                             restrictMessageHistoryLogging                       (bool messageHistoryLogInsideSend, bool messageHistoryLogInsideReply, bool messageHistoryLogInsideHandleMessage);
+        virtual bool                                             isOperationAllowedBeforeEnabling                    (const UI32 &operationCode);
 
-                void                                             registerLock                                       (const string &serviceString);
-                ResourceId                                       acquireLock                                        (const string &serviceString);
-                ResourceId                                       releaseLock                                        (const string &serviceString);
+                void                                             registerLock                                        (const string &serviceString);
+                ResourceId                                       acquireLock                                         (const string &serviceString);
+                ResourceId                                       releaseLock                                         (const string &serviceString);
 
-                void                                             zeroizeWorkersStep                                 (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             zeroizeWorkersStepCallback                         (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases) ;
-                void                                             zeroizeSelfStep                                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             zeroizeSelfStepCallback                            (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
-                void                                             zeroizeHandler                                     (WaveZeroizeObjectManagerMessage *pMessage);
+                void                                             zeroizeWorkersStep                                  (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             zeroizeWorkersStepCallback                          (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases) ;
+                void                                             zeroizeSelfStep                                     (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             zeroizeSelfStepCallback                             (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
+                void                                             zeroizeHandler                                      (WaveZeroizeObjectManagerMessage *pMessage);
 
-        virtual void                                             zeroize                                            (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
+        virtual void                                             zeroize                                             (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases);
 
-                void                                             databaseSanityCheckHandler                         (WaveObjectManagerDatabaseSanityCheckMessage *pMessage);
+                void                                             databaseSanityCheckHandler                          (WaveObjectManagerDatabaseSanityCheckMessage *pMessage);
 
-                void                                             checkBasicDatabaseSanityWorkersStep                (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             checkBasicDatabaseSanityWorkersStepCallback        (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-                void                                             checkBasicDatabaseSanitySelfStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             checkBasicDatabaseSanitySelfStepCallback           (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        virtual void                                             dbBasicSanityCheck                                 (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+                void                                             checkBasicDatabaseSanityWorkersStep                 (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             checkBasicDatabaseSanityWorkersStepCallback         (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+                void                                             checkBasicDatabaseSanitySelfStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             checkBasicDatabaseSanitySelfStepCallback            (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+        virtual void                                             dbBasicSanityCheck                                  (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
-                void                                             checkIncorrectEntriesWorkersStep                   (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             checkIncorrectEntriesWorkersStepCallback           (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-                void                                             checkIncorrectEntriesSelfStep                      (WaveLinearSequencerContext *pWaveLinearSequencerContext);
-                void                                             checkIncorrectEntriesSelfStepCallback              (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
-        virtual void                                             dbInconsistencyCheck                               (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+                void                                             checkIncorrectEntriesWorkersStep                    (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             checkIncorrectEntriesWorkersStepCallback            (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+                void                                             checkIncorrectEntriesSelfStep                       (WaveLinearSequencerContext *pWaveLinearSequencerContext);
+                void                                             checkIncorrectEntriesSelfStepCallback               (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
+        virtual void                                             dbInconsistencyCheck                                (WaveAsynchronousContextForBootPhases *pWaveAsynchronousContextForBootPhases);
 
 
 
-        virtual ResourceId                                       updateHardwareSynchronizationState                 (ResourceId hardwareSynchronizationState, const vector<LocationId> &locationIds);
-        virtual ResourceId                                       updateHardwareSynchronizationState                 (ResourceId hardwareSynchronizationState, LocationId locationId = 0);
-        virtual void                                             postponeMessageHandling                            (WaveMessage *pWaveMessage);
-        virtual void                                             resumeAllPostponedMessages                         ();
-        virtual ResourceId                                       blockCli                                           (const CliBlockContext &cliBlockContext, const bool &clusterWide);
-        virtual ResourceId                                       unblockCli                                         (const CliBlockContext &cliBlockContext, const bool &clusterWide);
+        virtual ResourceId                                       updateHardwareSynchronizationState                  (ResourceId hardwareSynchronizationState, const vector<LocationId> &locationIds);
+        virtual ResourceId                                       updateHardwareSynchronizationState                  (ResourceId hardwareSynchronizationState, LocationId locationId = 0);
+        virtual void                                             postponeMessageHandling                             (WaveMessage *pWaveMessage);
+        virtual void                                             resumeAllPostponedMessages                          ();
+        virtual ResourceId                                       blockCli                                            (const CliBlockContext &cliBlockContext, const bool &clusterWide);
+        virtual ResourceId                                       unblockCli                                          (const CliBlockContext &cliBlockContext, const bool &clusterWide);
 
 
         /**
@@ -870,39 +871,39 @@ class WaveObjectManager : public WaveElement
          *    This means the MO should have its own DerivationsInstances table.
          * So, Use deleteMultipleWaveManagedObjects API to avoid these limitations.
          */
-        virtual void                                             deleteAllManagedObjectInstances                     (const string &className);
+        virtual void                                             deleteAllManagedObjectInstances                      (const string &className);
 
-                WaveObjectManagerStatisticsTracker              *getPWaveObjectManagerStatisticsTracker              () const;
+                WaveObjectManagerStatisticsTracker              *getPWaveObjectManagerStatisticsTracker               () const;
 
-        virtual void                                             populatePostbootMap                                 ();
-                void                                             setPostbootMap                                      (const map<string, vector<string> > &postbootManagedObjectNames);
-                void                                             getPostbootMap                                      (map<string, vector<string> > &postbootManagedObjectNames) const;
+        virtual void                                             populatePostbootMap                                  ();
+                void                                             setPostbootMap                                       (const map<string, vector<string> > &postbootManagedObjectNames);
+                void                                             getPostbootMap                                       (map<string, vector<string> > &postbootManagedObjectNames) const;
 
-                void                                             getManageObjectNamesFromPostbootMap                 (const string passName, vector<string> &managedObjectNamesInPass );
+                void                                             getManageObjectNamesFromPostbootMap                  (const string passName, vector<string> &managedObjectNamesInPass );
 
-                bool                                             checkForDuplicationInBackEndAttributesMap           (GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext );
+                bool                                             checkForDuplicationInBackEndAttributesMap            (GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext );
 
-                void                                             getAssociatedAttributeClone                         (string parentClassName, Attribute *pAttribute, Attribute *&pAssociatedAttribute );
+                void                                             getAssociatedAttributeClone                          (string parentClassName, Attribute *pAttribute, Attribute *&pAssociatedAttribute );
 
-                void                                             postbootForCompositeChild                           (Attribute *pAttribute, GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext);
+                void                                             postbootForCompositeChild                            (Attribute *pAttribute, GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext);
 
-                void                                             postbootForChoiceGroup                              (GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext );
+                void                                             postbootForChoiceGroup                               (GetHardwareConfigurationDetailsForPostbootContext *pGetHardwareConfigurationDetailsForPostbootContext );
 
-        virtual void                                             applyPartitionFiltersWithPropagatedPartitionContext (WaveManagedObjectQueryContextBase *pWaveManagedObjectQueryContextBase);
+        virtual void                                             applyPartitionFiltersWithPropagatedPartitionContext  (WaveManagedObjectQueryContextBase *pWaveManagedObjectQueryContextBase);
 
-        virtual void                                             bootStrapSelf                                       ();
+        virtual void                                             bootStrapSelf                                        ();
 
-        virtual WaveMessageBrokerStatus                          connectToMessageBroker                              (const string &brokerName, const string &brokerIpAddress, const SI32 &brokerPort);
-        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const vector<string> &topicNames, const vector<WaveBrokerPublishMessageHandler> publishMessageHandlers, WaveElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const vector<string> &topicNames, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                            (const string &brokerName, const string &topicName, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                          (const string &brokerName, const vector<string> &topicNames, WaveElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                          (const string &brokerName, const string &topicName, WaveElement *pSubscriber = NULL);
-        virtual WaveMessageBrokerStatus                          publishToMessageBroker                              (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          connectToMessageBroker                               (const string &brokerName, const string &brokerIpAddress, const SI32 &brokerPort);
+        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                             (const string &brokerName, const vector<string> &topicNames, const vector<WaveBrokerPublishMessageHandler> publishMessageHandlers, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                             (const string &brokerName, const vector<string> &topicNames, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          subscribeToMessageBroker                             (const string &brokerName, const string &topicName, WaveBrokerPublishMessageHandler publishMessageHandler, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                           (const string &brokerName, const vector<string> &topicNames, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          unsubscribeToMessageBroker                           (const string &brokerName, const string &topicName, WaveElement *pSubscriber = NULL);
+        virtual WaveMessageBrokerStatus                          publishToMessageBroker                               (const string &brokerName, WaveBrokerPublishMessage *pWaveBrokerPublishMessage, WaveElement *pSubscriber = NULL);
 
-                bool                                             isAKnownWaveBrokerBasedMessageSubscription          (const string &brokerName, const string &topicName) const;
+                bool                                             isAKnownWaveBrokerBasedMessageSubscription           (const string &brokerName, const string &topicName) const;
 
-        virtual WaveMessageStatus                                broadcastLightPulse                                 (LightPulse *pLightPulse);
+        virtual WaveMessageStatus                                broadcastLightPulse                                  (LightPulse *pLightPulse);
 
     public :
         static void                getListOfEnabledServices                    (vector<WaveServiceId> &enabledServices);

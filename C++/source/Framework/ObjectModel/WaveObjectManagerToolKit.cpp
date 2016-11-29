@@ -149,6 +149,16 @@ ResourceId WaveObjectManagerToolKit::querySynchronouslyForCount (const string &m
     return (pWaveObjectManagerForCurrentThread->querySynchronouslyForCount (managedClassName, fieldName, range, count, schema));
 }
 
+ResourceId WaveObjectManagerToolKit::querySynchronouslyForObjectIdForManagedObjectByName (const string &managedClassName, const string &nameValue, ObjectId &objectId, const string &schema)
+{
+    WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
+
+    waveAssert (NULL != pWaveObjectManagerForCurrentThread, __FILE__, __LINE__);
+
+    return (pWaveObjectManagerForCurrentThread->querySynchronouslyForObjectIdForManagedObjectByName (managedClassName, nameValue, objectId, schema));
+}
+
+
 void WaveObjectManagerToolKit::getWaveConfigEntry (string &configName, Attribute *attribute, bool &configFound)
 {
     WaveObjectManager *pWaveObjectManagerForCurrentThread = WaveThread::getWaveObjectManagerForCurrentThread ();
@@ -157,6 +167,6 @@ void WaveObjectManagerToolKit::getWaveConfigEntry (string &configName, Attribute
 
     pWaveObjectManagerForCurrentThread->getWaveConfigEntry (configName, attribute, configFound);
 
-	return;
+  return;
 }
 }
