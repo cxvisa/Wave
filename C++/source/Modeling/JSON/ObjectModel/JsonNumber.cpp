@@ -49,4 +49,9 @@ void JsonNumber::print (const UI32 &level) const
     tracePrintf (TRACE_LEVEL_INFO, false, true, "%LF", m_number.getLd ());
 }
 
+const Number &JsonNumber::getNumber () const
+{
+    return (m_number);
+}
+
 }

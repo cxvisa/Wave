@@ -81,6 +81,10 @@ void JsonObject::fromString (const string &input)
                 {
                     successFullyLoaded = false;
                 }
+                else
+                {
+                    m_valuesByName[pJsonPair->getName ()] = pJsonPair->getPValue ();
+                }
             }
         }
         else
@@ -94,6 +98,19 @@ void JsonObject::fromString (const string &input)
     }
 
     setSuccessFullyLoaded (successFullyLoaded);
+}
+
+bool JsonObject::isAKnownName (const string &name) const
+{
+    map<string, JsonValue *>::const_iterator element    = m_valuesByName.find (name);
+    map<string, JsonValue *>::const_iterator endElement = m_valuesByName.end  ();
+
+    if (endElement != element)
+    {
+        return (true);
+    }
+
+    return (false);
 }
 
 void JsonObject::print (const UI32 &level) const
@@ -126,6 +143,16 @@ void JsonObject::print (const UI32 &level) const
     }
 
     tracePrintf (TRACE_LEVEL_INFO, false, true, (space + "}").c_str ());
+}
+
+JsonValue *JsonObject::getValueForName (const string &name)
+{
+    if (isAKnownName (name))
+    {
+        return (m_valuesByName[name]);
+    }
+
+    return (NULL);
 }
 
 }

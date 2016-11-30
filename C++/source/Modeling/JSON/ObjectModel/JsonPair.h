@@ -31,6 +31,9 @@ class JsonPair : public JsonValue
         virtual void    fromString (const string &input);
         virtual void    print      (const UI32 &level = 0) const;
 
+        const string    &getName   () const;
+              JsonValue *getPValue ();
+
     // Now the data members
 
     private :

@@ -122,4 +122,14 @@ void JsonPair::print (const UI32 &level) const
     }
 }
 
+const string &JsonPair::getName () const
+{
+    return (m_name);
+}
+
+JsonValue *JsonPair::getPValue ()
+{
+    return (m_pValue);
+}
+
 }

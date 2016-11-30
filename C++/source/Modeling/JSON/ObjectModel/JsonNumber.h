@@ -32,6 +32,8 @@ class JsonNumber : public JsonValue
 
         virtual void    print      (const UI32 &level) const;
 
+        const Number &getNumber () const;
+
     // Now the data members
 
     private :

@@ -31,6 +31,8 @@ class JsonString : public JsonValue
 
         virtual void    print      (const UI32 &level) const;
 
+        const string &getString () const;
+
     // Now the data members
 
     private :

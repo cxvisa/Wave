@@ -72,4 +72,9 @@ void JsonString::print (const UI32 &level) const
     WaveNs::tracePrintf (TRACE_LEVEL_INFO, false, true, ("\"" + m_string + "\"").c_str ());
 }
 
+const string &JsonString::getString () const
+{
+    return (m_string);
+}
+
 }
