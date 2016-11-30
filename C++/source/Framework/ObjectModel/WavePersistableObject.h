@@ -76,6 +76,7 @@ class WavePersistableObject
 
                 vector<string>  getUserDefinedKeyCombination          () const;
                 string          getUserDefinedKeyCombinationValue     () const;
+        virtual string          getUserDefinedKeyCombinationValueForJson () const;
 
                 Attribute      *getAttributeByName                    (const string &attributeName);
                 Attribute      *getAttributeByUserTag                 (const UI32 &attributeUserTag);
@@ -158,7 +159,7 @@ class WavePersistableObject
         vector<string>                                m_attributesToBeUpdated;
 
         static map<string, map<UI32, string> >        m_globalUserTagToNameMap;
-        static map<string, map<string, UI32> >        m_globalNameToUserTagMap; 
+        static map<string, map<string, UI32> >        m_globalNameToUserTagMap;
         static map<string, map<UI32, AttributeType> > m_globalUserTagToTypeMap;
         static WaveMutex                             m_globalUserTagToNameMapMutex;
         bool                                          m_emptyNeededOnPersistentBootWithDefault;

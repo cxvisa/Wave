@@ -6045,7 +6045,7 @@ void AttributeObjectIdVectorAssociation::toJsonString (string &jsonString)
             }
             else
             {
-                jsonString += "    \"" + pWaveManagedObject->getUserDefinedKeyCombinationValue () + "\"";
+                jsonString += "        \"" + pWaveManagedObject->getUserDefinedKeyCombinationValueForJson () + "\"";
             }
         }
 
@@ -6057,9 +6057,9 @@ void AttributeObjectIdVectorAssociation::toJsonString (string &jsonString)
         {
             jsonString += "\r\n";
         }
-
-        jsonString += "    ]";
     }
+
+    jsonString += "    ]";
 }
 
 void AttributeObjectIdVectorAssociation::storeRelatedObjectIdVector (const ObjectId &parentObjectId, const vector<ObjectId> &vectorOfRelatedObjectIds)

@@ -98,18 +98,18 @@ void WavePersistableObject::addPersistableAttribute (Attribute *pAttribute)
 {
     m_persistableAttributes.addAttribute (pAttribute);
 
-	UI32          attributeUserTag = pAttribute->getAttributeUserTag ();
+  UI32          attributeUserTag = pAttribute->getAttributeUserTag ();
     string        attributeName    = pAttribute->getAttributeName    ();
     AttributeType attributeType    = pAttribute->getAttributeType    ();
 
-	if (attributeUserTag != 0)
-	{
-		m_attributeUserTags.insert (m_attributeUserTags.end (), attributeUserTag);
+  if (attributeUserTag != 0)
+  {
+    m_attributeUserTags.insert (m_attributeUserTags.end (), attributeUserTag);
 
         addGlobalUserTagToNameCombination (m_objectClassName, attributeUserTag, attributeName, attributeType);
-	}
+  }
 
-	// trace (TRACE_LEVEL_DEBUG, string ("WavePersistableObject::addPersistableAttribute:") + pAttribute->getAttributeName() + ',' + attributeUserTag);
+  // trace (TRACE_LEVEL_DEBUG, string ("WavePersistableObject::addPersistableAttribute:") + pAttribute->getAttributeName() + ',' + attributeUserTag);
 }
 
 void WavePersistableObject::addPersistableAttributeForCreate (Attribute *pAttribute)
@@ -228,7 +228,7 @@ void WavePersistableObject::getSqlForUpdate (string &sqlStringForUpdate, const s
 
     if (ObjectId::NullObjectId != getObjectId ())
     {
-        /* 
+        /*
          * This indicates generating WHERE clause for an empty MO.
          * It is used in updating Multiple WMO using query context.
          * The WHERE condition is generated in the WaveManagedObjectQueryContextForUpdate class
@@ -266,7 +266,7 @@ void WavePersistableObject::setupOrm ()
         trace (TRACE_LEVEL_FATAL, "WavePersistableObject::setupOrm : Classes derived from WaveManagedView should set isWaveView to true in WavePersistebleObject constructor.");
         waveAssert (false, __FILE__, __LINE__);
     }
-    
+
     if (false == isAManagedView)
     {
         // Determine if the object class is a local managed object and constuct ORM Table accordingly
@@ -338,14 +338,14 @@ void WavePersistableObject::setupOrm ()
         }
 
         string viewDefinition = getSqlForCreateView ();
-        
+
         if (true == viewDefinition.empty ())
         {
             viewDefinition = computeSqlForCreateView ();
 
             trace (TRACE_LEVEL_INFO, "WavePersistableObject::setupOrm : viewDefinition " + viewDefinition);
         }
-            
+
         pOrmView->setSqlForCreateView (viewDefinition);
 
         // Prepare for general Serialization at run time and prepate for Schema Creation  phase.
@@ -435,6 +435,11 @@ string WavePersistableObject::getUserDefinedKeyCombinationValue () const
     return (m_userDefinedKeyCombinationValue);
 }
 
+string WavePersistableObject::getUserDefinedKeyCombinationValueForJson () const
+{
+    return (getUserDefinedKeyCombinationValue ());
+}
+
 void WavePersistableObject::setUserDefinedKeyCombination (const vector<string> &userDefinedKeyCombination)
 {
     m_userDefinedKeyCombination = userDefinedKeyCombination;
@@ -508,7 +513,7 @@ UI32 WavePersistableObject::getCase (const UI32 &attributeUserTag)
 
 vector<UI32> WavePersistableObject::getAttributeUserTags () const
 {
-	return (m_attributeUserTags);
+  return (m_attributeUserTags);
 }
 
 void WavePersistableObject::setEmptyNeededOnPersistentBoot (bool emptyNeeded)
@@ -852,15 +857,15 @@ void WavePersistableObject::setAttributesToBeUpdated (const vector<string> &attr
     }
     else
     {
-        /* 
+        /*
          * This indicates setting attributes for an empty MO.
          * It is used in updating Multiple WMO using query context.
          * Limitations: Bulk Update doesn't support updating of these attributes:
          *      1. AttributeTypeObjectIdVector
-         *      2. AttributeTypeComposition 
-         *      3. AttributeTypeCompositionVector 
+         *      2. AttributeTypeComposition
+         *      3. AttributeTypeCompositionVector
          */
-         
+
         UI32 numberOfAttributesToBeUpdated  = attributesToBeUpdated.size ();
         UI32 i                              = 0;
 
@@ -899,15 +904,15 @@ void WavePersistableObject::addAttributeToBeUpdated (const string &attributeName
 
         m_attributesToBeUpdated.push_back (attributeName);
     }
-    else 
+    else
     {
-        /* 
+        /*
          * This indicates setting attributes for an empty MO.
          * It is used in updating Multiple WMO using query context.
          * Limitations: Bulk Update doesn't support updating of these attributes:
          *      1. AttributeTypeObjectIdVector
-         *      2. AttributeTypeComposition 
-         *      3. AttributeTypeCompositionVector 
+         *      2. AttributeTypeComposition
+         *      3. AttributeTypeCompositionVector
          */
 
         AttributeType attributeTypeToBeUpdated = (getAttributeByName (attributeName))->getAttributeType ();
@@ -943,9 +948,9 @@ void WavePersistableObject::setDisableValidations (const string &attributeName, 
 
     waveAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
 
-    
+
     pAttributeManagedObjectVectorCompositionTemplateBase->setDisableValidations (disableValidations);
-    
+
 }
 
 void WavePersistableObject::setEmptyNeededOnPersistentBootWithDefault (const bool emptyNeededWithDefault)
