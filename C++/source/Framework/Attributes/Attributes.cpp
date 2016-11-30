@@ -22,6 +22,9 @@
 #include "Framework/ObjectModel/WaveManagedObject.h"
 #include "Framework/ObjectModel/WaveManagedObjectToolKit.h"
 #include "Framework/ObjectModel/WaveManagedObjectSynchronousQueryContext.h"
+#include "Modeling/JSON/ObjectModel/JsonValue.h"
+#include "Modeling/JSON/ObjectModel/JsonNumber.h"
+#include "Modeling/JSON/ObjectModel/JsonString.h"
 
 #include <algorithm>
 
@@ -323,6 +326,16 @@ void AttributeUI32::getCValue (WaveCValue *pCValue)
 void AttributeUI32::toJsonString (string &jsonString)
 {
     toString (jsonString);
+}
+
+void AttributeUI32::loadFromJsonValue (JsonValue *pJsonValue)
+{
+    JsonNumber *pJsonNumber = dynamic_cast<JsonNumber *> (pJsonValue);
+
+    if (NULL != pJsonNumber)
+    {
+        fromString ((pJsonNumber->getNumber ()).toString ());
+    }
 }
 
 AttributeUI32Vector::AttributeUI32Vector (const vector<UI32> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
@@ -4015,6 +4028,16 @@ void AttributeString::toJsonString (string &jsonString)
 
     jsonString.insert (0, "\"");
     jsonString += "\"";
+}
+
+void AttributeString::loadFromJsonValue (JsonValue *pJsonValue)
+{
+    JsonString *pJsonString = dynamic_cast<JsonString *> (pJsonValue);
+
+    if (NULL != pJsonString)
+    {
+        *m_pData = pJsonString->getString ();
+    }
 }
 
 AttributeUnion::AttributeUnion (const string &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)

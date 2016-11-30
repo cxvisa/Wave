@@ -18,7 +18,8 @@
 #include "Framework/ObjectModel/SerializableObject.h"
 #include "Framework/Types/BitMap.h"
 #include "Version/WaveVersion.h"
-
+#include "Modeling/JSON/ObjectModel/JsonObject.h"
+#include "Modeling/JSON/ObjectModel/JsonValue.h"
 
 namespace WaveNs
 {
@@ -1578,6 +1579,39 @@ void AttributesMap::storeRelatedObjectVectorForAOneToNComposition (const string 
     waveAssert (NULL != pAttributeManagedObjectVectorCompositionTemplateBase, __FILE__, __LINE__);
 
     pAttributeManagedObjectVectorCompositionTemplateBase->storeRelatedObjectVector (parentObjectId, vectorOfRelatedObjects);
+}
+
+void AttributesMap::loadFromJsonObject (JsonObject *pJsonObject)
+{
+    waveAssert (NULL != pJsonObject, __FILE__, __LINE__);
+
+    map<UI32, Attribute *>::iterator  element         = m_attributes.begin ();
+    map<UI32, Attribute *>::iterator  limitingElement = m_attributes.end ();
+    Attribute                        *pAttribute      = NULL;
+    string                            attributeName;
+
+    while (element != limitingElement)
+    {
+        pAttribute = element->second;
+
+        if (NULL != pAttribute)
+        {
+            attributeName = pAttribute->getAttributeName ();
+
+            JsonValue *pJsonValue = pJsonObject->getValueForName (attributeName);
+
+            if (NULL != pJsonValue)
+            {
+                pAttribute->loadFromJsonValue (pJsonValue);
+            }
+        }
+        else
+        {
+            waveAssert (false, __FILE__, __LINE__);
+        }
+
+        element++;
+    }
 }
 
 }

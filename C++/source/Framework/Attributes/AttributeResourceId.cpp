@@ -16,6 +16,8 @@
 #include "Framework/ObjectRelationalMapping/OrmRepository.h"
 #include "Framework/Database/DatabaseConnection.h"
 #include "Framework/Database/DatabaseObjectManager.h"
+#include "Modeling/JSON/ObjectModel/JsonValue.h"
+#include "Modeling/JSON/ObjectModel/JsonString.h"
 
 #include <algorithm>
 
@@ -240,9 +242,9 @@ bool AttributeResourceId::isCurrentValueSameAsDefault () const
     bool isDefault = false ;
 
     if ( getIsDefaultDataValidFlag() )
-    {   
+    {
         if ( getDefaultData() == getValue() )
-        {   
+        {
             isDefault = true;
         }
     }
@@ -300,7 +302,7 @@ void AttributeResourceId::toEscapedString (string &valueString)
 map<string, string> AttributeResourceId::getSupportedConversions ()
 {
     map<string, string> supportedConversions;
-    
+
     return (supportedConversions);
 }
 
@@ -319,6 +321,16 @@ void AttributeResourceId::setDefaultValue()
 void AttributeResourceId::getCValue(WaveCValue *pCValue)
 {
    wave_cvalue_set_ui32 (pCValue, getValue ());
+}
+
+void AttributeResourceId::loadFromJsonValue (JsonValue *pJsonValue)
+{
+    JsonString *pJsonString = dynamic_cast<JsonString *> (pJsonValue);
+
+    if (NULL != pJsonString)
+    {
+        fromString (pJsonString->getString ());
+    }
 }
 
 AttributeResourceIdVector::AttributeResourceIdVector (const vector<UI32> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
@@ -589,7 +601,7 @@ void AttributeResourceIdVector::toEscapedString (string &valueString)
 map<string, string> AttributeResourceIdVector::getSupportedConversions ()
 {
     map<string, string> supportedConversions;
-    
+
     return (supportedConversions);
 }
 
@@ -598,9 +610,9 @@ bool AttributeResourceIdVector::isCurrentValueSameAsDefault () const
     bool isDefault = false ;
 
     if ( getIsDefaultResourceIdVectorValidFlag() )
-    {   
+    {
         if ( getDefaultResourceIdVector() == getValue() )
-        {   
+        {
             isDefault = true;
         }
     }
@@ -640,7 +652,7 @@ void AttributeResourceIdVector::addAttributeToVector (Attribute *attribute)
 {
     if (m_pData == NULL)
     {
-        m_pData = new vector<UI32>;        
+        m_pData = new vector<UI32>;
     }
 
     vector<UI32> vectorToAppend = (dynamic_cast<AttributeResourceIdVector *> (attribute))->getValue ();
@@ -651,25 +663,25 @@ void AttributeResourceIdVector::addAttributeToVector (Attribute *attribute)
 void AttributeResourceIdVector::deleteAttributeFromVector (Attribute *attribute)
 {
     vector<ResourceId>::iterator iterOriginal = (*m_pData).begin ();
-    
+
     vector<ResourceId> vectorToDelete = (dynamic_cast<AttributeResourceIdVector *> (attribute))->getValue ();
     vector<ResourceId>::iterator iterDelete = vectorToDelete.begin ();
 
     for ( ; iterDelete != vectorToDelete.end (); iterDelete++)
-    {   
+    {
         iterOriginal = std::find ((*m_pData).begin (), (*m_pData).end (), *iterDelete);
 
         if (iterOriginal != (*m_pData).end ())
-        {   
+        {
             (*m_pData).erase (iterOriginal);
         }
         else
-        {   
+        {
             trace (TRACE_LEVEL_FATAL, string ("AttributeResourceIdVector::deleteAttributeFromVector : Element to be deleted not found ."));
             waveAssert (false, __FILE__, __LINE__);
         }
     }
 }
 
-                                                                                                                                  
+
 }

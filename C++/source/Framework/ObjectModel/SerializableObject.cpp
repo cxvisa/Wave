@@ -10,6 +10,7 @@
 #include "Framework/Utils/WaveMutex.h"
 #include "Framework/Messaging/MessageFactory/WaveMessageFactory.h"
 #include "Version/WaveVersion.h"
+#include "Modeling/JSON/ObjectModel/JsonObject.h"
 //#include <xercesc/dom/DOM.hpp>
 //#include <xercesc/framework/MemBufInputSource.hpp>
 //#include <xercesc/framework/MemBufFormatTarget.hpp>
@@ -539,11 +540,11 @@ SerializableObject *SerializableObject::createAndLoadFromSerializedData (const U
 #endif
 }
 
-void SerializableObject::loadFromSerializedData2 (const string &serializedData, const UI8 serializationType) 
+void SerializableObject::loadFromSerializedData2 (const string &serializedData, const UI8 serializationType)
 {
     prepareForSerialization ();
 
-    tracePrintf (TRACE_LEVEL_DEVEL, true, false, "SerializableObject::loadFromSerializedData2: serializationType = %d", serializationType); 
+    tracePrintf (TRACE_LEVEL_DEVEL, true, false, "SerializableObject::loadFromSerializedData2: serializationType = %d", serializationType);
 
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
     {
@@ -555,11 +556,11 @@ void SerializableObject::loadFromSerializedData2 (const string &serializedData, 
     }
 }
 
-void SerializableObject::serialize2 (string &serializedData, const UI8 serializationType) 
+void SerializableObject::serialize2 (string &serializedData, const UI8 serializationType)
 {
     prepareForSerialization ();
 
-    tracePrintf (TRACE_LEVEL_DEVEL, true, false, "SerializableObject::serialize2: serializationType = %d", serializationType); 
+    tracePrintf (TRACE_LEVEL_DEVEL, true, false, "SerializableObject::serialize2: serializationType = %d", serializationType);
 
     if (SERIALIZE_WITH_ATTRIBUTE_ORDER == serializationType)
     {
@@ -598,7 +599,14 @@ SerializableObject &SerializableObject::operator = (const SerializableObject &se
 
     serializableObject.copyToAttributesMap (m_serializableAttributes);
 
-    return (*this);    
+    return (*this);
+}
+
+void SerializableObject::loadFromJsonObject (JsonObject *pJsonObject)
+{
+    prepareForSerialization ();
+
+    m_serializableAttributes.loadFromJsonObject (pJsonObject);
 }
 
 }

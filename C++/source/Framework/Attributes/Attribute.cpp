@@ -45,6 +45,7 @@
 #include "Framework/Attributes/AttributeUI32UC.h"
 #include "Framework/Attributes/AttributeUI32VectorUC.h"
 #include "Framework/Attributes/AttributeUI64UC.h"
+#include "Modeling/JSON/ObjectModel/JsonValue.h"
 
 namespace WaveNs
 {
@@ -665,6 +666,13 @@ void Attribute::toJsonString (string &jsonString)
     jsonString.insert (0, "\"");
 
     jsonString += "\"";
+}
+
+void Attribute::loadFromJsonValue (JsonValue *pJsonValue)
+{
+    trace (TRACE_LEVEL_FATAL, "Attribute::loadFromJsonValue : Thsi needs to be overwritten in the derived classes.");
+
+    waveAssert (false, __FILE__, __LINE__);
 }
 
 }

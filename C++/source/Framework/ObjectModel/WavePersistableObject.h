@@ -22,6 +22,7 @@ namespace WaveNs
 {
 
 class WaveManagedObjectOperation;
+class JsonObject;
 
 class WavePersistableObject
 {
@@ -136,6 +137,8 @@ class WavePersistableObject
        //virtual WaveManagedObjectSynchronousQueryContextForSetOperation* getSetContextForCreateView            ();
        //virtual void             getSetContextForCreateView            (WaveManagedObjectSynchronousQueryContextForSetOperation* &pViewContext);
        virtual void             getSetContextForCreateView            (WaveManagedObjectSynchronousQueryContextForSetOperation &viewContext);
+
+       virtual void             loadFromJsonObject                              (JsonObject *pJsonObject);
 
     // Now the data members
 

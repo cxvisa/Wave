@@ -14,6 +14,8 @@
 namespace WaveNs
 {
 
+class JsonValue;
+
 class AttributeResourceId : public Attribute
 {
     private :
@@ -50,6 +52,9 @@ class AttributeResourceId : public Attribute
                 void                    toEscapedString                 (string &valueString);
         virtual void                    setDefaultValue                 ();
         virtual void                    getCValue                       (WaveCValue *pCValue);
+
+        virtual void                    loadFromJsonValue               (JsonValue *pJsonValue);
+
     // Now the data members
 
     private :

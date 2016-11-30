@@ -20,6 +20,8 @@ typedef enum
 namespace WaveNs
 {
 
+class JsonObject;
+
 class SerializableObject
 {
     private :
@@ -40,8 +42,8 @@ class SerializableObject
         virtual                    ~SerializableObject                      ();
                 void                prepareForSerialization                 ();
 
-                void                serialize2                              (string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); 
-                void                loadFromSerializedData2                 (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME); 
+                void                serialize2                              (string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME);
+                void                loadFromSerializedData2                 (const string &serializedData, const UI8 serializationType = SERIALIZE_WITH_ATTRIBUTE_NAME);
 
                 Attribute          *getAttribute                            (const string &attributeName);
                 void                getAllAttributeNames                    (vector<string> &allAttributeNames) const;
@@ -50,7 +52,9 @@ class SerializableObject
 
                 void                addAttributeNameForOrderToNameMapping   (const string& attributeName);
         virtual void                setupAttributesForSerializationInAttributeOrderFormat         ();
-                
+
+        virtual void                loadFromJsonObject                      (JsonObject *pJsonObject);
+
 
     // Now the data members
 

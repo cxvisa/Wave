@@ -23,6 +23,7 @@ class OrmTable;
 class WaveManagedObject;
 class WavePersistableObject;
 class WaveManagedObjectOperation;
+class JsonObject;
 
 class AttributesMap
 {
@@ -93,7 +94,9 @@ class AttributesMap
 
         void               addAttributeForOrderToNameMapping                (const string& attributeName);
         UI32               getAttributeNameForOrderFromMapping              (const UI32 &attributeOrder);
- 
+
+        void               loadFromJsonObject                               (JsonObject *pJsonObject);
+
 
     // Now the data members
 

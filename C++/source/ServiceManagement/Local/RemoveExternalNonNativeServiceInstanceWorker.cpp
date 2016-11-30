@@ -217,7 +217,7 @@ void RemoveExternalNonNativeServiceInstanceWorker::deleteShardDataStep (RemoveEx
         }
         else
         {
-            tracePrintf (TRACE_LEVEL_INFO, "RemoveExternalNonNativeServiceInstanceWorker::deleteShardDataStep : Failed to delete shard data : %s", FrameworkToolKit::localize (completionStatus));
+            tracePrintf (TRACE_LEVEL_INFO, "RemoveExternalNonNativeServiceInstanceWorker::deleteShardDataStep : Failed to delete shard data : %s", (FrameworkToolKit::localize (completionStatus)).c_str ());
 
             pRemoveExternalNonNativeServiceInstanceContext->executeNextStep (completionStatus);
             return;
@@ -225,7 +225,7 @@ void RemoveExternalNonNativeServiceInstanceWorker::deleteShardDataStep (RemoveEx
     }
     else
     {
-        tracePrintf (TRACE_LEVEL_INFO, "RemoveExternalNonNativeServiceInstanceWorker::deleteShardDataStep : Failed to send Message : %s", FrameworkToolKit::localize (sendStatus));
+        tracePrintf (TRACE_LEVEL_INFO, "RemoveExternalNonNativeServiceInstanceWorker::deleteShardDataStep : Failed to send Message : %s", (FrameworkToolKit::localize (sendStatus)).c_str ());
 
         delete pNetworkDeviceReadDeleteShardDataForExternalNonNativeServiceInstanceMessage;
 

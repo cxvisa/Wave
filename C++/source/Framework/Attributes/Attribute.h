@@ -32,6 +32,7 @@ class WaveManagedObject;
 class WavePersistableObject;
 class WaveObjectManager;
 class WaveManagedObjectOperation;
+class JsonValue;
 
 class Attribute
 {
@@ -45,7 +46,7 @@ class Attribute
                 bool               getIsMemoryOwnedByAttribute           ();
                 void               setAttributeType                      (const AttributeType &attributeType);
         virtual bool               validate                              () const = 0;
-        virtual bool               isConditionOperatorSupported          (AttributeConditionOperator attributeConditionOperator); 
+        virtual bool               isConditionOperatorSupported          (AttributeConditionOperator attributeConditionOperator);
 
     public :
         virtual                   ~Attribute                             ();
@@ -94,6 +95,9 @@ class Attribute
         static  Attribute         *getAttributeFromAttributeType         (const ResourceId attributeType);
 
         virtual void               toJsonString                          (string &jsonString);
+
+        virtual void               loadFromJsonValue                     (JsonValue *pJsonValue);
+
     // Now the data members
 
     private :

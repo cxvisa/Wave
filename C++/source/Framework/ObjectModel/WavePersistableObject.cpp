@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2011 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -18,7 +18,7 @@
 #include "Framework/ObjectModel/WaveManagedObjectOperation.h"
 #include "Framework/Attributes/AttributeManagedObjectVectorComposition.h"
 #include "Framework/Attributes/AttributeUUID.h"
-
+#include "Modeling/JSON/ObjectModel/JsonObject.h"
 
 namespace WaveNs
 {
@@ -983,6 +983,11 @@ void WavePersistableObject::storeRelatedObjectIdVectorForAOneToNAssociation (con
 void WavePersistableObject::storeRelatedObjectVectorForAOneToNComposition (const string &relationName, const ObjectId &parentObjectId, const vector<WaveManagedObject *> &vectorOfRelatedObjects)
 {
     m_persistableAttributes.storeRelatedObjectVectorForAOneToNComposition (relationName, parentObjectId, vectorOfRelatedObjects);
+}
+
+void WavePersistableObject::loadFromJsonObject (JsonObject *pJsonObject)
+{
+    m_persistableAttributes.loadFromJsonObject (pJsonObject);
 }
 
 }

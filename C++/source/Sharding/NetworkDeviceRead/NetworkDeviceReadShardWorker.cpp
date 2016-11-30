@@ -76,7 +76,7 @@ void NetworkDeviceReadShardWorker::install (WaveAsynchronousContextForBootPhases
 
     if (FRAMEWORK_SUCCESS != commitStatus)
     {
-        tracePrintf (TRACE_LEVEL_ERROR, "NetworkDeviceReadShardWorker::install : Failed to install the Network Device Read Shard Category.  Details : %s", FrameworkToolKit::localize (commitStatus));
+        tracePrintf (TRACE_LEVEL_ERROR, "NetworkDeviceReadShardWorker::install : Failed to install the Network Device Read Shard Category.  Details : %s", (FrameworkToolKit::localize (commitStatus)).c_str ());
 
         pWaveAsynchronousContextForBootPhases->setCompletionStatus (commitStatus);
         pWaveAsynchronousContextForBootPhases->callback ();
