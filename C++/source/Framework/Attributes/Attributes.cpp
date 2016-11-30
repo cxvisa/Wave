@@ -5507,7 +5507,7 @@ void AttributeObjectIdAssociation::toJsonString (string &jsonString)
         }
         else
         {
-            jsonString += "\"" + pWaveManagedObject->getUserDefinedKeyCombinationValue () + "\"";
+            jsonString += "\"" + pWaveManagedObject->getUserDefinedKeyCombinationValueForJson () + "\"";
         }
 
         WaveManagedObjectToolKit::releaseMemoryOfWaveMOVector (pQueryResults);
