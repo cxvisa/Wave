@@ -26,7 +26,7 @@ bool SystemLimitsUtils::getMaxNumberOfOpenFiles (UI32 &softLimit, UI32 &hardLimi
 
     if (-1 == rlimitStatus)
     {
-        WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "SystemLimitsUtils::getMaxNumberOfOpenFiles : Failed to get limits.  Status : %d, %s", SystemErrorUtils::getErrorStringForErrorNumber(errno));
+        WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "SystemLimitsUtils::getMaxNumberOfOpenFiles : Failed to get limits.  Status : %d, %s", errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
 
         softLimit = 0;
         hardLimit = 0;
@@ -72,7 +72,7 @@ bool SystemLimitsUtils::getFileDescriptorsCurrentlyInUse (vector<UI32> &fileDesc
 
     if (-1 == pollStatus)
     {
-        WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "SystemLimitsUtils::getFileDescriptorsCurrentlyInUse : Filed to poll. errno : %d, %s", errno, SystemErrorUtils::getErrorStringForErrorNumber(errno));
+        WaveNs::tracePrintf (TRACE_LEVEL_ERROR, true, false, "SystemLimitsUtils::getFileDescriptorsCurrentlyInUse : Filed to poll. errno : %d, %s", errno, (SystemErrorUtils::getErrorStringForErrorNumber(errno)).c_str ());
 
         delete[] (pPollFds);
 
