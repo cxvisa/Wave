@@ -1345,7 +1345,12 @@ void WaveFrameworkObjectManagerHaSyncWorker::removePreviousDatabaseBackupFile (R
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerHaSyncWorker::removePreviousDatabaseBackupFile");
 
         string commandToRemoveDatabaseBackupFile = string ("rm -rf " + FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + FrameworkToolKit::getDatabaseBackupFileName2 ());
-        system (commandToRemoveDatabaseBackupFile.c_str ());
+        int rc = system (commandToRemoveDatabaseBackupFile.c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error
+        }
     }
 
     pReceiveHaSyncDumpContext->executeNextStep (WAVE_MESSAGE_SUCCESS);

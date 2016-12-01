@@ -101,19 +101,41 @@ void DatabaseObjectManagerInstallWorker::installDatabaseStep (WaveLinearSequence
         //trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installDatabaseStep : Database was never installed.  Initializing Database.");
         trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installDatabaseStep : Initializing Database.");
 
-        system ((string ("rm -rf ") + DatabaseObjectManager::getDatabaseDirectory ()).c_str ());
+        int rc = 0;
 
-        system ("rm -rf *.cfg *.pgd");
+        rc = system ((string ("rm -rf ") + DatabaseObjectManager::getDatabaseDirectory ()).c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
+
+        rc = system ("rm -rf *.cfg *.pgd");
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
 
         // Indicate that initdb output starts below this
         string echoStr = string ("echo \"Executing the initdb command\" >> ") + DatabaseObjectManager::getDatabaseLogFileName ();
-        system(echoStr.c_str ());
+        rc = system(echoStr.c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
 
         string command = string ("initdb -A trust -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" >> ") + DatabaseObjectManager::getDatabaseLogFileName () + string (" 2>&1");
 
         // Log the command as well
         echoStr = string("echo \"") + command + string(" \" >> ") + DatabaseObjectManager::getDatabaseLogFileName ();
-        system(echoStr.c_str ());
+        rc = system(echoStr.c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
 
         // Execute the command
         int ret = system(command.c_str ());
@@ -166,7 +188,12 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
 
     // Indicate that pg_ctl command output starts below this
     string echoStr = string ("echo \"Executing the pg_ctl start command\" >> ") + DatabaseObjectManager::getDatabaseLogFileName ();
-    system(echoStr.c_str ());
+    int rc = system(echoStr.c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     UI8     retries       = 10;
     SI32    status        = -1;
@@ -174,7 +201,12 @@ void DatabaseObjectManagerInstallWorker::installBootDatabaseStep (WaveLinearSequ
 
     // Log the command as well
     echoStr = string("echo \"") + commandString + string(" \" >> ") + DatabaseObjectManager::getDatabaseLogFileName ();
-    system(echoStr.c_str ());
+    rc = system(echoStr.c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     // Execute the command
     for (UI8 i = 0; i < retries; i++)
@@ -267,7 +299,12 @@ void DatabaseObjectManagerInstallWorker::installCreateWaveDatabaseStep (WaveLine
     trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installCreateWaveDatabaseStep : Creating Wave Database...");
 
     string commandString = string ("createdb ") + DatabaseObjectManager::getDatabaseName () + " -p " + DatabaseObjectManager::getDatabasePort ();
-    system (commandString.c_str ());
+    int rc = system (commandString.c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     completionfileNew.open (completionFilePath.c_str ());
     completionfileNew.close ();
@@ -293,7 +330,12 @@ void DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep (WaveLinear
     trace (TRACE_LEVEL_INFO, "DatabaseObjectManagerInstallWorker::installShutdownDatabaseStep : Shutting down the database to create Wave Database...");
 
     string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" -o \" -p ") + DatabaseObjectManager::getDatabasePort () + "\" stop > /dev/null";
-    system (commandString.c_str ());
+    int rc = system (commandString.c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }

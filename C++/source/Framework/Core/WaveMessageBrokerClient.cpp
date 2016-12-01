@@ -318,7 +318,13 @@ void WaveMessageBrokerClient::initialize (const WaveMainConfiguration &waveMainC
 
     if (true == (waveMainConfiguration.getIsADaemon ()))
     {
-        daemon (1, 0);
+        int rc = daemon (1, 0);
+
+        if (0 != rc)
+        {
+            // handle the error
+        }
+
         FrameworkToolKit::initializeConsolePrintFunction ();
     }
 

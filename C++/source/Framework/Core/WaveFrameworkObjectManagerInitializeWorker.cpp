@@ -266,7 +266,12 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::determineNodeBootModeStep
         {
             configBackupFile.close();
             string cpBackupFileCmd  = "/bin/mv " + (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName () + " " + (WaveFrameworkObjectManager::getInstance ())->getConfigurationFileName ();
-            system (cpBackupFileCmd.c_str());
+            int rc = system (cpBackupFileCmd.c_str());
+
+            if (0 != rc)
+            {
+                // handle the error.
+            }
         }
     }
 
@@ -557,7 +562,12 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep (Wa
         if (0 != cmdStatus)
         {
             trace (TRACE_LEVEL_WARN, "WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep: failed to make configuration fiel backup.");
-            system ((string ("/bin/rm -rf ") + (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ()).c_str());
+            int rc = system ((string ("/bin/rm -rf ") + (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ()).c_str());
+
+            if (0 != rc)
+            {
+                // handle the error.
+            }
         }
 
         // 2. save wave configuration
@@ -583,7 +593,12 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep (Wa
             string databaseFwdlBackupFile   = FrameworkToolKit::getDatabaseBackupFileForFwdl();
             string dbConversionCompleteCmd  = "/bin/mv " + databaseFwdlBackupFile + " " + databaseFwdlBackupFile + ".done";
 
-            system (dbConversionCompleteCmd.c_str());
+            int rc = system (dbConversionCompleteCmd.c_str());
+
+            if (0 != rc)
+            {
+                // handle the error.
+            }
 
             tracePrintf (TRACE_LEVEL_INFO,true,false, "WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep: executed command [%s]", dbConversionCompleteCmd.c_str());
         }
@@ -591,7 +606,12 @@ ResourceId WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep (Wa
         // 4. remove the cfg backup file.
         string removeCfgBackupFile = "/bin/rm -rf " + (WaveFrameworkObjectManager::getInstance ())->getConfigurationBackupFileName ();
 
-        system (removeCfgBackupFile.c_str());
+        int rc = system (removeCfgBackupFile.c_str());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
 
 //        trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManagerInitializeWorker::saveConfigurationStep: Beginning System Call SYNC");
 //        sync ();

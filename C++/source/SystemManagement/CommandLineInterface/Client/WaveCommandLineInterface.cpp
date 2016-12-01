@@ -258,7 +258,12 @@ CommandLineInterfaceEntry *WaveCommandLineInterface::getCommandLineInterfaceEntr
 
 void WaveCommandLineInterface::sigIntHandler (int signal)
 {
-    system ("stty cooked echo");
+    int rc = system ("stty cooked echo");
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     cout << endl;
     //cout << "Program received signal SIGINT, Exiting." << endl;
@@ -268,7 +273,12 @@ void WaveCommandLineInterface::sigIntHandler (int signal)
 
 void WaveCommandLineInterface::sigSegvHandler (int signal)
 {
-    system ("stty cooked echo");
+    int rc = system ("stty cooked echo");
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     cout << endl;
     //cout << "Program received signal SIGSEGV, Exiting." << endl;
@@ -298,7 +308,12 @@ void WaveCommandLineInterface::installSigIntHandlers () const
 
 void WaveCommandLineInterface::acceptCommands ()
 {
-    system("stty raw -echo isig");
+    int rc = system("stty raw -echo isig");
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     string commandFromPreviousLevel;
     string command;
@@ -383,7 +398,12 @@ void WaveCommandLineInterface::acceptCommands ()
             UI32 lineCounter = 0;
             ifstream myfile (commandFromPreviousLevel.c_str ());
     
-            system ("date");
+            rc = system ("date");
+
+            if (0 != rc)
+            {
+                // handle the error
+            }
     
             if (myfile.is_open())
             {   
@@ -446,11 +466,21 @@ void WaveCommandLineInterface::acceptCommands ()
                 cout << "Unable to open file";
             }   
 
-            system ("date");
+            rc = system ("date");
+
+            if (0 != rc)
+            {
+                // handle the error
+            }
         }
     }
 
-    system("stty cooked echo");
+    rc = system("stty cooked echo");
+
+    if (0 != rc)
+    {
+         // handle the error.
+    }
 }
 
 WaveCommandLineInterface *WaveCommandLineInterface::getInstance ()

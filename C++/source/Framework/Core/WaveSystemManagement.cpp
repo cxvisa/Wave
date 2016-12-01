@@ -143,7 +143,12 @@ void WaveSystemManagement::initialize (const WaveMainConfiguration &waveMainConf
 
     if (true == (waveMainConfiguration.getIsADaemon ()))
     {
-        daemon (1, 0);
+        int rc = daemon (1, 0);
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
     }
 
     // Record if the process is running as a daemon.

@@ -10093,7 +10093,13 @@ void WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler (Framewo
             {
                 trace (TRACE_LEVEL_FATAL, ("WaveFrameworkObjectManager::rollbackStandbyOnActiveRollbackHandler: Removing CFG file failed in extreme Recoverycase "));
             }
-            system ("/sbin/reboot -f");
+
+            int rc = system ("/sbin/reboot -f");
+
+            if (0 != rc)
+            {
+                // handle the error.
+            }
 
             sleep (300);
 
@@ -10797,7 +10803,13 @@ void WaveFrameworkObjectManager::setStartupFileName (const string &fileName)
         string createFileLink = string("ln -sf " + fileName + " " + FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + s_startupFileName);
         trace (TRACE_LEVEL_INFO, "WaveFrameworkObjectManager:: setStartupFileName: setting startupFile to " + fileName);
         s_startupFileMutex.lock ();
-        system (createFileLink.c_str ());
+        int rc = system (createFileLink.c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
+
         s_startupFileMutex.unlock ();
     }
 }
@@ -11368,7 +11380,12 @@ void WaveFrameworkObjectManager::removePreviousDatabaseBackupFile (WaveLinearSeq
 {
     string commandToRemoveDatabaseBackupFile = string ("rm -rf " + FrameworkToolKit::getProcessInitialWorkingDirectory () + "/" + FrameworkToolKit::getDatabaseBackupFileName2 ());
 
-    system (commandToRemoveDatabaseBackupFile.c_str ());
+    int rc = system (commandToRemoveDatabaseBackupFile.c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error.
+    }
 
     pWaveLinearSequencerContext->executeNextStep (WAVE_MESSAGE_SUCCESS);
 }
@@ -11717,7 +11734,12 @@ void WaveFrameworkObjectManager::rollbackCfgFile ()
             trace (TRACE_LEVEL_FATAL, ("WaveFrameworkObjectManager::rollbackCfgFile : Removing CFG file failed in extreme Recoverycase "));
         }
 
-        system ("/sbin/reboot -f");
+        int rc = system ("/sbin/reboot -f");
+
+        if (0 != rc)
+        {
+            // handle the error
+        }
 
         sleep (300);
 

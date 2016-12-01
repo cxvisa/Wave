@@ -60,8 +60,14 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
     UI32           currentPosition                   = command.size ();
     UI32           commandPromptSize                 = linePrompt.size ();
     vector<string> matchingCommands;
+    SI32           rc                                = 0;
 
-    system("stty raw -echo isig");
+    rc = system("stty raw -echo isig");
+
+    if (0 != rc)
+    {
+        // handle error.
+    }
 
     printf ("%c%s>", 13, linePrompt.c_str ());
     fflush (stdout);
@@ -293,7 +299,13 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
 
                 if (4 == c)
                 {
-                    system("stty cooked echo");
+                    rc = system("stty cooked echo");
+
+                    if (0 != rc)
+                    {
+                        // handle error.
+                    }
+
                     exit (0);
                 }
 
@@ -440,7 +452,13 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
                     m_commandHistory.push_back (command);
                 }
 
-                system("stty cooked echo");
+                rc = system("stty cooked echo");
+
+                if (0 != rc)
+                {
+                    // handle error.
+                }
+
                 return (command);
             }
 
@@ -448,7 +466,12 @@ string WaveLineEditor::getUserInputLine (const string &linePrompt)
         }
     }
 
-    system("stty cooked echo");
+    rc = system("stty cooked echo");
+
+    if (0 != rc)
+    {
+        // handle error
+    }
 
     return (string (""));
 }

@@ -63,15 +63,34 @@ void DatabaseStandaloneTransaction::bootDatabaseStep ()
     }
     else
     {
-        system ((string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" stop")).c_str ());
-        system ((string ("chmod 777 ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
-        system ((string ("rm -rf ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
+        int rc = 0;
+
+        rc = system ((string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" stop")).c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
+
+        rc = system ((string ("chmod 777 ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
+
+        rc = system ((string ("rm -rf ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
+
+        if (0 != rc)
+        {
+            // handle the error.
+        }
 
         UI8     retries       = 10;
         SI32    status        = -1;
 
         // option -w in pg_ctl command returns a non-zero status for command failure. 
-        string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + DatabaseObjectManager::getDatabaseLogStringForPgctl () + string (" -w -o \" -F --shared_buffers=") + DatabaseObjectManager::getDatabaseSharedBuffers () + string (" --max_stack_depth=7680kB --max_wal_size=48MB --max_prepared_transactions='8' --max_locks_per_transaction='200' --log_line_prefix='%t %a [%e] ' -p ") + DatabaseObjectManager::getDatabasePort () + "\" start > /dev/null";
+        string commandString = string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + DatabaseObjectManager::getDatabaseLogStringForPgctl () + string (" -w -o \" -F --shared_buffers=") + DatabaseObjectManager::getDatabaseSharedBuffers () + string (" --max_stack_depth=7680kB --max_prepared_transactions='8' --max_locks_per_transaction='200' --log_line_prefix='%t %a [%e] ' -p ") + DatabaseObjectManager::getDatabasePort () + "\" start > /dev/null";
 
         trace (TRACE_LEVEL_DEVEL, "DatabaseStandaloneTransaction::bootDatabaseStep : Starting psql- conmmand string " + commandString);
 
@@ -762,9 +781,28 @@ void DatabaseStandaloneTransaction::shutdownDatabase ()
 
     trace (TRACE_LEVEL_INFO, "DatabaseStandaloneTransaction::shutdownDatabase : Shutting down database after standalone transaction");
 
-    system ((string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" stop")).c_str ());
-    system ((string ("chmod 777 ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
-    system ((string ("rm -rf ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
+    int rc = 0;
+
+    rc = system ((string ("pg_ctl -D ") + DatabaseObjectManager::getDatabaseDirectory () + string (" stop")).c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error.
+    }
+
+    rc = system ((string ("chmod 777 ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error.
+    }
+
+    rc = system ((string ("rm -rf ") + DatabaseObjectManager::getDatabaseDirectory () + string ("/postmaster.pid")).c_str ());
+
+    if (0 != rc)
+    {
+        // handle the error.
+    }
 
     trace (TRACE_LEVEL_DEVEL, "DatabaseStandaloneTransaction::shutdownDatabase : Done");
 }

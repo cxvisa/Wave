@@ -299,8 +299,12 @@ void WaveCliDebugShell::debugPsql (UI32 argc, vector<string> argv)
 
     string commandString = psql_path + string ("psql -p ") + (DatabaseObjectManager::getDatabasePort ()) + string (" ") + DatabaseObjectManager::getDatabaseName ();
 
-     system (commandString.c_str ());
+     int rc = system (commandString.c_str ());
 
+     if (0 != rc)
+     {
+         // handle the error
+     }
 }
 
 void WaveCliDebugShell::debugPsqlHelp()

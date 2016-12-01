@@ -218,7 +218,12 @@ void PersistenceLocalObjectManager::copyDefaultClusterMessageHandler( Persistenc
 
     Wave::logOperationStatus (COPY_DEFAULT_TO_STARTUP_SUCCESS);
 
-    system ("/fabos/sbin/chassisReboot");
+    int rc = system ("/fabos/sbin/chassisReboot");
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     pMessage->setCompletionStatus (status);
 

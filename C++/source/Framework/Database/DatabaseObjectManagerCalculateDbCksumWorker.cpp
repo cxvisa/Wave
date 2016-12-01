@@ -77,7 +77,12 @@ void DatabaseObjectManagerCalculateDbCksumWorker::calculateDBCksumMessageHandler
         return;
     }
 
-    fgets (cksum, 100, pFile);
+    char *pChar = fgets (cksum, 100, pFile);
+
+    if (NULL == pChar)
+    {
+        // handle the null case.
+    }
 
     fclose (pFile);
     tracePrintf (TRACE_LEVEL_DEBUG, "DatabaseObjectManagerCalculateDbCksumWorker::calculateDBCksumMessageHandler : cksum = %s", cksum); 

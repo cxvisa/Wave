@@ -120,7 +120,13 @@ bool DatabaseConnection::connect (const UI32 &maximumNumberOfRetries)
             {
                 trace (TRACE_LEVEL_INFO, "DatabaseConnection::connect : Creating Database...");
                 trace (TRACE_LEVEL_INFO, "DatabaseConnection::connect : " + createString);
-                system (createString.c_str ());
+                int rc = system (createString.c_str ());
+
+                if (0 != rc)
+                {
+                    // handle the error
+                }
+
                 continue;
             }
 

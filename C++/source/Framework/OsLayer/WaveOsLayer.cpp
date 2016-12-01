@@ -288,7 +288,12 @@ void waveBlockSignals ()
 
 void sigIntHandler (int signal)
 {
-    system ("stty cooked echo");
+    int rc = system ("stty cooked echo");
+
+    if (0 != rc)
+    {
+        // handle the error.
+    }
 
     cerr << endl;
     cerr << "Program received signal SIGINT, Exiting." << endl;
@@ -298,7 +303,12 @@ void sigIntHandler (int signal)
 
 void sigSegvHandler (int signal)
 {
-    system ("stty cooked echo");
+    int rc = system ("stty cooked echo");
+
+    if (0 != rc)
+    {
+        // handle the error
+    }
 
     cerr << endl;
     cerr << "Program received signal SIGSEGV, Exiting." << endl;

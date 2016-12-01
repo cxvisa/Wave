@@ -669,7 +669,12 @@ void PersistentWaveBootAgent::reloadPreviousDataBase ()
             {
                 trace (TRACE_LEVEL_FATAL, ("PersistentWaveBootAgent::reloadPreviousDataBase : Removing CFG file failed in extreme Recoverycase "));
             }
-            system ("/sbin/reboot -f");
+            int rc = system ("/sbin/reboot -f");
+
+            if (0 != rc)
+            {
+                // handle the error
+            }
 
             sleep (300);
     
