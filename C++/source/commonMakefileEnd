@@ -28,7 +28,7 @@
 #pragma noautodep *
 %.$(OS_ARCH_XT): $(COMMON_DEPENDENCIES)
 	#$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBFILES) $(filter-out /%,$(filter %.cpp,$^)) -o $@
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LIBFILES) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@ $(LIBFILES)
 
 
 ################################################################################
