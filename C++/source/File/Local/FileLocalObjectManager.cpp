@@ -1853,7 +1853,12 @@ ResourceId FileLocalObjectManager::pushFileToHaPeerReceiveFileStep (WaveSynchron
     // 3. Move temporary file to destination file.
 
     string sCmd = string ("/bin/mv ") + (destinationFileName + ".tmp") + string (" ") + destinationFileName;
-    system(sCmd.c_str()); // TODO: need to use popen.
+    int rc = system(sCmd.c_str()); // TODO: need to use popen.
+
+    if (0 != rc)
+    {
+        // handle the failure
+    }
 
     return WAVE_MESSAGE_SUCCESS;
 }

@@ -141,7 +141,12 @@ void FileLocalMessagingTestObjectManager::simplePushFileWithInvalidFilesizeTest 
           vecDestinationId.push_back(FrameworkToolKit::getThisLocationId());
 
           string sSourceFileName = "/tmp/testfile.txt" ;  // A non-existent file,
-          system("touch /tmp/testfile.txt"); // This will create a tempfile with size zero in the /tmp folder. Assuming there is no 
+          int rc = system("touch /tmp/testfile.txt"); // This will create a tempfile with size zero in the /tmp folder. Assuming there is no 
+	  if (0 != rc)
+	  {
+	      // handle the failure.
+	  }
+
           FilePushFileMessage *pMessage = new FilePushFileMessage(sSourceFileName, sSourceFileName,  FrameworkToolKit::getThisLocationId(), vecDestinationId);
           pMessage->setFileTransferFlag(FILE_OVERWRITE_DEST_FILE_IF_EXIST);
           status = sendSynchronously (pMessage);
@@ -430,7 +435,12 @@ void FileLocalMessagingTestObjectManager::SetupTempFileForTransfer(UI32 nFileSiz
      string sCmd = "/bin/dd if=/dev/urandom bs=";
      snprintf(buff, 64, "%d count=%d of=%s", nBlockSize, nBlockCount, sFileName.c_str());
      sCmd += buff;
-     system(sCmd.c_str());
+     int rc = system(sCmd.c_str());
+
+     if (0 != rc)
+     {
+         // handle the error code
+     }
 }
 
 void FileLocalMessagingTestObjectManager::copyFileWaveClientMessageHandler (CopyFileWaveClientMessage *pCopyFileWaveClientMessage)

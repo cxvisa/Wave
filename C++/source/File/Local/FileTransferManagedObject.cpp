@@ -188,7 +188,12 @@ namespace WaveNs
           sCmd  += stmpFileContent;
           sCmd  += "\" > ";
           sCmd      += stmpfilename;
-          system(sCmd.c_str());
+          int rc = system(sCmd.c_str());
+	   if (0 != rc)
+	   {
+	       // handle the error
+	   }
+
           fileObj = new CFile(stmpfilename , true);
           WaveNs::waveAssert (NULL != fileObj, __FILE__, __LINE__);
           fileObj->Init();
@@ -652,7 +657,12 @@ namespace WaveNs
                     sCmd += " " ;
                     sCmd += pContextObject->getDestFilename();
                     // tracePrintf(TRACE_LEVEL_INFO, "[%s]:[%d] Command to be executed for a final move is [%s]\n", __FILE__, __LINE__, sCmd.c_str());
-                    system(sCmd.c_str()); // TODO: need to use popen.               
+                    int rc = system(sCmd.c_str()); // TODO: need to use popen.               
+
+		    if (0 != rc)
+		    {
+		        // handle the error
+		    }
               } else {
                   // Increment the next FragmentIndex to expect.
                   pContextObject->incrementExpectedFragmentIndexAtReceiver();
@@ -1023,7 +1033,13 @@ namespace WaveNs
               waveAssert (false, __FILE__, __LINE__);
 		  }
 		  
-          write(m_fd_handle, pBuf, fragmentsize);
+          int rc = write(m_fd_handle, pBuf, fragmentsize);
+
+	  if (0 != rc)
+	  {
+	      // handle the error
+	  }
+
           // int nBytes = write(m_fd_handle, pBuf, fragmentsize);
           // tracePrintf(TRACE_LEVEL_INFO, "[%s]:[%d]  Copied [%d] bytes to temp file from incoming buffer address [0x%x]\n", __FUNCTION__, __LINE__, nBytes, pBuf);          
           // memcpy(pChunk, pBuf, fragmentsize);
