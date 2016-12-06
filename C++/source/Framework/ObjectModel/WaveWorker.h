@@ -58,6 +58,7 @@ class WaveWorker : public WaveElement
         virtual void shutdown                           (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
         virtual void uninstall                          (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
         virtual void disable                            (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
+        virtual void unlistenEvents                     ();
         virtual void uninitialize                       (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
         virtual void destruct                           (WaveAsynchronousContextForShutDownPhases               *pWaveAsynchronousContextForShutDownPhases);
         virtual void backendSyncUp                      (WaveAsynchronousContext                               *pWaveAsynchronousContext);

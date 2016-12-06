@@ -164,6 +164,7 @@ class AttributeUI64 : public Attribute
         virtual void            setDefaultValue                 ();
         virtual void            getCValue                       (WaveCValue *pCValue);
         virtual void            toJsonString                    (string &jsonString);
+        virtual void            loadFromJsonValue               (JsonValue *pJsonValue);
 
     // Now the data members
 

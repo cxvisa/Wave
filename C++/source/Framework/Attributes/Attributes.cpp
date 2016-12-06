@@ -971,6 +971,16 @@ void AttributeUI64::toJsonString (string &jsonString)
     toString (jsonString);
 }
 
+void AttributeUI64::loadFromJsonValue (JsonValue *pJsonValue)
+{
+    JsonNumber *pJsonNumber = dynamic_cast<JsonNumber *> (pJsonValue);
+
+    if (NULL != pJsonNumber)
+    {
+        fromString ((pJsonNumber->getNumber ()).toString ());
+    }
+}
+
 AttributeUI64Vector::AttributeUI64Vector (const vector<UI64> &data, const string &attributeName, const UI32 &attributeUserTag, const bool &isOperational)
     : Attribute          ( AttributeType::AttributeTypeUI64Vector, attributeName, attributeUserTag, isOperational),
     m_isDefaultDataValid (false)

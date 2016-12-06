@@ -219,6 +219,13 @@ void WaveWorker::disable (WaveAsynchronousContextForShutDownPhases *pWaveAsynchr
     pWaveAsynchronousContextForShutDownPhases->callback ();
 }
 
+void WaveWorker::unlistenEvents ()
+{
+    trace (TRACE_LEVEL_DEVEL, "WaveWorker::unlistenEvents : Entering ...");
+
+    m_pWaveObjectManager->unlistenEvents ();
+}
+
 void WaveWorker::uninitialize (WaveAsynchronousContextForShutDownPhases *pWaveAsynchronousContextForShutDownPhases)
 {
     trace (TRACE_LEVEL_DEVEL, "WaveWorker::uninitialize : Entering ...");
