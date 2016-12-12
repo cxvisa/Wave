@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2011 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -8,6 +8,7 @@
 #define HTTPTOOLKIT_H
 
 #include "Framework/Types/Types.h"
+#include "Framework/Types/Uri.h"
 
 #include <string>
 
@@ -47,6 +48,8 @@ class HttpToolKit
 
         static void                    getWaveServerPagePrePortion        (string &waveServerPagePrePortion);
         static void                    getWaveServerPagePostPortion       (string &waveServerPagePostPortion);
+
+        static void                    getSimpleJsonPostString            (string &jsonPostString, const string &jsonContent, const Uri &url);
 
     // Now the data members
 

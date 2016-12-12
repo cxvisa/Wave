@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2011 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -357,6 +357,21 @@ void HttpToolKit::getOkStringForGetForRestJson (string &okString, const string &
     okString += "Content-Type: text/json\r\n";
     okString += "\r\n";
     okString += jsonBody;
+}
+
+void HttpToolKit::getSimpleJsonPostString (string &jsonPostString, const string &jsonContent, const Uri &url)
+{
+    jsonPostString  = "POST ";
+    jsonPostString += url.getPath ();
+    jsonPostString += " HTTP/1.1\r\n";
+    jsonPostString += "Host: ";
+    jsonPostString += (url.getHost ()) + (string (":")) + (url.getPort ()) + "\r\n";
+    jsonPostString += string ("Content-Length: ") + (jsonContent.length ()) + "\r\n";
+    jsonPostString += "Content-Type: application/json\r\n";
+    jsonPostString += "User-Agent: Wave World Wide Web Client (W4C) v0.0.1\r\n";
+    jsonPostString += "Content-Type: text/json\r\n";
+    jsonPostString += "\r\n";
+    jsonPostString += jsonContent;
 }
 
 void HttpToolKit::decodeUrl (string& url)
