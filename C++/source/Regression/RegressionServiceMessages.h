@@ -132,6 +132,35 @@ class RegressionTestObjectManagerPrepareTestForAServiceMessage : public Manageme
     public :
 };
 
+class RegressionTestObjectManagerRunTestPatternsForAServiceMessage : public ManagementInterfaceMessage
+{
+    private :
+        virtual void setupAttributesForSerialization ();
+
+    protected :
+    public :
+                                      RegressionTestObjectManagerRunTestPatternsForAServiceMessage ();
+                                      RegressionTestObjectManagerRunTestPatternsForAServiceMessage (WaveServiceId serviceCode);
+                                      RegressionTestObjectManagerRunTestPatternsForAServiceMessage (WaveServiceId serviceCode, const string &inputTestPatterns);
+        virtual                      ~RegressionTestObjectManagerRunTestPatternsForAServiceMessage ();
+                      WaveServiceId   getServiceCode                                               ();
+                const string         &getInputTestPatterns                                         () const;
+                      void            setInputTestPatterns                                         (const string &inputTestPatterns);
+
+                const UI32           &getNumberOfTimesToRunServiceTest                             () const;
+                      void            setNumberOfTimesToRunServiceTest                             (const UI32 &numberOfTimesToRunServiceTest);
+
+    // Now the data members
+
+    private :
+        WaveServiceId m_serviceCode;
+        string        m_inputTestPatterns;
+        UI32          m_numberOfTimesToRunServiceTest;
+
+    protected :
+    public :
+};
+
 }
 
 #endif // REGRESSIONSERVICEMESSAGES_H

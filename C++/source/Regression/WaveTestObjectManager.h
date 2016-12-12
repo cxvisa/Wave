@@ -11,6 +11,8 @@
 #include "Regression/RegressionTestMessage.h"
 #include "Regression/RegressionPrepareMessage.h"
 #include "Regression/RegressionPrepareMessage2.h"
+#include "Regression/RegressionTestPatternsMessage.h"
+
 #include <map>
 #include <vector>
 #include <string>
@@ -24,11 +26,13 @@ class WaveTestObjectManager : public WaveLocalObjectManager
         virtual WaveMessage *createMessageInstance (const UI32 &operationCode);
 
     protected :
-                     WaveTestObjectManager              (const string &waveTestObjectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
+                     WaveTestObjectManager               (const string &waveTestObjectManagerName, const UI32 &stackSize = 0, const vector<UI32> *pCpuAffinityVector = NULL);
         virtual void testRequestHandler                  (RegressionTestMessage *pMessage) = 0;
                 void prepareForRegressionRequestHandler  (RegressionPrepareMessage *pMessage);
                 void prepareForRegressionRequestHandler2 (RegressionPrepareMessage2 *pMessage);
-              string getTestParameterValue (const string &inputKeyString);
+              string getTestParameterValue               (const string &inputKeyString);
+
+        virtual void runTestPatternsHandler              (RegressionTestPatternsMessage *pMessage);
 
     public :
 

@@ -25,17 +25,19 @@ class JsonObject : public JsonValue
     private :
     protected :
     public :
-                           JsonObject      ();
-        virtual           ~JsonObject      ();
+                                    JsonObject      ();
+        virtual                    ~JsonObject      ();
 
-        virtual string     toString        () const;
-        virtual void       fromString      (const string &input);
+        virtual string              toString        () const;
+        virtual void                fromString      (const string &input);
 
-        virtual void       print           (const UI32 &level = 0) const;
+        virtual void                print           (const UI32 &level = 0) const;
 
-                JsonValue *getValueForName (const string &name);
+                JsonValue          *getValueForName (const string &name);
 
-                bool       isAKnownName    (const string &name) const;
+                bool                isAKnownName    (const string &name) const;
+
+                vector<JsonPair *> &getJsonPairs    ();
 
     // Now the data members
 

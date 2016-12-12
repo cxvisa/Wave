@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 Vidyasagara Guntaka                                *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -19,6 +19,7 @@
 #include "Framework/Trace/Test/TraceTestObjectManager.h"
 #include "Cluster/Test/ClusterTestObjectManager.h"
 #include "Framework/Timer/Test/TimerTestObjectManager.h"
+#include "Regression/RegressionTestPatternsMessage.h"
 
 namespace WaveNs
 {
@@ -210,12 +211,12 @@ void RegressionTestObjectManager::prepareAServiceTestMessageHandler (RegressionT
     RegressionPrepareMessage2 message (serviceCode);
     WaveMessageStatus     status;
 
-    inputStrings = pMessage->getInputStrings();    
+    inputStrings = pMessage->getInputStrings();
 
     for (argIndex = 0; argIndex < (UI32) inputStrings.size(); argIndex++)
     {
         message.addInputString(inputStrings[argIndex]);
-    }  
+    }
 
     status = sendSynchronously (&message);
 
@@ -238,7 +239,7 @@ void RegressionTestObjectManager::prepareAServiceTestMessageHandler (RegressionT
             trace (TRACE_LEVEL_ERROR, "");
         }
         else
-        {  
+        {
             trace (TRACE_LEVEL_SUCCESS, "");
             trace (TRACE_LEVEL_SUCCESS, string ("Prepare SUCCEEDED for Service (") + FrameworkToolKit::getServiceNameById (serviceCode) + ").");
             trace (TRACE_LEVEL_SUCCESS, "");
@@ -292,6 +293,61 @@ void RegressionTestObjectManager::runAServiceTestMessageHandler (RegressionTestO
             {
                 trace (TRACE_LEVEL_SUCCESS, "");
                 trace (TRACE_LEVEL_SUCCESS, string ("Test SUCCEEDED for Service (") + FrameworkToolKit::getServiceNameById (serviceCode) + ").");
+                trace (TRACE_LEVEL_SUCCESS, "");
+            }
+        }
+    }
+
+    pMessage->setCompletionStatus (completionStatus);
+    reply (pMessage);
+}
+
+void RegressionTestObjectManager::runAServiceTestPatternsMessageHandler (RegressionTestObjectManagerRunTestPatternsForAServiceMessage *pMessage)
+{
+          WaveServiceId  serviceCode                   = pMessage->getServiceCode ();
+          UI32           numberOfTimesToRunServiceTest = pMessage->getNumberOfTimesToRunServiceTest ();
+    const string        &inputTerstPatterns            = pMessage->getInputTestPatterns ();
+          UI32           i                             = 0;
+          ResourceId     completionStatus              = WAVE_MESSAGE_SUCCESS;
+
+    for (i = 0; i < numberOfTimesToRunServiceTest; i++)
+    {
+        trace (TRACE_LEVEL_INFO, "");
+        trace (TRACE_LEVEL_INFO, "");
+        trace (TRACE_LEVEL_INFO, string ("Running Service Test Iteration : ") + (i + 1));
+        cout << "Running Service Test Iteration : " <<  (i + 1) << endl;
+        trace (TRACE_LEVEL_INFO, "");
+        trace (TRACE_LEVEL_INFO, "");
+
+        RegressionTestPatternsMessage message (serviceCode);
+        WaveMessageStatus             status;
+
+        message.setTestPatterns (inputTerstPatterns);
+
+        status = sendSynchronously (&message);
+
+        if (WAVE_MESSAGE_SUCCESS != status)
+        {
+            trace (TRACE_LEVEL_ERROR, "");
+            trace (TRACE_LEVEL_ERROR, string ("Test Patterns FAILED    for Service (") + FrameworkToolKit::getServiceNameById (serviceCode) + ").");
+            trace (TRACE_LEVEL_ERROR, "");
+
+            completionStatus = status;
+        }
+        else
+        {
+            completionStatus = message.getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                trace (TRACE_LEVEL_ERROR, "");
+                trace (TRACE_LEVEL_ERROR, string ("Test Patterns FAILED    for Service (") + FrameworkToolKit::getServiceNameById (serviceCode) + ").");
+                trace (TRACE_LEVEL_ERROR, "");
+            }
+            else
+            {
+                trace (TRACE_LEVEL_SUCCESS, "");
+                trace (TRACE_LEVEL_SUCCESS, string ("Test Patterns SUCCEEDED for Service (") + FrameworkToolKit::getServiceNameById (serviceCode) + ").");
                 trace (TRACE_LEVEL_SUCCESS, "");
             }
         }

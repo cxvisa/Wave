@@ -214,4 +214,64 @@ vector<string> &RegressionTestObjectManagerPrepareTestForAServiceMessage::getInp
     return (m_inputStrings);
 }
 
+RegressionTestObjectManagerRunTestPatternsForAServiceMessage::RegressionTestObjectManagerRunTestPatternsForAServiceMessage ()
+    : ManagementInterfaceMessage      (RegressionTestObjectManager::getServiceName (), REGRESSION_RUN_TEST_PATTERNS_FOR_A_SERVICE),
+      m_serviceCode                   (0),
+      m_numberOfTimesToRunServiceTest (1)
+{
+}
+
+RegressionTestObjectManagerRunTestPatternsForAServiceMessage::RegressionTestObjectManagerRunTestPatternsForAServiceMessage (WaveServiceId serviceCode)
+    : ManagementInterfaceMessage      (RegressionTestObjectManager::getServiceName (), REGRESSION_RUN_TEST_PATTERNS_FOR_A_SERVICE),
+      m_serviceCode                   (serviceCode),
+      m_numberOfTimesToRunServiceTest (1)
+{
+}
+
+RegressionTestObjectManagerRunTestPatternsForAServiceMessage::RegressionTestObjectManagerRunTestPatternsForAServiceMessage (WaveServiceId serviceCode, const string &inputTestPatterns)
+    : ManagementInterfaceMessage      (RegressionTestObjectManager::getServiceName (), REGRESSION_RUN_TEST_PATTERNS_FOR_A_SERVICE),
+      m_serviceCode                   (serviceCode),
+      m_inputTestPatterns             (inputTestPatterns),
+      m_numberOfTimesToRunServiceTest (1)
+{
+}
+
+RegressionTestObjectManagerRunTestPatternsForAServiceMessage::~RegressionTestObjectManagerRunTestPatternsForAServiceMessage ()
+{
+}
+
+void RegressionTestObjectManagerRunTestPatternsForAServiceMessage::setupAttributesForSerialization ()
+{
+    ManagementInterfaceMessage::setupAttributesForSerialization ();
+
+     addSerializableAttribute (new AttributeWaveServiceId (&m_serviceCode,                   "serviceCode"));
+     addSerializableAttribute (new AttributeString        (&m_inputTestPatterns,             "inputTestPatterns"));
+     addSerializableAttribute (new AttributeUI32          (&m_numberOfTimesToRunServiceTest, "numberOfTimesToRunServiceTest"));
+}
+
+WaveServiceId RegressionTestObjectManagerRunTestPatternsForAServiceMessage::getServiceCode ()
+{
+    return (m_serviceCode);
+}
+
+const string &RegressionTestObjectManagerRunTestPatternsForAServiceMessage::getInputTestPatterns () const
+{
+    return (m_inputTestPatterns);
+}
+
+void RegressionTestObjectManagerRunTestPatternsForAServiceMessage::setInputTestPatterns (const string &inputTestPatterns)
+{
+    m_inputTestPatterns = inputTestPatterns;
+}
+
+const UI32 &RegressionTestObjectManagerRunTestPatternsForAServiceMessage::getNumberOfTimesToRunServiceTest () const
+{
+    return (m_numberOfTimesToRunServiceTest);
+}
+
+void RegressionTestObjectManagerRunTestPatternsForAServiceMessage::setNumberOfTimesToRunServiceTest (const UI32 &numberOfTimesToRunServiceTest)
+{
+    m_numberOfTimesToRunServiceTest = numberOfTimesToRunServiceTest;
+}
+
 }

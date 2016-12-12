@@ -155,4 +155,9 @@ JsonValue *JsonObject::getValueForName (const string &name)
     return (NULL);
 }
 
+vector<JsonPair *> &JsonObject::getJsonPairs ()
+{
+    return (m_jsonPairs);
+}
+
 }
