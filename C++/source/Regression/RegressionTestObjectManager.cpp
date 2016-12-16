@@ -29,11 +29,12 @@ UI32 messageCount = 0;
 RegressionTestObjectManager::RegressionTestObjectManager ()
     : WaveLocalObjectManager (getServiceName ())
 {
-    addOperationMap (REGRESSION_GET_TEST_SERVICE_ENTRIES,   reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::getTestServiceEntriesMessageHandler));
-    addOperationMap (REGRESSION_SET_TEST_SERVICE_STATE,     reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::setTestServiceStateMessageHandler));
-    addOperationMap (REGRESSION_START_REGRESSION,           reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::startRegressionMessageHandler));
-    addOperationMap (REGRESSION_PREPARE_TEST_FOR_A_SERVICE, reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::prepareAServiceTestMessageHandler));
-    addOperationMap (REGRESSION_RUN_TEST_FOR_A_SERVICE,     reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::runAServiceTestMessageHandler));
+    addOperationMap (REGRESSION_GET_TEST_SERVICE_ENTRIES,        reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::getTestServiceEntriesMessageHandler));
+    addOperationMap (REGRESSION_SET_TEST_SERVICE_STATE,          reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::setTestServiceStateMessageHandler));
+    addOperationMap (REGRESSION_START_REGRESSION,                reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::startRegressionMessageHandler));
+    addOperationMap (REGRESSION_PREPARE_TEST_FOR_A_SERVICE,      reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::prepareAServiceTestMessageHandler));
+    addOperationMap (REGRESSION_RUN_TEST_FOR_A_SERVICE,          reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::runAServiceTestMessageHandler));
+    addOperationMap (REGRESSION_RUN_TEST_PATTERNS_FOR_A_SERVICE, reinterpret_cast<WaveMessageHandler> (&RegressionTestObjectManager::runAServiceTestPatternsMessageHandler));
 }
 
 RegressionTestObjectManager *RegressionTestObjectManager::getInstance ()
@@ -79,6 +80,10 @@ WaveMessage *RegressionTestObjectManager::createMessageInstance (const UI32 &ope
 
         case REGRESSION_RUN_TEST_FOR_A_SERVICE :
             pWaveMessage = new RegressionTestObjectManagerRunTestForAServiceMessage;
+            break;
+
+        case REGRESSION_RUN_TEST_PATTERNS_FOR_A_SERVICE :
+            pWaveMessage = new RegressionTestObjectManagerRunTestPatternsForAServiceMessage;
             break;
 
         default :
@@ -304,6 +309,8 @@ void RegressionTestObjectManager::runAServiceTestMessageHandler (RegressionTestO
 
 void RegressionTestObjectManager::runAServiceTestPatternsMessageHandler (RegressionTestObjectManagerRunTestPatternsForAServiceMessage *pMessage)
 {
+    trace (TRACE_LEVEL_DEBUG, "RegressionTestObjectManager::runAServiceTestPatternsMessageHandler : Entering ...");
+
           WaveServiceId  serviceCode                   = pMessage->getServiceCode ();
           UI32           numberOfTimesToRunServiceTest = pMessage->getNumberOfTimesToRunServiceTest ();
     const string        &inputTerstPatterns            = pMessage->getInputTestPatterns ();

@@ -420,6 +420,47 @@ ResourceId WaveClientSynchronousConnection::runTestForAService (const WaveServic
     return (clientStatus);
 }
 
+ResourceId WaveClientSynchronousConnection::runTestPatternsForAService (const WaveServiceId &waveServiceId, const string &inputTestPatterns, const UI32 &numberOfTimesToRunTheTest)
+{
+    RegressionTestObjectManagerRunTestPatternsForAServiceMessage message            (waveServiceId, inputTestPatterns);
+    WaveMessageStatus                                            status;
+    ResourceId                                                   completionStatus = WAVE_MESSAGE_SUCCESS;
+    ResourceId                                                   clientStatus     = WAVE_MESSAGE_ERROR;
+
+    message.setNumberOfTimesToRunServiceTest (numberOfTimesToRunTheTest);
+
+    if (true == (isCurrentlyConnected ()))
+    {
+        status = sendSynchronouslyToWaveServer (&message);
+
+        if (WAVE_MESSAGE_SUCCESS != status)
+        {
+            trace (TRACE_LEVEL_DEBUG, "WaveClientSynchronousConnection::runTestPatternsForAService : Sending message failed : " + FrameworkToolKit::localize (status));
+        }
+        else
+        {
+            completionStatus = message.getCompletionStatus ();
+
+            if (WAVE_MESSAGE_SUCCESS != completionStatus)
+            {
+                clientStatus = completionStatus;
+
+                trace (TRACE_LEVEL_DEBUG, "WaveClientSynchronousConnection::runTestPatternsForAService : Message Processing failed : " + FrameworkToolKit::localize (completionStatus));
+            }
+            else
+            {
+                clientStatus = WAVE_MESSAGE_SUCCESS;
+            }
+        }
+    }
+    else
+    {
+        clientStatus = getConnectionStatus ();
+    }
+
+    return (clientStatus);
+}
+
 ResourceId WaveClientSynchronousConnection::getServicesInformation (vector<WaveServiceId> &serviceIds, vector<string> &serviceNames, vector<bool> &enabledStates, vector<bool> &localServiceStates, vector<string> &cpuAffinities)
 {
     FrameworkObjectManagerServiceControlListMessage message;

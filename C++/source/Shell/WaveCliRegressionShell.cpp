@@ -10,15 +10,24 @@
 #include "Framework/Utils/StringUtils.h"
 #include "Framework/Utils/FrameworkToolKit.h"
 
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <streambuf>
+
+using namespace std;
+
 namespace WaveNs
 {
 
 WaveCliRegressionShell::WaveCliRegressionShell (WaveClientSynchronousConnection &connection)
     : WaveCliShell ("regression", connection)
 {
-    addCommandfunction ("list", reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionList),           "Lists the available Services.",                                                    reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionListHelp));
-    addCommandfunction ("prepare2", reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionPrepare2),   "Prepares a Regression Service by allowing test parameters to be set.",             reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionPrepare2Help));
-    addCommandfunction ("run",  reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionRunForAService), "Runs a particular Regression Service irrespective of its enabled/disabled state.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionRunForAServiceHelp));
+    addCommandfunction ("list",             reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionList),                       "Lists the available Services.",                                                                              reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionListHelp));
+    addCommandfunction ("prepare2",         reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionPrepare2),                   "Prepares a Regression Service by allowing test parameters to be set.",                                       reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionPrepare2Help));
+    addCommandfunction ("run",              reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionRunForAService),             "Runs a particular Regression Service irrespective of its enabled/disabled state.",                           reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionRunForAServiceHelp));
+    addCommandfunction ("runTestPatterns",  reinterpret_cast<WaveShellCommandFunction> (&WaveCliRegressionShell::regressionRunTestPatternsForAService), "Runs a particular Regression Service irrespective of its enabled/disabled state using input test patterns.", reinterpret_cast<WaveShellCommandHelpFunction> (&WaveCliRegressionShell::regressionRunTestPatternsForAServiceHelp));
 }
 
 WaveCliRegressionShell::~WaveCliRegressionShell ()
@@ -113,7 +122,7 @@ ResourceId WaveCliRegressionShell::regressionPrepare2 (const vector<string> &arg
         if (1 <= numberOfArguments)
         {
             serviceIndex = strtoul (arguments[0].c_str (), NULL, 10);
-    
+
             // Remove service index from string vector
             inputStrings.erase(inputStrings.begin());
         }
@@ -246,4 +255,102 @@ void WaveCliRegressionShell::regressionRunForAServiceHelp ()
     tracePrintf (TRACE_LEVEL_INFO, true, true, "");
 }
 
+ResourceId WaveCliRegressionShell::regressionRunTestPatternsForAService (const vector<string> &arguments)
+{
+    UI32                            numberOfArguments   = arguments.size ();
+    vector<RegressionTestEntry>     testServiceEntries;
+    ResourceId                      status;
+    WaveServiceId                   serviceId           = 0;
+    string                          testPatternFile;
+    string                          inputTestPatterns;
+    UI32                            serviceIndex        = 0;
+    UI32                            numberOfIterations  = 1;
+    WaveClientSynchronousConnection connection          = getConnection ();
+
+    if (numberOfArguments < 2)
+    {
+        return (WAVE_MESSAGE_ERROR);
+    }
+    else
+    {
+        if (1 <= numberOfArguments)
+        {
+            serviceIndex = strtoul (arguments[0].c_str (), NULL, 10);
+        }
+
+        if (2 <= numberOfArguments)
+        {
+            testPatternFile = arguments[1];
+        }
+
+        if (3 <= numberOfArguments)
+        {
+            numberOfIterations = strtoul (arguments[2].c_str (), NULL, 10);
+        }
+    }
+
+    status = connection.getListOfTestServices (testServiceEntries);
+
+    if (WAVE_MESSAGE_SUCCESS == status)
+    {
+        trace (TRACE_LEVEL_DEBUG, "Successfully Obtained the list of Test Services.");
+
+        UI32                numberOfTestServices = testServiceEntries.size ();
+        RegressionTestEntry tempEntry;
+
+        if (serviceIndex <= numberOfTestServices)
+        {
+            tempEntry = testServiceEntries[serviceIndex - 1];
+            serviceId = tempEntry.getTestServiceId ();
+
+            ifstream inputFileStream;
+
+            inputFileStream.open (testPatternFile.c_str ());
+
+            stringstream inputStringStream;
+
+            inputStringStream << inputFileStream.rdbuf();
+
+            inputTestPatterns = inputStringStream.str ();
+
+            status = connection.runTestPatternsForAService (serviceId, inputTestPatterns, numberOfIterations);
+
+            if (WAVE_MESSAGE_SUCCESS == status)
+            {
+                trace (TRACE_LEVEL_SUCCESS, "Regression Test Succeeded.");
+            }
+            else
+            {
+                trace (TRACE_LEVEL_ERROR, "Regression Test Failed.  Status : " + FrameworkToolKit::localize (status));
+            }
+        }
+        else
+        {
+            trace (TRACE_LEVEL_ERROR, "Service Index Out of range.");
+        }
+    }
+    else
+    {
+        trace (TRACE_LEVEL_ERROR, "Failed to Obtain the list of Test Services. Status : " + FrameworkToolKit::localize (status));
+    }
+
+    return (status);
+}
+
+void WaveCliRegressionShell::regressionRunTestPatternsForAServiceHelp ()
+{
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "USAGE : run <index> <testPatternFile> [nIterations]");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "INPUT");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    index           - The index of the BIST service to be run.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "                      This value can be obtained via list command.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "                      Please note that this value is different from coresponding Wave Service Id.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    testPatternFile - File  copntaining JSON input test patterns.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    nIterations     - Number of iterations for which the BIST is to be run.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "                      This is in an optional argument.  The default value is 1.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "OUTPUT");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "    Runs the particual BIST Service identified by the index for nIterations times.");
+    tracePrintf (TRACE_LEVEL_INFO, true, true, "");
+}
 }

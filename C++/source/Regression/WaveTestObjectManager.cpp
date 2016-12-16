@@ -21,8 +21,9 @@ namespace WaveNs
 WaveTestObjectManager::WaveTestObjectManager (const string &waveTestObjectManagerName, const UI32 &stackSize, const vector<UI32> *pCpuAffinityVector)
     : WaveLocalObjectManager (waveTestObjectManagerName, stackSize, pCpuAffinityVector)
 {
-    addOperationMap (WAVE_OBJECT_MANAGER_TEST,                   reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::testRequestHandler));
-    addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION, reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::prepareForRegressionRequestHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_TEST,                    reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::testRequestHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_TEST_PATTERNS,           reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::runTestPatternsHandler));
+    addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION,  reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::prepareForRegressionRequestHandler));
     addOperationMap (WAVE_OBJECT_MANAGER_PREPARE_FOR_REGRESSION2, reinterpret_cast<WaveMessageHandler> (&WaveTestObjectManager::prepareForRegressionRequestHandler2));
 
     RegressionTestObjectManager::addToRegressionShell (getServiceId (), true);
@@ -182,6 +183,16 @@ void WaveTestObjectManager::runTestPatternsHandler (RegressionTestPatternsMessag
 
         waveAssert (NULL != pWaveMessage, __FILE__, __LINE__);
 
+        JsonValue *pJsonValueForInputTestPattern = pJsonObjectForTestPattern->getValueForName ("testPattern");
+
+        waveAssert (NULL != pJsonValueForInputTestPattern, __FILE__, __LINE__);
+
+        JsonObject *pJsonObjectForInputTestPattern = dynamic_cast<JsonObject *> (pJsonValueForInputTestPattern);
+
+        waveAssert (NULL != pJsonObjectForInputTestPattern, __FILE__, __LINE__);
+
+        pWaveMessage->loadFromJsonObject (pJsonObjectForInputTestPattern);
+
         status = sendSynchronously (pWaveMessage);
 
         if (WAVE_MESSAGE_SUCCESS == status)
@@ -191,16 +202,45 @@ void WaveTestObjectManager::runTestPatternsHandler (RegressionTestPatternsMessag
 
         delete pWaveMessage;
 
-        if (WAVE_MESSAGE_SUCCESS != status)
+        JsonValue  *pJsonValueForExpectedStatus     = pJsonObjectForTestPattern->getValueForName ("expectedStatus");
+        JsonString *pJsonStringForExpectedStatus    = NULL;
+        string      expectedStatusResourceIdString;
+
+        if (NULL != pJsonValueForExpectedStatus)
         {
-            trace (TRACE_LEVEL_ERROR, string ("WaveTestObjectManager::runTestPatternsHandler : Test Patter processing failed : ") + FrameworkToolKit::localize (status));
+            pJsonStringForExpectedStatus = dynamic_cast<JsonString *> (pJsonValueForExpectedStatus);
+
+            waveAssert (NULL != pJsonStringForExpectedStatus, __FILE__, __LINE__);
+
+            expectedStatusResourceIdString = pJsonStringForExpectedStatus->getString ();
+        }
+        else
+        {
+            expectedStatusResourceIdString = "WAVE_MESSAGE_SUCCESS";
+        }
+
+        ResourceId expectedStatus = FrameworkToolKit::localizeToSourceCodeResourceId (expectedStatusResourceIdString);
+
+        if (expectedStatus != status)
+        {
+            const string actualStatusResourceIdString = FrameworkToolKit::localizeToSourceCodeEnum (status);
+
+            tracePrintf (TRACE_LEVEL_ERROR, true, false, "WaveTestObjectManager::runTestPatternsHandler : Test Pattern processing failed.  Expected : %s.  Got : %s", expectedStatusResourceIdString.c_str (), actualStatusResourceIdString.c_str ());
+
             break;
+        }
+        else
+        {
+            status = WAVE_MESSAGE_SUCCESS;
         }
     }
 
     delete pJsonValue;
 
     pMessage->setCompletionStatus (status);
+
+    reply (pMessage);
+
     return;
 }
 

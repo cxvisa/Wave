@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-2009 Vidyasagara Guntaka                           *
+ *   Copyright (C) 2005-2016 Vidyasagara Guntaka                           *
  *   All rights reserved.                                                  *
  *   Author : Vidyasagara Reddy Guntaka                                    *
  ***************************************************************************/
@@ -15,18 +15,21 @@ namespace WaveNs
 class WaveCliRegressionShell : public WaveCliShell
 {
     private :
-                   WaveCliRegressionShell       (WaveClientSynchronousConnection &connection);
+                   WaveCliRegressionShell                   (WaveClientSynchronousConnection &connection);
 
-        void       briefHelp                    ();
+        void       briefHelp                                ();
 
-        ResourceId regressionList               (const vector<string> &arguments);
-        void       regressionListHelp           (void);
+        ResourceId regressionList                           (const vector<string> &arguments);
+        void       regressionListHelp                       (void);
 
-        ResourceId regressionPrepare2           (const vector<string> &arguments);
-        void       regressionPrepare2Help       (void);
+        ResourceId regressionPrepare2                       (const vector<string> &arguments);
+        void       regressionPrepare2Help                   (void);
 
-        ResourceId regressionRunForAService     (const vector<string> &arguments);
-        void       regressionRunForAServiceHelp (void);
+        ResourceId regressionRunForAService                 (const vector<string> &arguments);
+        void       regressionRunForAServiceHelp             (void);
+
+        ResourceId regressionRunTestPatternsForAService     (const vector<string> &arguments);
+        void       regressionRunTestPatternsForAServiceHelp (void);
 
     protected :
     public :

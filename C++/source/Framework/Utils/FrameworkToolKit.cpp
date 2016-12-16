@@ -2659,38 +2659,30 @@ void FrameworkToolKit::getAllFilesInTheDirectory (const string &directoryPath, v
     if (NULL != pDirectory)
     {
         struct dirent *pDirectoryEntry = (struct dirent *) malloc (sizeof (struct dirent));
-        struct dirent *pResult         = NULL;
 
         waveAssert (NULL != pDirectoryEntry, __FILE__, __LINE__);
 
-        while (0 == (readdir_r (pDirectory, pDirectoryEntry, &pResult)))
+        while (NULL != (pDirectoryEntry = readdir (pDirectory)))
         {
-            if (NULL == pResult)
-            {
-                break;
-            }
-            else
-            {
-                struct stat fileStat;
-                string      filePathWithDirectory = directoryPath + string ("/") + string (pDirectoryEntry->d_name);
+            struct stat fileStat;
+            string      filePathWithDirectory = directoryPath + string ("/") + string (pDirectoryEntry->d_name);
 
-                if (-1 != (stat (filePathWithDirectory.c_str (), &fileStat)))
-                {
-                    if (S_ISREG (fileStat.st_mode))
+            if (-1 != (stat (filePathWithDirectory.c_str (), &fileStat)))
+            {
+                if (S_ISREG (fileStat.st_mode))
                 {
                     string filePath = pDirectoryEntry->d_name;
 
-                        if ("" != extensionFilter)
-                        {
-                    if (true == (StringUtils::endsWith (filePath, extensionFilter)))
+                    if ("" != extensionFilter)
                     {
-                                filePaths.push_back (filePathWithDirectory);
-                            }
-                        }
-                        else
+                        if (true == (StringUtils::endsWith (filePath, extensionFilter)))
                         {
                             filePaths.push_back (filePathWithDirectory);
                         }
+                    }
+                    else
+                    {
+                        filePaths.push_back (filePathWithDirectory);
                     }
                 }
             }

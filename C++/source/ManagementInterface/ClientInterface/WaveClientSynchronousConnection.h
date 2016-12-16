@@ -61,6 +61,7 @@ class WaveClientSynchronousConnection
         ResourceId            getListOfTestServices                                   (vector<RegressionTestEntry> &testServices);
         ResourceId            prepareTestForAService                                  (const WaveServiceId &waveServiceId, const vector<string> &inputStrings);
         ResourceId            runTestForAService                                      (const WaveServiceId &waveServiceId, const UI32 &numberOfTimesToRunTheTest = 1);
+        ResourceId            runTestPatternsForAService                              (const WaveServiceId &waveServiceId, const string &inputTestPatterns, const UI32 &numberOfTimesToRunTheTest = 1);
 
         ResourceId            getServicesInformation                                  (vector<WaveServiceId> &serviceIds, vector<string> &serviceNames, vector<bool> &enabledStates, vector<bool> &localServiceStates, vector<string> &cpuAffinities);
 
